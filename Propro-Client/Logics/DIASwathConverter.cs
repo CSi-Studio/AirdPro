@@ -1,20 +1,16 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Propro.Constants;
+using Propro.Domains;
+using Propro.Structs;
+using pwiz.CLI.analysis;
+using pwiz.CLI.cv;
+using pwiz.CLI.msdata;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
-using pwiz.CLI.analysis;
-using pwiz.CLI.cv;
-using pwiz.CLI.data;
-using pwiz.CLI.msdata;
-using pwiz.CLI.util;
-using Propro.Constants;
-using Propro.Domains;
-using Propro.Structs;
-using Propro.Utils;
 
 namespace Propro.Logics
 {
