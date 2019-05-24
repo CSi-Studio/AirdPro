@@ -1,22 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
+using Propro.Forms;
 
-namespace Propro_Client
+namespace Propro
 {
-    static class Program
+    internal static class Program
     {
+        public static AirdForm mainForm { get; private set; }
+
         /// <summary>
-        /// 应用程序的主入口点。
+        ///     The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        public static void Main(string[] args)
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            try
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                mainForm = new AirdForm();
+                Application.Run(mainForm);
+            }
+            catch (Exception e)
+            {
+                HandleException(e);
+            }
         }
+
+        #region Exception handling
+        public static void HandleException(Exception e)
+        {
+            MessageBox.Show(e.ToString(), "Error");
+            return;
+        }
+        #endregion
     }
 }

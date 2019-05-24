@@ -12,6 +12,21 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -22,6 +37,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,6 +49,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>binaries\x64\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="pwiz_bindings_cli, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>binaries\x64\pwiz_bindings_cli.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,16 +68,121 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="ThermoFisher.CommonCore.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1aef06afb5abd953, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>binaries\x64\ThermoFisher.CommonCore.Data.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="Asyncs\ConvertTaskManager.cs" />
+    <Compile Include="Asyncs\LimitedConcurrencyLevelTaskScheduler.cs" />
+    <Compile Include="Constants\ExperimentType.cs" />
+    <Compile Include="Constants\MsLevel.cs" />
+    <Compile Include="Constants\PositionType.cs" />
+    <Compile Include="CSharpFastPFORCore\BinaryPacking.cs" />
+    <Compile Include="CSharpFastPFORCore\BitPacking.cs" />
+    <Compile Include="CSharpFastPFORCore\ByteIntegerCODEC.cs" />
+    <Compile Include="CSharpFastPFORCore\Composition.cs" />
+    <Compile Include="CSharpFastPFORCore\DeltaZigzagBinaryPacking.cs" />
+    <Compile Include="CSharpFastPFORCore\DeltaZigzagEncoding.cs" />
+    <Compile Include="CSharpFastPFORCore\DeltaZigzagVariableByte.cs" />
+    <Compile Include="CSharpFastPFORCore\Differential\Delta.cs" />
+    <Compile Include="CSharpFastPFORCore\Differential\IntegratedBinaryPacking.cs" />
+    <Compile Include="CSharpFastPFORCore\Differential\IntegratedBitPacking.cs" />
+    <Compile Include="CSharpFastPFORCore\Differential\IntegratedByteIntegerCODEC.cs" />
+    <Compile Include="CSharpFastPFORCore\Differential\IntegratedComposition.cs" />
+    <Compile Include="CSharpFastPFORCore\Differential\IntegratedIntCompressor.cs" />
+    <Compile Include="CSharpFastPFORCore\Differential\IntegratedIntegerCODEC.cs" />
+    <Compile Include="CSharpFastPFORCore\Differential\IntegratedVariableByte.cs" />
+    <Compile Include="CSharpFastPFORCore\Differential\SkippableIntegratedComposition.cs" />
+    <Compile Include="CSharpFastPFORCore\Differential\SkippableIntegratedIntegerCODEC.cs" />
+    <Compile Include="CSharpFastPFORCore\Differential\XorBinaryPacking.cs" />
+    <Compile Include="CSharpFastPFORCore\FastPFOR.cs" />
+    <Compile Include="CSharpFastPFORCore\FastPFOR128.cs" />
+    <Compile Include="CSharpFastPFORCore\IntCompressor.cs" />
+    <Compile Include="CSharpFastPFORCore\IntegerCODEC.cs" />
+    <Compile Include="CSharpFastPFORCore\IntWrapper.cs" />
+    <Compile Include="CSharpFastPFORCore\JustCopy.cs" />
+    <Compile Include="CSharpFastPFORCore\NewPFD.cs" />
+    <Compile Include="CSharpFastPFORCore\NewPFDS16.cs" />
+    <Compile Include="CSharpFastPFORCore\NewPFDS9.cs" />
+    <Compile Include="CSharpFastPFORCore\OptPFD.cs" />
+    <Compile Include="CSharpFastPFORCore\OptPFDS16.cs" />
+    <Compile Include="CSharpFastPFORCore\OptPFDS9.cs" />
+    <Compile Include="CSharpFastPFORCore\Port\Arrays.cs" />
+    <Compile Include="CSharpFastPFORCore\Port\BitSet.cs" />
+    <Compile Include="CSharpFastPFORCore\Port\ByteBuffer.cs" />
+    <Compile Include="CSharpFastPFORCore\Port\ByteOrder.cs" />
+    <Compile Include="CSharpFastPFORCore\Port\IntBuffer.cs" />
+    <Compile Include="CSharpFastPFORCore\Port\Integer.cs" />
+    <Compile Include="CSharpFastPFORCore\S16.cs" />
+    <Compile Include="CSharpFastPFORCore\S9.cs" />
+    <Compile Include="CSharpFastPFORCore\Simple16.cs" />
+    <Compile Include="CSharpFastPFORCore\Simple9.cs" />
+    <Compile Include="CSharpFastPFORCore\SkippableComposition.cs" />
+    <Compile Include="CSharpFastPFORCore\SkippableIntegerCODEC.cs" />
+    <Compile Include="CSharpFastPFORCore\Synth\ClusteredDataGenerator.cs" />
+    <Compile Include="CSharpFastPFORCore\Synth\UniformDataGenerator.cs" />
+    <Compile Include="CSharpFastPFORCore\Util.cs" />
+    <Compile Include="CSharpFastPFORCore\VariableByte.cs" />
+    <Compile Include="Domains\Aird\AirdInfo.cs" />
+    <Compile Include="Domains\Aird\InstrumentInfo.cs" />
+    <Compile Include="Domains\Aird\ParentFileInfo.cs" />
+    <Compile Include="Domains\ConvertJobInfo.cs" />
+    <Compile Include="Domains\ConvertResult.cs" />
+    <Compile Include="Domains\Log.cs" />
+    <Compile Include="Domains\Position.cs" />
+    <Compile Include="Domains\Result.cs" />
+    <Compile Include="Domains\ScanIndex.cs" />
+    <Compile Include="Domains\Strategy.cs" />
+    <Compile Include="Domains\WindowRange.cs" />
+    <Compile Include="Forms\AirdForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\AirdForm.Designer.cs">
+      <DependentUpon>AirdForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Logics\DIASwathConverter.cs" />
+    <Compile Include="Logics\IConverter.cs" />
+    <Compile Include="Logics\InfoFillConverter.cs" />
+    <Compile Include="Logics\PRMConverter.cs" />
+    <Compile Include="Logics\TestLinearRead.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\CompressUtil.cs" />
+    <Compile Include="Utils\FileNameUtil.cs" />
+    <Compile Include="Zlib\Common\CRC32.cs" />
+    <Compile Include="Zlib\Common\Iso8859Dash1Encoding.cs" />
+    <Compile Include="Zlib\Deflate.cs" />
+    <Compile Include="Zlib\DeflateStream.cs" />
+    <Compile Include="Zlib\GZipStream.cs" />
+    <Compile Include="Zlib\Inflate.cs" />
+    <Compile Include="Zlib\InfTree.cs" />
+    <Compile Include="Zlib\ParallelDeflateOutputStream.cs" />
+    <Compile Include="Zlib\Tree.cs" />
+    <Compile Include="Zlib\Zlib.cs" />
+    <Compile Include="Zlib\ZlibBaseStream.cs" />
+    <Compile Include="Zlib\ZlibCodec.cs" />
+    <Compile Include="Zlib\ZlibConstants.cs" />
+    <Compile Include="Zlib\ZlibStream.cs" />
+    <EmbeddedResource Include="Forms\AirdForm.resx">
+      <DependentUpon>AirdForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -63,6 +192,29 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="binaries\x64\BaseDataAccess.dll.config" />
+    <None Include="binaries\x64\EULA.MHDAC" />
+    <None Include="binaries\x64\EULA.RawFileReader" />
+    <None Include="binaries\x64\EULA.SFCS" />
+    <None Include="binaries\x64\EULA.TimsSDK" />
+    <None Include="binaries\x64\Interop.EDAL.SxS.manifest" />
+    <None Include="binaries\x64\Interop.HSREADWRITELib.SxS.manifest" />
+    <None Include="binaries\x64\Microsoft.VC90.CRT.manifest" />
+    <None Include="binaries\x64\Microsoft.VC90.MFC.manifest" />
+    <None Include="binaries\x64\Microsoft.VC90.OpenMP.manifest" />
+    <None Include="binaries\x64\pwiz_bindings_cli.dll.manifest" />
+    <None Include="binaries\x64\pwiz_bindings_cli.dll.rsp" />
+    <None Include="binaries\x64\quantitation_1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="binaries\x64\quantitation_2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="binaries\x64\README" />
+    <None Include="binaries\x64\simplelogger.properties" />
+    <None Include="binaries\x64\unimod_2.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -72,9 +224,197 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="binaries\x64\agtsampleinforw.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-console-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-datetime-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-debug-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-errorhandling-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-file-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-file-l1-2-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-file-l2-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-handle-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-heap-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-interlocked-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-libraryloader-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-localization-l1-2-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-memory-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-namedpipe-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-processenvironment-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-processthreads-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-processthreads-l1-1-1.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-profile-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-rtlsupport-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-string-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-synch-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-synch-l1-2-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-sysinfo-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-timezone-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-core-util-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-crt-conio-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-crt-convert-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-crt-environment-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-crt-filesystem-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-crt-heap-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-crt-locale-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-crt-math-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-crt-multibyte-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-crt-private-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-crt-process-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-crt-runtime-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-crt-stdio-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-crt-string-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-crt-time-l1-1-0.dll" />
+    <Content Include="binaries\x64\api-ms-win-crt-utility-l1-1-0.dll" />
+    <Content Include="binaries\x64\baf2sql_c.dll" />
+    <Content Include="binaries\x64\BaseCommon.dll" />
+    <Content Include="binaries\x64\BaseDataAccess.dll" />
+    <Content Include="binaries\x64\BaseError.dll" />
+    <Content Include="binaries\x64\BaseTof.dll" />
+    <Content Include="binaries\x64\bdal-logconf.xml" />
+    <Content Include="binaries\x64\BDal.BCO.Constants.xml" />
+    <Content Include="binaries\x64\BDal.BCO.dll" />
+    <Content Include="binaries\x64\BDal.BCO.Interfaces.dll" />
+    <Content Include="binaries\x64\BDal.BCO.Objects.xml" />
+    <Content Include="binaries\x64\BDal.CCO.Calibration.dll" />
+    <Content Include="binaries\x64\BDal.CCO.Constants.xml" />
+    <Content Include="binaries\x64\BDal.CCO.Interfaces.dll" />
+    <Content Include="binaries\x64\BDal.CCO.Objects.xml" />
+    <Content Include="binaries\x64\BDal.CCO.TemperatureCompensation.dll" />
+    <Content Include="binaries\x64\BDal.CCO.Transformation.dll" />
+    <Content Include="binaries\x64\BDal.CCO.Utilities.dll" />
+    <Content Include="binaries\x64\BDal.CXt.Lc.dll" />
+    <Content Include="binaries\x64\BDal.CXt.Lc.Factory.dll" />
+    <Content Include="binaries\x64\BDal.CXt.Lc.Interfaces.dll" />
+    <Content Include="binaries\x64\BDal.CXt.Lc.UntU2.dll" />
+    <Content Include="binaries\x64\boost_date_time-vc90-mt-1_37-x64-BDAL_20091123.dll" />
+    <Content Include="binaries\x64\boost_regex-vc90-mt-1_37-x64-BDAL_20091123.dll" />
+    <Content Include="binaries\x64\boost_system-vc90-mt-1_37-x64-BDAL_20091123.dll" />
+    <Content Include="binaries\x64\boost_thread-vc90-mt-1_37-x64-BDAL_20091123.dll" />
+    <Content Include="binaries\x64\CABINET.dll" />
+    <Content Include="binaries\x64\cdt.dll" />
+    <Content Include="binaries\x64\Clearcore2.Compression.dll" />
+    <Content Include="binaries\x64\Clearcore2.Data.Acquisition.Client.dll" />
+    <Content Include="binaries\x64\Clearcore2.Data.Acquisition.Contracts.dll" />
+    <Content Include="binaries\x64\Clearcore2.Data.AnalystDataProvider.dll" />
+    <Content Include="binaries\x64\Clearcore2.Data.Client.dll" />
+    <Content Include="binaries\x64\Clearcore2.Data.Common.dll" />
+    <Content Include="binaries\x64\Clearcore2.Data.CommonInterfaces.dll" />
+    <Content Include="binaries\x64\Clearcore2.Data.Contracts.dll" />
+    <Content Include="binaries\x64\Clearcore2.Data.Core.dll" />
+    <Content Include="binaries\x64\Clearcore2.Data.dll" />
+    <Content Include="binaries\x64\Clearcore2.Data.Wiff2.dll" />
+    <Content Include="binaries\x64\Clearcore2.Data.WiffReader.dll" />
+    <Content Include="binaries\x64\Clearcore2.DataService.dll" />
+    <Content Include="binaries\x64\Clearcore2.Devices.Types.dll" />
+    <Content Include="binaries\x64\Clearcore2.Domain.Acquisition.dll" />
+    <Content Include="binaries\x64\Clearcore2.Domain.Acquisition.Methods.MassSpec.dll" />
+    <Content Include="binaries\x64\Clearcore2.Infrastructure.dll" />
+    <Content Include="binaries\x64\Clearcore2.InternalRawXYProcessing.dll" />
+    <Content Include="binaries\x64\Clearcore2.Muni.dll" />
+    <Content Include="binaries\x64\Clearcore2.RawXYProcessing.dll" />
+    <Content Include="binaries\x64\Clearcore2.StructuredStorage.dll" />
+    <Content Include="binaries\x64\Clearcore2.UserLog.Types.dll" />
+    <Content Include="binaries\x64\Clearcore2.Utility.dll" />
+    <Content Include="binaries\x64\Clearcore2.XmlHelpers.dll" />
+    <Content Include="binaries\x64\CLFIO32.dll" />
+    <Content Include="binaries\x64\CompassXtractMS.dll" />
+    <Content Include="binaries\x64\Compressor_12451AC8-3BF1-48e1-8E66-DA05BF3852A0.dll" />
+    <Content Include="binaries\x64\Compressor_382D5134-9727-4be6-B6F8-754F577426D6.dll" />
+    <Content Include="binaries\x64\Compressor_4F1EA0CB-5A6A-43ED-9562-D6D873034577.dll" />
+    <Content Include="binaries\x64\Compressor_6BB2E64A-27A0-4575-A66A-4E312C8B9AD7.dll" />
+    <Content Include="binaries\x64\Compressor_6EEE649E-09AA-4332-8E82-8188652E8AB5.dll" />
+    <Content Include="binaries\x64\Compressor_7F88E97F-2038-40ba-8F3A-FCA9A9719569.dll" />
+    <Content Include="binaries\x64\concrt140.dll" />
+    <Content Include="binaries\x64\CRHAKEI2.dll" />
+    <Content Include="binaries\x64\DataReader.dll" />
+    <Content Include="binaries\x64\DualProbeInterfaceParametersCS.dll" />
+    <Content Include="binaries\x64\FlexVariableTable.xml" />
+    <Content Include="binaries\x64\Google.Protobuf.dll" />
+    <Content Include="binaries\x64\HSReadWrite.dll" />
+    <Content Include="binaries\x64\ICRVariableTable.xml" />
+    <Content Include="binaries\x64\IdentityModel.dll" />
+    <Content Include="binaries\x64\Interop.DataExplorer.dll" />
+    <Content Include="binaries\x64\Interop.EDAL.dll" />
+    <Content Include="binaries\x64\Interop.HSREADWRITELib.dll" />
+    <Content Include="binaries\x64\IOModuleQTFL.dll" />
+    <Content Include="binaries\x64\MassCalcWrapObject.dll" />
+    <Content Include="binaries\x64\MassLynxRaw.dll" />
+    <Content Include="binaries\x64\MassSpecDataReader.dll" />
+    <Content Include="binaries\x64\mfc140.dll" />
+    <Content Include="binaries\x64\mfc90.dll" />
+    <Content Include="binaries\x64\Microsoft.Practices.ServiceLocation.dll" />
+    <Content Include="binaries\x64\Microsoft.Practices.Unity.Configuration.dll" />
+    <Content Include="binaries\x64\Microsoft.Practices.Unity.dll" />
+    <Content Include="binaries\x64\MIDAC.dll" />
+    <Content Include="binaries\x64\MiscUtil.dll" />
+    <Content Include="binaries\x64\mkl_sequential.dll" />
+    <Content Include="binaries\x64\MSMSDBCntl.dll" />
+    <Content Include="binaries\x64\msparser.dll" />
+    <Content Include="binaries\x64\msvcm90.dll" />
+    <Content Include="binaries\x64\msvcp110.dll" />
+    <Content Include="binaries\x64\msvcp120.dll" />
+    <Content Include="binaries\x64\msvcp140.dll" />
+    <Content Include="binaries\x64\msvcp90.dll" />
+    <Content Include="binaries\x64\msvcr110.dll" />
+    <Content Include="binaries\x64\msvcr120.dll" />
+    <Content Include="binaries\x64\msvcr90.dll" />
+    <Content Include="binaries\x64\Newtonsoft.Json.dll" />
+    <Content Include="binaries\x64\OFX.Core.Contracts.dll" />
+    <Content Include="binaries\x64\OFX.Core.dll" />
+    <Content Include="binaries\x64\OFX.EventServices.dll" />
+    <Content Include="binaries\x64\OFX.Logging.dll" />
+    <Content Include="binaries\x64\OFX.Security.Core.dll" />
+    <Content Include="binaries\x64\ParallelExtensionsExtras.dll" />
+    <Content Include="binaries\x64\PeakItgLSS.dll" />
+    <Content Include="binaries\x64\protobuf-net.dll" />
+    <Content Include="binaries\x64\pwiz_bindings_cli.dll" />
+    <Content Include="binaries\x64\pwiz_bindings_cli.xml" />
+    <Content Include="binaries\x64\QTFLDebugLog.dll" />
+    <Content Include="binaries\x64\QTFLProtoCS.dll" />
+    <Content Include="binaries\x64\Sciex.Clearcore.FMan.dll" />
+    <Content Include="binaries\x64\Sciex.Data.Processing.DLL" />
+    <Content Include="binaries\x64\Sciex.Data.SimpleTypes.dll" />
+    <Content Include="binaries\x64\Sciex.Data.XYData.dll" />
+    <Content Include="binaries\x64\Sciex.FMan.dll" />
+    <Content Include="binaries\x64\Sciex.Wiff.dll" />
+    <Content Include="binaries\x64\SciexToolKit.dll" />
+    <Content Include="binaries\x64\Shimadzu.LabSolutions.IO.IoModule.dll" />
+    <Content Include="binaries\x64\SQLite_v1.0.98\System.Data.SQLite.DLL" />
+    <Content Include="binaries\x64\System.Data.SQLite.DLL" />
+    <Content Include="binaries\x64\System.Runtime.Caching.Generic.dll" />
+    <Content Include="binaries\x64\ThermoFisher.CommonCore.Data.dll" />
+    <Content Include="binaries\x64\ThermoFisher.CommonCore.RawFileReader.dll" />
+    <Content Include="binaries\x64\ThermoRawMetaDump.exe" />
+    <Content Include="binaries\x64\timsdata.dll" />
+    <Content Include="binaries\x64\ucrtbase.dll" />
+    <Content Include="binaries\x64\UIMFLibrary.dll" />
+    <Content Include="binaries\x64\unifi-protobuf-net.dll" />
+    <Content Include="binaries\x64\vcomp110.dll" />
+    <Content Include="binaries\x64\vcomp140.dll" />
+    <Content Include="binaries\x64\vcomp90.dll" />
+    <Content Include="binaries\x64\vcruntime140.dll" />
+    <Content Include="binaries\x64\zlib.net.dll" />
+    <Content Include="favicon.ico" />
+    <Content Include="Zlib\LICENSE.jzlib.txt" />
+    <Content Include="Zlib\License.zlib.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
