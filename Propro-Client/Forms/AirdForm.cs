@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using pwiz.CLI.msdata;
-using Propro.Asyncs;
+﻿using Propro.Asyncs;
 using Propro.Constants;
 using Propro.Domains;
-using Propro.Utils;
-using ThermoFisher.CommonCore.Data;
+using System;
+using System.Collections;
+using System.Windows.Forms;
 
 namespace Propro.Forms
 {

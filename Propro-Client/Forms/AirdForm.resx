@@ -457,7 +457,7 @@
     <value>NoControl</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 125</value>
+    <value>163, 94</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>107, 16</value>
@@ -490,7 +490,7 @@
     <value>3</value>
   </data>
   <data name="cbIntensityPrecision.Location" type="System.Drawing.Point, System.Drawing">
-    <value>120, 121</value>
+    <value>276, 90</value>
   </data>
   <data name="cbIntensityPrecision.Size" type="System.Drawing.Size, System.Drawing">
     <value>54, 25</value>
@@ -523,7 +523,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblFileNameTag.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 159</value>
+    <value>7, 128</value>
   </data>
   <data name="lblFileNameTag.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 16</value>
@@ -553,7 +553,7 @@
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="tbFileNameSuffix.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 178</value>
+    <value>6, 147</value>
   </data>
   <data name="tbFileNameSuffix.Size" type="System.Drawing.Size, System.Drawing">
     <value>523, 23</value>
