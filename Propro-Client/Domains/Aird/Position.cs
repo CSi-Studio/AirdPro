@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Propro.Domains
 {
-    class Position
+    public class Position
     {
         //start
         public long s;

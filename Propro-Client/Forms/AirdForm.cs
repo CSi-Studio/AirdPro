@@ -22,7 +22,7 @@ namespace Propro.Forms
 
         private void ProproForm_Load(object sender, EventArgs e)
         {
-            this.Text = "Aird-Manager V0.1.6";
+            this.Text = "Aird-Manager V0.1.7";
         }
 
         private void btnChooseFiles_Click(object sender, EventArgs e)

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Propro.Domains
 {
-    class ScanIndex
+    public class ScanIndex
     {
         //0 代表Swath Block Index,包含了一个完整的Swath窗口中的所有谱图,msLevel
         public int level;
@@ -26,14 +26,12 @@ namespace Propro.Domains
         public float mzStart;
         //前体的荷质比窗口结束位置,已经经过ExperimentDO.overlap参数调整,precursor mz
         public float mzEnd;
-        //原始文件中前体的荷质比窗口开始位置,未经过ExperimentDO.overlap参数调整,precursor mz
-        public float oMzStart;
-        //原始文件中前体的荷质比窗口结束位置,未经过ExperimentDO.overlap参数调整,precursor mz
-        public float oMzEnd;
         //前体的荷质比窗口
         public float wid;
-        //原始文件中前体的窗口大小,未经过ExperimentDO.overlap参数调整,precursor mz
-        public float oWid;
+
+        //用于存储KV键值对
+        public string features;
+
         //特定字段,在msLevel=0的时候使用,在Aird格式文件中使用,一个Swath块中所有MS2的rt时间列表
         public List<float> rts;
         //特定字段,在msLevel=0的时候使用,在压缩文件中存储mz数组的长度以及存储intensity数组的长度,mz长度及intensity长度交替存入

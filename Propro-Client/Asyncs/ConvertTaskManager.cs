@@ -63,25 +63,18 @@ namespace Propro.Asyncs
                             jobInfo.threadId = "ThreadId:" + Thread.CurrentThread.ManagedThreadId;
                             if (jobInfo.type.Equals(ExperimentType.DIA_SWATH))
                             {
-                                new DIASwathConverter().doConvert(jobInfo);
+                                new DIASwathConverter(jobInfo).doConvert();
                             }
                             else if (jobInfo.type.Equals(ExperimentType.PRM))
                             {
-                                new PRMConverter().doConvert(jobInfo);
-                            }
-                            else if (jobInfo.type.Equals(ExperimentType.FILL_INFO))
-                            {
-                                new FillInfoConverter().doConvert(jobInfo);
-                            }
-                            else if (jobInfo.type.Equals(ExperimentType.TEST_READ_SPEED))
-                            {
-                                new TestLinearRead().doConvert(jobInfo);
+                                new PRMConverter(jobInfo).doConvert();
                             }
                            
                         }
                         catch (Exception ex)
                         {
-                            jobInfo.addLog(ex.ToString());
+                            jobInfo.log(ex.ToString(),"Error");
+                            jobTable.Remove(jobInfo.jobId);
                             MessageBox.Show(ex.ToString());
                         }
                     });

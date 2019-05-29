@@ -46,6 +46,8 @@ namespace Propro.Domains
         public string threadId;
         //额外的文件后缀名称
         public string suffix;
+        //任务的创建人
+        public string creator;
 
         public CancellationTokenSource cancellationTokenSource;
 
@@ -86,10 +88,31 @@ namespace Propro.Domains
             });
         }
 
-        public void addLog(string content)
+        public ConvertJobInfo log(string content)
         {
             Log log = new Log(DateTime.Now, content);
             logs.Add(log);
+            return this;
+        }
+
+        public ConvertJobInfo log(string content, string progressReport)
+        {
+            progress.Report(progressReport);
+            if (content != null)
+            {
+                Log log = new Log(DateTime.Now, content);
+                logs.Add(log);
+            }
+           
+            return this;
+        }
+
+        public void logError(string content)
+        {
+            progress.Report("Error");
+            Log log = new Log(DateTime.Now, content);
+            logs.Add(log);
+            throw new Exception(content);
         }
 
         public string getJsonInfo()

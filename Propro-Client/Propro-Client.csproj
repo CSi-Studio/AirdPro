@@ -149,16 +149,18 @@
     <Compile Include="CSharpFastPFORCore\Util.cs" />
     <Compile Include="CSharpFastPFORCore\VariableByte.cs" />
     <Compile Include="Domains\Aird\AirdInfo.cs" />
-    <Compile Include="Domains\Aird\InstrumentInfo.cs" />
-    <Compile Include="Domains\Aird\ParentFileInfo.cs" />
+    <Compile Include="Domains\Aird\ParentFile.cs" />
+    <Compile Include="Domains\Aird\Compressor.cs" />
+    <Compile Include="Domains\Aird\Features.cs" />
+    <Compile Include="Domains\Aird\Instrument.cs" />
+    <Compile Include="Domains\Aird\Software.cs" />
     <Compile Include="Domains\ConvertJobInfo.cs" />
     <Compile Include="Domains\ConvertResult.cs" />
     <Compile Include="Domains\Log.cs" />
-    <Compile Include="Domains\Position.cs" />
+    <Compile Include="Domains\Aird\Position.cs" />
     <Compile Include="Domains\Result.cs" />
-    <Compile Include="Domains\ScanIndex.cs" />
-    <Compile Include="Domains\Strategy.cs" />
-    <Compile Include="Domains\WindowRange.cs" />
+    <Compile Include="Domains\Aird\ScanIndex.cs" />
+    <Compile Include="Domains\Aird\WindowRange.cs" />
     <Compile Include="Forms\AirdForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -179,11 +181,10 @@
     </Compile>
     <Compile Include="Logics\DIASwathConverter.cs" />
     <Compile Include="Logics\IConverter.cs" />
-    <Compile Include="Logics\InfoFillConverter.cs" />
     <Compile Include="Logics\PRMConverter.cs" />
-    <Compile Include="Logics\TestLinearRead.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\FeaturesUtil.cs" />
     <Compile Include="Utils\CompressUtil.cs" />
     <Compile Include="Utils\FileNameUtil.cs" />
     <Compile Include="Zlib\Common\CRC32.cs" />

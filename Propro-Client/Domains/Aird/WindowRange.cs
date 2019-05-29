@@ -2,7 +2,7 @@
 
 namespace Propro.Structs
 {
-    class WindowRange
+    public class WindowRange
     {
         //mz start
         public float start;
@@ -13,8 +13,6 @@ namespace Propro.Structs
         //实际的precursor mz
         public float mz;
 
-        public float interval;
-
         public WindowRange() { }
 
         public WindowRange(float start, float end, float mz)
@@ -22,7 +20,6 @@ namespace Propro.Structs
             this.start = start;
             this.end = end;
             this.mz = mz;
-            this.interval = end - start;
         }
     }
 }
