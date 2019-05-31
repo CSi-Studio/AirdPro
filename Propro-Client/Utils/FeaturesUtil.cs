@@ -20,7 +20,6 @@ namespace Propro_Client.Utils
             StringBuilder sb = new StringBuilder();
             if (null != attrs && attrs.Count != 0)
             {
-                sb.Append(SP);
                 foreach (DictionaryEntry entry in attrs)
                 {
                     string key = entry.Key.ToString();

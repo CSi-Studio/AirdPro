@@ -14,13 +14,18 @@ namespace Propro.Asyncs
     {
         //需要进行处理的Job
         private Queue<ConvertJobInfo> jobQueue = new Queue<ConvertJobInfo>();
-        TaskFactory fac = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(10));
+        TaskFactory fac = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(2));
 
         //全部的Job信息
         public Hashtable jobTable = new Hashtable();
+        public Hashtable errorJob = new Hashtable();
 
         public void pushJob(ConvertJobInfo job)
         {
+            if (errorJob.Contains(job.jobId))
+            {
+                errorJob.Remove(job.jobId);
+            }
             if (!jobTable.Contains(job.jobId))
             {
                 jobQueue.Enqueue(job);
@@ -46,14 +51,9 @@ namespace Propro.Asyncs
                     {
                         jobInfo = jobQueue.Dequeue();
                     }
-                    catch
-                    {
-                    }
+                    catch {}
 
-                    if (jobInfo == null)
-                    {
-                        break;
-                    }
+                    if (jobInfo == null) break;
                     
                     fac.StartNew(() =>
                     {
@@ -61,6 +61,7 @@ namespace Propro.Asyncs
                         {
                             Console.Out.WriteLine("Start Convert");
                             jobInfo.threadId = "ThreadId:" + Thread.CurrentThread.ManagedThreadId;
+                            jobInfo.status = "Running";
                             if (jobInfo.type.Equals(ExperimentType.DIA_SWATH))
                             {
                                 new DIASwathConverter(jobInfo).doConvert();
@@ -69,12 +70,14 @@ namespace Propro.Asyncs
                             {
                                 new PRMConverter(jobInfo).doConvert();
                             }
-                           
+
+                            jobInfo.status = "Finished";
                         }
                         catch (Exception ex)
                         {
                             jobInfo.log(ex.ToString(),"Error");
-                            jobTable.Remove(jobInfo.jobId);
+                            jobInfo.status = "Error";
+                            errorJob.Add(jobInfo.jobId, jobInfo);
                             MessageBox.Show(ex.ToString());
                         }
                     });

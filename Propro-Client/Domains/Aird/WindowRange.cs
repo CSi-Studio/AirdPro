@@ -4,14 +4,16 @@ namespace Propro.Structs
 {
     public class WindowRange
     {
-        //mz start
+        //前体的荷质比窗口开始位置,已经经过ExperimentDO.overlap参数调整,precursor mz
         public float start;
-        
-        //mz end
+
+        //前体的荷质比窗口结束位置,已经经过ExperimentDO.overlap参数调整,precursor mz
         public float end;
 
-        //实际的precursor mz
+        //前体的荷质比,precursor mz
         public float mz;
+
+        public string features;
 
         public WindowRange() { }
 

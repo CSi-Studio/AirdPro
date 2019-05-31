@@ -15,14 +15,11 @@ namespace Propro.Forms
         public AirdForm()
         {
             InitializeComponent();
-            cbMzPrecision.SelectedItem = cbMzPrecision.Items[0];
-            cbIntensityPrecision.SelectedItem = cbIntensityPrecision.Items[0];
-            Console.Out.WriteLine("");
         }
 
         private void ProproForm_Load(object sender, EventArgs e)
         {
-            this.Text = "Aird-Manager V0.1.7";
+            this.Text = "Propro-Client V0.2.0";
         }
 
         private void btnChooseFiles_Click(object sender, EventArgs e)
@@ -84,10 +81,10 @@ namespace Propro.Forms
             
             foreach (ListViewItem item in lvFileList.Items)
             {
-                ConvertJobInfo jobInfo = new ConvertJobInfo(item.SubItems[0].Text, tbFolderPath.Text, item.SubItems[1].Text,
-                    (int)Math.Pow(10, int.Parse(cbMzPrecision.SelectedItem.ToString())),
-                    (int)Math.Pow(10, int.Parse(cbIntensityPrecision.SelectedItem.ToString())),
+                ConvertJobInfo jobInfo = new ConvertJobInfo(item.SubItems[0].Text, tbFolderPath.Text,
+                    item.SubItems[1].Text,
                     cbIsZeroIntensityIgnore.Checked,
+                    cbLog10.Checked,
                     tbFileNameSuffix.Text,
                     item);
                 convertTaskManager.pushJob(jobInfo);
@@ -109,6 +106,7 @@ namespace Propro.Forms
             {
                 removeFile(item);
             }
+           
         }
 
         private void addFile(string fileName,string expType)
@@ -135,6 +133,7 @@ namespace Propro.Forms
                 lblFileSelectedInfo.Text = currentFiles.Count + "files are selected";
             }
             fileItem.Remove();
+            
         }
 
         private void lvFileList_SelectedIndexChanged(object sender, EventArgs e)
@@ -159,6 +158,17 @@ namespace Propro.Forms
                     job = convertTaskManager.jobTable[item.Text] as ConvertJobInfo;
                     
                     for (int i=job.logs.Count-1;i>=0;i--)
+                    {
+                        content += job.logs[i].dateTime + "   " + job.logs[i].content + "\r\n";
+                    }
+                    string jobInfo = job.getJsonInfo();
+                    content += jobInfo + "\r\n";
+                }
+                else if (convertTaskManager.errorJob[item.Text] != null)
+                {
+                    job = convertTaskManager.errorJob[item.Text] as ConvertJobInfo;
+
+                    for (int i = job.logs.Count - 1; i >= 0; i--)
                     {
                         content += job.logs[i].dateTime + "   " + job.logs[i].content + "\r\n";
                     }
@@ -212,14 +222,6 @@ namespace Propro.Forms
         public void showFileSuffix()
         {
             string suffix = "";
-            if (!"3".Equals(cbMzPrecision.SelectedItem))
-            {
-                suffix += "_mz" + cbMzPrecision.SelectedItem;
-            }
-            if (!"1".Equals(cbIntensityPrecision.SelectedItem))
-            {
-                suffix += "_int" + cbIntensityPrecision.SelectedItem;
-            }
 
             if (!cbIsZeroIntensityIgnore.Checked)
             {
@@ -227,66 +229,6 @@ namespace Propro.Forms
             }
 
             tbFileNameSuffix.Text = suffix;
-        }
-
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-            if (lvFileList.Items.Count == 0)
-            {
-                MessageBox.Show("No file is selected!");
-                return;
-            }
-
-            foreach (ListViewItem item in lvFileList.Items)
-            {
-                ConvertJobInfo jobInfo = new ConvertJobInfo(item.SubItems[0].Text, tbFolderPath.Text, "TEST_READ_SPEED",
-                    (int)Math.Pow(10, int.Parse(cbMzPrecision.SelectedItem.ToString())),
-                    (int)Math.Pow(10, int.Parse(cbIntensityPrecision.SelectedItem.ToString())),
-                    cbIsZeroIntensityIgnore.Checked,
-                    tbFileNameSuffix.Text,
-                    item);
-                convertTaskManager.pushJob(jobInfo);
-            }
-
-            try
-            {
-                convertTaskManager.run();
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(exception.ToString());
-            }
-
-        }
-
-        private void btnFillInfo_Click(object sender, EventArgs e)
-        {
-            if (tbFolderPath.Text == "")
-            {
-                MessageBox.Show("Output folder path is empty!");
-                return;
-            }
-
-            if (lvFileList.Items.Count == 0)
-            {
-                MessageBox.Show("No file is selected!");
-                return;
-            }
-
-            foreach (ListViewItem item in lvFileList.Items)
-            {
-                ConvertJobInfo jobInfo = new ConvertJobInfo(item.SubItems[0].Text, tbFolderPath.Text, ExperimentType.FILL_INFO,item);
-                convertTaskManager.pushJob(jobInfo);
-            }
-
-            try
-            {
-                convertTaskManager.run();
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(exception.ToString());
-            }
         }
     }
 }

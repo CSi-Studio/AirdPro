@@ -13,12 +13,13 @@ namespace Propro.Domains
         public string manufacturer;
         //设备类型
         public string model;
-        //电离作用
-        public string ionisation;
-        //分析仪器
-        public string massAnalyer;
+        
+        public List<string> source = new List<string>();
+        //分析方式
+        public List<string> analyzer = new List<string>();
         //探测器
-        public string detector;
+        public List<string> detector = new List<string>();
+
         //其他特征,使用K:V;K:V;K:V;类似的格式进行存储
         public string features;
     }

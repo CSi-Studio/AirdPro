@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using Propro.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json;
-using pwiz.CLI.msdata;
-using Propro.Structs;
-using Propro.Utils;
 
 namespace Propro.Domains
 {
@@ -22,6 +15,10 @@ namespace Propro.Domains
         public string jobId;
         //0:DIA-Swath,1:PRM,2:Fill Info. see ExperimentType
         public string type;
+        //当前任务的状态
+        public string status = "Ready";
+        //文件的格式,全部大写: WIFF, RAW
+        public string format;
         //C:/data/plasma.wiff
         public string inputFilePath;
         //D://aird
@@ -32,15 +29,13 @@ namespace Propro.Domains
         public string airdFilePath;
         //D://aird/plasma.json
         public string airdJsonFilePath;
-        //mz精确到小数点后三位
-        public int mzPrecision = 1000;
-        //intensity精确到小数点后一位
-        public int intensityPrecision = 10;
         //忽略intensity为0的数据
         public Boolean ignoreZeroIntensity = true;
+        //对intensity是否求log10以降低精度
+        public Boolean log10 = true;
 
         public List<Log> logs = new List<Log>();
-        public IProgress<string> progress;
+        private IProgress<string> progress;
 
         //任务的线程名称
         public string threadId;
@@ -51,33 +46,16 @@ namespace Propro.Domains
 
         public CancellationTokenSource cancellationTokenSource;
 
-        public ConvertJobInfo(string inputFilePath, string outputFolderPath, string type, ListViewItem item)
+        public ConvertJobInfo(string inputFilePath, string outputFolderPath, string type, Boolean ignoreZeroIntensity, Boolean log10, string suffix, ListViewItem item)
         {
             this.jobId = inputFilePath;
             this.inputFilePath = inputFilePath;
             this.outputFolderPath = outputFolderPath;
-            this.type = type;
-            airdFileName = FileNameUtil.buildOutputFileName(inputFilePath);
-            airdFilePath = Path.Combine(outputFolderPath, airdFileName + suffix + ".aird");
-            airdJsonFilePath = Path.Combine(outputFolderPath, airdFileName + suffix + ".json");
-            this.cancellationTokenSource = new CancellationTokenSource();
-            this.progress = new Progress<string>((progressValue) =>
-            {
-                item.SubItems[2].Text = progressValue;
-            });
-        }
-
-        public ConvertJobInfo(string inputFilePath, string outputFolderPath, string type, int mzPrecision,
-            int intensityPrecision, Boolean ignoreZeroIntensity,string suffix, ListViewItem item)
-        {
-            this.jobId = inputFilePath;
-            this.inputFilePath = inputFilePath;
-            this.outputFolderPath = outputFolderPath;
-            this.mzPrecision = mzPrecision;
-            this.intensityPrecision = intensityPrecision;
             this.ignoreZeroIntensity = ignoreZeroIntensity;
+            this.log10 = log10;
             this.type = type;
             this.suffix = suffix;
+            format = Path.GetExtension(inputFilePath).Replace(".","").ToUpper();
             airdFileName = FileNameUtil.buildOutputFileName(inputFilePath);
             airdFilePath = Path.Combine(outputFolderPath, airdFileName + suffix + ".aird");
             airdJsonFilePath = Path.Combine(outputFolderPath, airdFileName + suffix + ".json");
@@ -92,6 +70,7 @@ namespace Propro.Domains
         {
             Log log = new Log(DateTime.Now, content);
             logs.Add(log);
+            Console.Out.WriteLine(content);
             return this;
         }
 
@@ -102,6 +81,7 @@ namespace Propro.Domains
             {
                 Log log = new Log(DateTime.Now, content);
                 logs.Add(log);
+                Console.Out.WriteLine(content);
             }
            
             return this;
@@ -112,6 +92,7 @@ namespace Propro.Domains
             progress.Report("Error");
             Log log = new Log(DateTime.Now, content);
             logs.Add(log);
+            Console.Out.WriteLine(content);
             throw new Exception(content);
         }
 
@@ -123,8 +104,6 @@ namespace Propro.Domains
             jobInfo += "airdFileName:" + airdFileName + "\r\n";
             jobInfo += "airdFilePath:" + airdFilePath + "\r\n";
             jobInfo += "airdJsonFilePath:" + airdJsonFilePath + "\r\n";
-            jobInfo += "mzPrecision:" + mzPrecision + "\r\n";
-            jobInfo += "intensityPrecision:" + intensityPrecision + "\r\n";
             jobInfo += "ignoreZeroIntensity:" + ignoreZeroIntensity + "\r\n";
             jobInfo += "suffix:" + suffix + "\r\n";
             jobInfo += "threadId:" + threadId + "\r\n";

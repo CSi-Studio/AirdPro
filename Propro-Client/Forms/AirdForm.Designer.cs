@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AirdForm));
             this.container = new System.Windows.Forms.SplitContainer();
-            this.btnFillInfo = new System.Windows.Forms.Button();
             this.btnChoosePRMFiles = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.lblFileSelectedInfo = new System.Windows.Forms.Label();
@@ -40,22 +39,18 @@
             this.headerExpType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerProgress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnDeleteFiles = new System.Windows.Forms.Button();
-            this.btnTest = new System.Windows.Forms.Button();
             this.btnChooseDIASwathFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cbIntensityPrecision = new System.Windows.Forms.ComboBox();
             this.lblFileNameTag = new System.Windows.Forms.Label();
             this.tbFileNameSuffix = new System.Windows.Forms.TextBox();
             this.cbIsZeroIntensityIgnore = new System.Windows.Forms.CheckBox();
-            this.lblMzPrecision = new System.Windows.Forms.Label();
-            this.cbMzPrecision = new System.Windows.Forms.ComboBox();
             this.lblConsole = new System.Windows.Forms.Label();
             this.tbConsole = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnChooseFolder = new System.Windows.Forms.Button();
             this.tbFolderPath = new System.Windows.Forms.TextBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.cbLog10 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -69,38 +64,26 @@
             // 
             // container.Panel1
             // 
-            this.container.Panel1.Controls.Add(this.btnFillInfo);
             this.container.Panel1.Controls.Add(this.btnChoosePRMFiles);
             this.container.Panel1.Controls.Add(this.btnClear);
             this.container.Panel1.Controls.Add(this.lblFileSelectedInfo);
             this.container.Panel1.Controls.Add(this.lvFileList);
             this.container.Panel1.Controls.Add(this.btnDeleteFiles);
-            this.container.Panel1.Controls.Add(this.btnTest);
             this.container.Panel1.Controls.Add(this.btnChooseDIASwathFiles);
             this.container.Panel1.Controls.Add(this.btnConvert);
             // 
             // container.Panel2
             // 
-            this.container.Panel2.Controls.Add(this.label2);
-            this.container.Panel2.Controls.Add(this.cbIntensityPrecision);
+            this.container.Panel2.Controls.Add(this.cbLog10);
             this.container.Panel2.Controls.Add(this.lblFileNameTag);
             this.container.Panel2.Controls.Add(this.tbFileNameSuffix);
             this.container.Panel2.Controls.Add(this.cbIsZeroIntensityIgnore);
-            this.container.Panel2.Controls.Add(this.lblMzPrecision);
-            this.container.Panel2.Controls.Add(this.cbMzPrecision);
             this.container.Panel2.Controls.Add(this.lblConsole);
             this.container.Panel2.Controls.Add(this.tbConsole);
             this.container.Panel2.Controls.Add(this.label1);
             this.container.Panel2.Controls.Add(this.btnChooseFolder);
             this.container.Panel2.Controls.Add(this.tbFolderPath);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
-            // 
-            // btnFillInfo
-            // 
-            resources.ApplyResources(this.btnFillInfo, "btnFillInfo");
-            this.btnFillInfo.Name = "btnFillInfo";
-            this.btnFillInfo.UseVisualStyleBackColor = true;
-            this.btnFillInfo.Click += new System.EventHandler(this.btnFillInfo_Click);
             // 
             // btnChoosePRMFiles
             // 
@@ -156,13 +139,6 @@
             this.btnDeleteFiles.UseVisualStyleBackColor = true;
             this.btnDeleteFiles.Click += new System.EventHandler(this.btnDeleteFiles_Click);
             // 
-            // btnTest
-            // 
-            resources.ApplyResources(this.btnTest, "btnTest");
-            this.btnTest.Name = "btnTest";
-            this.btnTest.UseVisualStyleBackColor = true;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
-            // 
             // btnChooseDIASwathFiles
             // 
             resources.ApplyResources(this.btnChooseDIASwathFiles, "btnChooseDIASwathFiles");
@@ -176,25 +152,6 @@
             this.btnConvert.Name = "btnConvert";
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label2.Name = "label2";
-            // 
-            // cbIntensityPrecision
-            // 
-            this.cbIntensityPrecision.DisplayMember = "1";
-            this.cbIntensityPrecision.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbIntensityPrecision.FormattingEnabled = true;
-            this.cbIntensityPrecision.Items.AddRange(new object[] {
-            resources.GetString("cbIntensityPrecision.Items"),
-            resources.GetString("cbIntensityPrecision.Items1"),
-            resources.GetString("cbIntensityPrecision.Items2")});
-            resources.ApplyResources(this.cbIntensityPrecision, "cbIntensityPrecision");
-            this.cbIntensityPrecision.Name = "cbIntensityPrecision";
-            this.cbIntensityPrecision.SelectedIndexChanged += new System.EventHandler(this.cbIntensityPrecision_SelectedIndexChanged);
             // 
             // lblFileNameTag
             // 
@@ -215,25 +172,6 @@
             this.cbIsZeroIntensityIgnore.Name = "cbIsZeroIntensityIgnore";
             this.cbIsZeroIntensityIgnore.UseVisualStyleBackColor = true;
             this.cbIsZeroIntensityIgnore.CheckedChanged += new System.EventHandler(this.cbIsZeroIntensityIgnore_CheckedChanged);
-            // 
-            // lblMzPrecision
-            // 
-            resources.ApplyResources(this.lblMzPrecision, "lblMzPrecision");
-            this.lblMzPrecision.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lblMzPrecision.Name = "lblMzPrecision";
-            // 
-            // cbMzPrecision
-            // 
-            this.cbMzPrecision.DisplayMember = "3";
-            this.cbMzPrecision.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbMzPrecision.FormattingEnabled = true;
-            resources.ApplyResources(this.cbMzPrecision, "cbMzPrecision");
-            this.cbMzPrecision.Items.AddRange(new object[] {
-            resources.GetString("cbMzPrecision.Items"),
-            resources.GetString("cbMzPrecision.Items1"),
-            resources.GetString("cbMzPrecision.Items2")});
-            this.cbMzPrecision.Name = "cbMzPrecision";
-            this.cbMzPrecision.SelectedIndexChanged += new System.EventHandler(this.cbMzPrecision_SelectedIndexChanged);
             // 
             // lblConsole
             // 
@@ -270,6 +208,14 @@
             this.timer.Enabled = true;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
+            // cbLog10
+            // 
+            resources.ApplyResources(this.cbLog10, "cbLog10");
+            this.cbLog10.Checked = true;
+            this.cbLog10.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbLog10.Name = "cbLog10";
+            this.cbLog10.UseVisualStyleBackColor = true;
+            // 
             // AirdForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -305,15 +251,10 @@
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Button btnChoosePRMFiles;
         private System.Windows.Forms.ColumnHeader headerExpType;
-        private System.Windows.Forms.Label lblMzPrecision;
-        private System.Windows.Forms.ComboBox cbMzPrecision;
-        private System.Windows.Forms.Button btnTest;
         private System.Windows.Forms.CheckBox cbIsZeroIntensityIgnore;
         private System.Windows.Forms.Label lblFileNameTag;
         private System.Windows.Forms.TextBox tbFileNameSuffix;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cbIntensityPrecision;
-        private System.Windows.Forms.Button btnFillInfo;
+        private System.Windows.Forms.CheckBox cbLog10;
     }
 }
 

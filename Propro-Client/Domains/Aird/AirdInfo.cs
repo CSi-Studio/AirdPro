@@ -11,7 +11,7 @@ namespace Propro.Domains
         /**
          * 仪器设备信息
          */
-        public List<Instrument> instruments;
+        public Instrument instrument;
     
         /**
          * 处理的软件信息
@@ -38,23 +38,24 @@ namespace Propro.Domains
 
         /**
          * [核心字段]
-         * The whole new scan index for new format file
-         * 为MS1和MS2的scan作的索引列表
+         * 用于存储SWATH Block的索引
          */
-        public List<ScanIndex> scanIndexList;
-
-        /**
-         * [核心字段]
-         * The swath window location(start and and) for new format file
-         * 专门用于存储SWATH块的索引列表
-         */
-        public List<ScanIndex> swathIndexList;
+        public List<SwathIndex> indexList;
 
         /**
          * [核心字段]
          * 实验类型,目前支持DIA_SWATH和PRM两种
          */
         public string type;
+
+        /**
+         * [核心字段]
+         * Aird格式版本号. 整型,不存在小版本号
+         */
+        public int version;
+
+        //文件后缀格式
+        public string fileFormat;
 
         /**
          * LITTLE_ENDIAN和BIG_ENDIAN两种

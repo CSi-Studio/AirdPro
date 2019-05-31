@@ -154,12 +154,13 @@
     <Compile Include="Domains\Aird\Features.cs" />
     <Compile Include="Domains\Aird\Instrument.cs" />
     <Compile Include="Domains\Aird\Software.cs" />
+    <Compile Include="Domains\Aird\SwathIndex.cs" />
     <Compile Include="Domains\ConvertJobInfo.cs" />
     <Compile Include="Domains\ConvertResult.cs" />
     <Compile Include="Domains\Log.cs" />
     <Compile Include="Domains\Aird\Position.cs" />
     <Compile Include="Domains\Result.cs" />
-    <Compile Include="Domains\Aird\ScanIndex.cs" />
+    <Compile Include="Domains\Aird\TempIndex.cs" />
     <Compile Include="Domains\Aird\WindowRange.cs" />
     <Compile Include="Forms\AirdForm.cs">
       <SubType>Form</SubType>
