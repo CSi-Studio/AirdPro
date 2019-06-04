@@ -289,21 +289,21 @@ namespace Propro.Logics
             List<Compressor> coms = new List<Compressor>();
             //mz compressor
             Compressor mzCompressor = new Compressor();
-            mzCompressor.method = "pFor,zlib";
-            mzCompressor.target = "mz";
+            mzCompressor.method = Compressor.METHOD_PFOR + "," + Compressor.METHOD_ZLIB;
+            mzCompressor.target = Compressor.TARGET_MZ;
             coms.Add(mzCompressor);
             //intensity compressor
             Compressor intCompressor = new Compressor();
             if (jobInfo.log10)
             {
-                intCompressor.method = "log10,zlib";
+                intCompressor.method = Compressor.METHOD_LOG10 + "," + Compressor.METHOD_ZLIB;
             }
             else
             {
-                intCompressor.method = "zlib";
+                intCompressor.method = Compressor.METHOD_ZLIB;
             }
             
-            intCompressor.target = "intensity";
+            intCompressor.target = Compressor.TARGET_INTENSITY;
             coms.Add(intCompressor);
             airdInfo.compressors = coms;
 

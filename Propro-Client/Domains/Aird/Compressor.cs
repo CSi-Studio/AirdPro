@@ -2,6 +2,13 @@
 {
     public class Compressor
     {
+        public static string TARGET_MZ = "mz";
+        public static string TARGET_INTENSITY = "intensity";
+
+        public static string METHOD_ZLIB = "zlib";
+        public static string METHOD_PFOR = "pFor";
+        public static string METHOD_LOG10 = "log10";
+
         //压缩对象,支持mz和intensity两种
         public string target;
 
