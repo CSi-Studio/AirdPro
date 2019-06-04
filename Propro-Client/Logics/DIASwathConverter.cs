@@ -88,9 +88,9 @@ namespace Propro.Logics
 
                 WindowRange range = new WindowRange(mz - lowerOffset, mz + upperOffset, mz);
                 Hashtable features = new Hashtable();
-                features.Add(Features.scan_index_original_width, lowerOffset + upperOffset);
-                features.Add(Features.scan_index_original_precursor_mz_start, mz - lowerOffset);
-                features.Add(Features.scan_index_original_precursor_mz_end, mz + upperOffset);
+                features.Add(Features.original_width, lowerOffset + upperOffset);
+                features.Add(Features.original_precursor_mz_start, mz - lowerOffset);
+                features.Add(Features.original_precursor_mz_end, mz + upperOffset);
 
                 range.features = FeaturesUtil.toString(features);
                 ranges.Add(range);
@@ -108,6 +108,7 @@ namespace Propro.Logics
             WindowRange range2 = ranges[1];
             float range2Left = range2.start;
             overlap = range1Right - range2Left;
+            featuresMap.Add(Features.overlap, overlap);
         }
 
         //调整间距

@@ -14,7 +14,9 @@ namespace Propro.Domains
 
         //retention time
         public float rt;
-        
+
+        //对应的ms1的序号
+        public int pNum;
         //序号
         public int num;
 

@@ -74,8 +74,8 @@ namespace Propro.Logics
         {
             TempIndex ms2 = new TempIndex();
             ms2.level = 2;
-            ms2.num = parentIndex;
-
+            ms2.pNum = parentIndex;
+            ms2.num = index;
             try
             {
                 float mz = (float)double.Parse(spectrum.precursors[0].isolationWindow
@@ -179,6 +179,7 @@ namespace Propro.Logics
                 airdStream.Write(intArrayBytes, 0, intArrayBytes.Length);
             }
 
+            swathIndex.endPtr = startPosition;
             indexList.Add(swathIndex);
         }
 
@@ -205,6 +206,8 @@ namespace Propro.Logics
                     byte[] mzArrayBytes, intArrayBytes;
                     compress(spectrumList.spectrum(index.num, true), out mzArrayBytes, out intArrayBytes);
 
+                    //SwathIndex中只存储MS2谱图对应的MS1谱图的序号,其本身的序号已经没用了,不做存储
+                    swathIndex.nums.Add(index.pNum);
                     swathIndex.rts.Add(index.rt);
                     swathIndex.mzs.Add(mzArrayBytes.Length);
                     swathIndex.ints.Add(intArrayBytes.Length);

@@ -49,15 +49,6 @@ namespace Propro.Domains
         public string type;
 
         /**
-         * [核心字段]
-         * Aird格式版本号. 整型,不存在小版本号
-         */
-        public int version;
-
-        //文件后缀格式
-        public string fileFormat;
-
-        /**
          * LITTLE_ENDIAN和BIG_ENDIAN两种
          */
         public string byteOrder = "LITTLE_ENDIAN";
@@ -71,6 +62,11 @@ namespace Propro.Domains
          * 实验的描述
          */
         public string description;
+
+        /**
+         * 原始文件的文件大小,单位byte
+         */
+        public long fileSize;
 
         /**
          * 实验的创建者,本字段在被导入Propro Server时会被操作人覆盖

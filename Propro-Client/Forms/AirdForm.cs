@@ -4,6 +4,7 @@ using Propro.Domains;
 using System;
 using System.Collections;
 using System.Windows.Forms;
+using Propro_Client.Constants;
 
 namespace Propro.Forms
 {
@@ -19,7 +20,7 @@ namespace Propro.Forms
 
         private void ProproForm_Load(object sender, EventArgs e)
         {
-            this.Text = "Propro-Client V0.2.0";
+            this.Text = SoftwareVersion.getVersion();
         }
 
         private void btnChooseFiles_Click(object sender, EventArgs e)
@@ -133,7 +134,7 @@ namespace Propro.Forms
                 lblFileSelectedInfo.Text = currentFiles.Count + "files are selected";
             }
             fileItem.Remove();
-            
+            convertTaskManager.jobTable.Remove(fileItem.Text);
         }
 
         private void lvFileList_SelectedIndexChanged(object sender, EventArgs e)

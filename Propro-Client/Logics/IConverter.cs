@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Propro.Constants;
-using pwiz.CLI.cv;
-using pwiz.CLI.data;
-using pwiz.CLI.msdata;
-using pwiz.CLI.util;
 using Propro.Domains;
 using Propro.Structs;
 using Propro.Utils;
 using Propro_Client.Domains.Aird;
 using Propro_Client.Utils;
 using pwiz.CLI.analysis;
+using pwiz.CLI.cv;
+using pwiz.CLI.data;
+using pwiz.CLI.msdata;
+using pwiz.CLI.util;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Text;
+using Propro_Client.Constants;
 using Software = pwiz.CLI.msdata.Software;
 
 namespace Propro.Logics
@@ -33,6 +32,9 @@ namespace Propro.Logics
         protected FileStream airdJsonStream;
         protected List<WindowRange> ranges = new List<WindowRange>();//SWATH Window的窗口
         protected List<SwathIndex> indexList = new List<SwathIndex>();//用于存储的全局的SWATH List
+        protected Hashtable featuresMap = new Hashtable();
+        protected long fileSize;
+
         public IConverter(ConvertJobInfo jobInfo)
         {
             this.jobInfo = jobInfo;
@@ -129,6 +131,35 @@ namespace Propro.Logics
             //用于Swath Aird平台的实验源文件中,msdList.Count必然为1,否则实验文件格式不符合要求
             if (msdList.Count != 1) jobInfo.logError("File Format Error.MSDataList size must be 1");
 
+            if (jobInfo.format.Equals("WIFF"))
+            {
+                FileInfo file1 = new FileInfo(jobInfo.inputFilePath);
+                if (file1.Exists)
+                {
+                    fileSize += file1.Length;
+                }
+             
+                FileInfo file2 = new FileInfo(jobInfo.inputFilePath+".mtd");
+                if (file2.Exists)
+                {
+                    fileSize += file2.Length;
+                }
+
+                FileInfo file3 = new FileInfo(jobInfo.inputFilePath + ".scan");
+                if (file3.Exists)
+                {
+                    fileSize += file3.Length;
+                }
+            }
+
+            if (jobInfo.format.Equals("RAW"))
+            {
+                FileInfo file1 = new FileInfo(jobInfo.inputFilePath);
+                if (file1.Exists)
+                {
+                    fileSize += file1.Length;
+                }
+            }
             msd = msdList[0];
         }
 
@@ -137,22 +168,21 @@ namespace Propro.Logics
         {
             jobInfo.log("Write-in", "Write-in");
             AirdInfo airdInfo = buildBasicInfo();
-
             JsonSerializerSettings jsonSetting = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
             string airdInfoStr = JsonConvert.SerializeObject(airdInfo, jsonSetting);
             byte[] airdBytes = Encoding.Default.GetBytes(airdInfoStr);
             airdJsonStream.Write(airdBytes, 0, airdBytes.Length);
-
         }
 
         protected AirdInfo buildBasicInfo()
         {
             AirdInfo airdInfo = new AirdInfo();
-            Hashtable features = new Hashtable();
             List<Domains.Software> softwares = new List<Domains.Software>();
             List<ParentFile> parentFiles = new List<ParentFile>();
 
             //Basic Job Info
+            airdInfo.airdPath = jobInfo.airdFilePath;
+            airdInfo.fileSize = fileSize;
             airdInfo.creator = jobInfo.creator;
             airdInfo.createDate = new DateTime();
             switch (jobInfo.type)
@@ -189,7 +219,7 @@ namespace Propro.Logics
             {
                 foreach (CVParam cv in ic.cvParams)
                 {
-                    features.Add(cv.name, cv.value);
+                    featuresMap.Add(cv.name, cv.value);
                 }
                 instrument.model = ic.cvParams[0].name;
             }
@@ -201,7 +231,7 @@ namespace Propro.Logics
                     {
                         foreach (CVParam cv in pg.cvParams)
                         {
-                            features.Add(cv.name, cv.value);
+                            featuresMap.Add(cv.name, cv.value);
                         }
                         instrument.model = pg.cvParams[0].name;
                     }
@@ -278,10 +308,13 @@ namespace Propro.Logics
             airdInfo.compressors = coms;
 
             //Features Info
-            
-            features.Add(Features.aird_info_raw_id, msd.id);
-            features.Add(Features.aird_info_ignore_zero_intensity, jobInfo.ignoreZeroIntensity);
-            airdInfo.features = FeaturesUtil.toString(features);
+            featuresMap.Add(Features.raw_id, msd.id);
+            featuresMap.Add(Features.ignore_zero_intensity, jobInfo.ignoreZeroIntensity);
+            featuresMap.Add(Features.source_file_format, jobInfo.format);
+            featuresMap.Add(Features.aird_version, SoftwareVersion.AIRD_VERSION);
+            featuresMap.Add(Features.propro_client_version, SoftwareVersion.CLIENT_VERSION);
+            featuresMap.Add(Features.byte_order, ByteOrder.LITTLE_ENDIAN);
+            airdInfo.features = FeaturesUtil.toString(featuresMap);
 
             return airdInfo;
         }

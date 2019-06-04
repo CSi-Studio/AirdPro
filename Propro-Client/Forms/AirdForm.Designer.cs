@@ -41,6 +41,7 @@
             this.btnDeleteFiles = new System.Windows.Forms.Button();
             this.btnChooseDIASwathFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
+            this.cbLog10 = new System.Windows.Forms.CheckBox();
             this.lblFileNameTag = new System.Windows.Forms.Label();
             this.tbFileNameSuffix = new System.Windows.Forms.TextBox();
             this.cbIsZeroIntensityIgnore = new System.Windows.Forms.CheckBox();
@@ -50,7 +51,6 @@
             this.btnChooseFolder = new System.Windows.Forms.Button();
             this.tbFolderPath = new System.Windows.Forms.TextBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.cbLog10 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -153,6 +153,12 @@
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
             // 
+            // cbLog10
+            // 
+            resources.ApplyResources(this.cbLog10, "cbLog10");
+            this.cbLog10.Name = "cbLog10";
+            this.cbLog10.UseVisualStyleBackColor = true;
+            // 
             // lblFileNameTag
             // 
             resources.ApplyResources(this.lblFileNameTag, "lblFileNameTag");
@@ -207,14 +213,6 @@
             // 
             this.timer.Enabled = true;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
-            // 
-            // cbLog10
-            // 
-            resources.ApplyResources(this.cbLog10, "cbLog10");
-            this.cbLog10.Checked = true;
-            this.cbLog10.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbLog10.Name = "cbLog10";
-            this.cbLog10.UseVisualStyleBackColor = true;
             // 
             // AirdForm
             // 

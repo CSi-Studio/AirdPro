@@ -99,9 +99,10 @@
   <ItemGroup>
     <Compile Include="Asyncs\ConvertTaskManager.cs" />
     <Compile Include="Asyncs\LimitedConcurrencyLevelTaskScheduler.cs" />
+    <Compile Include="Constants\ByteOrder.cs" />
     <Compile Include="Constants\ExperimentType.cs" />
     <Compile Include="Constants\MsLevel.cs" />
-    <Compile Include="Constants\PositionType.cs" />
+    <Compile Include="Constants\SoftwareVersion.cs" />
     <Compile Include="CSharpFastPFORCore\BinaryPacking.cs" />
     <Compile Include="CSharpFastPFORCore\BitPacking.cs" />
     <Compile Include="CSharpFastPFORCore\ByteIntegerCODEC.cs" />
@@ -158,7 +159,6 @@
     <Compile Include="Domains\ConvertJobInfo.cs" />
     <Compile Include="Domains\ConvertResult.cs" />
     <Compile Include="Domains\Log.cs" />
-    <Compile Include="Domains\Aird\Position.cs" />
     <Compile Include="Domains\Result.cs" />
     <Compile Include="Domains\Aird\TempIndex.cs" />
     <Compile Include="Domains\Aird\WindowRange.cs" />
