@@ -3,9 +3,9 @@ using Propro.Constants;
 using Propro.Domains;
 using Propro.Structs;
 using Propro.Utils;
+using Propro_Client.Constants;
 using Propro_Client.Domains.Aird;
 using Propro_Client.Utils;
-using pwiz.CLI.analysis;
 using pwiz.CLI.cv;
 using pwiz.CLI.data;
 using pwiz.CLI.msdata;
@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using Propro_Client.Constants;
+using MSFileReaderLib;
 using Software = pwiz.CLI.msdata.Software;
 
 namespace Propro.Logics
@@ -34,6 +34,7 @@ namespace Propro.Logics
         protected List<SwathIndex> indexList = new List<SwathIndex>();//用于存储的全局的SWATH List
         protected Hashtable featuresMap = new Hashtable();
         protected long fileSize;
+        protected long startPosition;//文件指针
 
         public IConverter(ConvertJobInfo jobInfo)
         {
@@ -69,56 +70,67 @@ namespace Propro.Logics
             Directory.CreateDirectory(Path.GetDirectoryName(jobInfo.airdJsonFilePath));
         }
 
-        //Wrapping数据
-        protected void wrapping()
-        {
-            //Wrapping 
-            jobInfo.log("Start Wrapping", "Wrapping");
-            SpectrumListFactory.wrap(msd, new List<string>());
-            if (msd.run.spectrumList == null || msd.run.spectrumList.empty()) jobInfo.logError("No Spectrums Found");
-            spectrumList = msd.run.spectrumList;
-        }
-
         protected float parseRT(Scan scan)
         {
             CVParam cv = scan.cvParamChild(CVID.MS_scan_start_time);
             float time = float.Parse(cv.value.ToString());
             if (cv.unitsName.Equals("minute"))
             {
-                return time * 60;
+                time = time * 60;
             }
-            else
-            {
-                return time;
-            }
+
+            return Convert.ToSingle(Math.Round(time, 3));
         }
 
-        protected void compress(Spectrum spectrum, out byte[] mzBytes, out byte[] intensityBytes)
+        protected void compress(Spectrum spectrum, TempScan ts)
         {
             BinaryData mzData = spectrum.getMZArray().data;
             BinaryData intData = spectrum.getIntensityArray().data;
 
             List<int> mzList = new List<int>();
             List<float> intensityList = new List<float>();
-            
             for (int t = 0; t < mzData.Count; t++)
             {
                 if (jobInfo.ignoreZeroIntensity && intData[t] == 0) continue;
-                mzList.Add(Convert.ToInt32(mzData[t] * 1000)); //精确到小数点后面三位
+                
+                int mz = Convert.ToInt32(mzData[t] * 1000);
+                mzList.Add(mz); //精确到小数点后面三位
+
                 if (jobInfo.log10)
                 {
-                    intensityList.Add((float)Math.Round(Math.Log10(intData[t]), 3)); //取log10并且精确到小数点后3位
+                    intensityList.Add(Convert.ToSingle(Math.Round(Math.Log10(intData[t]), 3))); //取log10并且精确到小数点后3位
                 }
                 else
                 {
-                    intensityList.Add((float)Math.Round(intData[t], 1)); //精确到小数点后一位
+                    intensityList.Add(Convert.ToSingle(Math.Round(intData[t], 1))); //精确到小数点后一位
                 }
             }
 
             float[] intensityArray = intensityList.ToArray();
             int[] mzArray = CompressUtil.compressWithPFor(mzList.ToArray());
-            mzBytes = CompressUtil.compressWithZlib(mzArray);
-            intensityBytes = CompressUtil.compressWithZlib(intensityArray);
+            ts.mzArrayBytes = CompressUtil.compressWithZlib(mzArray);
+            ts.intArrayBytes = CompressUtil.compressWithZlib(intensityArray);
+        }
+
+        protected void outputWithOrder(Hashtable table, SwathIndex swathIndex)
+        {
+            foreach (int key in table.Keys)
+            {
+                TempScan tempScan = (TempScan)table[key];
+                addToIndex(swathIndex, tempScan);
+            }
+        }
+
+        //注意:本函数会操作startPosition这个全局变量
+        protected void addToIndex(SwathIndex index, TempScan ts)
+        {
+            index.nums.Add(ts.num);
+            index.rts.Add(ts.rt);
+            index.mzs.Add(ts.mzArrayBytes.Length);
+            index.ints.Add(ts.intArrayBytes.Length);
+            startPosition = startPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;
+            airdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
+            airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
         }
 
         protected void readVendorFile()
@@ -161,6 +173,10 @@ namespace Propro.Logics
                 }
             }
             msd = msdList[0];
+
+            jobInfo.log("Parsing Spectrum", "Parsing");
+            if (msd.run.spectrumList == null || msd.run.spectrumList.empty()) jobInfo.logError("No Spectrums Found");
+            spectrumList = msd.run.spectrumList;
         }
 
         //将最终的数据写入文件中

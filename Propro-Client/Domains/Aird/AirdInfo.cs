@@ -49,19 +49,9 @@ namespace Propro.Domains
         public string type;
 
         /**
-         * LITTLE_ENDIAN和BIG_ENDIAN两种
-         */
-        public string byteOrder = "LITTLE_ENDIAN";
-
-        /**
          * 转换压缩后的aird二进制文件路径,默认读取同目录下的同名文件,如果不存在才去去读本字段对应的路径
          */
         public string airdPath;
-
-        /**
-         * 实验的描述
-         */
-        public string description;
 
         /**
          * 原始文件的文件大小,单位byte

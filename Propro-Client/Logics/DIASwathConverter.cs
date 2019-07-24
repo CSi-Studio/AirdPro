@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Propro.Logics
 {
@@ -18,7 +19,6 @@ namespace Propro.Logics
         private int rangeSize;//总计的WindowRange数目
         private int totalSize;//总计的谱图数目
         private int swathChilds;//每一个SWATH块中Scan的数量
-        private long startPosition;//文件指针
         private int progress;//进度计数器
         
         public DIASwathConverter(ConvertJobInfo jobInfo) : base(jobInfo) {}
@@ -32,7 +32,6 @@ namespace Propro.Logics
                 using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                 {
                     readVendorFile();//准备读取Vendor文件
-                    wrapping();//Data Wrapping
                     buildWindowsRanges();  //Getting SWATH Windows
                     computeOverlap(); //Compute Overlap
                     adjustOverlap(); //Adjust Overlap
@@ -135,14 +134,17 @@ namespace Propro.Logics
             for (int i = 0; i < rangeSize; i++)
             {
                 jobInfo.log("开始解析第" + (i + 1) + "批数据,共" + rangeSize + "批");
-                buildSWATHBlock(i);
+                buildSwathBlock(i, jobInfo.threadAccelerate);
             }
         }
 
-        //完整计算一个SWATH块的信息,包含谱图索引创建,数据压缩和SWATH块索引创建
-        private void buildSWATHBlock(int rangeIndex)
+        /**
+         * 完整计算一个SWATH块的信息,包含谱图索引创建,数据压缩和SWATH块索引创建
+         * threadAccelerate 是否进行多线程加速
+         */
+        private void buildSwathBlock(int rangeIndex, Boolean threadAccelerate)
         {
-            
+
             SwathIndex swathIndex = new SwathIndex();
             swathIndex.startPtr = startPosition;
 
@@ -157,32 +159,71 @@ namespace Propro.Logics
                 swathIndex.range = ranges[rangeIndex - 1];
             }
 
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
             long countForRead = 0;
             long countForCompress = 0;
-            //每一次循环代表一个完整的Swath窗口
-            for (int j = 0; j < swathChilds; j++)
+
+            if (threadAccelerate)
             {
-                int index = rangeIndex + j * rangeSize;
-                if (index > totalSize - 1) continue;
-                
-                Spectrum spectrum = spectrumList.spectrum(index, true);
-                countForRead += stopwatch.ElapsedMilliseconds;
-                stopwatch.Restart();
-                if (spectrum.scanList.scans.Count != 1) continue;
+                Hashtable table = Hashtable.Synchronized(new Hashtable());
+                //使用多线程处理数据提取与压缩
+                Parallel.For(0, swathChilds, (j, ParallelLoopState) =>
+                {
+                    int index = rangeIndex + j * rangeSize;
+                    if (index > totalSize - 1)
+                    {
+                        ParallelLoopState.Break();
+                        return;
+                    }
+                    long start = Environment.TickCount;
+                    Spectrum spectrum = spectrumList.spectrum(index, true);
+                    countForRead += (Environment.TickCount - start);
+                    if (spectrum.scanList.scans.Count != 1)
+                    {
+                        ParallelLoopState.Break();
+                        return;
+                    }
 
-                Scan scan = spectrum.scanList.scans[0];
-                swathIndex.nums.Add(j);
-                swathIndex.rts.Add(parseRT(scan));
-                stopwatch.Restart();
-                compressToFile(spectrum, swathIndex);
-                countForCompress += stopwatch.ElapsedMilliseconds;
-                if (progress % 10 == 0) jobInfo.log(null, progress + 1 + "/" + totalSize);
-                progress++;
+                    start = Environment.TickCount;
+                    try
+                    {
+                        TempScan ts = new TempScan(j, parseRT(spectrum.scanList.scans[0]));
+                        compress(spectrum, ts);
+                        table.Add(j, ts);
+                    }
+                    catch (Exception exception)
+                    {
+                        jobInfo.log(exception.Message);
+                        ParallelLoopState.Break();
+                        return;
+                    }
+                    
+                    countForCompress += (Environment.TickCount - start);
+                    if (progress % 100 == 0) jobInfo.log(null, progress + 1 + "/" + totalSize);
+                    progress++;
+                });
+                //并行处理完数据以后按次序存入Aird文件中
+                outputWithOrder(table, swathIndex);
             }
+            else
+            {
+                for (int j = 0; j < swathChilds; j++)
+                {
+                    int index = rangeIndex + j * rangeSize;
+                    if (index > totalSize - 1) continue;
+                    long start = Environment.TickCount;
+                    Spectrum spectrum = spectrumList.spectrum(index, true);
+                    countForRead += (Environment.TickCount - start);
+                    if (spectrum.scanList.scans.Count != 1) continue;
 
-            jobInfo.log("Read Time(ms):" + countForRead+": Compress Time(ms):"+countForCompress);
+                    start = Environment.TickCount;
+                    compressToFile(j, spectrum, swathIndex);
+                    countForCompress += (Environment.TickCount - start);
+                    if (progress % 10 == 0) jobInfo.log(null, progress + 1 + "/" + totalSize);
+                    progress++;
+                }
+            }
+            
+            jobInfo.log("Read Time(ms):" + countForRead + ": Compress Time(ms):" + countForCompress);
             //Swath块结束的位置
             swathIndex.endPtr = startPosition;
             indexList.Add(swathIndex);
@@ -190,27 +231,18 @@ namespace Propro.Logics
         }
 
         //将谱图进行压缩并且存储文件流中
-        private void compressToFile(Spectrum spectrum, SwathIndex swathIndex)
+        private void compressToFile(int num, Spectrum spectrum, SwathIndex swathIndex)
         {
             try
             {
-                byte[] mzArrayBytes, intArrayBytes;
-                compress(spectrum, out mzArrayBytes, out intArrayBytes);
-
-                swathIndex.mzs.Add(mzArrayBytes.Length);
-                swathIndex.ints.Add(intArrayBytes.Length);
-                startPosition = startPosition + mzArrayBytes.Length + intArrayBytes.Length;
-
-                airdStream.Write(mzArrayBytes, 0, mzArrayBytes.Length);
-                airdStream.Write(intArrayBytes, 0, intArrayBytes.Length);
+                TempScan ts = new TempScan(num, parseRT(spectrum.scanList.scans[0]));
+                compress(spectrum, ts);
+                addToIndex(swathIndex, ts);
             }
             catch (Exception exception)
             {
                 jobInfo.log(exception.Message);
-                Console.Out.WriteLine(exception.Message);
             }
         }
-
-
     }
 }

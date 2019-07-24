@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Propro_Client.Domains.Aird;
 
 namespace Propro.Logics
@@ -30,11 +31,10 @@ namespace Propro.Logics
                 using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                 {
                     readVendorFile();//准备读取Vendor文件
-                    wrapping();//Data Wrapping
                     initGlobalVar();//初始化全局变量
                     preProgress();//预处理谱图,将MS1和MS2谱图分开存储
-                    doWithMS1Block();//处理MS1,并将索引写入文件流中
-                    doWithMS2Block();//处理MS2,并将索引写入文件流中
+                    doWithMS1Block(jobInfo.threadAccelerate);//处理MS1,并将索引写入文件流中
+                    doWithMS2Block(jobInfo.threadAccelerate);//处理MS2,并将索引写入文件流中
                     writeToAirdInfoFile();//将Info数据写入文件
                 }
             }
@@ -155,35 +155,48 @@ namespace Propro.Logics
             jobInfo.log("Start Processing MS1 List");
         }
 
-        private void doWithMS1Block()
+        private void doWithMS1Block(Boolean threadAccelerate)
         {
             SwathIndex swathIndex = new SwathIndex();
             swathIndex.level = 1;
             swathIndex.startPtr = startPosition;
-            
-            for (int i = 0; i < ms1List.Count; i++)
+
+            if (threadAccelerate)
             {
-                jobInfo.log(null, "MS1:" + i + "/" + ms1List.Count);
-                byte[] mzArrayBytes, intArrayBytes;
-                TempIndex scanIndex = ms1List[i];
-                compress(spectrumList.spectrum(scanIndex.num, true), out mzArrayBytes, out intArrayBytes);
-
-                swathIndex.rts.Add(scanIndex.rt);
-                swathIndex.nums.Add(scanIndex.num);
-                swathIndex.mzs.Add(mzArrayBytes.Length);
-                swathIndex.ints.Add(intArrayBytes.Length);
-
-                startPosition = startPosition + mzArrayBytes.Length + intArrayBytes.Length;
-                
-                airdStream.Write(mzArrayBytes, 0, mzArrayBytes.Length);
-                airdStream.Write(intArrayBytes, 0, intArrayBytes.Length);
+                Hashtable table = Hashtable.Synchronized(new Hashtable());
+                //使用多线程处理数据提取与压缩
+                Parallel.For(0, ms1List.Count, (i, ParallelLoopState) =>
+                {
+                    jobInfo.log(null, "MS1:" + i + "/" + ms1List.Count);
+                    
+                   
+                    TempIndex scanIndex = ms1List[i];
+                    TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
+                    compress(spectrumList.spectrum(scanIndex.num, true), ts);
+                    
+                    table.Add(i, ts);
+                });
+                outputWithOrder(table, swathIndex);
             }
-
+            else
+            {
+                for (int i = 0; i < ms1List.Count; i++)
+                {
+                    jobInfo.log(null, "MS1:" + i + "/" + ms1List.Count);
+                    byte[] mzArrayBytes, intArrayBytes;
+                    int[] anchors;
+                    TempIndex scanIndex = ms1List[i];
+                    TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
+                    compress(spectrumList.spectrum(scanIndex.num, true), ts);
+                    addToIndex(swathIndex, ts);
+                }
+            }
+            
             swathIndex.endPtr = startPosition;
             indexList.Add(swathIndex);
         }
 
-        private void doWithMS2Block()
+        private void doWithMS2Block(Boolean threadAccelerate)
         {
             jobInfo.log("Start Processing MS2 List");
             foreach (float key in ms2Table.Keys)
@@ -201,22 +214,33 @@ namespace Propro.Logics
 
                 jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);
                 progress++;
-                foreach (TempIndex index in tempIndexList)
+
+                if (threadAccelerate)
                 {
-                    byte[] mzArrayBytes, intArrayBytes;
-                    compress(spectrumList.spectrum(index.num, true), out mzArrayBytes, out intArrayBytes);
+                    Hashtable table = Hashtable.Synchronized(new Hashtable());
+                    //使用多线程处理数据提取与压缩
+                    Parallel.For(0, tempIndexList.Count, (i, ParallelLoopState) =>
+                    {
+                        TempIndex index = tempIndexList[i];
+                        TempScan ts = new TempScan(index.pNum, index.rt);
+                        compress(spectrumList.spectrum(index.num, true), ts);
+                        //SwathIndex中只存储MS2谱图对应的MS1谱图的序号,其本身的序号已经没用了,不做存储,所以只存储了pNum
+                        table.Add(i, ts);
+                    });
 
-                    //SwathIndex中只存储MS2谱图对应的MS1谱图的序号,其本身的序号已经没用了,不做存储
-                    swathIndex.nums.Add(index.pNum);
-                    swathIndex.rts.Add(index.rt);
-                    swathIndex.mzs.Add(mzArrayBytes.Length);
-                    swathIndex.ints.Add(intArrayBytes.Length);
-
-                    startPosition = startPosition + mzArrayBytes.Length + intArrayBytes.Length;
-                    
-                    airdStream.Write(mzArrayBytes, 0, mzArrayBytes.Length);
-                    airdStream.Write(intArrayBytes, 0, intArrayBytes.Length);
+                    outputWithOrder(table, swathIndex);
                 }
+                else
+                {
+                    foreach (TempIndex index in tempIndexList)
+                    {
+                        TempScan ts = new TempScan(index.pNum, index.rt);
+                        compress(spectrumList.spectrum(index.num, true), ts);
+                        //SwathIndex中只存储MS2谱图对应的MS1谱图的序号,其本身的序号已经没用了,不做存储
+                        addToIndex(swathIndex, ts);
+                    }
+                }
+               
 
                 swathIndex.endPtr = startPosition;
                 indexList.Add(swathIndex);

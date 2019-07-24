@@ -34,6 +34,8 @@ namespace Propro.Domains
         //对intensity是否求log10以降低精度
         public Boolean log10 = true;
 
+        public Boolean threadAccelerate = true;
+
         public List<Log> logs = new List<Log>();
         private IProgress<string> progress;
 
@@ -46,7 +48,7 @@ namespace Propro.Domains
 
         public CancellationTokenSource cancellationTokenSource;
 
-        public ConvertJobInfo(string inputFilePath, string outputFolderPath, string type, Boolean ignoreZeroIntensity, Boolean log10, string suffix, ListViewItem item)
+        public ConvertJobInfo(string inputFilePath, string outputFolderPath, string type, Boolean ignoreZeroIntensity, Boolean log10, Boolean threadAccelerate, string suffix, ListViewItem item)
         {
             this.jobId = inputFilePath;
             this.inputFilePath = inputFilePath;
@@ -55,6 +57,7 @@ namespace Propro.Domains
             this.log10 = log10;
             this.type = type;
             this.suffix = suffix;
+            this.threadAccelerate = threadAccelerate;
             format = Path.GetExtension(inputFilePath).Replace(".","").ToUpper();
             airdFileName = FileNameUtil.buildOutputFileName(inputFilePath);
             airdFilePath = Path.Combine(outputFolderPath, airdFileName + suffix + ".aird");
@@ -107,6 +110,7 @@ namespace Propro.Domains
             jobInfo += "ignoreZeroIntensity:" + ignoreZeroIntensity + "\r\n";
             jobInfo += "suffix:" + suffix + "\r\n";
             jobInfo += "threadId:" + threadId + "\r\n";
+            jobInfo += "ThreadAccelerate:" + threadAccelerate + "\r\n";
           
             return jobInfo;
         }

@@ -51,6 +51,7 @@
             this.btnChooseFolder = new System.Windows.Forms.Button();
             this.tbFolderPath = new System.Windows.Forms.TextBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.cbThreadAccelerate = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -74,6 +75,7 @@
             // 
             // container.Panel2
             // 
+            this.container.Panel2.Controls.Add(this.cbThreadAccelerate);
             this.container.Panel2.Controls.Add(this.cbLog10);
             this.container.Panel2.Controls.Add(this.lblFileNameTag);
             this.container.Panel2.Controls.Add(this.tbFileNameSuffix);
@@ -114,6 +116,7 @@
             this.lvFileList.FullRowSelect = true;
             this.lvFileList.GridLines = true;
             this.lvFileList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.lvFileList.HideSelection = false;
             this.lvFileList.Name = "lvFileList";
             this.lvFileList.ShowItemToolTips = true;
             this.lvFileList.UseCompatibleStateImageBehavior = false;
@@ -214,6 +217,14 @@
             this.timer.Enabled = true;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
+            // cbThreadAccelerate
+            // 
+            resources.ApplyResources(this.cbThreadAccelerate, "cbThreadAccelerate");
+            this.cbThreadAccelerate.Checked = true;
+            this.cbThreadAccelerate.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbThreadAccelerate.Name = "cbThreadAccelerate";
+            this.cbThreadAccelerate.UseVisualStyleBackColor = true;
+            // 
             // AirdForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -253,6 +264,7 @@
         private System.Windows.Forms.Label lblFileNameTag;
         private System.Windows.Forms.TextBox tbFileNameSuffix;
         private System.Windows.Forms.CheckBox cbLog10;
+        private System.Windows.Forms.CheckBox cbThreadAccelerate;
     }
 }
 

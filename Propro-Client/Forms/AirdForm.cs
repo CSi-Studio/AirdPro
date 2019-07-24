@@ -86,6 +86,7 @@ namespace Propro.Forms
                     item.SubItems[1].Text,
                     cbIsZeroIntensityIgnore.Checked,
                     cbLog10.Checked,
+                    cbThreadAccelerate.Checked,
                     tbFileNameSuffix.Text,
                     item);
                 convertTaskManager.pushJob(jobInfo);

@@ -1,9 +1,5 @@
-﻿using System;
+﻿using Propro.Structs;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Propro.Structs;
 
 namespace Propro_Client.Domains.Aird
 {
@@ -25,6 +21,8 @@ namespace Propro_Client.Domains.Aird
         public List<long> mzs = new List<long>();
         //一个Swath块中所有子谱图的intenisty的压缩后的大小列表
         public List<long> ints= new List<long>();
+        //用于记录mz点位的锚点
+        public List<int[]> anchors = new List<int[]>();
         //用于存储KV键值对
         public string features;
     }
