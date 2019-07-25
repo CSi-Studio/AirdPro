@@ -15,7 +15,6 @@ namespace Propro.Logics
     internal class PRMConverter : IConverter
     {
         private int totalSize;//总计的谱图数目
-        private long startPosition;//块索引的指针
         private int progress;//进度计数器
         List<TempIndex> ms1List = new List<TempIndex>();//用于存放MS1索引及基础信息
         Hashtable ms2Table = new Hashtable();//用于存放MS2的索引信息,key为mz

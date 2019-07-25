@@ -201,19 +201,7 @@ namespace Propro.Logics
             airdInfo.fileSize = fileSize;
             airdInfo.creator = jobInfo.creator;
             airdInfo.createDate = new DateTime();
-            switch (jobInfo.type)
-            {
-                case "0":
-                    airdInfo.type = ExperimentType.DIA_SWATH;
-                    break;
-                case "1":
-                    airdInfo.type = ExperimentType.PRM;
-                    break;
-                default:
-                    airdInfo.type = ExperimentType.DIA_SWATH;
-                    break;
-            }
-
+            airdInfo.type = jobInfo.type;
             //Scan index and window range info
             airdInfo.rangeList = ranges;
             airdInfo.indexList = indexList;

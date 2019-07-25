@@ -13,7 +13,7 @@ namespace Propro.Domains
 
         //C:/data/plasma.wiff,作为job的ID存在
         public string jobId;
-        //0:DIA-Swath,1:PRM,2:Fill Info. see ExperimentType
+        //DIA-Swath,PRM,Fill Info. see ExperimentType
         public string type;
         //当前任务的状态
         public string status = "Ready";
