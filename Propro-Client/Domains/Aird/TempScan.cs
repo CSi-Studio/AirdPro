@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Propro_Client.Domains.Aird
 {
-    public class TempScan:IComparer
+    public class TempScan:IComparable
     {
         public int num;
         public float rt;
@@ -24,11 +24,10 @@ namespace Propro_Client.Domains.Aird
             this.intArrayBytes = intArrayBytes;
         }
 
-        public int Compare(object x, object y)
+        public int CompareTo(object obj)
         {
-            TempScan tsX = (TempScan) x;
-            TempScan tsY = (TempScan) y;
-            return tsX.rt.CompareTo(tsY.rt);
+            TempScan ts = (TempScan) obj;
+            return this.rt.CompareTo(ts.rt);
         }
     }
 }

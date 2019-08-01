@@ -84,7 +84,7 @@ namespace Propro.Logics
         private void coreLoop()
         {
             jobInfo.log(null, progress + "/" + totalSize);
-            Parallel.For(0, 100000, (i, ParallelLoopState) =>
+            Parallel.For(0, totalSize, (i, ParallelLoopState) =>
             {
                 scan(i);
                 if (progress % 100 == 0) jobInfo.log(null, progress + 1 + "/" + totalSize);
