@@ -14,7 +14,7 @@ namespace Propro.Asyncs
     {
         //需要进行处理的Job
         private Queue<ConvertJobInfo> jobQueue = new Queue<ConvertJobInfo>();
-        TaskFactory fac = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(2));
+        TaskFactory fac = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(1));
 
         //全部的Job信息
         public Hashtable jobTable = new Hashtable();
@@ -70,7 +70,10 @@ namespace Propro.Asyncs
                             {
                                 new PRMConverter(jobInfo).doConvert();
                             }
-
+                            else if (jobInfo.type.Equals(ExperimentType.SCANNING_SWATH))
+                            {
+                                new ScanningSwathConvert(jobInfo).doConvert();
+                            }
                             jobInfo.status = "Finished";
                         }
                         catch (Exception ex)

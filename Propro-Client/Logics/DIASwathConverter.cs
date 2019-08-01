@@ -62,7 +62,7 @@ namespace Propro.Logics
             jobInfo.log("Start getting windows", "Getting Windows");
             int i = 0;
             Spectrum spectrum = spectrumList.spectrum(0);
-            while (!spectrum.cvParamChild(CVID.MS_ms_level).value.ToString().Equals("1"))
+            while (!spectrum.cvParamChild(CVID.MS_ms_level).value.ToString().Equals(MsLevel.MS1))
             {
                 i++;
                 spectrum = spectrumList.spectrum(i);
@@ -78,21 +78,19 @@ namespace Propro.Logics
             spectrum = spectrumList.spectrum(i);
             while (spectrum.cvParamChild(CVID.MS_ms_level).value.ToString().Equals(MsLevel.MS2))
             {
-                float mz = (float) double.Parse(spectrum.precursors[0].isolationWindow
-                    .cvParamChild(CVID.MS_isolation_window_target_m_z).value.ToString());
-                float lowerOffset = (float) double.Parse(spectrum.precursors[0].isolationWindow
-                    .cvParamChild(CVID.MS_isolation_window_lower_offset).value.ToString());
-                float upperOffset = (float) double.Parse(spectrum.precursors[0].isolationWindow
-                    .cvParamChild(CVID.MS_isolation_window_upper_offset).value.ToString());
-
+                float mz, lowerOffset, upperOffset;
+                mz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
+                lowerOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_lower_offset);
+                upperOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_upper_offset);
+                
                 WindowRange range = new WindowRange(mz - lowerOffset, mz + upperOffset, mz);
                 Hashtable features = new Hashtable();
                 features.Add(Features.original_width, lowerOffset + upperOffset);
                 features.Add(Features.original_precursor_mz_start, mz - lowerOffset);
                 features.Add(Features.original_precursor_mz_end, mz + upperOffset);
-
                 range.features = FeaturesUtil.toString(features);
                 ranges.Add(range);
+
                 i++;
                 spectrum = spectrumList.spectrum(i);
             }

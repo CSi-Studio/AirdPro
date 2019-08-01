@@ -133,6 +133,27 @@ namespace Propro.Logics
             airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
         }
 
+        protected float getPrecursorIsolationWindowParams(Spectrum spectrum, CVID cvid)
+        {
+            float result = -1;
+            int retryTimes = 3;
+            while (result == -1 && retryTimes > 0)
+            {
+                try
+                {
+                    result = (float) double.Parse(spectrum.precursors[0].isolationWindow.cvParamChild(cvid).value.ToString());
+                }
+                catch (Exception e)
+                {
+                    jobInfo.logError(e.StackTrace);
+                    jobInfo.logError(cvid.GetTypeCode()+"-重试次数-" +retryTimes);
+                }
+                retryTimes--;
+            }
+
+            return result;
+        }
+
         protected void readVendorFile()
         {
             ReaderList readers = ReaderList.FullReaderList;
@@ -182,7 +203,7 @@ namespace Propro.Logics
         //将最终的数据写入文件中
         public void writeToAirdInfoFile()
         {
-            jobInfo.log("Write-in", "Write-in");
+            jobInfo.log("Writing Index File", "Writing Index File");
             AirdInfo airdInfo = buildBasicInfo();
             JsonSerializerSettings jsonSetting = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
             string airdInfoStr = JsonConvert.SerializeObject(airdInfo, jsonSetting);

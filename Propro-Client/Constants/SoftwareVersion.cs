@@ -3,8 +3,8 @@
     class SoftwareVersion
     {
         public static int AIRD_VERSION = 2;
-        public static string CLIENT_VERSION = "1.8.0";
-        public static string CLIENT_VERSION_DESCRIPTION = "New Function: Multi Thread Accelerate";
+        public static string CLIENT_VERSION = "1.8.1";
+        public static string CLIENT_VERSION_DESCRIPTION = "New Function: Retry for parse error";
 
         public static string getVersion()
         {

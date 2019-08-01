@@ -57,6 +57,23 @@ namespace Propro.Forms
             }
         }
 
+        private void BtnChooseSSwathFiles_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Multiselect = true;
+            ofd.CheckFileExists = true;
+            ofd.Filter = "Vendor Format|*.wiff;";
+            ofd.Title = "Please Choose Vendor File to Convert";
+
+            if (ofd.ShowDialog(this) == DialogResult.OK)
+            {
+                foreach (var fileName in ofd.FileNames)
+                {
+                    addFile(fileName, ExperimentType.SCANNING_SWATH);
+                }
+            }
+        }
+
         private void btnChooseFolder_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();

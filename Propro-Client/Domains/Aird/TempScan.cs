@@ -1,6 +1,9 @@
-﻿namespace Propro_Client.Domains.Aird
+﻿using System;
+using System.Collections;
+
+namespace Propro_Client.Domains.Aird
 {
-    public class TempScan
+    public class TempScan:IComparer
     {
         public int num;
         public float rt;
@@ -19,6 +22,13 @@
             this.rt = rt;
             this.mzArrayBytes = mzArrayBytes;
             this.intArrayBytes = intArrayBytes;
+        }
+
+        public int Compare(object x, object y)
+        {
+            TempScan tsX = (TempScan) x;
+            TempScan tsY = (TempScan) y;
+            return tsX.rt.CompareTo(tsY.rt);
         }
     }
 }

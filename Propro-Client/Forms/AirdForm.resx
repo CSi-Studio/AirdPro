@@ -125,6 +125,40 @@
   <data name="container.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
+  <data name="btnChooseSSwathFiles.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="btnChooseSSwathFiles.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 8pt</value>
+  </data>
+  <data name="btnChooseSSwathFiles.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnChooseSSwathFiles.Location" type="System.Drawing.Point, System.Drawing">
+    <value>274, 634</value>
+  </data>
+  <data name="btnChooseSSwathFiles.Size" type="System.Drawing.Size, System.Drawing">
+    <value>199, 25</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="btnChooseSSwathFiles.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="btnChooseSSwathFiles.Text" xml:space="preserve">
+    <value>Choose Scanning_SWATH Files</value>
+  </data>
+  <data name="&gt;&gt;btnChooseSSwathFiles.Name" xml:space="preserve">
+    <value>btnChooseSSwathFiles</value>
+  </data>
+  <data name="&gt;&gt;btnChooseSSwathFiles.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnChooseSSwathFiles.Parent" xml:space="preserve">
+    <value>container.Panel1</value>
+  </data>
+  <data name="&gt;&gt;btnChooseSSwathFiles.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="btnChoosePRMFiles.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -135,12 +169,11 @@
     <value>NoControl</value>
   </data>
   <data name="btnChoosePRMFiles.Location" type="System.Drawing.Point, System.Drawing">
-    <value>661, 665</value>
+    <value>645, 634</value>
   </data>
   <data name="btnChoosePRMFiles.Size" type="System.Drawing.Size, System.Drawing">
     <value>160, 25</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btnChoosePRMFiles.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
@@ -157,7 +190,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;btnChoosePRMFiles.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="btnClear.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -190,7 +223,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;btnClear.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="lblFileSelectedInfo.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -220,7 +253,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;lblFileSelectedInfo.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="lvFileList.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -271,7 +304,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;lvFileList.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="btnDeleteFiles.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -304,7 +337,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;btnDeleteFiles.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="btnChooseDIASwathFiles.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -313,7 +346,7 @@
     <value>微软雅黑, 8pt</value>
   </data>
   <data name="btnChooseDIASwathFiles.Location" type="System.Drawing.Point, System.Drawing">
-    <value>661, 634</value>
+    <value>479, 634</value>
   </data>
   <data name="btnChooseDIASwathFiles.Size" type="System.Drawing.Size, System.Drawing">
     <value>160, 25</value>
@@ -334,7 +367,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;btnChooseDIASwathFiles.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="btnConvert.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -367,7 +400,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;btnConvert.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="&gt;&gt;container.Panel1.Name" xml:space="preserve">
     <value>container.Panel1</value>

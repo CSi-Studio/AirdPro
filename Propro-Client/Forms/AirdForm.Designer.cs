@@ -41,6 +41,7 @@
             this.btnDeleteFiles = new System.Windows.Forms.Button();
             this.btnChooseDIASwathFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
+            this.cbThreadAccelerate = new System.Windows.Forms.CheckBox();
             this.cbLog10 = new System.Windows.Forms.CheckBox();
             this.lblFileNameTag = new System.Windows.Forms.Label();
             this.tbFileNameSuffix = new System.Windows.Forms.TextBox();
@@ -51,7 +52,7 @@
             this.btnChooseFolder = new System.Windows.Forms.Button();
             this.tbFolderPath = new System.Windows.Forms.TextBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.cbThreadAccelerate = new System.Windows.Forms.CheckBox();
+            this.btnChooseSSwathFiles = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -65,6 +66,7 @@
             // 
             // container.Panel1
             // 
+            this.container.Panel1.Controls.Add(this.btnChooseSSwathFiles);
             this.container.Panel1.Controls.Add(this.btnChoosePRMFiles);
             this.container.Panel1.Controls.Add(this.btnClear);
             this.container.Panel1.Controls.Add(this.lblFileSelectedInfo);
@@ -156,6 +158,14 @@
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
             // 
+            // cbThreadAccelerate
+            // 
+            resources.ApplyResources(this.cbThreadAccelerate, "cbThreadAccelerate");
+            this.cbThreadAccelerate.Checked = true;
+            this.cbThreadAccelerate.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbThreadAccelerate.Name = "cbThreadAccelerate";
+            this.cbThreadAccelerate.UseVisualStyleBackColor = true;
+            // 
             // cbLog10
             // 
             resources.ApplyResources(this.cbLog10, "cbLog10");
@@ -217,13 +227,12 @@
             this.timer.Enabled = true;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
-            // cbThreadAccelerate
+            // btnChooseSSwathFiles
             // 
-            resources.ApplyResources(this.cbThreadAccelerate, "cbThreadAccelerate");
-            this.cbThreadAccelerate.Checked = true;
-            this.cbThreadAccelerate.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbThreadAccelerate.Name = "cbThreadAccelerate";
-            this.cbThreadAccelerate.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.btnChooseSSwathFiles, "btnChooseSSwathFiles");
+            this.btnChooseSSwathFiles.Name = "btnChooseSSwathFiles";
+            this.btnChooseSSwathFiles.UseVisualStyleBackColor = true;
+            this.btnChooseSSwathFiles.Click += new System.EventHandler(this.BtnChooseSSwathFiles_Click);
             // 
             // AirdForm
             // 
@@ -265,6 +274,7 @@
         private System.Windows.Forms.TextBox tbFileNameSuffix;
         private System.Windows.Forms.CheckBox cbLog10;
         private System.Windows.Forms.CheckBox cbThreadAccelerate;
+        private System.Windows.Forms.Button btnChooseSSwathFiles;
     }
 }
 
