@@ -34,6 +34,7 @@ namespace Propro.Logics
                     coreLoop();//核心扫描解析逻辑
                     sortAndWrite();//整理最终的解析数据,并且写入文件
                     writeToAirdInfoFile();//将Info数据写入文件
+                    clearCache();
                 }
             }
             finish();
@@ -174,6 +175,12 @@ namespace Propro.Logics
             return str;
         }
 
+        private void clearCache()
+        {
+            rangeMap = Hashtable.Synchronized(new Hashtable());
+            ms2Map = Hashtable.Synchronized(new Hashtable());
+
+        }
        
     }
 }

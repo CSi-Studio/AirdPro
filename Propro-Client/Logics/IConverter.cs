@@ -211,6 +211,11 @@ namespace Propro.Logics
             airdJsonStream.Write(airdBytes, 0, airdBytes.Length);
         }
 
+        public void clearCache()
+        {
+            ranges = new List<WindowRange>();
+            indexList = new List<SwathIndex>();
+        }
         protected AirdInfo buildBasicInfo()
         {
             AirdInfo airdInfo = new AirdInfo();
