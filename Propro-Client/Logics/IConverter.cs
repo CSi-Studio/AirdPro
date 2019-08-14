@@ -114,7 +114,9 @@ namespace Propro.Logics
 
         protected void outputWithOrder(Hashtable table, SwathIndex swathIndex)
         {
-            foreach (int key in table.Keys)
+            ArrayList keys = new ArrayList(table.Keys);
+            keys.Sort();
+            foreach (int key in keys)
             {
                 TempScan tempScan = (TempScan)table[key];
                 addToIndex(swathIndex, tempScan);
@@ -156,13 +158,24 @@ namespace Propro.Logics
 
         protected void readVendorFile()
         {
-            ReaderList readers = ReaderList.FullReaderList;
-            MSDataList msdList = new MSDataList();
-            ReaderConfig rc = new ReaderConfig();
-            rc.ignoreZeroIntensityPoints = true;
-            readers.read(jobInfo.inputFilePath, msdList, rc);
-            //用于Swath Aird平台的实验源文件中,msdList.Count必然为1,否则实验文件格式不符合要求
-            if (msdList.Count != 1) jobInfo.logError("File Format Error.MSDataList size must be 1");
+            jobInfo.log("Prepare to Parse Vendor File", "Prepare");
+            msd = new MSDataFile(jobInfo.inputFilePath);
+            jobInfo.log("Adapting Vendor File API", "Adapting");
+            
+            spectrumList = msd.run.spectrumList;
+            if (spectrumList == null || spectrumList.empty())
+            {
+                jobInfo.logError("No Spectrums Found");
+            }
+            else
+            {
+                jobInfo.log("Adapting Finished");
+            }
+            //            ReaderList readers = ReaderList.FullReaderList;
+            //            MSDataList msdList = new MSDataList();
+            //            ReaderConfig rc = new ReaderConfig();
+            //            rc.ignoreZeroIntensityPoints = true;
+            //            readers.read(jobInfo.inputFilePath, msdList, rc);
 
             if (jobInfo.format.Equals("WIFF"))
             {
@@ -193,11 +206,6 @@ namespace Propro.Logics
                     fileSize += file1.Length;
                 }
             }
-            msd = msdList[0];
-
-            jobInfo.log("Parsing Spectrum", "Parsing");
-            if (msd.run.spectrumList == null || msd.run.spectrumList.empty()) jobInfo.logError("No Spectrums Found");
-            spectrumList = msd.run.spectrumList;
         }
 
         //将最终的数据写入文件中
@@ -216,6 +224,7 @@ namespace Propro.Logics
             ranges = new List<WindowRange>();
             indexList = new List<SwathIndex>();
         }
+
         protected AirdInfo buildBasicInfo()
         {
             AirdInfo airdInfo = new AirdInfo();

@@ -60,7 +60,6 @@ namespace Propro.Logics
             Spectrum spectrum = spectrumList.spectrum(0);
             while (spectrum.cvParamChild(CVID.MS_ms_level).value.ToString().Equals(MsLevel.MS2))
             {
-                String mzStr = getTargetMzStr(spectrum);
                 float mz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
                 float lowerOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_lower_offset);
                 float upperOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_upper_offset);
@@ -73,8 +72,8 @@ namespace Propro.Logics
                 WindowRange range = new WindowRange(mz - lowerOffset, mz + upperOffset, mz);
                 SwathIndex swathIndex = new SwathIndex();
                 swathIndex.range = range;
-                rangeMap.Add(mzStr, swathIndex);
-                ms2Map.Add(mzStr, ArrayList.Synchronized(new ArrayList()));
+                rangeMap.Add(mz, swathIndex);
+                ms2Map.Add(mz, ArrayList.Synchronized(new ArrayList()));
 
                 i++;
                 spectrum = spectrumList.spectrum(i);
@@ -96,7 +95,9 @@ namespace Propro.Logics
         private void sortAndWrite()
         {
             jobInfo.log("Writing Aird File", "writing file");
-            foreach (String key in rangeMap.Keys)
+            ArrayList mzKeys = new ArrayList(rangeMap.Keys); //别忘了导入System.Collections
+            mzKeys.Sort(); //按mz顺序进行排序
+            foreach (float key in mzKeys)
             {
                 SwathIndex swathIndex = (SwathIndex)rangeMap[key];
                 ArrayList tempScanList = (ArrayList)ms2Map[key];
@@ -122,11 +123,11 @@ namespace Propro.Logics
             {
                 return;
             }
-            String targetMzStr = getTargetMzStr(spectrum);
+            float targetMz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
             ArrayList ms2List = null;
-            if (rangeMap.Contains(targetMzStr))
+            if (rangeMap.Contains(targetMz))
             {
-                ms2List = (ArrayList) ms2Map[targetMzStr];
+                ms2List = (ArrayList) ms2Map[targetMz];
             }
             else
             {
@@ -137,9 +138,9 @@ namespace Propro.Logics
                 WindowRange range = new WindowRange(mz - lowerOffset, mz + upperOffset, mz);
                 SwathIndex addIndex = new SwathIndex();
                 addIndex.range = range;
-                rangeMap.Add(targetMzStr, addIndex);
-                ms2Map.Add(targetMzStr, ArrayList.Synchronized(new ArrayList()));
-                ms2List = (ArrayList)ms2Map[targetMzStr];
+                rangeMap.Add(targetMz, addIndex);
+                ms2Map.Add(targetMz, ArrayList.Synchronized(new ArrayList()));
+                ms2List = (ArrayList)ms2Map[targetMz];
             }
 
             if (spectrum.scanList.scans.Count != 1)
@@ -157,22 +158,6 @@ namespace Propro.Logics
                 jobInfo.log(exception.Message);
                 return;
             }
-        }
-
-        /**
-         * 入参必须保证是MS2类型的谱图
-         */
-        private String getTargetMzStr(Spectrum spectrum)
-        {
-            String str = spectrum.precursors[0].isolationWindow.cvParamChild(CVID.MS_isolation_window_target_m_z).value;
-            int retryTimes = 3;
-            while (String.IsNullOrEmpty(str) && retryTimes > 0)
-            {
-                retryTimes --;
-                str = spectrum.precursors[0].isolationWindow.cvParamChild(CVID.MS_isolation_window_target_m_z).value;
-            }
-
-            return str;
         }
 
         private void clearCache()

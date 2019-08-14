@@ -27,7 +27,7 @@ namespace Propro_Client.Domains.Aird
         public int CompareTo(object obj)
         {
             TempScan ts = (TempScan) obj;
-            return this.rt.CompareTo(ts.rt);
+            return ts.rt.CompareTo(this.rt);
         }
     }
 }

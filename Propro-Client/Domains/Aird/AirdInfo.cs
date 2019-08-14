@@ -44,7 +44,7 @@ namespace Propro.Domains
 
         /**
          * [核心字段]
-         * 实验类型,目前支持DIA_SWATH和PRM两种
+         * 实验类型,目前支持DIA_SWATH,PRM和SCANNING_SWATH三种
          */
         public string type;
 
