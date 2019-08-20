@@ -257,6 +257,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="downloads\ProproClient1.9.1.zip" />
     <None Include="ImportLibs\BaseDataAccess.dll.config" />
     <None Include="ImportLibs\EULA.MHDAC" />
     <None Include="ImportLibs\EULA.RawFileReader" />
