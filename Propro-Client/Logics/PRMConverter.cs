@@ -140,8 +140,8 @@ namespace Propro.Logics
                 //如果这个谱图是MS1                          
                 if (getMsLevel(i).Equals(MsLevel.MS1))
                 {
-                    if (getMsLevel(i + 1).Equals(MsLevel.MS1)) continue; //如果下一个谱图仍然是MS1,那么直接忽略这个谱图
-                    if (getMsLevel(i + 1).Equals(MsLevel.MS2)) //如果下一个谱图是MS2,那么将这个谱图设置为当前的父谱图
+                    if (getMsLevel(i + 1).Equals(MsLevel.MS1)) continue; //如果下一个谱图仍然是MS1, 那么直接忽略这个谱图
+                    if (getMsLevel(i + 1).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
                     {
                         parentNum = i;
                         ms1List.Add(parseMS1(spectrumList.spectrum(i), i));
@@ -183,8 +183,6 @@ namespace Propro.Logics
                 for (int i = 0; i < ms1List.Count; i++)
                 {
                     jobInfo.log(null, "MS1:" + i + "/" + ms1List.Count);
-                    byte[] mzArrayBytes, intArrayBytes;
-                    int[] anchors;
                     TempIndex scanIndex = ms1List[i];
                     TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
                     compress(spectrumList.spectrum(scanIndex.num, true), ts);

@@ -113,15 +113,7 @@ namespace Propro.Logics
         {
             foreach (WindowRange range in ranges)
             {
-                if (range.start + (overlap / 2) - 400 <= 1)
-                {
-                    range.start = 400;
-                }
-                else
-                {
-                    range.start = range.start + (overlap / 2);
-                }
-
+                range.start = range.start + (overlap / 2);
                 range.end = range.end - (overlap / 2);
             }
         }
