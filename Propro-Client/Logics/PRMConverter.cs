@@ -41,6 +41,7 @@ namespace Propro.Logics
         }
 
         private void initGlobalVar()
+
         {
             totalSize = spectrumList.size();
             progress = 0;
