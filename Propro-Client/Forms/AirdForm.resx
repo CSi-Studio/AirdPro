@@ -147,6 +147,9 @@
   <data name="btnChooseSSwathFiles.Text" xml:space="preserve">
     <value>Choose Scanning_SWATH Files</value>
   </data>
+  <data name="btnChooseSSwathFiles.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="&gt;&gt;btnChooseSSwathFiles.Name" xml:space="preserve">
     <value>btnChooseSSwathFiles</value>
   </data>

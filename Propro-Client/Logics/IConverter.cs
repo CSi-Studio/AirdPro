@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using MSFileReaderLib;
 using Software = pwiz.CLI.msdata.Software;
 
@@ -30,11 +31,14 @@ namespace Propro.Logics
         protected Stopwatch stopwatch = new Stopwatch();
         protected FileStream airdStream;
         protected FileStream airdJsonStream;
-        protected List<WindowRange> ranges = new List<WindowRange>();//SWATH Window的窗口
-        protected List<SwathIndex> indexList = new List<SwathIndex>();//用于存储的全局的SWATH List
+        protected List<WindowRange> ranges = new List<WindowRange>(); //SWATH Window的窗口
+        protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable());//用于存放MS2的索引信息,key为mz
+        protected List<TempIndex> ms1List = new List<TempIndex>(); //用于存放MS1索引及基础信息
+        protected List<SwathIndex> indexList = new List<SwathIndex>(); //用于存储的全局的SWATH List
         protected Hashtable featuresMap = new Hashtable();
         protected long fileSize;
         protected long startPosition;//文件指针
+        protected int totalSize;//总计的谱图数目
 
         public IConverter(ConvertJobInfo jobInfo)
         {
@@ -62,6 +66,11 @@ namespace Propro.Logics
                 jobInfo.log("SHA1 Checking", "SHA1 Checking");
                 MSDataFile.calculateSHA1Checksums(msd);
             }
+        }
+
+        protected string getMsLevel(int index)
+        {
+            return spectrumList.spectrum(index).cvParamChild(CVID.MS_ms_level).value.ToString();
         }
 
         protected void initDirectory()
@@ -223,6 +232,114 @@ namespace Propro.Logics
         {
             ranges = new List<WindowRange>();
             indexList = new List<SwathIndex>();
+        }
+
+        protected void addToMS2Map(TempIndex ms2Index)
+        {
+            if (ms2Table.Contains(ms2Index.mz))
+            {
+                (ms2Table[ms2Index.mz] as List<TempIndex>).Add(ms2Index);
+            }
+            else
+            {
+                List<TempIndex> indexList = new List<TempIndex>();
+                indexList.Add(ms2Index);
+                ms2Table.Add(ms2Index.mz, indexList);
+            }
+        }
+
+        protected TempIndex parseMS1(Spectrum spectrum, int index)
+        {
+            TempIndex ms1 = new TempIndex();
+            ms1.level = 1;
+            ms1.num = index;
+            if (spectrum.scanList.scans.Count != 1)
+            {
+                return ms1;
+            }
+
+            Scan scan = spectrum.scanList.scans[0];
+            ms1.rt = parseRT(scan);
+
+            return ms1;
+        }
+
+        protected TempIndex parseMS2(Spectrum spectrum, int index, int parentIndex)
+        {
+            TempIndex ms2 = new TempIndex();
+            ms2.level = 2;
+            ms2.pNum = parentIndex;
+            ms2.num = index;
+            try
+            {
+                float mz = (float)double.Parse(spectrum.precursors[0].isolationWindow
+                    .cvParamChild(CVID.MS_isolation_window_target_m_z).value.ToString());
+                float lowerOffset = (float)double.Parse(spectrum.precursors[0].isolationWindow
+                    .cvParamChild(CVID.MS_isolation_window_lower_offset).value.ToString());
+                float upperOffset = (float)double.Parse(spectrum.precursors[0].isolationWindow
+                    .cvParamChild(CVID.MS_isolation_window_upper_offset).value.ToString());
+
+                ms2.mz = mz;
+                ms2.mzStart = mz - lowerOffset;
+                ms2.mzEnd = mz + upperOffset;
+                ms2.wid = lowerOffset + upperOffset;
+            }
+            catch (Exception e)
+            {
+                jobInfo.log("ERROR:SpectrumIndex:" + spectrum.index)
+                    .log("ERROR:SpectrumId:" + spectrum.id)
+                    .log("ERROR: mz:" + spectrum.precursors[0].isolationWindow
+                             .cvParamChild(CVID.MS_isolation_window_target_m_z).value)
+                    .log("ERROR: lowerOffset:" + spectrum.precursors[0].isolationWindow
+                             .cvParamChild(CVID.MS_isolation_window_lower_offset).value)
+                    .log("ERROR: upperOffset:" + spectrum.precursors[0].isolationWindow
+                             .cvParamChild(CVID.MS_isolation_window_upper_offset).value);
+                throw e;
+            }
+
+            if (spectrum.scanList.scans.Count != 1) return ms2;
+            Scan scan = spectrum.scanList.scans[0];
+            ms2.rt = parseRT(scan);
+
+            return ms2;
+        }
+
+        protected void parseAndStoreMS1Block()
+        {
+            SwathIndex swathIndex = new SwathIndex();
+            swathIndex.level = 1;
+            swathIndex.startPtr = startPosition;
+
+            if (jobInfo.threadAccelerate)
+            {
+                Hashtable table = Hashtable.Synchronized(new Hashtable());
+                //使用多线程处理数据提取与压缩
+                Parallel.For(0, ms1List.Count, (i, ParallelLoopState) =>
+                {
+                    jobInfo.log(null, "MS1:" + i + "/" + ms1List.Count);
+
+                    TempIndex scanIndex = ms1List[i];
+                    TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
+                    compress(spectrumList.spectrum(scanIndex.num, true), ts);
+
+                    table.Add(i, ts);
+                });
+                outputWithOrder(table, swathIndex);
+            }
+            else
+            {
+                for (int i = 0; i < ms1List.Count; i++)
+                {
+                    jobInfo.log(null, "MS1:" + i + "/" + ms1List.Count);
+                    TempIndex scanIndex = ms1List[i];
+                    TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
+                    compress(spectrumList.spectrum(scanIndex.num, true), ts);
+                    addToIndex(swathIndex, ts);
+                }
+            }
+
+            swathIndex.endPtr = startPosition;
+            indexList.Add(swathIndex);
         }
 
         protected AirdInfo buildBasicInfo()
