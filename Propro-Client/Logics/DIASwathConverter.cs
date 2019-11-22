@@ -151,7 +151,6 @@ namespace Propro.Logics
             int size = ranges.Count;
             if (size <= 2)
             {
-<<<<<<< HEAD
                 jobInfo.log("Windows Size Exception: Only " + size + " Windows");
                 throw new Exception("Windows Size Exception: Only " + size + " Windows");
             }
@@ -210,10 +209,6 @@ namespace Propro.Logics
                 swathIndex.endPtr = startPosition;
                 indexList.Add(swathIndex);
                 jobInfo.log("MS2 Group Finished:" + progress + "/" + ms2Table.Keys.Count);
-=======
-                range.start = range.start + (overlap / 2);
-                range.end = range.end - (overlap / 2);
->>>>>>> 177ae97... minMZ不做限定
             }
         }
 

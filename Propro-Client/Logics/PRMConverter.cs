@@ -72,7 +72,6 @@ namespace Propro.Logics
                 //如果这个谱图是MS1                          
                 if (getMsLevel(i).Equals(MsLevel.MS1))
                 {
-<<<<<<< HEAD
                     //如果下一个谱图仍然是MS1, 那么直接忽略这个谱图
                     if (getMsLevel(i + 1).Equals(MsLevel.MS1))
                     {
@@ -80,10 +79,6 @@ namespace Propro.Logics
                         return;
                     }
                     if (getMsLevel(i + 1).Equals(MsLevel.MS2))
-=======
-                    if (getMsLevel(i + 1).Equals(MsLevel.MS1)) continue; //如果下一个谱图仍然是MS1, 那么直接忽略这个谱图
-                    if (getMsLevel(i + 1).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
->>>>>>> 177ae97... minMZ不做限定
                     {
                         parentNum = i;
                         ms1List.Add(parseMS1(spectrumList.spectrum(i), i));
@@ -101,50 +96,7 @@ namespace Propro.Logics
             jobInfo.log("Start Processing MS1 List");
         }
 
-<<<<<<< HEAD
         private void parseAndStoreMS2Block()
-=======
-        private void doWithMS1Block(Boolean threadAccelerate)
-        {
-            SwathIndex swathIndex = new SwathIndex();
-            swathIndex.level = 1;
-            swathIndex.startPtr = startPosition;
-
-            if (threadAccelerate)
-            {
-                Hashtable table = Hashtable.Synchronized(new Hashtable());
-                //使用多线程处理数据提取与压缩
-                Parallel.For(0, ms1List.Count, (i, ParallelLoopState) =>
-                {
-                    jobInfo.log(null, "MS1:" + i + "/" + ms1List.Count);
-                    
-                   
-                    TempIndex scanIndex = ms1List[i];
-                    TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
-                    compress(spectrumList.spectrum(scanIndex.num, true), ts);
-                    
-                    table.Add(i, ts);
-                });
-                outputWithOrder(table, swathIndex);
-            }
-            else
-            {
-                for (int i = 0; i < ms1List.Count; i++)
-                {
-                    jobInfo.log(null, "MS1:" + i + "/" + ms1List.Count);
-                    TempIndex scanIndex = ms1List[i];
-                    TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
-                    compress(spectrumList.spectrum(scanIndex.num, true), ts);
-                    addToIndex(swathIndex, ts);
-                }
-            }
-            
-            swathIndex.endPtr = startPosition;
-            indexList.Add(swathIndex);
-        }
-
-        private void doWithMS2Block(Boolean threadAccelerate)
->>>>>>> 177ae97... minMZ不做限定
         {
             jobInfo.log("Start Processing MS2 List");
             foreach (float key in ms2Table.Keys)
