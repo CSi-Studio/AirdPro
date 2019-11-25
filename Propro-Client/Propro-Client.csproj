@@ -219,6 +219,7 @@
     <Compile Include="Forms\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logics\DDAConverter.cs" />
     <Compile Include="Logics\DIASwathConverter.cs" />
     <Compile Include="Logics\IConverter.cs" />
     <Compile Include="Logics\PRMConverter.cs" />
