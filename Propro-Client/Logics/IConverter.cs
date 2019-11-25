@@ -32,6 +32,7 @@ namespace Propro.Logics
         protected FileStream airdJsonStream;
         protected List<WindowRange> ranges = new List<WindowRange>();//SWATH Window的窗口
         protected List<SwathIndex> indexList = new List<SwathIndex>();//用于存储的全局的SWATH List
+        protected List<BlockIndex> blockIndexList = new List<BlockIndex>();//适用于DDA的块索引
         protected Hashtable featuresMap = new Hashtable();
         protected long fileSize;
         protected long startPosition;//文件指针
@@ -240,6 +241,7 @@ namespace Propro.Logics
             //Scan index and window range info
             airdInfo.rangeList = ranges;
             airdInfo.indexList = indexList;
+            airdInfo.blockIndexList = blockIndexList;
 
             //Instrument Info
             InstrumentConfiguration ic = msd.instrumentConfigurationList[0];

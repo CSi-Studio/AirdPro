@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AirdForm));
             this.container = new System.Windows.Forms.SplitContainer();
+            this.btnChooseDDAFiles = new System.Windows.Forms.Button();
+            this.btnChooseSSwathFiles = new System.Windows.Forms.Button();
             this.btnChoosePRMFiles = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.lblFileSelectedInfo = new System.Windows.Forms.Label();
@@ -52,7 +54,6 @@
             this.btnChooseFolder = new System.Windows.Forms.Button();
             this.tbFolderPath = new System.Windows.Forms.TextBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.btnChooseSSwathFiles = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -66,6 +67,7 @@
             // 
             // container.Panel1
             // 
+            this.container.Panel1.Controls.Add(this.btnChooseDDAFiles);
             this.container.Panel1.Controls.Add(this.btnChooseSSwathFiles);
             this.container.Panel1.Controls.Add(this.btnChoosePRMFiles);
             this.container.Panel1.Controls.Add(this.btnClear);
@@ -88,6 +90,20 @@
             this.container.Panel2.Controls.Add(this.btnChooseFolder);
             this.container.Panel2.Controls.Add(this.tbFolderPath);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
+            // 
+            // btnChooseDDAFiles
+            // 
+            resources.ApplyResources(this.btnChooseDDAFiles, "btnChooseDDAFiles");
+            this.btnChooseDDAFiles.Name = "btnChooseDDAFiles";
+            this.btnChooseDDAFiles.UseVisualStyleBackColor = true;
+            this.btnChooseDDAFiles.Click += new System.EventHandler(this.btnChooseDDAFile_Click);
+            // 
+            // btnChooseSSwathFiles
+            // 
+            resources.ApplyResources(this.btnChooseSSwathFiles, "btnChooseSSwathFiles");
+            this.btnChooseSSwathFiles.Name = "btnChooseSSwathFiles";
+            this.btnChooseSSwathFiles.UseVisualStyleBackColor = true;
+            this.btnChooseSSwathFiles.Click += new System.EventHandler(this.BtnChooseSSwathFiles_Click);
             // 
             // btnChoosePRMFiles
             // 
@@ -227,13 +243,6 @@
             this.timer.Enabled = true;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
-            // btnChooseSSwathFiles
-            // 
-            resources.ApplyResources(this.btnChooseSSwathFiles, "btnChooseSSwathFiles");
-            this.btnChooseSSwathFiles.Name = "btnChooseSSwathFiles";
-            this.btnChooseSSwathFiles.UseVisualStyleBackColor = true;
-            this.btnChooseSSwathFiles.Click += new System.EventHandler(this.BtnChooseSSwathFiles_Click);
-            // 
             // AirdForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -275,6 +284,7 @@
         private System.Windows.Forms.CheckBox cbLog10;
         private System.Windows.Forms.CheckBox cbThreadAccelerate;
         private System.Windows.Forms.Button btnChooseSSwathFiles;
+        private System.Windows.Forms.Button btnChooseDDAFiles;
     }
 }
 

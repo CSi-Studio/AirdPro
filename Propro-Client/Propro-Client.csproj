@@ -188,6 +188,7 @@
     <Compile Include="CSharpFastPFORCore\Util.cs" />
     <Compile Include="CSharpFastPFORCore\VariableByte.cs" />
     <Compile Include="Domains\Aird\AirdInfo.cs" />
+    <Compile Include="Domains\Aird\BlockIndex.cs" />
     <Compile Include="Domains\Aird\ParentFile.cs" />
     <Compile Include="Domains\Aird\Compressor.cs" />
     <Compile Include="Domains\Aird\Features.cs" />

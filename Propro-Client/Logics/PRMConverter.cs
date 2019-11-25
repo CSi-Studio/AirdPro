@@ -135,7 +135,11 @@ namespace Propro.Logics
                 if (i == totalSize - 1)
                 {
                     if (getMsLevel(i).Equals(MsLevel.MS1)) continue; //如果是MS1谱图,那么直接跳过
-                    if (getMsLevel(i).Equals(MsLevel.MS2)) addToMS2Map(parseMS2(spectrumList.spectrum(i), i, parentNum)); //如果是MS2谱图,加入到谱图组
+                    if (getMsLevel(i).Equals(MsLevel.MS2))
+                    {
+                        addToMS2Map(parseMS2(spectrumList.spectrum(i), i, parentNum)); //如果是MS2谱图,加入到谱图组
+                        continue;
+                    }
                 }
                 //如果这个谱图是MS1                          
                 if (getMsLevel(i).Equals(MsLevel.MS1))

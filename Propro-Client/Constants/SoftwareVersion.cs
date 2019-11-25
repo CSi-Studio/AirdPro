@@ -2,8 +2,8 @@
 {
     class SoftwareVersion
     {
-        public static int AIRD_VERSION = 2;
-        public static string CLIENT_VERSION = "1.9.1";
+        public static int AIRD_VERSION = 3;
+        public static string CLIENT_VERSION = "2.0.1";
         public static string CLIENT_VERSION_DESCRIPTION = "New Function: Support for Scanning Swath";
 
         public static string getVersion()

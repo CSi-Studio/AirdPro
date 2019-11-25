@@ -74,6 +74,10 @@ namespace Propro.Asyncs
                             {
                                 new ScanningSwathConvert(jobInfo).doConvert();
                             }
+                            else if (jobInfo.type.Equals(ExperimentType.DDA))
+                            {
+                                new DDAConverter(jobInfo).doConvert();
+                            }
                             jobInfo.status = "Finished";
                         }
                         catch (Exception ex)
