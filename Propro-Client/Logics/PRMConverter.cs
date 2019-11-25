@@ -13,7 +13,7 @@ namespace Propro.Logics
     internal class PRMConverter : IConverter
     {
         private int progress;//进度计数器
-        
+
         public PRMConverter(ConvertJobInfo jobInfo) : base(jobInfo) {}
 
         public override void doConvert()
@@ -70,7 +70,7 @@ namespace Propro.Logics
                     }
                 }
 
-                //如果这个谱图是MS1                          
+                //如果这个谱图是MS1
                 if (getMsLevel(i).Equals(MsLevel.MS1))
                 {
                     //如果下一个谱图仍然是MS1, 那么直接忽略这个谱图
@@ -141,7 +141,7 @@ namespace Propro.Logics
                         addToIndex(swathIndex, ts);
                     }
                 }
-                
+
                 swathIndex.endPtr = startPosition;
                 indexList.Add(swathIndex);
                 jobInfo.log("MS2 Group Finished:" + progress + "/" + ms2Table.Keys.Count);

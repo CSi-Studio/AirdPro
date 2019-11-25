@@ -38,9 +38,15 @@ namespace Propro.Domains
 
         /**
          * [核心字段]
-         * 用于存储SWATH Block的索引
+         * 用于存储SWATH Block的索引（适用于PRM/DIA/ScanningSwath）
          */
         public List<SwathIndex> indexList;
+
+        /**
+         * [核心字段]
+         * 用于存储Block的索引（适用于DDA）
+         */
+        public List<BlockIndex> blockIndexList;
 
         /**
          * [核心字段]
