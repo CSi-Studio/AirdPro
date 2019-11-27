@@ -1,14 +1,13 @@
 ﻿using Propro.Constants;
 using Propro.Domains;
 using Propro.Structs;
+using Propro_Client.Domains.Aird;
 using pwiz.CLI.cv;
 using pwiz.CLI.msdata;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
-using Propro_Client.Domains.Aird;
 
 
 namespace Propro.Logics
@@ -20,7 +19,9 @@ namespace Propro.Logics
         List<TempIndex> ms1List = new List<TempIndex>();
         Hashtable ms2Table = new Hashtable();
 
-        public DDAConverter(ConvertJobInfo jobInfo) : base(jobInfo) {}
+        public DDAConverter(ConvertJobInfo jobInfo) : base(jobInfo)
+        {
+        }
 
         public override void doConvert()
         {
@@ -30,14 +31,15 @@ namespace Propro.Logics
             {
                 using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                 {
-                    readVendorFile();//准备读取Vendor文件
-                    initGlobalVar();//初始化全局变量
-                    preProcess();//MS1和MS2分开建立索引
-                    doWithMS1Block();//处理MS1,并将索引写入文件流中
-                    doWithMS2Block();//处理MS2,并将索引写入文件流中
-                    writeToAirdInfoFile();//将Info数据写入文件
+                    readVendorFile(); //准备读取Vendor文件
+                    initGlobalVar(); //初始化全局变量
+                    preProcess(); //MS1和MS2分开建立索引
+                    doWithMS1Block(); //处理MS1,并将索引写入文件流中
+                    doWithMS2Block(); //处理MS2,并将索引写入文件流中
+                    writeToAirdInfoFile(); //将Info数据写入文件
                 }
             }
+
             finish();
         }
 
@@ -53,30 +55,33 @@ namespace Propro.Logics
         {
             int parentNum = 0;
             jobInfo.log("Preprocessing:" + totalSize, "Preprocessing");
-            for(var i = 0; i <totalSize; i++)
+            for (var i = 0; i < totalSize; i++)
             {
                 //最后一个谱图,单独判断
                 if (i == totalSize - 1)
                 {
-                    if (getMsLevel(i).Equals(MsLevel.MS1)) ms1List.Add(parseMS1(spectrumList.spectrum(i), i));//如果是MS1谱图,加入到MS1List
-                    if (getMsLevel(i).Equals(MsLevel.MS2)) addToMS2Map(parseMS2(spectrumList.spectrum(i), i, parentNum)); //如果是MS2谱图,加入到谱图组
+                    if (getMsLevel(i).Equals(MsLevel.MS1))
+                        ms1List.Add(parseMS1(spectrumList.spectrum(i), i)); //如果是MS1谱图,加入到MS1List
+                    if (getMsLevel(i).Equals(MsLevel.MS2))
+                        addToMS2Map(parseMS2(spectrumList.spectrum(i), i, parentNum)); //如果是MS2谱图,加入到谱图组
                 }
                 else
                 {
                     //如果这个谱图是MS1
                     if (getMsLevel(i).Equals(MsLevel.MS1))
                     {
-                        ms1List.Add(parseMS1(spectrumList.spectrum(i), i));//加入MS1List
-                        if (getMsLevel(i + 1).Equals(MsLevel.MS2)) parentNum = i;//如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
+                        ms1List.Add(parseMS1(spectrumList.spectrum(i), i)); //加入MS1List
+                        if (getMsLevel(i + 1).Equals(MsLevel.MS2)) parentNum = i; //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
                     }
-                    if (getMsLevel(i).Equals(MsLevel.MS2)) addToMS2Map(parseMS2(spectrumList.spectrum(i), i, parentNum)); //如果这个谱图是MS2
+
+                    if (getMsLevel(i).Equals(MsLevel.MS2))
+                        addToMS2Map(parseMS2(spectrumList.spectrum(i), i, parentNum)); //如果这个谱图是MS2
                 }
             }
 
             jobInfo.log("Effective MS1 List Size:" + ms1List.Count);
             jobInfo.log("MS2 Group List Size:" + ms2Table.Count);
             jobInfo.log("Start Processing MS1 List");
-        
         }
 
         private string getMsLevel(int index)
@@ -110,11 +115,11 @@ namespace Propro.Logics
             ms2.num = index;
             try
             {
-                float mz = (float)double.Parse(spectrum.precursors[0].isolationWindow
+                float mz = (float) double.Parse(spectrum.precursors[0].isolationWindow
                     .cvParamChild(CVID.MS_isolation_window_target_m_z).value.ToString());
-                float lowerOffset = (float)double.Parse(spectrum.precursors[0].isolationWindow
+                float lowerOffset = (float) double.Parse(spectrum.precursors[0].isolationWindow
                     .cvParamChild(CVID.MS_isolation_window_lower_offset).value.ToString());
-                float upperOffset = (float)double.Parse(spectrum.precursors[0].isolationWindow
+                float upperOffset = (float) double.Parse(spectrum.precursors[0].isolationWindow
                     .cvParamChild(CVID.MS_isolation_window_upper_offset).value.ToString());
 
                 ms2.mz = mz;
@@ -144,7 +149,7 @@ namespace Propro.Logics
 
         private void addToMS2Map(TempIndex ms2Index)
         {
-            if(ms2Table.Contains(ms2Index.pNum))
+            if (ms2Table.Contains(ms2Index.pNum))
             {
                 (ms2Table[ms2Index.pNum] as List<TempIndex>).Add(ms2Index);
             }
@@ -176,9 +181,9 @@ namespace Propro.Logics
                 airdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
                 airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
             }
+
             blockIndex.endPtr = startPosition;
             blockIndexList.Add(blockIndex);
-
         }
 
         //处理MS2
@@ -187,7 +192,7 @@ namespace Propro.Logics
             jobInfo.log("Start Processing MS2 List");
             ArrayList keys = new ArrayList(ms2Table.Keys);
             keys.Sort();
-            foreach(int key in keys)
+            foreach (int key in keys)
             {
                 List<TempIndex> tempIndexList = ms2Table[key] as List<TempIndex>;
                 //为每一组key创建一个Block
@@ -213,15 +218,12 @@ namespace Propro.Logics
                     airdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
                     airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
                 }
+
                 blockIndex.rangeList = ms2Ranges;
                 blockIndex.endPtr = startPosition;
                 blockIndexList.Add(blockIndex);
                 jobInfo.log("MS2 Group Finished:" + progress + "/" + ms2Table.Keys.Count);
-            } 
-
+            }
         }
-
-  
     }
-
 }
