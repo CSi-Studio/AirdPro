@@ -85,7 +85,7 @@ namespace Propro.Asyncs
                             jobInfo.log(ex.ToString(),"Error");
                             jobInfo.status = "Error";
                             errorJob.Add(jobInfo.jobId, jobInfo);
-                            MessageBox.Show(ex.ToString());
+//                            MessageBox.Show(ex.ToString());
                         }
                     });
 

@@ -273,12 +273,9 @@ namespace Propro.Logics
             ms2.num = index;
             try
             {
-                float mz = (float)double.Parse(spectrum.precursors[0].isolationWindow
-                    .cvParamChild(CVID.MS_isolation_window_target_m_z).value.ToString());
-                float lowerOffset = (float)double.Parse(spectrum.precursors[0].isolationWindow
-                    .cvParamChild(CVID.MS_isolation_window_lower_offset).value.ToString());
-                float upperOffset = (float)double.Parse(spectrum.precursors[0].isolationWindow
-                    .cvParamChild(CVID.MS_isolation_window_upper_offset).value.ToString());
+                float mz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
+                float lowerOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_lower_offset);
+                float upperOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_upper_offset);
 
                 ms2.mz = mz;
                 ms2.mzStart = mz - lowerOffset;
@@ -372,7 +369,8 @@ namespace Propro.Logics
             {
                 instrument.manufacturer = "THERMO FISHER";
             }
-            
+
+            //设备信息在不同的源文件格式中取法不同,有些是在instrumentConfigurationList中获取,有些是在paramGroups获取,因此出现了以下比较丑陋的写法
             if (ic.cvParams.Count != 0)
             {
                 foreach (CVParam cv in ic.cvParams)
