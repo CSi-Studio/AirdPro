@@ -7,7 +7,7 @@
 
         public static string METHOD_ZLIB = "zlib";
         public static string METHOD_PFOR = "pFor";
-        public static string METHOD_LOG10 = "log10";
+        public static string METHOD_LOG10 = "log2";
 
         //压缩对象,支持mz和intensity两种
         public string target;

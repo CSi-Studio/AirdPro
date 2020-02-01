@@ -4659,7 +4659,7 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
             <summary>volumetric flow rate unit: A unit which is a standard measure of the volume of fluid which passes through a given surface per unit time .</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.UO_absorbance_unit">
-            <summary>absorbance unit: A dimensionless logarithmic unit assigned to a measure of absorbance of light through a partially absorbing substance, defined as -log10(I/I_0) where I = transmitted light and I_0 = incident light.</summary>
+            <summary>absorbance unit: A dimensionless logarithmic unit assigned to a measure of absorbance of light through a partially absorbing substance, defined as -log2(I/I_0) where I = transmitted light and I_0 = incident light.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.UO_volt_per_meter">
             <summary>volt per meter: The volt per meter is a unit of electric field strength equal to the a potential difference of 1 volt existing between two points that are 1 meter apart.</summary>
@@ -19490,7 +19490,7 @@ microliters per minute: A volumetric flow rate unit which is equal to one microl
 volumetric flow rate unit: A unit which is a standard measure of the volume of fluid which passes through a given surface per unit time .
 </member>
         <member name="F:UO_absorbance_unit">
-absorbance unit: A dimensionless logarithmic unit assigned to a measure of absorbance of light through a partially absorbing substance, defined as -log10(I/I_0) where I = transmitted light and I_0 = incident light.
+absorbance unit: A dimensionless logarithmic unit assigned to a measure of absorbance of light through a partially absorbing substance, defined as -log2(I/I_0) where I = transmitted light and I_0 = incident light.
 </member>
         <member name="F:UO_volt_per_meter">
 volt per meter: The volt per meter is a unit of electric field strength equal to the a potential difference of 1 volt existing between two points that are 1 meter apart.

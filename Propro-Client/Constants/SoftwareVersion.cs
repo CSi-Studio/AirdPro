@@ -3,8 +3,8 @@
     class SoftwareVersion
     {
         public static int AIRD_VERSION = 3;
-        public static string CLIENT_VERSION = "2.0.1";
-        public static string CLIENT_VERSION_DESCRIPTION = "New Function: Supporting for DDA Type vendor files";
+        public static string CLIENT_VERSION = "2.0.2";
+        public static string CLIENT_VERSION_DESCRIPTION = "New Function: Change Log10 Compression Strategy to Log2";
 
         public static string getVersion()
         {

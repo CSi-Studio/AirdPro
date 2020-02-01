@@ -32,7 +32,7 @@ namespace Propro.Domains
         //忽略intensity为0的数据
         public Boolean ignoreZeroIntensity = true;
         //对intensity是否求log10以降低精度
-        public Boolean log10 = true;
+        public Boolean log2 = true;
 
         public Boolean threadAccelerate = true;
 
@@ -48,13 +48,13 @@ namespace Propro.Domains
 
         public CancellationTokenSource cancellationTokenSource;
 
-        public ConvertJobInfo(string inputFilePath, string outputFolderPath, string type, Boolean ignoreZeroIntensity, Boolean log10, Boolean threadAccelerate, string suffix, ListViewItem item)
+        public ConvertJobInfo(string inputFilePath, string outputFolderPath, string type, Boolean ignoreZeroIntensity, Boolean log2, Boolean threadAccelerate, string suffix, ListViewItem item)
         {
             this.jobId = inputFilePath;
             this.inputFilePath = inputFilePath;
             this.outputFolderPath = outputFolderPath;
             this.ignoreZeroIntensity = ignoreZeroIntensity;
-            this.log10 = log10;
+            this.log2 = log2;
             this.type = type;
             this.suffix = suffix;
             this.threadAccelerate = threadAccelerate;

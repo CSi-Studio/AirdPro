@@ -44,7 +44,7 @@
             this.btnChooseDIASwathFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
             this.cbThreadAccelerate = new System.Windows.Forms.CheckBox();
-            this.cbLog10 = new System.Windows.Forms.CheckBox();
+            this.cbLog2 = new System.Windows.Forms.CheckBox();
             this.lblFileNameTag = new System.Windows.Forms.Label();
             this.tbFileNameSuffix = new System.Windows.Forms.TextBox();
             this.cbIsZeroIntensityIgnore = new System.Windows.Forms.CheckBox();
@@ -80,7 +80,7 @@
             // container.Panel2
             // 
             this.container.Panel2.Controls.Add(this.cbThreadAccelerate);
-            this.container.Panel2.Controls.Add(this.cbLog10);
+            this.container.Panel2.Controls.Add(this.cbLog2);
             this.container.Panel2.Controls.Add(this.lblFileNameTag);
             this.container.Panel2.Controls.Add(this.tbFileNameSuffix);
             this.container.Panel2.Controls.Add(this.cbIsZeroIntensityIgnore);
@@ -92,19 +92,19 @@
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
             // 
             // btnChooseDDAFiles
-            //
+            // 
             resources.ApplyResources(this.btnChooseDDAFiles, "btnChooseDDAFiles");
             this.btnChooseDDAFiles.Name = "btnChooseDDAFiles";
             this.btnChooseDDAFiles.UseVisualStyleBackColor = true;
             this.btnChooseDDAFiles.Click += new System.EventHandler(this.btnChooseDDAFile_Click);
-            //
+            // 
             // btnChooseSSwathFiles
-            //
+            // 
             resources.ApplyResources(this.btnChooseSSwathFiles, "btnChooseSSwathFiles");
             this.btnChooseSSwathFiles.Name = "btnChooseSSwathFiles";
             this.btnChooseSSwathFiles.UseVisualStyleBackColor = true;
             this.btnChooseSSwathFiles.Click += new System.EventHandler(this.BtnChooseSSwathFiles_Click);
-            //
+            // 
             // btnChoosePRMFiles
             // 
             resources.ApplyResources(this.btnChoosePRMFiles, "btnChoosePRMFiles");
@@ -182,11 +182,11 @@
             this.cbThreadAccelerate.Name = "cbThreadAccelerate";
             this.cbThreadAccelerate.UseVisualStyleBackColor = true;
             // 
-            // cbLog10
+            // cbLog2
             // 
-            resources.ApplyResources(this.cbLog10, "cbLog10");
-            this.cbLog10.Name = "cbLog10";
-            this.cbLog10.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.cbLog2, "cbLog2");
+            this.cbLog2.Name = "cbLog2";
+            this.cbLog2.UseVisualStyleBackColor = true;
             // 
             // lblFileNameTag
             // 
@@ -242,7 +242,7 @@
             // 
             this.timer.Enabled = true;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
-            //
+            // 
             // AirdForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -281,7 +281,7 @@
         private System.Windows.Forms.CheckBox cbIsZeroIntensityIgnore;
         private System.Windows.Forms.Label lblFileNameTag;
         private System.Windows.Forms.TextBox tbFileNameSuffix;
-        private System.Windows.Forms.CheckBox cbLog10;
+        private System.Windows.Forms.CheckBox cbLog2;
         private System.Windows.Forms.CheckBox cbThreadAccelerate;
         private System.Windows.Forms.Button btnChooseSSwathFiles;
         private System.Windows.Forms.Button btnChooseDDAFiles;

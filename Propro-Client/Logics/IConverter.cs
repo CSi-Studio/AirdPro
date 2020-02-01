@@ -41,6 +41,7 @@ namespace Propro.Logics
         protected long startPosition;//文件指针
         protected int totalSize;//总计的谱图数目
 
+        protected static double log2 = Math.Log(2);
         public IConverter(ConvertJobInfo jobInfo)
         {
             this.jobInfo = jobInfo;
@@ -106,9 +107,9 @@ namespace Propro.Logics
                 int mz = Convert.ToInt32(mzData[t] * 1000);
                 mzList.Add(mz); //精确到小数点后面三位
 
-                if (jobInfo.log10)
+                if (jobInfo.log2)
                 {
-                    intensityList.Add(Convert.ToSingle(Math.Round(Math.Log10(intData[t]), 3))); //取log10并且精确到小数点后3位
+                    intensityList.Add(Convert.ToSingle(Math.Round(Math.Log(intData[t])/log2, 3))); //取log10并且精确到小数点后3位
                 }
                 else
                 {
@@ -450,7 +451,7 @@ namespace Propro.Logics
             coms.Add(mzCompressor);
             //intensity compressor
             Compressor intCompressor = new Compressor();
-            if (jobInfo.log10)
+            if (jobInfo.log2)
             {
                 intCompressor.method = Compressor.METHOD_LOG10 + "," + Compressor.METHOD_ZLIB;
             }

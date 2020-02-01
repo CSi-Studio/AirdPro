@@ -119,7 +119,7 @@ namespace Propro.Forms
                 ConvertJobInfo jobInfo = new ConvertJobInfo(item.SubItems[0].Text, tbFolderPath.Text,
                     item.SubItems[1].Text,
                     cbIsZeroIntensityIgnore.Checked,
-                    cbLog10.Checked,
+                    cbLog2.Checked,
                     cbThreadAccelerate.Checked,
                     tbFileNameSuffix.Text,
                     item);

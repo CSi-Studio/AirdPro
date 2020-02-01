@@ -480,34 +480,34 @@
   <data name="&gt;&gt;cbThreadAccelerate.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="cbLog10.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cbLog2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbLog10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cbLog2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbLog10.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cbLog2.Location" type="System.Drawing.Point, System.Drawing">
     <value>176, 63</value>
   </data>
-  <data name="cbLog10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>281, 21</value>
+  <data name="cbLog2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>274, 21</value>
   </data>
-  <data name="cbLog10.TabIndex" type="System.Int32, mscorlib">
+  <data name="cbLog2.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
   </data>
-  <data name="cbLog10.Text" xml:space="preserve">
-    <value>Log10(Intensity) -- Precision loss:0%- 0.25%</value>
+  <data name="cbLog2.Text" xml:space="preserve">
+    <value>Log2(Intensity) -- Precision loss:0%- 0.25%</value>
   </data>
-  <data name="&gt;&gt;cbLog10.Name" xml:space="preserve">
-    <value>cbLog10</value>
+  <data name="&gt;&gt;cbLog2.Name" xml:space="preserve">
+    <value>cbLog2</value>
   </data>
-  <data name="&gt;&gt;cbLog10.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbLog2.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbLog10.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbLog2.Parent" xml:space="preserve">
     <value>container.Panel2</value>
   </data>
-  <data name="&gt;&gt;cbLog10.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbLog2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="lblFileNameTag.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
