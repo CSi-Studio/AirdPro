@@ -39,6 +39,7 @@ namespace Propro.Domains
         public Boolean threadAccelerate = true;
 
         public List<Log> logs = new List<Log>();
+
         private IProgress<string> progress;
 
         //任务的线程名称
