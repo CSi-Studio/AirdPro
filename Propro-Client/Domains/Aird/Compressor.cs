@@ -14,5 +14,8 @@
 
         //压缩方法,使用分号隔开,目前支持PFor和Zlib两种
         public string method;
+
+        //压缩精度, 有1000和100000两种,前者代表精确到小数点后3位,后者代表精确到小数点后5位
+        public int precision;
     }
 }

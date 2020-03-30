@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace Propro.Logics
@@ -70,6 +71,7 @@ namespace Propro.Logics
             int parentNum = 0;
             jobInfo.log("Preprocessing:" + totalSize, "Preprocessing");
             int proprogress = 0;
+            // 预处理所有的MS谱图
             for (int i = 0; i < totalSize; i++)
             {
                 proprogress++;
@@ -84,15 +86,24 @@ namespace Propro.Logics
                 //如果这个谱图是MS2
                 if (msLevel.Equals(MsLevel.MS2))
                 {
-                    addToMS2Map(parseMS2(spectrumList.spectrum(i), i, parentNum));
+                    addToMS2Map(parseMS2(spectrumList.spectrum(i, true), i, parentNum));
                 }
             }
-
+            jobInfo.log("MS2 Intensity编码表大小为:" + ms2IntensitySet.Count);
+            // 生成ms2 mz编码表
+            int count = 0;
+            foreach (float d in ms2IntensitySet)
+            {
+                ms2IntTable[d] = count;
+                count++;
+            }
             jobInfo.log("Effective MS1 List Size:" + ms1List.Count);
             jobInfo.log("MS2 Group List Size:" + ms2Table.Count);
             jobInfo.log("Start Processing MS1 List");
         }
 
+       
+        
         //提取SWATH 窗口信息
         private void buildWindowsRanges()
         {
@@ -188,7 +199,7 @@ namespace Propro.Logics
                     {
                         TempIndex index = tempIndexList[i];
                         TempScan ts = new TempScan(index.pNum, index.rt);
-                        compress(spectrumList.spectrum(index.num, true), ts);
+                        compress(spectrumList.spectrum(index.num), ts, 2);
                         //SwathIndex中只存储MS2谱图对应的MS1谱图的序号,其本身的序号已经没用了,不做存储,所以只存储了pNum
                         table.Add(i, ts);
                     });
@@ -200,7 +211,7 @@ namespace Propro.Logics
                     foreach (TempIndex index in tempIndexList)
                     {
                         TempScan ts = new TempScan(index.pNum, index.rt);
-                        compress(spectrumList.spectrum(index.num, true), ts);
+                        compress(spectrumList.spectrum(index.num), ts, 2);
                         //SwathIndex中只存储MS2谱图对应的MS1谱图的序号,其本身的序号已经没用了,不做存储
                         addToIndex(swathIndex, ts);
                     }
@@ -276,7 +287,7 @@ namespace Propro.Logics
                     try
                     {
                         TempScan ts = new TempScan(j, parseRT(spectrum.scanList.scans[0]));
-                        compress(spectrum, ts);
+                        compress(spectrum, ts, swathIndex.level);
                         table.Add(j, ts);
                     }
                     catch (Exception exception)
@@ -325,7 +336,7 @@ namespace Propro.Logics
             try
             {
                 TempScan ts = new TempScan(num, parseRT(spectrum.scanList.scans[0]));
-                compress(spectrum, ts);
+                compress(spectrum, ts, swathIndex.level);
                 addToIndex(swathIndex, ts);
             }
             catch (Exception exception)

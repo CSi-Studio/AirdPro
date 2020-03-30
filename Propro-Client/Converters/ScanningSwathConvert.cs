@@ -150,7 +150,7 @@ namespace Propro.Logics
             try
             {
                 TempScan ts = new TempScan(i, parseRT(spectrum.scanList.scans[0]));
-                compress(spectrum, ts);
+                compress(spectrum, ts, 2);
                 ms2List.Add(ts);
             }
             catch (Exception exception)

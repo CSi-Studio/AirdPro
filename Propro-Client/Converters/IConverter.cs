@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Propro.Constants;
 using Propro.Domains;
 using Propro.Structs;
 using Propro.Utils;
@@ -17,7 +16,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using MSFileReaderLib;
+using ByteOrder = Propro_Client.Constants.ByteOrder;
 using Software = pwiz.CLI.msdata.Software;
 
 namespace Propro.Logics
@@ -35,6 +34,8 @@ namespace Propro.Logics
         protected List<SwathIndex> indexList = new List<SwathIndex>();//用于存储的全局的SWATH List
         protected List<BlockIndex> blockIndexList = new List<BlockIndex>();//适用于DDA的块索引
         protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable());//用于存放MS2的索引信息,key为mz
+//        protected Hashtable ms2IntTable = Hashtable.Synchronized(new Hashtable());//用于存放MS2的intensity编码表,key为intensity,value为自增键
+//        protected SortedSet<float> ms2IntensitySet = new SortedSet<float>();//用于存放MS2的mz编码表
         protected List<TempIndex> ms1List = new List<TempIndex>(); //用于存放MS1索引及基础信息
         protected Hashtable featuresMap = new Hashtable();
         protected long fileSize;
@@ -93,19 +94,20 @@ namespace Propro.Logics
             return Convert.ToSingle(Math.Round(time, 3));
         }
 
-        protected void compress(Spectrum spectrum, TempScan ts)
+        protected void compress(Spectrum spectrum, TempScan ts, int msLevel)
         {
             BinaryData mzData = spectrum.getMZArray().data;
             BinaryData intData = spectrum.getIntensityArray().data;
 
             List<int> mzList = new List<int>();
             List<float> intensityList = new List<float>();
+            int precision = jobInfo.usingLosslessMz ? 100000 : 1000;
             for (int t = 0; t < mzData.Count; t++)
             {
                 if (jobInfo.ignoreZeroIntensity && intData[t] == 0) continue;
-                
-                int mz = Convert.ToInt32(mzData[t] * 1000);
-                mzList.Add(mz); //精确到小数点后面三位
+
+                int mz = Convert.ToInt32(mzData[t] * precision);
+                mzList.Add(mz);
 
                 if (jobInfo.log2)
                 {
@@ -113,7 +115,8 @@ namespace Propro.Logics
                 }
                 else
                 {
-                    intensityList.Add(Convert.ToSingle(Math.Round(intData[t], 1))); //精确到小数点后一位
+                    float intensity = Convert.ToSingle(Math.Round(intData[t], 1));
+                    intensityList.Add(intensity);//精确到小数点后一位
                 }
             }
 
@@ -319,7 +322,7 @@ namespace Propro.Logics
 
                     TempIndex scanIndex = ms1List[i];
                     TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
-                    compress(spectrumList.spectrum(scanIndex.num, true), ts);
+                    compress(spectrumList.spectrum(scanIndex.num, true), ts, 1);
 
                     table.Add(i, ts);
                 });
@@ -332,7 +335,7 @@ namespace Propro.Logics
                     jobInfo.log(null, "MS1:" + i + "/" + ms1List.Count);
                     TempIndex scanIndex = ms1List[i];
                     TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
-                    compress(spectrumList.spectrum(scanIndex.num, true), ts);
+                    compress(spectrumList.spectrum(scanIndex.num, true), ts ,1);
                     addToIndex(swathIndex, ts);
                 }
             }
@@ -357,7 +360,6 @@ namespace Propro.Logics
             airdInfo.rangeList = ranges;
             airdInfo.indexList = indexList;
             airdInfo.blockIndexList = blockIndexList;
-
             //Instrument Info
             InstrumentConfiguration ic = msd.instrumentConfigurationList[0];
             Instrument instrument = new Instrument();
@@ -448,6 +450,7 @@ namespace Propro.Logics
             Compressor mzCompressor = new Compressor();
             mzCompressor.method = Compressor.METHOD_PFOR + "," + Compressor.METHOD_ZLIB;
             mzCompressor.target = Compressor.TARGET_MZ;
+            mzCompressor.precision = jobInfo.usingLosslessMz ? 100000 : 1000;
             coms.Add(mzCompressor);
             //intensity compressor
             Compressor intCompressor = new Compressor();

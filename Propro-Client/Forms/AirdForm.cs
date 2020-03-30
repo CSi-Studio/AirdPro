@@ -121,6 +121,7 @@ namespace Propro.Forms
                     cbIsZeroIntensityIgnore.Checked,
                     cbLog2.Checked,
                     cbThreadAccelerate.Checked,
+                    cbLosslessMz.Checked,
                     tbFileNameSuffix.Text,
                     item);
                 convertTaskManager.pushJob(jobInfo);

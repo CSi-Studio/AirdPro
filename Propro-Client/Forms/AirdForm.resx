@@ -450,6 +450,36 @@
   <data name="&gt;&gt;container.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="cbLosslessMz.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cbLosslessMz.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cbLosslessMz.Location" type="System.Drawing.Point, System.Drawing">
+    <value>198, 90</value>
+  </data>
+  <data name="cbLosslessMz.Size" type="System.Drawing.Size, System.Drawing">
+    <value>198, 21</value>
+  </data>
+  <data name="cbLosslessMz.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="cbLosslessMz.Text" xml:space="preserve">
+    <value>Lossless m/z(Bigger File Size)</value>
+  </data>
+  <data name="&gt;&gt;cbLosslessMz.Name" xml:space="preserve">
+    <value>cbLosslessMz</value>
+  </data>
+  <data name="&gt;&gt;cbLosslessMz.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbLosslessMz.Parent" xml:space="preserve">
+    <value>container.Panel2</value>
+  </data>
+  <data name="&gt;&gt;cbLosslessMz.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="cbThreadAccelerate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -478,7 +508,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;cbThreadAccelerate.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="cbLog2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -508,7 +538,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;cbLog2.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="lblFileNameTag.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -544,7 +574,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblFileNameTag.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="tbFileNameSuffix.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -571,7 +601,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbFileNameSuffix.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="cbIsZeroIntensityIgnore.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -598,7 +628,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;cbIsZeroIntensityIgnore.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="lblConsole.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -631,7 +661,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblConsole.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="tbConsole.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -664,7 +694,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbConsole.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -697,7 +727,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="btnChooseFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -730,7 +760,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;btnChooseFolder.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="tbFolderPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -757,7 +787,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbFolderPath.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="container.Panel2.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 9pt</value>

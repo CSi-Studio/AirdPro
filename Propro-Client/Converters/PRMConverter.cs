@@ -124,7 +124,7 @@ namespace Propro.Logics
                     {
                         TempIndex index = tempIndexList[i];
                         TempScan ts = new TempScan(index.pNum, index.rt);
-                        compress(spectrumList.spectrum(index.num, true), ts);
+                        compress(spectrumList.spectrum(index.num, true), ts, 2);
                         //SwathIndex中只存储MS2谱图对应的MS1谱图的序号,其本身的序号已经没用了,不做存储,所以只存储了pNum
                         table.Add(i, ts);
                     });
@@ -136,7 +136,7 @@ namespace Propro.Logics
                     foreach (TempIndex index in tempIndexList)
                     {
                         TempScan ts = new TempScan(index.pNum, index.rt);
-                        compress(spectrumList.spectrum(index.num, true), ts);
+                        compress(spectrumList.spectrum(index.num, true), ts, 2);
                         //SwathIndex中只存储MS2谱图对应的MS1谱图的序号,其本身的序号已经没用了,不做存储
                         addToIndex(swathIndex, ts);
                     }

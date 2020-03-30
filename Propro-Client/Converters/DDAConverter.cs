@@ -172,7 +172,7 @@ namespace Propro.Logics
                 jobInfo.log(null, "MS1:" + i + "/" + ms1List.Count);
                 TempIndex scanIndex = ms1List[i];
                 TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
-                compress(spectrumList.spectrum(scanIndex.num, true), ts);
+                compress(spectrumList.spectrum(scanIndex.num, true), ts, 1);
                 blockIndex.nums.Add(ts.num);
                 blockIndex.rts.Add(ts.rt);
                 blockIndex.mzs.Add(ts.mzArrayBytes.Length);
@@ -209,7 +209,7 @@ namespace Propro.Logics
                 {
                     ms2Ranges.Add(new WindowRange(index.mzStart, index.mzEnd, index.mz));
                     TempScan ts = new TempScan(index.num, index.rt);
-                    compress(spectrumList.spectrum(index.num, true), ts);
+                    compress(spectrumList.spectrum(index.num, true), ts, 2);
                     blockIndex.nums.Add(ts.num);
                     blockIndex.rts.Add(ts.rt);
                     blockIndex.mzs.Add(ts.mzArrayBytes.Length);

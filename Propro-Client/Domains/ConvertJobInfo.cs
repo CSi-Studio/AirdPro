@@ -33,6 +33,8 @@ namespace Propro.Domains
         public Boolean ignoreZeroIntensity = true;
         //对intensity是否求log10以降低精度
         public Boolean log2 = true;
+        //是否使用无损的mz(精确到小数点后5位),否则精确到小数点后3位
+        public Boolean usingLosslessMz = false;
 
         public Boolean threadAccelerate = true;
 
@@ -48,7 +50,10 @@ namespace Propro.Domains
 
         public CancellationTokenSource cancellationTokenSource;
 
-        public ConvertJobInfo(string inputFilePath, string outputFolderPath, string type, Boolean ignoreZeroIntensity, Boolean log2, Boolean threadAccelerate, string suffix, ListViewItem item)
+        public ConvertJobInfo(string inputFilePath, string outputFolderPath, 
+            string type, Boolean ignoreZeroIntensity, Boolean log2, 
+            Boolean threadAccelerate, Boolean usingLosslessMz, 
+            string suffix, ListViewItem item)
         {
             this.jobId = inputFilePath;
             this.inputFilePath = inputFilePath;
@@ -58,6 +63,7 @@ namespace Propro.Domains
             this.type = type;
             this.suffix = suffix;
             this.threadAccelerate = threadAccelerate;
+            this.usingLosslessMz = usingLosslessMz;
             format = Path.GetExtension(inputFilePath).Replace(".","").ToUpper();
             airdFileName = FileNameUtil.buildOutputFileName(inputFilePath);
             airdFilePath = Path.Combine(outputFolderPath, airdFileName + suffix + ".aird");
@@ -111,7 +117,7 @@ namespace Propro.Domains
             jobInfo += "suffix:" + suffix + "\r\n";
             jobInfo += "threadId:" + threadId + "\r\n";
             jobInfo += "ThreadAccelerate:" + threadAccelerate + "\r\n";
-          
+            jobInfo += "usingLosslessMz:" + usingLosslessMz + "\r\n";
             return jobInfo;
         }
     }

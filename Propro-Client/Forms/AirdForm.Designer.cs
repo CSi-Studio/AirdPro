@@ -54,6 +54,7 @@
             this.btnChooseFolder = new System.Windows.Forms.Button();
             this.tbFolderPath = new System.Windows.Forms.TextBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.cbLosslessMz = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -79,6 +80,7 @@
             // 
             // container.Panel2
             // 
+            this.container.Panel2.Controls.Add(this.cbLosslessMz);
             this.container.Panel2.Controls.Add(this.cbThreadAccelerate);
             this.container.Panel2.Controls.Add(this.cbLog2);
             this.container.Panel2.Controls.Add(this.lblFileNameTag);
@@ -243,6 +245,12 @@
             this.timer.Enabled = true;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
+            // cbLosslessMz
+            // 
+            resources.ApplyResources(this.cbLosslessMz, "cbLosslessMz");
+            this.cbLosslessMz.Name = "cbLosslessMz";
+            this.cbLosslessMz.UseVisualStyleBackColor = true;
+            // 
             // AirdForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -285,6 +293,7 @@
         private System.Windows.Forms.CheckBox cbThreadAccelerate;
         private System.Windows.Forms.Button btnChooseSSwathFiles;
         private System.Windows.Forms.Button btnChooseDDAFiles;
+        private System.Windows.Forms.CheckBox cbLosslessMz;
     }
 }
 
