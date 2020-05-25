@@ -2,13 +2,13 @@
 {
     class SoftwareVersion
     {
-        public static int AIRD_VERSION = 3;
-        public static string CLIENT_VERSION = "2.0.2";
-        public static string CLIENT_VERSION_DESCRIPTION = "New Function: Change Log10 Compression Strategy to Log2";
+        public static int AIRD_VERSION = 4;
+        public static string CLIENT_VERSION = "2.1.0";
+        public static string CLIENT_VERSION_DESCRIPTION = "正式命名为AirdPro";
 
         public static string getVersion()
         {
-            return "Propro-Client V" + SoftwareVersion.CLIENT_VERSION + " (Aird Version Code:" + SoftwareVersion.AIRD_VERSION + ")";
+            return "AirdPro V" + SoftwareVersion.CLIENT_VERSION + " (Aird Version Code:" + SoftwareVersion.AIRD_VERSION + ")";
         }
 
         public static string getDescription()

@@ -43,6 +43,7 @@
             this.btnDeleteFiles = new System.Windows.Forms.Button();
             this.btnChooseDIASwathFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
+            this.cbLosslessMz = new System.Windows.Forms.CheckBox();
             this.cbThreadAccelerate = new System.Windows.Forms.CheckBox();
             this.cbLog2 = new System.Windows.Forms.CheckBox();
             this.lblFileNameTag = new System.Windows.Forms.Label();
@@ -54,7 +55,6 @@
             this.btnChooseFolder = new System.Windows.Forms.Button();
             this.tbFolderPath = new System.Windows.Forms.TextBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.cbLosslessMz = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -176,6 +176,12 @@
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
             // 
+            // cbLosslessMz
+            // 
+            resources.ApplyResources(this.cbLosslessMz, "cbLosslessMz");
+            this.cbLosslessMz.Name = "cbLosslessMz";
+            this.cbLosslessMz.UseVisualStyleBackColor = true;
+            // 
             // cbThreadAccelerate
             // 
             resources.ApplyResources(this.cbThreadAccelerate, "cbThreadAccelerate");
@@ -244,12 +250,6 @@
             // 
             this.timer.Enabled = true;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
-            // 
-            // cbLosslessMz
-            // 
-            resources.ApplyResources(this.cbLosslessMz, "cbLosslessMz");
-            this.cbLosslessMz.Name = "cbLosslessMz";
-            this.cbLosslessMz.UseVisualStyleBackColor = true;
             // 
             // AirdForm
             // 

@@ -34,13 +34,18 @@ namespace Propro.Logics
         protected List<SwathIndex> indexList = new List<SwathIndex>();//用于存储的全局的SWATH List
         protected List<BlockIndex> blockIndexList = new List<BlockIndex>();//适用于DDA的块索引
         protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable());//用于存放MS2的索引信息,key为mz
-//        protected Hashtable ms2IntTable = Hashtable.Synchronized(new Hashtable());//用于存放MS2的intensity编码表,key为intensity,value为自增键
-//        protected SortedSet<float> ms2IntensitySet = new SortedSet<float>();//用于存放MS2的mz编码表
+
         protected List<TempIndex> ms1List = new List<TempIndex>(); //用于存放MS1索引及基础信息
         protected Hashtable featuresMap = new Hashtable();
         protected long fileSize;
         protected long startPosition;//文件指针
         protected int totalSize;//总计的谱图数目
+
+        // protected Hashtable ms2IntTable = Hashtable.Synchronized(new Hashtable());//用于存放MS2的intensity编码表,key为intensity,value为自增键
+        // protected SortedSet<float> ms2IntensitySet = new SortedSet<float>();//用于存放MS2的mz编码表
+        //
+        // protected Hashtable ms2mzTable = Hashtable.Synchronized(new Hashtable());//用于存放MS2的mz编码表,key为mz,value为自增键
+        // protected SortedSet<int> ms2mzSet = new SortedSet<int>();//用于存放MS2的mz编码表
 
         protected static double log2 = Math.Log(2);
         public IConverter(ConvertJobInfo jobInfo)
@@ -101,7 +106,7 @@ namespace Propro.Logics
 
             List<int> mzList = new List<int>();
             List<float> intensityList = new List<float>();
-            int precision = jobInfo.usingLosslessMz ? 100000 : 1000;
+            int precision = jobInfo.usingLosslessMz ? 10000 : 1000;
             for (int t = 0; t < mzData.Count; t++)
             {
                 if (jobInfo.ignoreZeroIntensity && intData[t] == 0) continue;
@@ -450,7 +455,7 @@ namespace Propro.Logics
             Compressor mzCompressor = new Compressor();
             mzCompressor.method = Compressor.METHOD_PFOR + "," + Compressor.METHOD_ZLIB;
             mzCompressor.target = Compressor.TARGET_MZ;
-            mzCompressor.precision = jobInfo.usingLosslessMz ? 100000 : 1000;
+            mzCompressor.precision = jobInfo.usingLosslessMz ? 10000 : 1000;
             coms.Add(mzCompressor);
             //intensity compressor
             Compressor intCompressor = new Compressor();
