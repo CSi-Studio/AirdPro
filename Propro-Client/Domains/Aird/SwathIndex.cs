@@ -1,7 +1,6 @@
-﻿using Propro.Structs;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Propro_Client.Domains.Aird
+namespace AirdPro.Domains.Aird
 {
     public class SwathIndex
     {

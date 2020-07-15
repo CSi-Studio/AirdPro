@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Propro.Asyncs
+namespace AirdPro.Asyncs
 {
     public class LimitedConcurrencyLevelTaskScheduler : TaskScheduler
     {

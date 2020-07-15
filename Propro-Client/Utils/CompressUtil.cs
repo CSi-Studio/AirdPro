@@ -5,7 +5,7 @@ using CSharpFastPFOR.Differential;
 using CSharpFastPFOR.Port;
 using Ionic.Zlib;
 
-namespace Propro.Utils
+namespace AirdPro.Utils
 {
     internal class CompressUtil
     {

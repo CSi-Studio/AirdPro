@@ -1,28 +1,25 @@
-﻿using Propro.Constants;
-using Propro.Domains;
-using Propro.Structs;
-using Propro_Client.Domains.Aird;
-using Propro_Client.Utils;
+﻿using AirdPro.Constants;
+using AirdPro.Domains;
+using AirdPro.Domains.Aird;
+using AirdPro.Utils;
 using pwiz.CLI.cv;
 using pwiz.CLI.msdata;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace Propro.Logics
+namespace AirdPro.Converters
 {
-    internal class DIASwathConverter : IConverter
+    internal class DIASWATH : IConverter
     {
         private float overlap;//SWATH窗口间的区域重叠值
         private int rangeSize;//总计的WindowRange数目,这里包含了ms1的一个窗口.例如SWATH窗口为32个,那么这边存储的数字就是33
         private int swathChilds;//每一个SWATH块中Scan的数量
         private int progress;//进度计数器
         private Hashtable rangeTable = new Hashtable(); //用于存放SWATH窗口的信息,key为mz
-        public DIASwathConverter(ConvertJobInfo jobInfo) : base(jobInfo) {}
+        public DIASWATH(ConvertJobInfo jobInfo) : base(jobInfo) {}
 
         public override void doConvert()
         {

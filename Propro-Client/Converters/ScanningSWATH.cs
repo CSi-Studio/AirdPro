@@ -1,7 +1,6 @@
-﻿using Propro.Constants;
-using Propro.Domains;
-using Propro.Structs;
-using Propro_Client.Domains.Aird;
+﻿using AirdPro.Constants;
+using AirdPro.Domains;
+using AirdPro.Domains.Aird;
 using pwiz.CLI.cv;
 using pwiz.CLI.msdata;
 using System;
@@ -9,16 +8,15 @@ using System.Collections;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Propro.Logics
+namespace AirdPro.Converters
 {
-    public class ScanningSwathConvert : IConverter
+    public class ScanningSWATH : IConverter
     {
-        private int totalSize;//总计的谱图数目
         private int progress;//进度计数器
         Hashtable rangeMap = Hashtable.Synchronized(new Hashtable());//用于存储TargetMZ-SwathIndex
         Hashtable ms2Map = Hashtable.Synchronized(new Hashtable());//用于存储TargetMZ-List<TempScan>
 
-        public ScanningSwathConvert(ConvertJobInfo jobInfo) : base(jobInfo) { }
+        public ScanningSWATH(ConvertJobInfo jobInfo) : base(jobInfo) { }
 
         public override void doConvert()
         {

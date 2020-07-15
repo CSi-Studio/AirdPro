@@ -1,4 +1,4 @@
-﻿namespace Propro.Forms
+﻿namespace AirdPro.Forms
 {
     partial class MainForm
     {

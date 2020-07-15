@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Text;
 
-namespace Propro_Client.Utils
+namespace AirdPro.Utils
 {
     class FeaturesUtil
     {

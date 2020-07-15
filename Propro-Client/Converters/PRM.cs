@@ -1,20 +1,19 @@
-﻿using Propro.Domains;
-using Propro.Structs;
+﻿using AirdPro.Domains;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Propro.Constants;
-using Propro_Client.Domains.Aird;
+using AirdPro.Constants;
+using AirdPro.Domains.Aird;
 
-namespace Propro.Logics
+namespace AirdPro.Converters
 {
-    internal class PRMConverter : IConverter
+    internal class PRM : IConverter
     {
         private int progress;//进度计数器
 
-        public PRMConverter(ConvertJobInfo jobInfo) : base(jobInfo) {}
+        public PRM(ConvertJobInfo jobInfo) : base(jobInfo) {}
 
         public override void doConvert()
         {

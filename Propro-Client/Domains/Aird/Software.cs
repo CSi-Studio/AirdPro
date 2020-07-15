@@ -1,4 +1,4 @@
-﻿namespace Propro.Domains
+﻿namespace AirdPro.Domains.Aird
 {
     public class Software
     {

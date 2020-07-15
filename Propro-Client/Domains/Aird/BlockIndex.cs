@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Propro.Structs;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Propro_Client.Domains.Aird
+namespace AirdPro.Domains.Aird
 {
     public class BlockIndex
     {

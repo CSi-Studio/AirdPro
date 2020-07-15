@@ -1,13 +1,13 @@
-﻿using Propro.Constants;
-using Propro.Domains;
-using Propro.Logics;
+﻿using AirdPro.Constants;
+using AirdPro.Domains;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using AirdPro.Converters;
 
-namespace Propro.Asyncs
+namespace AirdPro.Asyncs
 {
     internal class ConvertTaskManager
     {
@@ -63,19 +63,19 @@ namespace Propro.Asyncs
                             jobInfo.status = "Running";
                             if (jobInfo.type.Equals(ExperimentType.DIA_SWATH))
                             {
-                                new DIASwathConverter(jobInfo).doConvert();
+                                new DIASWATH(jobInfo).doConvert();
                             }
                             else if (jobInfo.type.Equals(ExperimentType.PRM))
                             {
-                                new PRMConverter(jobInfo).doConvert();
+                                new PRM(jobInfo).doConvert();
                             }
                             else if (jobInfo.type.Equals(ExperimentType.SCANNING_SWATH))
                             {
-                                new ScanningSwathConvert(jobInfo).doConvert();
+                                new ScanningSWATH(jobInfo).doConvert();
                             }
                             else if (jobInfo.type.Equals(ExperimentType.DDA))
                             {
-                                new DDAConverter(jobInfo).doConvert();
+                                new DDA(jobInfo).doConvert();
                             }
                             jobInfo.status = "Finished";
                         }

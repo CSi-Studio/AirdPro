@@ -1,11 +1,11 @@
-﻿using Propro.Utils;
+﻿using AirdPro.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Propro.Domains
+namespace AirdPro.Domains
 {
     public class ConvertJobInfo
     {

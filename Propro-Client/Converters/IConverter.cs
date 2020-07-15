@@ -1,10 +1,7 @@
 ﻿using Newtonsoft.Json;
-using Propro.Domains;
-using Propro.Structs;
-using Propro.Utils;
-using Propro_Client.Constants;
-using Propro_Client.Domains.Aird;
-using Propro_Client.Utils;
+using AirdPro.Domains.Aird;
+using AirdPro.Utils;
+using AirdPro.Constants;
 using pwiz.CLI.cv;
 using pwiz.CLI.data;
 using pwiz.CLI.msdata;
@@ -16,10 +13,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using ByteOrder = Propro_Client.Constants.ByteOrder;
+using AirdPro.Domains;
+using ByteOrder = AirdPro.Constants.ByteOrder;
 using Software = pwiz.CLI.msdata.Software;
 
-namespace Propro.Logics
+namespace AirdPro.Converters
 {
     public abstract class IConverter
     {
@@ -352,7 +350,7 @@ namespace Propro.Logics
         protected AirdInfo buildBasicInfo()
         {
             AirdInfo airdInfo = new AirdInfo();
-            List<Domains.Software> softwares = new List<Domains.Software>();
+            List<Domains.Aird.Software> softwares = new List<Domains.Aird.Software>();
             List<ParentFile> parentFiles = new List<ParentFile>();
 
             //Basic Job Info
@@ -432,7 +430,7 @@ namespace Propro.Logics
             //Software Info
             foreach (Software sof in msd.softwareList)
             {
-                Domains.Software software = new Domains.Software();
+                Domains.Aird.Software software = new Domains.Aird.Software();
                 software.name = sof.id;
                 software.version = sof.version;
                 softwares.Add(software);

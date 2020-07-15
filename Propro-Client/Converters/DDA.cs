@@ -1,7 +1,6 @@
-﻿using Propro.Constants;
-using Propro.Domains;
-using Propro.Structs;
-using Propro_Client.Domains.Aird;
+﻿using AirdPro.Constants;
+using AirdPro.Domains;
+using AirdPro.Domains.Aird;
 using pwiz.CLI.cv;
 using pwiz.CLI.msdata;
 using System;
@@ -9,18 +8,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Propro.Logics
+namespace AirdPro.Converters
 {
-    internal class DDAConverter : IConverter
+    internal class DDA : IConverter
     {
-        private int totalSize;
         private int progress;
-        List<TempIndex> ms1List = new List<TempIndex>();
-        Hashtable ms2Table = new Hashtable();
 
-        public DDAConverter(ConvertJobInfo jobInfo) : base(jobInfo)
-        {
-        }
+        public DDA(ConvertJobInfo jobInfo) : base(jobInfo) {}
 
         public override void doConvert()
         {

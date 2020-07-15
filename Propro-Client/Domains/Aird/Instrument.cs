@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Propro.Domains
+namespace AirdPro.Domains.Aird
 {
     //仪器设备与信号信息
     public class Instrument

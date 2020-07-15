@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace Propro.Utils
+namespace AirdPro.Utils
 {
     internal class FileNameUtil
     {

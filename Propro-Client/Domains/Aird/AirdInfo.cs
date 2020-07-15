@@ -1,10 +1,7 @@
-﻿using Propro.Structs;
-using Propro_Client.Domains.Aird;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Propro.Domains
+namespace AirdPro.Domains.Aird
 {
     public class AirdInfo
     {
@@ -27,7 +24,7 @@ namespace Propro.Domains
          * [核心字段]
          * 数组压缩策略
          */
-        public List<Compressor> compressors;
+        public List<Aird.Compressor> compressors;
 
         /**
         * [核心字段]

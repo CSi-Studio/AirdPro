@@ -1,4 +1,4 @@
-﻿namespace Propro.Constants
+﻿namespace AirdPro.Constants
 {
     class MsLevel
     {

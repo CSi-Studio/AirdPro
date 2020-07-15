@@ -1,6 +1,6 @@
 ﻿
 
-namespace Propro.Structs
+namespace AirdPro.Domains.Aird
 {
     public class WindowRange
     {

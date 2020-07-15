@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>AirdPro</RootNamespace>
     <AssemblyName>AirdPro</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -28,6 +28,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -76,7 +77,7 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Propro.Program</StartupObject>
+    <StartupObject>AirdPro.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
@@ -162,52 +163,52 @@
     <Compile Include="Constants\ExperimentType.cs" />
     <Compile Include="Constants\MsLevel.cs" />
     <Compile Include="Constants\SoftwareVersion.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\BinaryPacking.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\BitPacking.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\ByteIntegerCODEC.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Composition.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\DeltaZigzagBinaryPacking.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\DeltaZigzagEncoding.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\DeltaZigzagVariableByte.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Differential\Delta.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Differential\IntegratedBinaryPacking.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Differential\IntegratedBitPacking.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Differential\IntegratedByteIntegerCODEC.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Differential\IntegratedComposition.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Differential\IntegratedIntCompressor.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Differential\IntegratedIntegerCODEC.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Differential\IntegratedVariableByte.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Differential\SkippableIntegratedComposition.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Differential\SkippableIntegratedIntegerCODEC.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Differential\XorBinaryPacking.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\FastPFOR.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\FastPFOR128.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\IntCompressor.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\IntegerCODEC.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\IntWrapper.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\JustCopy.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\NewPFD.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\NewPFDS16.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\NewPFDS9.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\OptPFD.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\OptPFDS16.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\OptPFDS9.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Port\Arrays.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Port\BitSet.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Port\ByteBuffer.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Port\ByteOrder.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Port\IntBuffer.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Port\Integer.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\S16.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\S9.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Simple16.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Simple9.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\SkippableComposition.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\SkippableIntegerCODEC.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Synth\ClusteredDataGenerator.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Synth\UniformDataGenerator.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\Util.cs" />
-    <Compile Include="BugFixForCSharpFastPFORCore\VariableByte.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\BinaryPacking.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\BitPacking.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\ByteIntegerCODEC.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Composition.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\DeltaZigzagBinaryPacking.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\DeltaZigzagEncoding.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\DeltaZigzagVariableByte.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Differential\Delta.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Differential\IntegratedBinaryPacking.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Differential\IntegratedBitPacking.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Differential\IntegratedByteIntegerCODEC.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Differential\IntegratedComposition.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Differential\IntegratedIntCompressor.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Differential\IntegratedIntegerCODEC.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Differential\IntegratedVariableByte.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Differential\SkippableIntegratedComposition.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Differential\SkippableIntegratedIntegerCODEC.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Differential\XorBinaryPacking.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\FastPFOR.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\FastPFOR128.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\IntCompressor.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\IntegerCODEC.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\IntWrapper.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\JustCopy.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\NewPFD.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\NewPFDS16.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\NewPFDS9.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\OptPFD.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\OptPFDS16.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\OptPFDS9.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Port\Arrays.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Port\BitSet.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Port\ByteBuffer.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Port\ByteOrder.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Port\IntBuffer.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Port\Integer.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\S16.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\S9.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Simple16.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Simple9.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\SkippableComposition.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\SkippableIntegerCODEC.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Synth\ClusteredDataGenerator.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Synth\UniformDataGenerator.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\Util.cs" />
+    <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\VariableByte.cs" />
     <Compile Include="Domains\Aird\AirdInfo.cs" />
     <Compile Include="Domains\Aird\BlockIndex.cs" />
     <Compile Include="Domains\Aird\ParentFile.cs" />
@@ -241,30 +242,31 @@
     <Compile Include="Forms\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Converters\DDAConverter.cs" />
-    <Compile Include="Converters\DIASwathConverter.cs" />
+    <Compile Include="Converters\DDA.cs" />
+    <Compile Include="Converters\DIASWATH.cs" />
     <Compile Include="Converters\IConverter.cs" />
-    <Compile Include="Converters\PRMConverter.cs" />
-    <Compile Include="Converters\ScanningSwathConvert.cs" />
+    <Compile Include="Converters\PRM.cs" />
+    <Compile Include="Converters\ScanningSWATH.cs" />
+    <Compile Include="ThirdParty\MsNumpress\MSNumpress.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\FeaturesUtil.cs" />
     <Compile Include="Utils\CompressUtil.cs" />
     <Compile Include="Utils\FileNameUtil.cs" />
-    <Compile Include="Zlib\Common\CRC32.cs" />
-    <Compile Include="Zlib\Common\Iso8859Dash1Encoding.cs" />
-    <Compile Include="Zlib\Deflate.cs" />
-    <Compile Include="Zlib\DeflateStream.cs" />
-    <Compile Include="Zlib\GZipStream.cs" />
-    <Compile Include="Zlib\Inflate.cs" />
-    <Compile Include="Zlib\InfTree.cs" />
-    <Compile Include="Zlib\ParallelDeflateOutputStream.cs" />
-    <Compile Include="Zlib\Tree.cs" />
-    <Compile Include="Zlib\Zlib.cs" />
-    <Compile Include="Zlib\ZlibBaseStream.cs" />
-    <Compile Include="Zlib\ZlibCodec.cs" />
-    <Compile Include="Zlib\ZlibConstants.cs" />
-    <Compile Include="Zlib\ZlibStream.cs" />
+    <Compile Include="ThirdParty\Zlib\Common\CRC32.cs" />
+    <Compile Include="ThirdParty\Zlib\Common\Iso8859Dash1Encoding.cs" />
+    <Compile Include="ThirdParty\Zlib\Deflate.cs" />
+    <Compile Include="ThirdParty\Zlib\DeflateStream.cs" />
+    <Compile Include="ThirdParty\Zlib\GZipStream.cs" />
+    <Compile Include="ThirdParty\Zlib\Inflate.cs" />
+    <Compile Include="ThirdParty\Zlib\InfTree.cs" />
+    <Compile Include="ThirdParty\Zlib\ParallelDeflateOutputStream.cs" />
+    <Compile Include="ThirdParty\Zlib\Tree.cs" />
+    <Compile Include="ThirdParty\Zlib\Zlib.cs" />
+    <Compile Include="ThirdParty\Zlib\ZlibBaseStream.cs" />
+    <Compile Include="ThirdParty\Zlib\ZlibCodec.cs" />
+    <Compile Include="ThirdParty\Zlib\ZlibConstants.cs" />
+    <Compile Include="ThirdParty\Zlib\ZlibStream.cs" />
     <EmbeddedResource Include="Forms\AirdForm.resx">
       <DependentUpon>AirdForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -281,6 +283,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="app.config" />
     <None Include="downloads\ProproClient1.9.1.zip" />
     <None Include="ImportLibs\BaseDataAccess.dll.config" />
     <None Include="ImportLibs\EULA.MHDAC" />
@@ -491,8 +494,8 @@
     <Content Include="ImportLibs\vcomp140.dll" />
     <Content Include="ImportLibs\vcomp90.dll" />
     <Content Include="ImportLibs\vcruntime140.dll" />
-    <Content Include="Zlib\LICENSE.jzlib.txt" />
-    <Content Include="Zlib\License.zlib.txt" />
+    <Content Include="ThirdParty\Zlib\LICENSE.jzlib.txt" />
+    <Content Include="ThirdParty\Zlib\License.zlib.txt" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
@@ -517,6 +520,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(ProjectDir)ImportLibs\*.*" "$(TargetDir)"</PostBuildEvent>

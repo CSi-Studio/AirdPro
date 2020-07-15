@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections;
 
-namespace Propro_Client.Domains.Aird
+namespace AirdPro.Domains.Aird
 {
     public class TempScan:IComparable
     {

@@ -1,4 +1,4 @@
-﻿namespace Propro_Client.Constants
+﻿namespace AirdPro.Constants
 {
     class SoftwareVersion
     {

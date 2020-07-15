@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Threading;
 using System.Windows.Forms;
-using Propro.Forms;
+using AirdPro.Forms;
 
-namespace Propro
+namespace AirdPro
 {
     internal static class Program
     {
