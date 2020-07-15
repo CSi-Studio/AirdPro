@@ -312,6 +312,9 @@ implementation of ChromatogramList
         <member name="T:pwiz.msdata.ChromatogramListBase">
 common functionality for base ChromatogramList implementations
 </member>
+        <member name="M:pwiz.util.findUnicodeBytes(std.basic_string&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte&gt;&gt;!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+heuristic that returns iterator in str pointing to first Unicode character, or str.end() if there are no Unicode characters
+</member>
         <member name="M:pwiz.CLI.tradata.Diff.op_Implicit(pwiz.CLI.tradata.Diff)~System.Boolean">
             <summary>
 conversion to bool, with same semantics as *nix diff command:
@@ -1171,6 +1174,15 @@ Reader may filter based on filename and/or head of the file
         <member name="T:pwiz.CLI.msdata.Reader">
 interface for file readers
 </member>
+        <member name="F:pwiz.CLI.msdata.ReaderConfig.globalChromatogramsAreMs1Only">
+when true, global TIC and BPC chromatograms consist of only MS1 spectra (thus the number of time points cannot be assumed to be equal to the number of spectra)
+</member>
+        <member name="F:pwiz.CLI.msdata.ReaderConfig.isolationMzAndMobilityFilter">
+when non-empty, only scans from precursors matching one of the included m/z and/or mobility windows will be enumerated; MS1 scans are affected only by the mobility filter
+</member>
+        <member name="F:pwiz.CLI.msdata.ReaderConfig.sortAndJitter">
+temporary(?) variable to avoid needing to regenerate Bruker test data
+</member>
         <member name="F:pwiz.CLI.msdata.ReaderConfig.allowMsMsWithoutPrecursor">
 when true, MS2 spectra without precursor/isolation information will be included in the output (currently only affects Bruker PASEF data)
 </member>
@@ -1204,11 +1216,19 @@ return Selected Ion Monitoring as spectra
 configuration struct for readers
 </summary>
         </member>
+        <member name="T:pwiz.CLI.msdata.MzMobilityWindow">
+            <summary>
+a window specifying an m/z and optionally a range of ion mobility values
+</summary>
+        </member>
         <member name="T:pwiz.CLI.analysis.Version">
             <summary>
 version information for the analysis namespace
 </summary>
         </member>
+        <member name="M:pwiz.analysis.SpectrumListFactory.usage(std.basic_string&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte&gt;&gt;!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+user-friendly documentation for a specified filter
+</member>
         <member name="M:pwiz.analysis.SpectrumListFactory.usage(System.Boolean,System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte!System.Runtime.CompilerServices.IsConst*,System.Int32)">
 user-friendly documentation, with option of less or more detail
 </member>
@@ -1318,9 +1338,19 @@ Delegate for filtering spectra in SpectrumList_Filter
 user-friendly documentation
 </summary>
         </member>
+        <member name="M:pwiz.CLI.analysis.SpectrumListFactory.wrap(pwiz.CLI.msdata.MSData,System.Collections.Generic.IList`1{System.String},pwiz.CLI.util.IterationListenerRegistry)">
+            <summary>
+instantiate a list of SpectrumListWrappers
+</summary>
+        </member>
         <member name="M:pwiz.CLI.analysis.SpectrumListFactory.wrap(pwiz.CLI.msdata.MSData,System.Collections.Generic.IList`1{System.String})">
             <summary>
 instantiate a list of SpectrumListWrappers
+</summary>
+        </member>
+        <member name="M:pwiz.CLI.analysis.SpectrumListFactory.wrap(pwiz.CLI.msdata.MSData,System.String,pwiz.CLI.util.IterationListenerRegistry)">
+            <summary>
+instantiate the SpectrumListWrapper indicated by wrapper
 </summary>
         </member>
         <member name="M:pwiz.CLI.analysis.SpectrumListFactory.wrap(pwiz.CLI.msdata.MSData,System.String)">
@@ -1353,23 +1383,14 @@ returns the ion mobility (units depend on IonMobilityEquipment) associated with 
         <member name="M:pwiz.analysis.SpectrumList_IonMobility.ionMobilityToCCS(System.Double,System.Double,System.Int32)">
 returns collisional cross-section associated with the ion mobility (units depend on IonMobilityEquipment)
 </member>
+        <member name="M:pwiz.analysis.SpectrumList_IonMobility.hasCombinedIonMobility">
+returns true if file in question will return ion mobility in 3-array format
+</member>
         <member name="M:pwiz.analysis.SpectrumList_IonMobility.canConvertIonMobilityAndCCS(pwiz.analysis.SpectrumList_IonMobility.IonMobilityUnits)">
 returns true if file in question contains necessary information for CCS/IonMobility handling (as with Drift Time in Agilent)
 </member>
         <member name="T:pwiz.analysis.SpectrumList_IonMobility">
 SpectrumList implementation that provides access to vendor-specific ion mobility functions
-</member>
-        <member name="M:pwiz.msdata.SpectrumListBase.warn_once(System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte!System.Runtime.CompilerServices.IsConst*)">
-issues a warning once per SpectrumList instance (based on string hash)
-</member>
-        <member name="M:pwiz.msdata.SpectrumListBase.setDataProcessingPtr(boost.shared_ptr&lt;pwiz.msdata.DataProcessing&gt;)">
-set DataProcessing
-</member>
-        <member name="M:pwiz.msdata.SpectrumListBase.dataProcessingPtr">
-implementation of SpectrumList
-</member>
-        <member name="T:pwiz.msdata.SpectrumListBase">
-common functionality for base SpectrumList implementations
 </member>
         <member name="M:pwiz.analysis.SpectrumList_3D.spectrum3d(System.Double,boost.icl.interval_set&lt;System.Double,std.less,boost.icl.continuous_interval&lt;System.Double,std.less&gt;,std.allocator&gt;!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
 creates a 3d spectrum at the given scan start time (specified in seconds) and including the given drift time ranges (specified in milliseconds)
@@ -1388,6 +1409,9 @@ SpectrumList implementation that assigns (probable) charge states to tandem mass
 </member>
         <member name="T:pwiz.analysis.SpectrumList_LockmassRefiner">
 SpectrumList implementation to replace peak profiles with picked peaks
+</member>
+        <member name="M:pwiz.analysis.SpectrumList_PeakPicker.supportsVendorPeakPicking(std.basic_string&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte&gt;&gt;!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+returns true if the given file 
 </member>
         <member name="T:pwiz.analysis.SpectrumList_PeakPicker">
 SpectrumList implementation to replace peak profiles with picked peaks
@@ -1491,6 +1515,33 @@ determines the orientation of the thresholding
         <member name="T:pwiz.analysis.ThresholdFilter.ThresholdingBy_Type">
 determines the method of thresholding and the meaning of the threshold value
 </member>
+        <member name="T:pwiz.msdata.SpectrumListWrapper">
+Inheritable pass-through implementation for wrapping a SpectrumList 
+</member>
+        <member name="M:pwiz.msdata.SpectrumListBase.warn_once(System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte!System.Runtime.CompilerServices.IsConst*)">
+issues a warning once per SpectrumList instance (based on string hash)
+</member>
+        <member name="M:pwiz.msdata.SpectrumListBase.setDataProcessingPtr(boost.shared_ptr&lt;pwiz.msdata.DataProcessing&gt;)">
+set DataProcessing
+</member>
+        <member name="M:pwiz.msdata.SpectrumListBase.dataProcessingPtr">
+implementation of SpectrumList
+</member>
+        <member name="T:pwiz.msdata.SpectrumListBase">
+common functionality for base SpectrumList implementations
+</member>
+        <member name="F:pwiz.util.IntegerSet.whole">
+whole numbers (0, 1, 2, ...)
+</member>
+        <member name="F:pwiz.util.IntegerSet.negative">
+negative integers (-1, -2, -3, ...)
+</member>
+        <member name="F:pwiz.util.IntegerSet.positive">
+natural numbers (1, 2, 3, ...)
+</member>
+        <member name="F:pwiz.util.IntegerSet.emptySet">
+empty set
+</member>
         <member name="M:pwiz.util.IntegerSet.size">
 returns the number of integers in the set
 </member>
@@ -1558,9 +1609,6 @@ a single closed interval of integers
         <member name="T:pwiz.util.IntegerSet">
 a virtual container of integers, accessible via an iterator interface,
 stored as union of intervals
-</member>
-        <member name="T:pwiz.msdata.SpectrumListWrapper">
-Inheritable pass-through implementation for wrapping a SpectrumList 
 </member>
         <member name="D:pwiz.msdata.FullReaderList">
 alias for ExtendedReaderList  
@@ -1771,6 +1819,15 @@ Reader may filter based on filename and/or head of the file
 return true iff Reader recognizes the file as one it should handle
 that's not to say one it CAN handle, necessarily, as in Thermo on linux,
 see comment for identify() below
+</member>
+        <member name="F:pwiz.msdata.Reader.Config.globalChromatogramsAreMs1Only">
+when true, global TIC and BPC chromatograms consist of only MS1 spectra (thus the number of time points cannot be assumed to be equal to the number of spectra)
+</member>
+        <member name="F:pwiz.msdata.Reader.Config.isolationMzAndMobilityFilter">
+when non-empty, only scans from precursors matching one of the included m/z and/or mobility windows will be enumerated; MS1 scans are affected only by the mobility filter
+</member>
+        <member name="F:pwiz.msdata.Reader.Config.sortAndJitter">
+temporary(?) variable to avoid needing to regenerate Bruker test data
 </member>
         <member name="F:pwiz.msdata.Reader.Config.allowMsMsWithoutPrecursor">
 when true, MS2 spectra without precursor/isolation information will be included in the output (currently only affects Bruker PASEF data)
@@ -2007,6 +2064,11 @@ set DataProcessing
 returns the data processing affecting chromatograms retrieved through this interface
 <para>- may return a null shared pointer</para></summary>
         </member>
+        <member name="M:pwiz.CLI.msdata.ChromatogramList.chromatogram(System.Int32,pwiz.CLI.msdata.DetailLevel)">
+            <summary>
+retrieve a chromatogram by index
+<para>- defaultArrayLength will be provided if detailLevel is at least DetailLevel.FullMetadata</para><para>- binary data arrays will be provided if detailLevel is at least DetailLevel.FullData</para><para>- client may assume the underlying Chromatogram^ is valid</para></summary>
+        </member>
         <member name="M:pwiz.CLI.msdata.ChromatogramList.chromatogram(System.Int32,System.Boolean)">
             <summary>
 retrieve a chromatogram by index
@@ -2074,7 +2136,7 @@ returns the data processing affecting spectra retrieved through this interface
         <member name="M:pwiz.CLI.msdata.SpectrumList.spectrum(System.Int32,pwiz.CLI.msdata.DetailLevel)">
             <summary>
 retrieve a spectrum by index
-<para>- binary data arrays will be provided if (getBinaryData == true)</para><para>- client may assume the underlying Spectrum^ is valid</para></summary>
+<para>- defaultArrayLength will be provided if detailLevel is at least DetailLevel.FullMetadata</para><para>- binary data arrays will be provided if detailLevel is at least DetailLevel.FullData</para><para>- client may assume the underlying Spectrum^ is valid</para></summary>
         </member>
         <member name="M:pwiz.CLI.msdata.SpectrumList.spectrum(System.Int32,System.Boolean)">
             <summary>
@@ -2171,6 +2233,11 @@ copy binary data arrays into time-intensity pair array
 returns true iff the element contains no params and all members are empty or null
 </summary>
         </member>
+        <member name="P:pwiz.CLI.msdata.Chromatogram.integerDataArrays">
+            <summary>
+list of integer data arrays.
+</summary>
+        </member>
         <member name="P:pwiz.CLI.msdata.Chromatogram.binaryDataArrays">
             <summary>
 list of binary data arrays.
@@ -2261,6 +2328,11 @@ copy binary data arrays into m/z-intensity pair array
 returns true iff the element contains no params and all members are empty or null
 </summary>
         </member>
+        <member name="P:pwiz.CLI.msdata.Spectrum.integerDataArrays">
+            <summary>
+list of integer data arrays.
+</summary>
+        </member>
         <member name="P:pwiz.CLI.msdata.Spectrum.binaryDataArrays">
             <summary>
 list of binary data arrays.
@@ -2331,6 +2403,11 @@ A list of TimeIntensityPair references; implements the IList&lt;TimeIntensityPai
 A list of MZIntensityPair references; implements the IList&lt;MZIntensityPair&gt; interface
 </summary>
         </member>
+        <member name="T:pwiz.CLI.msdata.IntegerDataArrayList">
+            <summary>
+A list of IntegerDataArray references; implements the IList&lt;IntegerDataArray&gt; interface
+</summary>
+        </member>
         <member name="T:pwiz.CLI.msdata.BinaryDataArrayList">
             <summary>
 A list of BinaryDataArray references; implements the IList&lt;BinaryDataArray&gt; interface
@@ -2384,6 +2461,26 @@ The data point type of a chromatogram.
         <member name="T:pwiz.CLI.msdata.MZIntensityPair">
             <summary>
 The data point type of a mass spectrum.
+</summary>
+        </member>
+        <member name="M:pwiz.CLI.msdata.IntegerDataArray.empty">
+            <summary>
+returns true iff the element contains no params and all members are empty or null
+</summary>
+        </member>
+        <member name="P:pwiz.CLI.msdata.IntegerDataArray.data">
+            <summary>
+the binary data.
+</summary>
+        </member>
+        <member name="P:pwiz.CLI.msdata.IntegerDataArray.dataProcessing">
+            <summary>
+this optional attribute may reference the 'id' attribute of the appropriate dataProcessing.
+</summary>
+        </member>
+        <member name="T:pwiz.CLI.msdata.IntegerDataArray">
+            <summary>
+A BinaryDataArray that stores integer values instead of doubles.
 </summary>
         </member>
         <member name="M:pwiz.CLI.msdata.BinaryDataArray.empty">
@@ -2801,17 +2898,6 @@ Description of the source file, including location and type.
 This summarizes the different types of spectra that can be expected in the file. This is expected to aid processing software in skipping files that do not contain appropriate spectrum types for it.
 </summary>
         </member>
-        <member name="M:pwiz.CLI.util.BinaryData.Storage">
-            <summary>
-Returns a managed array storing the underlying data; if the underlying storage is a std::vector, it will be copied to a managed array before returning.
-</summary>
-        </member>
-        <member name="T:pwiz.CLI.util.BinaryData">
-            <summary>
-Wrapper for binary data from spectra and chromatograms, accessible as IList&lt;double&gt; the underlying data may be stored in a native std::vector or in a managed cli::array.
-Call Storage() to get access to the managed array: if the underlying storage is a std::vector, it will be copied to a managed array before returning.
-</summary>
-        </member>
         <member name="M:pwiz.msdata.id.abbreviate(std.basic_string&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte&gt;&gt;!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced,System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte)">
 abbreviates a nativeID ("name1=value1 name2=value2" translates to "value1.value2")
 </member>
@@ -2908,6 +2994,12 @@ Note:  This chromatogram() implementation returns internal ChromatogramPtrs.
 returns the data processing affecting spectra retrieved through this interface
 - may return a null shared pointer
 </member>
+        <member name="M:pwiz.msdata.ChromatogramList.chromatogram(System.UInt64,pwiz.msdata.DetailLevel)">
+retrieve a chromatogram by index
+- detailLevel determines what fields are present on the chromatogram after the call
+- only DetailLevel_FullMetadata or higher guarantees that defaultArrayLength is set (it may require getting the binary data just to check the number of points)
+- client may assume the underlying Spectrum* is valid 
+</member>
         <member name="M:pwiz.msdata.ChromatogramList.chromatogram(System.UInt64,System.Boolean)">
 retrieve a chromatogram by index
 - binary data arrays will be provided if (getBinaryData == true);
@@ -2938,7 +3030,8 @@ returns the data processing affecting spectra retrieved through this interface
 </member>
         <member name="M:pwiz.msdata.SpectrumList.spectrum(System.UInt64,pwiz.msdata.DetailLevel)">
 retrieve a spectrum by index
-- detailLevel determines what fields are guaranteed present on the spectrum after the call
+- detailLevel determines what fields are present on the spectrum after the call
+- only DetailLevel_FullMetadata or higher guarantees that defaultArrayLength is set (it may require getting the binary data just to check the number of points)
 - client may assume the underlying Spectrum* is valid 
 </member>
         <member name="M:pwiz.msdata.SpectrumList.spectrum(boost.shared_ptr&lt;pwiz.msdata.Spectrum&gt;!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced,System.Boolean)">
@@ -2998,6 +3091,9 @@ copy binary data arrays into time-intensity pair array
         <member name="M:pwiz.msdata.Chromatogram.empty">
 returns true iff the element contains no params and all members are empty or null
 </member>
+        <member name="F:pwiz.msdata.Chromatogram.integerDataArrayPtrs">
+list of integer data arrays.
+</member>
         <member name="F:pwiz.msdata.Chromatogram.binaryDataArrayPtrs">
 list of binary data arrays.
 </member>
@@ -3021,6 +3117,9 @@ set m/z and intensity arrays separately (they must be the same size) by swapping
 this allows for a more nearly zero copy setup.  Contents of mzArray and intensityArray are undefined after calling.
 </member>
         <member name="M:pwiz.msdata.Spectrum.setMZIntensityArrays(std.vector&lt;System.Double,std.allocator&lt;System.Double&gt;&gt;!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced,std.vector&lt;System.Double,std.allocator&lt;System.Double&gt;&gt;!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced,pwiz.cv.CVID)">
+set m/z and intensity arrays separately (they must be the same size)
+</member>
+        <member name="M:pwiz.msdata.Spectrum.setMZIntensityArrays(pwiz.util.BinaryData&lt;System.Double&gt;!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced,pwiz.util.BinaryData&lt;System.Double&gt;!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced,pwiz.cv.CVID)">
 set m/z and intensity arrays separately (they must be the same size)
 </member>
         <member name="M:pwiz.msdata.Spectrum.setMZIntensityPairs(pwiz.msdata.MZIntensityPair!System.Runtime.CompilerServices.IsConst*,System.UInt64,pwiz.cv.CVID)">
@@ -3047,10 +3146,13 @@ must determine the correct size beforehand, or an exception will be thrown
 copy binary data arrays into m/z-intensity pair array
 </member>
         <member name="M:pwiz.msdata.Spectrum.hasBinaryData">
-returns true iff has nonnull and nonempty BinaryDataArrayPtr
+returns true iff has nonnull and nonempty binaryDataArrayPtrs and integerDataArrayPtrs
 </member>
         <member name="M:pwiz.msdata.Spectrum.empty">
 returns true iff the element contains no params and all members are empty or null
+</member>
+        <member name="F:pwiz.msdata.Spectrum.integerDataArrayPtrs">
+list of integer data arrays.
 </member>
         <member name="F:pwiz.msdata.Spectrum.binaryDataArrayPtrs">
 list of binary data arrays.
@@ -3114,6 +3216,18 @@ returns true iff mz and intensity are pairwise equal
 </member>
         <member name="T:pwiz.msdata.MZIntensityPair">
 The data point type of a mass spectrum.
+</member>
+        <member name="M:pwiz.msdata.IntegerDataArray.empty">
+returns true iff the element contains no params and all members are empty or null
+</member>
+        <member name="F:pwiz.msdata.IntegerDataArray.data">
+the binary data.
+</member>
+        <member name="F:pwiz.msdata.IntegerDataArray.dataProcessingPtr">
+this optional attribute may reference the 'id' attribute of the appropriate dataProcessing.
+</member>
+        <member name="T:pwiz.msdata.IntegerDataArray">
+The structure into which encoded integer binary data goes. Byte ordering is always little endian (Intel style). Computers using a different endian style MUST convert to/from little endian when writing/reading mzML
 </member>
         <member name="M:pwiz.msdata.BinaryDataArray.empty">
 returns true iff the element contains no params and all members are empty or null
@@ -4352,6 +4466,30 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
         <member name="T:pwiz.CLI.cv.CVID">
             <summary>enumeration of controlled vocabulary (CV) terms, generated from OBO file(s)</summary>
         </member>
+        <member name="F:pwiz.CLI.cv.CVID.UO_united_states_fda_cup">
+            <summary>united states fda cup: A United States FDA cup is a unit of measurement of volume used by the US Federal Department of Agriculture as a nutritional serving measure. It equals a 240 mL volume.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UO_united_states_customary_cup">
+            <summary>united states customary cup: A United States customary units cup is a unit of measurement of volume widely used in cooking recipes and pharmaceutic prescriptions in America. It equals a 236.59 mL volume.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UO_metric_cup">
+            <summary>metric cup: A metric cup is a unit of measurement of volume widely used in cooking recipes and pharmaceutic prescriptions. It equals a 250mL volume.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UO_united_states_customary_tablespoon">
+            <summary>united states customary tablespoon: A United States customary units tablespoon is a unit of measurement of volume widely used in cooking recipes and pharmaceutic prescriptions in America. It equals a 14.79 mL volume.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UO_australian_metric_tablespoon">
+            <summary>australian metric tablespoon: An Australian metric tablespoon is a unit of measurement of volume used in Australia for cooking recipes and pharmaceutic prescriptions. It equals a 20mL volume.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UO_tablespoon">
+            <summary>tablespoon: A metric tablespoon is a unit of measurement of volume widely used in cooking recipes and pharmaceutic prescriptions. It equals a 15mL volume.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UO_united_states_customary_teaspoon">
+            <summary>united states customary teaspoon: A United States customary units teaspoon is a unit of measurement of volume widely used in cooking recipes and pharmaceutic prescriptions in America. It equals a 4.93 mL volume.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UO_teaspoon">
+            <summary>teaspoon: A metric teaspoon is a unit of measurement of volume widely used in cooking recipes and pharmaceutic prescriptions. It equals a 5mL volume.</summary>
+        </member>
         <member name="F:pwiz.CLI.cv.CVID.UO_slug">
             <summary>slug: An imperial gravitational unit which is equivalent to a mass that accelerates by 1ft/sÂ² when a force of one pound (lbf) is exerted on it.</summary>
         </member>
@@ -4659,7 +4797,7 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
             <summary>volumetric flow rate unit: A unit which is a standard measure of the volume of fluid which passes through a given surface per unit time .</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.UO_absorbance_unit">
-            <summary>absorbance unit: A dimensionless logarithmic unit assigned to a measure of absorbance of light through a partially absorbing substance, defined as -log2(I/I_0) where I = transmitted light and I_0 = incident light.</summary>
+            <summary>absorbance unit: A dimensionless logarithmic unit assigned to a measure of absorbance of light through a partially absorbing substance, defined as -log10(I/I_0) where I = transmitted light and I_0 = incident light.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.UO_volt_per_meter">
             <summary>volt per meter: The volt per meter is a unit of electric field strength equal to the a potential difference of 1 volt existing between two points that are 1 meter apart.</summary>
@@ -5462,6 +5600,33 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
         <member name="F:pwiz.CLI.cv.CVID.UO_unit">
             <summary>unit: A unit of measurement is a standardized quantity of a physical quality.</summary>
         </member>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_TMTpro_zero">
+            <summary>TMTpro_zero: Native TMTpro Tandem Mass Tag.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_TMTpro">
+            <summary>TMTpro: TMTpro 16plex Tandem Mass Tag.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_shTMT">
+            <summary>shTMT: Super Heavy Tandem Mass Tag.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_Nitrene">
+            <summary>Nitrene: Loss of O2; nitro photochemical decomposition.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_Methamidophos_O">
+            <summary>Methamidophos-O: O-methyl amino phosphinate.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_Methamidophos_S">
+            <summary>Methamidophos-S: S-methyl amino phosphinate.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_Haloxon">
+            <summary>Haloxon: O-Dichloroethylphosphate.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_ZQG">
+            <summary>ZQG: Carbobenzoxy-L-glutaminyl-glycine.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_Xlink_DST_56_">
+            <summary>Xlink:DST[56]: DST crosslinker cleaved by sodium periodate.</summary>
+        </member>
         <member name="F:pwiz.CLI.cv.CVID.UNIMOD_TMPP_Ac_13C_9_">
             <summary>TMPP-Ac:13C(9): Heavy tris(2,4,6-trimethoxyphenyl)phosphonium acetic acid N-hydroxysuccinimide ester derivative.</summary>
         </member>
@@ -5777,8 +5942,8 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
         <member name="F:pwiz.CLI.cv.CVID.UNIMOD_MeMePhosphorothioate">
             <summary>MeMePhosphorothioate: S-Methyl Methyl phosphorothioate.</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_2_hydroxyisobutyrylation">
-            <summary>2-hydroxyisobutyrylation: 2-hydroxyisobutyrylation.</summary>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_hydroxyisobutyryl">
+            <summary>hydroxyisobutyryl: 2-hydroxyisobutyrylation.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.UNIMOD_Gluratylation">
             <summary>Gluratylation: Glutarylation.</summary>
@@ -9411,7 +9576,7 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
             <summary>AEBS: Aminoethylbenzenesulfonylation.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.UNIMOD_Nitrosyl">
-            <summary>Nitrosyl: S-nitrosylation.</summary>
+            <summary>Nitrosyl: Nitrosylation.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.UNIMOD_CAF">
             <summary>CAF: Sulfonation of N-terminus.</summary>
@@ -9853,6 +10018,144 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
         </member>
         <member name="F:pwiz.CLI.cv.CVID.UNIMOD_unimod_root_node">
             <summary>unimod root node: The root node of the unimod modifications ontology.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_Mascot_MinNumSigUniqueSeqs">
+            <summary>Mascot:MinNumSigUniqueSeqs: Minimum number of significant unique sequences required in a protein hit. The setting is only relevant if the protein grouping strategy is 'family clustering'.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_Orbitrap_Eclipse">
+            <summary>Orbitrap Eclipse: Thermo Scientific Orbitrap Eclipse mass spectrometer with Tribrid architecture consisting of quadrupole mass filter, linear ion trap and Orbitrap mass analyzers.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_Orbitrap_Exploris_480">
+            <summary>Orbitrap Exploris 480: Thermo Scientific Orbitrap Exploris 480 Quadrupole Orbitrap MS.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_named_element_in_mzML">
+            <summary>named element in mzML: A named element that is an attribute in a mzML file.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_named_element_in_mzIdentML">
+            <summary>named element in mzIdentML: A named element that is an attribute in a mzIdentML file.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_named_element">
+            <summary>named element: A named element that is an attribute in a proteomics standards file.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_OpenPepXL_score">
+            <summary>OpenPepXL:score: The OpenPepXL score for a cross-link spectrum match.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_OpenPepXL">
+            <summary>OpenPepXL: Cross-Linking MS search engine.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_Variable_modification">
+            <summary>Variable modification: Post-translational modification which may or may not be present at a residue type.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_Fixed_modification">
+            <summary>Fixed modification: Post-translational modification which is assumed to be present at each instance of a residue type.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_flow_rate_chromatogram">
+            <summary>flow rate chromatogram: Representation of the chromatographic flow rate versus time.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_pressure_chromatogram">
+            <summary>pressure chromatogram: Representation of chromatographic pressure versus time.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_Philosopher">
+            <summary>Philosopher: General proteomics processing toolkit for shotgun proteomics.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_ProteinProphet_peptide_group_weight">
+            <summary>ProteinProphet:peptide group weight: Fraction of peptide evidence attributable to a group of proteins.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_ProteinProphet_peptide_weight">
+            <summary>ProteinProphet:peptide weight: Fraction of peptide evidence attributable to a protein or a set of indistinguishable proteins.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_razor_peptide">
+            <summary>razor peptide: A peptide which is shared between protein groups and assigned to the protein group with the largest number of identified peptides.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_MSFragger">
+            <summary>MSFragger: A database search-based peptide identification tool.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_i3tms">
+            <summary>i3tms: i3-tms search engine and data-analysis software.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_KSDP_score">
+            <summary>KSDP score: Kernel mass spectral dot product scoring function.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_pFind">
+            <summary>pFind: Sequence-tag-based search engine pFind.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_LPPtiger">
+            <summary>LPPtiger: Software for lipidome-specific prediction and identification of oxidized phospholipids from LC-MS datasets.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_Shimadzu_Biotech_LCD_format">
+            <summary>Shimadzu Biotech LCD format: Shimadzu Biotech LCD file format.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_raw_inverse_reduced_ion_mobility_array">
+            <summary>raw inverse reduced ion mobility array: Array of raw inverse reduced ion mobilities.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_raw_ion_mobility_array">
+            <summary>raw ion mobility array: Array of raw drift times.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_mean_inverse_reduced_ion_mobility_array">
+            <summary>mean inverse reduced ion mobility array: Array of inverse reduced ion mobilities, averaged from a matrix of binned m/z and ion mobility values, corresponding to a spectrum of individual peaks encoded with an m/z array.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_timsTOF_Pro">
+            <summary>timsTOF Pro: Bruker Daltonics' timsTOF Pro.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_maXis_II">
+            <summary>maXis II: Bruker Daltonics' maXis II.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_LCMS_2020">
+            <summary>LCMS-2020: Shimadzu Scientific Instruments LCMS-2020.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_LCMS_8040">
+            <summary>LCMS-8040: Shimadzu Scientific Instruments LCMS-8040 MS.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_LCMS_8045">
+            <summary>LCMS-8045: Shimadzu Scientific Instruments LCMS-8045 MS.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_LCMS_8050">
+            <summary>LCMS-8050: Shimadzu Scientific Instruments LCMS-8050 MS.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_LCMS_8060">
+            <summary>LCMS-8060: Shimadzu Scientific Instruments LCMS-8060 MS.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_LCMS_9030">
+            <summary>LCMS-9030: Shimadzu Scientific Instruments LCMS-9030 Q-TOF MS.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_ProteomeXchange_dataset_identifier_reanalysis_number">
+            <summary>ProteomeXchange dataset identifier reanalysis number: Index number of a reanalysis within a ProteomeXchange reprocessed dataset identifier container (RPXD).</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_Andromeda_apl_file_format">
+            <summary>Andromeda:apl file format: Peak list file format of the Andromeda search engine.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_Andromeda_PEP">
+            <summary>Andromeda:PEP: Posterior error probability of the best identified peptide of the Andromeda search engine.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_python_psims">
+            <summary>python-psims: python-psims, a library for generating mzML and mzIdentML.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_ms_deisotope">
+            <summary>ms_deisotope: ms_deisotope, a library for deisotoping and charge state deconvolution of mass spectra.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_IdentiPy_hyperscore">
+            <summary>IdentiPy:hyperscore: The IdentiPy result 'hyperscore'.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_IdentiPy_RHNS">
+            <summary>IdentiPy:RHNS: The IdentiPy result 'RHNS'.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_IdentiPy">
+            <summary>IdentiPy: IdentiPy.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_in_solution_digestion">
+            <summary>in-solution digestion: Digestion of proteins in solution for mass spectrometric characterization of proteins and proteomes.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_in_gel_digestion">
+            <summary>in-gel digestion: Digestion of proteins separated by gel electrophoresis for mass spectrometric characterization of proteins and proteomes.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_Novor">
+            <summary>Novor: Novor real-time peptide de novo sequencing software tool.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_pNovo">
+            <summary>pNovo: pNovo tool for de novo peptide sequencing and identification using HCD spectra.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_PepNovo">
+            <summary>PepNovo: PepNovo tool for de novo peptide sequencing.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_Proline">
             <summary>Proline: The Proline software suite for mass spectrometry based proteomics.</summary>
@@ -10346,8 +10649,8 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
         <member name="F:pwiz.CLI.cv.CVID.MS_Bruker_TDF_format">
             <summary>Bruker TDF format: Bruker TDF raw file format.</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.MS_mean_inverse_reduced_ion_mobility_array">
-            <summary>mean inverse reduced ion mobility array: Array of drift times or inverse reduced ion mobilities, averaged from a matrix of binned m/z and ion mobility values, corresponding to a spectrum of individual peaks encoded with an m/z array.</summary>
+        <member name="F:pwiz.CLI.cv.CVID.MS_mean_ion_mobility_array">
+            <summary>mean ion mobility array: Array of drift times, averaged from a matrix of binned m/z and ion mobility values, corresponding to a spectrum of individual peaks encoded with an m/z array.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_inverse_reduced_ion_mobility">
             <summary>inverse reduced ion mobility: Ion mobility measurement for an ion or spectrum of ions as measured in an ion mobility mass spectrometer. This might refer to the central value of a bin into which all ions within a narrow range of mobilities have been aggregated.</summary>
@@ -10958,8 +11261,8 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
         <member name="F:pwiz.CLI.cv.CVID.MS_ICAT_reagent">
             <summary>ICAT reagent: Isotope coded affinity tag reagent.</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.MS_quantification_reagent">
-            <summary>quantification reagent: Reagent used in labeled quantification methods.</summary>
+        <member name="F:pwiz.CLI.cv.CVID.MS_sample_label">
+            <summary>sample label: Reagent used in labeled quantification methods.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_mzTab">
             <summary>mzTab: Tabular result format for proteomics and metabolomics experiments.</summary>
@@ -11900,6 +12203,9 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
         <member name="F:pwiz.CLI.cv.CVID.MS_ProteinProphet">
             <summary>ProteinProphet: A program in the TPP that calculates protein-level probabilities based on input PSM or peptide-level probabilities from PeptideProphet or iProphet. The output is written in the protXML format.</summary>
         </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_InterProphet">
+            <summary>InterProphet: A program in the TPP that calculates distinct peptide probabilities based on several lines of corroborating evidence including search results from multiple search engines via the pepXML format.</summary>
+        </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_iProphet">
             <summary>iProphet: A program in the TPP that calculates distinct peptide probabilities based on several lines of corroborating evidence including search results from multiple search engines via the pepXML format.</summary>
         </member>
@@ -12653,11 +12959,11 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
         <member name="F:pwiz.CLI.cv.CVID.MS_inlet_attribute">
             <summary>inlet attribute: Inlet properties that are associated with a value.</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.MS_light_labeled_sample">
-            <summary>light labeled sample: A sample that has not been labelled or modified. This is often referred to as \"light\" to distinguish from \"heavy\".</summary>
+        <member name="F:pwiz.CLI.cv.CVID.MS_light_sample">
+            <summary>light sample: A sample that has not been labelled or modified. This is often referred to as \"light\" to distinguish from \"heavy\".</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.MS_unlabeled_sample">
-            <summary>unlabeled sample: A sample that has not been labelled or modified. This is often referred to as \"light\" to distinguish from \"heavy\".</summary>
+        <member name="F:pwiz.CLI.cv.CVID.MS_label_free_sample">
+            <summary>label free sample: A sample that has not been labelled or modified. This is often referred to as \"light\" to distinguish from \"heavy\".</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_dataset_submitter">
             <summary>dataset submitter: A person who submits a dataset to a repository.</summary>
@@ -14373,22 +14679,22 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
             <summary>OMSSA: Open Mass Spectrometry Search Algorithm was used to analyze the spectra.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_CRM_chromatogram_OBSOLETE">
-            <summary>CRM chromatogram: Chromatogram created by creating an array of the measurements of a series of monitored reactions at each time point.</summary>
+            <summary>CRM chromatogram: Representation of an array of the measurements of a series of monitored reactions versus time.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_consecutive_reaction_monitoring_chromatogram_OBSOLETE">
-            <summary>consecutive reaction monitoring chromatogram: Chromatogram created by creating an array of the measurements of a series of monitored reactions at each time point.</summary>
+            <summary>consecutive reaction monitoring chromatogram: Representation of an array of the measurements of a series of monitored reactions versus time.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_SRM_chromatogram">
-            <summary>SRM chromatogram: Chromatogram created by creating an array of the measurements of a selectively monitored reaction at each time point.</summary>
+            <summary>SRM chromatogram: Representation of an array of the measurements of a selectively monitored reaction versus time.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_selected_reaction_monitoring_chromatogram">
-            <summary>selected reaction monitoring chromatogram: Chromatogram created by creating an array of the measurements of a selectively monitored reaction at each time point.</summary>
+            <summary>selected reaction monitoring chromatogram: Representation of an array of the measurements of a selectively monitored reaction versus time.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_SIM_chromatogram">
-            <summary>SIM chromatogram: Chromatogram created by creating an array of the measurements of a selectively monitored ion at each time point.</summary>
+            <summary>SIM chromatogram: Representation of an array of the measurements of a selectively monitored ion versus time.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_selected_ion_monitoring_chromatogram">
-            <summary>selected ion monitoring chromatogram: Chromatogram created by creating an array of the measurements of a selectively monitored ion at each time point.</summary>
+            <summary>selected ion monitoring chromatogram: Representation of an array of the measurements of a selectively monitored ion versus time.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_peptide_modification_details">
             <summary>peptide modification details: The children of this term can be used to describe modifications.</summary>
@@ -15617,8 +15923,8 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
         <member name="F:pwiz.CLI.cv.CVID.MS_database_release_date_OBSOLETE">
             <summary>database release date: OBSOLETE: Use attribute in mzIdentML instead. Release date of the search database.</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.MS_database_version_OBSOLETE">
-            <summary>database version: OBSOLETE: Use attribute in mzIdentML instead. Version of the search database.</summary>
+        <member name="F:pwiz.CLI.cv.CVID.MS_database_version">
+            <summary>database version: Version of the search database. In mzIdentML use the attribute instead.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_database_original_uri">
             <summary>database original uri: URI, from where the search database was originally downloaded.</summary>
@@ -16026,19 +16332,19 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
             <summary>counts per second: The number of counted events observed per second in one or a group of elements of a detector.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_emission_chromatogram">
-            <summary>emission chromatogram: The measurement of light emitted by the sample as a function of the retention time.</summary>
+            <summary>emission chromatogram: Representation of light emitted by the sample versus time.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_absorption_chromatogram">
-            <summary>absorption chromatogram: The measurement of light absorbed by the sample as a function of the retention time.</summary>
+            <summary>absorption chromatogram: Representation of light absorbed by the sample versus time.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_EMR_radiation_chromatogram">
-            <summary>EMR radiation chromatogram: The measurement of electromagnetic properties as a function of the retention time.</summary>
+            <summary>EMR radiation chromatogram: Representation of electromagnetic properties versus time.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_electromagnetic_radiation_chromatogram">
-            <summary>electromagnetic radiation chromatogram: The measurement of electromagnetic properties as a function of the retention time.</summary>
+            <summary>electromagnetic radiation chromatogram: Representation of electromagnetic properties versus time.</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.MS_mass_chromatogram">
-            <summary>mass chromatogram: A plot of the relative abundance of a beam or other collection of ions as a function of the retention time.</summary>
+        <member name="F:pwiz.CLI.cv.CVID.MS_ion_current_chromatogram">
+            <summary>ion current chromatogram: Representation of the current of ions versus time.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_chromatogram_title">
             <summary>chromatogram title: A free-form text title describing a chromatogram.</summary>
@@ -16608,19 +16914,19 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
             <summary>low intensity threshold: Threshold below which some action is taken.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_basepeak_chromatogram">
-            <summary>basepeak chromatogram: Chromatogram created by creating an array of the most intense peaks at each time point.</summary>
+            <summary>basepeak chromatogram: Representation of an array of the most intense peaks versus time.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_SIC_chromatogram">
-            <summary>SIC chromatogram: Chromatogram created by creating an array of the measurements of a specific single ion current at each time point.</summary>
+            <summary>SIC chromatogram: Representation of an array of the measurements of a specific single ion current versus time.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_selected_ion_current_chromatogram">
-            <summary>selected ion current chromatogram: Chromatogram created by creating an array of the measurements of a specific single ion current at each time point.</summary>
+            <summary>selected ion current chromatogram: Representation of an array of the measurements of a specific single ion current versus time.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_chromatogram_type">
-            <summary>chromatogram type: Broad category or type of a chromatogram.</summary>
+            <summary>chromatogram type: Type of chromatogram measurement being represented.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_chromatogram">
-            <summary>chromatogram: The representation of detector response versus time.</summary>
+            <summary>chromatogram: Representation of a chromatographic separation attribute measurement versus time.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_image_current_detector">
             <summary>image current detector: Inductive detector.</summary>
@@ -18054,10 +18360,10 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
             <summary>transmission: The ratio of the number of ions leaving a region of a mass spectrometer to the number entering that region.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_TIC_chromatogram">
-            <summary>TIC chromatogram: Chromatogram obtained by plotting the total ion current detected in each of a series of mass spectra recorded as a function of retention time.</summary>
+            <summary>TIC chromatogram: Representation of the total ion current detected in each of a series of mass spectra versus time.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_total_ion_current_chromatogram">
-            <summary>total ion current chromatogram: Chromatogram obtained by plotting the total ion current detected in each of a series of mass spectra recorded as a function of retention time.</summary>
+            <summary>total ion current chromatogram: Representation of the total ion current detected in each of a series of mass spectra versus time.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_mass_resolving_power_OBSOLETE">
             <summary>mass resolving power: In a mass spectrum, the observed mass divided by the difference between two masses that can be separated. The method by which delta m was obtained and the mass at which the measurement was made should be reported.</summary>
@@ -18902,149 +19208,170 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
         <member name="F:pwiz.CLI.cv.CVID.MS_sample_number">
             <summary>sample number: A reference number relevant to the sample under study.</summary>
         </member>
+        <member name="F:pwiz.CLI.cv.CVID.PEFF_initiator_methionine">
+            <summary>initiator methionine: N-terminal methionine residue of a protein that can be co-translationally cleaved.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.PEFF_propeptide">
+            <summary>propeptide: Short peptide that is cleaved off a newly synthesized protein and generally immediately degraded in the process of protein maturation, and is not a signal peptide or transit peptide.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.PEFF_Comment">
+            <summary>Comment: PEFF keyword for the individual protein entry comment. It is discouraged to put parsable information here. This is only for free-text commentary.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.PEFF_PEFF_molecule_processing_keyword">
+            <summary>PEFF molecule processing keyword: PEFF keyword describing the type of processing event being described.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.PEFF_DisulfideBond">
+            <summary>DisulfideBond: PEFF keyword for the disulfide bonds in this protein, constructed as a sets of annotation identifiers of two half-cystine modifications.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.PEFF_Proteoform">
+            <summary>Proteoform: PEFF keyword for the proteoforms of this protein, constructed as a set of annotation identifiers.</summary>
+        </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_VariantComplex">
-            <summary>VariantComplex: Simple sequence variation of a single amino acid change. A change to a stop codon is permitted with a * symbol. More complex variations must be encoded with the VariantComplex term.</summary>
+            <summary>VariantComplex: PEFF keyword for a sequence variation that is more complex than a single amino acid change or change to a stop codon.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_VariantSimple">
-            <summary>VariantSimple: Simple sequence variation of a single amino acid change. A change to a stop codon is permitted with a * symbol. More complex variations must be encoded with the VariantComplex term.</summary>
+            <summary>VariantSimple: PEFF keyword for the simple sequence variation of a single amino acid change. A change to a stop codon is permitted with a * symbol. More complex variations must be encoded with the VariantComplex term.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_ModResUnimod">
-            <summary>ModResUnimod: Modified residue with Unimod identifier.</summary>
+            <summary>ModResUnimod: PEFF keyword for the modified residue with UniMod identifier.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_ID">
-            <summary>ID: UniProtKB specific Protein identifier ID; a UniProtKB term.</summary>
+            <summary>ID: PEFF keyword for the UniProtKB specific Protein identifier ID; a UniProtKB term.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_Domain">
-            <summary>Domain: Sequence range of a domain.</summary>
+            <summary>Domain: PEFF keyword for the sequence range of a domain.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_Crc64">
-            <summary>Crc64: Sequence checksum in crc64.</summary>
+            <summary>Crc64: PEFF keyword for the Sequence checksum in crc64.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_Conflict">
-            <summary>Conflict: Sequence conflict; a UniProtKB term.</summary>
+            <summary>Conflict: PEFF keyword for the sequence conflict; a UniProtKB term.</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.PEFF_Transit">
-            <summary>Transit: Sequence range of transit peptide.</summary>
+        <member name="F:pwiz.CLI.cv.CVID.PEFF_transit_peptide">
+            <summary>transit peptide: Short peptide present at the N-terminus of a newly synthesized protein that helps the protein through the membrane of its destination organelle.</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.PEFF_Signal">
-            <summary>Signal: Sequence range of signal peptide.</summary>
+        <member name="F:pwiz.CLI.cv.CVID.PEFF_signal_peptide">
+            <summary>signal peptide: Short peptide present at the N-terminus of a newly synthesized protein that is cleaved off and is not part of the final mature protein.</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.PEFF_Chain">
-            <summary>Chain: Sequence range of active processed polypeptide.</summary>
+        <member name="F:pwiz.CLI.cv.CVID.PEFF_mature_protein">
+            <summary>mature protein: Portion of a newly synthesized protein that contributes to a final structure after other components such as signal peptides are removed.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_XRef">
-            <summary>XRef: Cross-reference to an external resource.</summary>
+            <summary>XRef: PEFF keyword for the cross-reference to an external resource.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_GO">
-            <summary>GO: Gene Ontology code.</summary>
+            <summary>GO: PEFF keyword for the Gene Ontology code.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_KW">
-            <summary>KW: Entry associated keyword(s).</summary>
+            <summary>KW: PEFF keyword for the entry associated keyword(s).</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_CC">
-            <summary>CC: Entry associated comment.</summary>
+            <summary>CC: PEFF keyword for the entry associated comment.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_SeqStatus">
-            <summary>SeqStatus: Sequence Status. Complete or Fragment.</summary>
+            <summary>SeqStatus: PEFF keyword for the sequence status. Complete or Fragment.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_AltAC">
-            <summary>AltAC: Alternative Accession Code.</summary>
+            <summary>AltAC: PEFF keyword for the Alternative Accession Code.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_ModRes">
-            <summary>ModRes: Modified residue without PSI-MOD identifier.</summary>
+            <summary>ModRes: PEFF keyword for the modified residue without aPSI-MOD or UniMod identifier.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_ModResPsi">
-            <summary>ModResPsi: Modified residue with PSI-MOD identifier.</summary>
+            <summary>ModResPsi: PEFF keyword for the modified residue with PSI-MOD identifier.</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.PEFF_Variant">
-            <summary>Variant: DEPRECATED in favor of VariantSimple and VariantComplex. Former definition: Sequence variation (substitution, insertion, deletion).</summary>
+        <member name="F:pwiz.CLI.cv.CVID.PEFF_Variant_OBSOLETE">
+            <summary>Variant: Sequence variation (substitution, insertion, deletion).</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_Processed">
-            <summary>Processed: Processed Molecule.</summary>
+            <summary>Processed: PEFF keyword for information on how the full length original protein sequence can be processed into shorter components such as signal peptides and chains.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_PE">
-            <summary>PE: Protein Evidence; A UniprotKB code.</summary>
+            <summary>PE: PEFF keyword for the Protein Evidence; A UniProtKB code 1-5.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_EV">
-            <summary>EV: Entry version.</summary>
+            <summary>EV: PEFF keyword for the entry version.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_SV">
-            <summary>SV: Sequence version.</summary>
+            <summary>SV: PEFF keyword for the sequence version.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_Length">
-            <summary>Length: Sequence length.</summary>
+            <summary>Length: PEFF keyword for the sequence length.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_GName">
-            <summary>GName: Gene name.</summary>
+            <summary>GName: PEFF keyword for the gene name.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_TaxName">
-            <summary>TaxName: Taxonomy name (latin or common name).</summary>
+            <summary>TaxName: PEFF keyword for the taxonomy name (latin or common name).</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_NcbiTaxId">
-            <summary>NcbiTaxId: NCBI taxonomy identifier.</summary>
+            <summary>NcbiTaxId: PEFF keyword for the NCBI taxonomy identifier.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_PName">
-            <summary>PName: Protein Name, description.</summary>
+            <summary>PName: PEFF keyword for the protein full name.</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.PEFF_DbUniqueId">
-            <summary>DbUniqueId: Sequence Database unique identifier.</summary>
+        <member name="F:pwiz.CLI.cv.CVID.PEFF_DbUniqueId_OBSOLETE">
+            <summary>DbUniqueId: Sequence database unique identifier.</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.PEFF_CustomTag">
-            <summary>CustomTag: A tag (short string) used to categorize a sequence annotation (variant or modification).</summary>
+        <member name="F:pwiz.CLI.cv.CVID.PEFF_HasAnnotationIdentifiers">
+            <summary>HasAnnotationIdentifiers: PEFF keyword that when set to 'true' indicates that entries in the database have identifiers for each annotation.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.PEFF_OptionalTagDef">
+            <summary>OptionalTagDef: PEFF keyword for the short tag (abbreviation) and longer definition used to annotate a sequence annotation (such as variant or modification) in the OptionalTag location.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_ProteoformDb">
-            <summary>ProteoformDb: Proteoform database flag.</summary>
+            <summary>ProteoformDb: PEFF keyword that when set to 'true' indicates that the database contains complete proteoforms.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_GeneralComment">
-            <summary>GeneralComment: PEFF file general comment.</summary>
+            <summary>GeneralComment: PEFF keyword for a general comment.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_DatabaseDescription">
-            <summary>DatabaseDescription: Short Description of the PEFF.</summary>
+            <summary>DatabaseDescription: PEFF keyword for the short description of the PEFF file.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_SpecificValue">
-            <summary>SpecificValue: PEFF specific values for a defined key.</summary>
+            <summary>SpecificValue: PEFF keyword for the specific values for a custom key.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_SpecificKey">
-            <summary>SpecificKey: Db specific information (not included in the current list of allowed keys).</summary>
+            <summary>SpecificKey: PEFF keyword for database specific keywords not included in the current controlled vocabulary.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_SequenceType">
-            <summary>SequenceType: Molecular type of the sequences.</summary>
+            <summary>SequenceType: PEFF keyword for the molecular type of the sequences.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_Conversion">
-            <summary>Conversion: Description of the conversion from original format to this current one.</summary>
+            <summary>Conversion: PEFF keyword for the description of the conversion from original format to this current one.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_NumberOfEntries">
-            <summary>NumberOfEntries: Number of sequence entries in the database.</summary>
+            <summary>NumberOfEntries: PEFF keyword for the sumber of sequence entries in the database.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_DbDate_OBSOLETE">
-            <summary>DbDate: Database date (release or file date of the source) according to database provider.</summary>
+            <summary>DbDate: PEFF keyword for the database date (release or file date of the source) according to database provider.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_DbVersion">
-            <summary>DbVersion: Database version (release date) according to database provider.</summary>
+            <summary>DbVersion: PEFF keyword for the database version (release date) according to database provider.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_DbSource">
-            <summary>DbSource: Source of the database file.</summary>
+            <summary>DbSource: PEFF keyword for the source of the database file.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_Decoy">
-            <summary>Decoy: Specifies whether the Sequence Database is a Decoy.</summary>
+            <summary>Decoy: PEFF keyword for the specifying whether the sequence database is a decoy database.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_DbDescription">
-            <summary>DbDescription: Sequence Database Short description.</summary>
+            <summary>DbDescription: PEFF keyword for the sequence database short description.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_Prefix">
-            <summary>Prefix: Sequence Database Prefix.</summary>
+            <summary>Prefix: PEFF keyword for the sequence database prefix.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_DbName">
-            <summary>DbName: Sequence Database Name.</summary>
+            <summary>DbName: PEFF keyword for the sequence database name.</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.PEFF_Individual_Sequence_Entries_Section_term">
-            <summary>Individual Sequence Entries Section term: CV term that may appear in a PEFF Individual Entry Section.</summary>
+        <member name="F:pwiz.CLI.cv.CVID.PEFF_PEFF_file_sequence_entry_term">
+            <summary>PEFF file sequence entry term: CV term that may appear in a description line of a PEFF file individual sequence entry.</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.PEFF_File_Header_Section_term">
-            <summary>File Header Section term: CV term that may appear in a PEFF File Header Section.</summary>
+        <member name="F:pwiz.CLI.cv.CVID.PEFF_PEFF_file_header_section_term">
+            <summary>PEFF file header section term: CV term that may appear in a PEFF file header section.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.PEFF_PEFF_CV_term">
-            <summary>PEFF CV term: PSI Extended FASTA Format Controlled Vocabulary term.</summary>
+            <summary>PEFF CV term: PSI Extended FASTA Format controlled vocabulary term.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_Proteomics_Standards_Initiative_Mass_Spectrometry_Vocabularies">
             <summary>Proteomics Standards Initiative Mass Spectrometry Vocabularies: Proteomics Standards Initiative Mass Spectrometry Vocabularies.</summary>
@@ -19182,6 +19509,30 @@ Information about an ontology or CV source and a short 'lookup' tag to refer to.
 </member>
         <member name="T:pwiz.cv.CVID">
 enumeration of controlled vocabulary (CV) terms, generated from OBO file(s)
+</member>
+        <member name="F:UO_united_states_fda_cup">
+united states fda cup: A United States FDA cup is a unit of measurement of volume used by the US Federal Department of Agriculture as a nutritional serving measure. It equals a 240 mL volume.
+</member>
+        <member name="F:UO_united_states_customary_cup">
+united states customary cup: A United States customary units cup is a unit of measurement of volume widely used in cooking recipes and pharmaceutic prescriptions in America. It equals a 236.59 mL volume.
+</member>
+        <member name="F:UO_metric_cup">
+metric cup: A metric cup is a unit of measurement of volume widely used in cooking recipes and pharmaceutic prescriptions. It equals a 250mL volume.
+</member>
+        <member name="F:UO_united_states_customary_tablespoon">
+united states customary tablespoon: A United States customary units tablespoon is a unit of measurement of volume widely used in cooking recipes and pharmaceutic prescriptions in America. It equals a 14.79 mL volume.
+</member>
+        <member name="F:UO_australian_metric_tablespoon">
+australian metric tablespoon: An Australian metric tablespoon is a unit of measurement of volume used in Australia for cooking recipes and pharmaceutic prescriptions. It equals a 20mL volume.
+</member>
+        <member name="F:UO_tablespoon">
+tablespoon: A metric tablespoon is a unit of measurement of volume widely used in cooking recipes and pharmaceutic prescriptions. It equals a 15mL volume.
+</member>
+        <member name="F:UO_united_states_customary_teaspoon">
+united states customary teaspoon: A United States customary units teaspoon is a unit of measurement of volume widely used in cooking recipes and pharmaceutic prescriptions in America. It equals a 4.93 mL volume.
+</member>
+        <member name="F:UO_teaspoon">
+teaspoon: A metric teaspoon is a unit of measurement of volume widely used in cooking recipes and pharmaceutic prescriptions. It equals a 5mL volume.
 </member>
         <member name="F:UO_slug">
 slug: An imperial gravitational unit which is equivalent to a mass that accelerates by 1ft/sÂ² when a force of one pound (lbf) is exerted on it.
@@ -19490,7 +19841,7 @@ microliters per minute: A volumetric flow rate unit which is equal to one microl
 volumetric flow rate unit: A unit which is a standard measure of the volume of fluid which passes through a given surface per unit time .
 </member>
         <member name="F:UO_absorbance_unit">
-absorbance unit: A dimensionless logarithmic unit assigned to a measure of absorbance of light through a partially absorbing substance, defined as -log2(I/I_0) where I = transmitted light and I_0 = incident light.
+absorbance unit: A dimensionless logarithmic unit assigned to a measure of absorbance of light through a partially absorbing substance, defined as -log10(I/I_0) where I = transmitted light and I_0 = incident light.
 </member>
         <member name="F:UO_volt_per_meter">
 volt per meter: The volt per meter is a unit of electric field strength equal to the a potential difference of 1 volt existing between two points that are 1 meter apart.
@@ -20293,6 +20644,33 @@ length unit: A unit which is a standard measure of the distance between two poin
         <member name="F:UO_unit">
 unit: A unit of measurement is a standardized quantity of a physical quality.
 </member>
+        <member name="F:UNIMOD_TMTpro_zero">
+TMTpro_zero: Native TMTpro Tandem Mass Tag.
+</member>
+        <member name="F:UNIMOD_TMTpro">
+TMTpro: TMTpro 16plex Tandem Mass Tag.
+</member>
+        <member name="F:UNIMOD_shTMT">
+shTMT: Super Heavy Tandem Mass Tag.
+</member>
+        <member name="F:UNIMOD_Nitrene">
+Nitrene: Loss of O2; nitro photochemical decomposition.
+</member>
+        <member name="F:UNIMOD_Methamidophos_O">
+Methamidophos-O: O-methyl amino phosphinate.
+</member>
+        <member name="F:UNIMOD_Methamidophos_S">
+Methamidophos-S: S-methyl amino phosphinate.
+</member>
+        <member name="F:UNIMOD_Haloxon">
+Haloxon: O-Dichloroethylphosphate.
+</member>
+        <member name="F:UNIMOD_ZQG">
+ZQG: Carbobenzoxy-L-glutaminyl-glycine.
+</member>
+        <member name="F:UNIMOD_Xlink_DST_56_">
+Xlink:DST[56]: DST crosslinker cleaved by sodium periodate.
+</member>
         <member name="F:UNIMOD_TMPP_Ac_13C_9_">
 TMPP-Ac:13C(9): Heavy tris(2,4,6-trimethoxyphenyl)phosphonium acetic acid N-hydroxysuccinimide ester derivative.
 </member>
@@ -20608,8 +20986,8 @@ Cation:Fe[III]: Replacement of 3 protons by iron.
         <member name="F:UNIMOD_MeMePhosphorothioate">
 MeMePhosphorothioate: S-Methyl Methyl phosphorothioate.
 </member>
-        <member name="F:UNIMOD_2_hydroxyisobutyrylation">
-2-hydroxyisobutyrylation: 2-hydroxyisobutyrylation.
+        <member name="F:UNIMOD_hydroxyisobutyryl">
+hydroxyisobutyryl: 2-hydroxyisobutyrylation.
 </member>
         <member name="F:UNIMOD_Gluratylation">
 Gluratylation: Glutarylation.
@@ -24242,7 +24620,7 @@ Ethanolyl: Ethanolation.
 AEBS: Aminoethylbenzenesulfonylation.
 </member>
         <member name="F:UNIMOD_Nitrosyl">
-Nitrosyl: S-nitrosylation.
+Nitrosyl: Nitrosylation.
 </member>
         <member name="F:UNIMOD_CAF">
 CAF: Sulfonation of N-terminus.
@@ -24684,6 +25062,144 @@ Acetyl: Acetylation.
 </member>
         <member name="F:UNIMOD_unimod_root_node">
 unimod root node: The root node of the unimod modifications ontology.
+</member>
+        <member name="F:MS_Mascot_MinNumSigUniqueSeqs">
+Mascot:MinNumSigUniqueSeqs: Minimum number of significant unique sequences required in a protein hit. The setting is only relevant if the protein grouping strategy is 'family clustering'.
+</member>
+        <member name="F:MS_Orbitrap_Eclipse">
+Orbitrap Eclipse: Thermo Scientific Orbitrap Eclipse mass spectrometer with Tribrid architecture consisting of quadrupole mass filter, linear ion trap and Orbitrap mass analyzers.
+</member>
+        <member name="F:MS_Orbitrap_Exploris_480">
+Orbitrap Exploris 480: Thermo Scientific Orbitrap Exploris 480 Quadrupole Orbitrap MS.
+</member>
+        <member name="F:MS_named_element_in_mzML">
+named element in mzML: A named element that is an attribute in a mzML file.
+</member>
+        <member name="F:MS_named_element_in_mzIdentML">
+named element in mzIdentML: A named element that is an attribute in a mzIdentML file.
+</member>
+        <member name="F:MS_named_element">
+named element: A named element that is an attribute in a proteomics standards file.
+</member>
+        <member name="F:MS_OpenPepXL_score">
+OpenPepXL:score: The OpenPepXL score for a cross-link spectrum match.
+</member>
+        <member name="F:MS_OpenPepXL">
+OpenPepXL: Cross-Linking MS search engine.
+</member>
+        <member name="F:MS_Variable_modification">
+Variable modification: Post-translational modification which may or may not be present at a residue type.
+</member>
+        <member name="F:MS_Fixed_modification">
+Fixed modification: Post-translational modification which is assumed to be present at each instance of a residue type.
+</member>
+        <member name="F:MS_flow_rate_chromatogram">
+flow rate chromatogram: Representation of the chromatographic flow rate versus time.
+</member>
+        <member name="F:MS_pressure_chromatogram">
+pressure chromatogram: Representation of chromatographic pressure versus time.
+</member>
+        <member name="F:MS_Philosopher">
+Philosopher: General proteomics processing toolkit for shotgun proteomics.
+</member>
+        <member name="F:MS_ProteinProphet_peptide_group_weight">
+ProteinProphet:peptide group weight: Fraction of peptide evidence attributable to a group of proteins.
+</member>
+        <member name="F:MS_ProteinProphet_peptide_weight">
+ProteinProphet:peptide weight: Fraction of peptide evidence attributable to a protein or a set of indistinguishable proteins.
+</member>
+        <member name="F:MS_razor_peptide">
+razor peptide: A peptide which is shared between protein groups and assigned to the protein group with the largest number of identified peptides.
+</member>
+        <member name="F:MS_MSFragger">
+MSFragger: A database search-based peptide identification tool.
+</member>
+        <member name="F:MS_i3tms">
+i3tms: i3-tms search engine and data-analysis software.
+</member>
+        <member name="F:MS_KSDP_score">
+KSDP score: Kernel mass spectral dot product scoring function.
+</member>
+        <member name="F:MS_pFind">
+pFind: Sequence-tag-based search engine pFind.
+</member>
+        <member name="F:MS_LPPtiger">
+LPPtiger: Software for lipidome-specific prediction and identification of oxidized phospholipids from LC-MS datasets.
+</member>
+        <member name="F:MS_Shimadzu_Biotech_LCD_format">
+Shimadzu Biotech LCD format: Shimadzu Biotech LCD file format.
+</member>
+        <member name="F:MS_raw_inverse_reduced_ion_mobility_array">
+raw inverse reduced ion mobility array: Array of raw inverse reduced ion mobilities.
+</member>
+        <member name="F:MS_raw_ion_mobility_array">
+raw ion mobility array: Array of raw drift times.
+</member>
+        <member name="F:MS_mean_inverse_reduced_ion_mobility_array">
+mean inverse reduced ion mobility array: Array of inverse reduced ion mobilities, averaged from a matrix of binned m/z and ion mobility values, corresponding to a spectrum of individual peaks encoded with an m/z array.
+</member>
+        <member name="F:MS_timsTOF_Pro">
+timsTOF Pro: Bruker Daltonics' timsTOF Pro.
+</member>
+        <member name="F:MS_maXis_II">
+maXis II: Bruker Daltonics' maXis II.
+</member>
+        <member name="F:MS_LCMS_2020">
+LCMS-2020: Shimadzu Scientific Instruments LCMS-2020.
+</member>
+        <member name="F:MS_LCMS_8040">
+LCMS-8040: Shimadzu Scientific Instruments LCMS-8040 MS.
+</member>
+        <member name="F:MS_LCMS_8045">
+LCMS-8045: Shimadzu Scientific Instruments LCMS-8045 MS.
+</member>
+        <member name="F:MS_LCMS_8050">
+LCMS-8050: Shimadzu Scientific Instruments LCMS-8050 MS.
+</member>
+        <member name="F:MS_LCMS_8060">
+LCMS-8060: Shimadzu Scientific Instruments LCMS-8060 MS.
+</member>
+        <member name="F:MS_LCMS_9030">
+LCMS-9030: Shimadzu Scientific Instruments LCMS-9030 Q-TOF MS.
+</member>
+        <member name="F:MS_ProteomeXchange_dataset_identifier_reanalysis_number">
+ProteomeXchange dataset identifier reanalysis number: Index number of a reanalysis within a ProteomeXchange reprocessed dataset identifier container (RPXD).
+</member>
+        <member name="F:MS_Andromeda_apl_file_format">
+Andromeda:apl file format: Peak list file format of the Andromeda search engine.
+</member>
+        <member name="F:MS_Andromeda_PEP">
+Andromeda:PEP: Posterior error probability of the best identified peptide of the Andromeda search engine.
+</member>
+        <member name="F:MS_python_psims">
+python-psims: python-psims, a library for generating mzML and mzIdentML.
+</member>
+        <member name="F:MS_ms_deisotope">
+ms_deisotope: ms_deisotope, a library for deisotoping and charge state deconvolution of mass spectra.
+</member>
+        <member name="F:MS_IdentiPy_hyperscore">
+IdentiPy:hyperscore: The IdentiPy result 'hyperscore'.
+</member>
+        <member name="F:MS_IdentiPy_RHNS">
+IdentiPy:RHNS: The IdentiPy result 'RHNS'.
+</member>
+        <member name="F:MS_IdentiPy">
+IdentiPy: IdentiPy.
+</member>
+        <member name="F:MS_in_solution_digestion">
+in-solution digestion: Digestion of proteins in solution for mass spectrometric characterization of proteins and proteomes.
+</member>
+        <member name="F:MS_in_gel_digestion">
+in-gel digestion: Digestion of proteins separated by gel electrophoresis for mass spectrometric characterization of proteins and proteomes.
+</member>
+        <member name="F:MS_Novor">
+Novor: Novor real-time peptide de novo sequencing software tool.
+</member>
+        <member name="F:MS_pNovo">
+pNovo: pNovo tool for de novo peptide sequencing and identification using HCD spectra.
+</member>
+        <member name="F:MS_PepNovo">
+PepNovo: PepNovo tool for de novo peptide sequencing.
 </member>
         <member name="F:MS_Proline">
 Proline: The Proline software suite for mass spectrometry based proteomics.
@@ -25177,8 +25693,8 @@ Bruker TDF nativeID format: Native format defined by frame=xsd:nonNegativeIntege
         <member name="F:MS_Bruker_TDF_format">
 Bruker TDF format: Bruker TDF raw file format.
 </member>
-        <member name="F:MS_mean_inverse_reduced_ion_mobility_array">
-mean inverse reduced ion mobility array: Array of drift times or inverse reduced ion mobilities, averaged from a matrix of binned m/z and ion mobility values, corresponding to a spectrum of individual peaks encoded with an m/z array.
+        <member name="F:MS_mean_ion_mobility_array">
+mean ion mobility array: Array of drift times, averaged from a matrix of binned m/z and ion mobility values, corresponding to a spectrum of individual peaks encoded with an m/z array.
 </member>
         <member name="F:MS_inverse_reduced_ion_mobility">
 inverse reduced ion mobility: Ion mobility measurement for an ion or spectrum of ions as measured in an ion mobility mass spectrometer. This might refer to the central value of a bin into which all ions within a narrow range of mobilities have been aggregated.
@@ -25789,8 +26305,8 @@ ICAT heavy reagent: The name of the sample labelled with the heavy ICAT label.
         <member name="F:MS_ICAT_reagent">
 ICAT reagent: Isotope coded affinity tag reagent.
 </member>
-        <member name="F:MS_quantification_reagent">
-quantification reagent: Reagent used in labeled quantification methods.
+        <member name="F:MS_sample_label">
+sample label: Reagent used in labeled quantification methods.
 </member>
         <member name="F:MS_mzTab">
 mzTab: Tabular result format for proteomics and metabolomics experiments.
@@ -26731,6 +27247,9 @@ XPRESS: A program in the TPP that calculates PSM-level abundances based on 2-cha
         <member name="F:MS_ProteinProphet">
 ProteinProphet: A program in the TPP that calculates protein-level probabilities based on input PSM or peptide-level probabilities from PeptideProphet or iProphet. The output is written in the protXML format.
 </member>
+        <member name="F:MS_InterProphet">
+InterProphet (iProphet): A program in the TPP that calculates distinct peptide probabilities based on several lines of corroborating evidence including search results from multiple search engines via the pepXML format.
+</member>
         <member name="F:MS_iProphet">
 iProphet: A program in the TPP that calculates distinct peptide probabilities based on several lines of corroborating evidence including search results from multiple search engines via the pepXML format.
 </member>
@@ -27484,11 +28003,11 @@ inlet temperature: The temperature of the inlet of a mass spectrometer.
         <member name="F:MS_inlet_attribute">
 inlet attribute: Inlet properties that are associated with a value.
 </member>
-        <member name="F:MS_light_labeled_sample">
-light labeled sample (unlabeled sample): A sample that has not been labelled or modified. This is often referred to as \"light\" to distinguish from \"heavy\".
+        <member name="F:MS_light_sample">
+light sample (label free sample): A sample that has not been labelled or modified. This is often referred to as \"light\" to distinguish from \"heavy\".
 </member>
-        <member name="F:MS_unlabeled_sample">
-unlabeled sample: A sample that has not been labelled or modified. This is often referred to as \"light\" to distinguish from \"heavy\".
+        <member name="F:MS_label_free_sample">
+label free sample: A sample that has not been labelled or modified. This is often referred to as \"light\" to distinguish from \"heavy\".
 </member>
         <member name="F:MS_dataset_submitter">
 dataset submitter: A person who submits a dataset to a repository.
@@ -29204,22 +29723,22 @@ X!Tandem: X!Tandem was used to analyze the spectra.
 OMSSA: Open Mass Spectrometry Search Algorithm was used to analyze the spectra.
 </member>
         <member name="F:MS_CRM_chromatogram_OBSOLETE">
-CRM chromatogram (consecutive reaction monitoring chromatogram): Chromatogram created by creating an array of the measurements of a series of monitored reactions at each time point.
+CRM chromatogram (consecutive reaction monitoring chromatogram): Representation of an array of the measurements of a series of monitored reactions versus time.
 </member>
         <member name="F:MS_consecutive_reaction_monitoring_chromatogram_OBSOLETE">
-consecutive reaction monitoring chromatogram: Chromatogram created by creating an array of the measurements of a series of monitored reactions at each time point.
+consecutive reaction monitoring chromatogram: Representation of an array of the measurements of a series of monitored reactions versus time.
 </member>
         <member name="F:MS_SRM_chromatogram">
-SRM chromatogram (selected reaction monitoring chromatogram): Chromatogram created by creating an array of the measurements of a selectively monitored reaction at each time point.
+SRM chromatogram (selected reaction monitoring chromatogram): Representation of an array of the measurements of a selectively monitored reaction versus time.
 </member>
         <member name="F:MS_selected_reaction_monitoring_chromatogram">
-selected reaction monitoring chromatogram: Chromatogram created by creating an array of the measurements of a selectively monitored reaction at each time point.
+selected reaction monitoring chromatogram: Representation of an array of the measurements of a selectively monitored reaction versus time.
 </member>
         <member name="F:MS_SIM_chromatogram">
-SIM chromatogram (selected ion monitoring chromatogram): Chromatogram created by creating an array of the measurements of a selectively monitored ion at each time point.
+SIM chromatogram (selected ion monitoring chromatogram): Representation of an array of the measurements of a selectively monitored ion versus time.
 </member>
         <member name="F:MS_selected_ion_monitoring_chromatogram">
-selected ion monitoring chromatogram: Chromatogram created by creating an array of the measurements of a selectively monitored ion at each time point.
+selected ion monitoring chromatogram: Representation of an array of the measurements of a selectively monitored ion versus time.
 </member>
         <member name="F:MS_peptide_modification_details">
 peptide modification details: The children of this term can be used to describe modifications.
@@ -30448,8 +30967,8 @@ database type: Database containing amino acid or nucleic acid sequences.
         <member name="F:MS_database_release_date_OBSOLETE">
 database release date: OBSOLETE: Use attribute in mzIdentML instead. Release date of the search database.
 </member>
-        <member name="F:MS_database_version_OBSOLETE">
-database version: OBSOLETE: Use attribute in mzIdentML instead. Version of the search database.
+        <member name="F:MS_database_version">
+database version: Version of the search database. In mzIdentML use the attribute instead.
 </member>
         <member name="F:MS_database_original_uri">
 database original uri: URI, from where the search database was originally downloaded.
@@ -30857,19 +31376,19 @@ Bruker BAF format: Bruker BAF raw file format.
 counts per second: The number of counted events observed per second in one or a group of elements of a detector.
 </member>
         <member name="F:MS_emission_chromatogram">
-emission chromatogram: The measurement of light emitted by the sample as a function of the retention time.
+emission chromatogram: Representation of light emitted by the sample versus time.
 </member>
         <member name="F:MS_absorption_chromatogram">
-absorption chromatogram: The measurement of light absorbed by the sample as a function of the retention time.
+absorption chromatogram: Representation of light absorbed by the sample versus time.
 </member>
         <member name="F:MS_EMR_radiation_chromatogram">
-EMR radiation chromatogram (electromagnetic radiation chromatogram): The measurement of electromagnetic properties as a function of the retention time.
+EMR radiation chromatogram (electromagnetic radiation chromatogram): Representation of electromagnetic properties versus time.
 </member>
         <member name="F:MS_electromagnetic_radiation_chromatogram">
-electromagnetic radiation chromatogram: The measurement of electromagnetic properties as a function of the retention time.
+electromagnetic radiation chromatogram: Representation of electromagnetic properties versus time.
 </member>
-        <member name="F:MS_mass_chromatogram">
-mass chromatogram: A plot of the relative abundance of a beam or other collection of ions as a function of the retention time.
+        <member name="F:MS_ion_current_chromatogram">
+ion current chromatogram: Representation of the current of ions versus time.
 </member>
         <member name="F:MS_chromatogram_title">
 chromatogram title: A free-form text title describing a chromatogram.
@@ -31439,19 +31958,19 @@ data processing parameter: Data processing parameter used in the data processing
 low intensity threshold: Threshold below which some action is taken.
 </member>
         <member name="F:MS_basepeak_chromatogram">
-basepeak chromatogram: Chromatogram created by creating an array of the most intense peaks at each time point.
+basepeak chromatogram: Representation of an array of the most intense peaks versus time.
 </member>
         <member name="F:MS_SIC_chromatogram">
-SIC chromatogram (selected ion current chromatogram): Chromatogram created by creating an array of the measurements of a specific single ion current at each time point.
+SIC chromatogram (selected ion current chromatogram): Representation of an array of the measurements of a specific single ion current versus time.
 </member>
         <member name="F:MS_selected_ion_current_chromatogram">
-selected ion current chromatogram: Chromatogram created by creating an array of the measurements of a specific single ion current at each time point.
+selected ion current chromatogram: Representation of an array of the measurements of a specific single ion current versus time.
 </member>
         <member name="F:MS_chromatogram_type">
-chromatogram type: Broad category or type of a chromatogram.
+chromatogram type: Type of chromatogram measurement being represented.
 </member>
         <member name="F:MS_chromatogram">
-chromatogram: The representation of detector response versus time.
+chromatogram: Representation of a chromatographic separation attribute measurement versus time.
 </member>
         <member name="F:MS_image_current_detector">
 image current detector (inductive detector): Inductive detector.
@@ -32885,10 +33404,10 @@ unified atomic mass unit: A non-SI unit of mass (u) defined as one twelfth of ^1
 transmission: The ratio of the number of ions leaving a region of a mass spectrometer to the number entering that region.
 </member>
         <member name="F:MS_TIC_chromatogram">
-TIC chromatogram (total ion current chromatogram): Chromatogram obtained by plotting the total ion current detected in each of a series of mass spectra recorded as a function of retention time.
+TIC chromatogram (total ion current chromatogram): Representation of the total ion current detected in each of a series of mass spectra versus time.
 </member>
         <member name="F:MS_total_ion_current_chromatogram">
-total ion current chromatogram: Chromatogram obtained by plotting the total ion current detected in each of a series of mass spectra recorded as a function of retention time.
+total ion current chromatogram: Representation of the total ion current detected in each of a series of mass spectra versus time.
 </member>
         <member name="F:MS_mass_resolving_power_OBSOLETE">
 mass resolving power: In a mass spectrum, the observed mass divided by the difference between two masses that can be separated. The method by which delta m was obtained and the mass at which the measurement was made should be reported.
@@ -33733,149 +34252,170 @@ sample name: A reference string relevant to the sample under study.
         <member name="F:MS_sample_number">
 sample number: A reference number relevant to the sample under study.
 </member>
+        <member name="F:PEFF_initiator_methionine">
+initiator methionine: N-terminal methionine residue of a protein that can be co-translationally cleaved.
+</member>
+        <member name="F:PEFF_propeptide">
+propeptide: Short peptide that is cleaved off a newly synthesized protein and generally immediately degraded in the process of protein maturation, and is not a signal peptide or transit peptide.
+</member>
+        <member name="F:PEFF_Comment">
+Comment: PEFF keyword for the individual protein entry comment. It is discouraged to put parsable information here. This is only for free-text commentary.
+</member>
+        <member name="F:PEFF_PEFF_molecule_processing_keyword">
+PEFF molecule processing keyword: PEFF keyword describing the type of processing event being described.
+</member>
+        <member name="F:PEFF_DisulfideBond">
+DisulfideBond: PEFF keyword for the disulfide bonds in this protein, constructed as a sets of annotation identifiers of two half-cystine modifications.
+</member>
+        <member name="F:PEFF_Proteoform">
+Proteoform: PEFF keyword for the proteoforms of this protein, constructed as a set of annotation identifiers.
+</member>
         <member name="F:PEFF_VariantComplex">
-VariantComplex: Simple sequence variation of a single amino acid change. A change to a stop codon is permitted with a * symbol. More complex variations must be encoded with the VariantComplex term.
+VariantComplex: PEFF keyword for a sequence variation that is more complex than a single amino acid change or change to a stop codon.
 </member>
         <member name="F:PEFF_VariantSimple">
-VariantSimple: Simple sequence variation of a single amino acid change. A change to a stop codon is permitted with a * symbol. More complex variations must be encoded with the VariantComplex term.
+VariantSimple: PEFF keyword for the simple sequence variation of a single amino acid change. A change to a stop codon is permitted with a * symbol. More complex variations must be encoded with the VariantComplex term.
 </member>
         <member name="F:PEFF_ModResUnimod">
-ModResUnimod: Modified residue with Unimod identifier.
+ModResUnimod: PEFF keyword for the modified residue with UniMod identifier.
 </member>
         <member name="F:PEFF_ID">
-ID: UniProtKB specific Protein identifier ID; a UniProtKB term.
+ID: PEFF keyword for the UniProtKB specific Protein identifier ID; a UniProtKB term.
 </member>
         <member name="F:PEFF_Domain">
-Domain: Sequence range of a domain.
+Domain: PEFF keyword for the sequence range of a domain.
 </member>
         <member name="F:PEFF_Crc64">
-Crc64: Sequence checksum in crc64.
+Crc64: PEFF keyword for the Sequence checksum in crc64.
 </member>
         <member name="F:PEFF_Conflict">
-Conflict: Sequence conflict; a UniProtKB term.
+Conflict: PEFF keyword for the sequence conflict; a UniProtKB term.
 </member>
-        <member name="F:PEFF_Transit">
-Transit: Sequence range of transit peptide.
+        <member name="F:PEFF_transit_peptide">
+transit peptide: Short peptide present at the N-terminus of a newly synthesized protein that helps the protein through the membrane of its destination organelle.
 </member>
-        <member name="F:PEFF_Signal">
-Signal: Sequence range of signal peptide.
+        <member name="F:PEFF_signal_peptide">
+signal peptide: Short peptide present at the N-terminus of a newly synthesized protein that is cleaved off and is not part of the final mature protein.
 </member>
-        <member name="F:PEFF_Chain">
-Chain: Sequence range of active processed polypeptide.
+        <member name="F:PEFF_mature_protein">
+mature protein: Portion of a newly synthesized protein that contributes to a final structure after other components such as signal peptides are removed.
 </member>
         <member name="F:PEFF_XRef">
-XRef: Cross-reference to an external resource.
+XRef: PEFF keyword for the cross-reference to an external resource.
 </member>
         <member name="F:PEFF_GO">
-GO: Gene Ontology code.
+GO: PEFF keyword for the Gene Ontology code.
 </member>
         <member name="F:PEFF_KW">
-KW: Entry associated keyword(s).
+KW: PEFF keyword for the entry associated keyword(s).
 </member>
         <member name="F:PEFF_CC">
-CC: Entry associated comment.
+CC: PEFF keyword for the entry associated comment.
 </member>
         <member name="F:PEFF_SeqStatus">
-SeqStatus: Sequence Status. Complete or Fragment.
+SeqStatus: PEFF keyword for the sequence status. Complete or Fragment.
 </member>
         <member name="F:PEFF_AltAC">
-AltAC: Alternative Accession Code.
+AltAC: PEFF keyword for the Alternative Accession Code.
 </member>
         <member name="F:PEFF_ModRes">
-ModRes: Modified residue without PSI-MOD identifier.
+ModRes: PEFF keyword for the modified residue without aPSI-MOD or UniMod identifier.
 </member>
         <member name="F:PEFF_ModResPsi">
-ModResPsi: Modified residue with PSI-MOD identifier.
+ModResPsi: PEFF keyword for the modified residue with PSI-MOD identifier.
 </member>
-        <member name="F:PEFF_Variant">
-Variant: DEPRECATED in favor of VariantSimple and VariantComplex. Former definition: Sequence variation (substitution, insertion, deletion).
+        <member name="F:PEFF_Variant_OBSOLETE">
+Variant: Sequence variation (substitution, insertion, deletion).
 </member>
         <member name="F:PEFF_Processed">
-Processed: Processed Molecule.
+Processed: PEFF keyword for information on how the full length original protein sequence can be processed into shorter components such as signal peptides and chains.
 </member>
         <member name="F:PEFF_PE">
-PE: Protein Evidence; A UniprotKB code.
+PE: PEFF keyword for the Protein Evidence; A UniProtKB code 1-5.
 </member>
         <member name="F:PEFF_EV">
-EV: Entry version.
+EV: PEFF keyword for the entry version.
 </member>
         <member name="F:PEFF_SV">
-SV: Sequence version.
+SV: PEFF keyword for the sequence version.
 </member>
         <member name="F:PEFF_Length">
-Length: Sequence length.
+Length: PEFF keyword for the sequence length.
 </member>
         <member name="F:PEFF_GName">
-GName: Gene name.
+GName: PEFF keyword for the gene name.
 </member>
         <member name="F:PEFF_TaxName">
-TaxName: Taxonomy name (latin or common name).
+TaxName: PEFF keyword for the taxonomy name (latin or common name).
 </member>
         <member name="F:PEFF_NcbiTaxId">
-NcbiTaxId: NCBI taxonomy identifier.
+NcbiTaxId: PEFF keyword for the NCBI taxonomy identifier.
 </member>
         <member name="F:PEFF_PName">
-PName: Protein Name, description.
+PName: PEFF keyword for the protein full name.
 </member>
-        <member name="F:PEFF_DbUniqueId">
-DbUniqueId: Sequence Database unique identifier.
+        <member name="F:PEFF_DbUniqueId_OBSOLETE">
+DbUniqueId: Sequence database unique identifier.
 </member>
-        <member name="F:PEFF_CustomTag">
-CustomTag: A tag (short string) used to categorize a sequence annotation (variant or modification).
+        <member name="F:PEFF_HasAnnotationIdentifiers">
+HasAnnotationIdentifiers: PEFF keyword that when set to 'true' indicates that entries in the database have identifiers for each annotation.
+</member>
+        <member name="F:PEFF_OptionalTagDef">
+OptionalTagDef: PEFF keyword for the short tag (abbreviation) and longer definition used to annotate a sequence annotation (such as variant or modification) in the OptionalTag location.
 </member>
         <member name="F:PEFF_ProteoformDb">
-ProteoformDb: Proteoform database flag.
+ProteoformDb: PEFF keyword that when set to 'true' indicates that the database contains complete proteoforms.
 </member>
         <member name="F:PEFF_GeneralComment">
-GeneralComment: PEFF file general comment.
+GeneralComment: PEFF keyword for a general comment.
 </member>
         <member name="F:PEFF_DatabaseDescription">
-DatabaseDescription: Short Description of the PEFF.
+DatabaseDescription: PEFF keyword for the short description of the PEFF file.
 </member>
         <member name="F:PEFF_SpecificValue">
-SpecificValue: PEFF specific values for a defined key.
+SpecificValue: PEFF keyword for the specific values for a custom key.
 </member>
         <member name="F:PEFF_SpecificKey">
-SpecificKey: Db specific information (not included in the current list of allowed keys).
+SpecificKey: PEFF keyword for database specific keywords not included in the current controlled vocabulary.
 </member>
         <member name="F:PEFF_SequenceType">
-SequenceType: Molecular type of the sequences.
+SequenceType: PEFF keyword for the molecular type of the sequences.
 </member>
         <member name="F:PEFF_Conversion">
-Conversion: Description of the conversion from original format to this current one.
+Conversion: PEFF keyword for the description of the conversion from original format to this current one.
 </member>
         <member name="F:PEFF_NumberOfEntries">
-NumberOfEntries: Number of sequence entries in the database.
+NumberOfEntries: PEFF keyword for the sumber of sequence entries in the database.
 </member>
         <member name="F:PEFF_DbDate_OBSOLETE">
-DbDate: Database date (release or file date of the source) according to database provider.
+DbDate: PEFF keyword for the database date (release or file date of the source) according to database provider.
 </member>
         <member name="F:PEFF_DbVersion">
-DbVersion: Database version (release date) according to database provider.
+DbVersion: PEFF keyword for the database version (release date) according to database provider.
 </member>
         <member name="F:PEFF_DbSource">
-DbSource: Source of the database file.
+DbSource: PEFF keyword for the source of the database file.
 </member>
         <member name="F:PEFF_Decoy">
-Decoy: Specifies whether the Sequence Database is a Decoy.
+Decoy: PEFF keyword for the specifying whether the sequence database is a decoy database.
 </member>
         <member name="F:PEFF_DbDescription">
-DbDescription: Sequence Database Short description.
+DbDescription: PEFF keyword for the sequence database short description.
 </member>
         <member name="F:PEFF_Prefix">
-Prefix: Sequence Database Prefix.
+Prefix: PEFF keyword for the sequence database prefix.
 </member>
         <member name="F:PEFF_DbName">
-DbName: Sequence Database Name.
+DbName: PEFF keyword for the sequence database name.
 </member>
-        <member name="F:PEFF_Individual_Sequence_Entries_Section_term">
-Individual Sequence Entries Section term: CV term that may appear in a PEFF Individual Entry Section.
+        <member name="F:PEFF_PEFF_file_sequence_entry_term">
+PEFF file sequence entry term: CV term that may appear in a description line of a PEFF file individual sequence entry.
 </member>
-        <member name="F:PEFF_File_Header_Section_term">
-File Header Section term: CV term that may appear in a PEFF File Header Section.
+        <member name="F:PEFF_PEFF_file_header_section_term">
+PEFF file header section term: CV term that may appear in a PEFF file header section.
 </member>
         <member name="F:PEFF_PEFF_CV_term">
-PEFF CV term: PSI Extended FASTA Format Controlled Vocabulary term.
+PEFF CV term: PSI Extended FASTA Format controlled vocabulary term.
 </member>
         <member name="F:MS_Proteomics_Standards_Initiative_Mass_Spectrometry_Vocabularies">
 Proteomics Standards Initiative Mass Spectrometry Vocabularies: Proteomics Standards Initiative Mass Spectrometry Vocabularies.
@@ -34210,6 +34750,7 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.ComponentList.analyzer(System.UInt64)'. -->
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.ComponentList.detector(System.UInt64)'. -->
         <!-- Discarding badly formed XML document comment for member 'T:pwiz.msdata.SpectrumList'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.SpectrumList.min_level_accepted(std.function<(pwiz.msdata.Spectrum!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)(pwiz.msdata.Spectrum!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced&)>)'. -->
         <!-- Discarding badly formed XML document comment for member 'T:pwiz.msdata.ChromatogramList'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.msdata.MSData.cvs'. -->
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.id.parse(std.basic_string<System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator<System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte>>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
@@ -34289,6 +34830,7 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.ComponentList.analyzer(System.UInt64)'. -->
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.ComponentList.detector(System.UInt64)'. -->
         <!-- Discarding badly formed XML document comment for member 'T:pwiz.msdata.SpectrumList'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.SpectrumList.min_level_accepted(std.function<(pwiz.msdata.Spectrum!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)(pwiz.msdata.Spectrum!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced&)>)'. -->
         <!-- Discarding badly formed XML document comment for member 'T:pwiz.msdata.ChromatogramList'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.msdata.MSData.cvs'. -->
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.id.parse(std.basic_string<System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator<System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte>>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
@@ -34369,6 +34911,7 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.ComponentList.analyzer(System.UInt64)'. -->
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.ComponentList.detector(System.UInt64)'. -->
         <!-- Discarding badly formed XML document comment for member 'T:pwiz.msdata.SpectrumList'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.SpectrumList.min_level_accepted(std.function<(pwiz.msdata.Spectrum!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)(pwiz.msdata.Spectrum!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced&)>)'. -->
         <!-- Discarding badly formed XML document comment for member 'T:pwiz.msdata.ChromatogramList'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.msdata.MSData.cvs'. -->
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.id.parse(std.basic_string<System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator<System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte>>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
@@ -34456,6 +34999,7 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.ComponentList.analyzer(System.UInt64)'. -->
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.ComponentList.detector(System.UInt64)'. -->
         <!-- Discarding badly formed XML document comment for member 'T:pwiz.msdata.SpectrumList'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.SpectrumList.min_level_accepted(std.function<(pwiz.msdata.Spectrum!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)(pwiz.msdata.Spectrum!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced&)>)'. -->
         <!-- Discarding badly formed XML document comment for member 'T:pwiz.msdata.ChromatogramList'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.msdata.MSData.cvs'. -->
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.id.parse(std.basic_string<System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator<System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte>>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
@@ -34746,6 +35290,7 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.ComponentList.analyzer(System.UInt64)'. -->
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.ComponentList.detector(System.UInt64)'. -->
         <!-- Discarding badly formed XML document comment for member 'T:pwiz.msdata.SpectrumList'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.SpectrumList.min_level_accepted(std.function<(pwiz.msdata.Spectrum!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)(pwiz.msdata.Spectrum!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced&)>)'. -->
         <!-- Discarding badly formed XML document comment for member 'T:pwiz.msdata.ChromatogramList'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.msdata.MSData.cvs'. -->
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.id.parse(std.basic_string<System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator<System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte>>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
@@ -35266,6 +35811,7 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.ComponentList.analyzer(System.UInt64)'. -->
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.ComponentList.detector(System.UInt64)'. -->
         <!-- Discarding badly formed XML document comment for member 'T:pwiz.msdata.SpectrumList'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.SpectrumList.min_level_accepted(std.function<(pwiz.msdata.Spectrum!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)(pwiz.msdata.Spectrum!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced&)>)'. -->
         <!-- Discarding badly formed XML document comment for member 'T:pwiz.msdata.ChromatogramList'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.msdata.MSData.cvs'. -->
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.id.parse(std.basic_string<System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator<System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte>>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->
@@ -35424,6 +35970,7 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.ComponentList.analyzer(System.UInt64)'. -->
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.ComponentList.detector(System.UInt64)'. -->
         <!-- Discarding badly formed XML document comment for member 'T:pwiz.msdata.SpectrumList'. -->
+        <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.SpectrumList.min_level_accepted(std.function<(pwiz.msdata.Spectrum!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)(pwiz.msdata.Spectrum!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced&)>)'. -->
         <!-- Discarding badly formed XML document comment for member 'T:pwiz.msdata.ChromatogramList'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.msdata.MSData.cvs'. -->
         <!-- Discarding badly formed XML document comment for member 'M:pwiz.msdata.id.parse(std.basic_string<System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator<System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte>>!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)'. -->

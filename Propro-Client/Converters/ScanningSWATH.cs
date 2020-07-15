@@ -158,12 +158,10 @@ namespace AirdPro.Converters
             }
         }
 
-        private void clearCache()
+        new private void clearCache()
         {
             rangeMap = Hashtable.Synchronized(new Hashtable());
             ms2Map = Hashtable.Synchronized(new Hashtable());
-
         }
-       
     }
 }

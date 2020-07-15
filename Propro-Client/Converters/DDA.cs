@@ -77,13 +77,13 @@ namespace AirdPro.Converters
             jobInfo.log("Start Processing MS1 List");
         }
 
-        private string getMsLevel(int index)
+        new private string getMsLevel(int index)
         {
             return spectrumList.spectrum(index).cvParamChild(CVID.MS_ms_level).value.ToString();
         }
 
         //建立Ms1Scan的索引
-        private TempIndex parseMS1(Spectrum spectrum, int index)
+        new private TempIndex parseMS1(Spectrum spectrum, int index)
         {
             TempIndex ms1 = new TempIndex();
             ms1.level = 1;
@@ -100,7 +100,7 @@ namespace AirdPro.Converters
         }
 
         //建立Ms2Scan的索引
-        private TempIndex parseMS2(Spectrum spectrum, int index, int parentIndex)
+        new private TempIndex parseMS2(Spectrum spectrum, int index, int parentIndex)
         {
             TempIndex ms2 = new TempIndex();
             ms2.level = 2;
@@ -140,7 +140,7 @@ namespace AirdPro.Converters
             return ms2;
         }
 
-        private void addToMS2Map(TempIndex ms2Index)
+        new private void addToMS2Map(TempIndex ms2Index)
         {
             if (ms2Table.Contains(ms2Index.pNum))
             {

@@ -14,6 +14,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using AirdPro.Domains;
+using pwiz.CLI.analysis;
 using ByteOrder = AirdPro.Constants.ByteOrder;
 using Software = pwiz.CLI.msdata.Software;
 
@@ -99,8 +100,8 @@ namespace AirdPro.Converters
 
         protected void compress(Spectrum spectrum, TempScan ts, int msLevel)
         {
-            BinaryData mzData = spectrum.getMZArray().data;
-            BinaryData intData = spectrum.getIntensityArray().data;
+            BinaryDataDouble mzData = spectrum.getMZArray().data;
+            BinaryDataDouble intData = spectrum.getIntensityArray().data;
 
             List<int> mzList = new List<int>();
             List<float> intensityList = new List<float>();
@@ -178,7 +179,9 @@ namespace AirdPro.Converters
             jobInfo.log("Prepare to Parse Vendor File", "Prepare");
             msd = new MSDataFile(jobInfo.inputFilePath);
             jobInfo.log("Adapting Vendor File API", "Adapting");
-            
+
+            List<string> filter = new List<string>();
+            SpectrumListFactory.wrap(msd, filter); //这一步操作可以帮助加快Wiff文件的初始化速度
             spectrumList = msd.run.spectrumList;
             if (spectrumList == null || spectrumList.empty())
             {
@@ -188,11 +191,6 @@ namespace AirdPro.Converters
             {
                 jobInfo.log("Adapting Finished");
             }
-            //            ReaderList readers = ReaderList.FullReaderList;
-            //            MSDataList msdList = new MSDataList();
-            //            ReaderConfig rc = new ReaderConfig();
-            //            rc.ignoreZeroIntensityPoints = true;
-            //            readers.read(jobInfo.inputFilePath, msdList, rc);
 
             if (jobInfo.format.Equals("WIFF"))
             {
