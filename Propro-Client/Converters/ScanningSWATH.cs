@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Threading.Tasks;
+using AirdPro.Domains.Convert;
 
 namespace AirdPro.Converters
 {
@@ -16,7 +17,7 @@ namespace AirdPro.Converters
         Hashtable rangeMap = Hashtable.Synchronized(new Hashtable());//用于存储TargetMZ-SwathIndex
         Hashtable ms2Map = Hashtable.Synchronized(new Hashtable());//用于存储TargetMZ-List<TempScan>
 
-        public ScanningSWATH(ConvertJobInfo jobInfo) : base(jobInfo) { }
+        public ScanningSWATH(JobInfo jobInfo) : base(jobInfo) { }
 
         public override void doConvert()
         {

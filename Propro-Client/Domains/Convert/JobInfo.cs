@@ -5,70 +5,57 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace AirdPro.Domains
-{
-    public class ConvertJobInfo
+namespace AirdPro.Domains.Convert
+{ 
+    public class JobInfo
     {
         //以C:/data/plasma.wiff为例
 
         //C:/data/plasma.wiff,作为job的ID存在
         public string jobId;
-        //DIA-Swath,PRM,Fill Info. see ExperimentType
+        //用于转换的参数
+        public JobParams jobParams;
+        //DIA-Swath,PRM,DDA. see ExperimentType
         public string type;
         //当前任务的状态
-        public string status = "Ready";
+        public string status;
         //文件的格式,全部大写: WIFF, RAW
         public string format;
         //C:/data/plasma.wiff
         public string inputFilePath;
-        //D://aird
+        //转换后的文件输出路径 D://aird
         public string outputFolderPath;
-        //plasma
+        //文件本名 plasma
         public string airdFileName;
-        //D://aird
+        //例如: D://aird
         public string airdFilePath;
-        //D://aird/plasma.json
+        //例如: D://aird/plasma.json
         public string airdJsonFilePath;
-        //忽略intensity为0的数据
-        public Boolean ignoreZeroIntensity = true;
-        //对intensity是否求log10以降低精度
-        public Boolean log2 = true;
-        //是否使用无损的mz(精确到小数点后5位),否则精确到小数点后3位
-        public Boolean usingLosslessMz = false;
-
-        public Boolean threadAccelerate = true;
-
+        //任务运行时产生的日志
         public List<Log> logs = new List<Log>();
-
+        //任务运行时产生的进度信息
         private IProgress<string> progress;
-
         //任务的线程名称
         public string threadId;
-        //额外的文件后缀名称
-        public string suffix;
-        //任务的创建人
-        public string creator;
 
         public CancellationTokenSource cancellationTokenSource;
 
-        public ConvertJobInfo(string inputFilePath, string outputFolderPath, 
-            string type, Boolean ignoreZeroIntensity, Boolean log2, 
-            Boolean threadAccelerate, Boolean usingLosslessMz, 
-            string suffix, ListViewItem item)
+        public JobInfo()
+        {
+        }
+
+        public JobInfo(string inputFilePath, string outputFolderPath, 
+            string type, JobParams jobParams, ListViewItem item)
         {
             this.jobId = inputFilePath;
             this.inputFilePath = inputFilePath;
             this.outputFolderPath = outputFolderPath;
-            this.ignoreZeroIntensity = ignoreZeroIntensity;
-            this.log2 = log2;
             this.type = type;
-            this.suffix = suffix;
-            this.threadAccelerate = threadAccelerate;
-            this.usingLosslessMz = usingLosslessMz;
+            this.jobParams = jobParams;
             format = Path.GetExtension(inputFilePath).Replace(".","").ToUpper();
             airdFileName = FileNameUtil.buildOutputFileName(inputFilePath);
-            airdFilePath = Path.Combine(outputFolderPath, airdFileName + suffix + ".aird");
-            airdJsonFilePath = Path.Combine(outputFolderPath, airdFileName + suffix + ".json");
+            airdFilePath = Path.Combine(outputFolderPath, airdFileName + jobParams.suffix + ".aird");
+            airdJsonFilePath = Path.Combine(outputFolderPath, airdFileName + jobParams.suffix + ".json");
             this.cancellationTokenSource = new CancellationTokenSource();
             this.progress = new Progress<string>((progressValue) =>
             {
@@ -76,7 +63,7 @@ namespace AirdPro.Domains
             });
         }
 
-        public ConvertJobInfo log(string content)
+        public JobInfo log(string content)
         {
             Log log = new Log(DateTime.Now, content);
             logs.Add(log);
@@ -84,7 +71,7 @@ namespace AirdPro.Domains
             return this;
         }
 
-        public ConvertJobInfo log(string content, string progressReport)
+        public JobInfo log(string content, string progressReport)
         {
             progress.Report(progressReport);
             if (content != null)
@@ -114,11 +101,11 @@ namespace AirdPro.Domains
             jobInfo += "airdFileName:" + airdFileName + "\r\n";
             jobInfo += "airdFilePath:" + airdFilePath + "\r\n";
             jobInfo += "airdJsonFilePath:" + airdJsonFilePath + "\r\n";
-            jobInfo += "ignoreZeroIntensity:" + ignoreZeroIntensity + "\r\n";
-            jobInfo += "suffix:" + suffix + "\r\n";
+            jobInfo += "ignoreZeroIntensity:" + jobParams.ignoreZeroIntensity + "\r\n";
+            jobInfo += "suffix:" + jobParams.suffix + "\r\n";
             jobInfo += "threadId:" + threadId + "\r\n";
-            jobInfo += "ThreadAccelerate:" + threadAccelerate + "\r\n";
-            jobInfo += "usingLosslessMz:" + usingLosslessMz + "\r\n";
+            jobInfo += "ThreadAccelerate:" + jobParams.threadAccelerate + "\r\n";
+            jobInfo += "mzPrecision:" + jobParams.mzPrecision + "\r\n";
             return jobInfo;
         }
     }

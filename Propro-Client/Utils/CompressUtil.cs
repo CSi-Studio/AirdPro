@@ -10,7 +10,7 @@ namespace AirdPro.Utils
     internal class CompressUtil
     {
         //使用zlib将byte数组压缩
-        public static byte[] compressWithZlib(byte[] data)
+        public static byte[] zlibEncoder(byte[] data)
         {
             using (var ms = new MemoryStream())
             {
@@ -21,44 +21,44 @@ namespace AirdPro.Utils
             }
         }
 
-        //使用zlib将byte数组解压缩
-        public static byte[] decompressWithZlib(byte[] data)
-        {
-            return ZlibStream.UncompressBuffer(data);
-        }
-
         //使用zlib将int数组压缩为byte数组
-        public static byte[] compressWithZlib(int[] target)
+        public static byte[] zlibEncoder(int[] target)
         {
             var targetArray = intToByte(target);
-            var compressedArray = compressWithZlib(targetArray);
+            var compressedArray = zlibEncoder(targetArray);
             return compressedArray;
         }
 
         //使用zlib将float数组压缩为byte数组
-        public static byte[] compressWithZlib(float[] target)
+        public static byte[] zlibEncoder(float[] target)
         {
             var targetArray = floatToByte(target);
-            var compressedArray = compressWithZlib(targetArray);
+            var compressedArray = zlibEncoder(targetArray);
             return compressedArray;
         }
 
+        //使用zlib将byte数组解压缩
+        public static byte[] zlibDecoder(byte[] data)
+        {
+            return ZlibStream.UncompressBuffer(data);
+        }
+
         //使用zlib将byte数组解压缩为float数组
-        public static float[] decompressToFloatWithZlib(byte[] compressed)
+        public static float[] zlibDecoderToFloat(byte[] compressed)
         {
             byte[] array = ZlibStream.UncompressBuffer(compressed);
             return byteToFloat(array);
         }
 
         //使用zlib将byte数组解压缩为int数组
-        public static int[] decompressToIntWithZlib(byte[] compressed)
+        public static int[] zlibDecoderToInt(byte[] compressed)
         {
             byte[] array = ZlibStream.UncompressBuffer(compressed);
             return byteToInt(array);
         }
 
         //使用PFor算法将排序了的int数组进行压缩,注意:target数组必须是排序后的数组
-        public static int[] compressWithPFor(int[] uncompressed)
+        public static int[] fastPForEncoder(int[] uncompressed)
         {
             var codec = new SkippableIntegratedComposition(new IntegratedBinaryPacking(), new IntegratedVariableByte());
             var compressed = new int[uncompressed.Length + 1024];
@@ -72,7 +72,7 @@ namespace AirdPro.Utils
         }
 
         //使用PFor算法对已经压缩的int数组进行解压缩
-        public static int[] decompressWithPFor(int[] compressed)
+        public static int[] fastPForDecoder(int[] compressed)
         {
             var codec = new SkippableIntegratedComposition(new IntegratedBinaryPacking(), new IntegratedVariableByte());
             var size = compressed[0];

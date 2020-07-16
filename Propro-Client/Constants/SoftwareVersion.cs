@@ -2,8 +2,8 @@
 {
     class SoftwareVersion
     {
-        public static int AIRD_VERSION = 4;
-        public static string CLIENT_VERSION = "2.1.0";
+        public static int AIRD_VERSION = 5;
+        public static string CLIENT_VERSION = "2.2.0";
         public static string CLIENT_VERSION_DESCRIPTION = "正式命名为AirdPro";
 
         public static string getVersion()

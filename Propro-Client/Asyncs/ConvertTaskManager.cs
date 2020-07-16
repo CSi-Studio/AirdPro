@@ -3,23 +3,26 @@ using AirdPro.Domains;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using AirdPro.Converters;
+using AirdPro.Domains.Convert;
+using static AirdPro.Constants.ProcessingStatus;
 
 namespace AirdPro.Asyncs
 {
     internal class ConvertTaskManager
     {
         //需要进行处理的Job
-        private Queue<ConvertJobInfo> jobQueue = new Queue<ConvertJobInfo>();
+        private Queue<JobInfo> jobQueue = new Queue<JobInfo>();
         TaskFactory fac = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(1));
 
         //全部的Job信息
         public Hashtable jobTable = new Hashtable();
         public Hashtable errorJob = new Hashtable();
 
-        public void pushJob(ConvertJobInfo job)
+        public void pushJob(JobInfo job)
         {
             if (errorJob.Contains(job.jobId))
             {
@@ -38,14 +41,14 @@ namespace AirdPro.Asyncs
             jobTable.Clear();
         }
 
-        public List<ConvertResult> run()
+        public List<Result> run()
         {
             
             if (jobQueue.Count != 0)
             {
                 while (true)
                 {
-                    ConvertJobInfo jobInfo = null;
+                    JobInfo jobInfo = null;
                     try
                     {
                         jobInfo = jobQueue.Dequeue();
@@ -60,7 +63,7 @@ namespace AirdPro.Asyncs
                         {
                             Console.Out.WriteLine("Start Convert");
                             jobInfo.threadId = "ThreadId:" + Thread.CurrentThread.ManagedThreadId;
-                            jobInfo.status = "Running";
+                            jobInfo.status = RUNNING;
                             if (jobInfo.type.Equals(ExperimentType.DIA_SWATH))
                             {
                                 new DIASWATH(jobInfo).doConvert();
@@ -77,12 +80,12 @@ namespace AirdPro.Asyncs
                             {
                                 new DDA(jobInfo).doConvert();
                             }
-                            jobInfo.status = "Finished";
+                            jobInfo.status = FINISHED;
                         }
                         catch (Exception ex)
                         {
                             jobInfo.log(ex.ToString(),"Error");
-                            jobInfo.status = "Error";
+                            jobInfo.status = ERROR;
                             errorJob.Add(jobInfo.jobId, jobInfo);
 //                            MessageBox.Show(ex.ToString());
                         }

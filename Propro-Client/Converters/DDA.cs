@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using AirdPro.Domains.Convert;
 
 namespace AirdPro.Converters
 {
@@ -14,7 +15,7 @@ namespace AirdPro.Converters
     {
         private int progress;
 
-        public DDA(ConvertJobInfo jobInfo) : base(jobInfo) {}
+        public DDA(JobInfo jobInfo) : base(jobInfo) {}
 
         public override void doConvert()
         {

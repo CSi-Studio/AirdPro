@@ -13,7 +13,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using AirdPro.Domains;
+using AirdPro.Domains.Convert;
 using pwiz.CLI.analysis;
 using ByteOrder = AirdPro.Constants.ByteOrder;
 using Software = pwiz.CLI.msdata.Software;
@@ -25,7 +25,7 @@ namespace AirdPro.Converters
         private static readonly object calculateSHA1Mutex = new object();
         protected MSData msd;
         protected SpectrumList spectrumList;
-        protected ConvertJobInfo jobInfo;
+        protected JobInfo jobInfo;
         protected Stopwatch stopwatch = new Stopwatch();
         protected FileStream airdStream;
         protected FileStream airdJsonStream;
@@ -47,7 +47,7 @@ namespace AirdPro.Converters
         // protected SortedSet<int> ms2mzSet = new SortedSet<int>();//用于存放MS2的mz编码表
 
         protected static double log2 = Math.Log(2);
-        public IConverter(ConvertJobInfo jobInfo)
+        public IConverter(JobInfo jobInfo)
         {
             this.jobInfo = jobInfo;
         }
@@ -105,15 +105,15 @@ namespace AirdPro.Converters
 
             List<int> mzList = new List<int>();
             List<float> intensityList = new List<float>();
-            int precision = jobInfo.usingLosslessMz ? 10000 : 1000;
+            int precision = (int) (1 / jobInfo.jobParams.mzPrecision);
             for (int t = 0; t < mzData.Count; t++)
             {
-                if (jobInfo.ignoreZeroIntensity && intData[t] == 0) continue;
+                if (jobInfo.jobParams.ignoreZeroIntensity && intData[t] == 0) continue;
 
                 int mz = Convert.ToInt32(mzData[t] * precision);
                 mzList.Add(mz);
 
-                if (jobInfo.log2)
+                if (jobInfo.jobParams.log2)
                 {
                     intensityList.Add(Convert.ToSingle(Math.Round(Math.Log(intData[t])/log2, 3))); //取log10并且精确到小数点后3位
                 }
@@ -125,9 +125,9 @@ namespace AirdPro.Converters
             }
 
             float[] intensityArray = intensityList.ToArray();
-            int[] mzArray = CompressUtil.compressWithPFor(mzList.ToArray());
-            ts.mzArrayBytes = CompressUtil.compressWithZlib(mzArray);
-            ts.intArrayBytes = CompressUtil.compressWithZlib(intensityArray);
+            int[] mzArray = CompressUtil.fastPForEncoder(mzList.ToArray());
+            ts.mzArrayBytes = CompressUtil.zlibEncoder(mzArray);
+            ts.intArrayBytes = CompressUtil.zlibEncoder(intensityArray);
         }
 
         protected void outputWithOrder(Hashtable table, SwathIndex swathIndex)
@@ -313,7 +313,7 @@ namespace AirdPro.Converters
             swathIndex.level = 1;
             swathIndex.startPtr = startPosition;
 
-            if (jobInfo.threadAccelerate)
+            if (jobInfo.jobParams.threadAccelerate)
             {
                 Hashtable table = Hashtable.Synchronized(new Hashtable());
                 //使用多线程处理数据提取与压缩
@@ -354,9 +354,9 @@ namespace AirdPro.Converters
             //Basic Job Info
             airdInfo.airdPath = jobInfo.airdFilePath;
             airdInfo.fileSize = fileSize;
-            airdInfo.creator = jobInfo.creator;
             airdInfo.createDate = new DateTime();
             airdInfo.type = jobInfo.type;
+            airdInfo.creator = jobInfo.jobParams.creator;
             //Scan index and window range info
             airdInfo.rangeList = ranges;
             airdInfo.indexList = indexList;
@@ -451,11 +451,11 @@ namespace AirdPro.Converters
             Compressor mzCompressor = new Compressor();
             mzCompressor.method = Compressor.METHOD_PFOR + "," + Compressor.METHOD_ZLIB;
             mzCompressor.target = Compressor.TARGET_MZ;
-            mzCompressor.precision = jobInfo.usingLosslessMz ? 10000 : 1000;
+            mzCompressor.precision = (int)(1/jobInfo.jobParams.mzPrecision);
             coms.Add(mzCompressor);
             //intensity compressor
             Compressor intCompressor = new Compressor();
-            if (jobInfo.log2)
+            if (jobInfo.jobParams.log2)
             {
                 intCompressor.method = Compressor.METHOD_LOG10 + "," + Compressor.METHOD_ZLIB;
             }
@@ -470,7 +470,7 @@ namespace AirdPro.Converters
 
             //Features Info
             featuresMap.Add(Features.raw_id, msd.id);
-            featuresMap.Add(Features.ignore_zero_intensity, jobInfo.ignoreZeroIntensity);
+            featuresMap.Add(Features.ignore_zero_intensity, jobInfo.jobParams.ignoreZeroIntensity);
             featuresMap.Add(Features.source_file_format, jobInfo.format);
             featuresMap.Add(Features.aird_version, SoftwareVersion.AIRD_VERSION);
             featuresMap.Add(Features.propro_client_version, SoftwareVersion.CLIENT_VERSION);

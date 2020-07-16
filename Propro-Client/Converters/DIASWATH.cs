@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using AirdPro.Domains.Convert;
 
 namespace AirdPro.Converters
 {
@@ -19,7 +20,7 @@ namespace AirdPro.Converters
         private int swathChilds;//每一个SWATH块中Scan的数量
         private int progress;//进度计数器
         private Hashtable rangeTable = new Hashtable(); //用于存放SWATH窗口的信息,key为mz
-        public DIASWATH(ConvertJobInfo jobInfo) : base(jobInfo) {}
+        public DIASWATH(JobInfo jobInfo) : base(jobInfo) {}
 
         public override void doConvert()
         {
@@ -180,7 +181,7 @@ namespace AirdPro.Converters
                 jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);
                 progress++;
 
-                if (jobInfo.threadAccelerate)
+                if (jobInfo.jobParams.threadAccelerate)
                 {
                     Hashtable table = Hashtable.Synchronized(new Hashtable());
                     //使用多线程处理数据提取与压缩
@@ -218,7 +219,7 @@ namespace AirdPro.Converters
             for (int i = 0; i < rangeSize; i++)
             {
                 jobInfo.log("开始解析第" + (i + 1) + "批数据,共" + rangeSize + "批");
-                buildSwathBlock(i, jobInfo.threadAccelerate);
+                buildSwathBlock(i, jobInfo.jobParams.threadAccelerate);
             }
         }
 

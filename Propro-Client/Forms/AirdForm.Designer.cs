@@ -43,7 +43,8 @@
             this.btnDeleteFiles = new System.Windows.Forms.Button();
             this.btnChooseDIASwathFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
-            this.cbLosslessMz = new System.Windows.Forms.CheckBox();
+            this.lblMzPrecision = new System.Windows.Forms.Label();
+            this.cbMzPrecision = new System.Windows.Forms.ComboBox();
             this.cbThreadAccelerate = new System.Windows.Forms.CheckBox();
             this.cbLog2 = new System.Windows.Forms.CheckBox();
             this.lblFileNameTag = new System.Windows.Forms.Label();
@@ -55,6 +56,9 @@
             this.btnChooseFolder = new System.Windows.Forms.Button();
             this.tbFolderPath = new System.Windows.Forms.TextBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.btnCheckGPU = new System.Windows.Forms.Button();
+            this.lblOperator = new System.Windows.Forms.Label();
+            this.tbOperator = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -80,7 +84,11 @@
             // 
             // container.Panel2
             // 
-            this.container.Panel2.Controls.Add(this.cbLosslessMz);
+            this.container.Panel2.Controls.Add(this.lblOperator);
+            this.container.Panel2.Controls.Add(this.tbOperator);
+            this.container.Panel2.Controls.Add(this.btnCheckGPU);
+            this.container.Panel2.Controls.Add(this.lblMzPrecision);
+            this.container.Panel2.Controls.Add(this.cbMzPrecision);
             this.container.Panel2.Controls.Add(this.cbThreadAccelerate);
             this.container.Panel2.Controls.Add(this.cbLog2);
             this.container.Panel2.Controls.Add(this.lblFileNameTag);
@@ -176,11 +184,21 @@
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
             // 
-            // cbLosslessMz
+            // lblMzPrecision
             // 
-            resources.ApplyResources(this.cbLosslessMz, "cbLosslessMz");
-            this.cbLosslessMz.Name = "cbLosslessMz";
-            this.cbLosslessMz.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.lblMzPrecision, "lblMzPrecision");
+            this.lblMzPrecision.Name = "lblMzPrecision";
+            // 
+            // cbMzPrecision
+            // 
+            resources.ApplyResources(this.cbMzPrecision, "cbMzPrecision");
+            this.cbMzPrecision.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMzPrecision.FormattingEnabled = true;
+            this.cbMzPrecision.Items.AddRange(new object[] {
+            resources.GetString("cbMzPrecision.Items"),
+            resources.GetString("cbMzPrecision.Items1"),
+            resources.GetString("cbMzPrecision.Items2")});
+            this.cbMzPrecision.Name = "cbMzPrecision";
             // 
             // cbThreadAccelerate
             // 
@@ -251,6 +269,24 @@
             this.timer.Enabled = true;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
+            // btnCheckGPU
+            // 
+            resources.ApplyResources(this.btnCheckGPU, "btnCheckGPU");
+            this.btnCheckGPU.Name = "btnCheckGPU";
+            this.btnCheckGPU.UseVisualStyleBackColor = true;
+            this.btnCheckGPU.Click += new System.EventHandler(this.btnCheckGPU_Click);
+            // 
+            // lblOperator
+            // 
+            resources.ApplyResources(this.lblOperator, "lblOperator");
+            this.lblOperator.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.lblOperator.Name = "lblOperator";
+            // 
+            // tbOperator
+            // 
+            resources.ApplyResources(this.tbOperator, "tbOperator");
+            this.tbOperator.Name = "tbOperator";
+            // 
             // AirdForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -293,7 +329,11 @@
         private System.Windows.Forms.CheckBox cbThreadAccelerate;
         private System.Windows.Forms.Button btnChooseSSwathFiles;
         private System.Windows.Forms.Button btnChooseDDAFiles;
-        private System.Windows.Forms.CheckBox cbLosslessMz;
+        private System.Windows.Forms.ComboBox cbMzPrecision;
+        private System.Windows.Forms.Label lblMzPrecision;
+        private System.Windows.Forms.Button btnCheckGPU;
+        private System.Windows.Forms.Label lblOperator;
+        private System.Windows.Forms.TextBox tbOperator;
     }
 }
 

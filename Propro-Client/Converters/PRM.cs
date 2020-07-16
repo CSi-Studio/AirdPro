@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading.Tasks;
 using AirdPro.Constants;
 using AirdPro.Domains.Aird;
+using AirdPro.Domains.Convert;
 
 namespace AirdPro.Converters
 {
@@ -13,7 +14,7 @@ namespace AirdPro.Converters
     {
         private int progress;//进度计数器
 
-        public PRM(ConvertJobInfo jobInfo) : base(jobInfo) {}
+        public PRM(JobInfo jobInfo) : base(jobInfo) {}
 
         public override void doConvert()
         {
@@ -115,7 +116,7 @@ namespace AirdPro.Converters
                 jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);
                 progress++;
 
-                if (jobInfo.threadAccelerate)
+                if (jobInfo.jobParams.threadAccelerate)
                 {
                     Hashtable table = Hashtable.Synchronized(new Hashtable());
                     //使用多线程处理数据提取与压缩

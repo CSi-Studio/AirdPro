@@ -1,9 +1,10 @@
 ﻿using AirdPro.Asyncs;
 using AirdPro.Constants;
-using AirdPro.Domains;
 using System;
 using System.Collections;
 using System.Windows.Forms;
+using AirdPro.Domains.Convert;
+using Alea;
 
 namespace AirdPro.Forms
 {
@@ -20,6 +21,7 @@ namespace AirdPro.Forms
         private void ProproForm_Load(object sender, EventArgs e)
         {
             this.Text = SoftwareVersion.getVersion();
+            this.cbMzPrecision.SelectedIndex = 1;
         }
 
         private void btnChooseFiles_Click(object sender, EventArgs e)
@@ -115,14 +117,14 @@ namespace AirdPro.Forms
             
             foreach (ListViewItem item in lvFileList.Items)
             {
-                ConvertJobInfo jobInfo = new ConvertJobInfo(item.SubItems[0].Text, tbFolderPath.Text,
-                    item.SubItems[1].Text,
-                    cbIsZeroIntensityIgnore.Checked,
-                    cbLog2.Checked,
-                    cbThreadAccelerate.Checked,
-                    cbLosslessMz.Checked,
-                    tbFileNameSuffix.Text,
-                    item);
+                JobParams jobParams = new JobParams();
+                jobParams.ignoreZeroIntensity = cbIsZeroIntensityIgnore.Checked;
+                jobParams.log2 = cbLog2.Checked;
+                jobParams.threadAccelerate = cbThreadAccelerate.Checked;
+                jobParams.suffix = tbFileNameSuffix.Text;
+                jobParams.creator = tbOperator.Text;
+                JobInfo jobInfo = new JobInfo(item.SubItems[0].Text, tbFolderPath.Text,
+                    item.SubItems[1].Text, jobParams, item);
                 convertTaskManager.pushJob(jobInfo);
             }
 
@@ -188,10 +190,10 @@ namespace AirdPro.Forms
             {
                 ListViewItem item = lvFileList.SelectedItems[lvFileList.SelectedItems.Count - 1];
                 string content = "";
-                ConvertJobInfo job;
+                JobInfo job = null;
                 if (convertTaskManager.jobTable[item.Text] != null)
                 {
-                    job = convertTaskManager.jobTable[item.Text] as ConvertJobInfo;
+                    job = convertTaskManager.jobTable[item.Text] as JobInfo;
                     
                     for (int i=job.logs.Count-1;i>=0;i--)
                     {
@@ -202,7 +204,7 @@ namespace AirdPro.Forms
                 }
                 else if (convertTaskManager.errorJob[item.Text] != null)
                 {
-                    job = convertTaskManager.errorJob[item.Text] as ConvertJobInfo;
+                    job = convertTaskManager.errorJob[item.Text] as JobInfo;
 
                     for (int i = job.logs.Count - 1; i >= 0; i--)
                     {
@@ -267,5 +269,19 @@ namespace AirdPro.Forms
             tbFileNameSuffix.Text = suffix;
         }
 
+        private void btnCheckGPU_Click(object sender, EventArgs e)
+        {
+            var devices = Device.Devices;
+            string message = "";
+            foreach (var device in devices)
+            {
+                message += "Name:" + device.Name+ "\r\n";
+                message += "Cores:" + device.Cores + "\r\n";
+                message += "Memory:" + device.TotalMemory/1024/1024/1024+ "GB\r\n";
+            } 
+
+            MessageBox.Show(message);
+
+        }
     }
 }
