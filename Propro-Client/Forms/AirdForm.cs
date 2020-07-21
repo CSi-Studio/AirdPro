@@ -123,6 +123,7 @@ namespace AirdPro.Forms
                 jobParams.threadAccelerate = cbThreadAccelerate.Checked;
                 jobParams.suffix = tbFileNameSuffix.Text;
                 jobParams.creator = tbOperator.Text;
+                jobParams.mzPrecision = Double.Parse(cbMzPrecision.Text);
                 JobInfo jobInfo = new JobInfo(item.SubItems[0].Text, tbFolderPath.Text,
                     item.SubItems[1].Text, jobParams, item);
                 convertTaskManager.pushJob(jobInfo);

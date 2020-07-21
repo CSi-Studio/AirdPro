@@ -69,8 +69,8 @@ namespace AirdPro.Converters
                 }
 
                 WindowRange range = new WindowRange(mz - lowerOffset, mz + upperOffset, mz);
-                SwathIndex swathIndex = new SwathIndex();
-                swathIndex.range = range;
+                BlockIndex swathIndex = new BlockIndex();
+                swathIndex.setWindowRange(range);
                 rangeMap.Add(mz, swathIndex);
                 ms2Map.Add(mz, ArrayList.Synchronized(new ArrayList()));
 
@@ -98,7 +98,7 @@ namespace AirdPro.Converters
             mzKeys.Sort(); //按mz顺序进行排序
             foreach (float key in mzKeys)
             {
-                SwathIndex swathIndex = (SwathIndex)rangeMap[key];
+                BlockIndex swathIndex = (BlockIndex)rangeMap[key];
                 ArrayList tempScanList = (ArrayList)ms2Map[key];
                 swathIndex.level = 2;
                 swathIndex.startPtr = startPosition;
@@ -110,7 +110,7 @@ namespace AirdPro.Converters
 
                 swathIndex.endPtr = startPosition;
                 indexList.Add(swathIndex);
-                ranges.Add(swathIndex.range);
+                ranges.Add(swathIndex.getWindowRange());
             }
         }
 
@@ -135,8 +135,8 @@ namespace AirdPro.Converters
                 float upperOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_upper_offset);
 
                 WindowRange range = new WindowRange(mz - lowerOffset, mz + upperOffset, mz);
-                SwathIndex addIndex = new SwathIndex();
-                addIndex.range = range;
+                BlockIndex addIndex = new BlockIndex();
+                addIndex.setWindowRange(range);
                 rangeMap.Add(targetMz, addIndex);
                 ms2Map.Add(targetMz, ArrayList.Synchronized(new ArrayList()));
                 ms2List = (ArrayList)ms2Map[targetMz];

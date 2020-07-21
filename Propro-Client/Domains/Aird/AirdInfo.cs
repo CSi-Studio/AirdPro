@@ -35,15 +35,10 @@ namespace AirdPro.Domains.Aird
 
         /**
          * [核心字段]
-         * 用于存储SWATH Block的索引（适用于PRM/DIA/ScanningSwath）
+         * 用于存储Block的索引（适用于PRM/DIA/ScanningSwath/DDA）
+         * 当存储SWATH窗口信息,窗口已经根据overlap进行过调整,并且由于同一个SWATH窗口中所有的MS2的precursor都相同,因此本数组的长度恒为1
          */
-        public List<SwathIndex> indexList;
-
-        /**
-         * [核心字段]
-         * 用于存储Block的索引（适用于DDA）
-         */
-        public List<BlockIndex> blockIndexList;
+        public List<BlockIndex> indexList;
 
         /**
          * [核心字段]

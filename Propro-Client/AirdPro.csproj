@@ -232,7 +232,6 @@
     <Compile Include="Domains\Aird\Features.cs" />
     <Compile Include="Domains\Aird\Instrument.cs" />
     <Compile Include="Domains\Aird\Software.cs" />
-    <Compile Include="Domains\Aird\SwathIndex.cs" />
     <Compile Include="Domains\Aird\TempScan.cs" />
     <Compile Include="Domains\Convert\JobInfo.cs" />
     <Compile Include="Domains\Log.cs" />

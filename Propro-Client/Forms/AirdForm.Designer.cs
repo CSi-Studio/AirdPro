@@ -43,6 +43,9 @@
             this.btnDeleteFiles = new System.Windows.Forms.Button();
             this.btnChooseDIASwathFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
+            this.lblOperator = new System.Windows.Forms.Label();
+            this.tbOperator = new System.Windows.Forms.TextBox();
+            this.btnCheckGPU = new System.Windows.Forms.Button();
             this.lblMzPrecision = new System.Windows.Forms.Label();
             this.cbMzPrecision = new System.Windows.Forms.ComboBox();
             this.cbThreadAccelerate = new System.Windows.Forms.CheckBox();
@@ -56,9 +59,6 @@
             this.btnChooseFolder = new System.Windows.Forms.Button();
             this.tbFolderPath = new System.Windows.Forms.TextBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.btnCheckGPU = new System.Windows.Forms.Button();
-            this.lblOperator = new System.Windows.Forms.Label();
-            this.tbOperator = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -184,6 +184,24 @@
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
             // 
+            // lblOperator
+            // 
+            resources.ApplyResources(this.lblOperator, "lblOperator");
+            this.lblOperator.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.lblOperator.Name = "lblOperator";
+            // 
+            // tbOperator
+            // 
+            resources.ApplyResources(this.tbOperator, "tbOperator");
+            this.tbOperator.Name = "tbOperator";
+            // 
+            // btnCheckGPU
+            // 
+            resources.ApplyResources(this.btnCheckGPU, "btnCheckGPU");
+            this.btnCheckGPU.Name = "btnCheckGPU";
+            this.btnCheckGPU.UseVisualStyleBackColor = true;
+            this.btnCheckGPU.Click += new System.EventHandler(this.btnCheckGPU_Click);
+            // 
             // lblMzPrecision
             // 
             resources.ApplyResources(this.lblMzPrecision, "lblMzPrecision");
@@ -268,24 +286,6 @@
             // 
             this.timer.Enabled = true;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
-            // 
-            // btnCheckGPU
-            // 
-            resources.ApplyResources(this.btnCheckGPU, "btnCheckGPU");
-            this.btnCheckGPU.Name = "btnCheckGPU";
-            this.btnCheckGPU.UseVisualStyleBackColor = true;
-            this.btnCheckGPU.Click += new System.EventHandler(this.btnCheckGPU_Click);
-            // 
-            // lblOperator
-            // 
-            resources.ApplyResources(this.lblOperator, "lblOperator");
-            this.lblOperator.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lblOperator.Name = "lblOperator";
-            // 
-            // tbOperator
-            // 
-            resources.ApplyResources(this.tbOperator, "tbOperator");
-            this.tbOperator.Name = "tbOperator";
             // 
             // AirdForm
             // 

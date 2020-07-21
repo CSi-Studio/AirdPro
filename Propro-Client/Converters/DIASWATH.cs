@@ -173,10 +173,10 @@ namespace AirdPro.Converters
                 List<TempIndex> tempIndexList = ms2Table[key] as List<TempIndex>;
                 WindowRange range = rangeTable[key] as WindowRange;
                 //为每一个key组创建一个SwathBlock
-                SwathIndex swathIndex = new SwathIndex();
+                BlockIndex swathIndex = new BlockIndex();
                 swathIndex.level = 2;
                 swathIndex.startPtr = startPosition;
-                swathIndex.range = range;
+                swathIndex.setWindowRange(range);
 
                 jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);
                 progress++;
@@ -230,7 +230,7 @@ namespace AirdPro.Converters
         private void buildSwathBlock(int rangeIndex, Boolean threadAccelerate)
         {
 
-            SwathIndex swathIndex = new SwathIndex();
+            BlockIndex swathIndex = new BlockIndex();
             swathIndex.startPtr = startPosition;
 
             //处理MS1 SWATH块
@@ -241,7 +241,7 @@ namespace AirdPro.Converters
             else
             {
                 swathIndex.level = 2;
-                swathIndex.range = ranges[rangeIndex - 1];
+                swathIndex.setWindowRange(ranges[rangeIndex - 1]);
             }
 
             long countForRead = 0;
@@ -321,7 +321,7 @@ namespace AirdPro.Converters
         }
 
         //将谱图进行压缩并且存储文件流中
-        private void compressToFile(int num, Spectrum spectrum, SwathIndex swathIndex)
+        private void compressToFile(int num, Spectrum spectrum, BlockIndex swathIndex)
         {
             try
             {
@@ -335,12 +335,12 @@ namespace AirdPro.Converters
             }
         }
 
-        private void check(Spectrum spectrum, SwathIndex index)
+        private void check(Spectrum spectrum, BlockIndex index)
         {
             float mz, lowerOffset;
             mz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
             lowerOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_lower_offset);
-            if (!index.range.start.Equals(mz-lowerOffset))
+            if (!index.getWindowRange().start.Equals(mz-lowerOffset))
             {
                 jobInfo.log("Error!" + spectrum.index);
             }

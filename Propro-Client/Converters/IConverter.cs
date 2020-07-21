@@ -11,9 +11,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AirdPro.Domains.Convert;
+using Alea;
+using Alea.Parallel;
 using pwiz.CLI.analysis;
 using ByteOrder = AirdPro.Constants.ByteOrder;
 using Software = pwiz.CLI.msdata.Software;
@@ -30,7 +33,7 @@ namespace AirdPro.Converters
         protected FileStream airdStream;
         protected FileStream airdJsonStream;
         protected List<WindowRange> ranges = new List<WindowRange>();//SWATH Window的窗口
-        protected List<SwathIndex> indexList = new List<SwathIndex>();//用于存储的全局的SWATH List
+        protected List<BlockIndex> indexList = new List<BlockIndex>();//用于存储的全局的SWATH List
         protected List<BlockIndex> blockIndexList = new List<BlockIndex>();//适用于DDA的块索引
         protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable());//用于存放MS2的索引信息,key为mz
 
@@ -40,6 +43,7 @@ namespace AirdPro.Converters
         protected long startPosition;//文件指针
         protected int totalSize;//总计的谱图数目
 
+        protected int mzPrecision;
         // protected Hashtable ms2IntTable = Hashtable.Synchronized(new Hashtable());//用于存放MS2的intensity编码表,key为intensity,value为自增键
         // protected SortedSet<float> ms2IntensitySet = new SortedSet<float>();//用于存放MS2的mz编码表
         //
@@ -50,6 +54,7 @@ namespace AirdPro.Converters
         public IConverter(JobInfo jobInfo)
         {
             this.jobInfo = jobInfo;
+            mzPrecision = (int)Math.Ceiling(1 / jobInfo.jobParams.mzPrecision);
         }
 
         public abstract void doConvert();
@@ -102,17 +107,18 @@ namespace AirdPro.Converters
         {
             BinaryDataDouble mzData = spectrum.getMZArray().data;
             BinaryDataDouble intData = spectrum.getIntensityArray().data;
-
+            
             List<int> mzList = new List<int>();
             List<float> intensityList = new List<float>();
-            int precision = (int) (1 / jobInfo.jobParams.mzPrecision);
+            // int[] mzArray = new int[mzData.Count];
+            // float[] intensityArray = new float[intData.Count];
             for (int t = 0; t < mzData.Count; t++)
             {
                 if (jobInfo.jobParams.ignoreZeroIntensity && intData[t] == 0) continue;
-
-                int mz = Convert.ToInt32(mzData[t] * precision);
+            
+                int mz = Convert.ToInt32(mzData[t] * mzPrecision);
                 mzList.Add(mz);
-
+            
                 if (jobInfo.jobParams.log2)
                 {
                     intensityList.Add(Convert.ToSingle(Math.Round(Math.Log(intData[t])/log2, 3))); //取log10并且精确到小数点后3位
@@ -124,13 +130,14 @@ namespace AirdPro.Converters
                 }
             }
 
-            float[] intensityArray = intensityList.ToArray();
-            int[] mzArray = CompressUtil.fastPForEncoder(mzList.ToArray());
-            ts.mzArrayBytes = CompressUtil.zlibEncoder(mzArray);
-            ts.intArrayBytes = CompressUtil.zlibEncoder(intensityArray);
+            // float[] intensityArray = intensityList.ToArray();
+            // int[] mzArray = CompressUtil.fastPForEncoder(mzList.ToArray());
+            int[] compressedMzArray = CompressUtil.fastPForEncoder(mzList.ToArray());
+            ts.mzArrayBytes = CompressUtil.zlibEncoder(compressedMzArray);
+            ts.intArrayBytes = CompressUtil.zlibEncoder(intensityList.ToArray());
         }
 
-        protected void outputWithOrder(Hashtable table, SwathIndex swathIndex)
+        protected void outputWithOrder(Hashtable table, BlockIndex swathIndex)
         {
             ArrayList keys = new ArrayList(table.Keys);
             keys.Sort();
@@ -142,7 +149,7 @@ namespace AirdPro.Converters
         }
 
         //注意:本函数会操作startPosition这个全局变量
-        protected void addToIndex(SwathIndex index, TempScan ts)
+        protected void addToIndex(BlockIndex index, TempScan ts)
         {
             index.nums.Add(ts.num);
             index.rts.Add(ts.rt);
@@ -237,7 +244,7 @@ namespace AirdPro.Converters
         public void clearCache()
         {
             ranges = new List<WindowRange>();
-            indexList = new List<SwathIndex>();
+            indexList = new List<BlockIndex>();
         }
 
         protected void addToMS2Map(TempIndex ms2Index)
@@ -309,7 +316,7 @@ namespace AirdPro.Converters
 
         protected void parseAndStoreMS1Block()
         {
-            SwathIndex swathIndex = new SwathIndex();
+            BlockIndex swathIndex = new BlockIndex();
             swathIndex.level = 1;
             swathIndex.startPtr = startPosition;
 
@@ -360,7 +367,6 @@ namespace AirdPro.Converters
             //Scan index and window range info
             airdInfo.rangeList = ranges;
             airdInfo.indexList = indexList;
-            airdInfo.blockIndexList = blockIndexList;
             //Instrument Info
             InstrumentConfiguration ic = msd.instrumentConfigurationList[0];
             Instrument instrument = new Instrument();
@@ -451,7 +457,7 @@ namespace AirdPro.Converters
             Compressor mzCompressor = new Compressor();
             mzCompressor.method = Compressor.METHOD_PFOR + "," + Compressor.METHOD_ZLIB;
             mzCompressor.target = Compressor.TARGET_MZ;
-            mzCompressor.precision = (int)(1/jobInfo.jobParams.mzPrecision);
+            mzCompressor.precision = (int) (Math.Ceiling(1 / jobInfo.jobParams.mzPrecision));
             coms.Add(mzCompressor);
             //intensity compressor
             Compressor intCompressor = new Compressor();

@@ -104,13 +104,13 @@ namespace AirdPro.Converters
             {
                 List<TempIndex> tempIndexList = ms2Table[key] as List<TempIndex>;
                 //为每一个key组创建一个SwathBlock
-                SwathIndex swathIndex = new SwathIndex();
+                BlockIndex swathIndex = new BlockIndex();
                 swathIndex.level = 2;
                 swathIndex.startPtr = startPosition;
                 
                 //顺便创建一个WindowRanges,用以让Propro服务端快速获取全局的窗口数目和mz区间
                 WindowRange range = new WindowRange(tempIndexList[0].mzStart, tempIndexList[0].mzEnd, key);
-                swathIndex.range = range;
+                swathIndex.setWindowRange(range);
                 ranges.Add(range);
 
                 jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);
