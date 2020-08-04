@@ -1,7 +1,7 @@
 # AirdPro
 
 ## Version Description
-### V3.0.0
+### V1.0.0
 - Supporting SWATH/DIA Format 
 - Supporting DDA Format 
 - Supporting PRM Format
