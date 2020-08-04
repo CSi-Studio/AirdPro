@@ -34,7 +34,6 @@ namespace AirdPro.Converters
         protected FileStream airdJsonStream;
         protected List<WindowRange> ranges = new List<WindowRange>();//SWATH Window的窗口
         protected List<BlockIndex> indexList = new List<BlockIndex>();//用于存储的全局的SWATH List
-        protected List<BlockIndex> blockIndexList = new List<BlockIndex>();//适用于DDA的块索引
         protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable());//用于存放MS2的索引信息,key为mz
 
         protected List<TempIndex> ms1List = new List<TempIndex>(); //用于存放MS1索引及基础信息
@@ -189,6 +188,7 @@ namespace AirdPro.Converters
 
             List<string> filter = new List<string>();
             SpectrumListFactory.wrap(msd, filter); //这一步操作可以帮助加快Wiff文件的初始化速度
+            
             spectrumList = msd.run.spectrumList;
             if (spectrumList == null || spectrumList.empty())
             {

@@ -177,7 +177,7 @@ namespace AirdPro.Converters
             }
 
             blockIndex.endPtr = startPosition;
-            blockIndexList.Add(blockIndex);
+            indexList.Add(blockIndex);
         }
 
         //处理MS2
@@ -215,7 +215,7 @@ namespace AirdPro.Converters
 
                 blockIndex.rangeList = ms2Ranges;
                 blockIndex.endPtr = startPosition;
-                blockIndexList.Add(blockIndex);
+                indexList.Add(blockIndex);
                 jobInfo.log("MS2 Group Finished:" + progress + "/" + ms2Table.Keys.Count);
             }
         }
