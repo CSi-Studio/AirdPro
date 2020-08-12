@@ -2,13 +2,20 @@
 
 namespace AirdPro.Domains.Aird
 {
-    //仪器设备与信号信息
+    /**
+     * General information about the MS instrument.
+     */
     public class Instrument
     {
         //设备仪器厂商
         public string manufacturer;
+
         //设备类型
         public string model;
+
+        public string ionisation;
+
+        public string resolution;
         
         public List<string> source = new List<string>();
         //分析方式

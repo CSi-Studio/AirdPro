@@ -59,9 +59,9 @@ namespace AirdPro.Converters
             Spectrum spectrum = spectrumList.spectrum(0);
             while (spectrum.cvParamChild(CVID.MS_ms_level).value.ToString().Equals(MsLevel.MS2))
             {
-                float mz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
-                float lowerOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_lower_offset);
-                float upperOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_upper_offset);
+                double mz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
+                double lowerOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_lower_offset);
+                double upperOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_upper_offset);
 
                 if (rangeMap.Contains(mz))
                 {
@@ -122,7 +122,7 @@ namespace AirdPro.Converters
             {
                 return;
             }
-            float targetMz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
+            double targetMz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
             ArrayList ms2List = null;
             if (rangeMap.Contains(targetMz))
             {
@@ -130,9 +130,9 @@ namespace AirdPro.Converters
             }
             else
             {
-                float mz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
-                float lowerOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_lower_offset);
-                float upperOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_upper_offset);
+                double mz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
+                double lowerOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_lower_offset);
+                double upperOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_upper_offset);
 
                 WindowRange range = new WindowRange(mz - lowerOffset, mz + upperOffset, mz);
                 BlockIndex addIndex = new BlockIndex();
@@ -149,7 +149,7 @@ namespace AirdPro.Converters
             try
             {
                 TempScan ts = new TempScan(i, parseRT(spectrum.scanList.scans[0]));
-                compress(spectrum, ts, 2);
+                compress(spectrum, ts);
                 ms2List.Add(ts);
             }
             catch (Exception exception)

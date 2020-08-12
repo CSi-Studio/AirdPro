@@ -100,7 +100,7 @@ namespace AirdPro.Converters
         private void parseAndStoreMS2Block()
         {
             jobInfo.log("Start Processing MS2 List");
-            foreach (float key in ms2Table.Keys)
+            foreach (double key in ms2Table.Keys)
             {
                 List<TempIndex> tempIndexList = ms2Table[key] as List<TempIndex>;
                 //为每一个key组创建一个SwathBlock
@@ -124,7 +124,7 @@ namespace AirdPro.Converters
                     {
                         TempIndex index = tempIndexList[i];
                         TempScan ts = new TempScan(index.pNum, index.rt);
-                        compress(spectrumList.spectrum(index.num, true), ts, 2);
+                        compress(spectrumList.spectrum(index.num, true), ts);
                         //SwathIndex中只存储MS2谱图对应的MS1谱图的序号,其本身的序号已经没用了,不做存储,所以只存储了pNum
                         table.Add(i, ts);
                     });
@@ -136,7 +136,7 @@ namespace AirdPro.Converters
                     foreach (TempIndex index in tempIndexList)
                     {
                         TempScan ts = new TempScan(index.pNum, index.rt);
-                        compress(spectrumList.spectrum(index.num, true), ts, 2);
+                        compress(spectrumList.spectrum(index.num, true), ts);
                         //SwathIndex中只存储MS2谱图对应的MS1谱图的序号,其本身的序号已经没用了,不做存储
                         addToIndex(swathIndex, ts);
                     }

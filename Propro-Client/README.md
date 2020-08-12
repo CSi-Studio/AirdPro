@@ -5,6 +5,7 @@
 - Supporting SWATH/DIA Format 
 - Supporting DDA Format 
 - Supporting PRM Format
+- Supporting COMMON Format
 
 
 ## Software Description

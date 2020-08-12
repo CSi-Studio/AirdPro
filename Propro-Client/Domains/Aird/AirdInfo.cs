@@ -6,10 +6,15 @@ namespace AirdPro.Domains.Aird
     public class AirdInfo
     {
         /**
-         * 仪器设备信息
+         * Instrument information list
          */
-        public Instrument instrument;
-    
+        public List<Instrument> instruments;
+
+        /**
+         * dataProcessing information list
+         */
+        public List<DataProcessing> dataProcessings;
+
         /**
          * 处理的软件信息
          */
@@ -24,7 +29,7 @@ namespace AirdPro.Domains.Aird
          * [核心字段]
          * 数组压缩策略
          */
-        public List<Aird.Compressor> compressors;
+        public List<Compressor> compressors;
 
         /**
         * [核心字段]
@@ -42,7 +47,7 @@ namespace AirdPro.Domains.Aird
 
         /**
          * [核心字段]
-         * 实验类型,目前支持DIA_SWATH,PRM和SCANNING_SWATH三种
+         * 实验类型,目前支持DIA_SWATH,PRM,DDA,SCANNING_SWATH和COMMON 5种
          */
         public string type;
 
@@ -57,7 +62,11 @@ namespace AirdPro.Domains.Aird
         public long fileSize;
 
         /**
-         * 实验的创建者,本字段在被导入Propro Server时会被操作人覆盖
+         * 总计拥有的光谱数
+         */
+        public long totalScanCount;
+        /**
+         * 实验的创建者
          */
         public string creator;
 
@@ -70,6 +79,14 @@ namespace AirdPro.Domains.Aird
          * 特征键值对,详情见Features.cs
          */
         public string features;
-       
+
+        /**
+         * 是否忽略intensity为0的点
+         */
+        public bool ignoreZeroIntensityPoint = true;
+
+        public string version;
+
+        public int versionCode;
     }
 }

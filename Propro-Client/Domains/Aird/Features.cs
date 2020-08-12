@@ -19,8 +19,6 @@
         public static string source_file_format = "sourceFileFormat";
         //Aird文件版本码
         public static string aird_version = "aird_version";
-        //Propro Client软件版本号
-        public static string propro_client_version = "propro_client_version";
         //进行zlib压缩时使用的byteOrder编码,C#默认使用的是LITTLE_ENDIAN
         public static string byte_order = "byte_order";
 

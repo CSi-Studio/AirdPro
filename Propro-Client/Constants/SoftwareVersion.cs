@@ -1,14 +1,15 @@
 ﻿namespace AirdPro.Constants
 {
-    class SoftwareVersion
+    class SoftwareInfo
     {
-        public static int AIRD_VERSION = 5;
-        public static string CLIENT_VERSION = "1.0.0";
+        public static string VERSION = "1.0.0";
+        public static int VERSION_CODE = 1;
         public static string CLIENT_VERSION_DESCRIPTION = "正式命名为AirdPro,合并SWATHIndex与BlockIndex为BlockIndex";
+        public static string NAME = "AirdPro";
 
         public static string getVersion()
         {
-            return "AirdPro V" + SoftwareVersion.CLIENT_VERSION + " (Aird Version Code:" + SoftwareVersion.AIRD_VERSION + ")";
+            return "AirdPro V" + SoftwareInfo.VERSION + " (Aird Version Code:" + SoftwareInfo.VERSION_CODE + ")";
         }
 
         public static string getDescription()

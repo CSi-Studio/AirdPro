@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using AirdPro.Constants;
 using AirdPro.Domains.Aird;
+using AirdPro.Domains.Convert;
 using AirdPro.Utils;
-using AirdPro.Constants;
+using Newtonsoft.Json;
+using pwiz.CLI.analysis;
 using pwiz.CLI.cv;
 using pwiz.CLI.data;
 using pwiz.CLI.msdata;
@@ -11,14 +13,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AirdPro.Domains.Convert;
-using Alea;
-using Alea.Parallel;
-using pwiz.CLI.analysis;
 using ByteOrder = AirdPro.Constants.ByteOrder;
+using DataProcessing = pwiz.CLI.msdata.DataProcessing;
 using Software = pwiz.CLI.msdata.Software;
 
 namespace AirdPro.Converters
@@ -84,6 +82,11 @@ namespace AirdPro.Converters
             return spectrumList.spectrum(index).cvParamChild(CVID.MS_ms_level).value.ToString();
         }
 
+        protected string getMsLevel(Spectrum spectrum)
+        {
+            return spectrum.cvParamChild(CVID.MS_ms_level).value.ToString();
+        }
+
         protected void initDirectory()
         {
             Directory.CreateDirectory(Path.GetDirectoryName(jobInfo.airdFilePath));
@@ -102,15 +105,13 @@ namespace AirdPro.Converters
             return Convert.ToSingle(Math.Round(time, 3));
         }
 
-        protected void compress(Spectrum spectrum, TempScan ts, int msLevel)
+        protected void compress(Spectrum spectrum, TempScan ts)
         {
             BinaryDataDouble mzData = spectrum.getMZArray().data;
             BinaryDataDouble intData = spectrum.getIntensityArray().data;
             
             List<int> mzList = new List<int>();
             List<float> intensityList = new List<float>();
-            // int[] mzArray = new int[mzData.Count];
-            // float[] intensityArray = new float[intData.Count];
             for (int t = 0; t < mzData.Count; t++)
             {
                 if (jobInfo.jobParams.ignoreZeroIntensity && intData[t] == 0) continue;
@@ -136,14 +137,14 @@ namespace AirdPro.Converters
             ts.intArrayBytes = CompressUtil.zlibEncoder(intensityList.ToArray());
         }
 
-        protected void outputWithOrder(Hashtable table, BlockIndex swathIndex)
+        protected void outputWithOrder(Hashtable table, BlockIndex index)
         {
             ArrayList keys = new ArrayList(table.Keys);
             keys.Sort();
             foreach (int key in keys)
             {
                 TempScan tempScan = (TempScan)table[key];
-                addToIndex(swathIndex, tempScan);
+                addToIndex(index, tempScan);
             }
         }
 
@@ -159,15 +160,15 @@ namespace AirdPro.Converters
             airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
         }
 
-        protected float getPrecursorIsolationWindowParams(Spectrum spectrum, CVID cvid)
+        protected double getPrecursorIsolationWindowParams(Spectrum spectrum, CVID cvid)
         {
-            float result = -1;
+            double result = -1;
             int retryTimes = 3;
             while (result == -1 && retryTimes > 0)
             {
                 try
                 {
-                    result = (float) double.Parse(spectrum.precursors[0].isolationWindow.cvParamChild(cvid).value.ToString());
+                    result = double.Parse(spectrum.precursors[0].isolationWindow.cvParamChild(cvid).value.ToString());
                 }
                 catch (Exception e)
                 {
@@ -285,9 +286,9 @@ namespace AirdPro.Converters
             ms2.num = index;
             try
             {
-                float mz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
-                float lowerOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_lower_offset);
-                float upperOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_upper_offset);
+                double mz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
+                double lowerOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_lower_offset);
+                double upperOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_upper_offset);
 
                 ms2.mz = mz;
                 ms2.mzStart = mz - lowerOffset;
@@ -316,9 +317,9 @@ namespace AirdPro.Converters
 
         protected void parseAndStoreMS1Block()
         {
-            BlockIndex swathIndex = new BlockIndex();
-            swathIndex.level = 1;
-            swathIndex.startPtr = startPosition;
+            BlockIndex index = new BlockIndex();
+            index.level = 1;
+            index.startPtr = startPosition;
 
             if (jobInfo.jobParams.threadAccelerate)
             {
@@ -330,11 +331,10 @@ namespace AirdPro.Converters
 
                     TempIndex scanIndex = ms1List[i];
                     TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
-                    compress(spectrumList.spectrum(scanIndex.num, true), ts, 1);
-
+                    compress(spectrumList.spectrum(scanIndex.num, true), ts);
                     table.Add(i, ts);
                 });
-                outputWithOrder(table, swathIndex);
+                outputWithOrder(table, index);
             }
             else
             {
@@ -343,13 +343,13 @@ namespace AirdPro.Converters
                     jobInfo.log(null, "MS1:" + i + "/" + ms1List.Count);
                     TempIndex scanIndex = ms1List[i];
                     TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
-                    compress(spectrumList.spectrum(scanIndex.num, true), ts ,1);
-                    addToIndex(swathIndex, ts);
+                    compress(spectrumList.spectrum(scanIndex.num, true), ts);
+                    addToIndex(index, ts);
                 }
             }
 
-            swathIndex.endPtr = startPosition;
-            indexList.Add(swathIndex);
+            index.endPtr = startPosition;
+            indexList.Add(index);
         }
 
         protected AirdInfo buildBasicInfo()
@@ -363,73 +363,83 @@ namespace AirdPro.Converters
             airdInfo.fileSize = fileSize;
             airdInfo.createDate = new DateTime();
             airdInfo.type = jobInfo.type;
+            airdInfo.totalScanCount = msd.run.spectrumList.size();
             airdInfo.creator = jobInfo.jobParams.creator;
+
             //Scan index and window range info
             airdInfo.rangeList = ranges;
-            airdInfo.indexList = indexList;
-            //Instrument Info
-            InstrumentConfiguration ic = msd.instrumentConfigurationList[0];
-            Instrument instrument = new Instrument();
-            //仪器设备信息
-            if (jobInfo.format.Equals("WIFF"))
-            {
-                instrument.manufacturer = "SCIEX";
-            }
-            if (jobInfo.format.Equals("RAW"))
-            {
-                instrument.manufacturer = "THERMO FISHER";
-            }
 
-            //设备信息在不同的源文件格式中取法不同,有些是在instrumentConfigurationList中获取,有些是在paramGroups获取,因此出现了以下比较丑陋的写法
-            if (ic.cvParams.Count != 0)
+            //Block index
+            airdInfo.indexList = indexList;
+
+            //Instrument Info
+            List<Instrument> instruments = new List<Instrument>();
+            foreach (InstrumentConfiguration ic in msd.instrumentConfigurationList)
             {
-                foreach (CVParam cv in ic.cvParams)
+                Instrument instrument = new Instrument();
+                //仪器设备信息
+                if (jobInfo.format.Equals("WIFF"))
                 {
-                    featuresMap.Add(cv.name, cv.value);
+                    instrument.manufacturer = "SCIEX";
                 }
-                instrument.model = ic.cvParams[0].name;
-            }
-            else if (msd.paramGroups.Count != 0)
-            {
-                foreach (ParamGroup pg in msd.paramGroups)
+                if (jobInfo.format.Equals("RAW"))
                 {
-                    if (pg.cvParams.Count != 0)
+                    instrument.manufacturer = "THERMO FISHER";
+                }
+
+                //设备信息在不同的源文件格式中取法不同,有些是在instrumentConfigurationList中获取,有些是在paramGroups获取,因此出现了以下比较丑陋的写法
+                if (ic.cvParams.Count != 0)
+                {
+                    foreach (CVParam cv in ic.cvParams)
                     {
-                        foreach (CVParam cv in pg.cvParams)
+                        featuresMap.Add(cv.name, cv.value);
+                    }
+                    instrument.model = ic.cvParams[0].name;
+                }
+                else if (msd.paramGroups.Count != 0)
+                {
+                    foreach (ParamGroup pg in msd.paramGroups)
+                    {
+                        if (pg.cvParams.Count != 0)
                         {
-                            featuresMap.Add(cv.name, cv.value);
+                            foreach (CVParam cv in pg.cvParams)
+                            {
+                                if (!featuresMap.ContainsKey(cv.name))
+                                {
+                                    featuresMap.Add(cv.name, cv.value.ToString());
+                                }
+                            }
+                            instrument.model = pg.cvParams[0].name;
                         }
-                        instrument.model = pg.cvParams[0].name;
                     }
                 }
-            }
-          
-            foreach (Component component in ic.componentList)
-            {
-                switch (component.type)
+                foreach (Component component in ic.componentList)
                 {
-                    case ComponentType.ComponentType_Analyzer:
-                        foreach (CVParam cv in component.cvParams)
-                        {
-                            instrument.analyzer.Add(cv.name);
-                        }
-                        break;
-                    case ComponentType.ComponentType_Source:
-                        foreach (CVParam cv in component.cvParams)
-                        {
-                            instrument.source.Add(cv.name);
-                        }
-                        break;
-                    case ComponentType.ComponentType_Detector:
-                        foreach (CVParam cv in component.cvParams)
-                        {
-                            instrument.detector.Add(cv.name);
-                        }
-                        break;
+                    switch (component.type)
+                    {
+                        case ComponentType.ComponentType_Analyzer:
+                            foreach (CVParam cv in component.cvParams)
+                            {
+                                instrument.analyzer.Add(cv.name);
+                            }
+                            break;
+                        case ComponentType.ComponentType_Source:
+                            foreach (CVParam cv in component.cvParams)
+                            {
+                                instrument.source.Add(cv.name);
+                            }
+                            break;
+                        case ComponentType.ComponentType_Detector:
+                            foreach (CVParam cv in component.cvParams)
+                            {
+                                instrument.detector.Add(cv.name);
+                            }
+                            break;
+                    }
                 }
+                instruments.Add(instrument);
             }
-            
-            airdInfo.instrument = instrument;
+            airdInfo.instruments = instruments;
 
             //Software Info
             foreach (Software sof in msd.softwareList)
@@ -439,6 +449,11 @@ namespace AirdPro.Converters
                 software.version = sof.version;
                 softwares.Add(software);
             }
+            Domains.Aird.Software airdPro = new Domains.Aird.Software();
+            airdPro.name = SoftwareInfo.NAME;
+            airdPro.version = SoftwareInfo.VERSION;
+            airdPro.type = "DataFormatConversion";
+            softwares.Add(airdPro);
             airdInfo.softwares = softwares;
 
             //Parent Files Info
@@ -447,7 +462,8 @@ namespace AirdPro.Converters
                 ParentFile file = new ParentFile();
                 file.name = sf.name;
                 file.location = sf.location;
-                file.type = sf.id;
+                file.formatType = sf.id; 
+                parentFiles.Add(file);
             }
             airdInfo.parentFiles = parentFiles;
 
@@ -455,7 +471,8 @@ namespace AirdPro.Converters
             List<Compressor> coms = new List<Compressor>();
             //mz compressor
             Compressor mzCompressor = new Compressor();
-            mzCompressor.method = Compressor.METHOD_PFOR + "," + Compressor.METHOD_ZLIB;
+            mzCompressor.addMethod(Compressor.METHOD_PFOR);
+            mzCompressor.addMethod(Compressor.METHOD_ZLIB);
             mzCompressor.target = Compressor.TARGET_MZ;
             mzCompressor.precision = (int) (Math.Ceiling(1 / jobInfo.jobParams.mzPrecision));
             coms.Add(mzCompressor);
@@ -463,26 +480,27 @@ namespace AirdPro.Converters
             Compressor intCompressor = new Compressor();
             if (jobInfo.jobParams.log2)
             {
-                intCompressor.method = Compressor.METHOD_LOG10 + "," + Compressor.METHOD_ZLIB;
+                intCompressor.addMethod(Compressor.METHOD_LOG10);
+                intCompressor.addMethod(Compressor.METHOD_ZLIB);
             }
             else
             {
-                intCompressor.method = Compressor.METHOD_ZLIB;
+                intCompressor.addMethod(Compressor.METHOD_ZLIB);
             }
             
             intCompressor.target = Compressor.TARGET_INTENSITY;
             coms.Add(intCompressor);
             airdInfo.compressors = coms;
 
+            airdInfo.ignoreZeroIntensityPoint = jobInfo.jobParams.ignoreZeroIntensity;
             //Features Info
             featuresMap.Add(Features.raw_id, msd.id);
             featuresMap.Add(Features.ignore_zero_intensity, jobInfo.jobParams.ignoreZeroIntensity);
             featuresMap.Add(Features.source_file_format, jobInfo.format);
-            featuresMap.Add(Features.aird_version, SoftwareVersion.AIRD_VERSION);
-            featuresMap.Add(Features.propro_client_version, SoftwareVersion.CLIENT_VERSION);
             featuresMap.Add(Features.byte_order, ByteOrder.LITTLE_ENDIAN);
             airdInfo.features = FeaturesUtil.toString(featuresMap);
-
+            airdInfo.version = SoftwareInfo.VERSION;
+            airdInfo.versionCode = SoftwareInfo.VERSION_CODE;
             return airdInfo;
         }
 

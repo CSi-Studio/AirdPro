@@ -31,9 +31,10 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AirdForm));
             this.container = new System.Windows.Forms.SplitContainer();
-            this.btnChooseDDAFiles = new System.Windows.Forms.Button();
+            this.btnAddCommonFiles = new System.Windows.Forms.Button();
+            this.btnAddDDAFiles = new System.Windows.Forms.Button();
             this.btnChooseSSwathFiles = new System.Windows.Forms.Button();
-            this.btnChoosePRMFiles = new System.Windows.Forms.Button();
+            this.btnAddPRMFiles = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.lblFileSelectedInfo = new System.Windows.Forms.Label();
             this.lvFileList = new System.Windows.Forms.ListView();
@@ -41,11 +42,10 @@
             this.headerExpType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerProgress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnDeleteFiles = new System.Windows.Forms.Button();
-            this.btnChooseDIASwathFiles = new System.Windows.Forms.Button();
+            this.btnAddSWATHFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
             this.lblOperator = new System.Windows.Forms.Label();
             this.tbOperator = new System.Windows.Forms.TextBox();
-            this.btnCheckGPU = new System.Windows.Forms.Button();
             this.lblMzPrecision = new System.Windows.Forms.Label();
             this.cbMzPrecision = new System.Windows.Forms.ComboBox();
             this.cbThreadAccelerate = new System.Windows.Forms.CheckBox();
@@ -72,21 +72,21 @@
             // 
             // container.Panel1
             // 
-            this.container.Panel1.Controls.Add(this.btnChooseDDAFiles);
+            this.container.Panel1.Controls.Add(this.btnAddCommonFiles);
+            this.container.Panel1.Controls.Add(this.btnAddDDAFiles);
             this.container.Panel1.Controls.Add(this.btnChooseSSwathFiles);
-            this.container.Panel1.Controls.Add(this.btnChoosePRMFiles);
+            this.container.Panel1.Controls.Add(this.btnAddPRMFiles);
             this.container.Panel1.Controls.Add(this.btnClear);
             this.container.Panel1.Controls.Add(this.lblFileSelectedInfo);
             this.container.Panel1.Controls.Add(this.lvFileList);
             this.container.Panel1.Controls.Add(this.btnDeleteFiles);
-            this.container.Panel1.Controls.Add(this.btnChooseDIASwathFiles);
+            this.container.Panel1.Controls.Add(this.btnAddSWATHFiles);
             this.container.Panel1.Controls.Add(this.btnConvert);
             // 
             // container.Panel2
             // 
             this.container.Panel2.Controls.Add(this.lblOperator);
             this.container.Panel2.Controls.Add(this.tbOperator);
-            this.container.Panel2.Controls.Add(this.btnCheckGPU);
             this.container.Panel2.Controls.Add(this.lblMzPrecision);
             this.container.Panel2.Controls.Add(this.cbMzPrecision);
             this.container.Panel2.Controls.Add(this.cbThreadAccelerate);
@@ -101,26 +101,33 @@
             this.container.Panel2.Controls.Add(this.tbFolderPath);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
             // 
-            // btnChooseDDAFiles
+            // btnAddCommonFiles
             // 
-            resources.ApplyResources(this.btnChooseDDAFiles, "btnChooseDDAFiles");
-            this.btnChooseDDAFiles.Name = "btnChooseDDAFiles";
-            this.btnChooseDDAFiles.UseVisualStyleBackColor = true;
-            this.btnChooseDDAFiles.Click += new System.EventHandler(this.btnChooseDDAFile_Click);
+            resources.ApplyResources(this.btnAddCommonFiles, "btnAddCommonFiles");
+            this.btnAddCommonFiles.Name = "btnAddCommonFiles";
+            this.btnAddCommonFiles.UseVisualStyleBackColor = true;
+            this.btnAddCommonFiles.Click += new System.EventHandler(this.btnAddCommonFiles_Click);
+            // 
+            // btnAddDDAFiles
+            // 
+            resources.ApplyResources(this.btnAddDDAFiles, "btnAddDDAFiles");
+            this.btnAddDDAFiles.Name = "btnAddDDAFiles";
+            this.btnAddDDAFiles.UseVisualStyleBackColor = true;
+            this.btnAddDDAFiles.Click += new System.EventHandler(this.btnChooseDDAFile_Click);
             // 
             // btnChooseSSwathFiles
             // 
             resources.ApplyResources(this.btnChooseSSwathFiles, "btnChooseSSwathFiles");
             this.btnChooseSSwathFiles.Name = "btnChooseSSwathFiles";
             this.btnChooseSSwathFiles.UseVisualStyleBackColor = true;
-            this.btnChooseSSwathFiles.Click += new System.EventHandler(this.BtnChooseSSwathFiles_Click);
+            this.btnChooseSSwathFiles.Click += new System.EventHandler(this.btnChooseSSwathFiles_Click);
             // 
-            // btnChoosePRMFiles
+            // btnAddPRMFiles
             // 
-            resources.ApplyResources(this.btnChoosePRMFiles, "btnChoosePRMFiles");
-            this.btnChoosePRMFiles.Name = "btnChoosePRMFiles";
-            this.btnChoosePRMFiles.UseVisualStyleBackColor = true;
-            this.btnChoosePRMFiles.Click += new System.EventHandler(this.btnChoosePRMFiles_Click);
+            resources.ApplyResources(this.btnAddPRMFiles, "btnAddPRMFiles");
+            this.btnAddPRMFiles.Name = "btnAddPRMFiles";
+            this.btnAddPRMFiles.UseVisualStyleBackColor = true;
+            this.btnAddPRMFiles.Click += new System.EventHandler(this.btnChoosePRMFiles_Click);
             // 
             // btnClear
             // 
@@ -170,12 +177,12 @@
             this.btnDeleteFiles.UseVisualStyleBackColor = true;
             this.btnDeleteFiles.Click += new System.EventHandler(this.btnDeleteFiles_Click);
             // 
-            // btnChooseDIASwathFiles
+            // btnAddSWATHFiles
             // 
-            resources.ApplyResources(this.btnChooseDIASwathFiles, "btnChooseDIASwathFiles");
-            this.btnChooseDIASwathFiles.Name = "btnChooseDIASwathFiles";
-            this.btnChooseDIASwathFiles.UseVisualStyleBackColor = true;
-            this.btnChooseDIASwathFiles.Click += new System.EventHandler(this.btnChooseFiles_Click);
+            resources.ApplyResources(this.btnAddSWATHFiles, "btnAddSWATHFiles");
+            this.btnAddSWATHFiles.Name = "btnAddSWATHFiles";
+            this.btnAddSWATHFiles.UseVisualStyleBackColor = true;
+            this.btnAddSWATHFiles.Click += new System.EventHandler(this.btnChooseFiles_Click);
             // 
             // btnConvert
             // 
@@ -194,13 +201,6 @@
             // 
             resources.ApplyResources(this.tbOperator, "tbOperator");
             this.tbOperator.Name = "tbOperator";
-            // 
-            // btnCheckGPU
-            // 
-            resources.ApplyResources(this.btnCheckGPU, "btnCheckGPU");
-            this.btnCheckGPU.Name = "btnCheckGPU";
-            this.btnCheckGPU.UseVisualStyleBackColor = true;
-            this.btnCheckGPU.Click += new System.EventHandler(this.btnCheckGPU_Click);
             // 
             // lblMzPrecision
             // 
@@ -305,7 +305,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button btnChooseDIASwathFiles;
+        private System.Windows.Forms.Button btnAddSWATHFiles;
         private System.Windows.Forms.Button btnConvert;
         private System.Windows.Forms.TextBox tbFolderPath;
         private System.Windows.Forms.Label label1;
@@ -320,7 +320,7 @@
         private System.Windows.Forms.ColumnHeader headerProgress;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.Button btnClear;
-        private System.Windows.Forms.Button btnChoosePRMFiles;
+        private System.Windows.Forms.Button btnAddPRMFiles;
         private System.Windows.Forms.ColumnHeader headerExpType;
         private System.Windows.Forms.CheckBox cbIsZeroIntensityIgnore;
         private System.Windows.Forms.Label lblFileNameTag;
@@ -328,12 +328,12 @@
         private System.Windows.Forms.CheckBox cbLog2;
         private System.Windows.Forms.CheckBox cbThreadAccelerate;
         private System.Windows.Forms.Button btnChooseSSwathFiles;
-        private System.Windows.Forms.Button btnChooseDDAFiles;
+        private System.Windows.Forms.Button btnAddDDAFiles;
         private System.Windows.Forms.ComboBox cbMzPrecision;
         private System.Windows.Forms.Label lblMzPrecision;
-        private System.Windows.Forms.Button btnCheckGPU;
         private System.Windows.Forms.Label lblOperator;
         private System.Windows.Forms.TextBox tbOperator;
+        private System.Windows.Forms.Button btnAddCommonFiles;
     }
 }
 

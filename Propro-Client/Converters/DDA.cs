@@ -166,7 +166,7 @@ namespace AirdPro.Converters
                 jobInfo.log(null, "MS1:" + i + "/" + ms1List.Count);
                 TempIndex scanIndex = ms1List[i];
                 TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
-                compress(spectrumList.spectrum(scanIndex.num, true), ts, 1);
+                compress(spectrumList.spectrum(scanIndex.num, true), ts);
                 blockIndex.nums.Add(ts.num);
                 blockIndex.rts.Add(ts.rt);
                 blockIndex.mzs.Add(ts.mzArrayBytes.Length);
@@ -193,7 +193,7 @@ namespace AirdPro.Converters
                 BlockIndex blockIndex = new BlockIndex();
                 blockIndex.level = 2;
                 blockIndex.startPtr = startPosition;
-                blockIndex.num = key;
+                blockIndex.parentNum = key;
                 //创建这一个block中每一个ms2的窗口序列
                 List<WindowRange> ms2Ranges = new List<WindowRange>();
                 jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);
@@ -203,7 +203,7 @@ namespace AirdPro.Converters
                 {
                     ms2Ranges.Add(new WindowRange(index.mzStart, index.mzEnd, index.mz));
                     TempScan ts = new TempScan(index.num, index.rt);
-                    compress(spectrumList.spectrum(index.num, true), ts, 2);
+                    compress(spectrumList.spectrum(index.num, true), ts);
                     blockIndex.nums.Add(ts.num);
                     blockIndex.rts.Add(ts.rt);
                     blockIndex.mzs.Add(ts.mzArrayBytes.Length);

@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Windows.Forms;
 using AirdPro.Domains.Convert;
-using Alea;
 
 namespace AirdPro.Forms
 {
@@ -20,8 +19,10 @@ namespace AirdPro.Forms
 
         private void ProproForm_Load(object sender, EventArgs e)
         {
-            this.Text = SoftwareVersion.getVersion();
+            this.Text = SoftwareInfo.getVersion();
             this.cbMzPrecision.SelectedIndex = 1;
+            this.tbFolderPath.Text = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            this.tbOperator.Text = Environment.UserName;
         }
 
         private void btnChooseFiles_Click(object sender, EventArgs e)
@@ -30,13 +31,13 @@ namespace AirdPro.Forms
             ofd.Multiselect = true;
             ofd.CheckFileExists = true;
             ofd.Filter = "Vendor Format|*.wiff;*.raw";
-            ofd.Title = "Please Choose Vendor File to Convert";
+            ofd.Title = "Please Choose SWATH Vendor File to Convert";
 
             if (ofd.ShowDialog(this) == DialogResult.OK)
             {
                 foreach (var fileName in ofd.FileNames)
                 {
-                    addFile(fileName, ExperimentType.DIA_SWATH);
+                    addFile(fileName, AirdType.DIA_SWATH);
                 }
             }
         }
@@ -47,30 +48,30 @@ namespace AirdPro.Forms
             ofd.Multiselect = true;
             ofd.CheckFileExists = true;
             ofd.Filter = "Vendor Format|*.wiff;*.raw";
-            ofd.Title = "Please Choose Vendor File to Convert";
+            ofd.Title = "Please Choose PRM Vendor File to Convert";
 
             if (ofd.ShowDialog(this) == DialogResult.OK)
             {
                 foreach (var fileName in ofd.FileNames)
                 {
-                    addFile(fileName, ExperimentType.PRM);
+                    addFile(fileName, AirdType.PRM);
                 }
             }
         }
 
-        private void BtnChooseSSwathFiles_Click(object sender, EventArgs e)
+        private void btnChooseSSwathFiles_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Multiselect = true;
             ofd.CheckFileExists = true;
             ofd.Filter = "Vendor Format|*.wiff;";
-            ofd.Title = "Please Choose Vendor File to Convert";
+            ofd.Title = "Please Choose Scanning SWATH Vendor File to Convert";
 
             if (ofd.ShowDialog(this) == DialogResult.OK)
             {
                 foreach (var fileName in ofd.FileNames)
                 {
-                    addFile(fileName, ExperimentType.SCANNING_SWATH);
+                    addFile(fileName, AirdType.SCANNING_SWATH);
                 }
             }
         }
@@ -81,13 +82,30 @@ namespace AirdPro.Forms
             ofd.Multiselect = true;
             ofd.CheckFileExists = true;
             ofd.Filter = "Vendor Format|*.wiff;*.raw";
-            ofd.Title = "Please Choose Vendor File to Convert";
+            ofd.Title = "Please Choose DDA Vendor File to Convert";
 
             if (ofd.ShowDialog(this) == DialogResult.OK)
             {
                 foreach (var fileName in ofd.FileNames)
                 {
-                    addFile(fileName, ExperimentType.DDA);
+                    addFile(fileName, AirdType.DDA);
+                }
+            }
+        }
+
+        private void btnAddCommonFiles_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Multiselect = true;
+            ofd.CheckFileExists = true;
+            ofd.Filter = "Vendor Format|*.wiff;*.raw";
+            ofd.Title = "Please Choose Common Vendor File to Convert";
+
+            if (ofd.ShowDialog(this) == DialogResult.OK)
+            {
+                foreach (var fileName in ofd.FileNames)
+                {
+                    addFile(fileName, AirdType.COMMON);
                 }
             }
         }
@@ -248,16 +266,6 @@ namespace AirdPro.Forms
             showFileSuffix();
         }
 
-        private void cbMzPrecision_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            showFileSuffix();
-        }
-
-        private void cbIntensityPrecision_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            showFileSuffix();
-        }
-
         public void showFileSuffix()
         {
             string suffix = "";
@@ -270,19 +278,6 @@ namespace AirdPro.Forms
             tbFileNameSuffix.Text = suffix;
         }
 
-        private void btnCheckGPU_Click(object sender, EventArgs e)
-        {
-            var devices = Device.Devices;
-            string message = "";
-            foreach (var device in devices)
-            {
-                message += "Name:" + device.Name+ "\r\n";
-                message += "Cores:" + device.Cores + "\r\n";
-                message += "Memory:" + device.TotalMemory/1024/1024/1024+ "GB\r\n";
-            } 
-
-            MessageBox.Show(message);
-
-        }
+        
     }
 }

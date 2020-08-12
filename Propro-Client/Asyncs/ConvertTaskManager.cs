@@ -3,7 +3,6 @@ using AirdPro.Domains;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using AirdPro.Converters;
@@ -41,7 +40,7 @@ namespace AirdPro.Asyncs
             jobTable.Clear();
         }
 
-        public List<Result> run()
+        public void run()
         {
             
             if (jobQueue.Count != 0)
@@ -64,21 +63,25 @@ namespace AirdPro.Asyncs
                             Console.Out.WriteLine("Start Convert");
                             jobInfo.threadId = "ThreadId:" + Thread.CurrentThread.ManagedThreadId;
                             jobInfo.status = RUNNING;
-                            if (jobInfo.type.Equals(ExperimentType.DIA_SWATH))
+                            if (jobInfo.type.Equals(AirdType.DIA_SWATH))
                             {
-                                new DIASWATH(jobInfo).doConvert();
+                                new SWATH(jobInfo).doConvert();
                             }
-                            else if (jobInfo.type.Equals(ExperimentType.PRM))
+                            else if (jobInfo.type.Equals(AirdType.PRM))
                             {
                                 new PRM(jobInfo).doConvert();
                             }
-                            else if (jobInfo.type.Equals(ExperimentType.SCANNING_SWATH))
+                            else if (jobInfo.type.Equals(AirdType.SCANNING_SWATH))
                             {
                                 new ScanningSWATH(jobInfo).doConvert();
                             }
-                            else if (jobInfo.type.Equals(ExperimentType.DDA))
+                            else if (jobInfo.type.Equals(AirdType.DDA))
                             {
                                 new DDA(jobInfo).doConvert();
+                            }
+                            else if (jobInfo.type.Equals(AirdType.COMMON))
+                            {
+                                new Common(jobInfo).doConvert();
                             }
                             jobInfo.status = FINISHED;
                         }
@@ -87,15 +90,12 @@ namespace AirdPro.Asyncs
                             jobInfo.log(ex.ToString(),"Error");
                             jobInfo.status = ERROR;
                             errorJob.Add(jobInfo.jobId, jobInfo);
-//                            MessageBox.Show(ex.ToString());
                         }
                     });
 
                 }
                 
             }
-
-            return null;
         }
     }
 }
