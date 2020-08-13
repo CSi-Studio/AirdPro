@@ -211,6 +211,7 @@ namespace AirdPro.Forms
         private void timer_Tick(object sender, EventArgs e)
         {
             printLog();
+            refresh();
         }
 
         private void printLog()
@@ -252,6 +253,18 @@ namespace AirdPro.Forms
             else
             {
                 tbConsole.Text = "select item to watch logs";
+            }
+        }
+
+        private void refresh()
+        {
+            foreach (ListViewItem item in lvFileList.Items)
+            {
+                if (convertTaskManager.jobTable[item.Text] != null)
+                {
+                    JobInfo job = convertTaskManager.jobTable[item.Text] as JobInfo;
+                    job.refreshReport = true;
+                }
             }
         }
 

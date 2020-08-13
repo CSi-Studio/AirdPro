@@ -173,21 +173,25 @@ namespace AirdPro.Converters
         protected double getPrecursorIsolationWindowParams(Spectrum spectrum, CVID cvid)
         {
             double result = -1;
-            int retryTimes = 3;
-            while (result == -1 && retryTimes > 0)
+            var retryTimes = 3;
+            while (result < 0 && retryTimes > 0)
             {
                 try
                 {
-                    result = double.Parse(spectrum.precursors[0].isolationWindow.cvParamChild(cvid).value.ToString());
+                    result = Double.Parse(spectrum.precursors[0].isolationWindow.cvParamChild(cvid).value.ToString());
                 }
-                catch (Exception e)
+                catch (FormatException e)
                 {
-                    jobInfo.logError(e.StackTrace);
-                    jobInfo.logError(cvid.GetTypeCode()+"-重试次数-" +retryTimes);
+                    jobInfo.log(cvid + "-重试次数-" + retryTimes+"-Result:"+result);
+                    jobInfo.log(e.StackTrace);
                 }
                 retryTimes--;
             }
 
+            if (result < 0)
+            {
+                throw new Exception("Parse Double Error:" + result);
+            }
             return result;
         }
 

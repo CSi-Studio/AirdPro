@@ -11,6 +11,7 @@
 using AirdPro.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -48,6 +49,8 @@ namespace AirdPro.Domains.Convert
         //任务的线程名称
         public string threadId;
 
+        public bool refreshReport = true;
+
         public CancellationTokenSource cancellationTokenSource;
 
         public JobInfo()
@@ -83,7 +86,12 @@ namespace AirdPro.Domains.Convert
 
         public JobInfo log(string content, string progressReport)
         {
-            progress.Report(progressReport);
+            if (refreshReport)
+            {
+                progress.Report(progressReport);
+                refreshReport = false;
+            }
+            
             if (content != null)
             {
                 Log log = new Log(DateTime.Now, content);
