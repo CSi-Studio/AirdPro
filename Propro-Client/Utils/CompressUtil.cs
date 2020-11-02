@@ -67,7 +67,7 @@ namespace AirdPro.Utils
             return byteToInt(array);
         }
 
-        //使用PFor算法将排序了的int数组进行压缩,注意:target数组必须是排序后的数组
+        //使用FastPfor算法将排序了的int数组进行压缩,注意:target数组必须是排序后的数组
         public static int[] fastPForEncoder(int[] uncompressed)
         {
             var codec = new SkippableIntegratedComposition(new IntegratedBinaryPacking(), new IntegratedVariableByte());
