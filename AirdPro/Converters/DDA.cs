@@ -202,7 +202,7 @@ namespace AirdPro.Converters
                 BlockIndex blockIndex = new BlockIndex();
                 blockIndex.level = 2;
                 blockIndex.startPtr = startPosition;
-                blockIndex.parentNum = key;
+                blockIndex.num = key;
                 //创建这一个block中每一个ms2的窗口序列
                 List<WindowRange> ms2Ranges = new List<WindowRange>();
                 jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);

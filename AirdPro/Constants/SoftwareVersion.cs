@@ -12,9 +12,9 @@ namespace AirdPro.Constants
 {
     class SoftwareInfo
     {
-        public static string VERSION = "1.0.1";
-        public static int VERSION_CODE = 2;
-        public static string CLIENT_VERSION_DESCRIPTION = "修复界面刷新时的闪屏问题";
+        public static string VERSION = "1.0.1.1";
+        public static int VERSION_CODE = 3;
+        public static string CLIENT_VERSION_DESCRIPTION = "blockIndex->parentNum改为num";
         public static string NAME = "AirdPro";
 
         public static string getVersion()

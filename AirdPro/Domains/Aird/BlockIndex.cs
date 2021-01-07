@@ -21,7 +21,7 @@ namespace AirdPro.Domains.Aird
         //在文件中的结束位置
         public long endPtr;
         //每一个MS2对应的MS1序号;如果是MS1块,则本字段为空
-        public int parentNum;
+        public int num;
         //每一个MS2对应的前体窗口;MS1中为空,在SWATH/DIA和PRM的采集模式下,本数组的长度恒为1
         public List<WindowRange> rangeList;
         //当msLevel=1时,本字段为每一个MS1谱图的序号,当msLevel=2时本字段为每一个MS2谱图序列号
