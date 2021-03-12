@@ -145,6 +145,7 @@
     <Compile Include="Converters\Common.cs" />
     <Compile Include="Domains\Aird\DataProcessing.cs" />
     <Compile Include="Domains\Job\JobParams.cs" />
+    <Compile Include="RabbitMQ\MsgSender.cs" />
     <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\BinaryPacking.cs" />
     <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\BitPacking.cs" />
     <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\ByteIntegerCODEC.cs" />

@@ -14,6 +14,7 @@ using System;
 using System.Collections;
 using System.Windows.Forms;
 using AirdPro.Domains.Convert;
+using AirdPro.RabbitMQ;
 
 namespace AirdPro.Forms
 {
@@ -33,6 +34,9 @@ namespace AirdPro.Forms
             this.cbMzPrecision.SelectedIndex = 1;
             this.tbFolderPath.Text = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             this.tbOperator.Text = Environment.UserName;
+
+            // MsgSender.getInstance().send("Hello World");
+            // MsgSender.getInstance().receive();
         }
 
         private void btnChooseFiles_Click(object sender, EventArgs e)
