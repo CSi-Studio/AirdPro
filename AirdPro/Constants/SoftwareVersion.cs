@@ -12,9 +12,9 @@ namespace AirdPro.Constants
 {
     class SoftwareInfo
     {
-        public static string VERSION = "1.0.1.1";
-        public static int VERSION_CODE = 3;
-        public static string CLIENT_VERSION_DESCRIPTION = "blockIndex->parentNum改为num";
+        public static string VERSION = "1.1.0.0";
+        public static int VERSION_CODE = 4;
+        public static string CLIENT_VERSION_DESCRIPTION = "Add Redis Msg Center Support";
         public static string NAME = "AirdPro";
 
         public static string getVersion()

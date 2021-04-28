@@ -12,17 +12,19 @@ using AirdPro.Asyncs;
 using AirdPro.Constants;
 using System;
 using System.Collections;
+using System.Drawing;
 using System.Windows.Forms;
 using AirdPro.Domains.Convert;
-using AirdPro.RabbitMQ;
+using AirdPro.Redis;
+using ThermoFisher.CommonCore.Data;
+using ThermoFisher.CommonCore.Data.Interfaces;
 
 namespace AirdPro.Forms
 {
     public partial class AirdForm : Form
     {
-        ArrayList currentFiles = new ArrayList();
-        ConvertTaskManager convertTaskManager = new ConvertTaskManager();
-      
+        ArrayList currentFiles = new ArrayList(); 
+        CustomPathForm customPathForm;
         public AirdForm()
         {
             InitializeComponent();
@@ -34,18 +36,13 @@ namespace AirdPro.Forms
             this.cbMzPrecision.SelectedIndex = 1;
             this.tbFolderPath.Text = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             this.tbOperator.Text = Environment.UserName;
-
-            // MsgSender.getInstance().send("Hello World");
-            // MsgSender.getInstance().receive();
+            RedisClient.getInstance();
+            ConvertTaskManager.getInstance().run();
         }
 
         private void btnChooseFiles_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Multiselect = true;
-            ofd.CheckFileExists = true;
-            ofd.Filter = "Vendor Format|*.wiff;*.raw";
-            ofd.Title = "Please Choose SWATH Vendor File to Convert";
+            ofd.Title = "Please Choose DIA/SWATH Vendor File to Convert";
 
             if (ofd.ShowDialog(this) == DialogResult.OK)
             {
@@ -58,10 +55,6 @@ namespace AirdPro.Forms
 
         private void btnChoosePRMFiles_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Multiselect = true;
-            ofd.CheckFileExists = true;
-            ofd.Filter = "Vendor Format|*.wiff;*.raw";
             ofd.Title = "Please Choose PRM Vendor File to Convert";
 
             if (ofd.ShowDialog(this) == DialogResult.OK)
@@ -75,10 +68,6 @@ namespace AirdPro.Forms
 
         private void btnChooseSSwathFiles_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Multiselect = true;
-            ofd.CheckFileExists = true;
-            ofd.Filter = "Vendor Format|*.wiff;";
             ofd.Title = "Please Choose Scanning SWATH Vendor File to Convert";
 
             if (ofd.ShowDialog(this) == DialogResult.OK)
@@ -92,10 +81,6 @@ namespace AirdPro.Forms
 
         private void btnChooseDDAFile_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Multiselect = true;
-            ofd.CheckFileExists = true;
-            ofd.Filter = "Vendor Format|*.wiff;*.raw";
             ofd.Title = "Please Choose DDA Vendor File to Convert";
 
             if (ofd.ShowDialog(this) == DialogResult.OK)
@@ -109,10 +94,6 @@ namespace AirdPro.Forms
 
         private void btnAddCommonFiles_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Multiselect = true;
-            ofd.CheckFileExists = true;
-            ofd.Filter = "Vendor Format|*.wiff;*.raw";
             ofd.Title = "Please Choose Common Vendor File to Convert";
 
             if (ofd.ShowDialog(this) == DialogResult.OK)
@@ -149,21 +130,28 @@ namespace AirdPro.Forms
             
             foreach (ListViewItem item in lvFileList.Items)
             {
-                JobParams jobParams = new JobParams();
-                jobParams.ignoreZeroIntensity = cbIsZeroIntensityIgnore.Checked;
-                jobParams.log2 = cbLog2.Checked;
-                jobParams.threadAccelerate = cbThreadAccelerate.Checked;
-                jobParams.suffix = tbFileNameSuffix.Text;
-                jobParams.creator = tbOperator.Text;
-                jobParams.mzPrecision = Double.Parse(cbMzPrecision.Text);
-                JobInfo jobInfo = new JobInfo(item.SubItems[0].Text, tbFolderPath.Text,
-                    item.SubItems[1].Text, jobParams, item);
-                convertTaskManager.pushJob(jobInfo);
+                if (!ConvertTaskManager.getInstance().jobTable.ContainsKey(item.SubItems[0].Text))
+                {
+                    JobParams jobParams = new JobParams
+                    {
+                        ignoreZeroIntensity = cbIsZeroIntensityIgnore.Checked,
+                        log2 = cbLog2.Checked,
+                        threadAccelerate = cbThreadAccelerate.Checked,
+                        suffix = tbFileNameSuffix.Text,
+                        creator = tbOperator.Text,
+                        mzPrecision = Double.Parse(cbMzPrecision.Text)
+                    };
+                    item.SubItems[3].Text = tbFolderPath.Text;
+                    JobInfo jobInfo = new JobInfo(item.SubItems[0].Text, tbFolderPath.Text,
+                        item.SubItems[1].Text, jobParams, item);
+                    ConvertTaskManager.getInstance().pushJob(jobInfo);
+                }
+                
             }
 
             try
             {
-                convertTaskManager.run();
+                ConvertTaskManager.getInstance().run();
             }
             catch (Exception exception)
             {
@@ -179,12 +167,11 @@ namespace AirdPro.Forms
             }
            
         }
-
-        private void addFile(string fileName,string expType)
+        public void addFile(string fileName,string expType)
         {
             if (fileName != "" && !currentFiles.Contains(fileName))
             {
-                ListViewItem item = new ListViewItem(new string[]{fileName, expType, "Waiting"});
+                ListViewItem item = new ListViewItem(new string[]{fileName, expType, "Waiting",""});
                 item.ToolTipText = fileName;
                 lvFileList.Items.Add(item);
                 currentFiles.Add(fileName);
@@ -204,7 +191,7 @@ namespace AirdPro.Forms
                 lblFileSelectedInfo.Text = currentFiles.Count + "files are selected";
             }
             fileItem.Remove();
-            convertTaskManager.jobTable.Remove(fileItem.Text);
+            ConvertTaskManager.getInstance().jobTable.Remove(fileItem.Text);
         }
 
         private void lvFileList_SelectedIndexChanged(object sender, EventArgs e)
@@ -225,9 +212,9 @@ namespace AirdPro.Forms
                 ListViewItem item = lvFileList.SelectedItems[lvFileList.SelectedItems.Count - 1];
                 string content = "";
                 JobInfo job = null;
-                if (convertTaskManager.jobTable[item.Text] != null)
+                if (ConvertTaskManager.getInstance().jobTable[item.Text] != null)
                 {
-                    job = convertTaskManager.jobTable[item.Text] as JobInfo;
+                    job = ConvertTaskManager.getInstance().jobTable[item.Text] as JobInfo;
                     
                     for (int i=job.logs.Count-1;i>=0;i--)
                     {
@@ -236,9 +223,9 @@ namespace AirdPro.Forms
                     string jobInfo = job.getJsonInfo();
                     content += jobInfo + "\r\n";
                 }
-                else if (convertTaskManager.errorJob[item.Text] != null)
+                else if (ConvertTaskManager.getInstance().errorJob[item.Text] != null)
                 {
-                    job = convertTaskManager.errorJob[item.Text] as JobInfo;
+                    job = ConvertTaskManager.getInstance().errorJob[item.Text] as JobInfo;
 
                     for (int i = job.logs.Count - 1; i >= 0; i--)
                     {
@@ -264,9 +251,9 @@ namespace AirdPro.Forms
         {
             foreach (ListViewItem item in lvFileList.Items)
             {
-                if (convertTaskManager.jobTable[item.Text] != null)
+                if (ConvertTaskManager.getInstance().jobTable[item.Text] != null)
                 {
-                    JobInfo job = convertTaskManager.jobTable[item.Text] as JobInfo;
+                    JobInfo job = ConvertTaskManager.getInstance().jobTable[item.Text] as JobInfo;
                     job.refreshReport = true;
                 }
             }
@@ -282,7 +269,7 @@ namespace AirdPro.Forms
                     {
                         item.Remove();
                         currentFiles.Remove(item.SubItems[0].Text);
-                        convertTaskManager.jobTable.Remove(item.SubItems[0].Text);
+                        ConvertTaskManager.getInstance().jobTable.Remove(item.SubItems[0].Text);
                     }
                 }
             }
@@ -305,6 +292,57 @@ namespace AirdPro.Forms
             tbFileNameSuffix.Text = suffix;
         }
 
-        
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            if (tbHostAndPort.Text.IsNullOrEmpty())
+            {
+                timerConsumer.Enabled = false;
+                MessageBox.Show("LIMS IP不能为空,监听器暂时关闭");
+                return;
+            }
+            bool initResult = RedisClient.getInstance().connect(tbHostAndPort.Text);
+            if (initResult)
+            {
+                lblConnectStatus.Text = "Connected";
+                lblConnectStatus.ForeColor = Color.Green;
+                timerConsumer.Enabled = true;
+            }
+            else
+            {
+                MessageBox.Show("连接失败,请检查LIMS IP字符串是否配置正确,监听器暂时关闭");
+                lblConnectStatus.Text = "Not Connect";
+                lblConnectStatus.ForeColor = Color.Red;
+                timerConsumer.Enabled = false;
+            }
+        }
+
+        //当Redis连接建立的时候持续的监听相关队列的消息
+        private void consumer_Tick(object sender, EventArgs e)
+        {
+           RedisClient.getInstance().consume();
+        }
+
+        private void btnClearError_Click(object sender, EventArgs e)
+        {
+            ConvertTaskManager.getInstance().errorJob.Clear();
+        }
+
+        private void btnDisconnect_Click(object sender, EventArgs e)
+        {
+            timerConsumer.Enabled = false;
+            RedisClient.getInstance().disconnect();
+            lblConnectStatus.Text = "Not Connect";
+            lblConnectStatus.ForeColor = Color.Red;
+        }
+
+        private void btnCustomerPath_Click(object sender, EventArgs e)
+        {
+            if (customPathForm == null || customPathForm.IsDisposed)
+            {
+                customPathForm = new CustomPathForm(this);
+            }
+            customPathForm.clearInfos();
+            customPathForm.Show();
+        }
     }
 }

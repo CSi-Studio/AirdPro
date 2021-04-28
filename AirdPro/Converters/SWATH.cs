@@ -105,6 +105,8 @@ namespace AirdPro.Converters
         {
             jobInfo.log("Start getting windows", "Getting Windows");
             int i = 0;
+
+            //找到第一张MS1图,如果找不到,则继续往下搜索,如果搜索了500张以上的谱图或者搜索了超过一半的谱图都没有MS1图,则认为数据格式有问题
             Spectrum spectrum = spectrumList.spectrum(0);
             while (!spectrum.cvParamChild(CVID.MS_ms_level).value.ToString().Equals(MsLevel.MS1))
             {

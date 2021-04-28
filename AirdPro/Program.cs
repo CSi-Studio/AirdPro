@@ -11,7 +11,6 @@
 using System;
 using System.Windows.Forms;
 using AirdPro.Forms;
-using AirdPro.RabbitMQ;
 
 namespace AirdPro
 {
@@ -31,7 +30,6 @@ namespace AirdPro
                 Application.SetCompatibleTextRenderingDefault(false);
                 mainForm = new AirdForm();
                 Application.Run(mainForm);
-               
             }
             catch (Exception e)
             {

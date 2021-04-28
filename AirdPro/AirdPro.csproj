@@ -120,12 +120,14 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
     <Reference Include="ThermoFisher.CommonCore.Data">
       <HintPath>ImportLibs\ThermoFisher.CommonCore.Data.dll</HintPath>
     </Reference>
@@ -138,6 +140,7 @@
     <Compile Include="Asyncs\ConvertTaskManager.cs" />
     <Compile Include="Asyncs\LimitedConcurrencyLevelTaskScheduler.cs" />
     <Compile Include="Constants\ByteOrder.cs" />
+    <Compile Include="Constants\Const.cs" />
     <Compile Include="Domains\Aird\Enums\AirdType.cs" />
     <Compile Include="Domains\Aird\Enums\MsLevel.cs" />
     <Compile Include="Constants\ProcessingStatus.cs" />
@@ -145,7 +148,14 @@
     <Compile Include="Converters\Common.cs" />
     <Compile Include="Domains\Aird\DataProcessing.cs" />
     <Compile Include="Domains\Job\JobParams.cs" />
-    <Compile Include="RabbitMQ\MsgSender.cs" />
+    <Compile Include="Domains\Job\RemoteConvertJob.cs" />
+    <Compile Include="Forms\CustomPathForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CustomPathForm.Designer.cs">
+      <DependentUpon>CustomPathForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Redis\RedisClient.cs" />
     <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\BinaryPacking.cs" />
     <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\BitPacking.cs" />
     <Compile Include="ThirdParty\BugFixForCSharpFastPFORCore\ByteIntegerCODEC.cs" />
@@ -249,6 +259,9 @@
     <Compile Include="ThirdParty\Zlib\ZlibStream.cs" />
     <EmbeddedResource Include="Forms\AirdForm.resx">
       <DependentUpon>AirdForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CustomPathForm.resx">
+      <DependentUpon>CustomPathForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -494,8 +507,11 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
     </PackageReference>
-    <PackageReference Include="RabbitMQ.Client">
-      <Version>6.2.1</Version>
+    <PackageReference Include="StackExchange.Redis">
+      <Version>2.2.4</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
+      <Version>5.0.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
