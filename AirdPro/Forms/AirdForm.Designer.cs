@@ -41,6 +41,8 @@ namespace AirdPro.Forms
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AirdForm));
             this.container = new System.Windows.Forms.SplitContainer();
+            this.btnCustomerPath = new System.Windows.Forms.Button();
+            this.btnClearError = new System.Windows.Forms.Button();
             this.btnAddCommonFiles = new System.Windows.Forms.Button();
             this.btnAddDDAFiles = new System.Windows.Forms.Button();
             this.btnChooseSSwathFiles = new System.Windows.Forms.Button();
@@ -51,9 +53,15 @@ namespace AirdPro.Forms
             this.headerFilePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerExpType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerProgress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerOutput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnDeleteFiles = new System.Windows.Forms.Button();
             this.btnAddSWATHFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
+            this.btnDisconnect = new System.Windows.Forms.Button();
+            this.lblConnectStatus = new System.Windows.Forms.Label();
+            this.lblIP = new System.Windows.Forms.Label();
+            this.tbHostAndPort = new System.Windows.Forms.TextBox();
+            this.btnConnect = new System.Windows.Forms.Button();
             this.lblOperator = new System.Windows.Forms.Label();
             this.tbOperator = new System.Windows.Forms.TextBox();
             this.lblMzPrecision = new System.Windows.Forms.Label();
@@ -69,6 +77,8 @@ namespace AirdPro.Forms
             this.btnChooseFolder = new System.Windows.Forms.Button();
             this.tbFolderPath = new System.Windows.Forms.TextBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.timerConsumer = new System.Windows.Forms.Timer(this.components);
+            this.ofd = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -82,6 +92,8 @@ namespace AirdPro.Forms
             // 
             // container.Panel1
             // 
+            this.container.Panel1.Controls.Add(this.btnCustomerPath);
+            this.container.Panel1.Controls.Add(this.btnClearError);
             this.container.Panel1.Controls.Add(this.btnAddCommonFiles);
             this.container.Panel1.Controls.Add(this.btnAddDDAFiles);
             this.container.Panel1.Controls.Add(this.btnChooseSSwathFiles);
@@ -95,6 +107,11 @@ namespace AirdPro.Forms
             // 
             // container.Panel2
             // 
+            this.container.Panel2.Controls.Add(this.btnDisconnect);
+            this.container.Panel2.Controls.Add(this.lblConnectStatus);
+            this.container.Panel2.Controls.Add(this.lblIP);
+            this.container.Panel2.Controls.Add(this.tbHostAndPort);
+            this.container.Panel2.Controls.Add(this.btnConnect);
             this.container.Panel2.Controls.Add(this.lblOperator);
             this.container.Panel2.Controls.Add(this.tbOperator);
             this.container.Panel2.Controls.Add(this.lblMzPrecision);
@@ -110,6 +127,20 @@ namespace AirdPro.Forms
             this.container.Panel2.Controls.Add(this.btnChooseFolder);
             this.container.Panel2.Controls.Add(this.tbFolderPath);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
+            // 
+            // btnCustomerPath
+            // 
+            resources.ApplyResources(this.btnCustomerPath, "btnCustomerPath");
+            this.btnCustomerPath.Name = "btnCustomerPath";
+            this.btnCustomerPath.UseVisualStyleBackColor = true;
+            this.btnCustomerPath.Click += new System.EventHandler(this.btnCustomerPath_Click);
+            // 
+            // btnClearError
+            // 
+            resources.ApplyResources(this.btnClearError, "btnClearError");
+            this.btnClearError.Name = "btnClearError";
+            this.btnClearError.UseVisualStyleBackColor = true;
+            this.btnClearError.Click += new System.EventHandler(this.btnClearError_Click);
             // 
             // btnAddCommonFiles
             // 
@@ -157,7 +188,8 @@ namespace AirdPro.Forms
             this.lvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.headerFilePath,
             this.headerExpType,
-            this.headerProgress});
+            this.headerProgress,
+            this.headerOutput});
             this.lvFileList.FullRowSelect = true;
             this.lvFileList.GridLines = true;
             this.lvFileList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -180,6 +212,10 @@ namespace AirdPro.Forms
             // 
             resources.ApplyResources(this.headerProgress, "headerProgress");
             // 
+            // headerOutput
+            // 
+            resources.ApplyResources(this.headerOutput, "headerOutput");
+            // 
             // btnDeleteFiles
             // 
             resources.ApplyResources(this.btnDeleteFiles, "btnDeleteFiles");
@@ -200,6 +236,36 @@ namespace AirdPro.Forms
             this.btnConvert.Name = "btnConvert";
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
+            // 
+            // btnDisconnect
+            // 
+            resources.ApplyResources(this.btnDisconnect, "btnDisconnect");
+            this.btnDisconnect.Name = "btnDisconnect";
+            this.btnDisconnect.UseVisualStyleBackColor = true;
+            this.btnDisconnect.Click += new System.EventHandler(this.btnDisconnect_Click);
+            // 
+            // lblConnectStatus
+            // 
+            resources.ApplyResources(this.lblConnectStatus, "lblConnectStatus");
+            this.lblConnectStatus.ForeColor = System.Drawing.Color.Red;
+            this.lblConnectStatus.Name = "lblConnectStatus";
+            // 
+            // lblIP
+            // 
+            resources.ApplyResources(this.lblIP, "lblIP");
+            this.lblIP.Name = "lblIP";
+            // 
+            // tbHostAndPort
+            // 
+            resources.ApplyResources(this.tbHostAndPort, "tbHostAndPort");
+            this.tbHostAndPort.Name = "tbHostAndPort";
+            // 
+            // btnConnect
+            // 
+            resources.ApplyResources(this.btnConnect, "btnConnect");
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
             // lblOperator
             // 
@@ -297,6 +363,16 @@ namespace AirdPro.Forms
             this.timer.Enabled = true;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
+            // timerConsumer
+            // 
+            this.timerConsumer.Interval = 3000;
+            this.timerConsumer.Tick += new System.EventHandler(this.consumer_Tick);
+            // 
+            // ofd
+            // 
+            resources.ApplyResources(this.ofd, "ofd");
+            this.ofd.Multiselect = true;
+            // 
             // AirdForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -320,7 +396,6 @@ namespace AirdPro.Forms
         private System.Windows.Forms.TextBox tbFolderPath;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnChooseFolder;
-        private System.Windows.Forms.ListView lvFileList;
         private System.Windows.Forms.Button btnDeleteFiles;
         private System.Windows.Forms.SplitContainer container;
         private System.Windows.Forms.Label lblFileSelectedInfo;
@@ -344,6 +419,17 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Label lblOperator;
         private System.Windows.Forms.TextBox tbOperator;
         private System.Windows.Forms.Button btnAddCommonFiles;
+        private System.Windows.Forms.Label lblIP;
+        private System.Windows.Forms.TextBox tbHostAndPort;
+        private System.Windows.Forms.Button btnConnect;
+        private System.Windows.Forms.Timer timerConsumer;
+        public System.Windows.Forms.ListView lvFileList;
+        private System.Windows.Forms.Button btnDisconnect;
+        public System.Windows.Forms.Label lblConnectStatus;
+        private System.Windows.Forms.Button btnClearError;
+        private System.Windows.Forms.ColumnHeader headerOutput;
+        private System.Windows.Forms.OpenFileDialog ofd;
+        private System.Windows.Forms.Button btnCustomerPath;
     }
 }
 

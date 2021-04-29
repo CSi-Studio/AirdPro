@@ -17,6 +17,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using AirdPro.Domains.Convert;
+using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Converters
 {
@@ -120,11 +121,27 @@ namespace AirdPro.Converters
             {
                 float mz = (float) double.Parse(spectrum.precursors[0].isolationWindow
                     .cvParamChild(CVID.MS_isolation_window_target_m_z).value.ToString());
-                float lowerOffset = (float) double.Parse(spectrum.precursors[0].isolationWindow
-                    .cvParamChild(CVID.MS_isolation_window_lower_offset).value.ToString());
-                float upperOffset = (float) double.Parse(spectrum.precursors[0].isolationWindow
-                    .cvParamChild(CVID.MS_isolation_window_upper_offset).value.ToString());
 
+
+                //兼容Agilent的DDA数据格式中可能出现的lower offset和upper offset为空的情况
+                string lowerOffsetStr =spectrum.precursors[0].isolationWindow
+                    .cvParamChild(CVID.MS_isolation_window_lower_offset).value.ToString();
+                string upperOffsetStr = spectrum.precursors[0].isolationWindow
+                    .cvParamChild(CVID.MS_isolation_window_upper_offset).value.ToString();
+
+                
+                float lowerOffset = 0f;
+                if (!lowerOffsetStr.IsNullOrEmpty())
+                {
+                    lowerOffset = (float) double.Parse(lowerOffsetStr);
+                }
+
+                float upperOffset = 0f;
+                if (!upperOffsetStr.IsNullOrEmpty())
+                {
+                    upperOffset = (float) double.Parse(upperOffsetStr);
+                }
+               
                 ms2.mz = mz;
                 ms2.mzStart = mz - lowerOffset;
                 ms2.mzEnd = mz + upperOffset;

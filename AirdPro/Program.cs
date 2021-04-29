@@ -30,7 +30,6 @@ namespace AirdPro
                 Application.SetCompatibleTextRenderingDefault(false);
                 mainForm = new AirdForm();
                 Application.Run(mainForm);
-               
             }
             catch (Exception e)
             {

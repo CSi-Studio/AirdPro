@@ -83,6 +83,11 @@ namespace AirdPro.Domains.Convert
             return this;
         }
 
+        public void setStatus(string status)
+        {
+            progress.Report(status);
+        }
+
         public JobInfo log(string content, string progressReport)
         {
             if (refreshReport)

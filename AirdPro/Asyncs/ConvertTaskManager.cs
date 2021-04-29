@@ -9,25 +9,41 @@
  */
 
 using AirdPro.Constants;
+using AirdPro.Converters;
+using AirdPro.Domains.Convert;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using AirdPro.Converters;
-using AirdPro.Domains.Convert;
 using static AirdPro.Constants.ProcessingStatus;
 
 namespace AirdPro.Asyncs
 {
     internal class ConvertTaskManager
     {
+
+        public static ConvertTaskManager instance;
+
+        public ConvertTaskManager() { }
+
+        public static ConvertTaskManager getInstance()
+        {
+            if (instance == null)
+            {
+                instance = new ConvertTaskManager();
+            }
+
+            return instance;
+        }
+
         //需要进行处理的Job
         private Queue<JobInfo> jobQueue = new Queue<JobInfo>();
         TaskFactory fac = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(1));
 
-        //全部的Job信息
+        //存放全部的Job信息,用于根据JobId判定当前的Job是否已经存在
         public Hashtable jobTable = new Hashtable();
+        //当某一个Job执行异常的时候会存储入本队列中
         public Hashtable errorJob = new Hashtable();
 
         public void pushJob(JobInfo job)
@@ -39,7 +55,7 @@ namespace AirdPro.Asyncs
             if (!jobTable.Contains(job.jobId))
             {
                 jobQueue.Enqueue(job);
-                jobTable.Add(job.jobId,job);
+                jobTable.Add(job.jobId, job);
             }
         }
 
@@ -51,60 +67,67 @@ namespace AirdPro.Asyncs
 
         public void run()
         {
-            
-            if (jobQueue.Count != 0)
+            Boolean again = true; //本次run执行完毕以后是否立即再执行一轮
+
+            while (again)
             {
-                while (true)
+                //如果队列中没有待执行的任务,那么进行休眠当前进程两秒
+                if (jobQueue.Count == 0)
                 {
-                    JobInfo jobInfo = null;
+                    again = false;
+                    return;
+                }
+                JobInfo jobInfo = null;
+                try
+                {
+                    jobInfo = jobQueue.Dequeue();
+                }
+                catch { }
+
+                if (jobInfo == null)
+                {
+                    again = false;
+                    return;
+                };
+
+                fac.StartNew(() =>
+                {
                     try
                     {
-                        jobInfo = jobQueue.Dequeue();
+                        Console.Out.WriteLine("Start Convert");
+                        jobInfo.threadId = "ThreadId:" + Thread.CurrentThread.ManagedThreadId;
+                        jobInfo.setStatus(RUNNING);
+                        if (jobInfo.type.Equals(AirdType.DIA_SWATH))
+                        {
+                            new SWATH(jobInfo).doConvert();
+                        }
+                        else if (jobInfo.type.Equals(AirdType.PRM))
+                        {
+                            new PRM(jobInfo).doConvert();
+                        }
+                        else if (jobInfo.type.Equals(AirdType.SCANNING_SWATH))
+                        {
+                            new ScanningSWATH(jobInfo).doConvert();
+                        }
+                        else if (jobInfo.type.Equals(AirdType.DDA))
+                        {
+                            new DDA(jobInfo).doConvert();
+                        }
+                        else if (jobInfo.type.Equals(AirdType.COMMON))
+                        {
+                            new Common(jobInfo).doConvert();
+                        }
+                        jobInfo.setStatus(FINISHED);
                     }
-                    catch {}
-
-                    if (jobInfo == null) break;
-                    
-                    fac.StartNew(() =>
+                    catch (Exception ex)
                     {
-                        try
-                        {
-                            Console.Out.WriteLine("Start Convert");
-                            jobInfo.threadId = "ThreadId:" + Thread.CurrentThread.ManagedThreadId;
-                            jobInfo.status = RUNNING;
-                            if (jobInfo.type.Equals(AirdType.DIA_SWATH))
-                            {
-                                new SWATH(jobInfo).doConvert();
-                            }
-                            else if (jobInfo.type.Equals(AirdType.PRM))
-                            {
-                                new PRM(jobInfo).doConvert();
-                            }
-                            else if (jobInfo.type.Equals(AirdType.SCANNING_SWATH))
-                            {
-                                new ScanningSWATH(jobInfo).doConvert();
-                            }
-                            else if (jobInfo.type.Equals(AirdType.DDA))
-                            {
-                                new DDA(jobInfo).doConvert();
-                            }
-                            else if (jobInfo.type.Equals(AirdType.COMMON))
-                            {
-                                new Common(jobInfo).doConvert();
-                            }
-                            jobInfo.status = FINISHED;
-                        }
-                        catch (Exception ex)
-                        {
-                            jobInfo.log(ex.ToString(),"Error");
-                            jobInfo.status = ERROR;
-                            errorJob.Add(jobInfo.jobId, jobInfo);
-                        }
-                    });
-
-                }
-                
+                        jobInfo.log(ex.ToString(), "Error");
+                        jobInfo.setStatus(ERROR);
+                        errorJob.Add(jobInfo.jobId, jobInfo);
+                    }
+                });
             }
+            
         }
     }
 }
