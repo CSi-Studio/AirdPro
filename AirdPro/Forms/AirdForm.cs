@@ -14,7 +14,6 @@ using System;
 using System.Collections;
 using System.Windows.Forms;
 using AirdPro.Domains.Convert;
-using AirdPro.RabbitMQ;
 
 namespace AirdPro.Forms
 {

@@ -11,7 +11,6 @@
 using System;
 using System.Windows.Forms;
 using AirdPro.Forms;
-using AirdPro.RabbitMQ;
 
 namespace AirdPro
 {
