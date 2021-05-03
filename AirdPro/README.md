@@ -4,18 +4,15 @@ AirdPro is opensource under the MulanPSL2 license
 
 
 ## Version Description
+### V1.1.0
+- Distributed batch conversion function based on Redis
+- Custom Path UI for folder format vendor file like Agilent .d folder format 
+
 ### V1.0.0
 - Supporting SWATH/DIA Format 
 - Supporting DDA Format 
 - Supporting PRM Format
 - Supporting COMMON Format
-
-# AirdPro
-You can download the AirdPro1.0.1.zip from the FTP server: <br/>
-    `server url: ftp://47.254.93.217/AirdPro` <br/>
-    `username: ftp` <br/>
-    `password: 123456` <br/>
-After downloading, unzip the file, click the 'AirdPro.exe' to start the AirdPro Application
 
 # What does Aird format like?
 Aird Index File Suffix: .json <br/>
@@ -26,6 +23,27 @@ When dealing with Spectra, we advice that you should process with SWATH Window o
 #Aird SDK
 You can read the data using AirdSDK for secondary development. 
 Visit AirdSDK project for more detail: https://github.com/CSi-Studio/Aird-SDK
+
+#Batch Conversion Task with Redis
+After install the Redis Server. You should input your custom Redis Server IP and Port in the Message Center InputBox and Click Connect button to see if the AirdPro has connnected to the Redis Server.
+In the AirdPro. We have already input a IP:Port string "192.168.31.88:6379" as an demo sample
+The Redis Channel is Database0, The redis key is "ConvertTask", the value should be a Set data structure of a specific json model called "ConvertJob".
+The detail of the "ConvertJob" object is described here:
+
+    String sourcePath    //the vendor file path, like  C:\vendor\test.raw
+    String targetPath    //the target output directory path, like D:\output
+    Double mzPrecision = 0.0001  //the needed precision, the default value is 0.0001
+    String type="DDA"    //the acquisition method of the vendor file. The value can be "DIA_SWATH", "DDA", "PRM", "COMMON"
+
+Here is a Java demo code
+    StringRedisTemplate stringRedisTemplate = new StringRedisTemplate(); //this is from spring-redis
+    ConvertJob job = new ConvertJob();
+    job.sourcePath = "C:\vendor\test_for_swath.raw";
+    job.targetPath = "D:\output";
+    job.type="DIA_SWATH";
+    job.precision=0.0001;
+    String jobJson = JSON.toJSONString(job);
+    stringRedisTemplate.opsForSet().add("ConvertTask", jobJson);
 
 ## Software Description
 AirdPro is a software tool used for convert files from vendor format to Aird format.
