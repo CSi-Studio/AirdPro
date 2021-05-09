@@ -121,6 +121,7 @@ namespace AirdPro.Redis
                         {
                             // 如果获取到转换队列中相关的任务,那么将消息队列中的转换任务加入到执行队列中
                             valueStr = value.ToString();
+                            // 目前远程任务还不支持第二代压缩算法
                             RemoteConvertJob job = JsonConvert.DeserializeObject<RemoteConvertJob>(valueStr);
                             JobParams jobParams = new JobParams();
                             jobParams.ignoreZeroIntensity = true;
@@ -134,8 +135,9 @@ namespace AirdPro.Redis
                             ListViewItem item = new ListViewItem(items);
                             item.SubItems[0].Text = job.sourcePath;
                             item.SubItems[1].Text = job.type;
-                            item.SubItems[2].Text = "Waiting";
-                            item.SubItems[3].Text = job.targetPath;
+                            item.SubItems[2].Text = job.getAirdAlgorithmStr();
+                            item.SubItems[3].Text = "Waiting";
+                            item.SubItems[4].Text = job.targetPath;
                             JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath,
                                 job.type, jobParams, item);
                             if (!ConvertTaskManager.getInstance().jobTable.Contains(jobInfo.jobId))

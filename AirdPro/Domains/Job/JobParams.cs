@@ -14,21 +14,61 @@ namespace AirdPro.Domains.Convert
 {
     public class JobParams
     {
-        //忽略intensity为0的数据
+        /**
+         * Ignore the mz-intensity pairs whose intensity is zero.
+         * 忽略intensity为0的数据
+         */
         public Boolean ignoreZeroIntensity = true;
-        //对intensity是否求log10以降低精度
-        public Boolean log2 = true;
-        //mz精度,默认保留到小数点后第4位
+        /**
+         * if using log2 for intensity, which would cause precision loss.
+         * 对intensity是否求log10以降低精度
+         */
+        public Boolean log2 = false;
+        /**
+         * the decimal point of the mz. The default value is 0.0001
+         * mz精度,默认保留到小数点后第4位
+         */
         public Double mzPrecision = 0.0001;
-        // 是否使用CPU多核加速,默认加速
+        /**
+         * if using the multi thread for acceleration. The default value is true
+         * 是否使用CPU多核加速,默认加速
+         */
         public Boolean threadAccelerate = true;
-        //额外的文件后缀名称
+
+        /**
+         * The extra suffix for every converted file's name
+         * 额外的文件后缀名称
+         */
         public String suffix;
-        //操作员姓名
+
+        /**
+         * The operator's name
+         * 操作员姓名
+         */
         public String creator;
+
+        /**
+         * The core compressor algorithm of Aird
+         * 使用的Aird核心压缩算法
+         * 1 : ZDPD, the first generation of aird compressor
+         * 2 : Stack ZDPD, the second generation of aird compressor
+         */
+        public int airdAlgorithm = 1;
+
+        /**
+         * The stack layers's tag
+         * 2^digit = layer's count
+         * eg. if the layer's size is 256, then the digit is 8
+         */
+        public int digit = 8;
 
         public JobParams()
         {
+        }
+
+        public String getAirdAlgorithmStr()
+        {
+            return airdAlgorithm == 1 ? "ZDPD" : ("Stack-ZDPD:" + Math.Pow(2, digit).ToString() + " Layers");
         }
     }
 }

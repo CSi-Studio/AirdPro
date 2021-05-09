@@ -57,6 +57,10 @@ namespace AirdPro.Forms
             this.btnDeleteFiles = new System.Windows.Forms.Button();
             this.btnAddSWATHFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
+            this.lblStackLayers = new System.Windows.Forms.Label();
+            this.cbStackLayers = new System.Windows.Forms.ComboBox();
+            this.lblAirdAlgorithm = new System.Windows.Forms.Label();
+            this.cbAlgorithm = new System.Windows.Forms.ComboBox();
             this.btnDisconnect = new System.Windows.Forms.Button();
             this.lblConnectStatus = new System.Windows.Forms.Label();
             this.lblIP = new System.Windows.Forms.Label();
@@ -79,6 +83,7 @@ namespace AirdPro.Forms
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.timerConsumer = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.headerCompressor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -107,6 +112,10 @@ namespace AirdPro.Forms
             // 
             // container.Panel2
             // 
+            this.container.Panel2.Controls.Add(this.lblStackLayers);
+            this.container.Panel2.Controls.Add(this.cbStackLayers);
+            this.container.Panel2.Controls.Add(this.lblAirdAlgorithm);
+            this.container.Panel2.Controls.Add(this.cbAlgorithm);
             this.container.Panel2.Controls.Add(this.btnDisconnect);
             this.container.Panel2.Controls.Add(this.lblConnectStatus);
             this.container.Panel2.Controls.Add(this.lblIP);
@@ -181,6 +190,7 @@ namespace AirdPro.Forms
             // 
             resources.ApplyResources(this.lblFileSelectedInfo, "lblFileSelectedInfo");
             this.lblFileSelectedInfo.Name = "lblFileSelectedInfo";
+            this.lblFileSelectedInfo.Click += new System.EventHandler(this.lblFileSelectedInfo_Click);
             // 
             // lvFileList
             // 
@@ -188,6 +198,7 @@ namespace AirdPro.Forms
             this.lvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.headerFilePath,
             this.headerExpType,
+            this.headerCompressor,
             this.headerProgress,
             this.headerOutput});
             this.lvFileList.FullRowSelect = true;
@@ -236,6 +247,41 @@ namespace AirdPro.Forms
             this.btnConvert.Name = "btnConvert";
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
+            // 
+            // lblStackLayers
+            // 
+            resources.ApplyResources(this.lblStackLayers, "lblStackLayers");
+            this.lblStackLayers.Name = "lblStackLayers";
+            // 
+            // cbStackLayers
+            // 
+            this.cbStackLayers.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStackLayers.FormattingEnabled = true;
+            this.cbStackLayers.Items.AddRange(new object[] {
+            resources.GetString("cbStackLayers.Items"),
+            resources.GetString("cbStackLayers.Items1"),
+            resources.GetString("cbStackLayers.Items2"),
+            resources.GetString("cbStackLayers.Items3"),
+            resources.GetString("cbStackLayers.Items4"),
+            resources.GetString("cbStackLayers.Items5")});
+            resources.ApplyResources(this.cbStackLayers, "cbStackLayers");
+            this.cbStackLayers.Name = "cbStackLayers";
+            // 
+            // lblAirdAlgorithm
+            // 
+            resources.ApplyResources(this.lblAirdAlgorithm, "lblAirdAlgorithm");
+            this.lblAirdAlgorithm.Name = "lblAirdAlgorithm";
+            // 
+            // cbAlgorithm
+            // 
+            this.cbAlgorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbAlgorithm.FormattingEnabled = true;
+            this.cbAlgorithm.Items.AddRange(new object[] {
+            resources.GetString("cbAlgorithm.Items"),
+            resources.GetString("cbAlgorithm.Items1")});
+            resources.ApplyResources(this.cbAlgorithm, "cbAlgorithm");
+            this.cbAlgorithm.Name = "cbAlgorithm";
+            this.cbAlgorithm.SelectedIndexChanged += new System.EventHandler(this.cbAlgorithm_SelectedIndexChanged);
             // 
             // btnDisconnect
             // 
@@ -373,6 +419,10 @@ namespace AirdPro.Forms
             resources.ApplyResources(this.ofd, "ofd");
             this.ofd.Multiselect = true;
             // 
+            // headerCompressor
+            // 
+            resources.ApplyResources(this.headerCompressor, "headerCompressor");
+            // 
             // AirdForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -430,6 +480,11 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ColumnHeader headerOutput;
         private System.Windows.Forms.OpenFileDialog ofd;
         private System.Windows.Forms.Button btnCustomerPath;
+        private System.Windows.Forms.Label lblAirdAlgorithm;
+        private System.Windows.Forms.ComboBox cbAlgorithm;
+        private System.Windows.Forms.Label lblStackLayers;
+        private System.Windows.Forms.ComboBox cbStackLayers;
+        private System.Windows.Forms.ColumnHeader headerCompressor;
     }
 }
 

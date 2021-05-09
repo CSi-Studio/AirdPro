@@ -71,7 +71,7 @@ namespace AirdPro.Domains.Convert
             this.cancellationTokenSource = new CancellationTokenSource();
             this.progress = new Progress<string>((progressValue) =>
             {
-                item.SubItems[2].Text = progressValue;
+                item.SubItems[3].Text = progressValue;
             });
         }
 
@@ -128,6 +128,7 @@ namespace AirdPro.Domains.Convert
             jobInfo += "threadId:" + threadId + "\r\n";
             jobInfo += "ThreadAccelerate:" + jobParams.threadAccelerate + "\r\n";
             jobInfo += "mzPrecision:" + jobParams.mzPrecision + "\r\n";
+            jobInfo += "compressor:" + (jobParams.airdAlgorithm == 1 ? "ZDPD" : ("Stack-ZDPD:" + (Math.Pow(2, jobParams.digit)))) + " Layers\r\n";
             return jobInfo;
         }
     }

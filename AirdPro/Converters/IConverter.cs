@@ -142,8 +142,8 @@ namespace AirdPro.Converters
             }
 
             // float[] intensityArray = intensityList.ToArray();
-            // int[] mzArray = CompressUtil.fastPForEncoder(mzList.ToArray());
-            int[] compressedMzArray = CompressUtil.fastPForEncoder(mzList.ToArray());
+            // int[] mzArray = CompressUtil.fastPforEncoder(mzList.ToArray());
+            int[] compressedMzArray = CompressUtil.fastPforEncoder(mzList.ToArray());
             ts.mzArrayBytes = CompressUtil.zlibEncoder(compressedMzArray);
             ts.intArrayBytes = CompressUtil.zlibEncoder(intensityList.ToArray());
         }

@@ -18,17 +18,36 @@ namespace AirdPro.Domains.Aird
         public static string TARGET_INTENSITY = "intensity";
 
         public static string METHOD_ZLIB = "zlib";
+        public static string METHOD_STACK = "stack";
         public static string METHOD_PFOR = "pFor";
         public static string METHOD_LOG10 = "log2";
 
-        //压缩对象,支持mz和intensity两种
+        /**
+         * Compression target, support for mz and intensity
+         * 压缩对象,支持mz和intensity两种
+         */
         public string target;
 
-        //压缩对象使用的压缩方法列表,按照顺序进行压缩
+        /**
+         * The compression method, sorted by the used order.
+         * 压缩对象使用的压缩方法列表,按照顺序进行压缩
+         */
         public List<string> methods;
 
-        //压缩精度, 有1000,10000和100000三种,代表精确到小数点后3,4,5位
+        /**
+         * Compressor precision.
+         * 1000: 0.001, 3dp
+         * 10000: 0.0001, 4dp
+         * 100000: 0.00001, 5dp
+         * 压缩精度, 有1000,10000和100000三种,代表精确到小数点后3,4,5位
+         */
         public int precision;
+
+        /**
+         * 2^digit = layers
+         * if layers = 256, then digit=8
+         */
+        public int digit;
 
         public void addMethod(string method)
         {

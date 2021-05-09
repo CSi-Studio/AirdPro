@@ -68,7 +68,7 @@ namespace AirdPro.Utils
         }
 
         //使用FastPfor算法将排序了的int数组进行压缩,注意:target数组必须是排序后的数组
-        public static int[] fastPForEncoder(int[] uncompressed)
+        public static int[] fastPforEncoder(int[] uncompressed)
         {
             var codec = new SkippableIntegratedComposition(new IntegratedBinaryPacking(), new IntegratedVariableByte());
             var compressed = new int[uncompressed.Length + 1024];
@@ -82,7 +82,7 @@ namespace AirdPro.Utils
         }
 
         //使用PFor算法对已经压缩的int数组进行解压缩
-        public static int[] fastPForDecoder(int[] compressed)
+        public static int[] fastPforDecoder(int[] compressed)
         {
             var codec = new SkippableIntegratedComposition(new IntegratedBinaryPacking(), new IntegratedVariableByte());
             var size = compressed[0];

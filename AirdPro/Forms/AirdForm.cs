@@ -16,6 +16,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using AirdPro.Domains.Convert;
 using AirdPro.Redis;
+using AirdPro.Test;
 using ThermoFisher.CommonCore.Data;
 using ThermoFisher.CommonCore.Data.Interfaces;
 
@@ -33,7 +34,9 @@ namespace AirdPro.Forms
         private void ProproForm_Load(object sender, EventArgs e)
         {
             this.Text = SoftwareInfo.getVersion();
-            this.cbMzPrecision.SelectedIndex = 1;
+            this.cbMzPrecision.SelectedIndex = 1; //默认选择精确到小数点后4位的精度
+            this.cbAlgorithm.SelectedIndex = 0; //默认选择Aird第一代压缩算法ZDPD
+            this.cbStackLayers.SelectedIndex = 3; //默认堆叠256层
             this.tbFolderPath.Text = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             this.tbOperator.Text = Environment.UserName;
             RedisClient.getInstance();
@@ -139,14 +142,17 @@ namespace AirdPro.Forms
                         threadAccelerate = cbThreadAccelerate.Checked,
                         suffix = tbFileNameSuffix.Text,
                         creator = tbOperator.Text,
-                        mzPrecision = Double.Parse(cbMzPrecision.Text)
+                        mzPrecision = Double.Parse(cbMzPrecision.Text),
+                        airdAlgorithm = cbAlgorithm.SelectedIndex+1,  // 1:ZDPD, 2:StackZDPD
+                        digit = (int)Math.Log(2, Int32.Parse(cbStackLayers.SelectedItem.ToString()))
                     };
-                    item.SubItems[3].Text = tbFolderPath.Text;
+                    item.SubItems[2].Text = jobParams.getAirdAlgorithmStr();
+                    item.SubItems[4].Text = tbFolderPath.Text;
+                    
                     JobInfo jobInfo = new JobInfo(item.SubItems[0].Text, tbFolderPath.Text,
                         item.SubItems[1].Text, jobParams, item);
                     ConvertTaskManager.getInstance().pushJob(jobInfo);
                 }
-                
             }
 
             try
@@ -171,7 +177,7 @@ namespace AirdPro.Forms
         {
             if (fileName != "" && !currentFiles.Contains(fileName))
             {
-                ListViewItem item = new ListViewItem(new string[]{fileName, expType, "Waiting",""});
+                ListViewItem item = new ListViewItem(new string[]{fileName, expType,"", "Waiting",""});
                 item.ToolTipText = fileName;
                 lvFileList.Items.Add(item);
                 currentFiles.Add(fileName);
@@ -265,7 +271,7 @@ namespace AirdPro.Forms
             {
                 foreach (ListViewItem item in lvFileList.Items)
                 {
-                    if (item.SubItems[2].Text.Equals("Finished"))
+                    if (item.SubItems[3].Text.Equals("Finished"))
                     {
                         item.Remove();
                         currentFiles.Remove(item.SubItems[0].Text);
@@ -343,6 +349,25 @@ namespace AirdPro.Forms
             }
             customPathForm.clearInfos();
             customPathForm.Show();
+        }
+
+        private void cbAlgorithm_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (((ComboBox) sender).SelectedIndex == 1)
+            {
+                lblStackLayers.Visible = true;
+                cbStackLayers.Visible = true;
+            }
+            else
+            {
+                lblStackLayers.Visible = false;
+                cbStackLayers.Visible = false;
+            }
+        }
+
+        private void lblFileSelectedInfo_Click(object sender, EventArgs e)
+        {
+            StackZDPDTest.stackZDPD_Test1();
         }
     }
 }
