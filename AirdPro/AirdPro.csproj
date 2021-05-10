@@ -137,6 +137,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\IZDPD.cs" />
+    <Compile Include="Algorithms\StackZDPD.cs" />
+    <Compile Include="Algorithms\ZDPD.cs" />
     <Compile Include="Asyncs\ConvertTaskManager.cs" />
     <Compile Include="Asyncs\LimitedConcurrencyLevelTaskScheduler.cs" />
     <Compile Include="Constants\ByteOrder.cs" />
@@ -150,6 +153,7 @@
     <Compile Include="Domains\Aird\Layers.cs" />
     <Compile Include="Domains\Job\JobParams.cs" />
     <Compile Include="Domains\Job\RemoteConvertJob.cs" />
+    <Compile Include="Domains\Scan\TempScanSZDPD.cs" />
     <Compile Include="Domains\Sort\IntArrayNode.cs" />
     <Compile Include="Forms\CustomPathForm.cs">
       <SubType>Form</SubType>

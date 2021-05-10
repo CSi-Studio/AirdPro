@@ -131,9 +131,8 @@ namespace AirdPro.Converters
                     Parallel.For(0, tempIndexList.Count, (i, ParallelLoopState) =>
                     {
                         TempIndex index = tempIndexList[i];
-                        TempScan ts = new TempScan(index.pNum, index.rt);
+                        TempScan ts = new TempScan(index.num, index.rt);
                         compress(spectrumList.spectrum(index.num, true), ts);
-                        //SwathIndex中只存储MS2谱图对应的MS1谱图的序号,其本身的序号已经没用了,不做存储,所以只存储了pNum
                         table.Add(i, ts);
                     });
 
@@ -145,7 +144,6 @@ namespace AirdPro.Converters
                     {
                         TempScan ts = new TempScan(index.pNum, index.rt);
                         compress(spectrumList.spectrum(index.num, true), ts);
-                        //SwathIndex中只存储MS2谱图对应的MS1谱图的序号,其本身的序号已经没用了,不做存储
                         addToIndex(swathIndex, ts);
                     }
                 }

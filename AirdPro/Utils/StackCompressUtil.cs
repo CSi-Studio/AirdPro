@@ -75,9 +75,10 @@ namespace AirdPro.Utils
             }
             //数组用fastPFor压缩，index用zlib压缩，并记录层数
             Layers layers = new Layers();
-            layers.mzArray = CompressUtil.intToByte(CompressUtil.fastPforEncoder(stackArr));
-            layers.indexArray = CompressUtil.zlibEncoder(indexShift);
+            layers.mzArray = CompressUtil.zlibEncoder(CompressUtil.intToByte(CompressUtil.fastPforEncoder(stackArr)));
+            layers.tagArray = CompressUtil.zlibEncoder(indexShift);
             layers.digit = digit;
+
             return layers;
         }
 
@@ -89,17 +90,17 @@ namespace AirdPro.Utils
          */
         public static List<int[]> stackDecode(Layers layers)
         {
-            int[] stackArr = CompressUtil.fastPforDecoder(CompressUtil.byteToInt(layers.mzArray));
+            int[] stackArr = CompressUtil.fastPforDecoder(CompressUtil.byteToInt(CompressUtil.zlibDecoder(layers.mzArray)));
             int[] stackIndex = new int[stackArr.Length];
-            byte[] indexShift = CompressUtil.zlibDecoder(layers.indexArray);
+            byte[] tagShift = CompressUtil.zlibDecoder(layers.tagArray);
             int digit = layers.digit;
             //拆分byte为8个bit，并分别存储
-            byte[] value = new byte[8 * indexShift.Length];
-            for (int i = 0; i < indexShift.Length; i++)
+            byte[] value = new byte[8 * tagShift.Length];
+            for (int i = 0; i < tagShift.Length; i++)
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    value[8 * i + j] = (byte)(((indexShift[i] & 0xff) >> j) & 1);
+                    value[8 * i + j] = (byte)(((tagShift[i] & 0xff) >> j) & 1);
                 }
             }
             //还原为int类型的index
@@ -162,8 +163,7 @@ namespace AirdPro.Utils
             {
                 for (int i = 0; i < arr.Length; i++)
                 {
-                    stackSort[i + arrLen][0] = arr[i];
-                    stackSort[i + arrLen][1] = index;
+                    stackSort[i + arrLen] = new []{ arr[i] , index};
                 }
                 index++;
                 arrLen += arr.Length;
@@ -183,7 +183,7 @@ namespace AirdPro.Utils
          */
         private static int[][] getPairSortArray(List<int[]> arrGroup)
         {
-            ArrayList indexGroup = new ArrayList();
+            List<int[]> indexGroup = new List<int[]>();
             indexGroup.Add(new int[arrGroup[0].Length]);
             for (int i = 1; i < arrGroup.Count; i++)
             {
@@ -191,7 +191,7 @@ namespace AirdPro.Utils
                 Arrays.fill(indexes, i);
                 indexGroup.Add(indexes);
             }
-            int mergeTimes = (int)Math.Log(2, arrGroup.Count);
+            int mergeTimes = (int)Math.Log(arrGroup.Count, 2);
             for (int i = 1; i <= mergeTimes; i++)
             {
                 int stepWidth = (int)Math.Pow(2, i);
@@ -203,13 +203,11 @@ namespace AirdPro.Utils
                     int rightIndex = leftIndex + stepWidth / 2;
                     int[] dataArr1 = arrGroup[leftIndex];
                     int[] dataArr2 = arrGroup[rightIndex];
-                    int[] indexArr1 = (int[]) indexGroup[leftIndex];
-                    int[] indexArr2 = (int[]) indexGroup[rightIndex];
+                    int[] indexArr1 = indexGroup[leftIndex];
+                    int[] indexArr2 = indexGroup[rightIndex];
                     int[] dataArr = new int[dataArr1.Length + dataArr2.Length];
                     int[] indexArr = new int[dataArr.Length];
-                    int index1 = 0;
-                    int index2 = 0;
-                    int index = 0;
+                    int index1 = 0, index2 = 0, index = 0;
                     for (int k = 0; k < dataArr.Length; k++)
                     {
                         if (index1 >= dataArr1.Length)
@@ -220,7 +218,6 @@ namespace AirdPro.Utils
                             index++;
                             continue;
                         }
-
                         if (index2 >= dataArr2.Length)
                         {
                             dataArr[index] = dataArr1[index1];
@@ -242,21 +239,19 @@ namespace AirdPro.Utils
                             indexArr[index] = indexArr2[index2];
                             index2++;
                         }
-
                         index++;
                     }
-
                     indexGroup[leftIndex] = indexArr;
                     arrGroup[leftIndex] = dataArr;
-                }
+                }//single thread
+                 //            });//multi threads
             }
             int[] arr = arrGroup[0];
-            int[] indexArray = (int[])indexGroup[0];
+            int[] indexArray = indexGroup[0];
             int[][] resultArr = new int[arr.Length][];
             for (int i = 0; i < resultArr.Length; i++)
             {
-                resultArr[i][0] = arr[i];
-                resultArr[i][1] = indexArray[i];
+                resultArr[i] = new []{arr[i], indexArray[i]};
             }
             return resultArr;
         }

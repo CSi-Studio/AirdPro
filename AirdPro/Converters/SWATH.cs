@@ -18,6 +18,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using AirdPro.Algorithms;
 using AirdPro.Domains.Convert;
 
 namespace AirdPro.Converters
@@ -176,6 +177,16 @@ namespace AirdPro.Converters
         private void parseAndStoreMS2Block()
         {
             jobInfo.log("Start Processing MS2 List");
+            IZDPD izdpd;
+            if (jobInfo.jobParams.useStackZDPD())
+            {
+                izdpd = new StackZDPD(this);
+            }
+            else
+            {
+                izdpd = new ZDPD(this);
+            }
+
             foreach (double key in ms2Table.Keys)
             {
                 List<TempIndex> tempIndexList = ms2Table[key] as List<TempIndex>;
@@ -188,33 +199,7 @@ namespace AirdPro.Converters
 
                 jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);
                 progress++;
-
-                if (jobInfo.jobParams.threadAccelerate)
-                {
-                    Hashtable table = Hashtable.Synchronized(new Hashtable());
-                    //使用多线程处理数据提取与压缩
-                    Parallel.For(0, tempIndexList.Count, (i, ParallelLoopState) =>
-                    {
-                        TempIndex tempIndex = tempIndexList[i];
-                        TempScan ts = new TempScan(tempIndex.num, tempIndex.rt);
-                        compress(spectrumList.spectrum(tempIndex.num, true), ts);
-                        //SwathIndex中只存储MS2谱图对应的MS1谱图的序号,其本身的序号已经没用了,不做存储,所以只存储了pNum
-                        table.Add(i, ts);
-                    });
-
-                    outputWithOrder(table, index);
-                }
-                else
-                {
-                    foreach (TempIndex tempIndex in tempIndexList)
-                    {
-                        TempScan ts = new TempScan(tempIndex.pNum, tempIndex.rt);
-                        compress(spectrumList.spectrum(tempIndex.num, true), ts);
-                        //SwathIndex中只存储MS2谱图对应的MS1谱图的序号,其本身的序号已经没用了,不做存储
-                        addToIndex(index, ts);
-                    }
-                }
-
+                izdpd.compressMS2(tempIndexList, index);
                 index.endPtr = startPosition;
                 indexList.Add(index);
                 jobInfo.log("MS2 Group Finished:" + progress + "/" + ms2Table.Keys.Count);

@@ -24,9 +24,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using System.Threading.Tasks;
+using AirdPro.Algorithms;
 using ByteOrder = AirdPro.Constants.ByteOrder;
-using DataProcessing = pwiz.CLI.msdata.DataProcessing;
 using Software = pwiz.CLI.msdata.Software;
 
 namespace AirdPro.Converters
@@ -35,8 +34,8 @@ namespace AirdPro.Converters
     {
         private static readonly object calculateSHA1Mutex = new object();
         protected MSData msd;
-        protected SpectrumList spectrumList;
-        protected JobInfo jobInfo;
+        public SpectrumList spectrumList;
+        public JobInfo jobInfo;
         protected Stopwatch stopwatch = new Stopwatch();
         protected FileStream airdStream;
         protected FileStream airdJsonStream;
@@ -44,18 +43,13 @@ namespace AirdPro.Converters
         protected List<BlockIndex> indexList = new List<BlockIndex>();//用于存储的全局的SWATH List
         protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable());//用于存放MS2的索引信息,key为mz
 
-        protected List<TempIndex> ms1List = new List<TempIndex>(); //用于存放MS1索引及基础信息
+        public List<TempIndex> ms1List = new List<TempIndex>(); //用于存放MS1索引及基础信息
         protected Hashtable featuresMap = new Hashtable();
         protected long fileSize;
         protected long startPosition;//文件指针
         protected int totalSize;//总计的谱图数目
 
         protected int mzPrecision;
-        // protected Hashtable ms2IntTable = Hashtable.Synchronized(new Hashtable());//用于存放MS2的intensity编码表,key为intensity,value为自增键
-        // protected SortedSet<float> ms2IntensitySet = new SortedSet<float>();//用于存放MS2的mz编码表
-        //
-        // protected Hashtable ms2mzTable = Hashtable.Synchronized(new Hashtable());//用于存放MS2的mz编码表,key为mz,value为自增键
-        // protected SortedSet<int> ms2mzSet = new SortedSet<int>();//用于存放MS2的mz编码表
 
         protected static double log2 = Math.Log(2);
         public IConverter(JobInfo jobInfo)
@@ -116,7 +110,7 @@ namespace AirdPro.Converters
             return Convert.ToSingle(Math.Round(time, 3));
         }
 
-        protected void compress(Spectrum spectrum, TempScan ts)
+        public void compress(Spectrum spectrum, TempScan ts)
         {
             BinaryDataDouble mzData = spectrum.getMZArray().data;
             BinaryDataDouble intData = spectrum.getIntensityArray().data;
@@ -141,34 +135,94 @@ namespace AirdPro.Converters
                 }
             }
 
-            // float[] intensityArray = intensityList.ToArray();
-            // int[] mzArray = CompressUtil.fastPforEncoder(mzList.ToArray());
             int[] compressedMzArray = CompressUtil.fastPforEncoder(mzList.ToArray());
             ts.mzArrayBytes = CompressUtil.zlibEncoder(compressedMzArray);
             ts.intArrayBytes = CompressUtil.zlibEncoder(intensityList.ToArray());
         }
 
-        protected void outputWithOrder(Hashtable table, BlockIndex index)
+        public void compress(List<Spectrum> spectrumGroup, TempScanSZDPD ts)
+        { 
+            List<int[]> mzListGroup = new List<int[]>();
+            //Intensity数组会直接合并为一个数组
+            List<float> intListAllGroup = new List<float>();
+
+            for (int i = 0; i < spectrumGroup.Count; i++)
+            {
+                BinaryDataDouble mzData = spectrumGroup[i].getMZArray().data;
+                BinaryDataDouble intData = spectrumGroup[i].getIntensityArray().data;
+                List<int> mzList = new List<int>();
+                List<float> intensityList = new List<float>();
+
+                for (int t = 0; t < mzData.Count; t++)
+                {
+                    if (jobInfo.jobParams.ignoreZeroIntensity && intData[t] == 0) continue;
+
+                    int mz = Convert.ToInt32(mzData[t] * mzPrecision);
+                    mzList.Add(mz);
+
+                    if (jobInfo.jobParams.log2)
+                    {
+                        intensityList.Add(Convert.ToSingle(Math.Round(Math.Log(intData[t]) / log2, 3))); //取log10并且精确到小数点后3位
+                    }
+                    else
+                    {
+                        float intensity = Convert.ToSingle(Math.Round(intData[t], 1));
+                        intensityList.Add(intensity);//精确到小数点后一位
+                    }
+                }
+                
+                mzListGroup.Add(mzList.ToArray());
+                intListAllGroup.AddRange(intensityList);
+            }
+
+            Layers layers = StackCompressUtil.stackEncode(mzListGroup, mzListGroup.Count == Math.Pow(2, jobInfo.jobParams.digit));
+            // List<int[]> temp = StackCompressUtil.stackDecode(layers);
+            //使用SZDPD对mz进行压缩
+            ts.mzArrayBytes = layers.mzArray;
+            ts.tagArrayBytes = layers.tagArray;
+            ts.intArrayBytes = CompressUtil.zlibEncoder(intListAllGroup.ToArray());
+        }
+
+        public void outputWithOrder(Hashtable table, BlockIndex index)
         {
             ArrayList keys = new ArrayList(table.Keys);
             keys.Sort();
             foreach (int key in keys)
             {
-                TempScan tempScan = (TempScan)table[key];
-                addToIndex(index, tempScan);
+                addToIndex(index, table[key]);
             }
         }
 
         //注意:本函数会操作startPosition这个全局变量
-        protected void addToIndex(BlockIndex index, TempScan ts)
+        public void addToIndex(BlockIndex index, object tempScan)
         {
-            index.nums.Add(ts.num);
-            index.rts.Add(ts.rt);
-            index.mzs.Add(ts.mzArrayBytes.Length);
-            index.ints.Add(ts.intArrayBytes.Length);
-            startPosition = startPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;
-            airdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
-            airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
+            if (jobInfo.jobParams.useStackZDPD())
+            {
+                TempScanSZDPD ts = (TempScanSZDPD)tempScan;
+
+                index.nums.AddRange(ts.nums);
+                index.rts.AddRange(ts.rts);
+                index.mzs.Add(ts.mzArrayBytes.Length);
+                index.ints.Add(ts.intArrayBytes.Length);
+                index.tags.Add(ts.tagArrayBytes.Length);
+                startPosition = startPosition + ts.mzArrayBytes.Length + ts.tagArrayBytes.Length + ts.intArrayBytes.Length;
+                airdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
+                airdStream.Write(ts.tagArrayBytes, 0, ts.tagArrayBytes.Length);
+                airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
+            }
+            else
+            {
+                TempScan ts = (TempScan)tempScan;
+
+                index.nums.Add(ts.num);
+                index.rts.Add(ts.rt);
+                index.mzs.Add(ts.mzArrayBytes.Length);
+                index.ints.Add(ts.intArrayBytes.Length);
+                startPosition = startPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;
+                airdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
+                airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
+            }
+          
         }
 
         protected double getPrecursorIsolationWindowParams(Spectrum spectrum, CVID cvid)
@@ -335,34 +389,15 @@ namespace AirdPro.Converters
             BlockIndex index = new BlockIndex();
             index.level = 1;
             index.startPtr = startPosition;
-
-            if (jobInfo.jobParams.threadAccelerate)
+            if (jobInfo.jobParams.useStackZDPD())
             {
-                Hashtable table = Hashtable.Synchronized(new Hashtable());
-                //使用多线程处理数据提取与压缩
-                Parallel.For(0, ms1List.Count, (i, ParallelLoopState) =>
-                {
-                    jobInfo.log(null, "MS1:" + i + "/" + ms1List.Count);
-
-                    TempIndex scanIndex = ms1List[i];
-                    TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
-                    compress(spectrumList.spectrum(scanIndex.num, true), ts);
-                    table.Add(i, ts);
-                });
-                outputWithOrder(table, index);
+                new StackZDPD(this).compressMS1(index);
             }
             else
             {
-                for (int i = 0; i < ms1List.Count; i++)
-                {
-                    jobInfo.log(null, "MS1:" + i + "/" + ms1List.Count);
-                    TempIndex scanIndex = ms1List[i];
-                    TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
-                    compress(spectrumList.spectrum(scanIndex.num, true), ts);
-                    addToIndex(index, ts);
-                }
+                new ZDPD(this).compressMS1(index);
             }
-
+          
             index.endPtr = startPosition;
             indexList.Add(index);
         }
@@ -486,6 +521,11 @@ namespace AirdPro.Converters
             List<Compressor> coms = new List<Compressor>();
             //mz compressor
             Compressor mzCompressor = new Compressor();
+            if (jobInfo.jobParams.useStackZDPD())
+            {
+                mzCompressor.addMethod(Compressor.METHOD_STACK);
+                mzCompressor.digit = jobInfo.jobParams.digit;
+            }
             mzCompressor.addMethod(Compressor.METHOD_PFOR);
             mzCompressor.addMethod(Compressor.METHOD_ZLIB);
             mzCompressor.target = Compressor.TARGET_MZ;
@@ -493,6 +533,11 @@ namespace AirdPro.Converters
             coms.Add(mzCompressor);
             //intensity compressor
             Compressor intCompressor = new Compressor();
+            if (jobInfo.jobParams.useStackZDPD())
+            {
+                intCompressor.addMethod(Compressor.METHOD_STACK);
+                intCompressor.digit = jobInfo.jobParams.digit;
+            }
             if (jobInfo.jobParams.log2)
             {
                 intCompressor.addMethod(Compressor.METHOD_LOG10);
@@ -504,6 +549,8 @@ namespace AirdPro.Converters
             }
             
             intCompressor.target = Compressor.TARGET_INTENSITY;
+            intCompressor.precision = 10;  //intensity默认精确到小数点后1位
+
             coms.Add(intCompressor);
             airdInfo.compressors = coms;
 
@@ -513,6 +560,7 @@ namespace AirdPro.Converters
             featuresMap.Add(Features.ignore_zero_intensity, jobInfo.jobParams.ignoreZeroIntensity);
             featuresMap.Add(Features.source_file_format, jobInfo.format);
             featuresMap.Add(Features.byte_order, ByteOrder.LITTLE_ENDIAN);
+            featuresMap.Add(Features.aird_algorithm, jobInfo.jobParams.getAirdAlgorithmStr());
             airdInfo.features = FeaturesUtil.toString(featuresMap);
             airdInfo.version = SoftwareInfo.VERSION;
             airdInfo.versionCode = SoftwareInfo.VERSION_CODE;

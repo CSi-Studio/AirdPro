@@ -31,6 +31,7 @@ namespace AirdPro.Domains.Aird
         public static string aird_version = "aird_version";
         //进行zlib压缩时使用的byteOrder编码,C#默认使用的是LITTLE_ENDIAN
         public static string byte_order = "byte_order";
-
+        //使用的Aird核心压缩算法,有ZDPD, StackZDPD两种
+        public static string aird_algorithm = "aird_algorithm";
     }
 }

@@ -4,11 +4,19 @@ AirdPro is opensource under the MulanPSL2 license
 
 
 ## Version Description
+### V2.0.0
+- Second Generation of Aird Compression Algorithm: Stack-ZDPD
+
+### V1.1.0
+- Distributed Batch Conversion Task based on Redis
+- Support for .d folder vendor format of Agilent
+
 ### V1.0.0
 - Supporting SWATH/DIA Format 
 - Supporting DDA Format 
 - Supporting PRM Format
 - Supporting COMMON Format
+- First Generation of Aird Compression Algorithm: ZDPD
 
 # AirdPro
 You can download the AirdPro1.0.1.zip from the FTP server: <br/>

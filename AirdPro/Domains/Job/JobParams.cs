@@ -70,5 +70,10 @@ namespace AirdPro.Domains.Convert
         {
             return airdAlgorithm == 1 ? "ZDPD" : ("Stack-ZDPD:" + Math.Pow(2, digit).ToString() + " Layers");
         }
+
+        public Boolean useStackZDPD()
+        {
+            return airdAlgorithm == 2;
+        }
     }
 }

@@ -12,7 +12,7 @@
          * mz对应的层索引
          * layer index of mz
          */
-        public byte[] indexArray;
+        public byte[] tagArray;
 
         /**
          * 存储单个索引所需的位数
@@ -22,10 +22,10 @@
 
         public Layers() { }
 
-        public Layers(byte[] mzArray, byte[] indexArray, int digit)
+        public Layers(byte[] mzArray, byte[] tagArray, int digit)
         {
             this.mzArray = mzArray;
-            this.indexArray = indexArray;
+            this.tagArray = tagArray;
             this.digit = digit;
         }
     }

@@ -144,7 +144,7 @@ namespace AirdPro.Forms
                         creator = tbOperator.Text,
                         mzPrecision = Double.Parse(cbMzPrecision.Text),
                         airdAlgorithm = cbAlgorithm.SelectedIndex+1,  // 1:ZDPD, 2:StackZDPD
-                        digit = (int)Math.Log(2, Int32.Parse(cbStackLayers.SelectedItem.ToString()))
+                        digit = (int)Math.Log(Int32.Parse(cbStackLayers.SelectedItem.ToString()), 2)
                     };
                     item.SubItems[2].Text = jobParams.getAirdAlgorithmStr();
                     item.SubItems[4].Text = tbFolderPath.Text;

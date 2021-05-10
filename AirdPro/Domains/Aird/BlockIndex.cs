@@ -71,6 +71,12 @@ namespace AirdPro.Domains.Aird
         public List<long> ints = new List<long>();
 
         /**
+         * Only using Stack ZDPD. The compressed list for tags of every mz. 
+         * 一个块中所有子谱图的mz原层码的压缩后的数组大小列表
+         */
+        public List<long> tags = new List<long>();
+
+        /**
          * Features of every block index
          * 用于存储KV键值对
          */
