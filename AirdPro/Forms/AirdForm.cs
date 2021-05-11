@@ -144,14 +144,13 @@ namespace AirdPro.Forms
                         creator = tbOperator.Text,
                         mzPrecision = Double.Parse(cbMzPrecision.Text),
                         airdAlgorithm = cbAlgorithm.SelectedIndex+1,  // 1:ZDPD, 2:StackZDPD
-                        digit = (int)Math.Log(Int32.Parse(cbStackLayers.SelectedItem.ToString()), 2)
+                        digit = (int)Math.Log(Int32.Parse(cbStackLayers.SelectedItem.ToString()), 2),
+                        includeCV = cbIncludingPSICV.Checked
                     };
 
                     JobInfo jobInfo = new JobInfo(item.SubItems[0].Text, tbFolderPath.Text,
                         item.SubItems[1].Text, jobParams, item);
 
-                    
-                    
                     ConvertTaskManager.getInstance().pushJob(jobInfo);
                 }
             }

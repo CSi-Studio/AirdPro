@@ -75,6 +75,7 @@ namespace AirdPro.Converters
             int parentNum = 0;
             jobInfo.log("Preprocessing:" + totalSize, "Preprocessing");
             int proprogress = 0;
+            
             // 预处理所有的MS谱图
             for (int i = 0; i < totalSize; i++)
             {
@@ -99,8 +100,6 @@ namespace AirdPro.Converters
             jobInfo.log("Start Processing MS1 List");
         }
 
-       
-        
         //提取SWATH 窗口信息
         private void buildWindowsRanges()
         {

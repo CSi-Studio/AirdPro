@@ -77,6 +77,12 @@ namespace AirdPro.Domains.Aird
         public List<long> tags = new List<long>();
 
         /**
+         * PSI CV
+         * PSI可控词汇表
+         */
+        public List<List<CV>> cvList = new List<List<CV>>();
+
+        /**
          * Features of every block index
          * 用于存储KV键值对
          */

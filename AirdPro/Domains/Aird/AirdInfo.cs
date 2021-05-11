@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using pwiz.CLI.data;
 
 namespace AirdPro.Domains.Aird
 {
@@ -124,6 +125,11 @@ namespace AirdPro.Domains.Aird
          * Aird的版本编码
          */
         public int versionCode;
+
+        /**
+         * PSI CV
+         */
+        public List<CVParam> cvParams;
 
     }
 }

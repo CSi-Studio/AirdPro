@@ -26,6 +26,10 @@ namespace AirdPro.Algorithms
                     converter.jobInfo.log(null, "MS1:" + i + "/" + converter.ms1List.Count);
                     TempIndex scanIndex = converter.ms1List[i];
                     TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
+                    if (converter.jobInfo.jobParams.includeCV)
+                    {
+                        ts.cvs = scanIndex.cvList;
+                    }
                     converter.compress(converter.spectrumList.spectrum(scanIndex.num, true), ts);
                     table.Add(i, ts);
                 });
@@ -38,11 +42,14 @@ namespace AirdPro.Algorithms
                     converter.jobInfo.log(null, "MS1:" + i + "/" + converter.ms1List.Count);
                     TempIndex scanIndex = converter.ms1List[i];
                     TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
+                    if (converter.jobInfo.jobParams.includeCV)
+                    {
+                        ts.cvs = scanIndex.cvList;
+                    }
                     converter.compress(converter.spectrumList.spectrum(scanIndex.num, true), ts);
                     converter.addToIndex(index, ts);
                 }
             }
-           
         }
 
         override
@@ -56,6 +63,10 @@ namespace AirdPro.Algorithms
                 {
                     TempIndex tempIndex = tempIndexList[i];
                     TempScan ts = new TempScan(tempIndex.num, tempIndex.rt);
+                    if (converter.jobInfo.jobParams.includeCV)
+                    {
+                        ts.cvs = tempIndex.cvList;
+                    }
                     converter.compress(converter.spectrumList.spectrum(tempIndex.num, true), ts);
                     table.Add(i, ts);
                 });
@@ -66,6 +77,10 @@ namespace AirdPro.Algorithms
                 foreach (TempIndex tempIndex in tempIndexList)
                 {
                     TempScan ts = new TempScan(tempIndex.num, tempIndex.rt);
+                    if (converter.jobInfo.jobParams.includeCV)
+                    {
+                        ts.cvs = tempIndex.cvList;
+                    }
                     converter.compress(converter.spectrumList.spectrum(tempIndex.num, true), ts);
                     converter.addToIndex(index, ts);
                 }

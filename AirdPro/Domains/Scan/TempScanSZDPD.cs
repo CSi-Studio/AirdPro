@@ -17,6 +17,7 @@ namespace AirdPro.Domains.Aird
     {
         public List<int> nums;
         public List<float> rts;
+        public List<List<CV>> cvs;
         public byte[] mzArrayBytes;
         public byte[] intArrayBytes;
         public byte[] tagArrayBytes;

@@ -8,6 +8,8 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using System.Collections.Generic;
+
 namespace AirdPro.Domains.Aird
 {
     public class TempIndex
@@ -34,6 +36,9 @@ namespace AirdPro.Domains.Aird
 
         //前体的荷质比窗口
         public double wid;
+
+        //PSI CV PSI可控词汇表
+        public List<CV> cvList;
 
         //用于存储KV键值对
         public string features;

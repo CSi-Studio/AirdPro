@@ -72,9 +72,13 @@ namespace AirdPro.Converters
                         ParallelLoopState.Break();
                         return;
                     }
-
+                   
                     var scan = spectrum.scanList.scans[0];
                     var ts = new TempScan(i, parseRT(scan));
+                    if (jobInfo.jobParams.includeCV)
+                    {
+                        ts.cvs = CV.trans(spectrum);
+                    }
                     compress(spectrum, ts);
                     var msLevel = getMsLevel(spectrum);
                     if (msLevel.Equals(MsLevel.MS1))
@@ -100,6 +104,10 @@ namespace AirdPro.Converters
                     }
                     var scan = spectrum.scanList.scans[0];
                     var ts = new TempScan(i, parseRT(scan));
+                    if (jobInfo.jobParams.includeCV)
+                    {
+                        ts.cvs = CV.trans(spectrum);
+                    }
                     compress(spectrum, ts);
                     var msLevel = getMsLevel(spectrum);
                     if (msLevel.Equals(MsLevel.MS1))
@@ -135,6 +143,7 @@ namespace AirdPro.Converters
             index.rts.Add(ts.rt);
             index.mzs.Add(startPosition);
             index.ints.Add(startPosition + ts.mzArrayBytes.Length);
+            index.cvList.Add(ts.cvs);
             startPosition = startPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;
             index.endPtr = startPosition;
             airdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);

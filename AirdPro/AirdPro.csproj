@@ -144,6 +144,7 @@
     <Compile Include="Asyncs\LimitedConcurrencyLevelTaskScheduler.cs" />
     <Compile Include="Constants\ByteOrder.cs" />
     <Compile Include="Constants\Const.cs" />
+    <Compile Include="Domains\Aird\CV.cs" />
     <Compile Include="Domains\Aird\Enums\AirdType.cs" />
     <Compile Include="Domains\Aird\Enums\MsLevel.cs" />
     <Compile Include="Constants\ProcessingStatus.cs" />
@@ -318,6 +319,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="PSI-MS.obo" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>

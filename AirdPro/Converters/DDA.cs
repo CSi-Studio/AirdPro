@@ -19,6 +19,7 @@ using System.IO;
 using AirdPro.Algorithms;
 using AirdPro.Domains.Convert;
 using ThermoFisher.CommonCore.Data;
+using CV = AirdPro.Domains.Aird.CV;
 
 namespace AirdPro.Converters
 {
@@ -100,6 +101,10 @@ namespace AirdPro.Converters
             TempIndex ms1 = new TempIndex();
             ms1.level = 1;
             ms1.num = index;
+            if (jobInfo.jobParams.includeCV)
+            {
+                ms1.cvList = CV.trans(spectrum);
+            }
             if (spectrum.scanList.scans.Count != 1)
             {
                 return ms1;
@@ -118,6 +123,10 @@ namespace AirdPro.Converters
             ms2.level = 2;
             ms2.pNum = parentIndex;
             ms2.num = index;
+            if (jobInfo.jobParams.includeCV)
+            {
+                ms2.cvList = CV.trans(spectrum);
+            }
             try
             {
                 float mz = (float) double.Parse(spectrum.precursors[0].isolationWindow
@@ -236,7 +245,6 @@ namespace AirdPro.Converters
                 blockIndex.rangeList = ms2Ranges;
                 blockIndex.endPtr = startPosition;
                 indexList.Add(blockIndex);
-                // jobInfo.log("MS2 Group Finished:" + progress + "/" + ms2Table.Keys.Count);
             }
         }
     }

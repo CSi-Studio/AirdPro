@@ -62,6 +62,12 @@ namespace AirdPro.Domains.Convert
          */
         public int digit = 8;
 
+        /**
+         * If Store the PSI CV
+         * 是否保存可控词汇表的相关信息
+         */
+        public Boolean includeCV = false;
+
         public JobParams()
         {
         }

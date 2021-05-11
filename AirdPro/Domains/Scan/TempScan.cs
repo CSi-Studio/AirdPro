@@ -9,6 +9,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace AirdPro.Domains.Aird
 {
@@ -16,6 +17,8 @@ namespace AirdPro.Domains.Aird
     {
         public int num;
         public float rt;
+        public List<CV> cvs;
+
         public byte[] mzArrayBytes;
         public byte[] intArrayBytes;
 

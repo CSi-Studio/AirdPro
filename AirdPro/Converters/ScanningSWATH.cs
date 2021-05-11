@@ -17,6 +17,7 @@ using System.Collections;
 using System.IO;
 using System.Threading.Tasks;
 using AirdPro.Domains.Convert;
+using CV = AirdPro.Domains.Aird.CV;
 
 namespace AirdPro.Converters
 {
@@ -158,6 +159,10 @@ namespace AirdPro.Converters
             try
             {
                 TempScan ts = new TempScan(i, parseRT(spectrum.scanList.scans[0]));
+                if (jobInfo.jobParams.includeCV)
+                {
+                    ts.cvs = CV.trans(spectrum);
+                }
                 compress(spectrum, ts);
                 ms2List.Add(ts);
             }

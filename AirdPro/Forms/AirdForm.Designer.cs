@@ -85,6 +85,7 @@ namespace AirdPro.Forms
             this.timerConsumer = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
+            this.cbIncludingPSICV = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -113,6 +114,7 @@ namespace AirdPro.Forms
             // 
             // container.Panel2
             // 
+            this.container.Panel2.Controls.Add(this.cbIncludingPSICV);
             this.container.Panel2.Controls.Add(this.lblStackLayers);
             this.container.Panel2.Controls.Add(this.cbStackLayers);
             this.container.Panel2.Controls.Add(this.lblAirdAlgorithm);
@@ -425,6 +427,12 @@ namespace AirdPro.Forms
             resources.ApplyResources(this.ofd, "ofd");
             this.ofd.Multiselect = true;
             // 
+            // cbIncludingPSICV
+            // 
+            resources.ApplyResources(this.cbIncludingPSICV, "cbIncludingPSICV");
+            this.cbIncludingPSICV.Name = "cbIncludingPSICV";
+            this.cbIncludingPSICV.UseVisualStyleBackColor = true;
+            // 
             // AirdForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -488,6 +496,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ComboBox cbStackLayers;
         private System.Windows.Forms.ColumnHeader headerCompressor;
         private System.Windows.Forms.ToolTip ttAlgorithm;
+        private System.Windows.Forms.CheckBox cbIncludingPSICV;
     }
 }
 

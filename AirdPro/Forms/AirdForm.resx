@@ -561,6 +561,36 @@
   <data name="&gt;&gt;container.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="cbIncludingPSICV.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cbIncludingPSICV.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cbIncludingPSICV.Location" type="System.Drawing.Point, System.Drawing">
+    <value>229, 63</value>
+  </data>
+  <data name="cbIncludingPSICV.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 21</value>
+  </data>
+  <data name="cbIncludingPSICV.TabIndex" type="System.Int32, mscorlib">
+    <value>31</value>
+  </data>
+  <data name="cbIncludingPSICV.Text" xml:space="preserve">
+    <value>PSI CV</value>
+  </data>
+  <data name="&gt;&gt;cbIncludingPSICV.Name" xml:space="preserve">
+    <value>cbIncludingPSICV</value>
+  </data>
+  <data name="&gt;&gt;cbIncludingPSICV.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbIncludingPSICV.Parent" xml:space="preserve">
+    <value>container.Panel2</value>
+  </data>
+  <data name="&gt;&gt;cbIncludingPSICV.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="lblStackLayers.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -592,7 +622,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblStackLayers.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="cbStackLayers.Items" xml:space="preserve">
     <value>32</value>
@@ -634,7 +664,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;cbStackLayers.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="lblAirdAlgorithm.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -664,7 +694,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblAirdAlgorithm.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="cbAlgorithm.Items" xml:space="preserve">
     <value>ZDPD</value>
@@ -697,7 +727,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;cbAlgorithm.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="btnDisconnect.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -724,7 +754,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;btnDisconnect.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="lblConnectStatus.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -751,7 +781,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblConnectStatus.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="lblIP.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -778,7 +808,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblIP.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="tbHostAndPort.Location" type="System.Drawing.Point, System.Drawing">
     <value>117, 186</value>
@@ -802,7 +832,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbHostAndPort.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="btnConnect.Location" type="System.Drawing.Point, System.Drawing">
     <value>271, 186</value>
@@ -826,7 +856,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;btnConnect.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="lblOperator.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -862,7 +892,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblOperator.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="tbOperator.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -889,7 +919,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbOperator.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="lblMzPrecision.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -919,7 +949,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblMzPrecision.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="cbMzPrecision.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -952,7 +982,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;cbMzPrecision.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="cbThreadAccelerate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -982,7 +1012,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;cbThreadAccelerate.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="cbLog2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1015,7 +1045,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;cbLog2.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="lblFileNameTag.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1048,7 +1078,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblFileNameTag.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>16</value>
   </data>
   <data name="tbFileNameSuffix.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 9pt</value>
@@ -1072,7 +1102,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbFileNameSuffix.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>17</value>
   </data>
   <data name="cbIsZeroIntensityIgnore.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1099,7 +1129,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;cbIsZeroIntensityIgnore.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>18</value>
   </data>
   <data name="lblConsole.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -1132,7 +1162,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblConsole.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>19</value>
   </data>
   <data name="tbConsole.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -1165,7 +1195,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbConsole.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>20</value>
   </data>
   <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1198,7 +1228,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>21</value>
   </data>
   <data name="btnChooseFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1231,7 +1261,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;btnChooseFolder.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>22</value>
   </data>
   <data name="tbFolderPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1258,7 +1288,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbFolderPath.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>23</value>
   </data>
   <data name="container.Panel2.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 9pt</value>

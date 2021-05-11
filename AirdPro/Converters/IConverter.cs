@@ -26,6 +26,7 @@ using System.IO;
 using System.Text;
 using AirdPro.Algorithms;
 using ByteOrder = AirdPro.Constants.ByteOrder;
+using CV = AirdPro.Domains.Aird.CV;
 using Software = pwiz.CLI.msdata.Software;
 
 namespace AirdPro.Converters
@@ -48,7 +49,7 @@ namespace AirdPro.Converters
         protected long fileSize;
         protected long startPosition;//文件指针
         protected int totalSize;//总计的谱图数目
-
+        protected int rtUnit; //时间单位
         protected int mzPrecision;
 
         protected static double log2 = Math.Log(2);
@@ -202,6 +203,10 @@ namespace AirdPro.Converters
 
                 index.nums.AddRange(ts.nums);
                 index.rts.AddRange(ts.rts);
+                if (jobInfo.jobParams.includeCV)
+                {
+                    index.cvList.AddRange(ts.cvs);
+                }
                 index.mzs.Add(ts.mzArrayBytes.Length);
                 index.ints.Add(ts.intArrayBytes.Length);
                 index.tags.Add(ts.tagArrayBytes.Length);
@@ -216,6 +221,10 @@ namespace AirdPro.Converters
 
                 index.nums.Add(ts.num);
                 index.rts.Add(ts.rt);
+                if (jobInfo.jobParams.includeCV)
+                {
+                    index.cvList.Add(ts.cvs);
+                }
                 index.mzs.Add(ts.mzArrayBytes.Length);
                 index.ints.Add(ts.intArrayBytes.Length);
                 startPosition = startPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;
@@ -255,7 +264,7 @@ namespace AirdPro.Converters
             jobInfo.log("Prepare to Parse Vendor File", "Prepare");
             msd = new MSDataFile(jobInfo.inputFilePath);
             jobInfo.log("Adapting Vendor File API", "Adapting");
-
+            
             List<string> filter = new List<string>();
             SpectrumListFactory.wrap(msd, filter); //这一步操作可以帮助加快Wiff文件的初始化速度
             
@@ -336,6 +345,10 @@ namespace AirdPro.Converters
             TempIndex ms1 = new TempIndex();
             ms1.level = 1;
             ms1.num = index;
+            if (jobInfo.jobParams.includeCV)
+            {
+                ms1.cvList = CV.trans(spectrum);
+            }
             if (spectrum.scanList.scans.Count != 1)
             {
                 return ms1;
@@ -353,6 +366,10 @@ namespace AirdPro.Converters
             ms2.level = 2;
             ms2.pNum = parentIndex;
             ms2.num = index;
+            if (jobInfo.jobParams.includeCV)
+            {
+                ms2.cvList = CV.trans(spectrum);
+            }
             try
             {
                 double mz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
