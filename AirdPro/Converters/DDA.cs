@@ -200,7 +200,7 @@ namespace AirdPro.Converters
             indexList.Add(index);
         }
 
-        //处理MS2
+        //处理MS2,由于每一个MS1只跟随少量的MS2光谱图,因此DDA采集模式下MS2的压缩模式仍然使用Aird ZDPD的压缩算法
         private void doWithMS2Block()
         {
             jobInfo.log("Start Processing MS2 List");
@@ -236,7 +236,7 @@ namespace AirdPro.Converters
                 blockIndex.rangeList = ms2Ranges;
                 blockIndex.endPtr = startPosition;
                 indexList.Add(blockIndex);
-                jobInfo.log("MS2 Group Finished:" + progress + "/" + ms2Table.Keys.Count);
+                // jobInfo.log("MS2 Group Finished:" + progress + "/" + ms2Table.Keys.Count);
             }
         }
     }
