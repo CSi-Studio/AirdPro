@@ -52,6 +52,7 @@ namespace AirdPro.Forms
             this.lvFileList = new System.Windows.Forms.ListView();
             this.headerFilePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerExpType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerCompressor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerProgress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerOutput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnDeleteFiles = new System.Windows.Forms.Button();
@@ -83,7 +84,7 @@ namespace AirdPro.Forms
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.timerConsumer = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
-            this.headerCompressor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -219,6 +220,10 @@ namespace AirdPro.Forms
             // 
             resources.ApplyResources(this.headerExpType, "headerExpType");
             // 
+            // headerCompressor
+            // 
+            resources.ApplyResources(this.headerCompressor, "headerCompressor");
+            // 
             // headerProgress
             // 
             resources.ApplyResources(this.headerProgress, "headerProgress");
@@ -281,6 +286,7 @@ namespace AirdPro.Forms
             resources.GetString("cbAlgorithm.Items1")});
             resources.ApplyResources(this.cbAlgorithm, "cbAlgorithm");
             this.cbAlgorithm.Name = "cbAlgorithm";
+            this.ttAlgorithm.SetToolTip(this.cbAlgorithm, resources.GetString("cbAlgorithm.ToolTip"));
             this.cbAlgorithm.SelectedIndexChanged += new System.EventHandler(this.cbAlgorithm_SelectedIndexChanged);
             // 
             // btnDisconnect
@@ -419,10 +425,6 @@ namespace AirdPro.Forms
             resources.ApplyResources(this.ofd, "ofd");
             this.ofd.Multiselect = true;
             // 
-            // headerCompressor
-            // 
-            resources.ApplyResources(this.headerCompressor, "headerCompressor");
-            // 
             // AirdForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -485,6 +487,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Label lblStackLayers;
         private System.Windows.Forms.ComboBox cbStackLayers;
         private System.Windows.Forms.ColumnHeader headerCompressor;
+        private System.Windows.Forms.ToolTip ttAlgorithm;
     }
 }
 

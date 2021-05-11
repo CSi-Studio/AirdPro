@@ -84,7 +84,6 @@ namespace AirdPro.Converters
                     {
                         ms2Table.Add(i, ts);
                     }
-                       
                 });
               
                 outputWithOrder(ms1Table, ms1Index);

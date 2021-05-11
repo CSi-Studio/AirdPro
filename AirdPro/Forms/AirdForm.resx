@@ -681,6 +681,12 @@
   <data name="cbAlgorithm.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
   </data>
+  <metadata name="ttAlgorithm.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>306, 16</value>
+  </metadata>
+  <data name="cbAlgorithm.ToolTip" xml:space="preserve">
+    <value>Stack-ZDPD only support for DIA</value>
+  </data>
   <data name="&gt;&gt;cbAlgorithm.Name" xml:space="preserve">
     <value>cbAlgorithm</value>
   </data>
@@ -2458,6 +2464,12 @@
   <data name="&gt;&gt;headerExpType.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;headerCompressor.Name" xml:space="preserve">
+    <value>headerCompressor</value>
+  </data>
+  <data name="&gt;&gt;headerCompressor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;headerProgress.Name" xml:space="preserve">
     <value>headerProgress</value>
   </data>
@@ -2488,11 +2500,11 @@
   <data name="&gt;&gt;ofd.Type" xml:space="preserve">
     <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;headerCompressor.Name" xml:space="preserve">
-    <value>headerCompressor</value>
+  <data name="&gt;&gt;ttAlgorithm.Name" xml:space="preserve">
+    <value>ttAlgorithm</value>
   </data>
-  <data name="&gt;&gt;headerCompressor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;ttAlgorithm.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>AirdForm</value>

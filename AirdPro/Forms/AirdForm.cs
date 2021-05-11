@@ -146,11 +146,12 @@ namespace AirdPro.Forms
                         airdAlgorithm = cbAlgorithm.SelectedIndex+1,  // 1:ZDPD, 2:StackZDPD
                         digit = (int)Math.Log(Int32.Parse(cbStackLayers.SelectedItem.ToString()), 2)
                     };
-                    item.SubItems[2].Text = jobParams.getAirdAlgorithmStr();
-                    item.SubItems[4].Text = tbFolderPath.Text;
-                    
+
                     JobInfo jobInfo = new JobInfo(item.SubItems[0].Text, tbFolderPath.Text,
                         item.SubItems[1].Text, jobParams, item);
+
+                    
+                    
                     ConvertTaskManager.getInstance().pushJob(jobInfo);
                 }
             }

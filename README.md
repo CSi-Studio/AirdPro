@@ -5,7 +5,7 @@ AirdPro is opensource under the MulanPSL2 license
 
 ## Version Description
 ### V2.0.0
-- Second Generation of Aird Compression Algorithm: Stack-ZDPD
+- Second Generation of Aird Compression Algorithm: Stack-ZDPD, about 30% more compression ratio than ZDPD
 
 ### V1.1.0
 - Distributed Batch Conversion Task based on Redis

@@ -16,6 +16,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using AirdPro.Algorithms;
 using AirdPro.Domains.Convert;
 using ThermoFisher.CommonCore.Data;
 
@@ -122,14 +123,12 @@ namespace AirdPro.Converters
                 float mz = (float) double.Parse(spectrum.precursors[0].isolationWindow
                     .cvParamChild(CVID.MS_isolation_window_target_m_z).value.ToString());
 
-
                 //兼容Agilent的DDA数据格式中可能出现的lower offset和upper offset为空的情况
                 string lowerOffsetStr =spectrum.precursors[0].isolationWindow
                     .cvParamChild(CVID.MS_isolation_window_lower_offset).value.ToString();
                 string upperOffsetStr = spectrum.precursors[0].isolationWindow
                     .cvParamChild(CVID.MS_isolation_window_upper_offset).value.ToString();
 
-                
                 float lowerOffset = 0f;
                 if (!lowerOffsetStr.IsNullOrEmpty())
                 {
@@ -184,26 +183,21 @@ namespace AirdPro.Converters
         //处理MS1
         private void doWithMS1Block()
         {
-            BlockIndex blockIndex = new BlockIndex();
-            blockIndex.level = 1;
-            blockIndex.startPtr = 0;
-            for (int i = 0; i < ms1List.Count; i++)
+            BlockIndex index = new BlockIndex();
+            index.level = 1;
+            index.startPtr = 0;
+
+            if (jobInfo.jobParams.useStackZDPD())
             {
-                jobInfo.log(null, "MS1:" + i + "/" + ms1List.Count);
-                TempIndex scanIndex = ms1List[i];
-                TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
-                compress(spectrumList.spectrum(scanIndex.num, true), ts);
-                blockIndex.nums.Add(ts.num);
-                blockIndex.rts.Add(ts.rt);
-                blockIndex.mzs.Add(ts.mzArrayBytes.Length);
-                blockIndex.ints.Add(ts.intArrayBytes.Length);
-                startPosition = startPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;
-                airdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
-                airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
+                new StackZDPD(this).compressMS1(index);
+            }
+            else
+            {
+                new ZDPD(this).compressMS1(index);
             }
 
-            blockIndex.endPtr = startPosition;
-            indexList.Add(blockIndex);
+            index.endPtr = startPosition;
+            indexList.Add(index);
         }
 
         //处理MS2
