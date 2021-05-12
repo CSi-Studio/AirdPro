@@ -26,21 +26,15 @@ namespace AirdPro.Utils
                 stackLen += arr.Length;
             }
 
-            List<int[]> tempArrGroup = new List<int[]>();
-            for (int i = 0; i < arrGroup.Count; i++)
-            {
-                tempArrGroup.Add(Arrays.copyOf(arrGroup[i], arrGroup[i].Length));
-            }
-
             //合并排序数组 pair：默认采取pair成对排序，True也采取pair排序；false时采用QueueSort
             int[][] stackSort;
             if (pair)
             {
-                stackSort = getPairSortArray(tempArrGroup);
+                stackSort = getPairSortArray(arrGroup);
             }
             else
             {
-                stackSort = getQueueSortArray(tempArrGroup);
+                stackSort = getQueueSortArray(arrGroup);
             }
             //取出stack数组和index数组
             int[] stackArr = new int[stackLen];
@@ -276,7 +270,7 @@ namespace AirdPro.Utils
             SimplePriorityQueue<int[]> queue = new SimplePriorityQueue<int[]>();
             for (int i = 0; i<arrGroup.Count; i++) 
             {
-                queue.Enqueue(new int[]{arrGroup[i][0], i}, arrGroup[i][0]);
+                queue.Enqueue(new int[] { arrGroup[i][0], i }, arrGroup[i][0]);
             }
             for (int i = 0; i < stackLen; i++)
             {

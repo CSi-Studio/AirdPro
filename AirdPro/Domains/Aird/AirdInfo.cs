@@ -129,7 +129,7 @@ namespace AirdPro.Domains.Aird
         /**
          * PSI CV
          */
-        public List<CVParam> cvParams;
+        public List<CV> cvList;
 
     }
 }

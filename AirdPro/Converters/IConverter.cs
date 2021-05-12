@@ -49,7 +49,6 @@ namespace AirdPro.Converters
         protected long fileSize;
         protected long startPosition;//文件指针
         protected int totalSize;//总计的谱图数目
-        protected int rtUnit; //时间单位
         protected int mzPrecision;
 
         protected static double log2 = Math.Log(2);
@@ -171,7 +170,14 @@ namespace AirdPro.Converters
                         intensityList.Add(intensity);//精确到小数点后一位
                     }
                 }
-                
+
+                //空光谱的情况下会填充一个mz=0,intensity=0的点
+                if (mzList.Count == 0)
+                {
+                    mzList.Add(0);
+                    intensityList.Add(0);
+                }
+                //说明是一帧空光谱,那么直接在Aird文件中抹除这一帧的信息
                 mzListGroup.Add(mzList.ToArray());
                 intListAllGroup.AddRange(intensityList);
             }
@@ -231,7 +237,6 @@ namespace AirdPro.Converters
                 airdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
                 airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
             }
-          
         }
 
         protected double getPrecursorIsolationWindowParams(Spectrum spectrum, CVID cvid)
@@ -414,7 +419,6 @@ namespace AirdPro.Converters
             {
                 new ZDPD(this).compressMS1(index);
             }
-          
             index.endPtr = startPosition;
             indexList.Add(index);
         }

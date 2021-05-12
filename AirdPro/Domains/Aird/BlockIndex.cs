@@ -88,7 +88,6 @@ namespace AirdPro.Domains.Aird
          */
         public string features;
         
-
         public WindowRange getWindowRange()
         {
             if (rangeList == null || rangeList.Count == 0)

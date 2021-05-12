@@ -58,6 +58,7 @@ namespace AirdPro.Forms
             this.btnDeleteFiles = new System.Windows.Forms.Button();
             this.btnAddSWATHFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
+            this.cbIncludingPSICV = new System.Windows.Forms.CheckBox();
             this.lblStackLayers = new System.Windows.Forms.Label();
             this.cbStackLayers = new System.Windows.Forms.ComboBox();
             this.lblAirdAlgorithm = new System.Windows.Forms.Label();
@@ -85,7 +86,6 @@ namespace AirdPro.Forms
             this.timerConsumer = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
-            this.cbIncludingPSICV = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -254,6 +254,12 @@ namespace AirdPro.Forms
             this.btnConvert.Name = "btnConvert";
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
+            // 
+            // cbIncludingPSICV
+            // 
+            resources.ApplyResources(this.cbIncludingPSICV, "cbIncludingPSICV");
+            this.cbIncludingPSICV.Name = "cbIncludingPSICV";
+            this.cbIncludingPSICV.UseVisualStyleBackColor = true;
             // 
             // lblStackLayers
             // 
@@ -426,12 +432,6 @@ namespace AirdPro.Forms
             // 
             resources.ApplyResources(this.ofd, "ofd");
             this.ofd.Multiselect = true;
-            // 
-            // cbIncludingPSICV
-            // 
-            resources.ApplyResources(this.cbIncludingPSICV, "cbIncludingPSICV");
-            this.cbIncludingPSICV.Name = "cbIncludingPSICV";
-            this.cbIncludingPSICV.UseVisualStyleBackColor = true;
             // 
             // AirdForm
             // 
