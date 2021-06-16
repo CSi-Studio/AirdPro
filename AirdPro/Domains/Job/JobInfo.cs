@@ -48,6 +48,8 @@ namespace AirdPro.Domains.Convert
         private IProgress<string> progress;
         //任务的线程名称
         public string threadId;
+        //出现异常错误的时候进行重试的次数,每一个job会被自动重试2次
+        public int retryTimes = 3;
 
         public bool refreshReport = true;
 

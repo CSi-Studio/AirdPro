@@ -4,9 +4,16 @@ AirdPro is opensource under the MulanPSL2 license
 
 
 ## Version Description
+### V2.0.0
+- [New Feature] New compression algorithm Stack-ZDPD is released, which has 5%-20% compression performance improvement compared with ZDPD kernel
+- [New Feature] PSI CV supoort as an option function
+- [Function Optimization] Output path of each conversion task is shown on the main list
+- [Stability improvement] Automatic retrial function for unknown conversion exception
+
+
 ### V1.1.0
-- Distributed batch conversion function based on Redis
-- Custom Path UI for folder format vendor file like Agilent .d folder format 
+- [New Feature] Distributed batch conversion function based on Redis
+- [New Feature] Custom Path UI for folder format vendor file like Agilent .d folder format 
 
 ### V1.0.0
 - Supporting SWATH/DIA Format 

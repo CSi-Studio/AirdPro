@@ -92,42 +92,58 @@ namespace AirdPro.Asyncs
 
                 fac.StartNew(() =>
                 {
-                    try
+                    Console.Out.WriteLine("Start Convert");
+                    jobInfo.threadId = "ThreadId:" + Thread.CurrentThread.ManagedThreadId;
+                    while (jobInfo.retryTimes > 0)
                     {
-                        Console.Out.WriteLine("Start Convert");
-                        jobInfo.threadId = "ThreadId:" + Thread.CurrentThread.ManagedThreadId;
-                        jobInfo.setStatus(RUNNING);
-                        if (jobInfo.type.Equals(AirdType.DIA_SWATH))
+                        try
                         {
-                            new SWATH(jobInfo).doConvert();
+                            jobInfo.setStatus(RUNNING);
+                            tryConvert(jobInfo);
                         }
-                        else if (jobInfo.type.Equals(AirdType.PRM))
+                        catch (Exception ex)
                         {
-                            new PRM(jobInfo).doConvert();
+                            jobInfo.log(ex.ToString(), "Error");
+                            jobInfo.retryTimes--;
+                            if (jobInfo.retryTimes > 0)
+                            {
+                                jobInfo.log("Retrying...left retry times:" + jobInfo.retryTimes);
+                            }
+                            else
+                            {
+                                jobInfo.setStatus(ERROR);
+                                errorJob.Add(jobInfo.jobId, jobInfo);
+                            }
                         }
-                        else if (jobInfo.type.Equals(AirdType.SCANNING_SWATH))
-                        {
-                            new ScanningSWATH(jobInfo).doConvert();
-                        }
-                        else if (jobInfo.type.Equals(AirdType.DDA))
-                        {
-                            new DDA(jobInfo).doConvert();
-                        }
-                        else if (jobInfo.type.Equals(AirdType.COMMON))
-                        {
-                            new Common(jobInfo).doConvert();
-                        }
-                        jobInfo.setStatus(FINISHED);
-                    }
-                    catch (Exception ex)
-                    {
-                        jobInfo.log(ex.ToString(), "Error");
-                        jobInfo.setStatus(ERROR);
-                        errorJob.Add(jobInfo.jobId, jobInfo);
                     }
                 });
             }
+        }
+
+        public void tryConvert(JobInfo jobInfo)
+        {
             
+            if (jobInfo.type.Equals(AirdType.DIA_SWATH))
+            {
+                new SWATH(jobInfo).doConvert();
+            }
+            else if (jobInfo.type.Equals(AirdType.PRM))
+            {
+                new PRM(jobInfo).doConvert();
+            }
+            else if (jobInfo.type.Equals(AirdType.SCANNING_SWATH))
+            {
+                new ScanningSWATH(jobInfo).doConvert();
+            }
+            else if (jobInfo.type.Equals(AirdType.DDA))
+            {
+                new DDA(jobInfo).doConvert();
+            }
+            else if (jobInfo.type.Equals(AirdType.COMMON))
+            {
+                new Common(jobInfo).doConvert();
+            }
+            jobInfo.setStatus(FINISHED);
         }
     }
 }
