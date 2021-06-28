@@ -13,7 +13,7 @@ using System.Text;
 
 namespace AirdPro.Utils
 {
-    class FeaturesUtil
+    public class FeaturesUtil
     {
 
         public static char SP = ';';

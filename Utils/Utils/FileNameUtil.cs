@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace AirdPro.Utils
 {
-    internal class FileNameUtil
+    public class FileNameUtil
     {
         public static string buildOutputFileName(string inputFilePath)
         {

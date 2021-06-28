@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AirdPro.Domains.Job
 {
-    class RemoteConvertJob
+    public class RemoteConvertJob
     {
         public string sourcePath;
         public string targetPath;

@@ -17,7 +17,7 @@ using Ionic.Zlib;
 
 namespace AirdPro.Utils
 {
-    internal class CompressUtil
+    public class CompressUtil
     {
         //使用zlib将byte数组压缩
         public static byte[] zlibEncoder(byte[] data)
