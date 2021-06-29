@@ -26,6 +26,7 @@ namespace AirdPro.Forms
     {
         ArrayList currentFiles = new ArrayList(); 
         CustomPathForm customPathForm;
+        Folder Folder;
         public AirdForm()
         {
             InitializeComponent();
@@ -368,6 +369,16 @@ namespace AirdPro.Forms
         private void lblFileSelectedInfo_Click(object sender, EventArgs e)
         {
             StackZDPDTest.stackZDPD_Test1();
+        }
+
+        private void Form1_Click(object sender, EventArgs e)
+        {
+            if (Folder == null || Folder.IsDisposed)
+            {
+                Folder = new Folder(this);
+            }
+            //Form.clearInfos();
+            Folder.Show();
         }
     }
 }

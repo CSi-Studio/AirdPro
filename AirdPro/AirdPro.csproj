@@ -148,6 +148,12 @@
     <Compile Include="Forms\CustomPathForm.Designer.cs">
       <DependentUpon>CustomPathForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Folder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Folder.Designer.cs">
+      <DependentUpon>Folder.cs</DependentUpon>
+    </Compile>
     <Compile Include="Redis\RedisClient.cs" />
     <Compile Include="Test\StackZDPDTest.cs" />
     <Compile Include="Forms\AirdForm.cs">
@@ -180,6 +186,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CustomPathForm.resx">
       <DependentUpon>CustomPathForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Folder.resx">
+      <DependentUpon>Folder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

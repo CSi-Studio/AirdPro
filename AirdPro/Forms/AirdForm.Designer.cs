@@ -41,6 +41,7 @@ namespace AirdPro.Forms
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AirdForm));
             this.container = new System.Windows.Forms.SplitContainer();
+            this.Form1 = new System.Windows.Forms.Button();
             this.btnCustomerPath = new System.Windows.Forms.Button();
             this.btnClearError = new System.Windows.Forms.Button();
             this.btnAddCommonFiles = new System.Windows.Forms.Button();
@@ -99,6 +100,7 @@ namespace AirdPro.Forms
             // 
             // container.Panel1
             // 
+            this.container.Panel1.Controls.Add(this.Form1);
             this.container.Panel1.Controls.Add(this.btnCustomerPath);
             this.container.Panel1.Controls.Add(this.btnClearError);
             this.container.Panel1.Controls.Add(this.btnAddCommonFiles);
@@ -139,6 +141,13 @@ namespace AirdPro.Forms
             this.container.Panel2.Controls.Add(this.btnChooseFolder);
             this.container.Panel2.Controls.Add(this.tbFolderPath);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
+            // 
+            // Form1
+            // 
+            resources.ApplyResources(this.Form1, "Form1");
+            this.Form1.Name = "Form1";
+            this.Form1.UseVisualStyleBackColor = true;
+            this.Form1.Click += new System.EventHandler(this.Form1_Click);
             // 
             // btnCustomerPath
             // 
@@ -497,6 +506,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ColumnHeader headerCompressor;
         private System.Windows.Forms.ToolTip ttAlgorithm;
         private System.Windows.Forms.CheckBox cbIncludingPSICV;
+        private System.Windows.Forms.Button Form1;
     }
 }
 
