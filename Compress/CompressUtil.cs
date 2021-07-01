@@ -9,7 +9,9 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using AirdPro.Domains.Aird;
 using CSharpFastPFOR;
 using CSharpFastPFOR.Differential;
 using CSharpFastPFOR.Port;
@@ -141,5 +143,48 @@ namespace AirdPro.Utils
 
             return fArray;
         }
+
+        /// <summary>
+        /// get the compressor for m/z
+        /// </summary>
+        /// <param name="compressors"> 压缩策略 </param>
+        /// <returns> the m/z compressor </returns>
+        public static Compressor getMzCompressor(IList<Compressor> compressors)
+        {
+            if (compressors == null)
+            {
+                return null;
+            }
+            foreach (Compressor compressor in compressors)
+            {
+                if (compressor.target.Equals(Compressor.TARGET_MZ))
+                {
+                    return compressor;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// get the intensity compressor for intensity
+        /// </summary>
+        /// <param name="compressors"> 压缩策略 </param>
+        /// <returns> the intensity compressor </returns>
+        public static Compressor getIntCompressor(IList<Compressor> compressors)
+        {
+            if (compressors == null)
+            {
+                return null;
+            }
+            foreach (Compressor compressor in compressors)
+            {
+                if (compressor.target.Equals(Compressor.TARGET_INTENSITY))
+                {
+                    return compressor;
+                }
+            }
+            return null;
+        }
+
     }
 }

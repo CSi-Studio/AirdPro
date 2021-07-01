@@ -5,13 +5,15 @@ VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirdPro", "AirdPro\AirdPro.csproj", "{E8027102-CAE0-476F-832D-04EC120098A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThirdParty", "ThirdParty\ThirdParty.csproj", "{EA1C54B8-2AEF-44B3-8CB5-25B6C98F6FF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThirdParty", "ThirdParty\ThirdParty.csproj", "{EA1C54B8-2AEF-44B3-8CB5-25B6C98F6FF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{EE163949-2A01-4147-AD5A-456136C66C2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utils", "Utils\Utils.csproj", "{EE163949-2A01-4147-AD5A-456136C66C2C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domains", "Domains\Domains.csproj", "{75C1C2F6-5C2C-4325-964B-0BDC0FA9CFD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Compress", "Compress\Compress.csproj", "{862D073A-A261-449A-B021-9E057C62328E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Compress", "Compress\Compress.csproj", "{862D073A-A261-449A-B021-9E057C62328E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parser", "Parser\Parser.csproj", "{273F1033-3BD6-49C4-87B5-5EBCAA66D1DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,14 @@ Global
 		{862D073A-A261-449A-B021-9E057C62328E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{862D073A-A261-449A-B021-9E057C62328E}.Release|x64.ActiveCfg = Release|Any CPU
 		{862D073A-A261-449A-B021-9E057C62328E}.Release|x64.Build.0 = Release|Any CPU
+		{273F1033-3BD6-49C4-87B5-5EBCAA66D1DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{273F1033-3BD6-49C4-87B5-5EBCAA66D1DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{273F1033-3BD6-49C4-87B5-5EBCAA66D1DA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{273F1033-3BD6-49C4-87B5-5EBCAA66D1DA}.Debug|x64.Build.0 = Debug|Any CPU
+		{273F1033-3BD6-49C4-87B5-5EBCAA66D1DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{273F1033-3BD6-49C4-87B5-5EBCAA66D1DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{273F1033-3BD6-49C4-87B5-5EBCAA66D1DA}.Release|x64.ActiveCfg = Release|Any CPU
+		{273F1033-3BD6-49C4-87B5-5EBCAA66D1DA}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

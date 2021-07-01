@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Compress\Compress.csproj" />
+    <ProjectReference Include="..\Domains\Domains.csproj" />
+    <ProjectReference Include="..\ThirdParty\ThirdParty.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="pwiz_bindings_cli">
+      <HintPath>..\ImportLibs\pwiz_bindings_cli.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

@@ -14,6 +14,19 @@ using System.Linq;
 
 namespace AirdPro.Utils
 {
+    public class SuffixConst
+    {
+        public static string JSON = ".json";
+        public static string AIRD = ".aird";
+    }
+
+    public class SymbolConst
+    {
+        public static string COMMA = ",";
+        public static string TAB = "\t";
+        public static string DOT = ".";
+        public static string CHANGE_LINE = "\r\n";
+    }
     public class FileNameUtil
     {
         public static string buildOutputFileName(string inputFilePath)
@@ -45,6 +58,33 @@ namespace AirdPro.Utils
                     string.Format("error generating output filename for input file '{0}' and output run id '{1}'",
                         inputFilePath, outputFileName), e);
             }
+        }
+
+        /**
+        * 根据索引文件路径获取aird文件路径
+        * @param indexPath 索引文件路径
+        * @return aird文件路径
+        */
+        public static string getAirdPathByIndexPath(string indexPath)
+        {
+            if (string.IsNullOrEmpty(indexPath) || !indexPath.Contains(SymbolConst.DOT) || !(Path.GetExtension(indexPath).ToLower() == SuffixConst.JSON))
+            {
+                return null;
+            }
+            return indexPath.Substring(0, indexPath.LastIndexOf(SymbolConst.DOT)) + SuffixConst.AIRD;
+        }
+
+        /// <summary>
+        /// 根据aird文件路径获取对应的索引文件路径 </summary>
+        /// <param name="airdPath"> aird文件路径 </param>
+        /// <returns> 索引文件路径 </returns>
+        public static string getIndexPathByAirdPath(string airdPath)
+        {
+            if (string.IsNullOrEmpty(airdPath) || !airdPath.Contains(SymbolConst.DOT) || !airdPath.EndsWith(SuffixConst.AIRD, StringComparison.Ordinal))
+            {
+                return null;
+            }
+            return airdPath.Substring(0, airdPath.LastIndexOf(SymbolConst.DOT)) + SuffixConst.JSON;
         }
     }
 }
