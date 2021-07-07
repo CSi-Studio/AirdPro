@@ -302,5 +302,27 @@ namespace AirdPro.Parser
         {
             airdFile.Close();
         }
+
+        public List<Result> getTIC()
+        {
+            var list = new List<Result>();
+            var ms1Block = airdInfo.indexList.FirstOrDefault(x => x.level == 1);
+            
+            var blockValue = parseBlockValue(airdFile, ms1Block);
+            foreach (var item in blockValue)
+            {
+                var r = new Result();
+                r.rt = item.Key;
+                r.intensity = item.Value.getIntensityArray().Sum();
+                list.Add(r);
+            }
+            return list;
+        }
+
+        public class Result
+        {
+            public double rt { get; set; }
+            public float intensity { get; set; }
+        }
     }
 }

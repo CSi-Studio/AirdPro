@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+	<AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+    <RootNamespace>Parser</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -261,6 +261,10 @@
       <Project>{75c1c2f6-5c2c-4325-964b-0bdc0fa9cfd6}</Project>
       <Name>Domains</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Parser\Parser.csproj">
+      <Project>{273f1033-3bd6-49c4-87b5-5ebcaa66d1da}</Project>
+      <Name>Parser</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ThirdParty\ThirdParty.csproj">
       <Project>{ea1c54b8-2aef-44b3-8cb5-25b6c98f6ff2}</Project>
       <Name>ThirdParty</Name>
