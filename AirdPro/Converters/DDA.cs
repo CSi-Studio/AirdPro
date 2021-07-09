@@ -9,7 +9,7 @@
  */
 
 using AirdPro.Constants;
-using AirdPro.Domains.Aird;
+using AirdPro.DomainsCore.Aird;
 using pwiz.CLI.cv;
 using pwiz.CLI.msdata;
 using System;
@@ -19,7 +19,7 @@ using System.IO;
 using AirdPro.Algorithms;
 using AirdPro.Domains.Convert;
 using ThermoFisher.CommonCore.Data;
-using CV = AirdPro.Domains.Aird.CV;
+using CV = AirdPro.DomainsCore.Aird.CV;
 
 namespace AirdPro.Converters
 {

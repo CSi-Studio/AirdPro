@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace AirdPro.Domains.Aird
+namespace AirdPro.DomainsCore.Aird
 {
     /**
      * Description of any manipulation (from the first conversion to aird format until the creation of the current aird instance document) applied to the data.

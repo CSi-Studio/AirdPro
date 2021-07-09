@@ -1,12 +1,10 @@
-﻿using AirdPro.Domains.Aird;
+﻿using AirdPro.DomainsCore.Aird;
 using AirdPro.Utils;
-using CSharpFastPFOR.Port;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using pwiz.CLI.msdata;
 using AirdPro.Constants;
-using AirdPro.Domains.Parser;
+using AirdPro.DomainsCore.Parser;
 using System.Linq;
 
 
@@ -317,6 +315,13 @@ namespace AirdPro.Parser
                 list.Add(r);
             }
             return list;
+        }
+
+        public class FileInfo
+        {
+            public string Name { get; set; }
+            public string Path { get; set; }
+            public string Manufacturer { get; set; }
         }
 
         public class Result

@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using AirdPro.Domains.Aird;
+using AirdPro.DomainsCore.Aird;
 using CSharpFastPFOR;
 using CSharpFastPFOR.Differential;
 using CSharpFastPFOR.Port;

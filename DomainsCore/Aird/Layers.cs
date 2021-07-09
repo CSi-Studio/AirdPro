@@ -1,4 +1,4 @@
-﻿namespace AirdPro.Domains.Aird
+﻿namespace AirdPro.DomainsCore.Aird
 {
     public class Layers
     {

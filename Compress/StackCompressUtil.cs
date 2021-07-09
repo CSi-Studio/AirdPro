@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using AirdPro.Domains.Aird;
+using AirdPro.DomainsCore.Aird;
 using CSharpFastPFOR.Port;
 using Priority_Queue;
 

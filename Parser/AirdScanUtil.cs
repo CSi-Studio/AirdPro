@@ -1,4 +1,4 @@
-﻿using AirdPro.Domains.Aird;
+﻿using AirdPro.DomainsCore.Aird;
 using System;
 using System.Collections.Generic;
 using System.IO;

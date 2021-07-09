@@ -1,7 +1,7 @@
-﻿using AirdPro.Domains.Aird;
+﻿using AirdPro.DomainsCore.Aird;
 using System.Collections.Generic;
 
-namespace AirdPro.Domains.Parser
+namespace AirdPro.DomainsCore.Parser
 {
 	public class MsCycle
 	{

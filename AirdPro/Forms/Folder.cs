@@ -38,9 +38,9 @@ namespace AirdPro.Forms
         private void Folder_Load(object sender, EventArgs e)
         {
             //节点图片
-            treeView.ImageList = new ImageList();
-            var a = Image.FromFile("");
-            treeView.ImageList.Images.Add("GdbSource", a);
+            //treeView.ImageList = new ImageList();
+            //var a = Image.FromFile("");
+            //treeView.ImageList.Images.Add("GdbSource", a);
             TreeNode rootNode = new TreeNode("My Computer",
                 IconIndexes.MyComputer, IconIndexes.MyComputer);  //载入显示 选择显示
             rootNode.Tag = "My Computer";                            //树节点数据

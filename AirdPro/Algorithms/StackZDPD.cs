@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AirdPro.Converters;
-using AirdPro.Domains.Aird;
+using AirdPro.DomainsCore.Aird;
 using AirdPro.Domains.Convert;
 using pwiz.CLI.data;
 using pwiz.CLI.msdata;

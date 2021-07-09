@@ -10,9 +10,8 @@
 
 using System;
 using System.Collections.Generic;
-using pwiz.CLI.data;
 
-namespace AirdPro.Domains.Aird
+namespace AirdPro.DomainsCore.Aird
 {
     public class AirdInfo
     {

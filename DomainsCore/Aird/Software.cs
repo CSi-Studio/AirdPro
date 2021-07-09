@@ -8,7 +8,7 @@
  * See the Mulan PSL v2 for more details.
  */
 
-namespace AirdPro.Domains.Aird
+namespace AirdPro.DomainsCore.Aird
 {
     public class Software
     {

@@ -16,14 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Compress\Compress.csproj" />
-    <ProjectReference Include="..\Domains\Domains.csproj" />
-    <ProjectReference Include="..\ThirdParty\ThirdParty.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="pwiz_bindings_cli">
-      <HintPath>..\ImportLibs\pwiz_bindings_cli.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
 
 </Project>

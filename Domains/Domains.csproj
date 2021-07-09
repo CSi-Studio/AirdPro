@@ -48,34 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domains\Aird\AirdInfo.cs" />
-    <Compile Include="Domains\Aird\BlockIndex.cs" />
-    <Compile Include="Domains\Aird\Compressor.cs" />
-    <Compile Include="Domains\Aird\CV.cs" />
-    <Compile Include="Domains\Aird\DataProcessing.cs" />
-    <Compile Include="Domains\Aird\Enums\AirdType.cs" />
-    <Compile Include="Domains\Aird\Enums\ResultCodeEnum.cs" />
-    <Compile Include="Domains\Aird\Enums\MsLevel.cs" />
-    <Compile Include="Domains\Aird\Features.cs" />
-    <Compile Include="Domains\Aird\Instrument.cs" />
-    <Compile Include="Domains\Aird\Layers.cs" />
-    <Compile Include="Domains\Aird\ParentFile.cs" />
-    <Compile Include="Domains\Aird\Software.cs" />
-    <Compile Include="Domains\Aird\WindowRange.cs" />
     <Compile Include="Domains\Job\JobInfo.cs" />
     <Compile Include="Domains\Job\JobParams.cs" />
     <Compile Include="Domains\Job\RemoteConvertJob.cs" />
     <Compile Include="Domains\Log.cs" />
-    <Compile Include="Domains\Parser\SpectrumDetail.cs" />
-    <Compile Include="Domains\Parser\MsCycle.cs" />
-    <Compile Include="Domains\Parser\MzIntensityPairs.cs" />
-    <Compile Include="Domains\Scan\TempIndex.cs" />
-    <Compile Include="Domains\Scan\TempScan.cs" />
-    <Compile Include="Domains\Scan\TempScanSZDPD.cs" />
     <Compile Include="Domains\Sort\IntArrayNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DomainsCore\DomainsCore.csproj">
+      <Project>{870ee31c-23e3-4836-ac04-4feeb6c487b7}</Project>
+      <Name>DomainsCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{ee163949-2a01-4147-ad5a-456136c66c2c}</Project>
       <Name>Utils</Name>

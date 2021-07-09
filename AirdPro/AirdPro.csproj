@@ -257,6 +257,10 @@
       <Project>{862d073a-a261-449a-b021-9e057c62328e}</Project>
       <Name>Compress</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DomainsCore\DomainsCore.csproj">
+      <Project>{870ee31c-23e3-4836-ac04-4feeb6c487b7}</Project>
+      <Name>DomainsCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Domains\Domains.csproj">
       <Project>{75c1c2f6-5c2c-4325-964b-0bdc0fa9cfd6}</Project>
       <Name>Domains</Name>

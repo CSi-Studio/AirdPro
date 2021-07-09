@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using AirdPro.Converters;
-using AirdPro.Domains.Aird;
+using AirdPro.DomainsCore.Aird;
 using pwiz.CLI.msdata;
 
 namespace AirdPro.Algorithms

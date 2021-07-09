@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using AirdPro.Domains.Aird;
+using AirdPro.DomainsCore.Aird;
 using AirdPro.Utils;
 using CSharpFastPFOR.Port;
 using Xunit;

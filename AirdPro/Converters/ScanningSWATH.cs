@@ -9,7 +9,7 @@
  */
 
 using AirdPro.Constants;
-using AirdPro.Domains.Aird;
+using AirdPro.DomainsCore.Aird;
 using pwiz.CLI.cv;
 using pwiz.CLI.msdata;
 using System;
@@ -17,7 +17,7 @@ using System.Collections;
 using System.IO;
 using System.Threading.Tasks;
 using AirdPro.Domains.Convert;
-using CV = AirdPro.Domains.Aird.CV;
+using CV = AirdPro.DomainsCore.Aird.CV;
 
 namespace AirdPro.Converters
 {

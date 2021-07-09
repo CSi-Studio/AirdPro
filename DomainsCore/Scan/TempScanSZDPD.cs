@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AirdPro.Domains.Aird
+namespace AirdPro.DomainsCore.Aird
 {
     public class TempScanSZDPD:IComparable
     {

@@ -9,7 +9,7 @@
  */
 
 using AirdPro.Constants;
-using AirdPro.Domains.Aird;
+using AirdPro.DomainsCore.Aird;
 using AirdPro.Domains.Convert;
 using AirdPro.Utils;
 using Newtonsoft.Json;
@@ -26,7 +26,7 @@ using System.IO;
 using System.Text;
 using AirdPro.Algorithms;
 using ByteOrder = AirdPro.Constants.ByteOrder;
-using CV = AirdPro.Domains.Aird.CV;
+using CV = AirdPro.DomainsCore.Aird.CV;
 using Software = pwiz.CLI.msdata.Software;
 
 namespace AirdPro.Converters
@@ -427,7 +427,7 @@ namespace AirdPro.Converters
         protected AirdInfo buildBasicInfo()
         {
             AirdInfo airdInfo = new AirdInfo();
-            List<Domains.Aird.Software> softwares = new List<Domains.Aird.Software>();
+            List<DomainsCore.Aird.Software> softwares = new List<DomainsCore.Aird.Software>();
             List<ParentFile> parentFiles = new List<ParentFile>();
 
             //Basic Job Info
@@ -516,12 +516,12 @@ namespace AirdPro.Converters
             //Software Info
             foreach (Software sof in msd.softwareList)
             {
-                Domains.Aird.Software software = new Domains.Aird.Software();
+                DomainsCore.Aird.Software software = new DomainsCore.Aird.Software();
                 software.name = sof.id;
                 software.version = sof.version;
                 softwares.Add(software);
             }
-            Domains.Aird.Software airdPro = new Domains.Aird.Software();
+            DomainsCore.Aird.Software airdPro = new DomainsCore.Aird.Software();
             airdPro.name = SoftwareInfo.NAME;
             airdPro.version = SoftwareInfo.VERSION;
             airdPro.type = "DataFormatConversion";

@@ -22,6 +22,12 @@ namespace Parser
             return null;
         }
 
+        public object qq(object input)
+        {
+            var parser = new BaseParser(input.ToString());
+            return JsonConvert.SerializeObject(parser.airdInfo);
+        }
+
 
         class Input
         {

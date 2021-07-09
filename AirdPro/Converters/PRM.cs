@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using AirdPro.Constants;
-using AirdPro.Domains.Aird;
+using AirdPro.DomainsCore.Aird;
 using AirdPro.Domains.Convert;
 
 namespace AirdPro.Converters

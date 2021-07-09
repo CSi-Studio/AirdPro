@@ -1,8 +1,8 @@
-﻿using AirdPro.Domains.Aird;
+﻿using AirdPro.DomainsCore.Aird;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using AirdPro.Domains.Parser;
+using AirdPro.DomainsCore.Parser;
 
 namespace AirdPro.Parser
 {

@@ -3,7 +3,7 @@ using pwiz.CLI.cv;
 using pwiz.CLI.data;
 using pwiz.CLI.msdata;
 
-namespace AirdPro.Domains.Aird
+namespace AirdPro.DomainsCore.Aird
 {
     public class CV
     {

@@ -9,7 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domains\Domains.csproj" />
+    <ProjectReference Include="..\DomainsCore\DomainsCore.csproj" />
+    <ProjectReference Include="..\ThirdParty\ThirdParty.csproj" />
   </ItemGroup>
 
 </Project>

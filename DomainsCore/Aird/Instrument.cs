@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace AirdPro.Domains.Aird
+namespace AirdPro.DomainsCore.Aird
 {
     /**
      * General information about the MS instrument.

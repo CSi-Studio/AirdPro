@@ -9,7 +9,7 @@
  */
 
 using AirdPro.Constants;
-using AirdPro.Domains.Aird;
+using AirdPro.DomainsCore.Aird;
 using AirdPro.Utils;
 using pwiz.CLI.cv;
 using pwiz.CLI.msdata;

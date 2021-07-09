@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AirdPro.Domains.Parser
+namespace AirdPro.DomainsCore.Parser
 {
 	public class MzIntensityPairs
 	{
