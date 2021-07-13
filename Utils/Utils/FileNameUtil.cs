@@ -86,5 +86,42 @@ namespace AirdPro.Utils
             }
             return airdPath.Substring(0, airdPath.LastIndexOf(SymbolConst.DOT)) + SuffixConst.JSON;
         }
+
+        /// <summary>
+        /// 判断aird文件是否存在
+        /// </summary>
+        /// <param name="path">aird文件或索引文件路径</param>
+        /// <returns></returns>
+        public static bool airdFileVerification(string path)
+        {
+            bool value = File.Exists(path);
+            if(path.EndsWith(SuffixConst.AIRD, StringComparison.Ordinal))
+            {
+                value = value && File.Exists(getIndexPathByAirdPath(path));
+            }
+            else if(path.EndsWith(SuffixConst.JSON, StringComparison.Ordinal))
+            {
+                value = value && File.Exists(getAirdPathByIndexPath(path));
+            }
+            return value;
+        }
+
+        /// <summary>
+        /// 根据aird或index文件地址获取index地址
+        /// </summary>
+        /// <param name="path">aird或index地址</param>
+        /// <returns></returns>
+        public static string getIndexPath(string path)
+        {
+            if (!airdFileVerification(path))
+            {
+                return null;
+            }
+            if(path.EndsWith(SuffixConst.AIRD, StringComparison.Ordinal))
+            {
+                return getIndexPathByAirdPath(path);
+            }
+            return path;
+        }
     }
 }
