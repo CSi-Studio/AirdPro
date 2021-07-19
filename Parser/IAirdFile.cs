@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using AirdPro.Utils;
 using AirdPro.DomainsCore.Aird;
+using System.Linq;
 
 namespace Parser
 {
@@ -20,8 +21,7 @@ namespace Parser
                 foreach (var item in para.filesPath)
                 {
                     string path = FileNameUtil.getIndexPath(item);
-                    var parser = new BaseParser(path);
-                    var tic = parser.getTIC();
+                    var tic = getTIC(path);
                     output.status = true;
                     output.content = tic;
                     return JsonConvert.SerializeObject(output);
@@ -51,8 +51,7 @@ namespace Parser
                         output.content = "Can't find the whole aird file.";
                         return JsonConvert.SerializeObject(output);
                     }
-                    var parser = new BaseParser(path);
-                    var msn = parser.getMsN(Convert.ToInt32(para.ms), Convert.ToDouble(para.time));
+                    var msn = getMsNByTime(path, Convert.ToInt32(para.ms), Convert.ToDouble(para.time));
                     output.status = true;
                     output.content = msn;
                     return JsonConvert.SerializeObject(output);
@@ -81,8 +80,8 @@ namespace Parser
                         output.content = "Can't find the whole aird file.";
                         return JsonConvert.SerializeObject(output);
                     }
-                    var parser = new BaseParser(path);
-                    var msn = parser.getMsN(Convert.ToInt32(para.ms), Convert.ToDouble(para.time));
+                    //var parser = new BaseParser(path);
+                    var msn = getMsNByTime(path, Convert.ToInt32(para.ms), Convert.ToDouble(para.time));
                     output.status = true;
                     output.content = msn;
                     return JsonConvert.SerializeObject(output);
@@ -137,6 +136,49 @@ namespace Parser
             }
         }
 
+        public List<MsNResult> getMsNByTime(string path, int msN, double time)
+        {
+            var list = new List<MsNResult>();
+            var parser = new BaseParser(path);
+            var msNBlock = parser.airdInfo.indexList.Where(x => x.level == msN)
+                .OrderBy(x => Math.Abs(x.rts.OrderBy(y => Math.Abs(y - time)).FirstOrDefault() - time))
+                .FirstOrDefault();
+            var blockValue = parser.parseBlockValue(parser.airdFile, msNBlock);
+            var MzIntensitys = blockValue.OrderBy(x => Math.Abs(x.Key - time)).FirstOrDefault().Value;
+            var mzArray = MzIntensitys.getMzArray();
+            var intensityArray = MzIntensitys.getIntensityArray();
+            for (int i = 0; i < mzArray.Length; i++)
+            {
+                var r = new MsNResult();
+                r.mz = mzArray[i];
+                r.intensity = intensityArray[i];
+                list.Add(r);
+            }
+            parser.close();
+            return list;
+        }
+
+        /// <summary>
+        /// 获取TIC
+        /// </summary>
+        /// <returns></returns>
+        public List<TICResult> getTIC(string path)
+        {
+            var list = new List<TICResult>();
+            var parser = new BaseParser(path);
+            var ms1Block = parser.airdInfo.indexList.FirstOrDefault(x => x.level == 1);
+            var blockValue = parser.parseBlockValue(parser.airdFile, ms1Block);
+            foreach (var item in blockValue)
+            {
+                var r = new TICResult();
+                r.rt = item.Key;
+                r.intensity = item.Value.getIntensityArray().Sum();
+                list.Add(r);
+            }
+            parser.close();
+            return list;
+        }
+
         class Input
         {
             public List<string> filesPath { get; set; }
@@ -150,6 +192,18 @@ namespace Parser
         {
             public bool status { get; set; }
             public object content { get; set; }
+        }
+
+        public class MsNResult
+        {
+            public double mz { get; set; }
+            public float intensity { get; set; }
+        }
+
+        public class TICResult
+        {
+            public double rt { get; set; }
+            public float intensity { get; set; }
         }
     }
 }
