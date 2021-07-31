@@ -115,30 +115,36 @@ namespace AirdPro.Converters
         {
             BinaryDataDouble mzData = spectrum.getMZArray().data;
             BinaryDataDouble intData = spectrum.getIntensityArray().data;
-            
-            List<int> mzList = new List<int>();
-            List<float> intensityList = new List<float>();
-            for (int t = 0; t < mzData.Count; t++)
+            var dataCount = mzData.Count;
+            int[] mzArray = new int[dataCount];
+            float[] intensityArray = new float[dataCount];
+            int j = 0;
+            for (int t = 0; t < dataCount; t++)
             {
                 if (jobInfo.jobParams.ignoreZeroIntensity && intData[t] == 0) continue;
             
                 int mz = Convert.ToInt32(mzData[t] * mzPrecision);
-                mzList.Add(mz);
+                mzArray[j] = mz;
             
                 if (jobInfo.jobParams.log2)
                 {
-                    intensityList.Add(Convert.ToSingle(Math.Round(Math.Log(intData[t])/log2, 3))); //取log10并且精确到小数点后3位
+                    intensityArray[j] = Convert.ToSingle(Math.Round(Math.Log(intData[t]) / log2, 3)); //取log10并且精确到小数点后3位
                 }
                 else
                 {
-                    float intensity = Convert.ToSingle(Math.Round(intData[t], 1));
-                    intensityList.Add(intensity);//精确到小数点后一位
+                    intensityArray[j] = Convert.ToSingle(Math.Round(intData[t], 1)); //精确到小数点后一位
                 }
+                j++;
             }
 
-            int[] compressedMzArray = CompressUtil.fastPforEncoder(mzList.ToArray());
+            int[] mzSubArray = new int[j];
+            Array.Copy(mzArray, mzSubArray, j);
+            float[] intensitySubArray = new float[j];
+            Array.Copy(intensityArray, intensitySubArray, j);
+
+            int[] compressedMzArray = CompressUtil.fastPforEncoder(mzSubArray);
             ts.mzArrayBytes = CompressUtil.zlibEncoder(compressedMzArray);
-            ts.intArrayBytes = CompressUtil.zlibEncoder(intensityList.ToArray());
+            ts.intArrayBytes = CompressUtil.zlibEncoder(intensitySubArray);
         }
 
         public void compress(List<Spectrum> spectrumGroup, TempScanSZDPD ts)
