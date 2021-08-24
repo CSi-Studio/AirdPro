@@ -28,6 +28,7 @@ using AirdPro.Algorithms;
 using ByteOrder = AirdPro.Constants.ByteOrder;
 using CV = AirdPro.DomainsCore.Aird.CV;
 using Software = pwiz.CLI.msdata.Software;
+using System.Numerics;
 
 namespace AirdPro.Converters
 {
@@ -41,6 +42,7 @@ namespace AirdPro.Converters
         protected FileStream airdStream;
         protected FileStream airdJsonStream;
         protected List<WindowRange> ranges = new List<WindowRange>();//SWATH Window的窗口
+        protected int ms1Size = 0;
         protected List<BlockIndex> indexList = new List<BlockIndex>();//用于存储的全局的SWATH List
         protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable());//用于存放MS2的索引信息,key为mz
 
@@ -121,7 +123,7 @@ namespace AirdPro.Converters
             for (int t = 0; t < mzData.Count; t++)
             {
                 if (jobInfo.jobParams.ignoreZeroIntensity && intData[t] == 0) continue;
-            
+                
                 int mz = Convert.ToInt32(mzData[t] * mzPrecision);
                 mzList.Add(mz);
             
