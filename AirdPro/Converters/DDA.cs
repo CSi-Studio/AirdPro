@@ -20,6 +20,7 @@ using AirdPro.Algorithms;
 using AirdPro.Domains.Convert;
 using ThermoFisher.CommonCore.Data;
 using CV = AirdPro.DomainsCore.Aird.CV;
+using System.Linq;
 
 namespace AirdPro.Converters
 {
@@ -112,7 +113,12 @@ namespace AirdPro.Converters
 
             Scan scan = spectrum.scanList.scans[0];
             ms1.rt = parseRT(scan);
-
+            //double intensity = 0;
+            //foreach (var item in spectrum.getIntensityArray().data)
+            //{
+            //    intensity += item;
+            //}
+            ticList.Add(new double[] { ms1.rt, spectrum.getIntensityArray().data.Sum(x => x) });
             return ms1;
         }
 

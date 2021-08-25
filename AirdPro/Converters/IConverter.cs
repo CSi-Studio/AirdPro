@@ -28,6 +28,7 @@ using AirdPro.Algorithms;
 using ByteOrder = AirdPro.Constants.ByteOrder;
 using CV = AirdPro.DomainsCore.Aird.CV;
 using Software = pwiz.CLI.msdata.Software;
+using System.Linq;
 
 namespace AirdPro.Converters
 {
@@ -45,6 +46,7 @@ namespace AirdPro.Converters
         protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable());//用于存放MS2的索引信息,key为mz
 
         public List<TempIndex> ms1List = new List<TempIndex>(); //用于存放MS1索引及基础信息
+        protected List<double[]> ticList = new List<double[]>();
         protected Hashtable featuresMap = new Hashtable();
         protected long fileSize;
         protected long startPosition;//文件指针
@@ -368,7 +370,12 @@ namespace AirdPro.Converters
 
             Scan scan = spectrum.scanList.scans[0];
             ms1.rt = parseRT(scan);
-
+            //double intensity = 0;
+            //foreach (var item in spectrum.getIntensityArray().data)
+            //{
+            //    intensity += item;
+            //}
+            ticList.Add(new double[] { ms1.rt, spectrum.getIntensityArray().data.Sum(x=>x) });
             return ms1;
         }
 
@@ -449,6 +456,8 @@ namespace AirdPro.Converters
 
             //Block index
             airdInfo.indexList = indexList;
+
+            airdInfo.ticList = ticList;
 
             //Instrument Info
             List<Instrument> instruments = new List<Instrument>();

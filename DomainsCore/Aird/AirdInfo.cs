@@ -130,5 +130,9 @@ namespace AirdPro.DomainsCore.Aird
          */
         public List<CV> cvList;
 
+        /**
+         * TIC
+         */
+        public List<double[]> ticList;
     }
 }
