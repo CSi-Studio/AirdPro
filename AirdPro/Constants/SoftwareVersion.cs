@@ -12,9 +12,9 @@ namespace AirdPro.Constants
 {
     class SoftwareInfo
     {
-        public static string VERSION = "2.0.0";
-        public static int VERSION_CODE = 200;
-        public static string CLIENT_VERSION_DESCRIPTION = "New Aird Compressor Algorithm:Stack-ZDPD, with 5% to 20% than ZDPD";
+        public static string VERSION = "2.0.1";
+        public static int VERSION_CODE = 201;
+        public static string CLIENT_VERSION_DESCRIPTION = "Fix Window Range scan bugs";
         public static string NAME = "AirdPro";
 
         public static string getVersion()
