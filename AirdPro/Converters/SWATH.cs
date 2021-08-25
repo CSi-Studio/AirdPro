@@ -56,7 +56,7 @@ namespace AirdPro.Converters
         //初始化全局变量
         private void initGlobalVar()
         {
-            rangeSize = ranges.Count + 1; //加上MS1的一个Range
+            rangeSize = ranges.Count + ms1Size; //加上MS1的一个size
             totalSize = msd.run.spectrumList.size(); //原始文件中谱图的总数目(包含MS1和MS2)
             startPosition = 0;//文件的存储位置,每一次解析完就会将指针往前挪移
             progress = 0;//扫描进度计数器
@@ -105,6 +105,7 @@ namespace AirdPro.Converters
         {
             jobInfo.log("Start getting windows", "Getting Windows");
             int i = 0;
+            List<Double> mzList = new List<Double>();
 
             //找到第一张MS1图,如果找不到,则继续往下搜索,如果搜索了500张以上的谱图或者搜索了超过一半的谱图都没有MS1图,则认为数据格式有问题
             Spectrum spectrum = spectrumList.spectrum(0);
@@ -120,15 +121,27 @@ namespace AirdPro.Converters
                 }
             }
 
-            i++;
-            spectrum = spectrumList.spectrum(i);
-            while (spectrum.cvParamChild(CVID.MS_ms_level).value.ToString().Equals(MsLevel.MS2))
-            {
+            while (true)
+            { 
+                if (spectrum.cvParamChild(CVID.MS_ms_level).value.ToString().Equals(MsLevel.MS1))
+                {
+                    ms1Size++;
+                    i++;
+                    spectrum = spectrumList.spectrum(i);
+                    continue;
+                }
+
                 double mz, lowerOffset, upperOffset;
                 mz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
+                if (mzList.Contains(mz))
+                {
+                    break;
+                }
+              
+                mzList.Add(mz);
                 lowerOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_lower_offset);
                 upperOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_upper_offset);
-                
+
                 WindowRange range = new WindowRange(mz - lowerOffset, mz + upperOffset, mz);
                 Hashtable features = new Hashtable();
                 features.Add(Features.original_width, lowerOffset + upperOffset);
@@ -136,10 +149,10 @@ namespace AirdPro.Converters
                 features.Add(Features.original_precursor_mz_end, mz + upperOffset);
                 range.features = FeaturesUtil.toString(features);
                 ranges.Add(range);
-
                 i++;
                 spectrum = spectrumList.spectrum(i);
             }
+           
             jobInfo.log("Finished Getting Windows");
         }
 
