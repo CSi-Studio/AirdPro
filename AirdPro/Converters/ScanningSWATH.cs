@@ -158,7 +158,7 @@ namespace AirdPro.Converters
             }
             try
             {
-                TempScan ts = new TempScan(i, parseRT(spectrum.scanList.scans[0]));
+                TempScan ts = new TempScan(i, parseRT(spectrum.scanList.scans[0]), getTIC(spectrum));
                 if (jobInfo.jobParams.includeCV)
                 {
                     ts.cvs = CV.trans(spectrum);

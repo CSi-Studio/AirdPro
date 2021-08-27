@@ -17,15 +17,17 @@ namespace AirdPro.DomainsCore.Aird
     {
         public int num;
         public float rt;
+        public long tic;
         public List<CV> cvs;
 
         public byte[] mzArrayBytes;
         public byte[] intArrayBytes;
 
-        public TempScan(int num, float rt)
+        public TempScan(int num, float rt, long tic)
         {
             this.num = num;
             this.rt = rt;
+            this.tic = tic;
         }
 
         public TempScan(int num, float rt, byte[] mzArrayBytes, byte[] intArrayBytes)

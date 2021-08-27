@@ -19,6 +19,9 @@ namespace AirdPro.DomainsCore.Aird
         //retention time
         public float rt;
 
+        //tic数值
+        public long tic;
+
         //对应的ms1的序号
         public int pNum;
 

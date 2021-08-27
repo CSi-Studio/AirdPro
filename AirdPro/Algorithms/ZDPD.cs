@@ -25,7 +25,7 @@ namespace AirdPro.Algorithms
                 {
                     converter.jobInfo.log(null, "MS1:" + i + "/" + converter.ms1List.Count);
                     TempIndex scanIndex = converter.ms1List[i];
-                    TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
+                    TempScan ts = new TempScan(scanIndex.num, scanIndex.rt, scanIndex.tic);
                     if (converter.jobInfo.jobParams.includeCV)
                     {
                         ts.cvs = scanIndex.cvList;
@@ -41,7 +41,7 @@ namespace AirdPro.Algorithms
                 {
                     converter.jobInfo.log(null, "MS1:" + i + "/" + converter.ms1List.Count);
                     TempIndex scanIndex = converter.ms1List[i];
-                    TempScan ts = new TempScan(scanIndex.num, scanIndex.rt);
+                    TempScan ts = new TempScan(scanIndex.num, scanIndex.rt, scanIndex.tic);
                     if (converter.jobInfo.jobParams.includeCV)
                     {
                         ts.cvs = scanIndex.cvList;
@@ -62,7 +62,7 @@ namespace AirdPro.Algorithms
                 Parallel.For(0, tempIndexList.Count, (i, ParallelLoopState) =>
                 {
                     TempIndex tempIndex = tempIndexList[i];
-                    TempScan ts = new TempScan(tempIndex.num, tempIndex.rt);
+                    TempScan ts = new TempScan(tempIndex.num, tempIndex.rt, tempIndex.tic);
                     if (converter.jobInfo.jobParams.includeCV)
                     {
                         ts.cvs = tempIndex.cvList;
@@ -76,7 +76,7 @@ namespace AirdPro.Algorithms
             {
                 foreach (TempIndex tempIndex in tempIndexList)
                 {
-                    TempScan ts = new TempScan(tempIndex.num, tempIndex.rt);
+                    TempScan ts = new TempScan(tempIndex.num, tempIndex.rt, tempIndex.tic);
                     if (converter.jobInfo.jobParams.includeCV)
                     {
                         ts.cvs = tempIndex.cvList;

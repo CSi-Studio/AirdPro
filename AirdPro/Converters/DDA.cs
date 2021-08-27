@@ -20,7 +20,6 @@ using AirdPro.Algorithms;
 using AirdPro.Domains.Convert;
 using ThermoFisher.CommonCore.Data;
 using CV = AirdPro.DomainsCore.Aird.CV;
-using System.Linq;
 
 namespace AirdPro.Converters
 {
@@ -113,12 +112,7 @@ namespace AirdPro.Converters
 
             Scan scan = spectrum.scanList.scans[0];
             ms1.rt = parseRT(scan);
-            //double intensity = 0;
-            //foreach (var item in spectrum.getIntensityArray().data)
-            //{
-            //    intensity += item;
-            //}
-            ticList.Add(new double[] { ms1.rt, spectrum.getIntensityArray().data.Sum(x => x) });
+            ms1.tic = getTIC(spectrum);
             return ms1;
         }
 
@@ -177,7 +171,7 @@ namespace AirdPro.Converters
             if (spectrum.scanList.scans.Count != 1) return ms2;
             Scan scan = spectrum.scanList.scans[0];
             ms2.rt = parseRT(scan);
-
+            ms2.tic = getTIC(spectrum);
             return ms2;
         }
 
@@ -237,10 +231,11 @@ namespace AirdPro.Converters
                 foreach (TempIndex index in tempIndexList)
                 {
                     ms2Ranges.Add(new WindowRange(index.mzStart, index.mzEnd, index.mz));
-                    TempScan ts = new TempScan(index.num, index.rt);
+                    TempScan ts = new TempScan(index.num, index.rt, index.tic);
                     compress(spectrumList.spectrum(index.num, true), ts);
                     blockIndex.nums.Add(ts.num);
                     blockIndex.rts.Add(ts.rt);
+                    blockIndex.tics.Add(ts.tic);
                     blockIndex.mzs.Add(ts.mzArrayBytes.Length);
                     blockIndex.ints.Add(ts.intArrayBytes.Length);
                     startPosition = startPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;

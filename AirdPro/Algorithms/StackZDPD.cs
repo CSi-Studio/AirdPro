@@ -28,6 +28,7 @@ namespace AirdPro.Algorithms
                     converter.jobInfo.log(null, "MS1:" + i + "/" + iter);
                     List<float> rts = new List<float>();
                     List<int> nums = new List<int>();
+                    List<long> tics = new List<long>();
                     List<List<CV>> cvs = new List<List<CV>>();
                     List<Spectrum> spectrumGroup = new List<Spectrum>();
                     for (int k = 0; k < layers; k++)
@@ -40,6 +41,7 @@ namespace AirdPro.Algorithms
                         TempIndex scanIndex = converter.ms1List[realNum];
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
+                        tics.Add(scanIndex.tic);
                         if (converter.jobInfo.jobParams.includeCV)
                         {
                             cvs.Add(scanIndex.cvList);
@@ -47,7 +49,7 @@ namespace AirdPro.Algorithms
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
 
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts);
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics);
                     if (converter.jobInfo.jobParams.includeCV)
                     {
                         ts.cvs = cvs;
@@ -65,6 +67,7 @@ namespace AirdPro.Algorithms
 
                     List<float> rts = new List<float>();
                     List<int> nums = new List<int>();
+                    List<long> tics = new List<long>();
                     List<List<CV>> cvs = new List<List<CV>>();
                     List<Spectrum> spectrumGroup = new List<Spectrum>();
                     for (int k = 0; k < layers; k++)
@@ -77,6 +80,7 @@ namespace AirdPro.Algorithms
                         TempIndex scanIndex = converter.ms1List[realNum];
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
+                        tics.Add(scanIndex.tic);
                         if (converter.jobInfo.jobParams.includeCV)
                         {
                             cvs.Add(scanIndex.cvList);
@@ -84,7 +88,7 @@ namespace AirdPro.Algorithms
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
 
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts);
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics);
                     if (converter.jobInfo.jobParams.includeCV)
                     {
                         ts.cvs = cvs;
@@ -109,6 +113,7 @@ namespace AirdPro.Algorithms
                 {
                     List<float> rts = new List<float>();
                     List<int> nums = new List<int>();
+                    List<long> tics = new List<long>();
                     List<List<CV>> cvs = new List<List<CV>>();
                     List<Spectrum> spectrumGroup = new List<Spectrum>();
                     for (int k = 0; k < layers; k++)
@@ -121,13 +126,14 @@ namespace AirdPro.Algorithms
                         TempIndex scanIndex = tempIndexList[realNum];
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
+                        tics.Add(scanIndex.tic);
                         if (converter.jobInfo.jobParams.includeCV)
                         {
                             cvs.Add(scanIndex.cvList);
                         }
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts);
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics);
                     if (converter.jobInfo.jobParams.includeCV)
                     {
                         ts.cvs = cvs;
@@ -143,6 +149,7 @@ namespace AirdPro.Algorithms
                 {
                     List<float> rts = new List<float>();
                     List<int> nums = new List<int>();
+                    List<long> tics = new List<long>();
                     List<List<CV>> cvs = new List<List<CV>>();
                     List<Spectrum> spectrumGroup = new List<Spectrum>();
                     for (int k = 0; k < layers; k++)
@@ -155,13 +162,14 @@ namespace AirdPro.Algorithms
                         TempIndex scanIndex = tempIndexList[realNum];
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
+                        tics.Add(scanIndex.tic);
                         if (converter.jobInfo.jobParams.includeCV)
                         {
                             cvs.Add(scanIndex.cvList);
                         }
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts);
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics);
                     if (converter.jobInfo.jobParams.includeCV)
                     {
                         ts.cvs = cvs;

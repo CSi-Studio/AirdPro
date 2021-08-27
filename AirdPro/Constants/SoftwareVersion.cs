@@ -12,9 +12,9 @@ namespace AirdPro.Constants
 {
     class SoftwareInfo
     {
-        public static string VERSION = "2.0.1";
-        public static int VERSION_CODE = 201;
-        public static string CLIENT_VERSION_DESCRIPTION = "Fix Window Range scan bugs";
+        public static string VERSION = "2.0.2";
+        public static int VERSION_CODE = 202;
+        public static string CLIENT_VERSION_DESCRIPTION = "Add TIC information in index file";
         public static string NAME = "AirdPro";
 
         public static string getVersion()

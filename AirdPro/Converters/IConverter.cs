@@ -47,7 +47,6 @@ namespace AirdPro.Converters
         protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable());//用于存放MS2的索引信息,key为mz
 
         public List<TempIndex> ms1List = new List<TempIndex>(); //用于存放MS1索引及基础信息
-        protected List<double[]> ticList = new List<double[]>();
         protected Hashtable featuresMap = new Hashtable();
         protected long fileSize;
         protected long startPosition;//文件指针
@@ -114,6 +113,18 @@ namespace AirdPro.Converters
             return Convert.ToSingle(Math.Round(time, 3));
         }
 
+        protected long getTIC(Spectrum spectrum)
+        {
+            try 
+            {
+                return Convert.ToInt64(Convert.ToDouble(spectrum.cvParamChild(CVID.MS_TIC).value.ToString()));
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+        }
+
         public void compress(Spectrum spectrum, TempScan ts)
         {
             BinaryDataDouble mzData = spectrum.getMZArray().data;
@@ -125,7 +136,6 @@ namespace AirdPro.Converters
             for (int t = 0; t < dataCount; t++)
             {
                 if (jobInfo.jobParams.ignoreZeroIntensity && intData[t] == 0) continue;
-                
                 int mz = Convert.ToInt32(mzData[t] * mzPrecision);
                 mzArray[j] = mz;
             
@@ -139,7 +149,6 @@ namespace AirdPro.Converters
                 }
                 j++;
             }
-
             int[] mzSubArray = new int[j];
             Array.Copy(mzArray, mzSubArray, j);
             float[] intensitySubArray = new float[j];
@@ -162,13 +171,15 @@ namespace AirdPro.Converters
                 BinaryDataDouble intData = spectrumGroup[i].getIntensityArray().data;
                 List<int> mzList = new List<int>();
                 List<float> intensityList = new List<float>();
-
+                var dataCount = mzData.Count;
+                int[] mzArray = new int[dataCount];
+                int j = 0;
                 for (int t = 0; t < mzData.Count; t++)
                 {
                     if (jobInfo.jobParams.ignoreZeroIntensity && intData[t] == 0) continue;
 
                     int mz = Convert.ToInt32(mzData[t] * mzPrecision);
-                    mzList.Add(mz);
+                    mzArray[j] = mz;
 
                     if (jobInfo.jobParams.log2)
                     {
@@ -176,19 +187,23 @@ namespace AirdPro.Converters
                     }
                     else
                     {
-                        float intensity = Convert.ToSingle(Math.Round(intData[t], 1));
-                        intensityList.Add(intensity);//精确到小数点后一位
+                        intensityList.Add(Convert.ToSingle(Math.Round(intData[t], 1))); //精确到小数点后一位
                     }
+                    j++;
                 }
-
                 //空光谱的情况下会填充一个mz=0,intensity=0的点
-                if (mzList.Count == 0)
+                if (j == 0)
                 {
-                    mzList.Add(0);
+                    mzListGroup.Add(new int[] { 0 });
                     intensityList.Add(0);
                 }
+                else
+                {
+                    int[] mzSubArray = new int[j];
+                    Array.Copy(mzArray, mzSubArray, j);
+                    mzListGroup.Add(mzSubArray);
+                }
                 //说明是一帧空光谱,那么直接在Aird文件中抹除这一帧的信息
-                mzListGroup.Add(mzList.ToArray());
                 intListAllGroup.AddRange(intensityList);
             }
 
@@ -219,6 +234,7 @@ namespace AirdPro.Converters
 
                 index.nums.AddRange(ts.nums);
                 index.rts.AddRange(ts.rts);
+                index.tics.AddRange(ts.tics);
                 if (jobInfo.jobParams.includeCV)
                 {
                     index.cvList.AddRange(ts.cvs);
@@ -237,6 +253,7 @@ namespace AirdPro.Converters
 
                 index.nums.Add(ts.num);
                 index.rts.Add(ts.rt);
+                index.tics.Add(ts.tic);
                 if (jobInfo.jobParams.includeCV)
                 {
                     index.cvList.Add(ts.cvs);
@@ -371,12 +388,7 @@ namespace AirdPro.Converters
 
             Scan scan = spectrum.scanList.scans[0];
             ms1.rt = parseRT(scan);
-            //double intensity = 0;
-            //foreach (var item in spectrum.getIntensityArray().data)
-            //{
-            //    intensity += item;
-            //}
-            ticList.Add(new double[] { ms1.rt, spectrum.getIntensityArray().data.Sum(x=>x) });
+            ms1.tic = getTIC(spectrum);
             return ms1;
         }
 
@@ -417,7 +429,7 @@ namespace AirdPro.Converters
             if (spectrum.scanList.scans.Count != 1) return ms2;
             Scan scan = spectrum.scanList.scans[0];
             ms2.rt = parseRT(scan);
-
+            ms2.tic = getTIC(spectrum);
             return ms2;
         }
 
@@ -457,8 +469,6 @@ namespace AirdPro.Converters
 
             //Block index
             airdInfo.indexList = indexList;
-
-            airdInfo.ticList = ticList;
 
             //Instrument Info
             List<Instrument> instruments = new List<Instrument>();

@@ -131,7 +131,7 @@ namespace AirdPro.Converters
                     Parallel.For(0, tempIndexList.Count, (i, ParallelLoopState) =>
                     {
                         TempIndex index = tempIndexList[i];
-                        TempScan ts = new TempScan(index.num, index.rt);
+                        TempScan ts = new TempScan(index.num, index.rt, index.tic);
                         compress(spectrumList.spectrum(index.num, true), ts);
                         table.Add(i, ts);
                     });
@@ -142,7 +142,7 @@ namespace AirdPro.Converters
                 {
                     foreach (TempIndex index in tempIndexList)
                     {
-                        TempScan ts = new TempScan(index.pNum, index.rt);
+                        TempScan ts = new TempScan(index.pNum, index.rt, index.tic);
                         compress(spectrumList.spectrum(index.num, true), ts);
                         addToIndex(swathIndex, ts);
                     }

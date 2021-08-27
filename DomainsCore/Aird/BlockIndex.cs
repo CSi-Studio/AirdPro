@@ -57,6 +57,12 @@ namespace AirdPro.DomainsCore.Aird
         public List<float> rts = new List<float>();
 
         /**
+         * Every Spectrum's total intensity in the block
+         * 所有该块中的tic列表
+         */
+        public List<long> tics = new List<long>();
+
+        /**
          * COMMON type: it store the start position of every compressed mz block
          * Other types: it store the size of every compressed mz block
          * 一个块中所有子谱图的mz的压缩后的大小列表,当为Common类型时,每一个存储的不是块大小,而是起始位置

@@ -129,10 +129,5 @@ namespace AirdPro.DomainsCore.Aird
          * PSI CV
          */
         public List<CV> cvList;
-
-        /**
-         * TIC
-         */
-        public List<double[]> ticList;
     }
 }

@@ -74,7 +74,7 @@ namespace AirdPro.Converters
                     }
                    
                     var scan = spectrum.scanList.scans[0];
-                    var ts = new TempScan(i, parseRT(scan));
+                    var ts = new TempScan(i, parseRT(scan), getTIC(spectrum));
                     if (jobInfo.jobParams.includeCV)
                     {
                         ts.cvs = CV.trans(spectrum);
@@ -103,7 +103,7 @@ namespace AirdPro.Converters
                         continue;
                     }
                     var scan = spectrum.scanList.scans[0];
-                    var ts = new TempScan(i, parseRT(scan));
+                    var ts = new TempScan(i, parseRT(scan), getTIC(spectrum));
                     if (jobInfo.jobParams.includeCV)
                     {
                         ts.cvs = CV.trans(spectrum);
