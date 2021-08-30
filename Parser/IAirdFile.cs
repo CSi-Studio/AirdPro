@@ -166,14 +166,13 @@ namespace Parser
         {
             var list = new List<TICResult>();
             var parser = new BaseParser(path);
-            var ms1Block = parser.airdInfo.indexList.FirstOrDefault(x => x.level == 1);
-            var blockValue = parser.parseBlockValue(parser.airdFile, ms1Block);
-            foreach (var item in blockValue)
+            var ms1Block = parser.airdInfo.indexList.Where(x => x.level == 1);
+            foreach (var item in ms1Block)
             {
-                var r = new TICResult();
-                r.rt = item.Key;
-                r.intensity = item.Value.getIntensityArray().Sum();
-                list.Add(r);
+                for (int i = 0; i < item.rts.Count; i++)
+                {
+                    list.Add(new TICResult() { rt = item.rts[i], intensity = item.tics[i] });
+                }
             }
             parser.close();
             return list;

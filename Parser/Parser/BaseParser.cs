@@ -186,56 +186,48 @@ namespace AirdPro.Parser
 
         public int[] getTags(byte[] value)
         {
-            //ByteBuffer byteBuffer = ByteBuffer.wrap(CompressUtil.zlibDecoder(value));
-            //byteBuffer.order(mzCompressor.getByteOrder());
-
-            //byte[] byteValue = new byte[byteBuffer.capacity() * 8];
-            //for (int i = 0; i < byteBuffer.capacity(); i++)
-            //{
-            //    for (int j = 0; j < 8; j++)
-            //    {
-            //        byteValue[8 * i + j] = (byte)(((byteBuffer.get(i) & 0xff) >> j) & 1);
-            //    }
-            //}
-            //int digit = mzCompressor.digit;
-            //int[] tags = new int[byteValue.Length / digit];
-            //for (int i = 0; i < tags.length; i++)
-            //{
-            //    for (int j = 0; j < digit; j++)
-            //    {
-            //        tags[i] += byteValue[digit * i + j] << j;
-            //    }
-            //}
-            //byteBuffer.clear();
-            //return tags;
-            return new int[0];
+            var byteBuffer = CompressUtil.zlibDecoder(value);
+            byte[] byteValue = new byte[byteBuffer.Length * 8];
+            for (int i = 0; i < byteBuffer.Length; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    byteValue[8 * i + j] = (byte)(((byteBuffer[i] & 0xff) >> j) & 1);
+                }
+            }
+            int digit = mzCompressor.digit;
+            int[] tags = new int[byteValue.Length / digit];
+            for (int i = 0; i < tags.Length; i++)
+            {
+                for (int j = 0; j < digit; j++)
+                {
+                    tags[i] += byteValue[digit * i + j] << j;
+                }
+            }
+            return tags;
         }
 
         public int[] getTags(byte[] value, int start, int length)
         {
-            //byte[] tagShift = CompressUtil.zlibDecoder(value, start, length);
-            ////        byteBuffer.order(mzCompressor.getByteOrder());
-
-            //byte[] byteValue = new byte[tagShift.length * 8];
-            //for (int i = 0; i < tagShift.length; i++)
-            //{
-            //    for (int j = 0; j < 8; j++)
-            //    {
-            //        byteValue[8 * i + j] = (byte)(((tagShift[i] & 0xff) >> j) & 1);
-            //    }
-            //}
-
-            //int digit = mzCompressor.getDigit();
-            //int[] tags = new int[byteValue.length / digit];
-            //for (int i = 0; i < tags.length; i++)
-            //{
-            //    for (int j = 0; j < digit; j++)
-            //    {
-            //        tags[i] += byteValue[digit * i + j] << j;
-            //    }
-            //}
-            //return tags;
-            return new int[0];
+            var tagShift = CompressUtil.zlibDecoder(value.Skip(start).Take(length).ToArray());
+            byte[] byteValue = new byte[tagShift.Length * 8];
+            for (int i = 0; i < tagShift.Length; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    byteValue[8 * i + j] = (byte)(((tagShift[i] & 0xff) >> j) & 1);
+                }
+            }
+            int digit = mzCompressor.digit;
+            int[] tags = new int[byteValue.Length / digit];
+            for (int i = 0; i < tags.Length; i++)
+            {
+                for (int j = 0; j < digit; j++)
+                {
+                    tags[i] += byteValue[digit * i + j] << j;
+                }
+            }
+            return tags;
         }
 
         /// <summary>
