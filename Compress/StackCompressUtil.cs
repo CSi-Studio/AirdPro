@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using AirdPro.DomainsCore.Aird;
 using CSharpFastPFOR.Port;
-using Priority_Queue;
+// using Priority_Queue;
 
 namespace AirdPro.Utils
 {
@@ -28,14 +28,15 @@ namespace AirdPro.Utils
 
             //合并排序数组 pair：默认采取pair成对排序，True也采取pair排序；false时采用QueueSort
             int[][] stackSort;
-            if (pair)
-            {
-                stackSort = getPairSortArray(arrGroup);
-            }
-            else
-            {
-                stackSort = getQueueSortArray(arrGroup);
-            }
+            stackSort = getPairSortArray(arrGroup);
+            //if (pair)
+            //{
+            //    stackSort = getPairSortArray(arrGroup);
+            //}
+            //else
+            //{
+            //    stackSort = getQueueSortArray(arrGroup);
+            //}
             //取出stack数组和index数组
             int[] stackArr = new int[stackLen];
             int[] stackIndex = new int[stackLen];
@@ -257,34 +258,34 @@ namespace AirdPro.Utils
          * @param arrGroup mzArray to be sorted
          * @return sorted mzArray-Index pair
          */
-        private static int[][] getQueueSortArray(List<int[]> arrGroup)
-        {
-            int stackLen = 0;//记录堆叠数总长度
-            foreach (int[] arr in arrGroup)
-            {
-                stackLen += arr.Length;
-            }
-            int[][] resultArr = new int[stackLen][];
-            int[] indexes = new int[arrGroup.Count];
-            Arrays.fill(indexes, 1);
-            SimplePriorityQueue<int[]> queue = new SimplePriorityQueue<int[]>();
-            for (int i = 0; i<arrGroup.Count; i++) 
-            {
-                queue.Enqueue(new int[] { arrGroup[i][0], i }, arrGroup[i][0]);
-            }
-            for (int i = 0; i < stackLen; i++)
-            {
-                int[] node = queue.Dequeue();
-                resultArr[i] = node;
-                int groupIndex = node[1];
-                int index = indexes[groupIndex];
-                if (index < arrGroup[groupIndex].Length)
-                {
-                    queue.Enqueue(new int[] { arrGroup[groupIndex][index], groupIndex }, arrGroup[groupIndex][index]);
-                    indexes[groupIndex]++;
-                }
-            }
-            return resultArr;
-        } 
+        //private static int[][] getQueueSortArray(List<int[]> arrGroup)
+        //{
+        //    int stackLen = 0;//记录堆叠数总长度
+        //    foreach (int[] arr in arrGroup)
+        //    {
+        //        stackLen += arr.Length;
+        //    }
+        //    int[][] resultArr = new int[stackLen][];
+        //    int[] indexes = new int[arrGroup.Count];
+        //    Arrays.fill(indexes, 1);
+        //    SimplePriorityQueue<int[]> queue = new SimplePriorityQueue<int[]>();
+        //    for (int i = 0; i<arrGroup.Count; i++) 
+        //    {
+        //        queue.Enqueue(new int[] { arrGroup[i][0], i }, arrGroup[i][0]);
+        //    }
+        //    for (int i = 0; i < stackLen; i++)
+        //    {
+        //        int[] node = queue.Dequeue();
+        //        resultArr[i] = node;
+        //        int groupIndex = node[1];
+        //        int index = indexes[groupIndex];
+        //        if (index < arrGroup[groupIndex].Length)
+        //        {
+        //            queue.Enqueue(new int[] { arrGroup[groupIndex][index], groupIndex }, arrGroup[groupIndex][index]);
+        //            indexes[groupIndex]++;
+        //        }
+        //    }
+        //    return resultArr;
+        //} 
     }
 }

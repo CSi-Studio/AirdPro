@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OptimizedPriorityQueue" Version="5.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DomainsCore\DomainsCore.csproj" />
     <ProjectReference Include="..\ThirdParty\ThirdParty.csproj" />
   </ItemGroup>
