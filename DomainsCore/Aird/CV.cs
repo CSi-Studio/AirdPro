@@ -37,5 +37,16 @@ namespace AirdPro.DomainsCore.Aird
 
             return cvList;
         }
+
+        public static List<CV> trans(CVParamList paramList)
+        {
+            List<CV> cvList = new List<CV>();
+            foreach (var cvParam in paramList)
+            {
+                cvList.Add(new CV(cvParam));
+            }
+
+            return cvList;
+        }
     }
 }
