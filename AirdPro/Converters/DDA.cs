@@ -241,10 +241,18 @@ namespace AirdPro.Converters
                 {
                     ms2Ranges.Add(new WindowRange(index.mzStart, index.mzEnd, index.mz));
                     TempScan ts = new TempScan(index.num, index.rt, index.tic);
+                    if (jobInfo.jobParams.includeCV)
+                    {
+                        ts.cvs = index.cvList;
+                    }
                     compress(spectrumList.spectrum(index.num, true), ts);
                     blockIndex.nums.Add(ts.num);
                     blockIndex.rts.Add(ts.rt);
                     blockIndex.tics.Add(ts.tic);
+                    if (jobInfo.jobParams.includeCV)
+                    {
+                        blockIndex.cvList.Add(ts.cvs);
+                    }
                     blockIndex.mzs.Add(ts.mzArrayBytes.Length);
                     blockIndex.ints.Add(ts.intArrayBytes.Length);
                     startPosition = startPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;
