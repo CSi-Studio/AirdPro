@@ -27,7 +27,7 @@ namespace AirdPro.Utils
             }
 
             //合并排序数组 pair：默认采取pair成对排序，True也采取pair排序；false时采用QueueSort
-            int[][] stackSort;
+            int[,] stackSort;
             stackSort = getPairSortArray(arrGroup);
             //if (pair)
             //{
@@ -42,8 +42,8 @@ namespace AirdPro.Utils
             int[] stackIndex = new int[stackLen];
             for (int i = 0; i < stackLen; i++)
             {
-                stackArr[i] = stackSort[i][0];
-                stackIndex[i] = stackSort[i][1];
+                stackArr[i] = stackSort[i,0];
+                stackIndex[i] = stackSort[i,1];
             }
             //index移位存储
             int digit = (int)Math.Ceiling(Math.Log(arrGroup.Count) / Math.Log(2));
@@ -176,7 +176,7 @@ namespace AirdPro.Utils
          * @param arrGroup mzArray to be sorted
          * @return sorted mzArray-Index pair
          */
-        private static int[][] getPairSortArray(List<int[]> arrGroup)
+        private static int[,] getPairSortArray(List<int[]> arrGroup)
         {
             List<int[]> indexGroup = new List<int[]>();
             indexGroup.Add(new int[arrGroup[0].Length]);
@@ -243,10 +243,11 @@ namespace AirdPro.Utils
             }
             int[] arr = arrGroup[0];
             int[] indexArray = indexGroup[0];
-            int[][] resultArr = new int[arr.Length][];
-            for (int i = 0; i < resultArr.Length; i++)
+            int[,] resultArr = new int[arr.Length,2];
+            for (int i = 0; i < arr.Length; i++)
             {
-                resultArr[i] = new []{arr[i], indexArray[i]};
+                resultArr[i,0] = arr[i];
+                resultArr[i,1] = indexArray[i];
             }
             return resultArr;
         }
