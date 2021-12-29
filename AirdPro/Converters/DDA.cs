@@ -160,10 +160,7 @@ namespace AirdPro.Converters
                     upperOffset = (float) double.Parse(upperOffsetStr);
                 }
 
-                if (activator == null)
-                {
-                    parseActivator(spectrum.precursors[0].activation);
-                }
+                ms2.charge = getPrecursorCharge(spectrum);
                 ms2.mz = mz;
                 ms2.mzStart = mz - lowerOffset;
                 ms2.mzEnd = mz + upperOffset;
@@ -256,7 +253,12 @@ namespace AirdPro.Converters
 
                 foreach (TempIndex index in tempIndexList)
                 {
-                    ms2Ranges.Add(new WindowRange(index.mzStart, index.mzEnd, index.mz));
+                    WindowRange range = new WindowRange(index.mzStart, index.mzEnd, index.mz);
+                    if (index.charge != 0)
+                    {
+                        range.charge = index.charge;
+                    }
+                    ms2Ranges.Add(range);
                     TempScan ts = new TempScan(index.num, index.rt, index.tic);
                     if (jobInfo.jobParams.includeCV)
                     {

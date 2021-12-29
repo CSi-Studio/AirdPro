@@ -368,6 +368,38 @@ namespace AirdPro.Converters
             return result;
         }
 
+        protected int getPrecursorCharge(Spectrum spectrum)
+        {
+            int result = 0;
+            var retryTimes = 3;
+            while (result < 0 && retryTimes > 0)
+            {
+                try
+                {
+                    Precursor precursor = spectrum.precursors[0];
+                    if (precursor.selectedIons == null || precursor.selectedIons[0].cvParamChild(CVID.MS_charge_state)
+                        .cvid.Equals(CVID.CVID_Unknown))
+                    {
+                        return 0;
+                    }
+                    
+                    result = Int32.Parse(precursor.selectedIons[0].cvParamChild(CVID.MS_charge_state).value.ToString());
+                }
+                catch (FormatException e)
+                {
+                    jobInfo.log("Charge-重试次数-" + retryTimes + "-Result:" + result);
+                    jobInfo.log(e.StackTrace);
+                }
+                retryTimes--;
+            }
+
+            if (result < 0)
+            {
+                throw new Exception("Parse Integer Error:" + result);
+            }
+            return result;
+        }
+
         protected void readVendorFile()
         {
             jobInfo.log("Prepare to Parse Vendor File", "Prepare");
@@ -493,7 +525,8 @@ namespace AirdPro.Converters
                 double mz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
                 double lowerOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_lower_offset);
                 double upperOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_upper_offset);
-
+                int charge = getPrecursorCharge(spectrum);
+                ms2.charge = charge;
                 ms2.mz = mz;
                 ms2.mzStart = mz - lowerOffset;
                 ms2.mzEnd = mz + upperOffset;

@@ -21,6 +21,9 @@ namespace AirdPro.DomainsCore.Aird
         //前体的荷质比,precursor mz
         public double mz;
 
+        //前体的带电量,大多情况为0,表示未知
+        public int charge;
+
         public string features;
 
         public WindowRange() { }
