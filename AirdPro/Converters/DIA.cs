@@ -23,13 +23,13 @@ using AirdPro.Domains.Convert;
 
 namespace AirdPro.Converters
 {
-    internal class SWATH : IConverter
+    internal class DIA : IConverter
     {
         private double overlap;//SWATH窗口间的区域重叠值
         private int rangeSize;//总计的WindowRange数目,这里包含了ms1的一个窗口.例如SWATH窗口为32个,那么这边存储的数字就是33
         private int progress;//进度计数器
         private Hashtable rangeTable = new Hashtable(); //用于存放SWATH窗口的信息,key为mz
-        public SWATH(JobInfo jobInfo) : base(jobInfo) {}
+        public DIA(JobInfo jobInfo) : base(jobInfo) {}
 
         public override void doConvert()
         {
@@ -82,7 +82,7 @@ namespace AirdPro.Converters
                 proprogress++;
                 jobInfo.log(null, "Pre:" + proprogress + "/" + totalSize);
                 Spectrum spectrum = spectrumList.spectrum(i);
-                string msLevel = getMsLevel(spectrum);
+                string msLevel = parseMsLevel(spectrum);
                 //如果这个谱图是MS1                          
                 if (msLevel.Equals(MsLevel.MS1))
                 {
@@ -141,7 +141,6 @@ namespace AirdPro.Converters
                 mzList.Add(mz);
                 lowerOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_lower_offset);
                 upperOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_upper_offset);
-
                 WindowRange range = new WindowRange(mz - lowerOffset, mz + upperOffset, mz);
                 Hashtable features = new Hashtable();
                 features.Add(Features.original_width, lowerOffset + upperOffset);

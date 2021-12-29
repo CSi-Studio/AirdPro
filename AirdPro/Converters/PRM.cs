@@ -48,7 +48,7 @@ namespace AirdPro.Converters
         {
             totalSize = spectrumList.size();
             progress = 0;
-            jobInfo.log("Total Size(Include useless MS1):" + totalSize);
+            jobInfo.log("Total Spectra:" + totalSize);
             startPosition = 0;//文件的存储位置,每一次解析完就会将指针往前挪移
         }
 
@@ -64,13 +64,13 @@ namespace AirdPro.Converters
                 if (i == totalSize - 1)
                 {
                     //如果是MS1谱图,那么直接跳过
-                    if (getMsLevel(i).Equals(MsLevel.MS1))
+                    if (parseMsLevel(i).Equals(MsLevel.MS1))
                     {
                         ParallelLoopState.Break();
                         return;
                     }
                     //如果是MS2谱图,加入到谱图组
-                    if (getMsLevel(i).Equals(MsLevel.MS2))
+                    if (parseMsLevel(i).Equals(MsLevel.MS2))
                     {
                         addToMS2Map(parseMS2(spectrumList.spectrum(i), i, parentNum));
                         ParallelLoopState.Break();
@@ -79,22 +79,22 @@ namespace AirdPro.Converters
                 }
 
                 //如果这个谱图是MS1
-                if (getMsLevel(i).Equals(MsLevel.MS1))
+                if (parseMsLevel(i).Equals(MsLevel.MS1))
                 {
                     //如果下一个谱图仍然是MS1, 那么直接忽略这个谱图
-                    if (getMsLevel(i + 1).Equals(MsLevel.MS1))
+                    if (parseMsLevel(i + 1).Equals(MsLevel.MS1))
                     {
                         ParallelLoopState.Break();
                         return;
                     }
-                    if (getMsLevel(i + 1).Equals(MsLevel.MS2))
+                    if (parseMsLevel(i + 1).Equals(MsLevel.MS2))
                     {
                         parentNum = i;
                         ms1List.Add(parseMS1(spectrumList.spectrum(i), i));
                     }
                 }
 
-                if (getMsLevel(i).Equals(MsLevel.MS2))
+                if (parseMsLevel(i).Equals(MsLevel.MS2))
                 {
                     addToMS2Map(parseMS2(spectrumList.spectrum(i), i, parentNum)); //如果这个谱图是MS2
                 }

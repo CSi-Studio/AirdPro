@@ -125,7 +125,7 @@ namespace AirdPro.Asyncs
             
             if (jobInfo.type.Equals(AirdType.DIA_SWATH))
             {
-                new SWATH(jobInfo).doConvert();
+                new DIA(jobInfo).doConvert();
             }
             else if (jobInfo.type.Equals(AirdType.PRM))
             {

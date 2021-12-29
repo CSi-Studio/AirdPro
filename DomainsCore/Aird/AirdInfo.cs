@@ -72,6 +72,34 @@ namespace AirdPro.DomainsCore.Aird
         public string type;
 
         /**
+        * See ActivationMethod: HCD,CID....
+        * 碎裂方法,详情见ActivationMethod类
+        */
+        public string activator;
+
+        /**
+        * Activation Method Energy
+        * 轰击能量
+        */
+        public float energy;
+
+        /**
+        * Profile or Centroid
+        */
+        public string msType;
+
+        /**
+         * rt unit
+         * rt的时间单位
+         */
+        public string rtUnit;
+
+        /**
+         * polarity
+         */
+        public string polarity;
+
+        /**
          * the aird file path.
          * 转换压缩后的aird二进制文件路径,默认读取同目录下的同名文件,如果不存在才去去读本字段对应的路径
          */
@@ -124,10 +152,5 @@ namespace AirdPro.DomainsCore.Aird
          * Aird的版本编码
          */
         public int versionCode;
-
-        /**
-         * PSI CV
-         */
-        public List<CV> cvList;
     }
 }

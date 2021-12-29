@@ -53,7 +53,7 @@ namespace AirdPro.Converters
         {
             totalSize = spectrumList.size();
             progress = 0;
-            jobInfo.log("Total Size(Include useless MS1):" + totalSize);
+            jobInfo.log("Total Spectra:" + totalSize);
             startPosition = 0;//文件的存储位置,每一次解析完就会将指针往前挪移
         }
 
@@ -158,7 +158,7 @@ namespace AirdPro.Converters
             }
             try
             {
-                TempScan ts = new TempScan(i, parseRT(spectrum.scanList.scans[0]), getTIC(spectrum));
+                TempScan ts = new TempScan(i, parseRT(spectrum.scanList.scans[0]), parseTIC(spectrum));
                 if (jobInfo.jobParams.includeCV)
                 {
                     ts.cvs = CV.trans(spectrum);

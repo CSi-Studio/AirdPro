@@ -53,6 +53,12 @@ namespace AirdPro.Converters
         protected int totalSize;//总计的谱图数目
         protected int mzPrecision;
 
+        protected string activator;//HCD,CID....
+        protected float energy; //轰击能
+        protected string msType; //Profile, Centroied
+        protected string polarity; //Negative, Positive
+        protected string rtUnit; //Minute, Second
+
         protected static double log2 = Math.Log(2);
         public IConverter(JobInfo jobInfo)
         {
@@ -85,35 +91,32 @@ namespace AirdPro.Converters
             }
         }
 
-        protected string getMsLevel(int index)
-        {
-            return spectrumList.spectrum(index).cvParamChild(CVID.MS_ms_level).value.ToString();
-        }
-
-        protected string getMsLevel(Spectrum spectrum)
-        {
-            return spectrum.cvParamChild(CVID.MS_ms_level).value.ToString();
-        }
-
         protected void initDirectory()
         {
             Directory.CreateDirectory(Path.GetDirectoryName(jobInfo.airdFilePath));
             Directory.CreateDirectory(Path.GetDirectoryName(jobInfo.airdJsonFilePath));
         }
 
+        protected string parseMsLevel(int index)
+        {
+            return spectrumList.spectrum(index).cvParamChild(CVID.MS_ms_level).value.ToString();
+        }
+
+        protected string parseMsLevel(Spectrum spectrum)
+        {
+            return spectrum.cvParamChild(CVID.MS_ms_level).value.ToString();
+        }
+
         protected float parseRT(Scan scan)
         {
             CVParam cv = scan.cvParamChild(CVID.MS_scan_start_time);
             float time = float.Parse(cv.value.ToString());
-            if (cv.unitsName.Equals("minute"))
-            {
-                time = time * 60;
-            }
+            rtUnit = cv.unitsName;
 
             return Convert.ToSingle(Math.Round(time, 3));
         }
 
-        protected long getTIC(Spectrum spectrum)
+        protected long parseTIC(Spectrum spectrum)
         {
             try 
             {
@@ -123,6 +126,79 @@ namespace AirdPro.Converters
             {
                 return 0;
             }
+        }
+
+        /**
+         * 从任意spectrum上获取
+         */
+        protected void parsePolarity(Spectrum spectrum)
+        {
+            if (!spectrum.cvParamChild(CVID.MS_negative_scan).cvid.Equals(CVID.CVID_Unknown))
+            {
+                polarity = Polarity.NEGATIVE;
+            }
+            else if (!spectrum.cvParamChild(CVID.MS_positive_scan).cvid.Equals(CVID.CVID_Unknown))
+            {
+                polarity = Polarity.POSITIVE;
+            }
+        }
+
+        /**
+         * 从任意spectrum上获取
+         */
+        protected void parseMsType(Spectrum spectrum)
+        {
+            if (!spectrum.cvParamChild(CVID.MS_profile_spectrum).cvid.Equals(CVID.CVID_Unknown)){
+                msType = MassSpectrumType.PROFILE;
+            }
+            else if (!spectrum.cvParamChild(CVID.MS_centroid_spectrum).cvid.Equals(CVID.CVID_Unknown))
+            {
+                msType = MassSpectrumType.CENTROIDED;
+            }
+        }
+
+        /**
+         * 解析activation以及对应的energy
+         * 需要从ms2的谱图上获取
+         */
+        protected void parseActivator(Activation activation)
+        {
+            //这个解析仅做一次,也就是仅分析第一个scan的activation
+            if (activation == null)
+            {
+                return;
+            }
+
+            if (!activation.cvParamChild(CVID.MS_HCD).cvid.Equals(CVID.CVID_Unknown))
+            {
+                activator = ActivationMethod.HCD;
+            }
+            else if (!activation.cvParamChild(CVID.MS_CID).cvid.Equals(CVID.CVID_Unknown))
+            {
+                activator = ActivationMethod.CID;
+            }
+            else if (!activation.cvParamChild(CVID.MS_ECD).cvid.Equals(CVID.CVID_Unknown))
+            {
+                activator = ActivationMethod.ECD;
+            }
+            else if (!activation.cvParamChild(CVID.MS_ETD).cvid.Equals(CVID.CVID_Unknown))
+            {
+                activator = ActivationMethod.ETD;
+            }
+            else
+            {
+                activator = ActivationMethod.UNKNOWN;
+            }
+
+            if (!activation.cvParamChild(CVID.MS_collision_energy).cvid.Equals(CVID.CVID_Unknown))
+            {
+                energy = Convert.ToSingle(activation.cvParamChild(CVID.MS_collision_energy).value.ToString());
+            }
+            else
+            {
+                energy = -1;
+            }
+            
         }
 
         public void compress(Spectrum spectrum, TempScan ts)
@@ -274,7 +350,8 @@ namespace AirdPro.Converters
             {
                 try
                 {
-                    result = Double.Parse(spectrum.precursors[0].isolationWindow.cvParamChild(cvid).value.ToString());
+                    Precursor precursor = spectrum.precursors[0];
+                    result = Double.Parse(precursor.isolationWindow.cvParamChild(cvid).value.ToString());
                 }
                 catch (FormatException e)
                 {
@@ -388,7 +465,16 @@ namespace AirdPro.Converters
 
             Scan scan = spectrum.scanList.scans[0];
             ms1.rt = parseRT(scan);
-            ms1.tic = getTIC(spectrum);
+            ms1.tic = parseTIC(spectrum);
+            if (msType == null)
+            {
+                parseMsType(spectrum);
+            }
+
+            if (polarity == null)
+            {
+                parsePolarity(spectrum);
+            }
             return ms1;
         }
 
@@ -425,11 +511,15 @@ namespace AirdPro.Converters
                              .cvParamChild(CVID.MS_isolation_window_upper_offset).value);
                 throw e;
             }
+            if (activator == null)
+            {
+                parseActivator(spectrum.precursors[0].activation);
+            }
 
             if (spectrum.scanList.scans.Count != 1) return ms2;
             Scan scan = spectrum.scanList.scans[0];
             ms2.rt = parseRT(scan);
-            ms2.tic = getTIC(spectrum);
+            ms2.tic = parseTIC(spectrum);
             return ms2;
         }
 
@@ -463,7 +553,11 @@ namespace AirdPro.Converters
             airdInfo.type = jobInfo.type;
             airdInfo.totalScanCount = msd.run.spectrumList.size();
             airdInfo.creator = jobInfo.jobParams.creator;
-
+            airdInfo.activator = activator;
+            airdInfo.energy = energy;
+            airdInfo.rtUnit = rtUnit;
+            airdInfo.msType = msType;
+            airdInfo.polarity = polarity;
             //Scan index and window range info
             airdInfo.rangeList = ranges;
 
@@ -482,7 +576,7 @@ namespace AirdPro.Converters
                 }
                 if (jobInfo.format.Equals("RAW"))
                 {
-                    instrument.manufacturer = "THERMO FISHER";
+                    instrument.manufacturer = "THERMO";
                 }
 
                 //设备信息在不同的源文件格式中取法不同,有些是在instrumentConfigurationList中获取,有些是在paramGroups获取,因此出现了以下比较丑陋的写法
@@ -540,11 +634,11 @@ namespace AirdPro.Converters
             airdInfo.instruments = instruments;
 
             //Software Info
-            foreach (Software sof in msd.softwareList)
+            foreach (Software soft in msd.softwareList)
             {
                 DomainsCore.Aird.Software software = new DomainsCore.Aird.Software();
-                software.name = sof.id;
-                software.version = sof.version;
+                software.name = soft.id;
+                software.version = soft.version;
                 softwares.Add(software);
             }
             DomainsCore.Aird.Software airdPro = new DomainsCore.Aird.Software();

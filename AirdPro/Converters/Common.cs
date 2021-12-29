@@ -74,18 +74,22 @@ namespace AirdPro.Converters
                     }
                    
                     var scan = spectrum.scanList.scans[0];
-                    var ts = new TempScan(i, parseRT(scan), getTIC(spectrum));
+                    var ts = new TempScan(i, parseRT(scan), parseTIC(spectrum));
                     if (jobInfo.jobParams.includeCV)
                     {
                         ts.cvs = CV.trans(spectrum);
                     }
                     compress(spectrum, ts);
-                    var msLevel = getMsLevel(spectrum);
+                    var msLevel = parseMsLevel(spectrum);
                     if (msLevel.Equals(MsLevel.MS1))
                     {
                         ms1Table.Add(i, ts);
                     }else
                     {
+                        if (activator == null)
+                        {
+                            parseActivator(spectrum.precursors[0].activation);
+                        }
                         ms2Table.Add(i, ts);
                     }
                 });
@@ -103,13 +107,13 @@ namespace AirdPro.Converters
                         continue;
                     }
                     var scan = spectrum.scanList.scans[0];
-                    var ts = new TempScan(i, parseRT(scan), getTIC(spectrum));
+                    var ts = new TempScan(i, parseRT(scan), parseTIC(spectrum));
                     if (jobInfo.jobParams.includeCV)
                     {
                         ts.cvs = CV.trans(spectrum);
                     }
                     compress(spectrum, ts);
-                    var msLevel = getMsLevel(spectrum);
+                    var msLevel = parseMsLevel(spectrum);
                     if (msLevel.Equals(MsLevel.MS1))
                     {
                         addToIndex(ms1Index, ts);

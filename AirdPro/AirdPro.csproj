@@ -137,8 +137,11 @@
     <Compile Include="Algorithms\ZDPD.cs" />
     <Compile Include="Asyncs\ConvertTaskManager.cs" />
     <Compile Include="Asyncs\LimitedConcurrencyLevelTaskScheduler.cs" />
+    <Compile Include="Constants\ActivationMethod.cs" />
     <Compile Include="Constants\ByteOrder.cs" />
     <Compile Include="Constants\Const.cs" />
+    <Compile Include="Constants\MassSpectrumType.cs" />
+    <Compile Include="Constants\Polarity.cs" />
     <Compile Include="Constants\ProcessingStatus.cs" />
     <Compile Include="Constants\SoftwareVersion.cs" />
     <Compile Include="Converters\Common.cs" />
@@ -175,7 +178,7 @@
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="Converters\DDA.cs" />
-    <Compile Include="Converters\SWATH.cs" />
+    <Compile Include="Converters\DIA.cs" />
     <Compile Include="Converters\IConverter.cs" />
     <Compile Include="Converters\PRM.cs" />
     <Compile Include="Converters\ScanningSWATH.cs" />
@@ -183,6 +186,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\AirdForm.resx">
       <DependentUpon>AirdForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CustomPathForm.resx">
       <DependentUpon>CustomPathForm.cs</DependentUpon>

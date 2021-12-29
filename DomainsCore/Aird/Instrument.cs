@@ -32,8 +32,5 @@ namespace AirdPro.DomainsCore.Aird
         public List<string> analyzer = new List<string>();
         //探测器
         public List<string> detector = new List<string>();
-
-        //其他特征,使用K:V;K:V;K:V;类似的格式进行存储
-        public string features;
     }
 }

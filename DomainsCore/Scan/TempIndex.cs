@@ -14,6 +14,7 @@ namespace AirdPro.DomainsCore.Aird
 {
     public class TempIndex
     {
+        //ms level
         public int level;
 
         //retention time
@@ -42,8 +43,5 @@ namespace AirdPro.DomainsCore.Aird
 
         //PSI CV PSI可控词汇表
         public List<CV> cvList;
-
-        //用于存储KV键值对
-        public string features;
     }
 }

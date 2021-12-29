@@ -604,7 +604,7 @@
     <value>229, 63</value>
   </data>
   <data name="cbIncludingPSICV.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 24</value>
+    <value>65, 21</value>
   </data>
   <data name="cbIncludingPSICV.TabIndex" type="System.Int32, mscorlib">
     <value>31</value>
@@ -634,7 +634,7 @@
     <value>446, 125</value>
   </data>
   <data name="lblStackLayers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 20</value>
+    <value>80, 17</value>
   </data>
   <data name="lblStackLayers.TabIndex" type="System.Int32, mscorlib">
     <value>30</value>
@@ -679,7 +679,7 @@
     <value>550, 122</value>
   </data>
   <data name="cbStackLayers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 28</value>
+    <value>84, 25</value>
   </data>
   <data name="cbStackLayers.TabIndex" type="System.Int32, mscorlib">
     <value>29</value>
@@ -709,7 +709,7 @@
     <value>5, 122</value>
   </data>
   <data name="lblAirdAlgorithm.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 20</value>
+    <value>65, 17</value>
   </data>
   <data name="lblAirdAlgorithm.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
@@ -736,10 +736,10 @@
     <value>Stack-ZDPD</value>
   </data>
   <data name="cbAlgorithm.Location" type="System.Drawing.Point, System.Drawing">
-    <value>90, 119</value>
+    <value>86, 117</value>
   </data>
   <data name="cbAlgorithm.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 28</value>
+    <value>119, 25</value>
   </data>
   <data name="cbAlgorithm.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -796,7 +796,7 @@
     <value>294, 252</value>
   </data>
   <data name="lblConnectStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>102, 20</value>
+    <value>81, 17</value>
   </data>
   <data name="lblConnectStatus.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
@@ -823,7 +823,7 @@
     <value>5, 225</value>
   </data>
   <data name="lblIP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>131, 20</value>
+    <value>106, 17</value>
   </data>
   <data name="lblIP.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -847,7 +847,7 @@
     <value>142, 222</value>
   </data>
   <data name="tbHostAndPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>254, 27</value>
+    <value>254, 23</value>
   </data>
   <data name="tbHostAndPort.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -907,7 +907,7 @@
     <value>455, 160</value>
   </data>
   <data name="lblOperator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>69, 20</value>
+    <value>55, 16</value>
   </data>
   <data name="lblOperator.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -937,7 +937,7 @@
     <value>530, 156</value>
   </data>
   <data name="tbOperator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>109, 27</value>
+    <value>109, 23</value>
   </data>
   <data name="tbOperator.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -964,7 +964,7 @@
     <value>397, 94</value>
   </data>
   <data name="lblMzPrecision.Size" type="System.Drawing.Size, System.Drawing">
-    <value>147, 20</value>
+    <value>120, 17</value>
   </data>
   <data name="lblMzPrecision.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -1000,7 +1000,7 @@
     <value>550, 88</value>
   </data>
   <data name="cbMzPrecision.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 28</value>
+    <value>84, 25</value>
   </data>
   <data name="cbMzPrecision.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -1027,7 +1027,7 @@
     <value>6, 90</value>
   </data>
   <data name="cbThreadAccelerate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>233, 24</value>
+    <value>186, 21</value>
   </data>
   <data name="cbThreadAccelerate.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -1057,10 +1057,10 @@
     <value>NoControl</value>
   </data>
   <data name="cbLog2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>318, 63</value>
+    <value>379, 63</value>
   </data>
   <data name="cbLog2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>321, 24</value>
+    <value>260, 21</value>
   </data>
   <data name="cbLog2.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -1093,7 +1093,7 @@
     <value>5, 160</value>
   </data>
   <data name="lblFileNameTag.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 20</value>
+    <value>62, 16</value>
   </data>
   <data name="lblFileNameTag.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -1120,7 +1120,7 @@
     <value>86, 156</value>
   </data>
   <data name="tbFileNameSuffix.Size" type="System.Drawing.Size, System.Drawing">
-    <value>143, 27</value>
+    <value>143, 23</value>
   </data>
   <data name="tbFileNameSuffix.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -1144,7 +1144,7 @@
     <value>7, 63</value>
   </data>
   <data name="cbIsZeroIntensityIgnore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 24</value>
+    <value>163, 21</value>
   </data>
   <data name="cbIsZeroIntensityIgnore.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -1177,7 +1177,7 @@
     <value>5, 368</value>
   </data>
   <data name="lblConsole.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 20</value>
+    <value>55, 17</value>
   </data>
   <data name="lblConsole.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -1243,7 +1243,7 @@
     <value>5, 9</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 20</value>
+    <value>76, 16</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1306,7 +1306,7 @@
     <value>6, 29</value>
   </data>
   <data name="tbFolderPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>552, 27</value>
+    <value>552, 23</value>
   </data>
   <data name="tbFolderPath.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>

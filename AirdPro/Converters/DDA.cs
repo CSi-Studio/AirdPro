@@ -53,7 +53,7 @@ namespace AirdPro.Converters
         {
             totalSize = spectrumList.size();
             progress = 0;
-            jobInfo.log("Total Size(include useless MS1):" + totalSize);
+            jobInfo.log("Total Spectra:" + totalSize);
             startPosition = 0;
         }
 
@@ -116,7 +116,16 @@ namespace AirdPro.Converters
                 }
             }
             ms1.rt = parseRT(scan);
-            ms1.tic = getTIC(spectrum);
+            ms1.tic = parseTIC(spectrum);
+            if (msType == null)
+            {
+                parseMsType(spectrum);
+            }
+
+            if (polarity == null)
+            {
+                parsePolarity(spectrum);
+            }
             return ms1;
         }
 
@@ -150,7 +159,11 @@ namespace AirdPro.Converters
                 {
                     upperOffset = (float) double.Parse(upperOffsetStr);
                 }
-               
+
+                if (activator == null)
+                {
+                    parseActivator(spectrum.precursors[0].activation);
+                }
                 ms2.mz = mz;
                 ms2.mzStart = mz - lowerOffset;
                 ms2.mzEnd = mz + upperOffset;
@@ -180,7 +193,11 @@ namespace AirdPro.Converters
                 }
             }
             ms2.rt = parseRT(scan);
-            ms2.tic = getTIC(spectrum);
+            ms2.tic = parseTIC(spectrum);
+            if (activator == null)
+            {
+                parseActivator(spectrum.precursors[0].activation);
+            }
             return ms2;
         }
 
