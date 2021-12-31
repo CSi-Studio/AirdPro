@@ -486,10 +486,7 @@ namespace AirdPro.Converters
             TempIndex ms1 = new TempIndex();
             ms1.level = 1;
             ms1.num = index;
-            if (jobInfo.jobParams.includeCV)
-            {
-                ms1.cvList = CV.trans(spectrum);
-            }
+           
             if (spectrum.scanList.scans.Count != 1)
             {
                 return ms1;
@@ -498,6 +495,14 @@ namespace AirdPro.Converters
             Scan scan = spectrum.scanList.scans[0];
             ms1.rt = parseRT(scan);
             ms1.tic = parseTIC(spectrum);
+            if (jobInfo.jobParams.includeCV)
+            {
+                ms1.cvList = CV.trans(spectrum);
+                if (scan.cvParams != null)
+                {
+                    ms1.cvList.AddRange(CV.trans(scan.cvParams));
+                }
+            }
             if (msType == null)
             {
                 parseMsType(spectrum);
@@ -516,10 +521,7 @@ namespace AirdPro.Converters
             ms2.level = 2;
             ms2.pNum = parentIndex;
             ms2.num = index;
-            if (jobInfo.jobParams.includeCV)
-            {
-                ms2.cvList = CV.trans(spectrum);
-            }
+           
             try
             {
                 double mz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
@@ -551,6 +553,14 @@ namespace AirdPro.Converters
 
             if (spectrum.scanList.scans.Count != 1) return ms2;
             Scan scan = spectrum.scanList.scans[0];
+            if (jobInfo.jobParams.includeCV)
+            {
+                ms2.cvList = CV.trans(spectrum);
+                if (scan.cvParams != null)
+                {
+                    ms2.cvList.AddRange(CV.trans(scan.cvParams));
+                }
+            }
             ms2.rt = parseRT(scan);
             ms2.tic = parseTIC(spectrum);
             return ms2;
