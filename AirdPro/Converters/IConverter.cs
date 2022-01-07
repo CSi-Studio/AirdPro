@@ -113,7 +113,7 @@ namespace AirdPro.Converters
             float time = float.Parse(cv.value.ToString());
             rtUnit = cv.unitsName;
 
-            return Convert.ToSingle(Math.Round(time, 3));
+            return Convert.ToSingle(Math.Round(time, 5));
         }
 
         protected long parseTIC(Spectrum spectrum)
