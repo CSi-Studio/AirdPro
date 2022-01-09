@@ -112,7 +112,6 @@ namespace AirdPro.Converters
             CVParam cv = scan.cvParamChild(CVID.MS_scan_start_time);
             float time = float.Parse(cv.value.ToString());
             rtUnit = cv.unitsName;
-
             return Convert.ToSingle(Math.Round(time, 5));
         }
 

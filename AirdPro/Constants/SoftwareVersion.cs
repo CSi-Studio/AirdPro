@@ -12,8 +12,8 @@ namespace AirdPro.Constants
 {
     class SoftwareInfo
     {
-        public static string VERSION = "2.1.0";
-        public static int VERSION_CODE = 206;
+        public static string VERSION = "2.1.1";
+        public static int VERSION_CODE = 207;
         public static string CLIENT_VERSION_DESCRIPTION = "More PSI CV for DDA";
         public static string NAME = "AirdPro";
 
