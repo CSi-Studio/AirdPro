@@ -8,12 +8,13 @@
  * See the Mulan PSL v2 for more details.
  */
 
-using Priority_Queue;
-
-namespace AirdPro.Domains.Sort
+namespace AirdPro.Constants
 {
-    public class IntArrayNode : FastPriorityQueueNode
+    public class CompressorType
     {
-        
+        public static int ZDPD = 1;
+        public static int ZDVB = 2;
+        public static int StackZDPD = 3;
+   
     }
 }

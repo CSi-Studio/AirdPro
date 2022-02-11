@@ -28,7 +28,6 @@ using AirdPro.Algorithms;
 using ByteOrder = AirdPro.Constants.ByteOrder;
 using CV = AirdPro.DomainsCore.Aird.CV;
 using Software = pwiz.CLI.msdata.Software;
-using System.Numerics;
 
 namespace AirdPro.Converters
 {
@@ -59,7 +58,7 @@ namespace AirdPro.Converters
         protected string polarity; //Negative, Positive
         protected string rtUnit; //Minute, Second
 
-        protected static double log2 = Math.Log(2);
+
         public IConverter(JobInfo jobInfo)
         {
             this.jobInfo = jobInfo;
@@ -97,11 +96,6 @@ namespace AirdPro.Converters
             Directory.CreateDirectory(Path.GetDirectoryName(jobInfo.airdJsonFilePath));
         }
 
-        protected string parseMsLevel(int index)
-        {
-            return spectrumList.spectrum(index).cvParamChild(CVID.MS_ms_level).value.ToString();
-        }
-
         protected string parseMsLevel(Spectrum spectrum)
         {
             return spectrum.cvParamChild(CVID.MS_ms_level).value.ToString();
@@ -113,7 +107,6 @@ namespace AirdPro.Converters
             float time = float.Parse(cv.value.ToString());
             rtUnit = cv.unitsName;
             return time;
-            // return Convert.ToSingle(Math.Round(time, 5));
         }
 
         protected long parseTIC(Spectrum spectrum)
@@ -149,11 +142,11 @@ namespace AirdPro.Converters
         protected void parseMsType(Spectrum spectrum)
         {
             if (!spectrum.cvParamChild(CVID.MS_profile_spectrum).cvid.Equals(CVID.CVID_Unknown)){
-                msType = MassSpectrumType.PROFILE;
+                msType = MSType.PROFILE;
             }
             else if (!spectrum.cvParamChild(CVID.MS_centroid_spectrum).cvid.Equals(CVID.CVID_Unknown))
             {
-                msType = MassSpectrumType.CENTROIDED;
+                msType = MSType.CENTROIDED;
             }
         }
 
@@ -171,23 +164,23 @@ namespace AirdPro.Converters
 
             if (!activation.cvParamChild(CVID.MS_HCD).cvid.Equals(CVID.CVID_Unknown))
             {
-                activator = ActivationMethod.HCD;
+                activator = Constants.Activator.HCD;
             }
             else if (!activation.cvParamChild(CVID.MS_CID).cvid.Equals(CVID.CVID_Unknown))
             {
-                activator = ActivationMethod.CID;
+                activator = Constants.Activator.CID;
             }
             else if (!activation.cvParamChild(CVID.MS_ECD).cvid.Equals(CVID.CVID_Unknown))
             {
-                activator = ActivationMethod.ECD;
+                activator = Constants.Activator.ECD;
             }
             else if (!activation.cvParamChild(CVID.MS_ETD).cvid.Equals(CVID.CVID_Unknown))
             {
-                activator = ActivationMethod.ETD;
+                activator = Constants.Activator.ETD;
             }
             else
             {
-                activator = ActivationMethod.UNKNOWN;
+                activator = Constants.Activator.UNKNOWN;
             }
 
             if (!activation.cvParamChild(CVID.MS_collision_energy).cvid.Equals(CVID.CVID_Unknown))
@@ -198,31 +191,25 @@ namespace AirdPro.Converters
             {
                 energy = -1;
             }
-            
         }
 
         public void compress(Spectrum spectrum, TempScan ts)
         {
             BinaryDataDouble mzData = spectrum.getMZArray().data;
             BinaryDataDouble intData = spectrum.getIntensityArray().data;
-            var dataCount = mzData.Count;
-            int[] mzArray = new int[dataCount];
-            float[] intensityArray = new float[dataCount];
+            var size = mzData.Count;
+            int[] mzArray = new int[size];
+            float[] intensityArray = new float[size];
             int j = 0;
-            for (int t = 0; t < dataCount; t++)
+            for (int t = 0; t < size; t++)
             {
-                if (jobInfo.jobParams.ignoreZeroIntensity && intData[t] == 0) continue;
+                if (jobInfo.jobParams.ignoreZeroIntensity && intData[t] == 0)
+                {
+                    continue;
+                } 
                 int mz = Convert.ToInt32(mzData[t] * mzPrecision);
                 mzArray[j] = mz;
-            
-                if (jobInfo.jobParams.log2)
-                {
-                    intensityArray[j] = Convert.ToSingle(Math.Round(Math.Log(intData[t]) / log2, 3)); //取log10并且精确到小数点后3位
-                }
-                else
-                {
-                    intensityArray[j] = Convert.ToSingle(Math.Round(intData[t], 1)); //精确到小数点后一位
-                }
+                intensityArray[j] = Convert.ToSingle(Math.Round(intData[t], 1)); //精确到小数点后一位
                 j++;
             }
             int[] mzSubArray = new int[j];
@@ -230,7 +217,7 @@ namespace AirdPro.Converters
             float[] intensitySubArray = new float[j];
             Array.Copy(intensityArray, intensitySubArray, j);
 
-            int[] compressedMzArray = CompressUtil.fastPforEncoder(mzSubArray);
+            int[] compressedMzArray = jobInfo.jobParams.airdAlgorithm==1?CompressUtil.fastPforEncoder(mzSubArray):CompressUtil.varbyteEncoder(mzSubArray);
             ts.mzArrayBytes = CompressUtil.zlibEncoder(compressedMzArray);
             ts.intArrayBytes = CompressUtil.zlibEncoder(intensitySubArray);
         }
@@ -256,15 +243,7 @@ namespace AirdPro.Converters
 
                     int mz = Convert.ToInt32(mzData[t] * mzPrecision);
                     mzArray[j] = mz;
-
-                    if (jobInfo.jobParams.log2)
-                    {
-                        intensityList.Add(Convert.ToSingle(Math.Round(Math.Log(intData[t]) / log2, 3))); //取log10并且精确到小数点后3位
-                    }
-                    else
-                    {
-                        intensityList.Add(Convert.ToSingle(Math.Round(intData[t], 1))); //精确到小数点后一位
-                    }
+                    intensityList.Add(Convert.ToSingle(Math.Round(intData[t], 1))); //精确到小数点后一位
                     j++;
                 }
                 //空光谱的情况下会填充一个mz=0,intensity=0的点
@@ -412,7 +391,7 @@ namespace AirdPro.Converters
             spectrumList = msd.run.spectrumList;
             if (spectrumList == null || spectrumList.empty())
             {
-                jobInfo.logError("No Spectrums Found");
+                jobInfo.logError("No Spectra Found");
             }
             else
             {
@@ -723,16 +702,8 @@ namespace AirdPro.Converters
                 intCompressor.addMethod(Compressor.METHOD_STACK);
                 intCompressor.digit = jobInfo.jobParams.digit;
             }
-            if (jobInfo.jobParams.log2)
-            {
-                intCompressor.addMethod(Compressor.METHOD_LOG10);
-                intCompressor.addMethod(Compressor.METHOD_ZLIB);
-            }
-            else
-            {
-                intCompressor.addMethod(Compressor.METHOD_ZLIB);
-            }
-            
+           
+            intCompressor.addMethod(Compressor.METHOD_ZLIB);
             intCompressor.target = Compressor.TARGET_INTENSITY;
             intCompressor.precision = 10;  //intensity默认精确到小数点后1位
 

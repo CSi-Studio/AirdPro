@@ -10,21 +10,9 @@
 
 namespace AirdPro.Constants
 {
-    class SoftwareInfo
+    public class FileFormat
     {
-        public static string VERSION = "2.1.1";
-        public static int VERSION_CODE = 207;
-        public static string CLIENT_VERSION_DESCRIPTION = "More PSI CV for DDA";
-        public static string NAME = "AirdPro";
-
-        public static string getVersion()
-        {
-            return "AirdPro Version" + SoftwareInfo.VERSION;
-        }
-
-        public static string getDescription()
-        {
-            return CLIENT_VERSION_DESCRIPTION;
-        }
+        public static string WIFF = "wiff";
+        public static string RAW = "raw";
     }
 }

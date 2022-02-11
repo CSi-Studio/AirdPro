@@ -25,8 +25,7 @@ namespace AirdPro.Forms
     public partial class AirdForm : Form
     {
         ArrayList currentFiles = new ArrayList(); 
-        CustomPathForm customPathForm;
-        Folder Folder;
+        FileFolderSelector customPathForm;
         public AirdForm()
         {
             InitializeComponent();
@@ -139,12 +138,11 @@ namespace AirdPro.Forms
                     JobParams jobParams = new JobParams
                     {
                         ignoreZeroIntensity = cbIsZeroIntensityIgnore.Checked,
-                        log2 = cbLog2.Checked,
                         threadAccelerate = cbThreadAccelerate.Checked,
                         suffix = tbFileNameSuffix.Text,
                         creator = tbOperator.Text,
                         mzPrecision = Double.Parse(cbMzPrecision.Text),
-                        airdAlgorithm = cbAlgorithm.SelectedIndex+1,  // 1:ZDPD, 2:StackZDPD
+                        airdAlgorithm = cbAlgorithm.SelectedIndex+1,  // 1:ZDPD, 2: ZDVB, 3:StackZDPD
                         digit = (int)Math.Log(Int32.Parse(cbStackLayers.SelectedItem.ToString()), 2),
                         includeCV = cbIncludingPSICV.Checked
                     };
@@ -346,7 +344,7 @@ namespace AirdPro.Forms
         {
             if (customPathForm == null || customPathForm.IsDisposed)
             {
-                customPathForm = new CustomPathForm(this);
+                customPathForm = new FileFolderSelector(this);
             }
             customPathForm.clearInfos();
             customPathForm.Show();
@@ -354,7 +352,7 @@ namespace AirdPro.Forms
 
         private void cbAlgorithm_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (((ComboBox) sender).SelectedIndex == 1)
+            if (((ComboBox) sender).SelectedIndex == 2)
             {
                 lblStackLayers.Visible = true;
                 cbStackLayers.Visible = true;
@@ -369,16 +367,6 @@ namespace AirdPro.Forms
         private void lblFileSelectedInfo_Click(object sender, EventArgs e)
         {
             StackZDPDTest.stackZDPD_Test1();
-        }
-
-        private void Form1_Click(object sender, EventArgs e)
-        {
-            if (Folder == null || Folder.IsDisposed)
-            {
-                Folder = new Folder(this);
-            }
-            //Form.clearInfos();
-            Folder.Show();
         }
     }
 }

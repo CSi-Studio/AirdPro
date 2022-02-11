@@ -72,32 +72,49 @@ namespace AirdPro.Utils
         //使用FastPfor算法将排序了的int数组进行压缩,注意:target数组必须是排序后的数组
         public static int[] fastPforEncoder(int[] uncompressed)
         {
-            var codec = new SkippableIntegratedComposition(new IntegratedBinaryPacking(), new IntegratedVariableByte());
-            var compressed = new int[uncompressed.Length + 1024];
-            var inputoffset = new IntWrapper(0);
-            var outputoffset = new IntWrapper(1);
-            codec.headlessCompress(uncompressed, inputoffset, uncompressed.Length, compressed, outputoffset, new IntWrapper(0));
-            compressed[0] = uncompressed.Length;
-            compressed = Arrays.copyOf(compressed, outputoffset.intValue());
+            int[] compressedInts = new IntegratedIntCompressor().compress(uncompressed);
+            return compressedInts;
+            // var codec = new SkippableIntegratedComposition(new IntegratedBinaryPacking(), new IntegratedVariableByte());
+            // var compressed = new int[uncompressed.Length + 1024];
+            // var inputoffset = new IntWrapper(0);
+            // var outputoffset = new IntWrapper(1);
+            // codec.headlessCompress(uncompressed, inputoffset, uncompressed.Length, compressed, outputoffset, new IntWrapper(0));
+            // compressed[0] = uncompressed.Length;
+            // compressed = Arrays.copyOf(compressed, outputoffset.intValue());
+            //
+            // return compressed;
+        }
 
-            return compressed;
+        //使用VariableByte算法将排序了的int数组进行压缩
+        public static int[] varbyteEncoder(int[] uncompressed)
+        {
+            int[] compressedInts = new IntegratedIntCompressor(new IntegratedVariableByte()).compress(uncompressed);
+            return compressedInts;
         }
 
         //使用PFor算法对已经压缩的int数组进行解压缩
         public static int[] fastPforDecoder(int[] compressed)
         {
-            var codec = new SkippableIntegratedComposition(new IntegratedBinaryPacking(), new IntegratedVariableByte());
-            var size = compressed[0];
-            // output vector should be large enough...
-            var recovered = new int[size];
-            var inPoso = new IntWrapper(1);
-            var outPoso = new IntWrapper(0);
-            var recoffset = new IntWrapper(0);
-            codec.headlessUncompress(compressed, inPoso, compressed.Length, recovered, recoffset, size, outPoso);
-
-            return recovered;
+            // var codec = new SkippableIntegratedComposition(new IntegratedBinaryPacking(), new IntegratedVariableByte());
+            // var size = compressed[0];
+            // // output vector should be large enough...
+            // var recovered = new int[size];
+            // var inPoso = new IntWrapper(1);
+            // var outPoso = new IntWrapper(0);
+            // var recoffset = new IntWrapper(0);
+            // codec.headlessUncompress(compressed, inPoso, compressed.Length, recovered, recoffset, size, outPoso);
+            // return recovered;
+            int[] sortedInts = new IntegratedIntCompressor().uncompress(compressed);
+            return sortedInts;
         }
-        
+
+        //使用VariableByte算法对已经压缩的int数组进行解压缩
+        public static int[] varbyteDecoder(int[] compressed)
+        {
+            int[] sortedInts = new IntegratedIntCompressor(new IntegratedVariableByte()).uncompress(compressed);
+            return sortedInts;
+        }
+
         //将int数组转化为byte数组
         public static byte[] intToByte(int[] src)
         {

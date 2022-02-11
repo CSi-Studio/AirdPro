@@ -8,12 +8,23 @@
  * See the Mulan PSL v2 for more details.
  */
 
-using Priority_Queue;
-
-namespace AirdPro.Domains.Sort
+namespace AirdPro.Constants
 {
-    public class IntArrayNode : FastPriorityQueueNode
+    class SoftwareInfo
     {
-        
+        public static string VERSION = "2.2.0";
+        public static int VERSION_CODE = 207;
+        public static string CLIENT_VERSION_DESCRIPTION = "PASEF Mode Support, ZDVB Compressor";
+        public static string NAME = "AirdPro";
+
+        public static string getVersion()
+        {
+            return "AirdPro Version" + SoftwareInfo.VERSION;
+        }
+
+        public static string getDescription()
+        {
+            return CLIENT_VERSION_DESCRIPTION;
+        }
     }
 }

@@ -89,14 +89,13 @@ namespace AirdPro.Converters
             jobInfo.log("MS2 Group List Size:" + ms2Table.Count);
             jobInfo.log("Start Processing MS1 List");
         }
-
-        new private string getMsLevel(int index)
+        private string getMsLevel(int index)
         {
             return spectrumList.spectrum(index).cvParamChild(CVID.MS_ms_level).value.ToString();
         }
 
         //建立Ms1Scan的索引
-        new private TempIndex parseMS1(Spectrum spectrum, int index)
+        private TempIndex parseMS1(Spectrum spectrum, int index)
         {
             TempIndex ms1 = new TempIndex();
             ms1.level = 1;
@@ -130,7 +129,7 @@ namespace AirdPro.Converters
         }
 
         //建立Ms2Scan的索引
-        new private TempIndex parseMS2(Spectrum spectrum, int index, int parentIndex)
+        private TempIndex parseMS2(Spectrum spectrum, int index, int parentIndex)
         {
             TempIndex ms2 = new TempIndex();
             ms2.level = 2;
@@ -219,13 +218,17 @@ namespace AirdPro.Converters
             index.level = 1;
             index.startPtr = 0;
 
-            if (jobInfo.jobParams.useStackZDPD())
+            switch (jobInfo.jobParams.airdAlgorithm)
             {
-                new StackZDPD(this).compressMS1(index);
-            }
-            else
-            {
-                new ZDPD(this).compressMS1(index);
+                case 1:
+                    new ZDPD(this).compressMS1(index);
+                    break;
+                case 2:
+                    new ZDVB(this).compressMS1(index);
+                    break;
+                case 3:
+                    new StackZDPD(this).compressMS1(index);
+                    break;
             }
 
             index.endPtr = startPosition;

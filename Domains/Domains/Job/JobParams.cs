@@ -20,11 +20,6 @@ namespace AirdPro.Domains.Convert
          */
         public Boolean ignoreZeroIntensity = true;
         /**
-         * if using log2 for intensity, which would cause precision loss.
-         * 对intensity是否求log10以降低精度
-         */
-        public Boolean log2 = false;
-        /**
          * the decimal point of the mz. The default value is 0.0001
          * mz精度,默认保留到小数点后第4位
          */
@@ -51,7 +46,8 @@ namespace AirdPro.Domains.Convert
          * The core compressor algorithm of Aird
          * 使用的Aird核心压缩算法
          * 1 : ZDPD, the first generation of aird compressor
-         * 2 : Stack ZDPD, the second generation of aird compressor
+         * 2 : ZDVB, the second generation of aird compressor
+         * 3 : Stack ZDPD, the second generation of aird compressor
          */
         public int airdAlgorithm = 1;
 
@@ -74,7 +70,14 @@ namespace AirdPro.Domains.Convert
 
         public String getAirdAlgorithmStr()
         {
-            return airdAlgorithm == 1 ? "ZDPD" : ("Stack-ZDPD:" + Math.Pow(2, digit).ToString() + " Layers");
+            switch (airdAlgorithm)
+            {
+                case 1: return "ZDPD";
+                case 2: return "ZDVB";
+                case 3: return ("Stack-ZDPD:" + Math.Pow(2, digit) + " Layers");
+                default: return "ZDPD";
+            }
+            // return airdAlgorithm == 1 ? "ZDPD" : ("Stack-ZDPD:" + Math.Pow(2, digit).ToString() + " Layers");
         }
 
         public Boolean useStackZDPD()

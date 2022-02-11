@@ -41,13 +41,8 @@ namespace AirdPro.Forms
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AirdForm));
             this.container = new System.Windows.Forms.SplitContainer();
-            this.Form1 = new System.Windows.Forms.Button();
-            this.btnCustomerPath = new System.Windows.Forms.Button();
+            this.btnSelectVendorFiles = new System.Windows.Forms.Button();
             this.btnClearError = new System.Windows.Forms.Button();
-            this.btnAddCommonFiles = new System.Windows.Forms.Button();
-            this.btnAddDDAFiles = new System.Windows.Forms.Button();
-            this.btnChooseSSwathFiles = new System.Windows.Forms.Button();
-            this.btnAddPRMFiles = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.lblFileSelectedInfo = new System.Windows.Forms.Label();
             this.lvFileList = new System.Windows.Forms.ListView();
@@ -57,7 +52,6 @@ namespace AirdPro.Forms
             this.headerProgress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerOutput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnDeleteFiles = new System.Windows.Forms.Button();
-            this.btnAddSWATHFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
             this.cbIncludingPSICV = new System.Windows.Forms.CheckBox();
             this.lblStackLayers = new System.Windows.Forms.Label();
@@ -74,7 +68,6 @@ namespace AirdPro.Forms
             this.lblMzPrecision = new System.Windows.Forms.Label();
             this.cbMzPrecision = new System.Windows.Forms.ComboBox();
             this.cbThreadAccelerate = new System.Windows.Forms.CheckBox();
-            this.cbLog2 = new System.Windows.Forms.CheckBox();
             this.lblFileNameTag = new System.Windows.Forms.Label();
             this.tbFileNameSuffix = new System.Windows.Forms.TextBox();
             this.cbIsZeroIntensityIgnore = new System.Windows.Forms.CheckBox();
@@ -100,18 +93,12 @@ namespace AirdPro.Forms
             // 
             // container.Panel1
             // 
-            this.container.Panel1.Controls.Add(this.Form1);
-            this.container.Panel1.Controls.Add(this.btnCustomerPath);
+            this.container.Panel1.Controls.Add(this.btnSelectVendorFiles);
             this.container.Panel1.Controls.Add(this.btnClearError);
-            this.container.Panel1.Controls.Add(this.btnAddCommonFiles);
-            this.container.Panel1.Controls.Add(this.btnAddDDAFiles);
-            this.container.Panel1.Controls.Add(this.btnChooseSSwathFiles);
-            this.container.Panel1.Controls.Add(this.btnAddPRMFiles);
             this.container.Panel1.Controls.Add(this.btnClear);
             this.container.Panel1.Controls.Add(this.lblFileSelectedInfo);
             this.container.Panel1.Controls.Add(this.lvFileList);
             this.container.Panel1.Controls.Add(this.btnDeleteFiles);
-            this.container.Panel1.Controls.Add(this.btnAddSWATHFiles);
             this.container.Panel1.Controls.Add(this.btnConvert);
             // 
             // container.Panel2
@@ -131,7 +118,6 @@ namespace AirdPro.Forms
             this.container.Panel2.Controls.Add(this.lblMzPrecision);
             this.container.Panel2.Controls.Add(this.cbMzPrecision);
             this.container.Panel2.Controls.Add(this.cbThreadAccelerate);
-            this.container.Panel2.Controls.Add(this.cbLog2);
             this.container.Panel2.Controls.Add(this.lblFileNameTag);
             this.container.Panel2.Controls.Add(this.tbFileNameSuffix);
             this.container.Panel2.Controls.Add(this.cbIsZeroIntensityIgnore);
@@ -142,19 +128,12 @@ namespace AirdPro.Forms
             this.container.Panel2.Controls.Add(this.tbFolderPath);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
             // 
-            // Form1
+            // btnSelectVendorFiles
             // 
-            resources.ApplyResources(this.Form1, "Form1");
-            this.Form1.Name = "Form1";
-            this.Form1.UseVisualStyleBackColor = true;
-            this.Form1.Click += new System.EventHandler(this.Form1_Click);
-            // 
-            // btnCustomerPath
-            // 
-            resources.ApplyResources(this.btnCustomerPath, "btnCustomerPath");
-            this.btnCustomerPath.Name = "btnCustomerPath";
-            this.btnCustomerPath.UseVisualStyleBackColor = true;
-            this.btnCustomerPath.Click += new System.EventHandler(this.btnCustomerPath_Click);
+            resources.ApplyResources(this.btnSelectVendorFiles, "btnSelectVendorFiles");
+            this.btnSelectVendorFiles.Name = "btnSelectVendorFiles";
+            this.btnSelectVendorFiles.UseVisualStyleBackColor = true;
+            this.btnSelectVendorFiles.Click += new System.EventHandler(this.btnCustomerPath_Click);
             // 
             // btnClearError
             // 
@@ -162,34 +141,6 @@ namespace AirdPro.Forms
             this.btnClearError.Name = "btnClearError";
             this.btnClearError.UseVisualStyleBackColor = true;
             this.btnClearError.Click += new System.EventHandler(this.btnClearError_Click);
-            // 
-            // btnAddCommonFiles
-            // 
-            resources.ApplyResources(this.btnAddCommonFiles, "btnAddCommonFiles");
-            this.btnAddCommonFiles.Name = "btnAddCommonFiles";
-            this.btnAddCommonFiles.UseVisualStyleBackColor = true;
-            this.btnAddCommonFiles.Click += new System.EventHandler(this.btnAddCommonFiles_Click);
-            // 
-            // btnAddDDAFiles
-            // 
-            resources.ApplyResources(this.btnAddDDAFiles, "btnAddDDAFiles");
-            this.btnAddDDAFiles.Name = "btnAddDDAFiles";
-            this.btnAddDDAFiles.UseVisualStyleBackColor = true;
-            this.btnAddDDAFiles.Click += new System.EventHandler(this.btnChooseDDAFile_Click);
-            // 
-            // btnChooseSSwathFiles
-            // 
-            resources.ApplyResources(this.btnChooseSSwathFiles, "btnChooseSSwathFiles");
-            this.btnChooseSSwathFiles.Name = "btnChooseSSwathFiles";
-            this.btnChooseSSwathFiles.UseVisualStyleBackColor = true;
-            this.btnChooseSSwathFiles.Click += new System.EventHandler(this.btnChooseSSwathFiles_Click);
-            // 
-            // btnAddPRMFiles
-            // 
-            resources.ApplyResources(this.btnAddPRMFiles, "btnAddPRMFiles");
-            this.btnAddPRMFiles.Name = "btnAddPRMFiles";
-            this.btnAddPRMFiles.UseVisualStyleBackColor = true;
-            this.btnAddPRMFiles.Click += new System.EventHandler(this.btnChoosePRMFiles_Click);
             // 
             // btnClear
             // 
@@ -250,13 +201,6 @@ namespace AirdPro.Forms
             this.btnDeleteFiles.UseVisualStyleBackColor = true;
             this.btnDeleteFiles.Click += new System.EventHandler(this.btnDeleteFiles_Click);
             // 
-            // btnAddSWATHFiles
-            // 
-            resources.ApplyResources(this.btnAddSWATHFiles, "btnAddSWATHFiles");
-            this.btnAddSWATHFiles.Name = "btnAddSWATHFiles";
-            this.btnAddSWATHFiles.UseVisualStyleBackColor = true;
-            this.btnAddSWATHFiles.Click += new System.EventHandler(this.btnChooseFiles_Click);
-            // 
             // btnConvert
             // 
             resources.ApplyResources(this.btnConvert, "btnConvert");
@@ -267,6 +211,8 @@ namespace AirdPro.Forms
             // cbIncludingPSICV
             // 
             resources.ApplyResources(this.cbIncludingPSICV, "cbIncludingPSICV");
+            this.cbIncludingPSICV.Checked = true;
+            this.cbIncludingPSICV.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbIncludingPSICV.Name = "cbIncludingPSICV";
             this.cbIncludingPSICV.UseVisualStyleBackColor = true;
             // 
@@ -300,7 +246,8 @@ namespace AirdPro.Forms
             this.cbAlgorithm.FormattingEnabled = true;
             this.cbAlgorithm.Items.AddRange(new object[] {
             resources.GetString("cbAlgorithm.Items"),
-            resources.GetString("cbAlgorithm.Items1")});
+            resources.GetString("cbAlgorithm.Items1"),
+            resources.GetString("cbAlgorithm.Items2")});
             resources.ApplyResources(this.cbAlgorithm, "cbAlgorithm");
             this.cbAlgorithm.Name = "cbAlgorithm";
             this.ttAlgorithm.SetToolTip(this.cbAlgorithm, resources.GetString("cbAlgorithm.ToolTip"));
@@ -360,7 +307,8 @@ namespace AirdPro.Forms
             this.cbMzPrecision.Items.AddRange(new object[] {
             resources.GetString("cbMzPrecision.Items"),
             resources.GetString("cbMzPrecision.Items1"),
-            resources.GetString("cbMzPrecision.Items2")});
+            resources.GetString("cbMzPrecision.Items2"),
+            resources.GetString("cbMzPrecision.Items3")});
             this.cbMzPrecision.Name = "cbMzPrecision";
             // 
             // cbThreadAccelerate
@@ -370,12 +318,6 @@ namespace AirdPro.Forms
             this.cbThreadAccelerate.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbThreadAccelerate.Name = "cbThreadAccelerate";
             this.cbThreadAccelerate.UseVisualStyleBackColor = true;
-            // 
-            // cbLog2
-            // 
-            resources.ApplyResources(this.cbLog2, "cbLog2");
-            this.cbLog2.Name = "cbLog2";
-            this.cbLog2.UseVisualStyleBackColor = true;
             // 
             // lblFileNameTag
             // 
@@ -460,7 +402,6 @@ namespace AirdPro.Forms
         }
 
         #endregion
-        private System.Windows.Forms.Button btnAddSWATHFiles;
         private System.Windows.Forms.Button btnConvert;
         private System.Windows.Forms.TextBox tbFolderPath;
         private System.Windows.Forms.Label label1;
@@ -474,20 +415,15 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ColumnHeader headerProgress;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.Button btnClear;
-        private System.Windows.Forms.Button btnAddPRMFiles;
         private System.Windows.Forms.ColumnHeader headerExpType;
         private System.Windows.Forms.CheckBox cbIsZeroIntensityIgnore;
         private System.Windows.Forms.Label lblFileNameTag;
         private System.Windows.Forms.TextBox tbFileNameSuffix;
-        private System.Windows.Forms.CheckBox cbLog2;
         private System.Windows.Forms.CheckBox cbThreadAccelerate;
-        private System.Windows.Forms.Button btnChooseSSwathFiles;
-        private System.Windows.Forms.Button btnAddDDAFiles;
         private System.Windows.Forms.ComboBox cbMzPrecision;
         private System.Windows.Forms.Label lblMzPrecision;
         private System.Windows.Forms.Label lblOperator;
         private System.Windows.Forms.TextBox tbOperator;
-        private System.Windows.Forms.Button btnAddCommonFiles;
         private System.Windows.Forms.Label lblIP;
         private System.Windows.Forms.TextBox tbHostAndPort;
         private System.Windows.Forms.Button btnConnect;
@@ -498,7 +434,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Button btnClearError;
         private System.Windows.Forms.ColumnHeader headerOutput;
         private System.Windows.Forms.OpenFileDialog ofd;
-        private System.Windows.Forms.Button btnCustomerPath;
+        private System.Windows.Forms.Button btnSelectVendorFiles;
         private System.Windows.Forms.Label lblAirdAlgorithm;
         private System.Windows.Forms.ComboBox cbAlgorithm;
         private System.Windows.Forms.Label lblStackLayers;
@@ -506,7 +442,6 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ColumnHeader headerCompressor;
         private System.Windows.Forms.ToolTip ttAlgorithm;
         private System.Windows.Forms.CheckBox cbIncludingPSICV;
-        private System.Windows.Forms.Button Form1;
     }
 }
 

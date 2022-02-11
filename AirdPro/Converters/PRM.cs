@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using AirdPro.Constants;
 using AirdPro.DomainsCore.Aird;
 using AirdPro.Domains.Convert;
+using pwiz.CLI.msdata;
 
 namespace AirdPro.Converters
 {
@@ -60,17 +61,19 @@ namespace AirdPro.Converters
             Parallel.For(0, totalSize, (i, ParallelLoopState) =>
             {
                 jobInfo.log(null, (i + 1) + "/" + totalSize);
+                Spectrum spectrum = spectrumList.spectrum(i);
+                string msLevel = parseMsLevel(spectrum);
                 //如果是最后一个谱图,那么单独判断
                 if (i == totalSize - 1)
                 {
                     //如果是MS1谱图,那么直接跳过
-                    if (parseMsLevel(i).Equals(MsLevel.MS1))
+                    if (msLevel.Equals(MsLevel.MS1))
                     {
                         ParallelLoopState.Break();
                         return;
                     }
                     //如果是MS2谱图,加入到谱图组
-                    if (parseMsLevel(i).Equals(MsLevel.MS2))
+                    if (msLevel.Equals(MsLevel.MS2))
                     {
                         addToMS2Map(parseMS2(spectrumList.spectrum(i), i, parentNum));
                         ParallelLoopState.Break();
@@ -79,22 +82,24 @@ namespace AirdPro.Converters
                 }
 
                 //如果这个谱图是MS1
-                if (parseMsLevel(i).Equals(MsLevel.MS1))
+                if (msLevel.Equals(MsLevel.MS1))
                 {
+                    Spectrum next = spectrumList.spectrum(i + 1);
+                    string msLevelNext = parseMsLevel(next);
                     //如果下一个谱图仍然是MS1, 那么直接忽略这个谱图
-                    if (parseMsLevel(i + 1).Equals(MsLevel.MS1))
+                    if (msLevelNext.Equals(MsLevel.MS1))
                     {
                         ParallelLoopState.Break();
                         return;
                     }
-                    if (parseMsLevel(i + 1).Equals(MsLevel.MS2))
+                    if (msLevelNext.Equals(MsLevel.MS2))
                     {
                         parentNum = i;
                         ms1List.Add(parseMS1(spectrumList.spectrum(i), i));
                     }
                 }
 
-                if (parseMsLevel(i).Equals(MsLevel.MS2))
+                if (msLevel.Equals(MsLevel.MS2))
                 {
                     addToMS2Map(parseMS2(spectrumList.spectrum(i), i, parentNum)); //如果这个谱图是MS2
                 }

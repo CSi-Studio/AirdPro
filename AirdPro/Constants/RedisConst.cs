@@ -8,12 +8,10 @@
  * See the Mulan PSL v2 for more details.
  */
 
-using Priority_Queue;
-
-namespace AirdPro.Domains.Sort
+namespace AirdPro.Constants
 {
-    public class IntArrayNode : FastPriorityQueueNode
+    public class RedisConst
     {
-        
+        public static string Redis_Queue_Convert = "ConvertTask";
     }
 }

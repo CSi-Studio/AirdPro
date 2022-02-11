@@ -132,30 +132,28 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms\IZDPD.cs" />
-    <Compile Include="Algorithms\StackZDPD.cs" />
-    <Compile Include="Algorithms\ZDPD.cs" />
+    <Compile Include="Algorithms\Compressor\ICompressor.cs" />
+    <Compile Include="Algorithms\Compressor\StackZDPD.cs" />
+    <Compile Include="Algorithms\Compressor\ZDVB.cs" />
+    <Compile Include="Algorithms\Compressor\ZDPD.cs" />
     <Compile Include="Asyncs\ConvertTaskManager.cs" />
     <Compile Include="Asyncs\LimitedConcurrencyLevelTaskScheduler.cs" />
-    <Compile Include="Constants\ActivationMethod.cs" />
+    <Compile Include="Constants\CompressorType.cs" />
+    <Compile Include="Constants\Activator.cs" />
     <Compile Include="Constants\ByteOrder.cs" />
+    <Compile Include="Constants\FileFormat.cs" />
+    <Compile Include="Constants\RedisConst.cs" />
     <Compile Include="Constants\Const.cs" />
-    <Compile Include="Constants\MassSpectrumType.cs" />
+    <Compile Include="Constants\MSType.cs" />
     <Compile Include="Constants\Polarity.cs" />
     <Compile Include="Constants\ProcessingStatus.cs" />
-    <Compile Include="Constants\SoftwareVersion.cs" />
+    <Compile Include="Constants\SoftwareInfo.cs" />
     <Compile Include="Converters\Common.cs" />
-    <Compile Include="Forms\CustomPathForm.cs">
+    <Compile Include="Forms\FileFolderSelector.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\CustomPathForm.Designer.cs">
-      <DependentUpon>CustomPathForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Folder.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Folder.Designer.cs">
-      <DependentUpon>Folder.cs</DependentUpon>
+    <Compile Include="Forms\FileFolderSelector.Designer.cs">
+      <DependentUpon>FileFolderSelector.cs</DependentUpon>
     </Compile>
     <Compile Include="Redis\RedisClient.cs" />
     <Compile Include="Test\StackZDPDTest.cs" />
@@ -188,11 +186,8 @@
       <DependentUpon>AirdForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\CustomPathForm.resx">
-      <DependentUpon>CustomPathForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Folder.resx">
-      <DependentUpon>Folder.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\FileFolderSelector.resx">
+      <DependentUpon>FileFolderSelector.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -240,6 +235,9 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="BetterFolderBrowser">
+      <Version>1.2.0</Version>
+    </PackageReference>
     <PackageReference Include="HDF5DotNet.x64">
       <Version>1.8.9</Version>
     </PackageReference>
@@ -253,10 +251,10 @@
       <Version>2.2.88</Version>
     </PackageReference>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
-      <Version>6.0.0</Version>
+      <Version>6.0.2-mauipre.1.22054.8</Version>
     </PackageReference>
     <PackageReference Include="xunit">
-      <Version>2.4.1</Version>
+      <Version>2.4.2-pre.12</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -285,6 +283,7 @@
       <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(SolutionDir)ImportLibs\*.*" "$(TargetDir)"</PostBuildEvent>

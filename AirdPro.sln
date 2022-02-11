@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29926.136
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirdPro", "AirdPro\AirdPro.csproj", "{E8027102-CAE0-476F-832D-04EC120098A9}"
 EndProject
@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Compress", "Compress\Compre
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parser", "Parser\Parser.csproj", "{273F1033-3BD6-49C4-87B5-5EBCAA66D1DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainsCore", "DomainsCore\DomainsCore.csproj", "{870EE31C-23E3-4836-AC04-4FEEB6C487B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainsCore", "DomainsCore\DomainsCore.csproj", "{870EE31C-23E3-4836-AC04-4FEEB6C487B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

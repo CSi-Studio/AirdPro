@@ -84,7 +84,8 @@ namespace AirdPro.Converters
                     if (msLevel.Equals(MsLevel.MS1))
                     {
                         ms1Table.Add(i, ts);
-                    }else
+                    }
+                    else
                     {
                         if (activator == null)
                         {
@@ -129,7 +130,7 @@ namespace AirdPro.Converters
             indexList.Add(ms2Index);
         }
 
-        protected new void outputWithOrder(Hashtable table, BlockIndex index)
+        protected void outputWithOrder(Hashtable table, BlockIndex index)
         {
             ArrayList keys = new ArrayList(table.Keys);
             keys.Sort();
@@ -141,7 +142,7 @@ namespace AirdPro.Converters
         }
 
         //注意:本函数会操作startPosition这个全局变量
-        protected new void addToIndex(BlockIndex index, TempScan ts)
+        protected void addToIndex(BlockIndex index, TempScan ts)
         {
             index.nums.Add(ts.num);
             index.rts.Add(ts.rt);

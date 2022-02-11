@@ -113,11 +113,11 @@ namespace AirdPro.Converters
             {
                 i++;
                 spectrum = spectrumList.spectrum(i);
-                if (i > spectrumList.size() / 2 || i > 500)
+                if (i > spectrumList.size() / 2 || i > 5000)
                 {
                     //如果找了一半的spectrum或者找了超过500个spectrum仍然没有找到ms1,那么数据格式有问题,返回空;
-                    jobInfo.logError("Search for more than 500 spectrums and no ms1 was found. File Format Error");
-                    throw new Exception("Search for more than 500 spectrums and no ms1 was found. File Format Error");
+                    jobInfo.logError("Search for more than 500 spectra and no ms1 was found. File Format Error");
+                    throw new Exception("Search for more than 500 spectra and no ms1 was found. File Format Error");
                 }
             }
 
@@ -188,14 +188,22 @@ namespace AirdPro.Converters
         private void parseAndStoreMS2Block()
         {
             jobInfo.log("Start Processing MS2 List");
-            IZDPD izdpd;
-            if (jobInfo.jobParams.useStackZDPD())
+            ICompressor compressor;
+
+            switch (jobInfo.jobParams.airdAlgorithm)
             {
-                izdpd = new StackZDPD(this);
-            }
-            else
-            {
-                izdpd = new ZDPD(this);
+                case 1:
+                    compressor = new ZDPD(this);
+                    break;
+                case 2:
+                    compressor = new ZDVB(this);
+                    break;
+                case 3:
+                    compressor = new StackZDPD(this);
+                    break;
+                default:
+                    compressor = new ZDPD(this);
+                    break;
             }
 
             foreach (double key in ms2Table.Keys)
@@ -210,7 +218,7 @@ namespace AirdPro.Converters
 
                 jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);
                 progress++;
-                izdpd.compressMS2(tempIndexList, index);
+                compressor.compressMS2(tempIndexList, index);
                 index.endPtr = startPosition;
                 indexList.Add(index);
                 jobInfo.log("MS2 Group Finished:" + progress + "/" + ms2Table.Keys.Count);
