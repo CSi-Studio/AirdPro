@@ -40,22 +40,21 @@ namespace AirdPro.Converters
         protected Stopwatch stopwatch = new Stopwatch();
         protected FileStream airdStream;
         protected FileStream airdJsonStream;
-        protected List<WindowRange> ranges = new List<WindowRange>();//SWATH Window的窗口
-        protected int ms1Size = 0;
-        protected List<BlockIndex> indexList = new List<BlockIndex>();//用于存储的全局的SWATH List
-        protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable());//用于存放MS2的索引信息,key为mz
-
-        public List<TempIndex> ms1List = new List<TempIndex>(); //用于存放MS1索引及基础信息
+        protected List<WindowRange> ranges = new List<WindowRange>(); //SWATH Window的窗口
+        
+        protected List<BlockIndex> indexList = new List<BlockIndex>(); //用于存储的全局的SWATH List
+        protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,key为mz
+        public List<MsIndex> ms1List = new List<MsIndex>(); //用于存放MS1索引及基础信息
         protected Hashtable featuresMap = new Hashtable();
-
         public List<Compressor> compressors; //用于标明mz和intensity的存储算法的对象
-        protected long fileSize; //厂商文件大小
-        protected long startPosition;//文件指针
-        protected int totalSize;//总计的谱图数目
-        public int mzPrecision; //mz精度
-        public int intPrecision; //int精度
 
-        protected string activator;//HCD,CID....
+        protected int ms1Size = 0;
+        protected long fileSize; //厂商文件大小
+        protected long startPosition; //文件指针
+        protected int totalSize; //总计的谱图数目
+        public int mzPrecision; //mz精度
+
+        protected string activator; //HCD,CID....
         protected float energy; //轰击能
         protected string msType; //Profile, Centroided
         protected string polarity; //Negative, Positive
@@ -405,23 +404,23 @@ namespace AirdPro.Converters
             indexList = new List<BlockIndex>();
         }
 
-        protected void addToMS2Map(TempIndex ms2Index)
+        protected void addToMS2Map(MsIndex ms2Index)
         {
             if (ms2Table.Contains(ms2Index.mz))
             {
-                (ms2Table[ms2Index.mz] as List<TempIndex>).Add(ms2Index);
+                (ms2Table[ms2Index.mz] as List<MsIndex>).Add(ms2Index);
             }
             else
             {
-                List<TempIndex> indexList = new List<TempIndex>();
+                List<MsIndex> indexList = new List<MsIndex>();
                 indexList.Add(ms2Index);
                 ms2Table.Add(ms2Index.mz, indexList);
             }
         }
 
-        protected TempIndex parseMS1(Spectrum spectrum, int index)
+        protected MsIndex parseMS1(Spectrum spectrum, int index)
         {
-            TempIndex ms1 = new TempIndex();
+            MsIndex ms1 = new MsIndex();
             ms1.level = 1;
             ms1.num = index;
            
@@ -453,9 +452,9 @@ namespace AirdPro.Converters
             return ms1;
         }
 
-        protected TempIndex parseMS2(Spectrum spectrum, int index, int parentIndex)
+        protected MsIndex parseMS2(Spectrum spectrum, int index, int parentIndex)
         {
-            TempIndex ms2 = new TempIndex();
+            MsIndex ms2 = new MsIndex();
             ms2.level = 2;
             ms2.pNum = parentIndex;
             ms2.num = index;

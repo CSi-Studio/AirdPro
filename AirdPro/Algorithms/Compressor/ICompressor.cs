@@ -25,6 +25,6 @@ namespace AirdPro.Algorithms
 
         public abstract void compressMS1(BlockIndex index);
 
-        public abstract void compressMS2(List<TempIndex> tempIndexList, BlockIndex index);
+        public abstract void compressMS2(List<MsIndex> tempIndexList, BlockIndex index);
     }
 }

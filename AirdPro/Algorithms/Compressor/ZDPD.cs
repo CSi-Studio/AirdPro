@@ -31,7 +31,7 @@ namespace AirdPro.Algorithms
                 Parallel.For(0, converter.ms1List.Count, (i, ParallelLoopState) =>
                 {
                     converter.jobInfo.log(null, "MS1:" + i + "/" + converter.ms1List.Count);
-                    TempIndex scanIndex = converter.ms1List[i];
+                    MsIndex scanIndex = converter.ms1List[i];
                     TempScan ts = new TempScan(scanIndex.num, scanIndex.rt, scanIndex.tic);
                     if (converter.jobInfo.jobParams.includeCV)
                     {
@@ -47,7 +47,7 @@ namespace AirdPro.Algorithms
                 for (int i = 0; i < converter.ms1List.Count; i++)
                 {
                     converter.jobInfo.log(null, "MS1:" + i + "/" + converter.ms1List.Count);
-                    TempIndex scanIndex = converter.ms1List[i];
+                    MsIndex scanIndex = converter.ms1List[i];
                     TempScan ts = new TempScan(scanIndex.num, scanIndex.rt, scanIndex.tic);
                     if (converter.jobInfo.jobParams.includeCV)
                     {
@@ -60,7 +60,7 @@ namespace AirdPro.Algorithms
         }
 
         override
-        public void compressMS2(List<TempIndex> tempIndexList, BlockIndex index)
+        public void compressMS2(List<MsIndex> tempIndexList, BlockIndex index)
         {
             if (converter.jobInfo.jobParams.threadAccelerate)
             {
@@ -68,20 +68,20 @@ namespace AirdPro.Algorithms
                 //使用多线程处理数据提取与压缩
                 Parallel.For(0, tempIndexList.Count, (i, ParallelLoopState) =>
                 {
-                    TempIndex tempIndex = tempIndexList[i];
-                    TempScan ts = new TempScan(tempIndex.num, tempIndex.rt, tempIndex.tic);
+                    MsIndex msIndex = tempIndexList[i];
+                    TempScan ts = new TempScan(msIndex.num, msIndex.rt, msIndex.tic);
                     if (converter.jobInfo.jobParams.includeCV)
                     {
-                        ts.cvs = tempIndex.cvList;
+                        ts.cvs = msIndex.cvList;
                     }
-                    converter.compress(converter.spectrumList.spectrum(tempIndex.num, true), ts);
+                    converter.compress(converter.spectrumList.spectrum(msIndex.num, true), ts);
                     table.Add(i, ts);
                 });
                 converter.outputWithOrder(table, index);
             }
             else
             {
-                foreach (TempIndex tempIndex in tempIndexList)
+                foreach (MsIndex tempIndex in tempIndexList)
                 {
                     TempScan ts = new TempScan(tempIndex.num, tempIndex.rt, tempIndex.tic);
                     if (converter.jobInfo.jobParams.includeCV)

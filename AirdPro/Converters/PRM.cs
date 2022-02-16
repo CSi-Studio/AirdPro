@@ -115,7 +115,7 @@ namespace AirdPro.Converters
             jobInfo.log("Start Processing MS2 List");
             foreach (double key in ms2Table.Keys)
             {
-                List<TempIndex> tempIndexList = ms2Table[key] as List<TempIndex>;
+                List<MsIndex> tempIndexList = ms2Table[key] as List<MsIndex>;
                 //为每一个key组创建一个SwathBlock
                 BlockIndex swathIndex = new BlockIndex();
                 swathIndex.level = 2;
@@ -135,7 +135,7 @@ namespace AirdPro.Converters
                     //使用多线程处理数据提取与压缩
                     Parallel.For(0, tempIndexList.Count, (i, ParallelLoopState) =>
                     {
-                        TempIndex index = tempIndexList[i];
+                        MsIndex index = tempIndexList[i];
                         TempScan ts = new TempScan(index.num, index.rt, index.tic);
                         compress(spectrumList.spectrum(index.num, true), ts);
                         table.Add(i, ts);
@@ -145,7 +145,7 @@ namespace AirdPro.Converters
                 }
                 else
                 {
-                    foreach (TempIndex index in tempIndexList)
+                    foreach (MsIndex index in tempIndexList)
                     {
                         TempScan ts = new TempScan(index.pNum, index.rt, index.tic);
                         compress(spectrumList.spectrum(index.num, true), ts);

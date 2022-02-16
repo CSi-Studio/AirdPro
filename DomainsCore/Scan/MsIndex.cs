@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace AirdPro.DomainsCore.Aird
 {
-    public class TempIndex
+    public class MsIndex
     {
         //ms level
         public int level;

@@ -50,7 +50,7 @@ namespace AirdPro.Algorithms
                         {
                             break;
                         }
-                        TempIndex scanIndex = converter.ms1List[realNum];
+                        MsIndex scanIndex = converter.ms1List[realNum];
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
                         tics.Add(scanIndex.tic);
@@ -89,7 +89,7 @@ namespace AirdPro.Algorithms
                         {
                             break;
                         }
-                        TempIndex scanIndex = converter.ms1List[realNum];
+                        MsIndex scanIndex = converter.ms1List[realNum];
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
                         tics.Add(scanIndex.tic);
@@ -112,7 +112,7 @@ namespace AirdPro.Algorithms
         }
 
         override
-        public void compressMS2(List<TempIndex> tempIndexList, BlockIndex index)
+        public void compressMS2(List<MsIndex> tempIndexList, BlockIndex index)
         {
             int layers = (int)Math.Pow(2, converter.jobInfo.jobParams.digit); //计算堆叠层数
             int iter = tempIndexList.Count % layers == 0 ? (tempIndexList.Count / layers) : (tempIndexList.Count / layers + 1); //计算循环周期
@@ -135,7 +135,7 @@ namespace AirdPro.Algorithms
                         {
                             break;
                         }
-                        TempIndex scanIndex = tempIndexList[realNum];
+                        MsIndex scanIndex = tempIndexList[realNum];
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
                         tics.Add(scanIndex.tic);
@@ -171,7 +171,7 @@ namespace AirdPro.Algorithms
                         {
                             break;
                         }
-                        TempIndex scanIndex = tempIndexList[realNum];
+                        MsIndex scanIndex = tempIndexList[realNum];
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
                         tics.Add(scanIndex.tic);

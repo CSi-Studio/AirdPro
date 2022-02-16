@@ -96,9 +96,9 @@ namespace AirdPro.Converters
         }
 
         //建立Ms1Scan的索引
-        private TempIndex parseMS1(Spectrum spectrum, int index)
+        private MsIndex parseMS1(Spectrum spectrum, int index)
         {
-            TempIndex ms1 = new TempIndex();
+            MsIndex ms1 = new MsIndex();
             ms1.level = 1;
             ms1.num = index;
             if (spectrum.scanList.scans.Count != 1)
@@ -130,9 +130,9 @@ namespace AirdPro.Converters
         }
 
         //建立Ms2Scan的索引
-        private TempIndex parseMS2(Spectrum spectrum, int index, int parentIndex)
+        private MsIndex parseMS2(Spectrum spectrum, int index, int parentIndex)
         {
-            TempIndex ms2 = new TempIndex();
+            MsIndex ms2 = new MsIndex();
             ms2.level = 2;
             ms2.pNum = parentIndex;
             ms2.num = index;
@@ -198,15 +198,15 @@ namespace AirdPro.Converters
             return ms2;
         }
 
-        new private void addToMS2Map(TempIndex ms2Index)
+        new private void addToMS2Map(MsIndex ms2Index)
         {
             if (ms2Table.Contains(ms2Index.pNum))
             {
-                (ms2Table[ms2Index.pNum] as List<TempIndex>).Add(ms2Index);
+                (ms2Table[ms2Index.pNum] as List<MsIndex>).Add(ms2Index);
             }
             else
             {
-                List<TempIndex> indexList = new List<TempIndex>();
+                List<MsIndex> indexList = new List<MsIndex>();
                 indexList.Add(ms2Index);
                 ms2Table.Add(ms2Index.pNum, indexList);
             }
@@ -244,7 +244,7 @@ namespace AirdPro.Converters
             keys.Sort();
             foreach (int key in keys)
             {
-                List<TempIndex> tempIndexList = ms2Table[key] as List<TempIndex>;
+                List<MsIndex> tempIndexList = ms2Table[key] as List<MsIndex>;
                 //为每一组key创建一个Block
                 BlockIndex blockIndex = new BlockIndex();
                 blockIndex.level = 2;
@@ -255,7 +255,7 @@ namespace AirdPro.Converters
                 jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);
                 progress++;
 
-                foreach (TempIndex index in tempIndexList)
+                foreach (MsIndex index in tempIndexList)
                 {
                     WindowRange range = new WindowRange(index.mzStart, index.mzEnd, index.mz);
                     if (index.charge != 0)

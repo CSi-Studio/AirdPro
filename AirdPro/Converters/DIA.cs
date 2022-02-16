@@ -17,7 +17,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using AirdPro.Algorithms;
 using AirdPro.Domains.Convert;
 
@@ -76,7 +75,7 @@ namespace AirdPro.Converters
             jobInfo.log("Preprocessing:" + totalSize, "Preprocessing");
             int proprogress = 0;
             
-            // 预处理所有的MS谱图
+            // 预处理所有的MS谱图,将MS1与MS2的信息扫描以后放入对应的内存对象中
             for (int i = 0; i < totalSize; i++)
             {
                 proprogress++;
@@ -109,7 +108,7 @@ namespace AirdPro.Converters
 
             //找到第一张MS1图,如果找不到,则继续往下搜索,如果搜索了500张以上的谱图或者搜索了超过一半的谱图都没有MS1图,则认为数据格式有问题
             Spectrum spectrum = spectrumList.spectrum(0);
-            while (!spectrum.cvParamChild(CVID.MS_ms_level).value.ToString().Equals(MsLevel.MS1))
+            while (!parseMsLevel(spectrum).Equals(MsLevel.MS1))
             {
                 i++;
                 spectrum = spectrumList.spectrum(i);
@@ -123,7 +122,7 @@ namespace AirdPro.Converters
 
             while (true)
             { 
-                if (spectrum.cvParamChild(CVID.MS_ms_level).value.ToString().Equals(MsLevel.MS1))
+                if (parseMsLevel(spectrum).Equals(MsLevel.MS1))
                 {
                     ms1Size++;
                     i++;
@@ -208,7 +207,7 @@ namespace AirdPro.Converters
 
             foreach (double key in ms2Table.Keys)
             {
-                List<TempIndex> tempIndexList = ms2Table[key] as List<TempIndex>;
+                List<MsIndex> tempIndexList = ms2Table[key] as List<MsIndex>;
                 WindowRange range = rangeTable[key] as WindowRange;
                 //为每一个key组创建一个SwathBlock
                 BlockIndex index = new BlockIndex();
