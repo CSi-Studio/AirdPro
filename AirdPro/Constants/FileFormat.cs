@@ -12,7 +12,7 @@ namespace AirdPro.Constants
 {
     public class FileFormat
     {
-        public static string WIFF = "wiff";
-        public static string RAW = "raw";
+        public static string WIFF = "WIFF";
+        public static string RAW = "RAW";
     }
 }

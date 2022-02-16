@@ -87,16 +87,9 @@ namespace AirdPro.Parser
 				airdFile.Read(reader, 0, (int)delta);
 
 				float[] intensityArray = null;
-				if (intCompressor.methods.Contains(Compressor.METHOD_LOG10))
-				{
-					intensityArray = getLogedIntValues(reader);
-				}
-				else
-				{
-					intensityArray = getIntValues(reader);
-				}
+                intensityArray = getIntValues(reader);
 
-				return new MzIntensityPairs(mzArray, intensityArray);
+                return new MzIntensityPairs(mzArray, intensityArray);
 
 			}
 			catch (Exception e)

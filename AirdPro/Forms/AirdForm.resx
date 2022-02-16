@@ -403,7 +403,7 @@
     <value>NoControl</value>
   </data>
   <data name="cbIncludingPSICV.Location" type="System.Drawing.Point, System.Drawing">
-    <value>229, 63</value>
+    <value>176, 61</value>
   </data>
   <data name="cbIncludingPSICV.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 21</value>
@@ -433,7 +433,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblStackLayers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>408, 127</value>
+    <value>201, 95</value>
   </data>
   <data name="lblStackLayers.Size" type="System.Drawing.Size, System.Drawing">
     <value>80, 17</value>
@@ -478,7 +478,7 @@
     <value>1024</value>
   </data>
   <data name="cbStackLayers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>505, 122</value>
+    <value>285, 91</value>
   </data>
   <data name="cbStackLayers.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 25</value>
@@ -511,13 +511,13 @@
     <value>5, 96</value>
   </data>
   <data name="lblAirdAlgorithm.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 17</value>
+    <value>80, 17</value>
   </data>
   <data name="lblAirdAlgorithm.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
   </data>
   <data name="lblAirdAlgorithm.Text" xml:space="preserve">
-    <value>Algorithm</value>
+    <value>Compressor</value>
   </data>
   <data name="&gt;&gt;lblAirdAlgorithm.Name" xml:space="preserve">
     <value>lblAirdAlgorithm</value>
@@ -541,10 +541,10 @@
     <value>Stack-ZDPD</value>
   </data>
   <data name="cbAlgorithm.Location" type="System.Drawing.Point, System.Drawing">
-    <value>86, 93</value>
+    <value>90, 92</value>
   </data>
   <data name="cbAlgorithm.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 25</value>
+    <value>98, 25</value>
   </data>
   <data name="cbAlgorithm.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -571,10 +571,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnDisconnect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>489, 219</value>
+    <value>454, 159</value>
   </data>
   <data name="btnDisconnect.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 26</value>
+    <value>90, 26</value>
   </data>
   <data name="btnDisconnect.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
@@ -598,7 +598,7 @@
     <value>True</value>
   </data>
   <data name="lblConnectStatus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>294, 252</value>
+    <value>294, 191</value>
   </data>
   <data name="lblConnectStatus.Size" type="System.Drawing.Size, System.Drawing">
     <value>81, 17</value>
@@ -625,16 +625,16 @@
     <value>True</value>
   </data>
   <data name="lblIP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 225</value>
+    <value>5, 164</value>
   </data>
   <data name="lblIP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>106, 17</value>
+    <value>142, 17</value>
   </data>
   <data name="lblIP.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
   </data>
   <data name="lblIP.Text" xml:space="preserve">
-    <value>Message Center:</value>
+    <value>Redis Message Center:</value>
   </data>
   <data name="&gt;&gt;lblIP.Name" xml:space="preserve">
     <value>lblIP</value>
@@ -649,10 +649,10 @@
     <value>7</value>
   </data>
   <data name="tbHostAndPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>121, 222</value>
+    <value>163, 161</value>
   </data>
   <data name="tbHostAndPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>254, 23</value>
+    <value>212, 23</value>
   </data>
   <data name="tbHostAndPort.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -673,10 +673,10 @@
     <value>8</value>
   </data>
   <data name="btnConnect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>392, 219</value>
+    <value>377, 159</value>
   </data>
   <data name="btnConnect.Size" type="System.Drawing.Size, System.Drawing">
-    <value>91, 26</value>
+    <value>71, 26</value>
   </data>
   <data name="btnConnect.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
@@ -703,16 +703,16 @@
     <value>True</value>
   </data>
   <data name="lblOperator.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
+    <value>微软雅黑, 9pt</value>
   </data>
   <data name="lblOperator.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lblOperator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>418, 161</value>
+    <value>277, 131</value>
   </data>
   <data name="lblOperator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 16</value>
+    <value>62, 17</value>
   </data>
   <data name="lblOperator.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -739,7 +739,7 @@
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="tbOperator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>485, 157</value>
+    <value>344, 128</value>
   </data>
   <data name="tbOperator.Size" type="System.Drawing.Size, System.Drawing">
     <value>104, 23</value>
@@ -766,7 +766,7 @@
     <value>True</value>
   </data>
   <data name="lblMzPrecision.Location" type="System.Drawing.Point, System.Drawing">
-    <value>368, 94</value>
+    <value>381, 94</value>
   </data>
   <data name="lblMzPrecision.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 17</value>
@@ -805,7 +805,7 @@
     <value>0.000001</value>
   </data>
   <data name="cbMzPrecision.Location" type="System.Drawing.Point, System.Drawing">
-    <value>505, 88</value>
+    <value>505, 90</value>
   </data>
   <data name="cbMzPrecision.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 25</value>
@@ -859,16 +859,16 @@
     <value>True</value>
   </data>
   <data name="lblFileNameTag.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
+    <value>微软雅黑, 9pt</value>
   </data>
   <data name="lblFileNameTag.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lblFileNameTag.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 161</value>
+    <value>6, 131</value>
   </data>
   <data name="lblFileNameTag.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 16</value>
+    <value>62, 17</value>
   </data>
   <data name="lblFileNameTag.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -892,7 +892,7 @@
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="tbFileNameSuffix.Location" type="System.Drawing.Point, System.Drawing">
-    <value>86, 157</value>
+    <value>71, 128</value>
   </data>
   <data name="tbFileNameSuffix.Size" type="System.Drawing.Size, System.Drawing">
     <value>185, 23</value>
@@ -949,7 +949,7 @@
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="lblConsole.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 359</value>
+    <value>7, 246</value>
   </data>
   <data name="lblConsole.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 17</value>
@@ -976,7 +976,7 @@
     <value>Bottom, Left, Right</value>
   </data>
   <data name="tbConsole.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 382</value>
+    <value>3, 266</value>
   </data>
   <data name="tbConsole.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -985,7 +985,7 @@
     <value>Vertical</value>
   </data>
   <data name="tbConsole.Size" type="System.Drawing.Size, System.Drawing">
-    <value>600, 307</value>
+    <value>600, 423</value>
   </data>
   <data name="tbConsole.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1144,7 +1144,7 @@
     <value>234, 16</value>
   </metadata>
   <data name="ofd.Filter" xml:space="preserve">
-    <value>Vendor Format|*.wiff;*.raw;*.d</value>
+    <value>Vendor Format|*.wiff;*.raw;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

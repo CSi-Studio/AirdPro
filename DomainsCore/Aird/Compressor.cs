@@ -17,10 +17,11 @@ namespace AirdPro.DomainsCore.Aird
         public static string TARGET_MZ = "mz";
         public static string TARGET_INTENSITY = "intensity";
 
+        public static string METHOD_ZDVB = "ZDVB";
+        public static string METHOD_ZVB = "ZVB";
+        public static string METHOD_ZDPD = "ZDPD";
+        public static string METHOD_STACK_ZDPD = "Stack-ZDPD";
         public static string METHOD_ZLIB = "zlib";
-        public static string METHOD_STACK = "stack";
-        public static string METHOD_PFOR = "pFor";
-        public static string METHOD_LOG10 = "log2";
 
         /**
          * Compression target, support for mz and intensity
@@ -48,6 +49,11 @@ namespace AirdPro.DomainsCore.Aird
          * if layers = 256, then digit=8
          */
         public int digit;
+
+        public Compressor(string target)
+        {
+            this.target = target;
+        }
 
         public void addMethod(string method)
         {

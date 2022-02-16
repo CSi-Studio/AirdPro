@@ -63,35 +63,36 @@ namespace AirdPro.Converters
             jobInfo.log("Preprocessing:" + totalSize, "Preprocessing");
             for (var i = 0; i < totalSize; i++)
             {
+                Spectrum spectrum = spectrumList.spectrum(i);
+                string msLevel = parseMsLevel(spectrum);
+               
                 //最后一个谱图,单独判断
                 if (i == totalSize - 1)
                 {
-                    if (getMsLevel(i).Equals(MsLevel.MS1))
-                        ms1List.Add(parseMS1(spectrumList.spectrum(i), i)); //如果是MS1谱图,加入到MS1List
-                    if (getMsLevel(i).Equals(MsLevel.MS2))
-                        addToMS2Map(parseMS2(spectrumList.spectrum(i), i, parentNum)); //如果是MS2谱图,加入到谱图组
+                    
+                    if (msLevel.Equals(MsLevel.MS1))
+                        ms1List.Add(parseMS1(spectrum, i)); //如果是MS1谱图,加入到MS1List
+                    if (msLevel.Equals(MsLevel.MS2))
+                        addToMS2Map(parseMS2(spectrum, i, parentNum)); //如果是MS2谱图,加入到谱图组
                 }
                 else
                 {
                     //如果这个谱图是MS1
-                    if (getMsLevel(i).Equals(MsLevel.MS1))
+                    if (msLevel.Equals(MsLevel.MS1))
                     {
-                        ms1List.Add(parseMS1(spectrumList.spectrum(i), i)); //加入MS1List
-                        if (getMsLevel(i + 1).Equals(MsLevel.MS2)) parentNum = i; //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
+                        ms1List.Add(parseMS1(spectrum, i)); //加入MS1List
+                        Spectrum next = spectrumList.spectrum(i + 1);
+                        if (parseMsLevel(next).Equals(MsLevel.MS2)) parentNum = i; //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
                     }
 
-                    if (getMsLevel(i).Equals(MsLevel.MS2))
-                        addToMS2Map(parseMS2(spectrumList.spectrum(i), i, parentNum)); //如果这个谱图是MS2
+                    if (msLevel.Equals(MsLevel.MS2))
+                        addToMS2Map(parseMS2(spectrum, i, parentNum)); //如果这个谱图是MS2
                 }
             }
 
             jobInfo.log("Effective MS1 List Size:" + ms1List.Count);
             jobInfo.log("MS2 Group List Size:" + ms2Table.Count);
             jobInfo.log("Start Processing MS1 List");
-        }
-        private string getMsLevel(int index)
-        {
-            return spectrumList.spectrum(index).cvParamChild(CVID.MS_ms_level).value.ToString();
         }
 
         //建立Ms1Scan的索引

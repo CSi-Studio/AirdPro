@@ -16,6 +16,8 @@ using System.IO;
 using AirdPro.Constants;
 using AirdPro.DomainsCore.Parser;
 using System.Linq;
+using AirdPro.Algorithms;
+using Compress;
 
 namespace AirdPro.Parser
 {
@@ -56,8 +58,8 @@ namespace AirdPro.Parser
                 throw new Exception(ResultCodeEnum.AIRD_FILE_PARSE_ERROR.Message);
             }
 
-            mzCompressor = CompressUtil.getMzCompressor(airdInfo.compressors);
-            intCompressor = CompressUtil.getIntCompressor(airdInfo.compressors);
+            mzCompressor = getMzCompressor(airdInfo.compressors);
+            intCompressor = getIntCompressor(airdInfo.compressors);
             mzPrecision = mzCompressor.precision;
             type = airdInfo.type;
         }
@@ -147,8 +149,8 @@ namespace AirdPro.Parser
         /// <returns> 解压缩后的数组 </returns>
         public float[] getMzValues(byte[] value)
         {
-            var Values = CompressUtil.zlibDecoderToInt(value);
-            var intValues = CompressUtil.fastPforDecoder(Values);
+            var Values = Zlib.decodeToInt(value);
+            var intValues = BinPacking.decode(Values);
             float[] floatValues = new float[intValues.Length];
             for (int index = 0; index < intValues.Length; index++)
             {
@@ -168,8 +170,8 @@ namespace AirdPro.Parser
         /// <returns> 解压缩后的数组 </returns>
         public float[] getMzValues(byte[] value, int start, int length)
         {
-            var Values = CompressUtil.zlibDecoderToInt(value.Skip(start).Take(length).ToArray());
-            var intValues = CompressUtil.fastPforDecoder(Values);
+            var values = Zlib.decodeToInt(value.Skip(start).Take(length).ToArray());
+            var intValues = BinPacking.decode(values);
             float[] floatValues = new float[intValues.Length];
             for (int index = 0; index < intValues.Length; index++)
             {
@@ -187,15 +189,15 @@ namespace AirdPro.Parser
         /// <returns> 解压缩后的数组 </returns>
         public int[] getMzValuesAsInteger(byte[] value)
         {
-            var intValues = CompressUtil.zlibDecoderToInt(value);
-            intValues = CompressUtil.fastPforDecoder(intValues);
+            var intValues = Zlib.decodeToInt(value);
+            intValues = BinPacking.decode(intValues);
             return intValues;
         }
 
 
         public int[] getTags(byte[] value)
         {
-            var byteBuffer = CompressUtil.zlibDecoder(value);
+            var byteBuffer = Zlib.decode(value);
             byte[] byteValue = new byte[byteBuffer.Length * 8];
             for (int i = 0; i < byteBuffer.Length; i++)
             {
@@ -218,7 +220,7 @@ namespace AirdPro.Parser
 
         public int[] getTags(byte[] value, int start, int length)
         {
-            var tagShift = CompressUtil.zlibDecoder(value.Skip(start).Take(length).ToArray());
+            var tagShift = Zlib.decode(value.Skip(start).Take(length).ToArray());
             byte[] byteValue = new byte[tagShift.Length * 8];
             for (int i = 0; i < tagShift.Length; i++)
             {
@@ -246,7 +248,7 @@ namespace AirdPro.Parser
         /// <returns> 解压缩后的数组 </returns>
         public float[] getIntValues(byte[] value)
         {
-            return CompressUtil.zlibDecoderToFloat(value);
+            return Zlib.decodeToFloat(value);
         }
 
         /// <summary>
@@ -258,44 +260,50 @@ namespace AirdPro.Parser
         /// <returns> 解压缩后的数组 </returns>
         public float[] getIntValues(byte[] value, int start, int length)
         {
-            return CompressUtil.zlibDecoderToFloat(value.Skip(start).Take(length).ToArray());
+            return Zlib.decodeToFloat(value.Skip(start).Take(length).ToArray());
         }
 
         /// <summary>
-        /// get intensity values only for aird file
+        /// get the compressor for m/z
         /// </summary>
-        /// <param name="value"> 压缩的数组 </param>
-        /// <returns> 解压缩后的数组 </returns>
-        public float[] getLogedIntValues(byte[] value)
+        /// <param name="compressors"> 压缩策略 </param>
+        /// <returns> the m/z compressor </returns>
+        public static Compressor getMzCompressor(IList<Compressor> compressors)
         {
-            var intValues = CompressUtil.zlibDecoderToFloat(value);
-            float[] intensityValues = new float[intValues.Length];
-            for (int index = 0; index < intValues.Length; index++)
+            if (compressors == null)
             {
-                intensityValues[index] = (float)Math.Pow(10, intValues[index]);
+                return null;
             }
-            return intensityValues;
+            foreach (Compressor compressor in compressors)
+            {
+                if (compressor.target.Equals(Compressor.TARGET_MZ))
+                {
+                    return compressor;
+                }
+            }
+            return null;
         }
-
 
         /// <summary>
-        /// get intensity values only for aird file
+        /// get the intensity compressor for intensity
         /// </summary>
-        /// <param name="value"> 压缩的数组 </param>
-        /// <param name="start">  起始位置 </param>
-        /// <param name="length"> 读取长度 </param>
-        /// <returns> 解压缩后的数组 </returns>
-        public float[] getLogedIntValues(byte[] value, int start, int length)
+        /// <param name="compressors"> 压缩策略 </param>
+        /// <returns> the intensity compressor </returns>
+        public static Compressor getIntCompressor(IList<Compressor> compressors)
         {
-            var intValues = CompressUtil.zlibDecoderToFloat(value.Skip(start).Take(length).ToArray());
-            float[] intensityValues = new float[intValues.Length];
-            for (int index = 0; index < intValues.Length; index++)
+            if (compressors == null)
             {
-                intensityValues[index] = (float)Math.Pow(10, intValues[index]);
+                return null;
             }
-            return intensityValues;
+            foreach (Compressor compressor in compressors)
+            {
+                if (compressor.target.Equals(Compressor.TARGET_INTENSITY))
+                {
+                    return compressor;
+                }
+            }
+            return null;
         }
-
 
         public void close()
         {

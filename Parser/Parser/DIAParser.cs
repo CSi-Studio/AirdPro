@@ -37,7 +37,7 @@ namespace AirdPro.Parser
 
 		public SortedDictionary<float, MzIntensityPairs> getSpectrums(BlockIndex index)
 		{
-			if (mzCompressor.methods.Contains(Compressor.METHOD_STACK))
+			if (mzCompressor.methods.Contains(Compressor.METHOD_STACK_ZDPD))
 			{
 				return getSpectrums(index.startPtr, index.endPtr, index.rts, index.mzs, index.tags, index.ints);
 			}
@@ -82,15 +82,8 @@ namespace AirdPro.Parser
 					float[] intensityArray = null;
 					float[] mzArray = getMzValues(result, start, ((int)mzSizeList[i]));
 					start = start + ((int)mzSizeList[i]);
-					if (intCompressor.methods.Contains(Compressor.METHOD_LOG10))
-					{
-						intensityArray = getLogedIntValues(result, start, ((int)intSizeList[i]));
-					}
-					else
-					{
-						intensityArray = getIntValues(result, start, ((int)intSizeList[i]));
-					}
-					start = start + ((int)intSizeList[i]);
+					intensityArray = getIntValues(result, start, ((int)intSizeList[i]));
+                    start = start + ((int)intSizeList[i]);
 					map[rtList[i]] = new MzIntensityPairs(mzArray, intensityArray);
 				}
 				return map;
@@ -168,15 +161,8 @@ namespace AirdPro.Parser
 					}
 
 					float[] intensityArray = null;
-					if (intCompressor.methods.Contains(Compressor.METHOD_LOG10))
-					{
-						intensityArray = getLogedIntValues(result, start, ((int)intSizeList[i]));
-					}
-					else
-					{
-						intensityArray = getIntValues(result, start, ((int)intSizeList[i]));
-					}
-					start = start + ((int)intSizeList[i]);
+                    intensityArray = getIntValues(result, start, ((int)intSizeList[i]));
+                    start = start + ((int)intSizeList[i]);
 					IList<float[]> intensityGroup = new List<float[]>();
 					int initFlag = 0;
 					for (int j = 0; j < layerNum; j++)
@@ -298,15 +284,8 @@ namespace AirdPro.Parser
 				airdFile.Read(reader, 0, (int)intSizeList[index]);
 
 				float[] intensityArray = null;
-				if (intCompressor.methods.Contains(Compressor.METHOD_LOG10))
-				{
-					intensityArray = getLogedIntValues(reader);
-				}
-				else
-				{
-					intensityArray = getIntValues(reader);
-				}
-				return new MzIntensityPairs(mzArray, intensityArray);
+                intensityArray = getIntValues(reader);
+                return new MzIntensityPairs(mzArray, intensityArray);
 			}
 			catch (Exception e)
 			{
@@ -364,15 +343,8 @@ namespace AirdPro.Parser
 				reader = new byte[((int)intSizeList[mzIndex])];
 				airdFile.Read(reader, 0, (int)intSizeList[mzIndex]);
 				float[] intensityArray = null;
-				if (intCompressor.methods.Contains(Compressor.METHOD_LOG10))
-				{
-					intensityArray = getLogedIntValues(reader);
-				}
-				else
-				{
-					intensityArray = getIntValues(reader);
-				}
-				IDictionary<int, int> tagMap = new Dictionary<int, int>();
+                intensityArray = getIntValues(reader);
+                IDictionary<int, int> tagMap = new Dictionary<int, int>();
 				foreach (int tag in tagArray)
 				{
 					if (tagMap.ContainsKey(tag))
@@ -418,7 +390,7 @@ namespace AirdPro.Parser
 		/// <returns> 对应光谱数据 </returns>
 		public virtual MzIntensityPairs getSpectrumByIndex(BlockIndex blockIndex, int index)
 		{
-			if (mzCompressor.methods.Contains(Compressor.METHOD_STACK))
+			if (mzCompressor.methods.Contains(Compressor.METHOD_STACK_ZDPD))
 			{
 				return getSpectrumByIndex(blockIndex.startPtr, blockIndex.mzs, blockIndex.tags, blockIndex.ints, index);
 			}
@@ -467,15 +439,8 @@ namespace AirdPro.Parser
 				airdFile.Read(reader, 0, (int)intSizeList[index]);
 				detail.intensityBytes = ((byte[])reader.Clone());
 				float[] intensityArray = null;
-				if (intCompressor.methods.Contains(Compressor.METHOD_LOG10))
-				{
-					intensityArray = getLogedIntValues(reader);
-				}
-				else
-				{
-					intensityArray = getIntValues(reader);
-				}
-
+                intensityArray = getIntValues(reader);
+                
 				detail.mzs = mzArray;
 				detail.intensities = intensityArray;
 				return detail;
@@ -588,16 +553,8 @@ namespace AirdPro.Parser
 				reader = new byte[((int)index.ints[position])];
 				airdFile.Read(reader, 0, (int)index.ints[position]);
 
-				float[] intensityArray = null;
-				if (intCompressor.methods.Contains(Compressor.METHOD_LOG10))
-				{
-					intensityArray = getLogedIntValues(reader);
-				}
-				else
-				{
-					intensityArray = getIntValues(reader);
-				}
-
+				float[] intensityArray = getIntValues(reader);
+                
 				return new MzIntensityPairs(mzArray, intensityArray);
 
 			}

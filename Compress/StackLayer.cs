@@ -13,13 +13,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using AirdPro.Algorithms;
 using AirdPro.DomainsCore.Aird;
+using Compress;
+using CSharpFastPFOR;
 using CSharpFastPFOR.Port;
 // using Priority_Queue;
 
 namespace AirdPro.Utils
 {
-    public class StackCompressUtil
+    public class StackLayer
     {
         /**
          * compress the data with stack-ZDPD algorithm
@@ -28,7 +31,7 @@ namespace AirdPro.Utils
          * @param pair sorting method of mzArray
          * @return compressed mzArray
          */
-        public static Layers stackEncode(List<int[]> arrGroup, Boolean pair)
+        public static Layers encode(List<int[]> arrGroup, Boolean pair)
         {
             int stackLen = 0;  //记录堆叠数总长度
             foreach (int[] arr in arrGroup)
@@ -80,8 +83,8 @@ namespace AirdPro.Utils
             }
             //数组用fastPFor压缩，index用zlib压缩，并记录层数
             Layers layers = new Layers();
-            layers.mzArray = CompressUtil.zlibEncoder(CompressUtil.intToByte(CompressUtil.fastPforEncoder(stackArr)));
-            layers.tagArray = CompressUtil.zlibEncoder(indexShift);
+            layers.mzArray = Zlib.encode(ByteTrans.intToByte(BinPacking.encode(stackArr)));
+            layers.tagArray = Zlib.encode(indexShift);
             layers.digit = digit;
 
             return layers;
@@ -93,11 +96,11 @@ namespace AirdPro.Utils
          * @param layers compressed mzArray
          * @return decompressed mzArray
          */
-        public static List<int[]> stackDecode(Layers layers)
+        public static List<int[]> decode(Layers layers)
         {
-            int[] stackArr = CompressUtil.fastPforDecoder(CompressUtil.byteToInt(CompressUtil.zlibDecoder(layers.mzArray)));
+            int[] stackArr = BinPacking.decode(ByteTrans.byteToInt(Zlib.decode(layers.mzArray)));
             int[] stackIndex = new int[stackArr.Length];
-            byte[] tagShift = CompressUtil.zlibDecoder(layers.tagArray);
+            byte[] tagShift = Zlib.decode(layers.tagArray);
             int digit = layers.digit;
             //拆分byte为8个bit，并分别存储
             byte[] value = new byte[8 * tagShift.Length];

@@ -20,13 +20,13 @@ namespace AirdPro.Algorithms
     {
         public ZDVB(IConverter converter) : base(converter) {}
 
-        override 
-        public void compressMS1(BlockIndex index)
+        override
+       public void compressMS1(BlockIndex index)
         {
             if (converter.jobInfo.jobParams.threadAccelerate)
             {
                 Hashtable table = Hashtable.Synchronized(new Hashtable());
-                
+
                 //使用多线程处理数据提取与压缩
                 Parallel.For(0, converter.ms1List.Count, (i, ParallelLoopState) =>
                 {

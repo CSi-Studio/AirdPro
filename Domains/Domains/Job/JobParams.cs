@@ -82,7 +82,7 @@ namespace AirdPro.Domains.Convert
 
         public Boolean useStackZDPD()
         {
-            return airdAlgorithm == 2;
+            return airdAlgorithm == 3;
         }
     }
 }

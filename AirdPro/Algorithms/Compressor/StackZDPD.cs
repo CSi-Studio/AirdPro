@@ -15,8 +15,10 @@ using System.Threading.Tasks;
 using AirdPro.Converters;
 using AirdPro.DomainsCore.Aird;
 using AirdPro.Domains.Convert;
+using AirdPro.Utils;
 using pwiz.CLI.data;
 using pwiz.CLI.msdata;
+using pwiz.CLI.util;
 
 namespace AirdPro.Algorithms
 {
@@ -64,7 +66,7 @@ namespace AirdPro.Algorithms
                     {
                         ts.cvs = cvs;
                     }
-                    converter.compress(spectrumGroup, ts);
+                    compress(spectrumGroup, ts);
                     table.Add(i, ts);
                 });
                 converter.outputWithOrder(table, index);
@@ -103,7 +105,7 @@ namespace AirdPro.Algorithms
                     {
                         ts.cvs = cvs;
                     }
-                    converter.compress(spectrumGroup, ts);
+                    compress(spectrumGroup, ts);
                     converter.addToIndex(index, ts);
                 }
             }
@@ -148,7 +150,7 @@ namespace AirdPro.Algorithms
                     {
                         ts.cvs = cvs;
                     }
-                    converter.compress(spectrumGroup, ts);
+                    compress(spectrumGroup, ts);
                     table.Add(i, ts);
                 });
                 converter.outputWithOrder(table, index);
@@ -184,10 +186,55 @@ namespace AirdPro.Algorithms
                     {
                         ts.cvs = cvs;
                     }
-                    converter.compress(spectrumGroup, ts);
+                    compress(spectrumGroup, ts);
                     converter.addToIndex(index, ts);
                 }
             }
+        }
+
+        //Compress for Stack-ZDPD
+        public void compress(List<Spectrum> spectrumGroup, TempScanSZDPD ts)
+        {
+            List<int[]> mzListGroup = new List<int[]>();
+            List<float> intListAllGroup = new List<float>(); //Intensity数组会直接合并为一个数组
+
+            for (int i = 0; i < spectrumGroup.Count; i++)
+            {
+                BinaryDataDouble mzData = spectrumGroup[i].getMZArray().data;
+                BinaryDataDouble intData = spectrumGroup[i].getIntensityArray().data;
+                List<float> intensityList = new List<float>();
+                var dataCount = mzData.Count;
+                int[] mzArray = new int[dataCount];
+                int j = 0;
+                for (int t = 0; t < mzData.Count; t++)
+                {
+                    if (converter.jobInfo.jobParams.ignoreZeroIntensity && intData[t] == 0) continue;
+                    mzArray[j] = Convert.ToInt32(mzData[t] * converter.mzPrecision);
+                    intensityList.Add(Convert.ToSingle(Math.Round(intData[t], 1))); //精确到小数点后一位
+                    j++;
+                }
+                //空光谱的情况下会填充一个mz=0,intensity=0的点
+                if (j == 0)
+                {
+                    mzListGroup.Add(new int[] { 0 });
+                    intensityList.Add(0);
+                }
+                else
+                {
+                    int[] mzSubArray = new int[j];
+                    Array.Copy(mzArray, mzSubArray, j);
+                    mzListGroup.Add(mzSubArray);
+                }
+                //说明是一帧空光谱,那么直接在Aird文件中抹除这一帧的信息
+                intListAllGroup.AddRange(intensityList);
+            }
+
+            Layers layers = StackLayer.encode(mzListGroup, mzListGroup.Count == Math.Pow(2, converter.jobInfo.jobParams.digit));
+            // List<int[]> temp = StackCompressUtil.stackDecode(layers);
+            //使用SZDPD对mz进行压缩
+            ts.mzArrayBytes = layers.mzArray;
+            ts.tagArrayBytes = layers.tagArray;
+            ts.intArrayBytes = Zlib.encode(intListAllGroup.ToArray());
         }
     }
 }

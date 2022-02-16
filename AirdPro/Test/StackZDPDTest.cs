@@ -33,8 +33,8 @@ namespace AirdPro.Test
                 }
                 arrGroup.Add(mz);
             }
-            Layers layers = StackCompressUtil.stackEncode(arrGroup, false);
-            List<int[]> decompressArrGroup = StackCompressUtil.stackDecode(layers);
+            Layers layers = StackLayer.encode(arrGroup, false);
+            List<int[]> decompressArrGroup = StackLayer.decode(layers);
             Boolean pass = true;
             for (int i = 0; i < arrGroup.Count; i++)
             {
