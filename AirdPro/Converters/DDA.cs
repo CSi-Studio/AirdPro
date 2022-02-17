@@ -65,15 +65,20 @@ namespace AirdPro.Converters
             {
                 Spectrum spectrum = spectrumList.spectrum(i);
                 string msLevel = parseMsLevel(spectrum);
-               
+                
                 //最后一个谱图,单独判断
                 if (i == totalSize - 1)
                 {
-                    
                     if (msLevel.Equals(MsLevel.MS1))
+                    {
                         ms1List.Add(parseMS1(spectrum, i)); //如果是MS1谱图,加入到MS1List
+                    }
+
                     if (msLevel.Equals(MsLevel.MS2))
+                    {
                         addToMS2Map(parseMS2(spectrum, i, parentNum)); //如果是MS2谱图,加入到谱图组
+                    }
+                        
                 }
                 else
                 {
@@ -82,11 +87,17 @@ namespace AirdPro.Converters
                     {
                         ms1List.Add(parseMS1(spectrum, i)); //加入MS1List
                         Spectrum next = spectrumList.spectrum(i + 1);
-                        if (parseMsLevel(next).Equals(MsLevel.MS2)) parentNum = i; //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
+                        if (parseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
+                        {
+                            parentNum = i;
+                        }
                     }
 
                     if (msLevel.Equals(MsLevel.MS2))
+                    {
                         addToMS2Map(parseMS2(spectrum, i, parentNum)); //如果这个谱图是MS2
+                    }
+                        
                 }
             }
 

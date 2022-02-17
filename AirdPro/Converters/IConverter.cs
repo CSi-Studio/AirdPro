@@ -641,24 +641,23 @@ namespace AirdPro.Converters
 
             //Compressor Info
             List<Compressor> coms = new List<Compressor>();
-            //mz compressor
             Compressor mzCompressor = new Compressor(Compressor.TARGET_MZ);
             Compressor intCompressor = new Compressor(Compressor.TARGET_INTENSITY);
             switch (jobInfo.jobParams.airdAlgorithm)
             {
-                case 1:
+                case 1: //ZDPD
                     mzCompressor.addMethod(Compressor.METHOD_ZDPD);
                     mzCompressor.precision = (int)(Math.Ceiling(1 / jobInfo.jobParams.mzPrecision));
                     intCompressor.addMethod(Compressor.METHOD_ZLIB);
                     intCompressor.precision = 10;
                     break;
-                case 2:
+                case 2: //ZDVB
                     mzCompressor.addMethod(Compressor.METHOD_ZDVB);
                     mzCompressor.precision = (int)(Math.Ceiling(1 / jobInfo.jobParams.mzPrecision));
                     intCompressor.addMethod(Compressor.METHOD_ZVB);
                     intCompressor.precision = 1;
                     break;
-                case 3:
+                case 3: //Stack-ZDPD
                     mzCompressor.addMethod(Compressor.METHOD_STACK_ZDPD);
                     mzCompressor.precision = (int)(Math.Ceiling(1 / jobInfo.jobParams.mzPrecision));
                     mzCompressor.digit = jobInfo.jobParams.digit;

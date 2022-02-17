@@ -28,8 +28,6 @@ namespace AirdPro.Domains.Convert
         public JobParams jobParams;
         //DIA-Swath,PRM,DDA. see ExperimentType
         public string type;
-        //当前任务的状态
-        public string status;
         //文件的格式,全部大写: WIFF, RAW
         public string format;
         //C:/data/plasma.wiff

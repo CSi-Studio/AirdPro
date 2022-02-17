@@ -172,7 +172,7 @@ namespace AirdPro.Forms
             }
            
         }
-        public void addFile(string fileName,string expType)
+        public void addFile(string fileName, string expType)
         {
             if (fileName != "" && !currentFiles.Contains(fileName))
             {
@@ -193,7 +193,7 @@ namespace AirdPro.Forms
             }
             else
             {
-                lblFileSelectedInfo.Text = currentFiles.Count + "files are selected";
+                lblFileSelectedInfo.Text = currentFiles.Count + " files are selected";
             }
             fileItem.Remove();
             ConvertTaskManager.getInstance().jobTable.Remove(fileItem.Text);
