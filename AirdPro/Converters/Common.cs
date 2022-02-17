@@ -74,12 +74,9 @@ namespace AirdPro.Converters
                     }
                    
                     var scan = spectrum.scanList.scans[0];
-                    var ts = new TempScan(i, parseRT(scan), parseTIC(spectrum));
-                    if (jobInfo.jobParams.includeCV)
-                    {
-                        ts.cvs = CV.trans(spectrum);
-                    }
-                    compress(spectrum, ts);
+                    var ts = new TempScan(i, parseRT(scan), parseTIC(spectrum), CV.trans(spectrum));
+
+                    compressor.compress(spectrum, ts);
                     var msLevel = parseMsLevel(spectrum);
                     if (msLevel.Equals(MsLevel.MS1))
                     {
@@ -108,12 +105,9 @@ namespace AirdPro.Converters
                         continue;
                     }
                     var scan = spectrum.scanList.scans[0];
-                    var ts = new TempScan(i, parseRT(scan), parseTIC(spectrum));
-                    if (jobInfo.jobParams.includeCV)
-                    {
-                        ts.cvs = CV.trans(spectrum);
-                    }
-                    compress(spectrum, ts);
+                    var ts = new TempScan(i, parseRT(scan), parseTIC(spectrum), CV.trans(spectrum));
+
+                    compressor.compress(spectrum, ts);
                     var msLevel = parseMsLevel(spectrum);
                     if (msLevel.Equals(MsLevel.MS1))
                     {

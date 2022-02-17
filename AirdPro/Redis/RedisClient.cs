@@ -131,7 +131,7 @@ namespace AirdPro.Redis
                             jobParams.threadAccelerate = true;
                             jobParams.suffix = "";
                             jobParams.creator = "LIMS Admin";
-                            jobParams.mzPrecision = job.mzPrecision;
+                            jobParams.mzPrecision = (int)Math.Ceiling(1 / job.mzPrecision);
 
                             string[] items = new string[4];
                             ListViewItem item = new ListViewItem(items);

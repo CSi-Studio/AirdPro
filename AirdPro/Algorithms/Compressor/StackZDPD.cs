@@ -14,9 +14,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AirdPro.Converters;
 using AirdPro.DomainsCore.Aird;
-using AirdPro.Domains.Convert;
 using AirdPro.Utils;
-using pwiz.CLI.data;
 using pwiz.CLI.msdata;
 using pwiz.CLI.util;
 
@@ -27,7 +25,7 @@ namespace AirdPro.Algorithms
         public StackZDPD(IConverter converter) : base(converter){}
 
         override 
-        public void compressMS1(BlockIndex index)
+        public void compressMS1(IConverter converter, BlockIndex index)
         {
             int layers = (int)Math.Pow(2, converter.jobInfo.jobParams.digit); //计算堆叠层数
             int iter = converter.ms1List.Count % layers == 0 ? (converter.ms1List.Count / layers) : (converter.ms1List.Count / layers + 1); //计算循环周期
@@ -54,18 +52,12 @@ namespace AirdPro.Algorithms
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
                         tics.Add(scanIndex.tic);
-                        if (converter.jobInfo.jobParams.includeCV)
-                        {
-                            cvs.Add(scanIndex.cvList);
-                        }
+                        cvs.Add(scanIndex.cvList);
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
 
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics);
-                    if (converter.jobInfo.jobParams.includeCV)
-                    {
-                        ts.cvs = cvs;
-                    }
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, cvs);
+
                     compress(spectrumGroup, ts);
                     table.Add(i, ts);
                 });
@@ -93,18 +85,11 @@ namespace AirdPro.Algorithms
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
                         tics.Add(scanIndex.tic);
-                        if (converter.jobInfo.jobParams.includeCV)
-                        {
-                            cvs.Add(scanIndex.cvList);
-                        }
+                        cvs.Add(scanIndex.cvList);
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
 
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics);
-                    if (converter.jobInfo.jobParams.includeCV)
-                    {
-                        ts.cvs = cvs;
-                    }
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, cvs);
                     compress(spectrumGroup, ts);
                     converter.addToIndex(index, ts);
                 }
@@ -112,10 +97,10 @@ namespace AirdPro.Algorithms
         }
 
         override
-        public void compressMS2(List<MsIndex> tempIndexList, BlockIndex index)
+        public void compressMS2(IConverter converter, List<MsIndex> ms2List, BlockIndex index)
         {
             int layers = (int)Math.Pow(2, converter.jobInfo.jobParams.digit); //计算堆叠层数
-            int iter = tempIndexList.Count % layers == 0 ? (tempIndexList.Count / layers) : (tempIndexList.Count / layers + 1); //计算循环周期
+            int iter = ms2List.Count % layers == 0 ? (ms2List.Count / layers) : (ms2List.Count / layers + 1); //计算循环周期
 
             if (converter.jobInfo.jobParams.threadAccelerate)
             {
@@ -131,25 +116,18 @@ namespace AirdPro.Algorithms
                     for (int k = 0; k < layers; k++)
                     {
                         int realNum = i * layers + k;
-                        if (realNum >= tempIndexList.Count)
+                        if (realNum >= ms2List.Count)
                         {
                             break;
                         }
-                        MsIndex scanIndex = tempIndexList[realNum];
+                        MsIndex scanIndex = ms2List[realNum];
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
                         tics.Add(scanIndex.tic);
-                        if (converter.jobInfo.jobParams.includeCV)
-                        {
-                            cvs.Add(scanIndex.cvList);
-                        }
+                        cvs.Add(scanIndex.cvList);
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics);
-                    if (converter.jobInfo.jobParams.includeCV)
-                    {
-                        ts.cvs = cvs;
-                    }
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, cvs);
                     compress(spectrumGroup, ts);
                     table.Add(i, ts);
                 });
@@ -167,29 +145,27 @@ namespace AirdPro.Algorithms
                     for (int k = 0; k < layers; k++)
                     {
                         int realNum = i * layers + k;
-                        if (realNum >= tempIndexList.Count)
+                        if (realNum >= ms2List.Count)
                         {
                             break;
                         }
-                        MsIndex scanIndex = tempIndexList[realNum];
+                        MsIndex scanIndex = ms2List[realNum];
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
                         tics.Add(scanIndex.tic);
-                        if (converter.jobInfo.jobParams.includeCV)
-                        {
-                            cvs.Add(scanIndex.cvList);
-                        }
+                        cvs.Add(scanIndex.cvList);
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics);
-                    if (converter.jobInfo.jobParams.includeCV)
-                    {
-                        ts.cvs = cvs;
-                    }
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, cvs);
                     compress(spectrumGroup, ts);
                     converter.addToIndex(index, ts);
                 }
             }
+        }
+
+        public override void compress(Spectrum spectrum, TempScan ts)
+        {
+            throw new NotImplementedException();
         }
 
         //Compress for Stack-ZDPD
@@ -208,8 +184,8 @@ namespace AirdPro.Algorithms
                 int j = 0;
                 for (int t = 0; t < mzData.Count; t++)
                 {
-                    if (converter.jobInfo.jobParams.ignoreZeroIntensity && intData[t] == 0) continue;
-                    mzArray[j] = Convert.ToInt32(mzData[t] * converter.mzPrecision);
+                    if (ignoreZero && intData[t] == 0) continue;
+                    mzArray[j] = Convert.ToInt32(mzData[t] * mzPrecision);
                     intensityList.Add(Convert.ToSingle(Math.Round(intData[t], 1))); //精确到小数点后一位
                     j++;
                 }
@@ -229,7 +205,7 @@ namespace AirdPro.Algorithms
                 intListAllGroup.AddRange(intensityList);
             }
 
-            Layers layers = StackLayer.encode(mzListGroup, mzListGroup.Count == Math.Pow(2, converter.jobInfo.jobParams.digit));
+            Layers layers = StackLayer.encode(mzListGroup, mzListGroup.Count == Math.Pow(2, digit));
             // List<int[]> temp = StackCompressUtil.stackDecode(layers);
             //使用SZDPD对mz进行压缩
             ts.mzArrayBytes = layers.mzArray;

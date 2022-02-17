@@ -115,46 +115,20 @@ namespace AirdPro.Converters
             jobInfo.log("Start Processing MS2 List");
             foreach (double key in ms2Table.Keys)
             {
-                List<MsIndex> tempIndexList = ms2Table[key] as List<MsIndex>;
-                //为每一个key组创建一个SwathBlock
-                BlockIndex swathIndex = new BlockIndex();
-                swathIndex.level = 2;
-                swathIndex.startPtr = startPosition;
-                
-                //顺便创建一个WindowRanges,用以让Propro服务端快速获取全局的窗口数目和mz区间
-                WindowRange range = new WindowRange(tempIndexList[0].mzStart, tempIndexList[0].mzEnd, key);
-                swathIndex.setWindowRange(range);
+                List<MsIndex> ms2List = ms2Table[key] as List<MsIndex>;
+                WindowRange range = new WindowRange(ms2List[0].mzStart, ms2List[0].mzEnd, key);
+
+                BlockIndex index = new BlockIndex(); //为每一个key组创建一个SwathBlock
+                index.level = 2;
+                index.startPtr = startPosition;
+                index.setWindowRange(range); //顺便创建一个WindowRanges,用以让Propro服务端快速获取全局的窗口数目和mz区间
                 ranges.Add(range);
 
                 jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);
                 progress++;
-
-                if (jobInfo.jobParams.threadAccelerate)
-                {
-                    Hashtable table = Hashtable.Synchronized(new Hashtable());
-                    //使用多线程处理数据提取与压缩
-                    Parallel.For(0, tempIndexList.Count, (i, ParallelLoopState) =>
-                    {
-                        MsIndex index = tempIndexList[i];
-                        TempScan ts = new TempScan(index.num, index.rt, index.tic);
-                        compress(spectrumList.spectrum(index.num, true), ts);
-                        table.Add(i, ts);
-                    });
-
-                    outputWithOrder(table, swathIndex);
-                }
-                else
-                {
-                    foreach (MsIndex index in tempIndexList)
-                    {
-                        TempScan ts = new TempScan(index.pNum, index.rt, index.tic);
-                        compress(spectrumList.spectrum(index.num, true), ts);
-                        addToIndex(swathIndex, ts);
-                    }
-                }
-
-                swathIndex.endPtr = startPosition;
-                indexList.Add(swathIndex);
+                compressor.compressMS2(this,ms2List, index);
+                index.endPtr = startPosition;
+                indexList.Add(index);
                 jobInfo.log("MS2 Group Finished:" + progress + "/" + ms2Table.Keys.Count);
             }
         }

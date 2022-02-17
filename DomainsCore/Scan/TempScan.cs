@@ -23,11 +23,12 @@ namespace AirdPro.DomainsCore.Aird
         public byte[] mzArrayBytes;
         public byte[] intArrayBytes;
 
-        public TempScan(int num, float rt, long tic)
+        public TempScan(int num, float rt, long tic, List<CV> cvs)
         {
             this.num = num;
             this.rt = rt;
             this.tic = tic;
+            this.cvs = cvs;
         }
 
         public TempScan(int num, float rt, byte[] mzArrayBytes, byte[] intArrayBytes)

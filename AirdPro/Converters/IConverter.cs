@@ -17,7 +17,6 @@ using pwiz.CLI.analysis;
 using pwiz.CLI.cv;
 using pwiz.CLI.data;
 using pwiz.CLI.msdata;
-using pwiz.CLI.util;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,7 +24,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using AirdPro.Algorithms;
-using Compress;
 using ByteOrder = AirdPro.Constants.ByteOrder;
 using CV = AirdPro.DomainsCore.Aird.CV;
 using Software = pwiz.CLI.msdata.Software;
@@ -46,13 +44,11 @@ namespace AirdPro.Converters
         protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,key为mz
         public List<MsIndex> ms1List = new List<MsIndex>(); //用于存放MS1索引及基础信息
         protected Hashtable featuresMap = new Hashtable();
-        public List<Compressor> compressors; //用于标明mz和intensity的存储算法的对象
-
+        public ICompressor compressor;
         protected int ms1Size = 0;
         protected long fileSize; //厂商文件大小
         protected long startPosition; //文件指针
         protected int totalSize; //总计的谱图数目
-        public int mzPrecision; //mz精度
 
         protected string activator; //HCD,CID....
         protected float energy; //轰击能
@@ -64,7 +60,6 @@ namespace AirdPro.Converters
         public IConverter(JobInfo jobInfo)
         {
             this.jobInfo = jobInfo;
-            mzPrecision = (int)Math.Ceiling(1 / jobInfo.jobParams.mzPrecision);
         }
 
         public abstract void doConvert();
@@ -190,43 +185,7 @@ namespace AirdPro.Converters
             }
         }
 
-        public void compress(Spectrum spectrum, TempScan ts)
-        {
-            BinaryDataDouble mzData = spectrum.getMZArray().data;
-            BinaryDataDouble intData = spectrum.getIntensityArray().data;
-            var size = mzData.Count;
-            int[] mzArray = new int[size];
-            float[] intensityArray = new float[size];
-            int j = 0;
-            for (int t = 0; t < size; t++)
-            {
-                if (jobInfo.jobParams.ignoreZeroIntensity && intData[t] == 0) continue;
-                mzArray[j] = Convert.ToInt32(mzData[t] * mzPrecision);
-                intensityArray[j] = Convert.ToSingle(Math.Round(intData[t],1)); //精确到小数点后一位
-                j++;
-            }
-            int[] mzSubArray = new int[j];
-            Array.Copy(mzArray, mzSubArray, j);
-            float[] intensitySubArray = new float[j];
-            Array.Copy(intensityArray, intensitySubArray, j);
 
-            int[] compressedMzSubArray = null;
-            byte[] compressedIntArray = null;
-            if (jobInfo.jobParams.airdAlgorithm == CompressorType.ZDPD)
-            {
-                compressedMzSubArray = BinPacking.encode(mzSubArray);
-                compressedIntArray = Zlib.encode(intensitySubArray);
-            }
-            if (jobInfo.jobParams.airdAlgorithm == CompressorType.ZDVB)
-            {
-                compressedMzSubArray = VarByte.encode(mzSubArray, true);
-                compressedIntArray = Zlib.encode(intensitySubArray);
-            }
-            ts.mzArrayBytes = Zlib.encode(compressedMzSubArray);
-            ts.intArrayBytes = compressedIntArray;
-        }
-
-        
 
         public void outputWithOrder(Hashtable table, BlockIndex index)
         {
@@ -248,10 +207,7 @@ namespace AirdPro.Converters
                 index.nums.AddRange(ts.nums);
                 index.rts.AddRange(ts.rts);
                 index.tics.AddRange(ts.tics);
-                if (jobInfo.jobParams.includeCV)
-                {
-                    index.cvList.AddRange(ts.cvs);
-                }
+                index.cvList.AddRange(ts.cvs);
                 index.mzs.Add(ts.mzArrayBytes.Length);
                 index.ints.Add(ts.intArrayBytes.Length);
                 index.tags.Add(ts.tagArrayBytes.Length);
@@ -267,10 +223,7 @@ namespace AirdPro.Converters
                 index.nums.Add(ts.num);
                 index.rts.Add(ts.rt);
                 index.tics.Add(ts.tic);
-                if (jobInfo.jobParams.includeCV)
-                {
-                    index.cvList.Add(ts.cvs);
-                }
+                index.cvList.Add(ts.cvs);
                 index.mzs.Add(ts.mzArrayBytes.Length);
                 index.ints.Add(ts.intArrayBytes.Length);
                 startPosition = startPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;
@@ -432,14 +385,12 @@ namespace AirdPro.Converters
             Scan scan = spectrum.scanList.scans[0];
             ms1.rt = parseRT(scan);
             ms1.tic = parseTIC(spectrum);
-            if (jobInfo.jobParams.includeCV)
+            ms1.cvList = CV.trans(spectrum);
+            if (scan.cvParams != null)
             {
-                ms1.cvList = CV.trans(spectrum);
-                if (scan.cvParams != null)
-                {
-                    ms1.cvList.AddRange(CV.trans(scan.cvParams));
-                }
+                ms1.cvList.AddRange(CV.trans(scan.cvParams));
             }
+            
             if (msType == null)
             {
                 parseMsType(spectrum);
@@ -490,14 +441,13 @@ namespace AirdPro.Converters
 
             if (spectrum.scanList.scans.Count != 1) return ms2;
             Scan scan = spectrum.scanList.scans[0];
-            if (jobInfo.jobParams.includeCV)
+           
+            ms2.cvList = CV.trans(spectrum);
+            if (scan.cvParams != null)
             {
-                ms2.cvList = CV.trans(spectrum);
-                if (scan.cvParams != null)
-                {
-                    ms2.cvList.AddRange(CV.trans(scan.cvParams));
-                }
+                ms2.cvList.AddRange(CV.trans(scan.cvParams));
             }
+            
             ms2.rt = parseRT(scan);
             ms2.tic = parseTIC(spectrum);
             return ms2;
@@ -508,14 +458,7 @@ namespace AirdPro.Converters
             BlockIndex index = new BlockIndex();
             index.level = 1;
             index.startPtr = startPosition;
-            if (jobInfo.jobParams.useStackZDPD())
-            {
-                new StackZDPD(this).compressMS1(index);
-            }
-            else
-            {
-                new ZDPD(this).compressMS1(index);
-            }
+            compressor.compressMS1(this,index);
             index.endPtr = startPosition;
             indexList.Add(index);
         }
@@ -647,19 +590,19 @@ namespace AirdPro.Converters
             {
                 case 1: //ZDPD
                     mzCompressor.addMethod(Compressor.METHOD_ZDPD);
-                    mzCompressor.precision = (int)(Math.Ceiling(1 / jobInfo.jobParams.mzPrecision));
+                    mzCompressor.precision = jobInfo.jobParams.mzPrecision;
                     intCompressor.addMethod(Compressor.METHOD_ZLIB);
                     intCompressor.precision = 10;
                     break;
                 case 2: //ZDVB
                     mzCompressor.addMethod(Compressor.METHOD_ZDVB);
-                    mzCompressor.precision = (int)(Math.Ceiling(1 / jobInfo.jobParams.mzPrecision));
+                    mzCompressor.precision = jobInfo.jobParams.mzPrecision;
                     intCompressor.addMethod(Compressor.METHOD_ZVB);
                     intCompressor.precision = 1;
                     break;
                 case 3: //Stack-ZDPD
                     mzCompressor.addMethod(Compressor.METHOD_STACK_ZDPD);
-                    mzCompressor.precision = (int)(Math.Ceiling(1 / jobInfo.jobParams.mzPrecision));
+                    mzCompressor.precision = jobInfo.jobParams.mzPrecision;
                     mzCompressor.digit = jobInfo.jobParams.digit;
                     intCompressor.addMethod(Compressor.METHOD_ZLIB);
                     intCompressor.precision = 10;

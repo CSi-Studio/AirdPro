@@ -23,7 +23,7 @@ namespace AirdPro.Domains.Convert
          * the decimal point of the mz. The default value is 0.0001
          * mz精度,默认保留到小数点后第4位
          */
-        public Double mzPrecision = 0.0001;
+        public int mzPrecision = 10000;
         /**
          * if using the multi thread for acceleration. The default value is true
          * 是否使用CPU多核加速,默认加速
@@ -58,11 +58,6 @@ namespace AirdPro.Domains.Convert
          */
         public int digit = 8;
 
-        /**
-         * If Store the PSI CV
-         * 是否保存可控词汇表的相关信息
-         */
-        public Boolean includeCV = false;
 
         public JobParams()
         {

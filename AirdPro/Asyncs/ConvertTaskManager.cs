@@ -16,6 +16,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using AirdPro.Algorithms;
 using static AirdPro.Constants.ProcessingStatus;
 
 namespace AirdPro.Asyncs
@@ -122,27 +123,44 @@ namespace AirdPro.Asyncs
 
         public void tryConvert(JobInfo jobInfo)
         {
-            
+            ICompressor comp = null;
+            IConverter converter = null;
             if (jobInfo.type.Equals(AirdType.DIA_SWATH))
             {
-                new DIA(jobInfo).doConvert();
+                converter = new DIA(jobInfo);
             }
             else if (jobInfo.type.Equals(AirdType.PRM))
             {
-                new PRM(jobInfo).doConvert();
+                converter = new PRM(jobInfo);
             }
             else if (jobInfo.type.Equals(AirdType.SCANNING_SWATH))
             {
-                new ScanningSWATH(jobInfo).doConvert();
+                converter = new ScanningSWATH(jobInfo);
             }
             else if (jobInfo.type.Equals(AirdType.DDA))
             {
-                new DDA(jobInfo).doConvert();
+                converter = new DDA(jobInfo);
             }
             else if (jobInfo.type.Equals(AirdType.COMMON))
             {
-                new Common(jobInfo).doConvert();
+                converter = new Common(jobInfo);
             }
+
+            switch (jobInfo.jobParams.airdAlgorithm)
+            {
+                case 1: 
+                    comp = new ZDPD(converter);
+                    break;
+                case 2:
+                    comp = new ZDVB(converter);
+                    break;
+                case 3:
+                    comp = new StackZDPD(converter);
+                    break;
+            }
+
+            converter.compressor = comp;
+            converter.doConvert();
             jobInfo.setStatus(FINISHED);
         }
     }

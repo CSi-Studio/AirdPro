@@ -118,14 +118,12 @@ namespace AirdPro.Converters
             }
            
             Scan scan = spectrum.scanList.scans[0];
-            if (jobInfo.jobParams.includeCV)
+            ms1.cvList = CV.trans(spectrum);
+            if (scan.cvParams != null)
             {
-                ms1.cvList = CV.trans(spectrum);
-                if (scan.cvParams != null)
-                {
-                    ms1.cvList.AddRange(CV.trans(scan.cvParams));
-                }
+                ms1.cvList.AddRange(CV.trans(scan.cvParams));
             }
+            
             ms1.rt = parseRT(scan);
             ms1.tic = parseTIC(spectrum);
             if (msType == null)
@@ -192,14 +190,12 @@ namespace AirdPro.Converters
 
             if (spectrum.scanList.scans.Count != 1) return ms2;
             Scan scan = spectrum.scanList.scans[0];
-            if (jobInfo.jobParams.includeCV)
+            ms2.cvList = CV.trans(spectrum);
+            if (scan.cvParams != null)
             {
-                ms2.cvList = CV.trans(spectrum);
-                if (scan.cvParams != null)
-                {
-                    ms2.cvList.AddRange(CV.trans(scan.cvParams));
-                }
+                ms2.cvList.AddRange(CV.trans(scan.cvParams));
             }
+            
             ms2.rt = parseRT(scan);
             ms2.tic = parseTIC(spectrum);
             if (activator == null)
@@ -229,20 +225,7 @@ namespace AirdPro.Converters
             BlockIndex index = new BlockIndex();
             index.level = 1;
             index.startPtr = 0;
-
-            switch (jobInfo.jobParams.airdAlgorithm)
-            {
-                case 1:
-                    new ZDPD(this).compressMS1(index);
-                    break;
-                case 2:
-                    new ZDVB(this).compressMS1(index);
-                    break;
-                case 3:
-                    new StackZDPD(this).compressMS1(index);
-                    break;
-            }
-
+            compressor.compressMS1(this,index);
             index.endPtr = startPosition;
             indexList.Add(index);
         }
@@ -274,19 +257,12 @@ namespace AirdPro.Converters
                         range.charge = index.charge;
                     }
                     ms2Ranges.Add(range);
-                    TempScan ts = new TempScan(index.num, index.rt, index.tic);
-                    if (jobInfo.jobParams.includeCV)
-                    {
-                        ts.cvs = index.cvList;
-                    }
-                    compress(spectrumList.spectrum(index.num, true), ts);
+                    TempScan ts = new TempScan(index.num, index.rt, index.tic, index.cvList);
+                    compressor.compress(spectrumList.spectrum(index.num, true), ts);
                     blockIndex.nums.Add(ts.num);
                     blockIndex.rts.Add(ts.rt);
                     blockIndex.tics.Add(ts.tic);
-                    if (jobInfo.jobParams.includeCV)
-                    {
-                        blockIndex.cvList.Add(ts.cvs);
-                    }
+                    blockIndex.cvList.Add(ts.cvs);
                     blockIndex.mzs.Add(ts.mzArrayBytes.Length);
                     blockIndex.ints.Add(ts.intArrayBytes.Length);
                     startPosition = startPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;

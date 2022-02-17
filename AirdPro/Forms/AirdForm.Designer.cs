@@ -53,7 +53,6 @@ namespace AirdPro.Forms
             this.headerOutput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnDeleteFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
-            this.cbIncludingPSICV = new System.Windows.Forms.CheckBox();
             this.lblStackLayers = new System.Windows.Forms.Label();
             this.cbStackLayers = new System.Windows.Forms.ComboBox();
             this.lblAirdAlgorithm = new System.Windows.Forms.Label();
@@ -103,7 +102,6 @@ namespace AirdPro.Forms
             // 
             // container.Panel2
             // 
-            this.container.Panel2.Controls.Add(this.cbIncludingPSICV);
             this.container.Panel2.Controls.Add(this.lblStackLayers);
             this.container.Panel2.Controls.Add(this.cbStackLayers);
             this.container.Panel2.Controls.Add(this.lblAirdAlgorithm);
@@ -207,14 +205,6 @@ namespace AirdPro.Forms
             this.btnConvert.Name = "btnConvert";
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
-            // 
-            // cbIncludingPSICV
-            // 
-            resources.ApplyResources(this.cbIncludingPSICV, "cbIncludingPSICV");
-            this.cbIncludingPSICV.Checked = true;
-            this.cbIncludingPSICV.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbIncludingPSICV.Name = "cbIncludingPSICV";
-            this.cbIncludingPSICV.UseVisualStyleBackColor = true;
             // 
             // lblStackLayers
             // 
@@ -441,7 +431,6 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ComboBox cbStackLayers;
         private System.Windows.Forms.ColumnHeader headerCompressor;
         private System.Windows.Forms.ToolTip ttAlgorithm;
-        private System.Windows.Forms.CheckBox cbIncludingPSICV;
     }
 }
 

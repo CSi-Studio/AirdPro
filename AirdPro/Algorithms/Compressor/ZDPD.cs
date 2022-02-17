@@ -8,22 +8,28 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using System;
 using AirdPro.Converters;
 using AirdPro.DomainsCore.Aird;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Compress;
+using pwiz.CLI.msdata;
+using pwiz.CLI.util;
 
 namespace AirdPro.Algorithms
 {
     public class ZDPD :ICompressor
     {
+        
         public ZDPD(IConverter converter) : base(converter) {}
 
+      
         override 
-        public void compressMS1(BlockIndex index)
+        public void compressMS1(IConverter converter, BlockIndex index)
         {
-            if (converter.jobInfo.jobParams.threadAccelerate)
+            if (multiThread)
             {
                 Hashtable table = Hashtable.Synchronized(new Hashtable());
                 
@@ -32,12 +38,8 @@ namespace AirdPro.Algorithms
                 {
                     converter.jobInfo.log(null, "MS1:" + i + "/" + converter.ms1List.Count);
                     MsIndex scanIndex = converter.ms1List[i];
-                    TempScan ts = new TempScan(scanIndex.num, scanIndex.rt, scanIndex.tic);
-                    if (converter.jobInfo.jobParams.includeCV)
-                    {
-                        ts.cvs = scanIndex.cvList;
-                    }
-                    converter.compress(converter.spectrumList.spectrum(scanIndex.num, true), ts);
+                    TempScan ts = new TempScan(scanIndex.num, scanIndex.rt, scanIndex.tic, scanIndex.cvList);
+                    compress(converter.spectrumList.spectrum(scanIndex.num, true), ts);
                     table.Add(i, ts);
                 });
                 converter.outputWithOrder(table, index);
@@ -48,50 +50,68 @@ namespace AirdPro.Algorithms
                 {
                     converter.jobInfo.log(null, "MS1:" + i + "/" + converter.ms1List.Count);
                     MsIndex scanIndex = converter.ms1List[i];
-                    TempScan ts = new TempScan(scanIndex.num, scanIndex.rt, scanIndex.tic);
-                    if (converter.jobInfo.jobParams.includeCV)
-                    {
-                        ts.cvs = scanIndex.cvList;
-                    }
-                    converter.compress(converter.spectrumList.spectrum(scanIndex.num, true), ts);
+                    TempScan ts = new TempScan(scanIndex.num, scanIndex.rt, scanIndex.tic, scanIndex.cvList);
+                    compress(converter.spectrumList.spectrum(scanIndex.num, true), ts);
                     converter.addToIndex(index, ts);
                 }
             }
         }
 
         override
-        public void compressMS2(List<MsIndex> tempIndexList, BlockIndex index)
+        public void compressMS2(IConverter converter, List<MsIndex> ms2List, BlockIndex index)
         {
             if (converter.jobInfo.jobParams.threadAccelerate)
             {
                 Hashtable table = Hashtable.Synchronized(new Hashtable());
                 //使用多线程处理数据提取与压缩
-                Parallel.For(0, tempIndexList.Count, (i, ParallelLoopState) =>
+                Parallel.For(0, ms2List.Count, (i, ParallelLoopState) =>
                 {
-                    MsIndex msIndex = tempIndexList[i];
-                    TempScan ts = new TempScan(msIndex.num, msIndex.rt, msIndex.tic);
-                    if (converter.jobInfo.jobParams.includeCV)
-                    {
-                        ts.cvs = msIndex.cvList;
-                    }
-                    converter.compress(converter.spectrumList.spectrum(msIndex.num, true), ts);
+                    MsIndex msIndex = ms2List[i];
+                    TempScan ts = new TempScan(msIndex.num, msIndex.rt, msIndex.tic, msIndex.cvList);
+                    compress(converter.spectrumList.spectrum(msIndex.num, true), ts);
                     table.Add(i, ts);
                 });
                 converter.outputWithOrder(table, index);
             }
             else
             {
-                foreach (MsIndex tempIndex in tempIndexList)
+                foreach (MsIndex tempIndex in ms2List)
                 {
-                    TempScan ts = new TempScan(tempIndex.num, tempIndex.rt, tempIndex.tic);
-                    if (converter.jobInfo.jobParams.includeCV)
-                    {
-                        ts.cvs = tempIndex.cvList;
-                    }
-                    converter.compress(converter.spectrumList.spectrum(tempIndex.num, true), ts);
+                    TempScan ts = new TempScan(tempIndex.num, tempIndex.rt, tempIndex.tic, tempIndex.cvList);
+                    compress(converter.spectrumList.spectrum(tempIndex.num, true), ts);
                     converter.addToIndex(index, ts);
                 }
             }
         }
+
+        override
+        public void compress(Spectrum spectrum, TempScan ts)
+        {
+            BinaryDataDouble mzData = spectrum.getMZArray().data;
+            BinaryDataDouble intData = spectrum.getIntensityArray().data;
+            var size = mzData.Count;
+            int[] mzArray = new int[size];
+            float[] intensityArray = new float[size];
+            int j = 0;
+            for (int t = 0; t < size; t++)
+            {
+                if (ignoreZero && intData[t] == 0) continue;
+                mzArray[j] = Convert.ToInt32(mzData[t] * mzPrecision);
+                intensityArray[j] = Convert.ToSingle(Math.Round(intData[t], 1)); //精确到小数点后一位
+                j++;
+            }
+            int[] mzSubArray = new int[j];
+            Array.Copy(mzArray, mzSubArray, j);
+            float[] intensitySubArray = new float[j];
+            Array.Copy(intensityArray, intensitySubArray, j);
+
+            int[] compressedMzSubArray = BinPacking.encode(mzSubArray);
+            byte[] compressedIntArray = Zlib.encode(intensitySubArray);
+            
+            ts.mzArrayBytes = Zlib.encode(compressedMzSubArray);
+            ts.intArrayBytes = compressedIntArray;
+        }
     }
+
+    
 }

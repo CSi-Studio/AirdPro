@@ -18,7 +18,6 @@ using AirdPro.Domains.Convert;
 using AirdPro.Redis;
 using AirdPro.Test;
 using ThermoFisher.CommonCore.Data;
-using ThermoFisher.CommonCore.Data.Interfaces;
 
 namespace AirdPro.Forms
 {
@@ -41,71 +40,6 @@ namespace AirdPro.Forms
             this.tbOperator.Text = Environment.UserName;
             RedisClient.getInstance();
             ConvertTaskManager.getInstance().run();
-        }
-
-        private void btnChooseFiles_Click(object sender, EventArgs e)
-        {
-            ofd.Title = "Please Choose DIA/SWATH Vendor File to Convert";
-
-            if (ofd.ShowDialog(this) == DialogResult.OK)
-            {
-                foreach (var fileName in ofd.FileNames)
-                {
-                    addFile(fileName, AirdType.DIA_SWATH);
-                }
-            }
-        }
-
-        private void btnChoosePRMFiles_Click(object sender, EventArgs e)
-        {
-            ofd.Title = "Please Choose PRM Vendor File to Convert";
-
-            if (ofd.ShowDialog(this) == DialogResult.OK)
-            {
-                foreach (var fileName in ofd.FileNames)
-                {
-                    addFile(fileName, AirdType.PRM);
-                }
-            }
-        }
-
-        private void btnChooseSSwathFiles_Click(object sender, EventArgs e)
-        {
-            ofd.Title = "Please Choose Scanning SWATH Vendor File to Convert";
-
-            if (ofd.ShowDialog(this) == DialogResult.OK)
-            {
-                foreach (var fileName in ofd.FileNames)
-                {
-                    addFile(fileName, AirdType.SCANNING_SWATH);
-                }
-            }
-        }
-
-        private void btnChooseDDAFile_Click(object sender, EventArgs e)
-        {
-            ofd.Title = "Please Choose DDA Vendor File to Convert";
-
-            if (ofd.ShowDialog(this) == DialogResult.OK)
-            {
-                foreach (var fileName in ofd.FileNames)
-                {
-                    addFile(fileName, AirdType.DDA);
-                }
-            }
-        }
-
-        private void btnAddCommonFiles_Click(object sender, EventArgs e)
-        {
-            ofd.Title = "Please Choose Common Vendor File to Convert";
-
-            if (ofd.ShowDialog(this) == DialogResult.OK)
-            {
-                foreach (var fileName in ofd.FileNames)
-                {
-                    addFile(fileName, AirdType.COMMON);
-                }
-            }
         }
 
         private void btnChooseFolder_Click(object sender, EventArgs e)
@@ -141,10 +75,9 @@ namespace AirdPro.Forms
                         threadAccelerate = cbThreadAccelerate.Checked,
                         suffix = tbFileNameSuffix.Text,
                         creator = tbOperator.Text,
-                        mzPrecision = Double.Parse(cbMzPrecision.Text),
+                        mzPrecision = (int)Math.Ceiling(1 / double.Parse(cbMzPrecision.Text)),
                         airdAlgorithm = cbAlgorithm.SelectedIndex+1,  // 1:ZDPD, 2: ZDVB, 3:StackZDPD
-                        digit = (int)Math.Log(Int32.Parse(cbStackLayers.SelectedItem.ToString()), 2),
-                        includeCV = cbIncludingPSICV.Checked
+                        digit = (int)Math.Log(int.Parse(cbStackLayers.SelectedItem.ToString()), 2),
                     };
 
                     JobInfo jobInfo = new JobInfo(item.SubItems[0].Text, tbFolderPath.Text,

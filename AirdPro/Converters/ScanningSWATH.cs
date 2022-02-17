@@ -158,12 +158,8 @@ namespace AirdPro.Converters
             }
             try
             {
-                TempScan ts = new TempScan(i, parseRT(spectrum.scanList.scans[0]), parseTIC(spectrum));
-                if (jobInfo.jobParams.includeCV)
-                {
-                    ts.cvs = CV.trans(spectrum);
-                }
-                compress(spectrum, ts);
+                TempScan ts = new TempScan(i, parseRT(spectrum.scanList.scans[0]), parseTIC(spectrum), CV.trans(spectrum));
+                compressor.compress(spectrum, ts);
                 ms2List.Add(ts);
             }
             catch (Exception exception)

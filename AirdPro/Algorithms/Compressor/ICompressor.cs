@@ -8,8 +8,10 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using System;
 using System.Collections.Generic;
 using AirdPro.Converters;
+using AirdPro.Domains.Convert;
 using AirdPro.DomainsCore.Aird;
 using pwiz.CLI.msdata;
 
@@ -17,14 +19,24 @@ namespace AirdPro.Algorithms
 {
     public abstract class ICompressor
     {
-        protected IConverter converter;
+        public bool multiThread = true;
+        public int mzPrecision = 10000;
+        public bool ignoreZero = true;
+        public bool includeCV = true;
+        public int digit = 8;
         public ICompressor(IConverter converter)
         {
-            this.converter = converter;
+            this.multiThread = converter.jobInfo.jobParams.threadAccelerate;
+            this.mzPrecision = converter.jobInfo.jobParams.mzPrecision;
+            this.ignoreZero = converter.jobInfo.jobParams.ignoreZeroIntensity;
+            this.includeCV = true;
+            this.digit = converter.jobInfo.jobParams.digit;
         }
 
-        public abstract void compressMS1(BlockIndex index);
+        public abstract void compressMS1(IConverter converter, BlockIndex index);
 
-        public abstract void compressMS2(List<MsIndex> tempIndexList, BlockIndex index);
+        public abstract void compressMS2(IConverter converter, List<MsIndex> ms2List, BlockIndex index);
+
+        public abstract void compress(Spectrum spectrum, TempScan ts);
     }
 }

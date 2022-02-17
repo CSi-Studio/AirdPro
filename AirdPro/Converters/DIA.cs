@@ -73,13 +73,13 @@ namespace AirdPro.Converters
         {
             int parentNum = 0;
             jobInfo.log("Preprocessing:" + totalSize, "Preprocessing");
-            int proprogress = 0;
+            int progress = 0;
             
             // 预处理所有的MS谱图,将MS1与MS2的信息扫描以后放入对应的内存对象中
             for (int i = 0; i < totalSize; i++)
             {
-                proprogress++;
-                jobInfo.log(null, "Pre:" + proprogress + "/" + totalSize);
+                progress++;
+                jobInfo.log(null, "Pre:" + progress + "/" + totalSize);
                 Spectrum spectrum = spectrumList.spectrum(i);
                 string msLevel = parseMsLevel(spectrum);
                 //如果这个谱图是MS1                          
@@ -187,37 +187,19 @@ namespace AirdPro.Converters
         private void parseAndStoreMS2Block()
         {
             jobInfo.log("Start Processing MS2 List");
-            ICompressor compressor;
-
-            switch (jobInfo.jobParams.airdAlgorithm)
-            {
-                case 1:
-                    compressor = new ZDPD(this);
-                    break;
-                case 2:
-                    compressor = new ZDVB(this);
-                    break;
-                case 3:
-                    compressor = new StackZDPD(this);
-                    break;
-                default:
-                    compressor = new ZDPD(this);
-                    break;
-            }
-
             foreach (double key in ms2Table.Keys)
             {
-                List<MsIndex> tempIndexList = ms2Table[key] as List<MsIndex>;
+                List<MsIndex> ms2List = ms2Table[key] as List<MsIndex>;
                 WindowRange range = rangeTable[key] as WindowRange;
-                //为每一个key组创建一个SwathBlock
-                BlockIndex index = new BlockIndex();
+                
+                BlockIndex index = new BlockIndex(); //为每一个key组创建一个SwathBlock
                 index.level = 2;
                 index.startPtr = startPosition;
                 index.setWindowRange(range);
 
                 jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);
                 progress++;
-                compressor.compressMS2(tempIndexList, index);
+                compressor.compressMS2(this, ms2List, index);
                 index.endPtr = startPosition;
                 indexList.Add(index);
                 jobInfo.log("MS2 Group Finished:" + progress + "/" + ms2Table.Keys.Count);

@@ -23,11 +23,12 @@ namespace AirdPro.DomainsCore.Aird
         public byte[] intArrayBytes;
         public byte[] tagArrayBytes;
 
-        public TempScanSZDPD(List<int> nums, List<float> rts, List<long> tics)
+        public TempScanSZDPD(List<int> nums, List<float> rts, List<long> tics, List<List<CV>> cvs)
         {
             this.nums = nums;
             this.rts = rts;
             this.tics = tics;
+            this.cvs = cvs;
         }
 
         public TempScanSZDPD(List<int> nums, List<float> rts, byte[] mzArrayBytes, byte[] intArrayBytes, byte[] tagArrayBytes)
