@@ -39,7 +39,7 @@ namespace AirdPro.Converters
                 {
                     readVendorFile(); //准备读取Vendor文件
                     initGlobalVar(); //初始化全局变量
-                    preProcess(); //MS1和MS2分开建立索引
+                    pretreatment(); //MS1和MS2分开建立索引
                     doWithMS1Block(); //处理MS1,并将索引写入文件流中
                     doWithMS2Block(); //处理MS2,并将索引写入文件流中
                     writeToAirdInfoFile(); //将Info数据写入文件
@@ -51,16 +51,14 @@ namespace AirdPro.Converters
 
         private void initGlobalVar()
         {
-            totalSize = spectrumList.size();
             progress = 0;
-            jobInfo.log("Total Spectra:" + totalSize);
             startPosition = 0;
         }
 
-        private void preProcess()
+        private void pretreatment()
         {
             int parentNum = 0;
-            jobInfo.log("Preprocessing:" + totalSize, "Preprocessing");
+            jobInfo.log("Pretreatment:" + totalSize, "Pretreatment");
             for (var i = 0; i < totalSize; i++)
             {
                 Spectrum spectrum = spectrumList.spectrum(i);
@@ -169,7 +167,7 @@ namespace AirdPro.Converters
                     upperOffset = (float) double.Parse(upperOffsetStr);
                 }
 
-                ms2.charge = getPrecursorCharge(spectrum);
+                ms2.charge = parsePrecursorCharge(spectrum);
                 ms2.mz = mz;
                 ms2.mzStart = mz - lowerOffset;
                 ms2.mzEnd = mz + upperOffset;

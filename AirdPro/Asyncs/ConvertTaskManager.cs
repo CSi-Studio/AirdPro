@@ -145,6 +145,14 @@ namespace AirdPro.Asyncs
             {
                 converter = new Common(jobInfo);
             }
+            // else if (jobInfo.type.Equals(AirdType.DDA_PASEF))
+            // {
+            //     converter = new DDAPasef(jobInfo);
+            // }
+            else if (jobInfo.type.Equals(AirdType.DIA_PASEF))
+            {
+                converter = new DIAPasef(jobInfo);
+            }
 
             switch (jobInfo.jobParams.airdAlgorithm)
             {

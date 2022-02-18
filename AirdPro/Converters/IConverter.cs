@@ -19,6 +19,7 @@ using pwiz.CLI.data;
 using pwiz.CLI.msdata;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -42,12 +43,12 @@ namespace AirdPro.Converters
         
         protected List<BlockIndex> indexList = new List<BlockIndex>(); //用于存储的全局的SWATH List
         protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,key为mz
-        public List<MsIndex> ms1List = new List<MsIndex>(); //用于存放MS1索引及基础信息
+        public ConcurrentBag<MsIndex> ms1List = new ConcurrentBag<MsIndex>(); //用于存放MS1索引及基础信息,泛型为MsIndex
         protected Hashtable featuresMap = new Hashtable();
         public ICompressor compressor;
-        protected int ms1Size = 0;
+        
         protected long fileSize; //厂商文件大小
-        protected long startPosition; //文件指针
+        protected long startPosition = 0; //文件指针
         protected int totalSize; //总计的谱图数目
 
         protected string activator; //HCD,CID....
@@ -232,64 +233,6 @@ namespace AirdPro.Converters
             }
         }
 
-        protected double getPrecursorIsolationWindowParams(Spectrum spectrum, CVID cvid)
-        {
-            double result = -1;
-            var retryTimes = 3;
-            while (result < 0 && retryTimes > 0)
-            {
-                try
-                {
-                    Precursor precursor = spectrum.precursors[0];
-                    result = double.Parse(precursor.isolationWindow.cvParamChild(cvid).value.ToString());
-                }
-                catch (FormatException e)
-                {
-                    jobInfo.log(cvid + "-重试次数-" + retryTimes+"-Result:"+result);
-                    jobInfo.log(e.StackTrace);
-                }
-                retryTimes--;
-            }
-
-            if (result < 0)
-            {
-                throw new Exception("Parse Double Error:" + result);
-            }
-            return result;
-        }
-
-        protected int getPrecursorCharge(Spectrum spectrum)
-        {
-            int result = 0;
-            var retryTimes = 3;
-            while (result < 0 && retryTimes > 0)
-            {
-                try
-                {
-                    Precursor precursor = spectrum.precursors[0];
-                    if (precursor.selectedIons == null || precursor.selectedIons[0].cvParamChild(CVID.MS_charge_state)
-                        .cvid.Equals(CVID.CVID_Unknown))
-                    {
-                        return 0;
-                    }
-                    
-                    result = int.Parse(precursor.selectedIons[0].cvParamChild(CVID.MS_charge_state).value.ToString());
-                }
-                catch (FormatException e)
-                {
-                    jobInfo.log("Charge-重试次数-" + retryTimes + "-Result:" + result);
-                    jobInfo.log(e.StackTrace);
-                }
-                retryTimes--;
-            }
-
-            if (result < 0)
-            {
-                throw new Exception("Parse Integer Error:" + result);
-            }
-            return result;
-        }
-
         protected void readVendorFile()
         {
             jobInfo.log("Prepare to Parse Vendor File", "Prepare");
@@ -306,7 +249,8 @@ namespace AirdPro.Converters
             }
             else
             {
-                jobInfo.log("Adapting Finished");
+                totalSize = spectrumList.size();
+                jobInfo.log("Adapting Finished, Total Spectra:"+ totalSize);
             }
 
             if (jobInfo.format.Equals(FileFormat.WIFF))
@@ -412,10 +356,10 @@ namespace AirdPro.Converters
            
             try
             {
-                double mz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
-                double lowerOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_lower_offset);
-                double upperOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_upper_offset);
-                int charge = getPrecursorCharge(spectrum);
+                double mz = parsePrecursorParams(spectrum, CVID.MS_isolation_window_target_m_z);
+                double lowerOffset = parsePrecursorParams(spectrum, CVID.MS_isolation_window_lower_offset);
+                double upperOffset = parsePrecursorParams(spectrum, CVID.MS_isolation_window_upper_offset);
+                int charge = parsePrecursorCharge(spectrum);
                 ms2.charge = charge;
                 ms2.mz = mz;
                 ms2.mzStart = mz - lowerOffset;
@@ -461,6 +405,64 @@ namespace AirdPro.Converters
             compressor.compressMS1(this,index);
             index.endPtr = startPosition;
             indexList.Add(index);
+        }
+
+        protected double parsePrecursorParams(Spectrum spectrum, CVID cvid)
+        {
+            double result = -1;
+            var retryTimes = 3;
+            while (result < 0 && retryTimes > 0)
+            {
+                try
+                {
+                    Precursor precursor = spectrum.precursors[0];
+                    result = double.Parse(precursor.isolationWindow.cvParamChild(cvid).value.ToString());
+                }
+                catch (FormatException e)
+                {
+                    jobInfo.log(cvid + "-重试次数-" + retryTimes + "-Result:" + result);
+                    jobInfo.log(e.StackTrace);
+                }
+                retryTimes--;
+            }
+
+            if (result < 0)
+            {
+                throw new Exception("Parse Double Error:" + result);
+            }
+            return result;
+        }
+
+        protected int parsePrecursorCharge(Spectrum spectrum)
+        {
+            int result = 0;
+            var retryTimes = 3;
+            while (result < 0 && retryTimes > 0)
+            {
+                try
+                {
+                    Precursor precursor = spectrum.precursors[0];
+                    if (precursor.selectedIons == null || precursor.selectedIons[0].cvParamChild(CVID.MS_charge_state)
+                        .cvid.Equals(CVID.CVID_Unknown))
+                    {
+                        return 0;
+                    }
+
+                    result = int.Parse(precursor.selectedIons[0].cvParamChild(CVID.MS_charge_state).value.ToString());
+                }
+                catch (FormatException e)
+                {
+                    jobInfo.log("Charge-重试次数-" + retryTimes + "-Result:" + result);
+                    jobInfo.log(e.StackTrace);
+                }
+                retryTimes--;
+            }
+
+            if (result < 0)
+            {
+                throw new Exception("Parse Integer Error:" + result);
+            }
+            return result;
         }
 
         protected AirdInfo buildBasicInfo()

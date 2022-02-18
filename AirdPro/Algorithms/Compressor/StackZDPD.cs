@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using AirdPro.Converters;
 using AirdPro.DomainsCore.Aird;
@@ -24,18 +25,20 @@ namespace AirdPro.Algorithms
     {
         public StackZDPD(IConverter converter) : base(converter){}
 
-        override 
-        public void compressMS1(IConverter converter, BlockIndex index)
+        public override void compressMS1(IConverter converter, BlockIndex index)
         {
-            int layers = (int)Math.Pow(2, converter.jobInfo.jobParams.digit); //计算堆叠层数
+            int layers = (int)Math.Pow(2, digit); //计算堆叠层数
             int iter = converter.ms1List.Count % layers == 0 ? (converter.ms1List.Count / layers) : (converter.ms1List.Count / layers + 1); //计算循环周期
-            if (converter.jobInfo.jobParams.threadAccelerate)
+            MsIndex[] ms1List = converter.ms1List.ToArray();
+            if (multiThread)
             {
                 Hashtable table = Hashtable.Synchronized(new Hashtable());
+                int process = 0;
                 //使用多线程处理数据提取与压缩
                 Parallel.For(0, iter, (i, ParallelLoopState) =>
                 {
-                    converter.jobInfo.log(null, "MS1:" + i + "/" + iter);
+                    Interlocked.Increment(ref process);
+                    converter.jobInfo.log(null, "MS1:" + process + "/" + iter);
                     List<float> rts = new List<float>();
                     List<int> nums = new List<int>();
                     List<long> tics = new List<long>();
@@ -44,11 +47,11 @@ namespace AirdPro.Algorithms
                     for (int k = 0; k < layers; k++)
                     {
                         int realNum = i * layers + k;
-                        if (realNum >= converter.ms1List.Count)
+                        if (realNum >= ms1List.Length)
                         {
                             break;
                         }
-                        MsIndex scanIndex = converter.ms1List[realNum];
+                        MsIndex scanIndex = ms1List[realNum];
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
                         tics.Add(scanIndex.tic);
@@ -81,7 +84,7 @@ namespace AirdPro.Algorithms
                         {
                             break;
                         }
-                        MsIndex scanIndex = converter.ms1List[realNum];
+                        MsIndex scanIndex = ms1List[realNum];
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
                         tics.Add(scanIndex.tic);
@@ -96,13 +99,12 @@ namespace AirdPro.Algorithms
             }
         }
 
-        override
-        public void compressMS2(IConverter converter, List<MsIndex> ms2List, BlockIndex index)
+        public override void compressMS2(IConverter converter, List<MsIndex> ms2List, BlockIndex index)
         {
-            int layers = (int)Math.Pow(2, converter.jobInfo.jobParams.digit); //计算堆叠层数
+            int layers = (int)Math.Pow(2, digit); //计算堆叠层数
             int iter = ms2List.Count % layers == 0 ? (ms2List.Count / layers) : (ms2List.Count / layers + 1); //计算循环周期
 
-            if (converter.jobInfo.jobParams.threadAccelerate)
+            if (multiThread)
             {
                 Hashtable table = Hashtable.Synchronized(new Hashtable());
                 //使用多线程处理数据提取与压缩

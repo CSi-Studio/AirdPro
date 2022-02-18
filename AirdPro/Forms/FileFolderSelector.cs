@@ -45,7 +45,7 @@ namespace AirdPro.Forms
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            String expType = null;
+            string expType = null;
             for (int i = 0; i < gBoxMode.Controls.Count; i++)
             {
                 var cb = gBoxMode.Controls[i] as RadioButton;
@@ -98,11 +98,6 @@ namespace AirdPro.Forms
                     tbPaths.Text = tbPaths.Text + filePath + Const.Change_Line;
                 }
             }
-        }
-
-        private void addFile(string fileName)
-        {
-            tbPaths.Text = tbPaths.Text + fileName + Const.Change_Line;
         }
     }
 }

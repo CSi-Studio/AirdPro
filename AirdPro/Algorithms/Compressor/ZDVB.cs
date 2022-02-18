@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using AirdPro.Constants;
 using AirdPro.Converters;
@@ -26,18 +27,20 @@ namespace AirdPro.Algorithms
     {
         public ZDVB(IConverter converter) : base(converter) {}
 
-        override
-       public void compressMS1(IConverter converter, BlockIndex index)
-        {
+        
+       public override void compressMS1(IConverter converter, BlockIndex index)
+       {
+           MsIndex[] ms1List = converter.ms1List.ToArray();
             if (multiThread)
             {
                 Hashtable table = Hashtable.Synchronized(new Hashtable());
-
+                int process = 0;
                 //使用多线程处理数据提取与压缩
                 Parallel.For(0, converter.ms1List.Count, (i, ParallelLoopState) =>
                 {
-                    converter.jobInfo.log(null, "MS1:" + i + "/" + converter.ms1List.Count);
-                    MsIndex scanIndex = converter.ms1List[i];
+                    Interlocked.Increment(ref process);
+                    converter.jobInfo.log(null, "MS1:" + process + "/" + converter.ms1List.Count);
+                    MsIndex scanIndex = ms1List[i];
                     TempScan ts = new TempScan(scanIndex.num, scanIndex.rt, scanIndex.tic, scanIndex.cvList);
                     compress(converter.spectrumList.spectrum(scanIndex.num, true), ts);
                     table.Add(i, ts);
@@ -49,16 +52,15 @@ namespace AirdPro.Algorithms
                 for (int i = 0; i < converter.ms1List.Count; i++)
                 {
                     converter.jobInfo.log(null, "MS1:" + i + "/" + converter.ms1List.Count);
-                    MsIndex scanIndex = converter.ms1List[i];
+                    MsIndex scanIndex = ms1List[i];
                     TempScan ts = new TempScan(scanIndex.num, scanIndex.rt, scanIndex.tic, scanIndex.cvList);
                     compress(converter.spectrumList.spectrum(scanIndex.num, true), ts);
                     converter.addToIndex(index, ts);
                 }
             }
         }
-
-        override
-        public void compressMS2(IConverter converter, List<MsIndex> ms2List, BlockIndex index)
+        
+        public override void compressMS2(IConverter converter, List<MsIndex> ms2List, BlockIndex index)
         {
             if (multiThread)
             {
@@ -83,9 +85,8 @@ namespace AirdPro.Algorithms
                 }
             }
         }
-
-        override 
-        public void compress(Spectrum spectrum, TempScan ts)
+        
+        public override void compress(Spectrum spectrum, TempScan ts)
         {
             BinaryDataDouble mzData = spectrum.getMZArray().data;
             BinaryDataDouble intData = spectrum.getIntensityArray().data;

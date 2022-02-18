@@ -35,7 +35,7 @@ namespace AirdPro.Converters
                 {
                     readVendorFile();//准备读取Vendor文件
                     initGlobalVar();//初始化全局变量
-                    preProgress();//预处理谱图,将MS1和MS2谱图分开存储
+                    pretreatment();//预处理谱图,将MS1和MS2谱图分开存储
                     parseAndStoreMS1Block();//处理MS1,并将索引写入文件流中
                     parseAndStoreMS2Block();//处理MS2,并将索引写入文件流中
                     writeToAirdInfoFile();//将Info数据写入文件
@@ -54,7 +54,7 @@ namespace AirdPro.Converters
         }
 
         //Step1. 解析MS1和MS2谱图
-        protected void preProgress()
+        protected void pretreatment()
         {
             int parentNum = 0;
             jobInfo.log("Preprocessing:" + totalSize, "Preprocessing");

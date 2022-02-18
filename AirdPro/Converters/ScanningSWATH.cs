@@ -69,9 +69,9 @@ namespace AirdPro.Converters
             Spectrum spectrum = spectrumList.spectrum(0);
             while (spectrum.cvParamChild(CVID.MS_ms_level).value.ToString().Equals(MsLevel.MS2))
             {
-                double mz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
-                double lowerOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_lower_offset);
-                double upperOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_upper_offset);
+                double mz = parsePrecursorParams(spectrum, CVID.MS_isolation_window_target_m_z);
+                double lowerOffset = parsePrecursorParams(spectrum, CVID.MS_isolation_window_lower_offset);
+                double upperOffset = parsePrecursorParams(spectrum, CVID.MS_isolation_window_upper_offset);
 
                 if (rangeMap.Contains(mz))
                 {
@@ -132,7 +132,7 @@ namespace AirdPro.Converters
             {
                 return;
             }
-            double targetMz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
+            double targetMz = parsePrecursorParams(spectrum, CVID.MS_isolation_window_target_m_z);
             ArrayList ms2List = null;
             if (rangeMap.Contains(targetMz))
             {
@@ -140,9 +140,9 @@ namespace AirdPro.Converters
             }
             else
             {
-                double mz = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_target_m_z);
-                double lowerOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_lower_offset);
-                double upperOffset = getPrecursorIsolationWindowParams(spectrum, CVID.MS_isolation_window_upper_offset);
+                double mz = parsePrecursorParams(spectrum, CVID.MS_isolation_window_target_m_z);
+                double lowerOffset = parsePrecursorParams(spectrum, CVID.MS_isolation_window_lower_offset);
+                double upperOffset = parsePrecursorParams(spectrum, CVID.MS_isolation_window_upper_offset);
 
                 WindowRange range = new WindowRange(mz - lowerOffset, mz + upperOffset, mz);
                 BlockIndex addIndex = new BlockIndex();

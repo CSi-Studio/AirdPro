@@ -12,7 +12,9 @@ namespace AirdPro.Constants
 {
     public class AirdType
     {
-        public static string DIA_SWATH = "DIA_SWATH"; // Precursor-mz -> MS2 Group
+        public static string DIA_PASEF = "DIA_PASEF"; 
+        public static string DDA_PASEF = "DDA_PASEF"; 
+        public static string DIA_SWATH = "DIA"; // Precursor-mz -> MS2 Group
         public static string PRM = "PRM"; // Precursor-mz -> MS2 Group
         public static string SCANNING_SWATH = "SCANNING_SWATH"; // 
         public static string DDA = "DDA"; // MS1 -> MS2 Group
