@@ -37,9 +37,6 @@ namespace AirdPro.Converters
                 {
                     readVendorFile();//准备读取Vendor文件
                     buildWindowsRanges();  //Getting SWATH Windows
-                    computeOverlap(); //Compute Overlap
-                    adjustOverlap(); //Adjust Overlap
-                    initGlobalVar();//初始化全局变量
                     pretreatment();//预处理谱图,将MS1和MS2谱图分开存储
                     parseAndStoreMS1Block();
                     parseAndStoreMS2Block();
@@ -47,17 +44,6 @@ namespace AirdPro.Converters
                 }
             }
             finish();
-        }
-
-        //初始化全局变量
-        private void initGlobalVar()
-        {
-            startPosition = 0;//文件的存储位置,每一次解析完就会将指针往前挪移
-            jobInfo.log("SWATH Windows Size:" + ranges.Count).log("Overlap:" + overlap);
-            foreach (WindowRange range in ranges)
-            {
-                rangeTable.Add(range.mz, range);
-            }
         }
 
         //解析MS1和MS2谱图
@@ -129,7 +115,9 @@ namespace AirdPro.Converters
                 spectrum = spectrumList.spectrum(i);
             }
             
-            jobInfo.log("Finished Getting Windows");
+            computeOverlap();
+            adjustOverlap();
+            jobInfo.log("Finished Getting Windows, Total SWATH Windows:" +ranges.Count);
         }
 
         //计算窗口间的重叠区域的大小
@@ -159,6 +147,11 @@ namespace AirdPro.Converters
             {
                 ranges[i].start = ranges[i].start + (overlap / 2);
                 ranges[i].end = ranges[i].end - (overlap / 2);
+            }
+
+            foreach (WindowRange range in ranges)
+            {
+                rangeTable.Add(range.mz, range);
             }
         }
 

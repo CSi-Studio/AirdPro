@@ -8,8 +8,10 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using System;
 using System.Collections;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using AirdPro.Constants;
 using AirdPro.DomainsCore.Aird;
@@ -19,7 +21,6 @@ namespace AirdPro.Converters
 {
     internal class Common : IConverter
     {
-        private int progress; //进度计数器
 
         public Common(JobInfo jobInfo) : base(jobInfo)
         {
@@ -34,21 +35,12 @@ namespace AirdPro.Converters
                 using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                 {
                     readVendorFile(); //准备读取Vendor文件
-                    initGlobalVar();
                     doProgress(); //开始逐帧解析数据
                     writeToAirdInfoFile(); //将Info数据写入文件
                 }
             }
 
             finish();
-        }
-
-        private void initGlobalVar()
-        {
-            totalSize = spectrumList.size();
-            progress = 0;
-            jobInfo.log("Total Spectrums Size:" + totalSize);
-            startPosition = 0;
         }
 
         //解析MS1和MS2谱图
@@ -61,34 +53,46 @@ namespace AirdPro.Converters
             {
                 var ms1Table = Hashtable.Synchronized(new Hashtable());
                 var ms2Table = Hashtable.Synchronized(new Hashtable());
+                int progress = 0;
                 //使用多线程处理数据提取与压缩
                 Parallel.For(0, totalSize, (i, ParallelLoopState) =>
                 {
                     jobInfo.log(null, progress + "/" + totalSize);
-                    progress++;
-                    var spectrum = spectrumList.spectrum(i, true);
-                    if (spectrum.scanList.scans.Count != 1)
+                    Interlocked.Increment(ref progress);
+                    try
                     {
-                        ParallelLoopState.Break();
-                        return;
-                    }
-                   
-                    var scan = spectrum.scanList.scans[0];
-                    var ts = new TempScan(i, parseRT(scan), parseTIC(spectrum), CV.trans(spectrum));
-
-                    compressor.compress(spectrum, ts);
-                    var msLevel = parseMsLevel(spectrum);
-                    if (msLevel.Equals(MsLevel.MS1))
-                    {
-                        ms1Table.Add(i, ts);
-                    }
-                    else
-                    {
-                        if (activator == null)
+                        var spectrum = spectrumList.spectrum(i, true);
+                        if (spectrum.scanList.scans.Count != 1)
                         {
-                            parseActivator(spectrum.precursors[0].activation);
+                            ParallelLoopState.Break();
+                            return;
                         }
-                        ms2Table.Add(i, ts);
+
+                        var scan = spectrum.scanList.scans[0];
+                        var ts = new TempScan(i, parseRT(scan), parseTIC(spectrum), CV.trans(spectrum));
+                        ts.cvs = CV.trans(spectrum);
+                        if (scan.cvParams != null)
+                        {
+                            ts.cvs.AddRange(CV.trans(scan.cvParams));
+                        }
+                        compressor.compress(spectrum, ts);
+                        var msLevel = parseMsLevel(spectrum);
+                        if (msLevel.Equals(MsLevel.MS1))
+                        {
+                            ms1Table.Add(i, ts);
+                        }
+                        else
+                        {
+                            if (activator == null)
+                            {
+                                parseActivator(spectrum.precursors[0].activation);
+                            }
+                            ms2Table.Add(i, ts);
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine("Num:"+i+"Exception!"+exception.Message);
                     }
                 });
               
