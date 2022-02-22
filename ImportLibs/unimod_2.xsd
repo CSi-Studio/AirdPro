@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2007 sp2 (http://www.altova.com) by John S Cottrell (Matrix Science Ltd) -->
 <!--
-  @(#)$Source: /vol/cvsroot/parser/xml/schema/unimod_2.xsd,v $
-  @(#)$Revision: 1.8 $
-  @(#)$Name: MSPARSER_RELBRN_2_6_1 $
+  @(#)$Source: parser/xml/schema/unimod_2.xsd $
+  @(#)$Revision: 1b450440f9c97e1e41d0fc6016a27d68951d4532 | MSPARSER_REL_2_8_0-20210727-0-gc32e976769 $
+  @(#)$Name$
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:umod="http://www.unimod.org/xmlns/schema/unimod_2" targetNamespace="http://www.unimod.org/xmlns/schema/unimod_2" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:annotation>
