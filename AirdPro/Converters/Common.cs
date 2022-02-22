@@ -54,8 +54,8 @@ namespace AirdPro.Converters
                 var ms1Table = Hashtable.Synchronized(new Hashtable());
                 var ms2Table = Hashtable.Synchronized(new Hashtable());
                 int progress = 0;
-                //使用多线程处理数据提取与压缩
-                Parallel.For(0, totalSize, (i, ParallelLoopState) =>
+           
+                for(int i = 0; i < totalSize; i++)
                 {
                     jobInfo.log(null, progress + "/" + totalSize);
                     Interlocked.Increment(ref progress);
@@ -64,8 +64,9 @@ namespace AirdPro.Converters
                         var spectrum = spectrumList.spectrum(i, true);
                         if (spectrum.scanList.scans.Count != 1)
                         {
-                            ParallelLoopState.Break();
-                            return;
+                            //ParallelLoopState.Break();
+                            //return;
+                            break;
                         }
 
                         var scan = spectrum.scanList.scans[0];
@@ -92,10 +93,10 @@ namespace AirdPro.Converters
                     }
                     catch (Exception exception)
                     {
-                        Console.WriteLine("Num:"+i+"Exception!"+exception.Message);
+                        Console.WriteLine("Num:" + i + "Exception!" + exception.Message);
                     }
-                });
-              
+                }
+
                 outputWithOrder(ms1Table, ms1Index);
                 outputWithOrder(ms2Table, ms2Index);
             }
