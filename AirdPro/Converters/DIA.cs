@@ -10,15 +10,12 @@
 
 using AirdPro.Constants;
 using AirdPro.DomainsCore.Aird;
-using AirdPro.Utils;
 using pwiz.CLI.cv;
 using pwiz.CLI.msdata;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using AirdPro.Domains.Convert;
 
 namespace AirdPro.Converters

@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using pwiz.CLI.cv;
 using pwiz.CLI.data;
-using pwiz.CLI.msdata;
 
 namespace AirdPro.DomainsCore.Aird
 {
@@ -32,8 +31,7 @@ namespace AirdPro.DomainsCore.Aird
             CVID.MS_CID,
             CVID.MS_ECD,
             CVID.MS_ETD,
-            CVID.MS_collision_energy,
-
+            CVID.MS_collision_energy
         };
         
         public string cvid;
