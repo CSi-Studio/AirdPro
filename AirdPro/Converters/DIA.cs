@@ -38,8 +38,7 @@ namespace AirdPro.Converters
                 using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                 {
                     readVendorFile();//准备读取Vendor文件
-                    buildWindowsRanges();  //Getting SWATH Windows
-                   
+                    // buildWindowsRanges();  //Getting SWATH Windows
                     pretreatment();//预处理谱图,将MS1和MS2谱图分开存储
                     parseAndStoreMS1Block();
                     parseAndStoreMS2Block();
@@ -78,11 +77,6 @@ namespace AirdPro.Converters
                 lowerOffset = parsePrecursorParams(spectrum, CVID.MS_isolation_window_lower_offset);
                 upperOffset = parsePrecursorParams(spectrum, CVID.MS_isolation_window_upper_offset);
                 WindowRange range = new WindowRange(mz - lowerOffset, mz + upperOffset, mz);
-                Hashtable features = new Hashtable();
-                features.Add(Features.original_width, lowerOffset + upperOffset);
-                features.Add(Features.original_precursor_mz_start, mz - lowerOffset);
-                features.Add(Features.original_precursor_mz_end, mz + upperOffset);
-                range.features = FeaturesUtil.toString(features);
                 ranges.Add(range);
                 i++;
                 spectrum = spectrumList.spectrum(i);
@@ -90,8 +84,8 @@ namespace AirdPro.Converters
 
             jobInfo.log("Finished Getting Windows");
 
-            computeOverlap();
-            adjustOverlap();
+            // computeOverlap();
+            // adjustOverlap();
         }
 
         //计算窗口间的重叠区域的大小
@@ -152,10 +146,19 @@ namespace AirdPro.Converters
                 //如果这个谱图是MS2
                 if (msLevel.Equals(MsLevel.MS2))
                 {
-                    addToMS2Map(parseMS2(spectrum, i, parentNum));
+                    MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
+                    if (!rangeTable.Contains(ms2Index.precursorMz))
+                    {
+                        WindowRange range = new WindowRange(ms2Index.mzStart, ms2Index.mzEnd, ms2Index.precursorMz);
+                        ranges.Add(range);
+                        rangeTable.Add(ms2Index.precursorMz, range);
+                    }
+
+                    addToMS2Map(ms2Index);
                 }
             }
-           
+
+            jobInfo.log("Total SWATH Windows:" + ranges.Count);
             //需要填充离ms2向左搜索最近的一个ms1的num作为parentNum
             jobInfo.log("Effective MS1 List Size:" + ms1List.Count);
             jobInfo.log("MS2 Group List Size:" + ms2Table.Count);
@@ -166,10 +169,10 @@ namespace AirdPro.Converters
         {
             jobInfo.log("Start Processing MS2 List");
             int progress = 0;
-            foreach (double key in ms2Table.Keys)
+            foreach (double precursorMz in ms2Table.Keys)
             {
-                List<MsIndex> ms2List = ms2Table[key] as List<MsIndex>;
-                WindowRange range = rangeTable[key] as WindowRange;
+                List<MsIndex> ms2List = ms2Table[precursorMz] as List<MsIndex>;
+                WindowRange range = rangeTable[precursorMz] as WindowRange;
                 
                 BlockIndex index = new BlockIndex(); //为每一个key组创建一个SwathBlock
                 index.level = 2;

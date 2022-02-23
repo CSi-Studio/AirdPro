@@ -95,6 +95,16 @@ namespace AirdPro.DomainsCore.Aird
         public string rtUnit;
 
         /**
+         * ion mobility ccs unit
+         */
+        public string ccsUnit;
+
+        /**
+         * ion mobility type
+         */
+        public string mobilityType;
+
+        /**
          * polarity
          */
         public string polarity;

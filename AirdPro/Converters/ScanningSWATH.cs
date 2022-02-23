@@ -158,7 +158,7 @@ namespace AirdPro.Converters
             }
             try
             {
-                TempScan ts = new TempScan(i, parseRT(spectrum.scanList.scans[0]), parseTIC(spectrum), CV.trans(spectrum));
+                TempScan ts = new TempScan(i, parseRT(spectrum.scanList.scans[0]), parseTIC(spectrum), CV.trans(spectrum.cvParams));
                 compressor.compress(spectrum, ts);
                 ms2List.Add(ts);
             }

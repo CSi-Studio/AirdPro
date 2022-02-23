@@ -33,19 +33,19 @@ namespace AirdPro.Algorithms
             MsIndex[] ms1List = converter.ms1List.ToArray();
             if (multiThread)
             {
-                Hashtable table = Hashtable.Synchronized(new Hashtable());
+                Hashtable ms1Table = Hashtable.Synchronized(new Hashtable());
                 int process = 0;
                 //使用多线程处理数据提取与压缩
                 Parallel.For(0, converter.ms1List.Count, (i, ParallelLoopState) =>
                 {
                     Interlocked.Increment(ref process);
                     converter.jobInfo.log(null, "MS1:" + process + "/" + converter.ms1List.Count);
-                    MsIndex scanIndex = ms1List[i];
-                    TempScan ts = new TempScan(scanIndex.num, scanIndex.rt, scanIndex.tic, scanIndex.cvList);
-                    compress(converter.spectrumList.spectrum(scanIndex.num, true), ts);
-                    table.Add(i, ts);
+                    MsIndex ms1Index = ms1List[i];
+                    TempScan ts = new TempScan(ms1Index.num, ms1Index.rt, ms1Index.tic, ms1Index.cvList);
+                    compress(converter.spectrumList.spectrum(ms1Index.num, true), ts);
+                    ms1Table.Add(i, ts);
                 });
-                converter.outputWithOrder(table, index);
+                converter.writeToFile(ms1Table, index);
             }
             else
             {
@@ -68,19 +68,19 @@ namespace AirdPro.Algorithms
                 //使用多线程处理数据提取与压缩
                 Parallel.For(0, ms2List.Count, (i, ParallelLoopState) =>
                 {
-                    MsIndex msIndex = ms2List[i];
-                    TempScan ts = new TempScan(msIndex.num, msIndex.rt, msIndex.tic, msIndex.cvList);
-                    compress(converter.spectrumList.spectrum(msIndex.num, true), ts);
+                    MsIndex ms2Index = ms2List[i];
+                    TempScan ts = new TempScan(ms2Index.num, ms2Index.rt, ms2Index.tic, ms2Index.cvList);
+                    compress(converter.spectrumList.spectrum(ms2Index.num, true), ts);
                     table.Add(i, ts);
                 });
-                converter.outputWithOrder(table, index);
+                converter.writeToFile(table, index);
             }
             else
             {
-                foreach (MsIndex tempIndex in ms2List)
+                foreach (MsIndex ms2Index in ms2List)
                 {
-                    TempScan ts = new TempScan(tempIndex.num, tempIndex.rt, tempIndex.tic, tempIndex.cvList);
-                    compress(converter.spectrumList.spectrum(tempIndex.num, true), ts);
+                    TempScan ts = new TempScan(ms2Index.num, ms2Index.rt, ms2Index.tic, ms2Index.cvList);
+                    compress(converter.spectrumList.spectrum(ms2Index.num, true), ts);
                     converter.addToIndex(index, ts);
                 }
             }
@@ -91,6 +91,10 @@ namespace AirdPro.Algorithms
             BinaryDataDouble mzData = spectrum.getMZArray().data;
             BinaryDataDouble intData = spectrum.getIntensityArray().data;
             var size = mzData.Count;
+            if (size == 0)
+            {
+                return;
+            }
             int[] mzArray = new int[size];
             float[] intensityArray = new float[size];
             int j = 0;

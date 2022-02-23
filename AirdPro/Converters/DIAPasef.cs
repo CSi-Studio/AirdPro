@@ -36,7 +36,7 @@ namespace AirdPro.Converters
                 using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                 {
                     readVendorFile();//准备读取Vendor文件
-                    buildWindowsRanges();  //Getting SWATH Windows
+                    // buildWindowsRanges();  //Getting SWATH Windows
                     pretreatment();//预处理谱图,将MS1和MS2谱图分开存储
                     parseAndStoreMS1Block();
                     parseAndStoreMS2Block();
@@ -67,7 +67,8 @@ namespace AirdPro.Converters
                 }
                 if (msLevel.Equals(MsLevel.MS2))
                 {
-                    addToMS2Map(parseMS2(spectrum, i, parentNum));
+                    MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
+                    addToMS2Map(ms2Index);
                 }
             }
             jobInfo.log("Effective MS1 List Size:" + ms1List.Count);
