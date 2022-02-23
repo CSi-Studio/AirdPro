@@ -64,8 +64,8 @@ namespace AirdPro.Domains.Convert
             this.inputFilePath = inputFilePath;
             this.outputFolderPath = outputFolderPath;
             this.type = type;
-            // 二代压缩算法StackZDPD目前不支持COMMON和SCANNING_SWATH模式
-            if (type.Equals(AirdType.COMMON) || type.Equals(AirdType.SCANNING_SWATH))
+            // 二代压缩算法StackZDPD目前不支持COMMON模式
+            if (type.Equals(AirdType.COMMON) && jobParams.airdAlgorithm == 3)
             {
                 jobParams.airdAlgorithm = 1;  
             }

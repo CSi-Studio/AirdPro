@@ -30,15 +30,15 @@ namespace AirdPro.DomainsCore.Aird
         public int num;
 
         //前体的荷质比,precursor mz
-        public double mz;
+        public double precursorMz;
 
         //前体的带电量,未知时为0
-        public int charge;
+        public int precursorCharge;
 
-        //前体的荷质比窗口开始位置,已经经过ExperimentDO.overlap参数调整,precursor mz
+        //前体的荷质比窗口开始位置
         public double mzStart;
 
-        //前体的荷质比窗口结束位置,已经经过ExperimentDO.overlap参数调整,precursor mz
+        //前体的荷质比窗口结束位置
         public double mzEnd;
 
         //前体的荷质比窗口

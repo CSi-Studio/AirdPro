@@ -13,10 +13,12 @@ using System.Collections.Generic;
 
 namespace AirdPro.DomainsCore.Aird
 {
+    //包含mz,intensity数组
     public class TempScan:IComparable
     {
         public int num;
         public float rt;
+        public float ccs;
         public long tic;
         public List<CV> cvs;
 

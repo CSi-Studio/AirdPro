@@ -42,7 +42,7 @@ namespace AirdPro.Converters
         protected List<WindowRange> ranges = new List<WindowRange>(); //SWATH Window的窗口
         
         protected List<BlockIndex> indexList = new List<BlockIndex>(); //用于存储的全局的SWATH List
-        protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,key为mz
+        protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
         public ConcurrentBag<MsIndex> ms1List = new ConcurrentBag<MsIndex>(); //用于存放MS1索引及基础信息,泛型为MsIndex
         protected Hashtable featuresMap = new Hashtable();
         public ICompressor compressor;
@@ -56,7 +56,8 @@ namespace AirdPro.Converters
         protected string msType; //Profile, Centroided
         protected string polarity; //Negative, Positive
         protected string rtUnit; //Minute, Second
-
+        protected string ccsUnit;
+        protected string mobilityType;
 
         public IConverter(JobInfo jobInfo)
         {
@@ -96,6 +97,28 @@ namespace AirdPro.Converters
             float time = float.Parse(cv.value.ToString());
             rtUnit = cv.unitsName;
             return time;
+        }
+
+        protected float parseMobility(Scan scan)
+        {
+            float ccs = 0f;
+            if (scan.hasCVParamChild(CVID.MS_inverse_reduced_ion_mobility))
+            {
+                CVParam cv = scan.cvParamChild(CVID.MS_inverse_reduced_ion_mobility); 
+                ccs = float.Parse(cv.value.ToString());
+                ccsUnit = cv.unitsName;
+                mobilityType = MobilityType.TIMS;
+            }
+
+            if (scan.hasCVParamChild(CVID.MS_ion_mobility_drift_time))
+            {
+                CVParam cv = scan.cvParamChild(CVID.MS_ion_mobility_drift_time);
+                ccs = float.Parse(cv.value.ToString());
+                ccsUnit = cv.unitsName;
+                mobilityType = MobilityType.DTIMS;
+            }
+
+            return ccs;
         }
 
         protected long parseTIC(Spectrum spectrum)
@@ -188,7 +211,7 @@ namespace AirdPro.Converters
 
 
 
-        public void outputWithOrder(Hashtable table, BlockIndex index)
+        public void writeToFile(Hashtable table, BlockIndex index)
         {
             ArrayList keys = new ArrayList(table.Keys);
             keys.Sort();
@@ -303,15 +326,15 @@ namespace AirdPro.Converters
 
         protected void addToMS2Map(MsIndex ms2Index)
         {
-            if (ms2Table.Contains(ms2Index.mz))
+            if (ms2Table.Contains(ms2Index.precursorMz))
             {
-                (ms2Table[ms2Index.mz] as List<MsIndex>).Add(ms2Index);
+                (ms2Table[ms2Index.precursorMz] as List<MsIndex>).Add(ms2Index);
             }
             else
             {
                 List<MsIndex> indexList = new List<MsIndex>();
                 indexList.Add(ms2Index);
-                ms2Table.Add(ms2Index.mz, indexList);
+                ms2Table.Add(ms2Index.precursorMz, indexList);
             }
         }
 
@@ -329,7 +352,7 @@ namespace AirdPro.Converters
             Scan scan = spectrum.scanList.scans[0];
             ms1.rt = parseRT(scan);
             ms1.tic = parseTIC(spectrum);
-            ms1.cvList = CV.trans(spectrum);
+            ms1.cvList = CV.trans(spectrum.cvParams);
             if (scan.cvParams != null)
             {
                 ms1.cvList.AddRange(CV.trans(scan.cvParams));
@@ -356,14 +379,14 @@ namespace AirdPro.Converters
            
             try
             {
-                double mz = parsePrecursorParams(spectrum, CVID.MS_isolation_window_target_m_z);
+                double precursorMz = parsePrecursorParams(spectrum, CVID.MS_isolation_window_target_m_z);
                 double lowerOffset = parsePrecursorParams(spectrum, CVID.MS_isolation_window_lower_offset);
                 double upperOffset = parsePrecursorParams(spectrum, CVID.MS_isolation_window_upper_offset);
                 int charge = parsePrecursorCharge(spectrum);
-                ms2.charge = charge;
-                ms2.mz = mz;
-                ms2.mzStart = mz - lowerOffset;
-                ms2.mzEnd = mz + upperOffset;
+                ms2.precursorCharge = charge;
+                ms2.precursorMz = precursorMz;
+                ms2.mzStart = precursorMz - lowerOffset;
+                ms2.mzEnd = precursorMz + upperOffset;
                 ms2.wid = lowerOffset + upperOffset;
             }
             catch (Exception e)
@@ -386,7 +409,7 @@ namespace AirdPro.Converters
             if (spectrum.scanList.scans.Count != 1) return ms2;
             Scan scan = spectrum.scanList.scans[0];
            
-            ms2.cvList = CV.trans(spectrum);
+            ms2.cvList = CV.trans(spectrum.cvParams);
             if (scan.cvParams != null)
             {
                 ms2.cvList.AddRange(CV.trans(scan.cvParams));
@@ -481,6 +504,8 @@ namespace AirdPro.Converters
             airdInfo.activator = activator;
             airdInfo.energy = energy;
             airdInfo.rtUnit = rtUnit;
+            airdInfo.ccsUnit = ccsUnit;
+            airdInfo.mobilityType = mobilityType;
             airdInfo.msType = msType;
             airdInfo.polarity = polarity;
             //Scan index and window range info

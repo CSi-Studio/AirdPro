@@ -64,7 +64,7 @@ namespace AirdPro.Algorithms
                     compress(spectrumGroup, ts);
                     table.Add(i, ts);
                 });
-                converter.outputWithOrder(table, index);
+                converter.writeToFile(table, index);
             }
             else
             {
@@ -133,7 +133,7 @@ namespace AirdPro.Algorithms
                     compress(spectrumGroup, ts);
                     table.Add(i, ts);
                 });
-                converter.outputWithOrder(table, index);
+                converter.writeToFile(table, index);
             }
             else
             {

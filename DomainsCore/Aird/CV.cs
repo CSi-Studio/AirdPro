@@ -17,6 +17,25 @@ namespace AirdPro.DomainsCore.Aird
 {
     public class CV
     {
+        private static List<CVID> skipList = new List<CVID>()
+        {
+            CVID.MS_scan_start_time,
+            CVID.MS_ms_level,
+            CVID.MS_MSn_spectrum,
+            CVID.MS_inverse_reduced_ion_mobility,
+            CVID.MS_TIC,
+            CVID.MS_negative_scan,
+            CVID.MS_positive_scan,
+            CVID.MS_profile_spectrum,
+            CVID.MS_centroid_spectrum,
+            CVID.MS_HCD,
+            CVID.MS_CID,
+            CVID.MS_ECD,
+            CVID.MS_ETD,
+            CVID.MS_collision_energy,
+
+        };
+        
         public string cvid;
         public object value;
         public string units;
@@ -36,23 +55,19 @@ namespace AirdPro.DomainsCore.Aird
             }
         }
 
-        public static List<CV> trans(Spectrum spectrum)
-        {
-            List<CV> cvList = new List<CV>();
-            CVParamList cvParamList = spectrum.cvParams;
-            foreach (var cvParam in cvParamList)
-            {
-                cvList.Add(new CV(cvParam));
-            }
-
-            return cvList;
-        }
-
         public static List<CV> trans(CVParamList paramList)
         {
+            if (paramList == null)
+            {
+                return null;
+            }
             List<CV> cvList = new List<CV>();
             foreach (var cvParam in paramList)
             {
+                if (skipList.Contains(cvParam.cvid))
+                {
+                    continue;
+                }
                 cvList.Add(new CV(cvParam));
             }
 

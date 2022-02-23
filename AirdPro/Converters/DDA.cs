@@ -116,7 +116,7 @@ namespace AirdPro.Converters
             }
            
             Scan scan = spectrum.scanList.scans[0];
-            ms1.cvList = CV.trans(spectrum);
+            ms1.cvList = CV.trans(spectrum.cvParams);
             if (scan.cvParams != null)
             {
                 ms1.cvList.AddRange(CV.trans(scan.cvParams));
@@ -167,8 +167,8 @@ namespace AirdPro.Converters
                     upperOffset = (float) double.Parse(upperOffsetStr);
                 }
 
-                ms2.charge = parsePrecursorCharge(spectrum);
-                ms2.mz = mz;
+                ms2.precursorCharge = parsePrecursorCharge(spectrum);
+                ms2.precursorMz = mz;
                 ms2.mzStart = mz - lowerOffset;
                 ms2.mzEnd = mz + upperOffset;
                 ms2.wid = lowerOffset + upperOffset;
@@ -188,7 +188,7 @@ namespace AirdPro.Converters
 
             if (spectrum.scanList.scans.Count != 1) return ms2;
             Scan scan = spectrum.scanList.scans[0];
-            ms2.cvList = CV.trans(spectrum);
+            ms2.cvList = CV.trans(spectrum.cvParams);
             if (scan.cvParams != null)
             {
                 ms2.cvList.AddRange(CV.trans(scan.cvParams));
@@ -249,10 +249,10 @@ namespace AirdPro.Converters
 
                 foreach (MsIndex index in tempIndexList)
                 {
-                    WindowRange range = new WindowRange(index.mzStart, index.mzEnd, index.mz);
-                    if (index.charge != 0)
+                    WindowRange range = new WindowRange(index.mzStart, index.mzEnd, index.precursorMz);
+                    if (index.precursorCharge != 0)
                     {
-                        range.charge = index.charge;
+                        range.charge = index.precursorCharge;
                     }
                     ms2Ranges.Add(range);
                     TempScan ts = new TempScan(index.num, index.rt, index.tic, index.cvList);

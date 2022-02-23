@@ -70,8 +70,8 @@ namespace AirdPro.Converters
                         }
 
                         var scan = spectrum.scanList.scans[0];
-                        var ts = new TempScan(i, parseRT(scan), parseTIC(spectrum), CV.trans(spectrum));
-                        ts.cvs = CV.trans(spectrum);
+                        var ts = new TempScan(i, parseRT(scan), parseTIC(spectrum), CV.trans(spectrum.cvParams));
+                        ts.ccs = parseMobility(scan);
                         if (scan.cvParams != null)
                         {
                             ts.cvs.AddRange(CV.trans(scan.cvParams));
@@ -97,8 +97,8 @@ namespace AirdPro.Converters
                     }
                 }
 
-                outputWithOrder(ms1Table, ms1Index);
-                outputWithOrder(ms2Table, ms2Index);
+                writeToFile(ms1Table, ms1Index);
+                writeToFile(ms2Table, ms2Index);
             }
             else
             {
@@ -110,7 +110,7 @@ namespace AirdPro.Converters
                         continue;
                     }
                     var scan = spectrum.scanList.scans[0];
-                    var ts = new TempScan(i, parseRT(scan), parseTIC(spectrum), CV.trans(spectrum));
+                    var ts = new TempScan(i, parseRT(scan), parseTIC(spectrum), CV.trans(spectrum.cvParams));
 
                     compressor.compress(spectrum, ts);
                     var msLevel = parseMsLevel(spectrum);
@@ -129,7 +129,7 @@ namespace AirdPro.Converters
             indexList.Add(ms2Index);
         }
 
-        protected void outputWithOrder(Hashtable table, BlockIndex index)
+        protected void writeToFile(Hashtable table, BlockIndex index)
         {
             ArrayList keys = new ArrayList(table.Keys);
             keys.Sort();
