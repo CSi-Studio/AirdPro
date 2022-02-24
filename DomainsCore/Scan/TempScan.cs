@@ -18,7 +18,7 @@ namespace AirdPro.DomainsCore.Aird
     {
         public int num;
         public float rt;
-        public float ccs;
+        public float mobility;
         public long tic;
         public List<CV> cvs;
 

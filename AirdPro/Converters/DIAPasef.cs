@@ -23,26 +23,29 @@ namespace AirdPro.Converters
 {
     internal class DIAPasef : IConverter
     {
-        private double overlap;//SWATH窗口间的区域重叠值
+        private double overlap; //SWATH窗口间的区域重叠值
         private Hashtable rangeTable = new Hashtable(); //用于存放SWATH窗口的信息,key为mz
-        public DIAPasef(JobInfo jobInfo) : base(jobInfo) {}
+
+        public DIAPasef(JobInfo jobInfo) : base(jobInfo)
+        {
+        }
 
         public override void doConvert()
         {
             start();
-            initDirectory();//创建文件夹
+            initDirectory(); //创建文件夹
             using (airdStream = new FileStream(jobInfo.airdFilePath, FileMode.Create))
             {
                 using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                 {
-                    readVendorFile();//准备读取Vendor文件
-                    // buildWindowsRanges();  //Getting SWATH Windows
-                    pretreatment();//预处理谱图,将MS1和MS2谱图分开存储
+                    readVendorFile(); //准备读取Vendor文件
+                    pretreatment(); //预处理谱图,将MS1和MS2谱图分开存储
                     parseAndStoreMS1Block();
                     parseAndStoreMS2Block();
-                    writeToAirdInfoFile();//将Info数据写入文件
+                    writeToAirdInfoFile(); //将Info数据写入文件
                 }
             }
+
             finish();
         }
 
@@ -52,7 +55,11 @@ namespace AirdPro.Converters
             int parentNum = 0;
             jobInfo.log("Preprocessing:" + totalSize, "Preprocessing");
             int progress = 0;
-            
+            double lastPrecursorMz = 0;
+            MsIndex ms1Index = null;
+            MsIndex ms2Index = null;
+            Boolean isLastIndexMs1 = false;
+            List<double> ccsList = new List<double>();
             // 预处理所有的MS谱图,将MS1与MS2的信息扫描以后放入对应的内存对象中
             for (int i = 0; i < totalSize; i++)
             {
@@ -60,17 +67,43 @@ namespace AirdPro.Converters
                 jobInfo.log(null, "Pre:" + progress + "/" + totalSize);
                 Spectrum spectrum = spectrumList.spectrum(i);
                 string msLevel = parseMsLevel(spectrum);
+                
                 if (msLevel.Equals(MsLevel.MS1))
                 {
                     parentNum = i;
+                    isLastIndexMs1 = true;
                     ms1List.Add(parseMS1(spectrum, i));
                 }
-                if (msLevel.Equals(MsLevel.MS2))
+                else if (msLevel.Equals(MsLevel.MS2))
                 {
-                    MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
-                    addToMS2Map(ms2Index);
+                    double precursorMz = parsePrecursorParams(spectrum, CVID.MS_isolation_window_target_m_z);
+                    if (lastPrecursorMz != precursorMz) //如果上一个precursorMz和当前的不一样,说明来自不同的frame
+                    {
+                        //将上一轮的ms2Index存储map中
+                        if (ms2Index != null)
+                        {
+                            addToMS2Map(ms2Index);
+                            ccsList = new List<double>();
+                        }
+
+                        //初始化新的ms2Index
+                        ms2Index = parseMS2(spectrum, i, parentNum);
+                        lastPrecursorMz = precursorMz;
+                        if (!rangeTable.Contains(ms2Index.precursorMz))
+                        {
+                            WindowRange range = new WindowRange(ms2Index.mzStart, ms2Index.mzEnd, ms2Index.precursorMz);
+                            ranges.Add(range);
+                            rangeTable.Add(ms2Index.precursorMz, range);
+                        }
+                    }
+                    else
+                    {
+                        double ccs = parseMobility(spectrum.scanList.scans[0]);
+                        ccsList.Add(ccs);
+                    }
                 }
             }
+
             jobInfo.log("Effective MS1 List Size:" + ms1List.Count);
             jobInfo.log("MS2 Group List Size:" + ms2Table.Count);
             jobInfo.log("Start Processing MS1 List");
@@ -84,7 +117,7 @@ namespace AirdPro.Converters
             List<Double> mzList = new List<Double>();
             Spectrum spectrum = spectrumList.spectrum(0);
             while (true)
-            { 
+            {
                 if (parseMsLevel(spectrum).Equals(MsLevel.MS1))
                 {
                     i++;
@@ -107,18 +140,19 @@ namespace AirdPro.Converters
                     range.features = FeaturesUtil.toString(features);
                     ranges.Add(range);
                 }
-                
+
                 i++;
-                if (i>=spectrumList.size())
+                if (i >= spectrumList.size())
                 {
                     break;
                 }
+
                 spectrum = spectrumList.spectrum(i);
             }
-            
+
             computeOverlap();
             adjustOverlap();
-            jobInfo.log("Finished Getting Windows, Total SWATH Windows:" +ranges.Count);
+            jobInfo.log("Finished Getting Windows, Total SWATH Windows:" + ranges.Count);
         }
 
         //计算窗口间的重叠区域的大小
@@ -141,10 +175,11 @@ namespace AirdPro.Converters
                 jobInfo.log("Windows Size Exception: Only " + size + " Windows");
                 throw new Exception("Windows Size Exception: Only " + size + " Windows");
             }
-            ranges[0].end = ranges[0].end - (overlap / 2);  //第一个窗口的上区间保持不变,下区间做调整
+
+            ranges[0].end = ranges[0].end - (overlap / 2); //第一个窗口的上区间保持不变,下区间做调整
             ranges[size - 1].start = ranges[size - 1].start + (overlap / 2); //最后一个窗口的下区间不变,上区间做调整
 
-            for (int i=1;i < size - 1;i++)
+            for (int i = 1; i < size - 1; i++)
             {
                 ranges[i].start = ranges[i].start + (overlap / 2);
                 ranges[i].end = ranges[i].end - (overlap / 2);
@@ -164,7 +199,7 @@ namespace AirdPro.Converters
             {
                 List<MsIndex> ms2List = ms2Table[key] as List<MsIndex>;
                 WindowRange range = rangeTable[key] as WindowRange;
-                
+
                 BlockIndex index = new BlockIndex(); //为每一个key组创建一个SwathBlock
                 index.level = 2;
                 index.startPtr = startPosition;

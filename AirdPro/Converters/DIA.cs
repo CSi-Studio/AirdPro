@@ -35,7 +35,6 @@ namespace AirdPro.Converters
                 using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                 {
                     readVendorFile();//准备读取Vendor文件
-                    // buildWindowsRanges();  //Getting SWATH Windows
                     pretreatment();//预处理谱图,将MS1和MS2谱图分开存储
                     parseAndStoreMS1Block();
                     parseAndStoreMS2Block();
@@ -43,57 +42,6 @@ namespace AirdPro.Converters
                 }
             }
             finish();
-        }
-
-        //提取SWATH 窗口信息
-        private void buildWindowsRanges()
-        {
-            jobInfo.log("Start getting windows", "Getting Windows");
-            int i = 0;
-            List<Double> mzList = new List<Double>();
-
-            //找到第一张MS1图,如果找不到,则继续往下搜索,如果搜索了500张以上的谱图或者搜索了超过一半的谱图都没有MS1图,则认为数据格式有问题
-            Spectrum spectrum = spectrumList.spectrum(0);
-            while (true)
-            {
-                if (parseMsLevel(spectrum).Equals(MsLevel.MS1))
-                {
-                    i++;
-                    spectrum = spectrumList.spectrum(i);
-                    continue;
-                }
-
-                double mz, lowerOffset, upperOffset;
-                mz = parsePrecursorParams(spectrum, CVID.MS_isolation_window_target_m_z);
-                if (mzList.Contains(mz))
-                {
-                    break;
-                }
-
-                mzList.Add(mz);
-                lowerOffset = parsePrecursorParams(spectrum, CVID.MS_isolation_window_lower_offset);
-                upperOffset = parsePrecursorParams(spectrum, CVID.MS_isolation_window_upper_offset);
-                WindowRange range = new WindowRange(mz - lowerOffset, mz + upperOffset, mz);
-                ranges.Add(range);
-                i++;
-                spectrum = spectrumList.spectrum(i);
-            }
-
-            jobInfo.log("Finished Getting Windows");
-
-            // computeOverlap();
-            // adjustOverlap();
-        }
-
-        //计算窗口间的重叠区域的大小
-        private void computeOverlap()
-        {
-            WindowRange range1 = ranges[0];
-            double range1Right = range1.end;
-            WindowRange range2 = ranges[1];
-            double range2Left = range2.start;
-            overlap = range1Right - range2Left;
-            featuresMap.Add(Features.overlap, overlap);
         }
 
         //调整间距,第一个窗口的上区间不做调整,最后一个窗口的下区间不做调整

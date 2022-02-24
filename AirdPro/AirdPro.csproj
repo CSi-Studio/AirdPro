@@ -291,7 +291,9 @@
       <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Analyzer Include="..\..\mzmine3\src\main\resources\vendorlib\bruker\timsdata_x64.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(SolutionDir)ImportLibs\*.*" "$(TargetDir)"</PostBuildEvent>

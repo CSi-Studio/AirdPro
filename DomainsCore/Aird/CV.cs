@@ -16,11 +16,12 @@ namespace AirdPro.DomainsCore.Aird
 {
     public class CV
     {
-        private static List<CVID> skipList = new List<CVID>()
+        private static HashSet<CVID> skipList = new HashSet<CVID>()
         {
             CVID.MS_scan_start_time,
             CVID.MS_ms_level,
             CVID.MS_MSn_spectrum,
+            CVID.MS_MS1_spectrum,
             CVID.MS_inverse_reduced_ion_mobility,
             CVID.MS_TIC,
             CVID.MS_negative_scan,

@@ -26,6 +26,9 @@ namespace AirdPro.DomainsCore.Aird
         //对应的ms1的序号
         public int pNum;
 
+        //ion-mobility
+        public float mobility;
+
         //序号
         public int num;
 
