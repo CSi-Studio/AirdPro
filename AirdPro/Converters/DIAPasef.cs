@@ -17,6 +17,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Security.Policy;
 using AirdPro.Domains.Convert;
 
 namespace AirdPro.Converters
@@ -54,40 +56,69 @@ namespace AirdPro.Converters
         {
             int parentNum = 0;
             jobInfo.log("Preprocessing:" + totalSize, "Preprocessing");
-            int progress = 0;
             double lastPrecursorMz = 0;
             MsIndex ms1Index = null;
             MsIndex ms2Index = null;
             Boolean isLastIndexMs1 = false;
-            List<double> ccsList = new List<double>();
+            HashSet<float> totalMobilitySet = new HashSet<float>();
             // 预处理所有的MS谱图,将MS1与MS2的信息扫描以后放入对应的内存对象中
             for (int i = 0; i < totalSize; i++)
             {
-                progress++;
-                jobInfo.log(null, "Pre:" + progress + "/" + totalSize);
+                jobInfo.log(null, "Pre:" + i + "/" + totalSize);
                 Spectrum spectrum = spectrumList.spectrum(i);
                 string msLevel = parseMsLevel(spectrum);
-                
-                if (msLevel.Equals(MsLevel.MS1))
+                //如果是MS1,开始聚合ms1的光谱
+                while (msLevel.Equals(MsLevel.MS1))
                 {
-                    parentNum = i;
                     isLastIndexMs1 = true;
-                    ms1List.Add(parseMS1(spectrum, i));
+                    if (ms1Index == null)
+                    {
+                        parentNum = i;
+                        ms1Index = parseMS1(spectrum, i);
+                        ms1Index.mobilities = new List<float>();
+                        ms1Index.scanNums = new List<int>();
+                    }
+                    else
+                    {
+                        ms1Index.tic += parseTIC(spectrum);
+                    }
+                    float mobility = parseMobility(spectrum.scanList.scans[0]);
+                    ms1Index.scanNums.Add(i);
+                    ms1Index.mobilities.Add(mobility);
+                    i++;
+                    if (i < totalSize)
+                    {
+                        jobInfo.log(null, "Pre:" + i + "/" + totalSize);
+                        spectrum = spectrumList.spectrum(i);
+                        msLevel = parseMsLevel(spectrum);
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
-                else if (msLevel.Equals(MsLevel.MS2))
+
+                if (ms1Index != null)
+                {
+                    ms1List.Add(ms1Index);
+                }
+                
+                isLastIndexMs1 = false;
+                ms1Index = null;
+
+                while (msLevel.Equals(MsLevel.MS2))
                 {
                     double precursorMz = parsePrecursorParams(spectrum, CVID.MS_isolation_window_target_m_z);
                     if (lastPrecursorMz != precursorMz) //如果上一个precursorMz和当前的不一样,说明来自不同的frame
                     {
-                        //将上一轮的ms2Index存储map中
                         if (ms2Index != null)
                         {
                             addToMS2Map(ms2Index);
-                            ccsList = new List<double>();
                         }
-
                         //初始化新的ms2Index
                         ms2Index = parseMS2(spectrum, i, parentNum);
+                        ms2Index.mobilities = new List<float>();
+                        ms2Index.scanNums = new List<int>();
                         lastPrecursorMz = precursorMz;
                         if (!rangeTable.Contains(ms2Index.precursorMz))
                         {
@@ -98,8 +129,21 @@ namespace AirdPro.Converters
                     }
                     else
                     {
-                        double ccs = parseMobility(spectrum.scanList.scans[0]);
-                        ccsList.Add(ccs);
+                        ms2Index.tic += parseTIC(spectrum);
+                    }
+                    float mobility = parseMobility(spectrum.scanList.scans[0]);
+                    ms2Index.scanNums.Add(i);
+                    ms2Index.mobilities.Add(mobility);
+                    i++;
+                    if (i < totalSize)
+                    {
+                        jobInfo.log(null, "Pre:" + i + "/" + totalSize);
+                        spectrum = spectrumList.spectrum(i);
+                        msLevel = parseMsLevel(spectrum);
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
             }
@@ -109,86 +153,9 @@ namespace AirdPro.Converters
             jobInfo.log("Start Processing MS1 List");
         }
 
-        //提取SWATH 窗口信息
-        private void buildWindowsRanges()
+        public void buildFrame(List<int> spectraNums, List<float> mobilityList)
         {
-            jobInfo.log("Start getting windows", "Getting Windows");
-            int i = 0;
-            List<Double> mzList = new List<Double>();
-            Spectrum spectrum = spectrumList.spectrum(0);
-            while (true)
-            {
-                if (parseMsLevel(spectrum).Equals(MsLevel.MS1))
-                {
-                    i++;
-                    spectrum = spectrumList.spectrum(i);
-                    continue;
-                }
 
-                double mz, lowerOffset, upperOffset;
-                mz = parsePrecursorParams(spectrum, CVID.MS_isolation_window_target_m_z);
-                if (!mzList.Contains(mz))
-                {
-                    mzList.Add(mz);
-                    lowerOffset = parsePrecursorParams(spectrum, CVID.MS_isolation_window_lower_offset);
-                    upperOffset = parsePrecursorParams(spectrum, CVID.MS_isolation_window_upper_offset);
-                    WindowRange range = new WindowRange(mz - lowerOffset, mz + upperOffset, mz);
-                    Hashtable features = new Hashtable();
-                    features.Add(Features.original_width, lowerOffset + upperOffset);
-                    features.Add(Features.original_precursor_mz_start, mz - lowerOffset);
-                    features.Add(Features.original_precursor_mz_end, mz + upperOffset);
-                    range.features = FeaturesUtil.toString(features);
-                    ranges.Add(range);
-                }
-
-                i++;
-                if (i >= spectrumList.size())
-                {
-                    break;
-                }
-
-                spectrum = spectrumList.spectrum(i);
-            }
-
-            computeOverlap();
-            adjustOverlap();
-            jobInfo.log("Finished Getting Windows, Total SWATH Windows:" + ranges.Count);
-        }
-
-        //计算窗口间的重叠区域的大小
-        private void computeOverlap()
-        {
-            WindowRange range1 = ranges[0];
-            double range1Right = range1.end;
-            WindowRange range2 = ranges[1];
-            double range2Left = range2.start;
-            overlap = range1Right - range2Left;
-            featuresMap.Add(Features.overlap, overlap);
-        }
-
-        //调整间距,第一个窗口的上区间不做调整,最后一个窗口的下区间不做调整
-        private void adjustOverlap()
-        {
-            int size = ranges.Count;
-            if (size <= 2)
-            {
-                jobInfo.log("Windows Size Exception: Only " + size + " Windows");
-                throw new Exception("Windows Size Exception: Only " + size + " Windows");
-            }
-
-            ranges[0].end = ranges[0].end - (overlap / 2); //第一个窗口的上区间保持不变,下区间做调整
-            ranges[size - 1].start = ranges[size - 1].start + (overlap / 2); //最后一个窗口的下区间不变,上区间做调整
-
-            for (int i = 1; i < size - 1; i++)
-            {
-                ranges[i].start = ranges[i].start + (overlap / 2);
-                ranges[i].end = ranges[i].end - (overlap / 2);
-            }
-
-            foreach (WindowRange range in ranges)
-            {
-                rangeTable.Add(range.mz, range);
-            }
         }
 
         private void parseAndStoreMS2Block()

@@ -21,13 +21,15 @@ namespace AirdPro.DomainsCore.Aird
         public float rt;
 
         //tic数值
-        public long tic;
+        public long tic = 0;
 
         //对应的ms1的序号
         public int pNum;
 
+        //the scan of each frame, only used in Ion-Mobility
+        public List<int> scanNums;
         //ion-mobility
-        public float mobility;
+        public List<float> mobilities;
 
         //序号
         public int num;

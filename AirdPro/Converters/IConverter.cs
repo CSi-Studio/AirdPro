@@ -352,7 +352,6 @@ namespace AirdPro.Converters
             Scan scan = spectrum.scanList.scans[0];
             ms1.rt = parseRT(scan);
             ms1.tic = parseTIC(spectrum);
-            ms1.mobility = parseMobility(scan);
             ms1.cvList = CV.trans(spectrum.cvParams);
             if (scan.cvParams != null)
             {
@@ -419,7 +418,6 @@ namespace AirdPro.Converters
             
             ms2.rt = parseRT(scan);
             ms2.tic = parseTIC(spectrum);
-            ms2.mobility = parseMobility(scan);
             return ms2;
         }
 
