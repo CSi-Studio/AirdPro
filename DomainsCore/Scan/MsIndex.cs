@@ -28,6 +28,7 @@ namespace AirdPro.DomainsCore.Aird
 
         //the scan of each frame, only used in Ion-Mobility
         public List<int> scanNums;
+
         //ion-mobility
         public List<float> mobilities;
 

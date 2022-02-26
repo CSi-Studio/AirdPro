@@ -12,7 +12,6 @@ namespace AirdPro.Constants
 {
     public class ProcessingStatus
     {
-        public static string READY = "Ready";
         public static string RUNNING = "Running";
         public static string FINISHED = "Finished";
         public static string ERROR = "Error";

@@ -10,14 +10,15 @@
 
 namespace AirdPro.Constants
 {
-    public class AirdType
+    public static class AirdType
     {
-        public static string DIA_PASEF = "DIA_PASEF"; 
-        public static string DDA_PASEF = "DDA_PASEF"; 
-        public static string DIA_SWATH = "DIA"; // Precursor-mz -> MS2 Group
-        public static string PRM = "PRM"; // Precursor-mz -> MS2 Group
-        public static string SCANNING_SWATH = "SCANNING_SWATH"; // 
-        public static string DDA = "DDA"; // MS1 -> MS2 Group
-        public static string COMMON = "Common"; // RT
+        public const string DIA_PASEF = "DIA_PASEF"; 
+        public const string DDA_PASEF = "DDA_PASEF"; 
+        public const string PRM_PASEF = "PRM_PASEF";
+        public const string DIA_SWATH = "DIA"; // Precursor-mz -> MS2 Group
+        public const string PRM = "PRM"; // Precursor-mz -> MS2 Group
+        public const string SCANNING_SWATH = "SCANNING_SWATH"; // 
+        public const string DDA = "DDA"; // MS1 -> MS2 Group
+        public const string COMMON = "Common"; // RT
     }
 }

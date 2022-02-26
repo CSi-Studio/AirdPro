@@ -151,18 +151,19 @@ namespace AirdPro.Asyncs
             // }
             else if (jobInfo.type.Equals(AirdType.DIA_PASEF))
             {
+                jobInfo.ionMobility = true;
                 converter = new DIAPasef(jobInfo);
             }
 
             switch (jobInfo.jobParams.airdAlgorithm)
             {
-                case 1: 
+                case CompressorType.ZDPD: 
                     comp = new ZDPD(converter);
                     break;
-                case 2:
+                case CompressorType.ZDVB:
                     comp = new ZDVB(converter);
                     break;
-                case 3:
+                case CompressorType.StackZDPD:
                     comp = new StackZDPD(converter);
                     break;
             }

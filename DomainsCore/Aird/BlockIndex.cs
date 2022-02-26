@@ -77,6 +77,12 @@ namespace AirdPro.DomainsCore.Aird
         public List<long> ints = new List<long>();
 
         /**
+         * Ion Mobility types: it store the size of every compressed intensity block
+         * 一个块中所有子谱图的mobility的压缩后的大小列表
+         */
+        public List<long> mobilities = new List<long>();
+
+        /**
          * Only using Stack ZDPD. The compressed list for tags of every mz. 
          * 一个块中所有子谱图的mz原层码的压缩后的数组大小列表
          */

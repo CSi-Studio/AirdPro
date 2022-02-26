@@ -10,12 +10,12 @@
 
 namespace AirdPro.Constants
 {
-    public class Activator
+    public static class Activator
     {
-        public static string CID = "CID"; //collision induced dissociation, unit:eV
-        public static string HCD = "HCD"; //higher-energy C-trap dissociation, unit:a.u.
-        public static string ECD = "ECD"; //electron capture dissociation
-        public static string ETD = "ETD"; //electron transfer dissociation
-        public static string UNKNOWN = "UNKNOWN";
+        public const string CID = "CID"; //collision induced dissociation, unit:eV
+        public const string HCD = "HCD"; //higher-energy C-trap dissociation, unit:a.u.
+        public const string ECD = "ECD"; //electron capture dissociation
+        public const string ETD = "ETD"; //electron transfer dissociation
+        public const string UNKNOWN = "UNKNOWN";
     }
 }

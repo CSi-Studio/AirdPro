@@ -10,11 +10,11 @@
 
 namespace AirdPro.Constants
 {
-    public class CompressorType
+    public static class CompressorType
     {
-        public static int ZDPD = 1;
-        public static int ZDVB = 2;
-        public static int StackZDPD = 3;
+        public const int ZDPD = 1;
+        public const int ZDVB = 2;
+        public const int StackZDPD = 3;
    
     }
 }

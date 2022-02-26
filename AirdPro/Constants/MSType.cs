@@ -10,11 +10,11 @@
 
 namespace AirdPro.Constants
 {
-    public class MSType
+    public static class MSType
     {
-        public static string PROFILE = "PROFILE";
-        public static string CENTROIDED = "CENTROIDED";
-        public static string THRESHOLDED = "THRESHOLDED";
-        public static string UNKNOWN = "UNKNOWN";
+        public const string PROFILE = "PROFILE";
+        public const string CENTROIDED = "CENTROIDED";
+        public const string THRESHOLDED = "THRESHOLDED";
+        public const string UNKNOWN = "UNKNOWN";
     }
 }

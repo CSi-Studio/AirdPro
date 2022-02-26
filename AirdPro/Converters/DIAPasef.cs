@@ -42,8 +42,8 @@ namespace AirdPro.Converters
                 {
                     readVendorFile(); //准备读取Vendor文件
                     pretreatment(); //预处理谱图,将MS1和MS2谱图分开存储
-                    parseAndStoreMS1Block();
-                    parseAndStoreMS2Block();
+                    compressMS1Block();
+                    compressMS2Block();
                     writeToAirdInfoFile(); //将Info数据写入文件
                 }
             }
@@ -57,20 +57,18 @@ namespace AirdPro.Converters
             int parentNum = 0;
             jobInfo.log("Preprocessing:" + totalSize, "Preprocessing");
             double lastPrecursorMz = 0;
-            MsIndex ms1Index = null;
             MsIndex ms2Index = null;
-            Boolean isLastIndexMs1 = false;
             HashSet<float> totalMobilitySet = new HashSet<float>();
             // 预处理所有的MS谱图,将MS1与MS2的信息扫描以后放入对应的内存对象中
             for (int i = 0; i < totalSize; i++)
             {
+                MsIndex ms1Index = null; //清空ms1Index
                 jobInfo.log(null, "Pre:" + i + "/" + totalSize);
                 Spectrum spectrum = spectrumList.spectrum(i);
                 string msLevel = parseMsLevel(spectrum);
                 //如果是MS1,开始聚合ms1的光谱
                 while (msLevel.Equals(MsLevel.MS1))
                 {
-                    isLastIndexMs1 = true;
                     if (ms1Index == null)
                     {
                         parentNum = i;
@@ -103,9 +101,6 @@ namespace AirdPro.Converters
                     ms1List.Add(ms1Index);
                 }
                 
-                isLastIndexMs1 = false;
-                ms1Index = null;
-
                 while (msLevel.Equals(MsLevel.MS2))
                 {
                     double precursorMz = parsePrecursorParams(spectrum, CVID.MS_isolation_window_target_m_z);
@@ -153,12 +148,7 @@ namespace AirdPro.Converters
             jobInfo.log("Start Processing MS1 List");
         }
 
-        public void buildFrame(List<int> spectraNums, List<float> mobilityList)
-        {
-
-        }
-
-        private void parseAndStoreMS2Block()
+        private void compressMS2Block()
         {
             jobInfo.log("Start Processing MS2 List");
             int progress = 0;

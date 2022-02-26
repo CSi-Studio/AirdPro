@@ -36,7 +36,7 @@ namespace AirdPro.Converters
                     readVendorFile();//准备读取Vendor文件
                     initGlobalVar();//初始化全局变量
                     pretreatment();//预处理谱图,将MS1和MS2谱图分开存储
-                    parseAndStoreMS1Block();//处理MS1,并将索引写入文件流中
+                    compressMS1Block();//处理MS1,并将索引写入文件流中
                     parseAndStoreMS2Block();//处理MS2,并将索引写入文件流中
                     writeToAirdInfoFile();//将Info数据写入文件
                 }

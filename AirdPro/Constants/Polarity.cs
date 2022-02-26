@@ -10,10 +10,10 @@
 
 namespace AirdPro.Constants
 {
-    public class Polarity
+    public static class Polarity
     {
-        public static string NEGATIVE = "NEGATIVE";
-        public static string POSITIVE = "POSITIVE";
-        public static string NEUTRAL = "NEUTRAL";
+        public const string NEGATIVE = "NEGATIVE";
+        public const string POSITIVE = "POSITIVE";
+        public const string NEUTRAL = "NEUTRAL";
     }
 }

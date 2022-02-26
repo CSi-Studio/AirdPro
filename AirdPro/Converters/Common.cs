@@ -71,7 +71,6 @@ namespace AirdPro.Converters
 
                         var scan = spectrum.scanList.scans[0];
                         var ts = new TempScan(i, parseRT(scan), parseTIC(spectrum), CV.trans(spectrum.cvParams));
-                        ts.mobility = parseMobility(scan);
                         if (scan.cvParams != null)
                         {
                             ts.cvs.AddRange(CV.trans(scan.cvParams));

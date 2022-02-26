@@ -18,12 +18,12 @@ namespace AirdPro.DomainsCore.Aird
     {
         public int num;
         public float rt;
-        public float mobility;
         public long tic;
         public List<CV> cvs;
 
         public byte[] mzArrayBytes;
         public byte[] intArrayBytes;
+        public byte[] mobilityArrayBytes;
 
         public TempScan(int num, float rt, long tic, List<CV> cvs)
         {

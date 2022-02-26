@@ -26,9 +26,11 @@ namespace AirdPro.Domains.Convert
         public string jobId;
         //用于转换的参数
         public JobParams jobParams;
-        //DIA-Swath,PRM,DDA. see ExperimentType
+        //DIA-Swath,PRM,DDA. see AirdType
         public string type;
-        //文件的格式,全部大写: WIFF, RAW
+        //是否是IonMobility文件
+        public Boolean ionMobility = false;
+        //文件的格式,全部大写: WIFF, RAW. See FileFormat.cs
         public string format;
         //C:/data/plasma.wiff
         public string inputFilePath;
