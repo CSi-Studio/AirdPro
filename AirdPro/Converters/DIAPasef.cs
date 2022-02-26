@@ -12,7 +12,6 @@ using AirdPro.Constants;
 using AirdPro.DomainsCore.Aird;
 using pwiz.CLI.cv;
 using pwiz.CLI.msdata;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using AirdPro.Domains.Convert;
@@ -46,7 +45,7 @@ namespace AirdPro.Converters
         protected void pretreatment()
         {
             int parentNum = 0;
-            jobInfo.log("Preprocessing:" + totalSize, "Preprocessing");
+            jobInfo.log("Pretreatment:" + totalSize, "Pretreatment");
             double lastPrecursorMz = 0;
             MsIndex ms2Index = null;
             HashSet<float> totalMobilitySet = new HashSet<float>();

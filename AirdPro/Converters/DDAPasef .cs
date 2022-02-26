@@ -62,7 +62,6 @@ namespace AirdPro.Converters
                         MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
                         addToMS2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
                     }
-
                 }
                 else
                 {
