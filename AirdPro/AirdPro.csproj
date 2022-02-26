@@ -153,6 +153,7 @@
     <Compile Include="Constants\ProcessingStatus.cs" />
     <Compile Include="Constants\SoftwareInfo.cs" />
     <Compile Include="Converters\Common.cs" />
+    <Compile Include="Converters\DDAPasef .cs" />
     <Compile Include="Converters\DIAPasef.cs" />
     <Compile Include="Forms\FileFolderSelector.cs">
       <SubType>Form</SubType>

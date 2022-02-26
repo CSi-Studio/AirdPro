@@ -42,6 +42,7 @@ namespace AirdPro.Converters
         protected FileStream airdStream;
         protected FileStream airdJsonStream;
         protected List<WindowRange> ranges = new List<WindowRange>(); //SWATH Window的窗口
+        protected Hashtable rangeTable = new Hashtable(); //用于存放SWATH窗口的信息,key为mz
         protected List<BlockIndex> indexList = new List<BlockIndex>(); //用于存储的全局的SWATH List
         protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
         public ConcurrentBag<MsIndex> ms1List = new ConcurrentBag<MsIndex>(); //用于存放MS1索引及基础信息,泛型为MsIndex
@@ -320,18 +321,19 @@ namespace AirdPro.Converters
             ranges = new List<WindowRange>();
             indexList = new List<BlockIndex>();
         }
-
-        protected void addToMS2Map(MsIndex ms2Index)
+        
+        //DDA模式下,key为ms2Index.pNum, DIA模式下,key为ms2Index.precursorMz
+        protected void addToMS2Map(Object key, MsIndex ms2Index)
         {
-            if (ms2Table.Contains(ms2Index.precursorMz))
+            if (ms2Table.Contains(key))
             {
-                (ms2Table[ms2Index.precursorMz] as List<MsIndex>).Add(ms2Index);
+                (ms2Table[key] as List<MsIndex>).Add(ms2Index);
             }
             else
             {
                 List<MsIndex> indexList = new List<MsIndex>();
                 indexList.Add(ms2Index);
-                ms2Table.Add(ms2Index.precursorMz, indexList);
+                ms2Table.Add(key, indexList);
             }
         }
 
@@ -340,30 +342,15 @@ namespace AirdPro.Converters
             MsIndex ms1 = new MsIndex();
             ms1.level = 1;
             ms1.num = index;
-
-            if (spectrum.scanList.scans.Count != 1)
-            {
-                return ms1;
-            }
-
+            if (spectrum.scanList.scans.Count != 1) return ms1;
             Scan scan = spectrum.scanList.scans[0];
+            ms1.cvList = CV.trans(spectrum.cvParams);
+            if (scan.cvParams != null) ms1.cvList.AddRange(CV.trans(scan.cvParams));
+
             ms1.rt = parseRT(scan);
             ms1.tic = parseTIC(spectrum);
-            ms1.cvList = CV.trans(spectrum.cvParams);
-            if (scan.cvParams != null)
-            {
-                ms1.cvList.AddRange(CV.trans(scan.cvParams));
-            }
-
-            if (msType == null)
-            {
-                parseMsType(spectrum);
-            }
-
-            if (polarity == null)
-            {
-                parsePolarity(spectrum);
-            }
+            if (msType == null) parseMsType(spectrum);
+            if (polarity == null) parsePolarity(spectrum);
 
             return ms1;
         }
@@ -399,21 +386,13 @@ namespace AirdPro.Converters
                         .cvParamChild(CVID.MS_isolation_window_upper_offset).value);
                 throw e;
             }
-
-            if (activator == null)
-            {
-                parseActivator(spectrum.precursors[0].activation);
-            }
-
             if (spectrum.scanList.scans.Count != 1) return ms2;
+
+            if (activator == null) parseActivator(spectrum.precursors[0].activation);
             Scan scan = spectrum.scanList.scans[0];
 
             ms2.cvList = CV.trans(spectrum.cvParams);
-            if (scan.cvParams != null)
-            {
-                ms2.cvList.AddRange(CV.trans(scan.cvParams));
-            }
-
+            if (scan.cvParams != null) ms2.cvList.AddRange(CV.trans(scan.cvParams));
             ms2.rt = parseRT(scan);
             ms2.tic = parseTIC(spectrum);
             return ms2;
@@ -427,6 +406,76 @@ namespace AirdPro.Converters
             compressor.compressMS1(this, index);
             index.endPtr = startPosition;
             indexList.Add(index);
+        }
+
+        protected void compressMS2BlockForDIA()
+        {
+            jobInfo.log("Start Processing MS2 List");
+            int progress = 0;
+            foreach (double precursorMz in ms2Table.Keys)
+            {
+                List<MsIndex> ms2List = ms2Table[precursorMz] as List<MsIndex>;
+                WindowRange range = rangeTable[precursorMz] as WindowRange;
+
+                BlockIndex index = new BlockIndex(); //为每一个key组创建一个SwathBlock
+                index.level = 2;
+                index.startPtr = startPosition;
+                index.setWindowRange(range);
+
+                jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);
+                progress++;
+                compressor.compressMS2(this, ms2List, index);
+                index.endPtr = startPosition;
+                indexList.Add(index);
+                jobInfo.log("MS2 Group Finished:" + progress + "/" + ms2Table.Keys.Count);
+            }
+        }
+
+        //处理MS2,由于每一个MS1只跟随少量的MS2光谱图,因此DDA采集模式下MS2的压缩模式仍然使用Aird ZDPD的压缩算法
+        protected void compressMS2BlockForDDA()
+        {
+            int progress = 0;
+            jobInfo.log("Start Processing MS2 List");
+            ArrayList keys = new ArrayList(ms2Table.Keys);
+            keys.Sort();
+            foreach (int key in keys)
+            {
+                List<MsIndex> tempIndexList = ms2Table[key] as List<MsIndex>;
+                //为每一组key创建一个Block
+                BlockIndex blockIndex = new BlockIndex();
+                blockIndex.level = 2;
+                blockIndex.startPtr = startPosition;
+                blockIndex.num = key;
+                //创建这一个block中每一个ms2的窗口序列
+                List<WindowRange> ms2Ranges = new List<WindowRange>();
+                jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);
+                progress++;
+
+                foreach (MsIndex index in tempIndexList)
+                {
+                    WindowRange range = new WindowRange(index.mzStart, index.mzEnd, index.precursorMz);
+                    if (index.precursorCharge != 0)
+                    {
+                        range.charge = index.precursorCharge;
+                    }
+                    ms2Ranges.Add(range);
+                    TempScan ts = new TempScan(index.num, index.rt, index.tic, index.cvList);
+                    compressor.compress(spectrumList.spectrum(index.num, true), ts);
+                    blockIndex.nums.Add(ts.num);
+                    blockIndex.rts.Add(ts.rt);
+                    blockIndex.tics.Add(ts.tic);
+                    blockIndex.cvList.Add(ts.cvs);
+                    blockIndex.mzs.Add(ts.mzArrayBytes.Length);
+                    blockIndex.ints.Add(ts.intArrayBytes.Length);
+                    startPosition = startPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;
+                    airdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
+                    airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
+                }
+
+                blockIndex.rangeList = ms2Ranges;
+                blockIndex.endPtr = startPosition;
+                indexList.Add(blockIndex);
+            }
         }
 
         protected double parsePrecursorParams(Spectrum spectrum, CVID cvid)

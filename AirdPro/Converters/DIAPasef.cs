@@ -10,27 +10,18 @@
 
 using AirdPro.Constants;
 using AirdPro.DomainsCore.Aird;
-using AirdPro.Utils;
 using pwiz.CLI.cv;
 using pwiz.CLI.msdata;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Security.Policy;
 using AirdPro.Domains.Convert;
 
 namespace AirdPro.Converters
 {
     internal class DIAPasef : IConverter
     {
-        private double overlap; //SWATH窗口间的区域重叠值
-        private Hashtable rangeTable = new Hashtable(); //用于存放SWATH窗口的信息,key为mz
-
-        public DIAPasef(JobInfo jobInfo) : base(jobInfo)
-        {
-        }
+        public DIAPasef(JobInfo jobInfo) : base(jobInfo) {}
 
         public override void doConvert()
         {
@@ -43,7 +34,7 @@ namespace AirdPro.Converters
                     readVendorFile(); //准备读取Vendor文件
                     pretreatment(); //预处理谱图,将MS1和MS2谱图分开存储
                     compressMS1Block();
-                    compressMS2Block();
+                    compressMS2BlockForDIA();
                     writeToAirdInfoFile(); //将Info数据写入文件
                 }
             }
@@ -51,7 +42,7 @@ namespace AirdPro.Converters
             finish();
         }
 
-        //解析MS1和MS2谱图
+        //预处理MS1和MS2谱图
         protected void pretreatment()
         {
             int parentNum = 0;
@@ -108,7 +99,7 @@ namespace AirdPro.Converters
                     {
                         if (ms2Index != null)
                         {
-                            addToMS2Map(ms2Index);
+                            addToMS2Map(ms2Index.precursorMz, ms2Index);
                         }
                         //初始化新的ms2Index
                         ms2Index = parseMS2(spectrum, i, parentNum);
@@ -142,33 +133,10 @@ namespace AirdPro.Converters
                     }
                 }
             }
-
+            jobInfo.log("Total SWATH Windows:" + ranges.Count);
             jobInfo.log("Effective MS1 List Size:" + ms1List.Count);
             jobInfo.log("MS2 Group List Size:" + ms2Table.Count);
             jobInfo.log("Start Processing MS1 List");
-        }
-
-        private void compressMS2Block()
-        {
-            jobInfo.log("Start Processing MS2 List");
-            int progress = 0;
-            foreach (double key in ms2Table.Keys)
-            {
-                List<MsIndex> ms2List = ms2Table[key] as List<MsIndex>;
-                WindowRange range = rangeTable[key] as WindowRange;
-
-                BlockIndex index = new BlockIndex(); //为每一个key组创建一个SwathBlock
-                index.level = 2;
-                index.startPtr = startPosition;
-                index.setWindowRange(range);
-
-                jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);
-                progress++;
-                compressor.compressMS2(this, ms2List, index);
-                index.endPtr = startPosition;
-                indexList.Add(index);
-                jobInfo.log("MS2 Group Finished:" + progress + "/" + ms2Table.Keys.Count);
-            }
         }
     }
 }

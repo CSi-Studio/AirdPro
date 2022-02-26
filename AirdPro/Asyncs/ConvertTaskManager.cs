@@ -145,10 +145,11 @@ namespace AirdPro.Asyncs
             {
                 converter = new Common(jobInfo);
             }
-            // else if (jobInfo.type.Equals(AirdType.DDA_PASEF))
-            // {
-            //     converter = new DDAPasef(jobInfo);
-            // }
+            else if (jobInfo.type.Equals(AirdType.DDA_PASEF))
+            {
+                jobInfo.ionMobility = true;
+                converter = new DDAPasef(jobInfo);
+            }
             else if (jobInfo.type.Equals(AirdType.DIA_PASEF))
             {
                 jobInfo.ionMobility = true;

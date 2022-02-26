@@ -16,10 +16,10 @@ using AirdPro.Domains.Convert;
 
 namespace AirdPro.Converters
 {
-    internal class DDA : IConverter
+    internal class DDAPasef : IConverter
     {
 
-        public DDA(JobInfo jobInfo) : base(jobInfo) {}
+        public DDAPasef(JobInfo jobInfo) : base(jobInfo) { }
 
         public override void doConvert()
         {
@@ -48,7 +48,7 @@ namespace AirdPro.Converters
             {
                 Spectrum spectrum = spectrumList.spectrum(i);
                 string msLevel = parseMsLevel(spectrum);
-                
+
                 //最后一个谱图,单独判断
                 if (i == totalSize - 1)
                 {
@@ -62,7 +62,7 @@ namespace AirdPro.Converters
                         MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
                         addToMS2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
                     }
-                        
+
                 }
                 else
                 {
@@ -80,7 +80,7 @@ namespace AirdPro.Converters
                     if (msLevel.Equals(MsLevel.MS2))
                     {
                         MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
-                        addToMS2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
+                        addToMS2Map(ms2Index.pNum, ms2Index); //如果这个谱图是MS2
                     }
 
                 }
@@ -91,6 +91,5 @@ namespace AirdPro.Converters
             jobInfo.log("Start Processing MS1 List");
         }
 
-      
     }
 }

@@ -75,7 +75,8 @@ namespace AirdPro.Converters
                     //如果是MS2谱图,加入到谱图组
                     if (msLevel.Equals(MsLevel.MS2))
                     {
-                        addToMS2Map(parseMS2(spectrumList.spectrum(i), i, parentNum));
+                        MsIndex ms2Index = parseMS2(spectrumList.spectrum(i), i, parentNum);
+                        addToMS2Map(ms2Index.precursorMz, ms2Index);
                         ParallelLoopState.Break();
                         return;
                     }
@@ -101,7 +102,8 @@ namespace AirdPro.Converters
 
                 if (msLevel.Equals(MsLevel.MS2))
                 {
-                    addToMS2Map(parseMS2(spectrumList.spectrum(i), i, parentNum)); //如果这个谱图是MS2
+                    MsIndex ms2Index = parseMS2(spectrumList.spectrum(i), i, parentNum);
+                    addToMS2Map(ms2Index.precursorMz, ms2Index); //如果这个谱图是MS2
                 }
             });
 
