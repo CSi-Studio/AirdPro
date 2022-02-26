@@ -8,7 +8,6 @@
  * See the Mulan PSL v2 for more details.
  */
 
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -21,7 +20,6 @@ namespace AirdPro.Converters
 {
     internal class PRM : IConverter
     {
-        private int progress;//进度计数器
 
         public PRM(JobInfo jobInfo) : base(jobInfo) {}
 
@@ -34,7 +32,6 @@ namespace AirdPro.Converters
                 using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                 {
                     readVendorFile();//准备读取Vendor文件
-                    initGlobalVar();//初始化全局变量
                     pretreatment();//预处理谱图,将MS1和MS2谱图分开存储
                     compressMS1Block();//处理MS1,并将索引写入文件流中
                     parseAndStoreMS2Block();//处理MS2,并将索引写入文件流中
@@ -42,15 +39,6 @@ namespace AirdPro.Converters
                 }
             }
             finish();
-        }
-
-        private void initGlobalVar()
-
-        {
-            totalSize = spectrumList.size();
-            progress = 0;
-            jobInfo.log("Total Spectra:" + totalSize);
-            startPosition = 0;//文件的存储位置,每一次解析完就会将指针往前挪移
         }
 
         //Step1. 解析MS1和MS2谱图
@@ -115,6 +103,7 @@ namespace AirdPro.Converters
         private void parseAndStoreMS2Block()
         {
             jobInfo.log("Start Processing MS2 List");
+            int progress = 0;
             foreach (double key in ms2Table.Keys)
             {
                 List<MsIndex> ms2List = ms2Table[key] as List<MsIndex>;
