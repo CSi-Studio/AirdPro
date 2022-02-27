@@ -4,11 +4,11 @@ using ZstdNet;
 
 namespace Compress
 {
-    public class Zstd
+    public class Zstd:ByteComp
     {
 
         //使用zstd将byte数组压缩
-        public static byte[] encode(byte[] data)
+        public byte[] encode(byte[] data)
         {
             using (var ms = new MemoryStream())
             {
@@ -21,14 +21,14 @@ namespace Compress
         }
 
         //使用zstd将float数组压缩为byte数组
-        public static byte[] encode(float[] target)
+        public byte[] encode(float[] target)
         {
             var targetArray = ByteTrans.floatToByte(target);
             var compressedArray = encode(targetArray);
             return compressedArray;
         }
 
-        public static byte[] decode(byte[] data)
+        public byte[] decode(byte[] data)
         {
             using (var result = new MemoryStream())
             {
@@ -38,7 +38,7 @@ namespace Compress
             }
         }
 
-        public static float[] decodeToFloat(byte[] data)
+        public float[] decodeToFloat(byte[] data)
         {
             using (var result = new MemoryStream())
             {

@@ -136,12 +136,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\Compressor\ICompressor.cs" />
-    <Compile Include="Algorithms\Compressor\StackZDPD.cs" />
-    <Compile Include="Algorithms\Compressor\ZDVB.cs" />
-    <Compile Include="Algorithms\Compressor\ZDPD.cs" />
+    <Compile Include="Algorithms\Compressor\StackComp.cs" />
+    <Compile Include="Algorithms\Compressor\CoreComp.cs" />
     <Compile Include="Asyncs\ConvertTaskManager.cs" />
     <Compile Include="Asyncs\LimitedConcurrencyLevelTaskScheduler.cs" />
-    <Compile Include="Constants\CompressorType.cs" />
+    <Compile Include="Constants\IntCompType.cs" />
+    <Compile Include="Constants\ByteCompType.cs" />
     <Compile Include="Constants\Activator.cs" />
     <Compile Include="Constants\ByteOrder.cs" />
     <Compile Include="Constants\FileFormat.cs" />
@@ -155,6 +155,11 @@
     <Compile Include="Converters\Common.cs" />
     <Compile Include="Converters\DDAPasef .cs" />
     <Compile Include="Converters\DIAPasef.cs" />
+    <Compile Include="Domains\Job\JobInfo.cs" />
+    <Compile Include="Domains\Job\JobParams.cs" />
+    <Compile Include="Domains\Job\RemoteConvertJob.cs" />
+    <Compile Include="Domains\Log.cs" />
+    <Compile Include="Domains\Sort\IntArrayNode.cs" />
     <Compile Include="Forms\FileFolderSelector.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -162,7 +167,6 @@
       <DependentUpon>FileFolderSelector.cs</DependentUpon>
     </Compile>
     <Compile Include="Redis\RedisClient.cs" />
-    <Compile Include="Test\StackZDPDTest.cs" />
     <Compile Include="Forms\AirdForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -274,14 +278,6 @@
     <ProjectReference Include="..\DomainsCore\DomainsCore.csproj">
       <Project>{870ee31c-23e3-4836-ac04-4feeb6c487b7}</Project>
       <Name>DomainsCore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Domains\Domains.csproj">
-      <Project>{75c1c2f6-5c2c-4325-964b-0bdc0fa9cfd6}</Project>
-      <Name>Domains</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Parser\Parser.csproj">
-      <Project>{273f1033-3bd6-49c4-87b5-5ebcaa66d1da}</Project>
-      <Name>Parser</Name>
     </ProjectReference>
     <ProjectReference Include="..\ThirdParty\ThirdParty.csproj">
       <Project>{ea1c54b8-2aef-44b3-8cb5-25b6c98f6ff2}</Project>

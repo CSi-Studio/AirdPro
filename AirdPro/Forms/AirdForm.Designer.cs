@@ -53,16 +53,15 @@ namespace AirdPro.Forms
             this.headerOutput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnDeleteFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
-            this.intCompA = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.lblCompB = new System.Windows.Forms.Label();
-            this.mzCompB = new System.Windows.Forms.ComboBox();
+            this.cbStack = new System.Windows.Forms.CheckBox();
+            this.lblIntCompA = new System.Windows.Forms.Label();
+            this.intByteComp = new System.Windows.Forms.ComboBox();
+            this.lblMzByteComp = new System.Windows.Forms.Label();
+            this.mzByteComp = new System.Windows.Forms.ComboBox();
             this.lblStackLayers = new System.Windows.Forms.Label();
             this.cbStackLayers = new System.Windows.Forms.ComboBox();
-            this.lblCompA = new System.Windows.Forms.Label();
-            this.mzCompA = new System.Windows.Forms.ComboBox();
+            this.lblMzIntComp = new System.Windows.Forms.Label();
+            this.mzIntComp = new System.Windows.Forms.ComboBox();
             this.btnDisconnect = new System.Windows.Forms.Button();
             this.lblConnectStatus = new System.Windows.Forms.Label();
             this.lblIP = new System.Windows.Forms.Label();
@@ -108,16 +107,15 @@ namespace AirdPro.Forms
             // 
             // container.Panel2
             // 
-            this.container.Panel2.Controls.Add(this.label4);
-            this.container.Panel2.Controls.Add(this.intCompA);
-            this.container.Panel2.Controls.Add(this.label2);
-            this.container.Panel2.Controls.Add(this.label3);
-            this.container.Panel2.Controls.Add(this.lblCompB);
-            this.container.Panel2.Controls.Add(this.mzCompB);
+            this.container.Panel2.Controls.Add(this.cbStack);
+            this.container.Panel2.Controls.Add(this.lblIntCompA);
+            this.container.Panel2.Controls.Add(this.intByteComp);
+            this.container.Panel2.Controls.Add(this.lblMzByteComp);
+            this.container.Panel2.Controls.Add(this.mzByteComp);
             this.container.Panel2.Controls.Add(this.lblStackLayers);
             this.container.Panel2.Controls.Add(this.cbStackLayers);
-            this.container.Panel2.Controls.Add(this.lblCompA);
-            this.container.Panel2.Controls.Add(this.mzCompA);
+            this.container.Panel2.Controls.Add(this.lblMzIntComp);
+            this.container.Panel2.Controls.Add(this.mzIntComp);
             this.container.Panel2.Controls.Add(this.btnDisconnect);
             this.container.Panel2.Controls.Add(this.lblConnectStatus);
             this.container.Panel2.Controls.Add(this.lblIP);
@@ -163,7 +161,6 @@ namespace AirdPro.Forms
             // 
             resources.ApplyResources(this.lblFileSelectedInfo, "lblFileSelectedInfo");
             this.lblFileSelectedInfo.Name = "lblFileSelectedInfo";
-            this.lblFileSelectedInfo.Click += new System.EventHandler(this.lblFileSelectedInfo_Click);
             // 
             // lvFileList
             // 
@@ -218,51 +215,37 @@ namespace AirdPro.Forms
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
             // 
-            // label4
+            // cbStack
             // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
+            resources.ApplyResources(this.cbStack, "cbStack");
+            this.cbStack.Name = "cbStack";
+            this.cbStack.UseVisualStyleBackColor = true;
             // 
-            // intCompA
+            // lblIntCompA
             // 
-            this.intCompA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.intCompA.FormattingEnabled = true;
-            this.intCompA.Items.AddRange(new object[] {
-            resources.GetString("intCompA.Items"),
-            resources.GetString("intCompA.Items1")});
-            resources.ApplyResources(this.intCompA, "intCompA");
-            this.intCompA.Name = "intCompA";
-            this.ttAlgorithm.SetToolTip(this.intCompA, resources.GetString("intCompA.ToolTip"));
+            resources.ApplyResources(this.lblIntCompA, "lblIntCompA");
+            this.lblIntCompA.Name = "lblIntCompA";
             // 
-            // label2
+            // intByteComp
             // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
+            this.intByteComp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.intByteComp.FormattingEnabled = true;
+            resources.ApplyResources(this.intByteComp, "intByteComp");
+            this.intByteComp.Name = "intByteComp";
+            this.ttAlgorithm.SetToolTip(this.intByteComp, resources.GetString("intByteComp.ToolTip"));
             // 
-            // label3
+            // lblMzByteComp
             // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
+            resources.ApplyResources(this.lblMzByteComp, "lblMzByteComp");
+            this.lblMzByteComp.Name = "lblMzByteComp";
             // 
-            // lblCompB
+            // mzByteComp
             // 
-            resources.ApplyResources(this.lblCompB, "lblCompB");
-            this.lblCompB.Name = "lblCompB";
-            // 
-            // mzCompB
-            // 
-            this.mzCompB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.mzCompB.FormattingEnabled = true;
-            this.mzCompB.Items.AddRange(new object[] {
-            resources.GetString("mzCompB.Items"),
-            resources.GetString("mzCompB.Items1"),
-            resources.GetString("mzCompB.Items2"),
-            resources.GetString("mzCompB.Items3"),
-            resources.GetString("mzCompB.Items4"),
-            resources.GetString("mzCompB.Items5")});
-            resources.ApplyResources(this.mzCompB, "mzCompB");
-            this.mzCompB.Name = "mzCompB";
-            this.ttAlgorithm.SetToolTip(this.mzCompB, resources.GetString("mzCompB.ToolTip"));
+            this.mzByteComp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.mzByteComp.FormattingEnabled = true;
+            resources.ApplyResources(this.mzByteComp, "mzByteComp");
+            this.mzByteComp.Name = "mzByteComp";
+            this.ttAlgorithm.SetToolTip(this.mzByteComp, resources.GetString("mzByteComp.ToolTip"));
             // 
             // lblStackLayers
             // 
@@ -283,23 +266,18 @@ namespace AirdPro.Forms
             resources.ApplyResources(this.cbStackLayers, "cbStackLayers");
             this.cbStackLayers.Name = "cbStackLayers";
             // 
-            // lblCompA
+            // lblMzIntComp
             // 
-            resources.ApplyResources(this.lblCompA, "lblCompA");
-            this.lblCompA.Name = "lblCompA";
+            resources.ApplyResources(this.lblMzIntComp, "lblMzIntComp");
+            this.lblMzIntComp.Name = "lblMzIntComp";
             // 
-            // mzCompA
+            // mzIntComp
             // 
-            this.mzCompA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.mzCompA.FormattingEnabled = true;
-            this.mzCompA.Items.AddRange(new object[] {
-            resources.GetString("mzCompA.Items"),
-            resources.GetString("mzCompA.Items1"),
-            resources.GetString("mzCompA.Items2")});
-            resources.ApplyResources(this.mzCompA, "mzCompA");
-            this.mzCompA.Name = "mzCompA";
-            this.ttAlgorithm.SetToolTip(this.mzCompA, resources.GetString("mzCompA.ToolTip"));
-            this.mzCompA.SelectedIndexChanged += new System.EventHandler(this.cbAlgorithm_SelectedIndexChanged);
+            this.mzIntComp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.mzIntComp.FormattingEnabled = true;
+            resources.ApplyResources(this.mzIntComp, "mzIntComp");
+            this.mzIntComp.Name = "mzIntComp";
+            this.ttAlgorithm.SetToolTip(this.mzIntComp, resources.GetString("mzIntComp.ToolTip"));
             // 
             // btnDisconnect
             // 
@@ -349,7 +327,6 @@ namespace AirdPro.Forms
             // 
             // cbMzPrecision
             // 
-            resources.ApplyResources(this.cbMzPrecision, "cbMzPrecision");
             this.cbMzPrecision.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbMzPrecision.FormattingEnabled = true;
             this.cbMzPrecision.Items.AddRange(new object[] {
@@ -357,6 +334,7 @@ namespace AirdPro.Forms
             resources.GetString("cbMzPrecision.Items1"),
             resources.GetString("cbMzPrecision.Items2"),
             resources.GetString("cbMzPrecision.Items3")});
+            resources.ApplyResources(this.cbMzPrecision, "cbMzPrecision");
             this.cbMzPrecision.Name = "cbMzPrecision";
             // 
             // cbThreadAccelerate
@@ -483,18 +461,17 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ColumnHeader headerOutput;
         private System.Windows.Forms.OpenFileDialog ofd;
         private System.Windows.Forms.Button btnSelectVendorFiles;
-        private System.Windows.Forms.Label lblCompA;
-        private System.Windows.Forms.ComboBox mzCompA;
+        private System.Windows.Forms.Label lblMzIntComp;
+        private System.Windows.Forms.ComboBox mzIntComp;
         private System.Windows.Forms.Label lblStackLayers;
         private System.Windows.Forms.ComboBox cbStackLayers;
         private System.Windows.Forms.ColumnHeader headerCompressor;
         private System.Windows.Forms.ToolTip ttAlgorithm;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label lblCompB;
-        private System.Windows.Forms.ComboBox mzCompB;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox intCompA;
+        private System.Windows.Forms.Label lblMzByteComp;
+        private System.Windows.Forms.ComboBox mzByteComp;
+        private System.Windows.Forms.Label lblIntCompA;
+        private System.Windows.Forms.ComboBox intByteComp;
+        private System.Windows.Forms.CheckBox cbStack;
     }
 }
 

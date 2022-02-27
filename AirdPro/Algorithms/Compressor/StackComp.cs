@@ -21,9 +21,9 @@ using pwiz.CLI.util;
 
 namespace AirdPro.Algorithms
 {
-    public class StackZDPD : ICompressor
+    public class StackComp : ICompressor
     {
-        public StackZDPD(IConverter converter) : base(converter){}
+        public StackComp(IConverter converter) : base(converter){}
 
         public override void compressMS1(IConverter converter, BlockIndex index)
         {
@@ -207,12 +207,13 @@ namespace AirdPro.Algorithms
                 intListAllGroup.AddRange(intensityList);
             }
 
-            Layers layers = StackLayer.encode(mzListGroup, mzListGroup.Count == Math.Pow(2, digit));
+            // Layers layers = StackLayer.encode(mzListGroup, mzListGroup.Count == Math.Pow(2, digit));
+            Layers layers = StackLayer.encode(mzListGroup, mzIntComp, intByteComp);
             // List<int[]> temp = StackCompressUtil.stackDecode(layers);
             //使用SZDPD对mz进行压缩
             ts.mzArrayBytes = layers.mzArray;
             ts.tagArrayBytes = layers.tagArray;
-            ts.intArrayBytes = Zlib.encode(intListAllGroup.ToArray());
+            ts.intArrayBytes = intByteComp.encode(ByteTrans.floatToByte(intListAllGroup.ToArray()));
         }
     }
 }

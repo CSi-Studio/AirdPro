@@ -25,6 +25,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using AirdPro.Algorithms;
+using Compress;
 using ByteOrder = AirdPro.Constants.ByteOrder;
 using CV = AirdPro.DomainsCore.Aird.CV;
 using Software = pwiz.CLI.msdata.Software;
@@ -47,7 +48,6 @@ namespace AirdPro.Converters
         protected Hashtable featuresMap = new Hashtable();
         public ICompressor compressor;
 
-        
         protected long fileSize; //厂商文件大小
         protected long startPosition = 0; //文件指针
         protected int totalSize; //总计的谱图数目
@@ -225,7 +225,7 @@ namespace AirdPro.Converters
         //注意:本函数会操作startPosition这个全局变量
         public void addToIndex(BlockIndex index, object tempScan)
         {
-            if (jobInfo.jobParams.useStackZDPD())
+            if (jobInfo.jobParams.stack)
             {
                 TempScanSZDPD ts = (TempScanSZDPD) tempScan;
 
@@ -674,27 +674,21 @@ namespace AirdPro.Converters
             List<Compressor> coms = new List<Compressor>();
             Compressor mzCompressor = new Compressor(Compressor.TARGET_MZ);
             Compressor intCompressor = new Compressor(Compressor.TARGET_INTENSITY);
-            switch (jobInfo.jobParams.airdAlgorithm)
+            if (jobInfo.jobParams.stack)
             {
-                case CompressorType.ZDPD:
-                    mzCompressor.addMethod(Compressor.METHOD_ZDPD);
-                    mzCompressor.precision = jobInfo.jobParams.mzPrecision;
-                    intCompressor.addMethod(Compressor.METHOD_ZLIB);
-                    intCompressor.precision = 10;
-                    break;
-                case CompressorType.ZDVB:
-                    mzCompressor.addMethod(Compressor.METHOD_ZDVB);
-                    mzCompressor.precision = jobInfo.jobParams.mzPrecision;
-                    intCompressor.addMethod(Compressor.METHOD_ZVB);
-                    intCompressor.precision = 1;
-                    break;
-                case CompressorType.StackZDPD:
-                    mzCompressor.addMethod(Compressor.METHOD_STACK_ZDPD);
-                    mzCompressor.precision = jobInfo.jobParams.mzPrecision;
-                    mzCompressor.digit = jobInfo.jobParams.digit;
-                    intCompressor.addMethod(Compressor.METHOD_ZLIB);
-                    intCompressor.precision = 10;
-                    break;
+                mzCompressor.addMethod(jobInfo.jobParams.mzIntComp.ToString());
+                mzCompressor.addMethod(jobInfo.jobParams.mzByteComp.ToString());
+                mzCompressor.precision = jobInfo.jobParams.mzPrecision;
+                mzCompressor.digit = jobInfo.jobParams.digit;
+                intCompressor.addMethod(jobInfo.jobParams.intByteComp.ToString());
+                intCompressor.precision = 10;
+            }
+            else
+            {
+                mzCompressor.addMethod(jobInfo.jobParams.mzIntComp.ToString());
+                mzCompressor.addMethod(jobInfo.jobParams.mzByteComp.ToString());
+                mzCompressor.precision = jobInfo.jobParams.mzPrecision;
+                intCompressor.addMethod(jobInfo.jobParams.intByteComp.ToString());
             }
 
             coms.Add(mzCompressor);
@@ -708,7 +702,7 @@ namespace AirdPro.Converters
             featuresMap.Add(Features.ignore_zero_intensity, jobInfo.jobParams.ignoreZeroIntensity);
             featuresMap.Add(Features.source_file_format, jobInfo.format);
             featuresMap.Add(Features.byte_order, ByteOrder.LITTLE_ENDIAN);
-            featuresMap.Add(Features.aird_algorithm, jobInfo.jobParams.getAirdAlgorithmStr());
+            featuresMap.Add(Features.aird_algorithm, jobInfo.jobParams.getCompressorStr());
             airdInfo.features = FeaturesUtil.toString(featuresMap);
             airdInfo.version = SoftwareInfo.VERSION;
             airdInfo.versionCode = SoftwareInfo.VERSION_CODE;

@@ -9,23 +9,21 @@
  */
 
 using System;
+using AirdPro.Converters;
+using AirdPro.DomainsCore.Aird;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using AirdPro.Constants;
-using AirdPro.Converters;
-using AirdPro.Domains.Convert;
-using AirdPro.DomainsCore.Aird;
 using Compress;
 using pwiz.CLI.msdata;
 using pwiz.CLI.util;
 
 namespace AirdPro.Algorithms
 {
-    public class ZDVB : ICompressor
+    public class CoreComp : ICompressor
     {
-        public ZDVB(IConverter converter) : base(converter)
+        public CoreComp(IConverter converter) : base(converter)
         {
         }
 
@@ -34,39 +32,37 @@ namespace AirdPro.Algorithms
             MsIndex[] ms1List = converter.ms1List.ToArray();
             if (multiThread)
             {
-                Hashtable table = Hashtable.Synchronized(new Hashtable());
+                Hashtable ms1Table = Hashtable.Synchronized(new Hashtable());
                 int process = 0;
                 //使用多线程处理数据提取与压缩
                 Parallel.For(0, converter.ms1List.Count, (i, ParallelLoopState) =>
                 {
                     Interlocked.Increment(ref process);
                     converter.jobInfo.log(null, "MS1:" + process + "/" + converter.ms1List.Count);
-                    MsIndex msIndex = ms1List[i];
-                    TempScan ts = new TempScan(msIndex.num, msIndex.rt, msIndex.tic, msIndex.cvList);
-
+                    MsIndex ms1Index = ms1List[i];
+                    TempScan ts = new TempScan(ms1Index.num, ms1Index.rt, ms1Index.tic, ms1Index.cvList);
                     if (converter.jobInfo.ionMobility)
-                    { 
-                        compressMobility(converter.spectrumList, msIndex, ts);
+                    {
+                        compressMobility(converter.spectrumList, ms1Index, ts);
                     }
                     else
                     {
                         compress(converter.spectrumList.spectrum(ts.num, true), ts);
                     }
-                    
-                    table.Add(i, ts);
+                    ms1Table.Add(i, ts);
                 });
-                converter.writeToFile(table, index);
+                converter.writeToFile(ms1Table, index);
             }
             else
             {
                 for (int i = 0; i < converter.ms1List.Count; i++)
                 {
                     converter.jobInfo.log(null, "MS1:" + i + "/" + converter.ms1List.Count);
-                    MsIndex msIndex = ms1List[i];
-                    TempScan ts = new TempScan(msIndex.num, msIndex.rt, msIndex.tic, msIndex.cvList);
+                    MsIndex ms1Index = ms1List[i];
+                    TempScan ts = new TempScan(ms1Index.num, ms1Index.rt, ms1Index.tic, ms1Index.cvList);
                     if (converter.jobInfo.ionMobility)
                     {
-                        compressMobility(converter.spectrumList, msIndex, ts);
+                        compressMobility(converter.spectrumList, ms1Index, ts);
                     }
                     else
                     {
@@ -85,18 +81,16 @@ namespace AirdPro.Algorithms
                 //使用多线程处理数据提取与压缩
                 Parallel.For(0, ms2List.Count, (i, ParallelLoopState) =>
                 {
-                    MsIndex msIndex = ms2List[i];
-                    TempScan ts = new TempScan(msIndex.num, msIndex.rt, msIndex.tic, msIndex.cvList);
-                    // compress(converter.spectrumList.spectrum(msIndex.num, true), ts);
+                    MsIndex ms2Index = ms2List[i];
+                    TempScan ts = new TempScan(ms2Index.num, ms2Index.rt, ms2Index.tic, ms2Index.cvList);
                     if (converter.jobInfo.ionMobility)
                     {
-                        compressMobility(converter.spectrumList, msIndex, ts);
+                        compressMobility(converter.spectrumList, ms2Index, ts);
                     }
                     else
                     {
                         compress(converter.spectrumList.spectrum(ts.num, true), ts);
                     }
-
                     table.Add(i, ts);
                 });
                 converter.writeToFile(table, index);
@@ -125,6 +119,11 @@ namespace AirdPro.Algorithms
             BinaryDataDouble mzData = spectrum.getMZArray().data;
             BinaryDataDouble intData = spectrum.getIntensityArray().data;
             var size = mzData.Count;
+            if (size == 0)
+            {
+                return;
+            }
+
             int[] mzArray = new int[size];
             float[] intensityArray = new float[size];
             int j = 0;
@@ -141,16 +140,17 @@ namespace AirdPro.Algorithms
             float[] intensitySubArray = new float[j];
             Array.Copy(intensityArray, intensitySubArray, j);
 
-            int[] compressedMzSubArray = VarByte.encode(mzSubArray, true);
-            byte[] compressedIntArray = Zlib.encode(intensitySubArray);
+            int[] compressedMzSubArray = mzIntComp.encode(mzSubArray);
+            byte[] compressedIntArray = intByteComp.encode(ByteTrans.floatToByte(intensitySubArray));
 
-            ts.mzArrayBytes = Zlib.encode(compressedMzSubArray);
+            ts.mzArrayBytes = mzByteComp.encode(ByteTrans.intToByte(compressedMzSubArray));
             ts.intArrayBytes = compressedIntArray;
         }
 
         public void compressMobility(SpectrumList spectrumList, MsIndex msIndex, TempScan ts)
         {
             List<int> scanNums = msIndex.scanNums;
+            Spectrum frame = new Spectrum();
             List<TimsData> dataList = new List<TimsData>();
             int totalSize = 0;
             for (var i = 0; i < scanNums.Count; i++)
@@ -170,7 +170,7 @@ namespace AirdPro.Algorithms
                     dataList.Add(new TimsData(mobility, mzData[t], intData[t]));
                 }
 
-                dataList.Sort(delegate (TimsData x, TimsData y)
+                dataList.Sort(delegate(TimsData x, TimsData y)
                 {
                     if (x.mz > y.mz)
                         return 1;
@@ -182,7 +182,7 @@ namespace AirdPro.Algorithms
             int[] mzArray = new int[totalSize];
             float[] intensityArray = new float[totalSize];
             float[] mobilityArray = new float[totalSize];
-
+            
             for (int i = 0; i < totalSize; i++)
             {
                 mzArray[i] = Convert.ToInt32(dataList[i].mz * mzPrecision);
@@ -190,11 +190,11 @@ namespace AirdPro.Algorithms
                 mobilityArray[i] = Convert.ToInt32(dataList[i].mobility * mzPrecision); //精确到小数点后一位
             }
 
-            int[] compressedMzArray = VarByte.encode(mzArray, true);
-            byte[] compressedIntArray = Zlib.encode(intensityArray);
-            byte[] compressedMobilityArray = Zlib.encode(mobilityArray);
+            int[] compressedMzArray = mzIntComp.encode(mzArray);
+            byte[] compressedIntArray = intByteComp.encode(ByteTrans.floatToByte(intensityArray));
+            byte[] compressedMobilityArray = mobilityByteComp.encode(ByteTrans.floatToByte(mobilityArray));
 
-            ts.mzArrayBytes = Zlib.encode(compressedMzArray);
+            ts.mzArrayBytes = mzByteComp.encode(ByteTrans.intToByte(compressedMzArray));
             ts.intArrayBytes = compressedIntArray;
             ts.mobilityArrayBytes = compressedMobilityArray;
         }

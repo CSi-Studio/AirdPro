@@ -50,11 +50,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domains\Job\JobInfo.cs" />
-    <Compile Include="Domains\Job\JobParams.cs" />
-    <Compile Include="Domains\Job\RemoteConvertJob.cs" />
-    <Compile Include="Domains\Log.cs" />
-    <Compile Include="Domains\Sort\IntArrayNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

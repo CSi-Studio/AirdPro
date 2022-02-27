@@ -67,9 +67,9 @@ namespace AirdPro.Domains.Convert
             this.outputFolderPath = outputFolderPath;
             this.type = type;
             // 二代压缩算法StackZDPD目前不支持COMMON模式
-            if (type.Equals(AirdType.COMMON) && jobParams.airdAlgorithm == 3)
+            if (type.Equals(AirdType.COMMON) && jobParams.stack)
             {
-                jobParams.airdAlgorithm = 1;  
+                throw new Exception("Stack Layer Algorithm is not support for COMMON mode");
             }
             this.jobParams = jobParams;
             format = Path.GetExtension(inputFilePath).Replace(".","").ToUpper();
@@ -81,7 +81,7 @@ namespace AirdPro.Domains.Convert
             {
                 item.SubItems[3].Text = progressValue;
             });
-            item.SubItems[2].Text = jobParams.getAirdAlgorithmStr();
+            item.SubItems[2].Text = jobParams.getCompressorStr();
             item.SubItems[4].Text = outputFolderPath;
         }
 

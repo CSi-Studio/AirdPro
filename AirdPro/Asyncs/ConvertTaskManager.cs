@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AirdPro.Algorithms;
+using Compress;
 using static AirdPro.Constants.ProcessingStatus;
 
 namespace AirdPro.Asyncs
@@ -156,16 +157,67 @@ namespace AirdPro.Asyncs
                 converter = new DIAPasef(jobInfo);
             }
 
-            switch (jobInfo.jobParams.airdAlgorithm)
+            if (!jobInfo.jobParams.stack)
             {
-                case CompressorType.ZDPD: 
-                    comp = new ZDPD(converter);
+                comp = new CoreComp(converter);
+            }
+            else
+            {
+                comp = new StackComp(converter);
+                comp.mobilityByteComp = new Zlib();
+            }
+
+            switch (jobInfo.jobParams.mzIntComp)
+            {
+                case IntCompType.IBP:
+                    comp.mzIntComp = new IntegratedBinPacking();
                     break;
-                case CompressorType.ZDVB:
-                    comp = new ZDVB(converter);
+                case IntCompType.IVB:
+                    comp.mzIntComp = new IntegratedVarByte();
                     break;
-                case CompressorType.StackZDPD:
-                    comp = new StackZDPD(converter);
+            }
+
+            switch (jobInfo.jobParams.mzByteComp)
+            {
+                case ByteCompType.Zlib:
+                    comp.mzByteComp = new Zlib();
+                    break;
+                case ByteCompType.Zstd:
+                    comp.mzByteComp = new Zstd();
+                    break;
+                case ByteCompType.Snappy:
+                    comp.mzByteComp = new Zlib();
+                    break;
+                case ByteCompType.Brotli:
+                    comp.mzByteComp = new Zlib();
+                    break;
+                case ByteCompType.LZ4:
+                    comp.mzByteComp = new Zlib();
+                    break;
+                case ByteCompType.Gzip:
+                    comp.mzByteComp = new Zlib();
+                    break;
+            }
+
+            switch (jobInfo.jobParams.intByteComp)
+            {
+                case ByteCompType.Zlib:
+                    comp.intByteComp = new Zlib();
+                    break;
+                case ByteCompType.Zstd:
+                    comp.intByteComp = new Zstd();
+                    break;
+                case ByteCompType.Snappy:
+                    comp.intByteComp = new Zlib();
+                    break;
+                case ByteCompType.Brotli:
+                    comp.intByteComp = new Zlib();
+                    break;
+                case ByteCompType.LZ4:
+                    comp.intByteComp = new Zlib();
+                    break;
+                case ByteCompType.Gzip:
+                    comp.intByteComp = new Zlib();
                     break;
             }
 

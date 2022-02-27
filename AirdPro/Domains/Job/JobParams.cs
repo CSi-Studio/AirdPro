@@ -9,6 +9,7 @@
  */
 
 using System;
+using AirdPro.Constants;
 
 namespace AirdPro.Domains.Convert
 {
@@ -18,38 +19,51 @@ namespace AirdPro.Domains.Convert
          * Ignore the mz-intensity pairs whose intensity is zero.
          * 忽略intensity为0的数据
          */
-        public Boolean ignoreZeroIntensity = true;
+        public bool ignoreZeroIntensity = true;
+
         /**
          * the decimal point of the mz. The default value is 0.0001
          * mz精度,默认保留到小数点后第4位
          */
         public int mzPrecision = 10000;
+
         /**
          * if using the multi thread for acceleration. The default value is true
          * 是否使用CPU多核加速,默认加速
          */
-        public Boolean threadAccelerate = true;
+        public bool threadAccelerate = true;
 
         /**
          * The extra suffix for every converted file's name
          * 额外的文件后缀名称
          */
-        public String suffix;
+        public string suffix;
 
         /**
          * The operator's name
          * 操作员姓名
          */
-        public String creator;
+        public string creator;
 
         /**
-         * The core compressor algorithm of Aird
-         * 使用的Aird核心压缩算法
-         * 1 : ZDPD, the first generation of aird compressor
-         * 2 : ZDVB, the second generation of aird compressor
-         * 3 : Stack ZDPD, the second generation of aird compressor
+         * 用于mz压缩的int数组压缩方法
          */
-        public int airdAlgorithm = 1;
+        public IntCompType mzIntComp = IntCompType.IBP;
+
+        /**
+         * 用于mz压缩的byte数组压缩方法
+         */
+        public ByteCompType mzByteComp = ByteCompType.Zlib;
+
+        /**
+         * 用于intensity压缩的byte数组压缩方法
+         */
+        public ByteCompType intByteComp = ByteCompType.Zlib;
+
+        /**
+         * 是否使用stack layer压缩
+         */
+        public bool stack = false;
 
         /**
          * The stack layers's tag
@@ -63,21 +77,10 @@ namespace AirdPro.Domains.Convert
         {
         }
 
-        public String getAirdAlgorithmStr()
+        public String getCompressorStr()
         {
-            switch (airdAlgorithm)
-            {
-                case 1: return "ZDPD";
-                case 2: return "ZDVB";
-                case 3: return ("Stack-ZDPD:" + Math.Pow(2, digit) + " Layers");
-                default: return "ZDPD";
-            }
+            return mzIntComp.ToString() + "|" + mzByteComp.ToString() + "|" + intByteComp.ToString();
             // return airdAlgorithm == 1 ? "ZDPD" : ("Stack-ZDPD:" + Math.Pow(2, digit).ToString() + " Layers");
-        }
-
-        public Boolean useStackZDPD()
-        {
-            return airdAlgorithm == 3;
         }
     }
 }

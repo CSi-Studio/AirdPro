@@ -1,24 +1,21 @@
 ﻿using CSharpFastPFOR;
-using CSharpFastPFOR.Differential;
 
 namespace Compress
 {
-    public class VarByte
+    public class VarByte:IntComp
     {
-        //使用VariableByte算法将排序了的int数组进行压缩
-        public static int[] encode(int[] uncompressed, bool sorted)
+        //使用VariableByte算法将未排序的int数组进行压缩
+        public int[] encode(int[] uncompressed)
         {
-            int[] compressedInts = sorted ? new IntegratedIntCompressor(new IntegratedVariableByte()).compress(uncompressed) :
-                new IntCompressor(new VariableByte()).compress(uncompressed);
+            int[] compressedInts = new IntCompressor(new VariableByte()).compress(uncompressed);
             return compressedInts;
         }
 
 
         //使用VariableByte算法对已经压缩的int数组进行解压缩
-        public static int[] decode(int[] compressed, bool sorted)
+        public int[] decode(int[] compressed)
         {
-            int[] sortedInts = sorted ? new IntegratedIntCompressor(new IntegratedVariableByte()).compress(compressed) :
-                new IntCompressor(new VariableByte()).compress(compressed);
+            int[] sortedInts = new IntCompressor(new VariableByte()).compress(compressed);
             return sortedInts;
         }
     }

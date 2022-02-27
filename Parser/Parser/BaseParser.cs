@@ -149,8 +149,8 @@ namespace AirdPro.Parser
         /// <returns> 解压缩后的数组 </returns>
         public float[] getMzValues(byte[] value)
         {
-            var Values = Zlib.decodeToInt(value);
-            var intValues = BinPacking.decode(Values);
+            var values = mzInt.decodeToInt(value);
+            var intValues = IntegratedBinPacking.decode(values);
             float[] floatValues = new float[intValues.Length];
             for (int index = 0; index < intValues.Length; index++)
             {
@@ -171,7 +171,7 @@ namespace AirdPro.Parser
         public float[] getMzValues(byte[] value, int start, int length)
         {
             var values = Zlib.decodeToInt(value.Skip(start).Take(length).ToArray());
-            var intValues = BinPacking.decode(values);
+            var intValues = IntegratedBinPacking.decode(values);
             float[] floatValues = new float[intValues.Length];
             for (int index = 0; index < intValues.Length; index++)
             {
@@ -190,7 +190,7 @@ namespace AirdPro.Parser
         public int[] getMzValuesAsInteger(byte[] value)
         {
             var intValues = Zlib.decodeToInt(value);
-            intValues = BinPacking.decode(intValues);
+            intValues = IntegratedBinPacking.decode(intValues);
             return intValues;
         }
 

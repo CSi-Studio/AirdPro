@@ -11,8 +11,8 @@
 using System;
 using System.Collections.Generic;
 using AirdPro.Converters;
-using AirdPro.Domains.Convert;
 using AirdPro.DomainsCore.Aird;
+using Compress;
 using pwiz.CLI.msdata;
 
 namespace AirdPro.Algorithms
@@ -24,6 +24,12 @@ namespace AirdPro.Algorithms
         public bool ignoreZero = true;
         public bool includeCV = true;
         public int digit = 8;
+
+        public IntComp mzIntComp;
+        public ByteComp mzByteComp;
+        public ByteComp intByteComp;
+        public ByteComp mobilityByteComp;
+
         public ICompressor(IConverter converter)
         {
             this.multiThread = converter.jobInfo.jobParams.threadAccelerate;

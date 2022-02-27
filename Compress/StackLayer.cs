@@ -31,7 +31,7 @@ namespace AirdPro.Utils
          * @param pair sorting method of mzArray
          * @return compressed mzArray
          */
-        public static Layers encode(List<int[]> arrGroup, Boolean pair)
+        public static Layers encode(List<int[]> arrGroup,IntComp intComp, ByteComp byteComp)
         {
             int stackLen = 0;  //记录堆叠数总长度
             foreach (int[] arr in arrGroup)
@@ -83,8 +83,8 @@ namespace AirdPro.Utils
             }
             //数组用fastPFor压缩，index用zlib压缩，并记录层数
             Layers layers = new Layers();
-            layers.mzArray = Zlib.encode(ByteTrans.intToByte(BinPacking.encode(stackArr)));
-            layers.tagArray = Zlib.encode(indexShift);
+            layers.mzArray = byteComp.encode(ByteTrans.intToByte(intComp.encode(stackArr)));
+            layers.tagArray = byteComp.encode(indexShift);
             layers.digit = digit;
 
             return layers;
@@ -96,11 +96,11 @@ namespace AirdPro.Utils
          * @param layers compressed mzArray
          * @return decompressed mzArray
          */
-        public static List<int[]> decode(Layers layers)
+        public static List<int[]> decode(Layers layers, IntComp intComp, ByteComp byteComp)
         {
-            int[] stackArr = BinPacking.decode(ByteTrans.byteToInt(Zlib.decode(layers.mzArray)));
+            int[] stackArr = intComp.decode(ByteTrans.byteToInt(byteComp.decode(layers.mzArray)));
             int[] stackIndex = new int[stackArr.Length];
-            byte[] tagShift = Zlib.decode(layers.tagArray);
+            byte[] tagShift = byteComp.decode(layers.tagArray);
             int digit = layers.digit;
             //拆分byte为8个bit，并分别存储
             byte[] value = new byte[8 * tagShift.Length];

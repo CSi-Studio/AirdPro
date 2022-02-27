@@ -10,11 +10,10 @@
 
 namespace AirdPro.Constants
 {
-    public static class CompressorType
+    public enum IntCompType
     {
-        public const int ZDPD = 1;
-        public const int ZDVB = 2;
-        public const int StackZDPD = 3;
-   
+        IBP = 0, //Integrated Binary Packing
+        IVB = 1, //Integrated Variable Byte
+        VB = 2, //Variable Byte
     }
 }

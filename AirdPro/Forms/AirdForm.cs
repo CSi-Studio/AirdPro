@@ -16,7 +16,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using AirdPro.Domains.Convert;
 using AirdPro.Redis;
-using AirdPro.Test;
 using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Forms
@@ -34,10 +33,21 @@ namespace AirdPro.Forms
         {
             this.Text = SoftwareInfo.getVersion();
             this.cbMzPrecision.SelectedIndex = 1; //默认选择精确到小数点后4位的精度
-            this.mzCompA.SelectedIndex = 0; //mz数组默认选择XDPD-Zlib的压缩内核
-            this.mzCompB.SelectedIndex = 0; //mz数组默认选择XDPD-Zlib的压缩内核
-            this.intCompA.SelectedIndex = 0; //intensity数组默认选择Zlib的压缩内核
-            this.cbStackLayers.SelectedIndex = 3; //当使用Stack-ZDPD的时候,默认堆叠256层
+           
+            foreach (string intCompType in Enum.GetNames(typeof(IntCompType)))
+            {
+                this.mzIntComp.Items.Add(intCompType);
+            }
+            foreach (string byteCompType in Enum.GetNames(typeof(ByteCompType)))
+            {
+                this.mzByteComp.Items.Add(byteCompType);
+                this.intByteComp.Items.Add(byteCompType);
+            }
+
+            this.mzIntComp.SelectedItem = IntCompType.IBP.ToString(); //mz数组默认选择IBP的压缩内核
+            this.mzByteComp.SelectedItem = ByteCompType.Zlib.ToString(); //mz数组默认选择Zlib的压缩内核
+            this.intByteComp.SelectedItem = ByteCompType.Zlib.ToString(); //intensity数组默认选择Zlib的压缩内核
+            this.cbStackLayers.SelectedItem = "256"; //当使用Stack Layer堆叠的时候,默认堆叠256层
             this.tbFolderPath.Text = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             this.tbOperator.Text = Environment.UserName;
             RedisClient.getInstance();
@@ -77,8 +87,11 @@ namespace AirdPro.Forms
                         threadAccelerate = cbThreadAccelerate.Checked,
                         suffix = tbFileNameSuffix.Text,
                         creator = tbOperator.Text,
-                        mzPrecision = (int)Math.Ceiling(1 / double.Parse(cbMzPrecision.Text)),
-                        airdAlgorithm = mzCompA.SelectedIndex+1,  // 1:ZDPD, 2: ZDVB, 3:StackZDPD
+                        mzPrecision = (int)Math.Pow(10, int.Parse(cbMzPrecision.Text)),
+                        stack = cbStack.Checked,  // 是否使用stack layer压缩算法
+                        mzIntComp = (IntCompType)Enum.Parse(typeof(IntCompType),mzIntComp.SelectedItem.ToString()),
+                        mzByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), mzByteComp.SelectedItem.ToString()),
+                        intByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), intByteComp.SelectedItem.ToString()),
                         digit = (int)Math.Log(int.Parse(cbStackLayers.SelectedItem.ToString()), 2),
                     };
 
@@ -285,23 +298,5 @@ namespace AirdPro.Forms
             customPathForm.Show();
         }
 
-        private void cbAlgorithm_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (((ComboBox) sender).SelectedIndex == 2)
-            {
-                lblStackLayers.Visible = true;
-                cbStackLayers.Visible = true;
-            }
-            else
-            {
-                lblStackLayers.Visible = false;
-                cbStackLayers.Visible = false;
-            }
-        }
-
-        private void lblFileSelectedInfo_Click(object sender, EventArgs e)
-        {
-            StackZDPDTest.stackZDPD_Test1();
-        }
     }
 }
