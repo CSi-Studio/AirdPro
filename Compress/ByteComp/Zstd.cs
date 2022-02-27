@@ -20,14 +20,6 @@ namespace Compress
             }
         }
 
-        //使用zstd将float数组压缩为byte数组
-        public byte[] encode(float[] target)
-        {
-            var targetArray = ByteTrans.floatToByte(target);
-            var compressedArray = encode(targetArray);
-            return compressedArray;
-        }
-
         public byte[] decode(byte[] data)
         {
             using (var result = new MemoryStream())
@@ -35,17 +27,6 @@ namespace Compress
                 DecompressionStream decompressionStream = new DecompressionStream(new MemoryStream(data));
                 decompressionStream.CopyTo(result);
                 return result.ToArray();
-            }
-        }
-
-        public float[] decodeToFloat(byte[] data)
-        {
-            using (var result = new MemoryStream())
-            {
-                DecompressionStream decompressionStream = new DecompressionStream(new MemoryStream(data));
-                decompressionStream.CopyTo(result);
-                byte[] origin = result.ToArray();
-                return ByteTrans.byteToFloat(origin);
             }
         }
 

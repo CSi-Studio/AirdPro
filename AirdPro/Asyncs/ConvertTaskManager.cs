@@ -186,16 +186,10 @@ namespace AirdPro.Asyncs
                     comp.mzByteComp = new Zstd();
                     break;
                 case ByteCompType.Snappy:
-                    comp.mzByteComp = new Zlib();
+                    comp.mzByteComp = new Snappier();
                     break;
                 case ByteCompType.Brotli:
-                    comp.mzByteComp = new Zlib();
-                    break;
-                case ByteCompType.LZ4:
-                    comp.mzByteComp = new Zlib();
-                    break;
-                case ByteCompType.Gzip:
-                    comp.mzByteComp = new Zlib();
+                    comp.mzByteComp = new Brotlier();
                     break;
             }
 
@@ -208,16 +202,10 @@ namespace AirdPro.Asyncs
                     comp.intByteComp = new Zstd();
                     break;
                 case ByteCompType.Snappy:
-                    comp.intByteComp = new Zlib();
+                    comp.intByteComp = new Snappier();
                     break;
                 case ByteCompType.Brotli:
-                    comp.intByteComp = new Zlib();
-                    break;
-                case ByteCompType.LZ4:
-                    comp.intByteComp = new Zlib();
-                    break;
-                case ByteCompType.Gzip:
-                    comp.intByteComp = new Zlib();
+                    comp.intByteComp = new Brotlier();
                     break;
             }
 

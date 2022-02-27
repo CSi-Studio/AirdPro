@@ -16,6 +16,4 @@ public enum ByteCompType
     Zstd = 1,
     Snappy = 2,
     Brotli = 3,
-    LZ4 = 4,
-    Gzip = 5
 }
