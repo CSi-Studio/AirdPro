@@ -25,8 +25,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using AirdPro.Algorithms;
-using Compress;
-using pwiz.CLI.util;
 using ByteOrder = AirdPro.Constants.ByteOrder;
 using CV = AirdPro.DomainsCore.Aird.CV;
 using Software = pwiz.CLI.msdata.Software;
@@ -49,6 +47,7 @@ namespace AirdPro.Converters
         protected Hashtable featuresMap = new Hashtable();
         public ICompressor compressor;
 
+        
         protected long fileSize; //厂商文件大小
         protected long startPosition = 0; //文件指针
         protected int totalSize; //总计的谱图数目

@@ -34,8 +34,10 @@ namespace AirdPro.Forms
         {
             this.Text = SoftwareInfo.getVersion();
             this.cbMzPrecision.SelectedIndex = 1; //默认选择精确到小数点后4位的精度
-            this.cbAlgorithm.SelectedIndex = 0; //默认选择Aird第一代压缩算法ZDPD
-            this.cbStackLayers.SelectedIndex = 3; //默认堆叠256层
+            this.mzCompA.SelectedIndex = 0; //mz数组默认选择XDPD-Zlib的压缩内核
+            this.mzCompB.SelectedIndex = 0; //mz数组默认选择XDPD-Zlib的压缩内核
+            this.intCompA.SelectedIndex = 0; //intensity数组默认选择Zlib的压缩内核
+            this.cbStackLayers.SelectedIndex = 3; //当使用Stack-ZDPD的时候,默认堆叠256层
             this.tbFolderPath.Text = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             this.tbOperator.Text = Environment.UserName;
             RedisClient.getInstance();
@@ -76,7 +78,7 @@ namespace AirdPro.Forms
                         suffix = tbFileNameSuffix.Text,
                         creator = tbOperator.Text,
                         mzPrecision = (int)Math.Ceiling(1 / double.Parse(cbMzPrecision.Text)),
-                        airdAlgorithm = cbAlgorithm.SelectedIndex+1,  // 1:ZDPD, 2: ZDVB, 3:StackZDPD
+                        airdAlgorithm = mzCompA.SelectedIndex+1,  // 1:ZDPD, 2: ZDVB, 3:StackZDPD
                         digit = (int)Math.Log(int.Parse(cbStackLayers.SelectedItem.ToString()), 2),
                     };
 

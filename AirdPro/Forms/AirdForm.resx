@@ -396,6 +396,201 @@
   <data name="&gt;&gt;container.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>66, 122</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>55, 17</value>
+  </data>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>36</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Comp A</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>container.Panel2</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="intCompA.Items" xml:space="preserve">
+    <value>Zlib</value>
+  </data>
+  <data name="intCompA.Items1" xml:space="preserve">
+    <value>Zstd</value>
+  </data>
+  <data name="intCompA.Location" type="System.Drawing.Point, System.Drawing">
+    <value>123, 119</value>
+  </data>
+  <data name="intCompA.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 25</value>
+  </data>
+  <data name="intCompA.TabIndex" type="System.Int32, mscorlib">
+    <value>35</value>
+  </data>
+  <metadata name="ttAlgorithm.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>306, 16</value>
+  </metadata>
+  <data name="intCompA.ToolTip" xml:space="preserve">
+    <value>Stack-ZDPD only support for DIA</value>
+  </data>
+  <data name="&gt;&gt;intCompA.Name" xml:space="preserve">
+    <value>intCompA</value>
+  </data>
+  <data name="&gt;&gt;intCompA.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;intCompA.Parent" xml:space="preserve">
+    <value>container.Panel2</value>
+  </data>
+  <data name="&gt;&gt;intCompA.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 119</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 17</value>
+  </data>
+  <data name="label2.TabIndex" type="System.Int32, mscorlib">
+    <value>34</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Intensity</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>container.Panel2</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 93</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>30, 17</value>
+  </data>
+  <data name="label3.TabIndex" type="System.Int32, mscorlib">
+    <value>33</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>m/z</value>
+  </data>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>container.Panel2</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="lblCompB.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblCompB.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblCompB.Location" type="System.Drawing.Point, System.Drawing">
+    <value>236, 94</value>
+  </data>
+  <data name="lblCompB.Size" type="System.Drawing.Size, System.Drawing">
+    <value>55, 17</value>
+  </data>
+  <data name="lblCompB.TabIndex" type="System.Int32, mscorlib">
+    <value>32</value>
+  </data>
+  <data name="lblCompB.Text" xml:space="preserve">
+    <value>Comp B</value>
+  </data>
+  <data name="&gt;&gt;lblCompB.Name" xml:space="preserve">
+    <value>lblCompB</value>
+  </data>
+  <data name="&gt;&gt;lblCompB.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblCompB.Parent" xml:space="preserve">
+    <value>container.Panel2</value>
+  </data>
+  <data name="&gt;&gt;lblCompB.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="mzCompB.Items" xml:space="preserve">
+    <value>Zlib</value>
+  </data>
+  <data name="mzCompB.Items1" xml:space="preserve">
+    <value>Zstd</value>
+  </data>
+  <data name="mzCompB.Items2" xml:space="preserve">
+    <value>Snappy</value>
+  </data>
+  <data name="mzCompB.Items3" xml:space="preserve">
+    <value>Brotli</value>
+  </data>
+  <data name="mzCompB.Items4" xml:space="preserve">
+    <value>LZ4</value>
+  </data>
+  <data name="mzCompB.Items5" xml:space="preserve">
+    <value>Gzip</value>
+  </data>
+  <data name="mzCompB.Location" type="System.Drawing.Point, System.Drawing">
+    <value>294, 90</value>
+  </data>
+  <data name="mzCompB.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 25</value>
+  </data>
+  <data name="mzCompB.TabIndex" type="System.Int32, mscorlib">
+    <value>31</value>
+  </data>
+  <data name="mzCompB.ToolTip" xml:space="preserve">
+    <value>Stack-ZDPD only support for DIA</value>
+  </data>
+  <data name="&gt;&gt;mzCompB.Name" xml:space="preserve">
+    <value>mzCompB</value>
+  </data>
+  <data name="&gt;&gt;mzCompB.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mzCompB.Parent" xml:space="preserve">
+    <value>container.Panel2</value>
+  </data>
+  <data name="&gt;&gt;mzCompB.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
   <data name="lblStackLayers.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -403,7 +598,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblStackLayers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>201, 95</value>
+    <value>409, 94</value>
   </data>
   <data name="lblStackLayers.Size" type="System.Drawing.Size, System.Drawing">
     <value>80, 17</value>
@@ -427,7 +622,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblStackLayers.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>6</value>
   </data>
   <data name="cbStackLayers.Items" xml:space="preserve">
     <value>32</value>
@@ -448,7 +643,7 @@
     <value>1024</value>
   </data>
   <data name="cbStackLayers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>285, 91</value>
+    <value>505, 90</value>
   </data>
   <data name="cbStackLayers.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 25</value>
@@ -469,79 +664,76 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;cbStackLayers.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>7</value>
   </data>
-  <data name="lblAirdAlgorithm.AutoSize" type="System.Boolean, mscorlib">
+  <data name="lblCompA.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblAirdAlgorithm.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="lblCompA.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lblAirdAlgorithm.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 96</value>
+  <data name="lblCompA.Location" type="System.Drawing.Point, System.Drawing">
+    <value>66, 93</value>
   </data>
-  <data name="lblAirdAlgorithm.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 17</value>
+  <data name="lblCompA.Size" type="System.Drawing.Size, System.Drawing">
+    <value>55, 17</value>
   </data>
-  <data name="lblAirdAlgorithm.TabIndex" type="System.Int32, mscorlib">
+  <data name="lblCompA.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
   </data>
-  <data name="lblAirdAlgorithm.Text" xml:space="preserve">
-    <value>Compressor</value>
+  <data name="lblCompA.Text" xml:space="preserve">
+    <value>Comp A</value>
   </data>
-  <data name="&gt;&gt;lblAirdAlgorithm.Name" xml:space="preserve">
-    <value>lblAirdAlgorithm</value>
+  <data name="&gt;&gt;lblCompA.Name" xml:space="preserve">
+    <value>lblCompA</value>
   </data>
-  <data name="&gt;&gt;lblAirdAlgorithm.Type" xml:space="preserve">
+  <data name="&gt;&gt;lblCompA.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblAirdAlgorithm.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lblCompA.Parent" xml:space="preserve">
     <value>container.Panel2</value>
   </data>
-  <data name="&gt;&gt;lblAirdAlgorithm.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="&gt;&gt;lblCompA.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
-  <data name="cbAlgorithm.Items" xml:space="preserve">
-    <value>ZDPD</value>
+  <data name="mzCompA.Items" xml:space="preserve">
+    <value>XDPD</value>
   </data>
-  <data name="cbAlgorithm.Items1" xml:space="preserve">
-    <value>ZDVB</value>
+  <data name="mzCompA.Items1" xml:space="preserve">
+    <value>XDVB</value>
   </data>
-  <data name="cbAlgorithm.Items2" xml:space="preserve">
+  <data name="mzCompA.Items2" xml:space="preserve">
     <value>Stack-ZDPD</value>
   </data>
-  <data name="cbAlgorithm.Location" type="System.Drawing.Point, System.Drawing">
-    <value>90, 92</value>
+  <data name="mzCompA.Location" type="System.Drawing.Point, System.Drawing">
+    <value>123, 90</value>
   </data>
-  <data name="cbAlgorithm.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="mzCompA.Size" type="System.Drawing.Size, System.Drawing">
     <value>98, 25</value>
   </data>
-  <data name="cbAlgorithm.TabIndex" type="System.Int32, mscorlib">
+  <data name="mzCompA.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
   </data>
-  <metadata name="ttAlgorithm.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>306, 16</value>
-  </metadata>
-  <data name="cbAlgorithm.ToolTip" xml:space="preserve">
+  <data name="mzCompA.ToolTip" xml:space="preserve">
     <value>Stack-ZDPD only support for DIA</value>
   </data>
-  <data name="&gt;&gt;cbAlgorithm.Name" xml:space="preserve">
-    <value>cbAlgorithm</value>
+  <data name="&gt;&gt;mzCompA.Name" xml:space="preserve">
+    <value>mzCompA</value>
   </data>
-  <data name="&gt;&gt;cbAlgorithm.Type" xml:space="preserve">
+  <data name="&gt;&gt;mzCompA.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbAlgorithm.Parent" xml:space="preserve">
+  <data name="&gt;&gt;mzCompA.Parent" xml:space="preserve">
     <value>container.Panel2</value>
   </data>
-  <data name="&gt;&gt;cbAlgorithm.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="&gt;&gt;mzCompA.ZOrder" xml:space="preserve">
+    <value>9</value>
   </data>
   <data name="btnDisconnect.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnDisconnect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>454, 159</value>
+    <value>454, 192</value>
   </data>
   <data name="btnDisconnect.Size" type="System.Drawing.Size, System.Drawing">
     <value>90, 26</value>
@@ -562,13 +754,13 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;btnDisconnect.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>10</value>
   </data>
   <data name="lblConnectStatus.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="lblConnectStatus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>294, 191</value>
+    <value>294, 224</value>
   </data>
   <data name="lblConnectStatus.Size" type="System.Drawing.Size, System.Drawing">
     <value>81, 17</value>
@@ -589,13 +781,13 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblConnectStatus.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>11</value>
   </data>
   <data name="lblIP.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="lblIP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 164</value>
+    <value>5, 197</value>
   </data>
   <data name="lblIP.Size" type="System.Drawing.Size, System.Drawing">
     <value>142, 17</value>
@@ -616,10 +808,10 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblIP.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>12</value>
   </data>
   <data name="tbHostAndPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>163, 161</value>
+    <value>163, 194</value>
   </data>
   <data name="tbHostAndPort.Size" type="System.Drawing.Size, System.Drawing">
     <value>212, 23</value>
@@ -640,10 +832,10 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbHostAndPort.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>13</value>
   </data>
   <data name="btnConnect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>377, 159</value>
+    <value>377, 192</value>
   </data>
   <data name="btnConnect.Size" type="System.Drawing.Size, System.Drawing">
     <value>71, 26</value>
@@ -664,7 +856,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;btnConnect.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>14</value>
   </data>
   <data name="lblOperator.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -679,7 +871,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblOperator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>277, 131</value>
+    <value>277, 164</value>
   </data>
   <data name="lblOperator.Size" type="System.Drawing.Size, System.Drawing">
     <value>62, 17</value>
@@ -700,7 +892,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblOperator.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>15</value>
   </data>
   <data name="tbOperator.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -709,7 +901,7 @@
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="tbOperator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>344, 128</value>
+    <value>344, 161</value>
   </data>
   <data name="tbOperator.Size" type="System.Drawing.Size, System.Drawing">
     <value>104, 23</value>
@@ -727,7 +919,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbOperator.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>16</value>
   </data>
   <data name="lblMzPrecision.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -736,7 +928,7 @@
     <value>True</value>
   </data>
   <data name="lblMzPrecision.Location" type="System.Drawing.Point, System.Drawing">
-    <value>381, 94</value>
+    <value>379, 61</value>
   </data>
   <data name="lblMzPrecision.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 17</value>
@@ -757,7 +949,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblMzPrecision.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>17</value>
   </data>
   <data name="cbMzPrecision.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -775,7 +967,7 @@
     <value>0.000001</value>
   </data>
   <data name="cbMzPrecision.Location" type="System.Drawing.Point, System.Drawing">
-    <value>505, 90</value>
+    <value>505, 58</value>
   </data>
   <data name="cbMzPrecision.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 25</value>
@@ -793,7 +985,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;cbMzPrecision.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>18</value>
   </data>
   <data name="cbThreadAccelerate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -802,7 +994,7 @@
     <value>NoControl</value>
   </data>
   <data name="cbThreadAccelerate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>403, 62</value>
+    <value>175, 62</value>
   </data>
   <data name="cbThreadAccelerate.Size" type="System.Drawing.Size, System.Drawing">
     <value>186, 21</value>
@@ -823,7 +1015,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;cbThreadAccelerate.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>19</value>
   </data>
   <data name="lblFileNameTag.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -835,7 +1027,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblFileNameTag.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 131</value>
+    <value>6, 164</value>
   </data>
   <data name="lblFileNameTag.Size" type="System.Drawing.Size, System.Drawing">
     <value>62, 17</value>
@@ -856,13 +1048,13 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblFileNameTag.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>20</value>
   </data>
   <data name="tbFileNameSuffix.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="tbFileNameSuffix.Location" type="System.Drawing.Point, System.Drawing">
-    <value>71, 128</value>
+    <value>71, 161</value>
   </data>
   <data name="tbFileNameSuffix.Size" type="System.Drawing.Size, System.Drawing">
     <value>185, 23</value>
@@ -880,7 +1072,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbFileNameSuffix.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>21</value>
   </data>
   <data name="cbIsZeroIntensityIgnore.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -907,7 +1099,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;cbIsZeroIntensityIgnore.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>22</value>
   </data>
   <data name="lblConsole.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -940,7 +1132,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblConsole.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>23</value>
   </data>
   <data name="tbConsole.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -973,7 +1165,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbConsole.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>24</value>
   </data>
   <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1006,7 +1198,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>25</value>
   </data>
   <data name="btnChooseFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1039,7 +1231,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;btnChooseFolder.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>26</value>
   </data>
   <data name="tbFolderPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1066,7 +1258,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbFolderPath.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>27</value>
   </data>
   <data name="container.Panel2.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 9pt</value>
