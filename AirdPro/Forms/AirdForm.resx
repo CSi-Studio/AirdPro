@@ -259,7 +259,7 @@
     <value>FilePath</value>
   </data>
   <data name="headerFilePath.Width" type="System.Int32, mscorlib">
-    <value>300</value>
+    <value>200</value>
   </data>
   <data name="headerExpType.Text" xml:space="preserve">
     <value>Type</value>
@@ -270,15 +270,6 @@
   <data name="headerExpType.Width" type="System.Int32, mscorlib">
     <value>120</value>
   </data>
-  <data name="headerCompressor.Text" xml:space="preserve">
-    <value>Compressor</value>
-  </data>
-  <data name="headerCompressor.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
-    <value>Center</value>
-  </data>
-  <data name="headerCompressor.Width" type="System.Int32, mscorlib">
-    <value>150</value>
-  </data>
   <data name="headerProgress.Text" xml:space="preserve">
     <value>Progress</value>
   </data>
@@ -287,6 +278,21 @@
   </data>
   <data name="headerProgress.Width" type="System.Int32, mscorlib">
     <value>120</value>
+  </data>
+  <data name="headerPrecision.Text" xml:space="preserve">
+    <value>Precision</value>
+  </data>
+  <data name="headerPrecision.Width" type="System.Int32, mscorlib">
+    <value>150</value>
+  </data>
+  <data name="headerCompressor.Text" xml:space="preserve">
+    <value>Compressor</value>
+  </data>
+  <data name="headerCompressor.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="headerCompressor.Width" type="System.Int32, mscorlib">
+    <value>100</value>
   </data>
   <data name="headerOutput.Text" xml:space="preserve">
     <value>Output</value>
@@ -1293,6 +1299,9 @@
   <data name="ofd.Filter" xml:space="preserve">
     <value>Vendor Format|*.wiff;*.raw;</value>
   </data>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>426, 16</value>
+  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -2449,16 +2458,22 @@
   <data name="&gt;&gt;headerExpType.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;headerCompressor.Name" xml:space="preserve">
-    <value>headerCompressor</value>
-  </data>
-  <data name="&gt;&gt;headerCompressor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;headerProgress.Name" xml:space="preserve">
     <value>headerProgress</value>
   </data>
   <data name="&gt;&gt;headerProgress.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;headerPrecision.Name" xml:space="preserve">
+    <value>headerPrecision</value>
+  </data>
+  <data name="&gt;&gt;headerPrecision.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;headerCompressor.Name" xml:space="preserve">
+    <value>headerCompressor</value>
+  </data>
+  <data name="&gt;&gt;headerCompressor.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;headerOutput.Name" xml:space="preserve">
@@ -2489,6 +2504,12 @@
     <value>ttAlgorithm</value>
   </data>
   <data name="&gt;&gt;ttAlgorithm.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolTip1.Name" xml:space="preserve">
+    <value>toolTip1</value>
+  </data>
+  <data name="&gt;&gt;toolTip1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

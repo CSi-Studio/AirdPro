@@ -124,7 +124,7 @@ namespace AirdPro.Forms
         {
             if (fileName != "" && !currentFiles.Contains(fileName))
             {
-                ListViewItem item = new ListViewItem(new string[]{fileName, expType,"", "Waiting",""});
+                ListViewItem item = new ListViewItem(new string[]{fileName, expType, "Waiting","","",""});
                 item.ToolTipText = fileName;
                 lvFileList.Items.Add(item);
                 currentFiles.Add(fileName);
@@ -218,7 +218,7 @@ namespace AirdPro.Forms
             {
                 foreach (ListViewItem item in lvFileList.Items)
                 {
-                    if (item.SubItems[3].Text.Equals("Finished"))
+                    if (item.SubItems[2].Text.Equals("Finished"))
                     {
                         item.Remove();
                         currentFiles.Remove(item.SubItems[0].Text);
