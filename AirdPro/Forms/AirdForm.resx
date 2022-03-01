@@ -396,6 +396,39 @@
   <data name="&gt;&gt;container.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="lblDp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="lblDp.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblDp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblDp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>534, 62</value>
+  </data>
+  <data name="lblDp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>24, 17</value>
+  </data>
+  <data name="lblDp.TabIndex" type="System.Int32, mscorlib">
+    <value>38</value>
+  </data>
+  <data name="lblDp.Text" xml:space="preserve">
+    <value>dp</value>
+  </data>
+  <data name="&gt;&gt;lblDp.Name" xml:space="preserve">
+    <value>lblDp</value>
+  </data>
+  <data name="&gt;&gt;lblDp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblDp.Parent" xml:space="preserve">
+    <value>container.Panel2</value>
+  </data>
+  <data name="&gt;&gt;lblDp.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="cbStack.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -403,10 +436,10 @@
     <value>True</value>
   </data>
   <data name="cbStack.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 179</value>
+    <value>12, 171</value>
   </data>
   <data name="cbStack.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 24</value>
+    <value>58, 21</value>
   </data>
   <data name="cbStack.TabIndex" type="System.Int32, mscorlib">
     <value>37</value>
@@ -424,7 +457,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;cbStack.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="lblIntCompA.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -439,7 +472,7 @@
     <value>10, 136</value>
   </data>
   <data name="lblIntCompA.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 20</value>
+    <value>158, 17</value>
   </data>
   <data name="lblIntCompA.TabIndex" type="System.Int32, mscorlib">
     <value>36</value>
@@ -457,13 +490,13 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblIntCompA.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="intByteComp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>215, 133</value>
+    <value>174, 133</value>
   </data>
   <data name="intByteComp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 28</value>
+    <value>82, 25</value>
   </data>
   <data name="intByteComp.TabIndex" type="System.Int32, mscorlib">
     <value>35</value>
@@ -484,7 +517,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;intByteComp.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="lblMzByteComp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -496,10 +529,10 @@
     <value>NoControl</value>
   </data>
   <data name="lblMzByteComp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>299, 101</value>
+    <value>247, 101</value>
   </data>
   <data name="lblMzByteComp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>164, 20</value>
+    <value>133, 17</value>
   </data>
   <data name="lblMzByteComp.TabIndex" type="System.Int32, mscorlib">
     <value>32</value>
@@ -517,13 +550,13 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblMzByteComp.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="mzByteComp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>469, 98</value>
+    <value>386, 98</value>
   </data>
   <data name="mzByteComp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 28</value>
+    <value>77, 25</value>
   </data>
   <data name="mzByteComp.TabIndex" type="System.Int32, mscorlib">
     <value>31</value>
@@ -541,7 +574,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;mzByteComp.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="lblStackLayers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -553,10 +586,10 @@
     <value>NoControl</value>
   </data>
   <data name="lblStackLayers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 179</value>
+    <value>104, 171</value>
   </data>
   <data name="lblStackLayers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 20</value>
+    <value>45, 17</value>
   </data>
   <data name="lblStackLayers.TabIndex" type="System.Int32, mscorlib">
     <value>30</value>
@@ -574,7 +607,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblStackLayers.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="cbStackLayers.Items" xml:space="preserve">
     <value>32</value>
@@ -595,10 +628,10 @@
     <value>1024</value>
   </data>
   <data name="cbStackLayers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>165, 176</value>
+    <value>158, 167</value>
   </data>
   <data name="cbStackLayers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 28</value>
+    <value>84, 25</value>
   </data>
   <data name="cbStackLayers.TabIndex" type="System.Int32, mscorlib">
     <value>29</value>
@@ -613,7 +646,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;cbStackLayers.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="lblMzIntComp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -628,7 +661,7 @@
     <value>9, 101</value>
   </data>
   <data name="lblMzIntComp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 20</value>
+    <value>122, 17</value>
   </data>
   <data name="lblMzIntComp.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
@@ -646,13 +679,13 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblMzIntComp.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="mzIntComp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>167, 98</value>
+    <value>137, 98</value>
   </data>
   <data name="mzIntComp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 28</value>
+    <value>82, 25</value>
   </data>
   <data name="mzIntComp.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -670,16 +703,13 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;mzIntComp.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="btnDisconnect.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>9</value>
   </data>
   <data name="btnDisconnect.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnDisconnect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>361, 250</value>
+    <value>361, 231</value>
   </data>
   <data name="btnDisconnect.Size" type="System.Drawing.Size, System.Drawing">
     <value>103, 27</value>
@@ -700,19 +730,19 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;btnDisconnect.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="lblConnectStatus.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>Top, Left, Right</value>
   </data>
   <data name="lblConnectStatus.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="lblConnectStatus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 280</value>
+    <value>9, 264</value>
   </data>
   <data name="lblConnectStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>102, 20</value>
+    <value>81, 17</value>
   </data>
   <data name="lblConnectStatus.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
@@ -730,19 +760,19 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblConnectStatus.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="lblIP.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>Top, Left, Right</value>
   </data>
   <data name="lblIP.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="lblIP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 253</value>
+    <value>8, 237</value>
   </data>
   <data name="lblIP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>49, 20</value>
+    <value>40, 17</value>
   </data>
   <data name="lblIP.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -760,16 +790,13 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblIP.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="tbHostAndPort.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>12</value>
   </data>
   <data name="tbHostAndPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>64, 250</value>
+    <value>64, 234</value>
   </data>
   <data name="tbHostAndPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 27</value>
+    <value>176, 23</value>
   </data>
   <data name="tbHostAndPort.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -787,13 +814,10 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbHostAndPort.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="btnConnect.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>13</value>
   </data>
   <data name="btnConnect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>250, 251</value>
+    <value>250, 232</value>
   </data>
   <data name="btnConnect.Size" type="System.Drawing.Size, System.Drawing">
     <value>105, 26</value>
@@ -814,7 +838,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;btnConnect.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="lblOperator.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -829,10 +853,10 @@
     <value>NoControl</value>
   </data>
   <data name="lblOperator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>279, 221</value>
+    <value>292, 205</value>
   </data>
   <data name="lblOperator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 20</value>
+    <value>62, 17</value>
   </data>
   <data name="lblOperator.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -850,16 +874,16 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblOperator.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="tbOperator.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="tbOperator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>360, 218</value>
+    <value>360, 202</value>
   </data>
   <data name="tbOperator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 27</value>
+    <value>104, 23</value>
   </data>
   <data name="tbOperator.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -874,7 +898,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbOperator.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>16</value>
   </data>
   <data name="lblMzPrecision.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -886,13 +910,13 @@
     <value>439, 61</value>
   </data>
   <data name="lblMzPrecision.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 20</value>
+    <value>30, 17</value>
   </data>
   <data name="lblMzPrecision.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
   </data>
   <data name="lblMzPrecision.Text" xml:space="preserve">
-    <value>m/z dp</value>
+    <value>m/z</value>
   </data>
   <data name="&gt;&gt;lblMzPrecision.Name" xml:space="preserve">
     <value>lblMzPrecision</value>
@@ -904,7 +928,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblMzPrecision.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>17</value>
   </data>
   <data name="cbMzPrecision.Items" xml:space="preserve">
     <value>3</value>
@@ -919,10 +943,10 @@
     <value>6</value>
   </data>
   <data name="cbMzPrecision.Location" type="System.Drawing.Point, System.Drawing">
-    <value>505, 58</value>
+    <value>475, 58</value>
   </data>
   <data name="cbMzPrecision.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 28</value>
+    <value>55, 25</value>
   </data>
   <data name="cbMzPrecision.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -937,7 +961,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;cbMzPrecision.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>18</value>
   </data>
   <data name="cbThreadAccelerate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -952,7 +976,7 @@
     <value>240, 62</value>
   </data>
   <data name="cbThreadAccelerate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 24</value>
+    <value>112, 21</value>
   </data>
   <data name="cbThreadAccelerate.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -970,7 +994,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;cbThreadAccelerate.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>19</value>
   </data>
   <data name="lblFileNameTag.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -985,10 +1009,10 @@
     <value>NoControl</value>
   </data>
   <data name="lblFileNameTag.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 221</value>
+    <value>8, 205</value>
   </data>
   <data name="lblFileNameTag.Size" type="System.Drawing.Size, System.Drawing">
-    <value>78, 20</value>
+    <value>62, 17</value>
   </data>
   <data name="lblFileNameTag.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -1006,16 +1030,16 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblFileNameTag.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>20</value>
   </data>
   <data name="tbFileNameSuffix.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="tbFileNameSuffix.Location" type="System.Drawing.Point, System.Drawing">
-    <value>88, 218</value>
+    <value>88, 202</value>
   </data>
   <data name="tbFileNameSuffix.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 27</value>
+    <value>185, 23</value>
   </data>
   <data name="tbFileNameSuffix.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -1030,7 +1054,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbFileNameSuffix.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>21</value>
   </data>
   <data name="cbIsZeroIntensityIgnore.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1042,7 +1066,7 @@
     <value>11, 62</value>
   </data>
   <data name="cbIsZeroIntensityIgnore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 24</value>
+    <value>149, 21</value>
   </data>
   <data name="cbIsZeroIntensityIgnore.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -1060,7 +1084,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;cbIsZeroIntensityIgnore.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>22</value>
   </data>
   <data name="lblConsole.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -1075,7 +1099,7 @@
     <value>7, 314</value>
   </data>
   <data name="lblConsole.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 20</value>
+    <value>55, 17</value>
   </data>
   <data name="lblConsole.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -1093,7 +1117,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblConsole.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>23</value>
   </data>
   <data name="tbConsole.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -1126,7 +1150,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbConsole.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>24</value>
   </data>
   <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1141,7 +1165,7 @@
     <value>5, 9</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 20</value>
+    <value>75, 16</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1159,7 +1183,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>25</value>
   </data>
   <data name="btnChooseFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1192,7 +1216,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;btnChooseFolder.ZOrder" xml:space="preserve">
-    <value>25</value>
+    <value>26</value>
   </data>
   <data name="tbFolderPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1204,7 +1228,7 @@
     <value>6, 29</value>
   </data>
   <data name="tbFolderPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>493, 27</value>
+    <value>493, 23</value>
   </data>
   <data name="tbFolderPath.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1219,7 +1243,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbFolderPath.ZOrder" xml:space="preserve">
-    <value>26</value>
+    <value>27</value>
   </data>
   <data name="container.Panel2.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 9pt</value>

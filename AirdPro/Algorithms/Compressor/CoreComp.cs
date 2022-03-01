@@ -121,6 +121,8 @@ namespace AirdPro.Algorithms
             var size = mzData.Count;
             if (size == 0)
             {
+                ts.mzArrayBytes = new byte[0];
+                ts.intArrayBytes = new byte[0];
                 return;
             }
 

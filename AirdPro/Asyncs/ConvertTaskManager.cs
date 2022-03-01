@@ -90,7 +90,7 @@ namespace AirdPro.Asyncs
                 {
                     again = false;
                     return;
-                };
+                }
 
                 fac.StartNew(() =>
                 {

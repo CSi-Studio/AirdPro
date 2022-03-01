@@ -84,6 +84,7 @@ namespace AirdPro.Forms
             this.timerConsumer = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
+            this.lblDp = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -107,6 +108,7 @@ namespace AirdPro.Forms
             // 
             // container.Panel2
             // 
+            this.container.Panel2.Controls.Add(this.lblDp);
             this.container.Panel2.Controls.Add(this.cbStack);
             this.container.Panel2.Controls.Add(this.lblIntCompA);
             this.container.Panel2.Controls.Add(this.intByteComp);
@@ -410,6 +412,11 @@ namespace AirdPro.Forms
             resources.ApplyResources(this.ofd, "ofd");
             this.ofd.Multiselect = true;
             // 
+            // lblDp
+            // 
+            resources.ApplyResources(this.lblDp, "lblDp");
+            this.lblDp.Name = "lblDp";
+            // 
             // AirdForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -472,6 +479,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Label lblIntCompA;
         private System.Windows.Forms.ComboBox intByteComp;
         private System.Windows.Forms.CheckBox cbStack;
+        private System.Windows.Forms.Label lblDp;
     }
 }
 

@@ -486,7 +486,15 @@ namespace AirdPro.Converters
                 try
                 {
                     Precursor precursor = spectrum.precursors[0];
-                    result = double.Parse(precursor.isolationWindow.cvParamChild(cvid).value.ToString());
+                    if (precursor.isolationWindow.hasCVParamChild(cvid))
+                    {
+                        result = Double.Parse(precursor.isolationWindow.cvParamChild(cvid).value.ToString());
+                    }
+                    else
+                    {
+                        result = 0;
+                    }
+                    
                 }
                 catch (FormatException e)
                 {
