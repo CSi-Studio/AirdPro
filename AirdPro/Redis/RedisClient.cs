@@ -133,13 +133,14 @@ namespace AirdPro.Redis
                             jobParams.creator = "LIMS Admin";
                             jobParams.mzPrecision = (int)Math.Ceiling(1 / job.mzPrecision);
 
-                            string[] items = new string[4];
+                            string[] items = new string[5];
                             ListViewItem item = new ListViewItem(items);
                             item.SubItems[0].Text = job.sourcePath;
                             item.SubItems[1].Text = job.type;
-                            item.SubItems[2].Text = job.getAirdAlgorithmStr();
-                            item.SubItems[3].Text = "Waiting";
-                            item.SubItems[4].Text = job.targetPath;
+                            item.SubItems[2].Text = "Waiting";
+                            item.SubItems[3].Text = Convert.ToString(job.mzPrecision);
+                            item.SubItems[4].Text = job.getAirdAlgorithmStr();
+                            item.SubItems[5].Text = job.targetPath;
                             JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath,
                                 job.type, jobParams, item);
                             if (!ConvertTaskManager.getInstance().jobTable.Contains(jobInfo.jobId))

@@ -79,10 +79,11 @@ namespace AirdPro.Domains.Convert
             this.cancellationTokenSource = new CancellationTokenSource();
             this.progress = new Progress<string>((progressValue) =>
             {
-                item.SubItems[3].Text = progressValue;
+                item.SubItems[2].Text = progressValue;
             });
-            item.SubItems[2].Text = jobParams.getCompressorStr();
-            item.SubItems[4].Text = outputFolderPath;
+            item.SubItems[4].Text = jobParams.getCompressorStr();
+            item.SubItems[5].Text = outputFolderPath;
+            item.SubItems[3].Text = System.Convert.ToString(jobParams.mzPrecision);
         }
 
         public JobInfo log(string content)

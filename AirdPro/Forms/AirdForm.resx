@@ -259,7 +259,7 @@
     <value>FilePath</value>
   </data>
   <data name="headerFilePath.Width" type="System.Int32, mscorlib">
-    <value>300</value>
+    <value>200</value>
   </data>
   <data name="headerExpType.Text" xml:space="preserve">
     <value>Type</value>
@@ -270,15 +270,6 @@
   <data name="headerExpType.Width" type="System.Int32, mscorlib">
     <value>120</value>
   </data>
-  <data name="headerCompressor.Text" xml:space="preserve">
-    <value>Compressor</value>
-  </data>
-  <data name="headerCompressor.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
-    <value>Center</value>
-  </data>
-  <data name="headerCompressor.Width" type="System.Int32, mscorlib">
-    <value>150</value>
-  </data>
   <data name="headerProgress.Text" xml:space="preserve">
     <value>Progress</value>
   </data>
@@ -287,6 +278,21 @@
   </data>
   <data name="headerProgress.Width" type="System.Int32, mscorlib">
     <value>120</value>
+  </data>
+  <data name="headerPrecision.Text" xml:space="preserve">
+    <value>Precision</value>
+  </data>
+  <data name="headerPrecision.Width" type="System.Int32, mscorlib">
+    <value>150</value>
+  </data>
+  <data name="headerCompressor.Text" xml:space="preserve">
+    <value>Compressor</value>
+  </data>
+  <data name="headerCompressor.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="headerCompressor.Width" type="System.Int32, mscorlib">
+    <value>100</value>
   </data>
   <data name="headerOutput.Text" xml:space="preserve">
     <value>Output</value>
@@ -406,7 +412,7 @@
     <value>12, 179</value>
   </data>
   <data name="cbStack.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 24</value>
+    <value>58, 21</value>
   </data>
   <data name="cbStack.TabIndex" type="System.Int32, mscorlib">
     <value>37</value>
@@ -439,7 +445,7 @@
     <value>10, 136</value>
   </data>
   <data name="lblIntCompA.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 20</value>
+    <value>158, 17</value>
   </data>
   <data name="lblIntCompA.TabIndex" type="System.Int32, mscorlib">
     <value>36</value>
@@ -463,7 +469,7 @@
     <value>215, 133</value>
   </data>
   <data name="intByteComp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 28</value>
+    <value>82, 25</value>
   </data>
   <data name="intByteComp.TabIndex" type="System.Int32, mscorlib">
     <value>35</value>
@@ -499,7 +505,7 @@
     <value>299, 101</value>
   </data>
   <data name="lblMzByteComp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>164, 20</value>
+    <value>133, 17</value>
   </data>
   <data name="lblMzByteComp.TabIndex" type="System.Int32, mscorlib">
     <value>32</value>
@@ -523,7 +529,7 @@
     <value>469, 98</value>
   </data>
   <data name="mzByteComp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 28</value>
+    <value>77, 25</value>
   </data>
   <data name="mzByteComp.TabIndex" type="System.Int32, mscorlib">
     <value>31</value>
@@ -556,7 +562,7 @@
     <value>104, 179</value>
   </data>
   <data name="lblStackLayers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 20</value>
+    <value>45, 17</value>
   </data>
   <data name="lblStackLayers.TabIndex" type="System.Int32, mscorlib">
     <value>30</value>
@@ -598,7 +604,7 @@
     <value>165, 176</value>
   </data>
   <data name="cbStackLayers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 28</value>
+    <value>84, 25</value>
   </data>
   <data name="cbStackLayers.TabIndex" type="System.Int32, mscorlib">
     <value>29</value>
@@ -628,7 +634,7 @@
     <value>9, 101</value>
   </data>
   <data name="lblMzIntComp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 20</value>
+    <value>122, 17</value>
   </data>
   <data name="lblMzIntComp.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
@@ -652,7 +658,7 @@
     <value>167, 98</value>
   </data>
   <data name="mzIntComp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 28</value>
+    <value>82, 25</value>
   </data>
   <data name="mzIntComp.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -712,7 +718,7 @@
     <value>9, 280</value>
   </data>
   <data name="lblConnectStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>102, 20</value>
+    <value>81, 17</value>
   </data>
   <data name="lblConnectStatus.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
@@ -742,7 +748,7 @@
     <value>8, 253</value>
   </data>
   <data name="lblIP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>49, 20</value>
+    <value>40, 17</value>
   </data>
   <data name="lblIP.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -769,7 +775,7 @@
     <value>64, 250</value>
   </data>
   <data name="tbHostAndPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 27</value>
+    <value>176, 23</value>
   </data>
   <data name="tbHostAndPort.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -832,7 +838,7 @@
     <value>279, 221</value>
   </data>
   <data name="lblOperator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 20</value>
+    <value>62, 17</value>
   </data>
   <data name="lblOperator.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -859,7 +865,7 @@
     <value>360, 218</value>
   </data>
   <data name="tbOperator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 27</value>
+    <value>104, 23</value>
   </data>
   <data name="tbOperator.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -886,7 +892,7 @@
     <value>439, 61</value>
   </data>
   <data name="lblMzPrecision.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 20</value>
+    <value>50, 17</value>
   </data>
   <data name="lblMzPrecision.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -922,7 +928,7 @@
     <value>505, 58</value>
   </data>
   <data name="cbMzPrecision.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 28</value>
+    <value>84, 25</value>
   </data>
   <data name="cbMzPrecision.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -952,7 +958,7 @@
     <value>240, 62</value>
   </data>
   <data name="cbThreadAccelerate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 24</value>
+    <value>112, 21</value>
   </data>
   <data name="cbThreadAccelerate.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -988,7 +994,7 @@
     <value>8, 221</value>
   </data>
   <data name="lblFileNameTag.Size" type="System.Drawing.Size, System.Drawing">
-    <value>78, 20</value>
+    <value>62, 17</value>
   </data>
   <data name="lblFileNameTag.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -1015,7 +1021,7 @@
     <value>88, 218</value>
   </data>
   <data name="tbFileNameSuffix.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 27</value>
+    <value>185, 23</value>
   </data>
   <data name="tbFileNameSuffix.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -1042,7 +1048,7 @@
     <value>11, 62</value>
   </data>
   <data name="cbIsZeroIntensityIgnore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 24</value>
+    <value>149, 21</value>
   </data>
   <data name="cbIsZeroIntensityIgnore.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -1075,7 +1081,7 @@
     <value>7, 314</value>
   </data>
   <data name="lblConsole.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 20</value>
+    <value>55, 17</value>
   </data>
   <data name="lblConsole.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -1141,7 +1147,7 @@
     <value>5, 9</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 20</value>
+    <value>75, 16</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1204,7 +1210,7 @@
     <value>6, 29</value>
   </data>
   <data name="tbFolderPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>493, 27</value>
+    <value>493, 23</value>
   </data>
   <data name="tbFolderPath.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1269,6 +1275,9 @@
   <data name="ofd.Filter" xml:space="preserve">
     <value>Vendor Format|*.wiff;*.raw;</value>
   </data>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>426, 16</value>
+  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -2425,16 +2434,22 @@
   <data name="&gt;&gt;headerExpType.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;headerCompressor.Name" xml:space="preserve">
-    <value>headerCompressor</value>
-  </data>
-  <data name="&gt;&gt;headerCompressor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;headerProgress.Name" xml:space="preserve">
     <value>headerProgress</value>
   </data>
   <data name="&gt;&gt;headerProgress.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;headerPrecision.Name" xml:space="preserve">
+    <value>headerPrecision</value>
+  </data>
+  <data name="&gt;&gt;headerPrecision.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;headerCompressor.Name" xml:space="preserve">
+    <value>headerCompressor</value>
+  </data>
+  <data name="&gt;&gt;headerCompressor.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;headerOutput.Name" xml:space="preserve">
@@ -2465,6 +2480,12 @@
     <value>ttAlgorithm</value>
   </data>
   <data name="&gt;&gt;ttAlgorithm.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolTip1.Name" xml:space="preserve">
+    <value>toolTip1</value>
+  </data>
+  <data name="&gt;&gt;toolTip1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

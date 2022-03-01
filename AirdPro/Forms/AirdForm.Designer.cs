@@ -48,8 +48,9 @@ namespace AirdPro.Forms
             this.lvFileList = new System.Windows.Forms.ListView();
             this.headerFilePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerExpType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.headerCompressor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerProgress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerPrecision = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerCompressor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerOutput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnDeleteFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
@@ -84,6 +85,7 @@ namespace AirdPro.Forms
             this.timerConsumer = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -168,14 +170,16 @@ namespace AirdPro.Forms
             this.lvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.headerFilePath,
             this.headerExpType,
-            this.headerCompressor,
             this.headerProgress,
+            this.headerPrecision,
+            this.headerCompressor,
             this.headerOutput});
             this.lvFileList.FullRowSelect = true;
             this.lvFileList.GridLines = true;
             this.lvFileList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvFileList.HideSelection = false;
             this.lvFileList.Name = "lvFileList";
+            this.lvFileList.ShowGroups = false;
             this.lvFileList.ShowItemToolTips = true;
             this.lvFileList.UseCompatibleStateImageBehavior = false;
             this.lvFileList.View = System.Windows.Forms.View.Details;
@@ -189,13 +193,17 @@ namespace AirdPro.Forms
             // 
             resources.ApplyResources(this.headerExpType, "headerExpType");
             // 
-            // headerCompressor
-            // 
-            resources.ApplyResources(this.headerCompressor, "headerCompressor");
-            // 
             // headerProgress
             // 
             resources.ApplyResources(this.headerProgress, "headerProgress");
+            // 
+            // headerPrecision
+            // 
+            resources.ApplyResources(this.headerPrecision, "headerPrecision");
+            // 
+            // headerCompressor
+            // 
+            resources.ApplyResources(this.headerCompressor, "headerCompressor");
             // 
             // headerOutput
             // 
@@ -472,6 +480,8 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Label lblIntCompA;
         private System.Windows.Forms.ComboBox intByteComp;
         private System.Windows.Forms.CheckBox cbStack;
+        private System.Windows.Forms.ColumnHeader headerPrecision;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 
