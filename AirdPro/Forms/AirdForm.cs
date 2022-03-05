@@ -32,7 +32,7 @@ namespace AirdPro.Forms
         private void ProproForm_Load(object sender, EventArgs e)
         {
             this.Text = SoftwareInfo.getVersion();
-            this.cbMzPrecision.SelectedIndex = 1; //默认选择精确到小数点后4位的精度
+            this.cbMzPrecision.SelectedIndex = 1; //默认选择精确到小数点后5位的精度
            
             foreach (string intCompType in Enum.GetNames(typeof(IntCompType)))
             {

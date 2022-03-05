@@ -54,6 +54,7 @@ namespace AirdPro.Forms
             this.headerOutput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnDeleteFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
+            this.lblDp = new System.Windows.Forms.Label();
             this.cbStack = new System.Windows.Forms.CheckBox();
             this.lblIntCompA = new System.Windows.Forms.Label();
             this.intByteComp = new System.Windows.Forms.ComboBox();
@@ -85,7 +86,6 @@ namespace AirdPro.Forms
             this.timerConsumer = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
-            this.lblDp = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
@@ -225,6 +225,11 @@ namespace AirdPro.Forms
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
             // 
+            // lblDp
+            // 
+            resources.ApplyResources(this.lblDp, "lblDp");
+            this.lblDp.Name = "lblDp";
+            // 
             // cbStack
             // 
             resources.ApplyResources(this.cbStack, "cbStack");
@@ -342,8 +347,7 @@ namespace AirdPro.Forms
             this.cbMzPrecision.Items.AddRange(new object[] {
             resources.GetString("cbMzPrecision.Items"),
             resources.GetString("cbMzPrecision.Items1"),
-            resources.GetString("cbMzPrecision.Items2"),
-            resources.GetString("cbMzPrecision.Items3")});
+            resources.GetString("cbMzPrecision.Items2")});
             resources.ApplyResources(this.cbMzPrecision, "cbMzPrecision");
             this.cbMzPrecision.Name = "cbMzPrecision";
             // 
@@ -419,11 +423,6 @@ namespace AirdPro.Forms
             // 
             resources.ApplyResources(this.ofd, "ofd");
             this.ofd.Multiselect = true;
-            // 
-            // lblDp
-            // 
-            resources.ApplyResources(this.lblDp, "lblDp");
-            this.lblDp.Name = "lblDp";
             // 
             // AirdForm
             // 
