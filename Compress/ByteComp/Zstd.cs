@@ -4,7 +4,7 @@ using ZstdNet;
 
 namespace Compress
 {
-    public class Zstd:ByteComp
+    public class ZSTD:ByteComp
     {
 
         //使用zstd将byte数组压缩

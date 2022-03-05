@@ -183,7 +183,7 @@ namespace AirdPro.Asyncs
                     comp.mzByteComp = new Zlib();
                     break;
                 case ByteCompType.Zstd:
-                    comp.mzByteComp = new Zstd();
+                    comp.mzByteComp = new ZSTD();
                     break;
                 case ByteCompType.Snappy:
                     comp.mzByteComp = new Snappier();
@@ -199,7 +199,7 @@ namespace AirdPro.Asyncs
                     comp.intByteComp = new Zlib();
                     break;
                 case ByteCompType.Zstd:
-                    comp.intByteComp = new Zstd();
+                    comp.intByteComp = new ZSTD();
                     break;
                 case ByteCompType.Snappy:
                     comp.intByteComp = new Snappier();
