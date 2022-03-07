@@ -20,7 +20,7 @@ namespace AirdPro.Algorithms
     public abstract class ICompressor
     {
         public bool multiThread = true;
-        public int mzPrecision = 10000;
+        public int mzPrecision = 100000;
         public bool ignoreZero = true;
         public bool includeCV = true;
         public int digit = 8;

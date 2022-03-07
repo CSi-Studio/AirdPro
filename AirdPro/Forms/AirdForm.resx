@@ -985,15 +985,12 @@
     <value>17</value>
   </data>
   <data name="cbMzPrecision.Items" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="cbMzPrecision.Items1" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="cbMzPrecision.Items2" xml:space="preserve">
+  <data name="cbMzPrecision.Items1" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="cbMzPrecision.Items3" xml:space="preserve">
+  <data name="cbMzPrecision.Items2" xml:space="preserve">
     <value>6</value>
   </data>
   <data name="cbMzPrecision.Location" type="System.Drawing.Point, System.Drawing">
