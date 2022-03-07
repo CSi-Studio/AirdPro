@@ -34,7 +34,7 @@ namespace AirdPro.Forms
         ConversionConfigForm conversionConfigForm;
         ConversionConfigListForm conversionConfigListForm;
         public ConversionConfigHandler conversionConfigHandler;
-
+        public string rootFolderPath;
         public AirdForm()
         {
             InitializeComponent();
