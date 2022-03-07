@@ -1,7 +1,7 @@
 ﻿
 namespace AirdPro.Forms
 {
-    partial class FileFolderSelector
+    partial class VendorFileSelectorForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@ namespace AirdPro.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileFolderSelector));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VendorFileSelectorForm));
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.gBoxMode = new System.Windows.Forms.GroupBox();
             this.radioButton4 = new System.Windows.Forms.RadioButton();

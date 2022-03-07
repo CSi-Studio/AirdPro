@@ -225,7 +225,7 @@ namespace AirdPro.Converters
         //注意:本函数会操作startPosition这个全局变量
         public void addToIndex(BlockIndex index, object tempScan)
         {
-            if (jobInfo.jobParams.stack)
+            if (jobInfo.config.stack)
             {
                 TempScanSZDPD ts = (TempScanSZDPD) tempScan;
 
@@ -269,7 +269,7 @@ namespace AirdPro.Converters
         protected void readVendorFile()
         {
             jobInfo.log("Prepare to Parse Vendor File", "Prepare");
-            msd = new MSDataFile(jobInfo.inputFilePath);
+            msd = new MSDataFile(jobInfo.inputPath);
             jobInfo.log("Adapting Vendor File API", "Adapting");
 
             List<string> filter = new List<string>();
@@ -289,15 +289,15 @@ namespace AirdPro.Converters
             switch (jobInfo.format)
             {
                 case FileFormat.WIFF:
-                    FileInfo wiff = new FileInfo(jobInfo.inputFilePath);
+                    FileInfo wiff = new FileInfo(jobInfo.inputPath);
                     if (wiff.Exists) fileSize += wiff.Length;
-                    FileInfo mtd = new FileInfo(jobInfo.inputFilePath + ".mtd");
+                    FileInfo mtd = new FileInfo(jobInfo.inputPath + ".mtd");
                     if (mtd.Exists) fileSize += mtd.Length;
-                    FileInfo scan = new FileInfo(jobInfo.inputFilePath + ".scan");
+                    FileInfo scan = new FileInfo(jobInfo.inputPath + ".scan");
                     if (scan.Exists) fileSize += scan.Length;
                     break;
                 case FileFormat.RAW:
-                    FileInfo raw = new FileInfo(jobInfo.inputFilePath);
+                    FileInfo raw = new FileInfo(jobInfo.inputPath);
                     if (raw.Exists) fileSize += raw.Length;
                     break;
             }
@@ -558,7 +558,7 @@ namespace AirdPro.Converters
             airdInfo.createDate = new DateTime();
             airdInfo.type = jobInfo.type;
             airdInfo.totalScanCount = msd.run.spectrumList.size();
-            airdInfo.creator = jobInfo.jobParams.creator;
+            airdInfo.creator = jobInfo.config.creator;
             airdInfo.activator = activator;
             airdInfo.energy = energy;
             airdInfo.rtUnit = rtUnit;
@@ -682,21 +682,21 @@ namespace AirdPro.Converters
             List<Compressor> coms = new List<Compressor>();
             Compressor mzCompressor = new Compressor(Compressor.TARGET_MZ);
             Compressor intCompressor = new Compressor(Compressor.TARGET_INTENSITY);
-            if (jobInfo.jobParams.stack)
+            if (jobInfo.config.stack)
             {
-                mzCompressor.addMethod(jobInfo.jobParams.mzIntComp.ToString());
-                mzCompressor.addMethod(jobInfo.jobParams.mzByteComp.ToString());
-                mzCompressor.precision = jobInfo.jobParams.mzPrecision;
-                mzCompressor.digit = jobInfo.jobParams.digit;
-                intCompressor.addMethod(jobInfo.jobParams.intByteComp.ToString());
+                mzCompressor.addMethod(jobInfo.config.mzIntComp.ToString());
+                mzCompressor.addMethod(jobInfo.config.mzByteComp.ToString());
+                mzCompressor.precision = jobInfo.config.mzPrecision;
+                mzCompressor.digit = jobInfo.config.digit;
+                intCompressor.addMethod(jobInfo.config.intByteComp.ToString());
                 intCompressor.precision = 10;
             }
             else
             {
-                mzCompressor.addMethod(jobInfo.jobParams.mzIntComp.ToString());
-                mzCompressor.addMethod(jobInfo.jobParams.mzByteComp.ToString());
-                mzCompressor.precision = jobInfo.jobParams.mzPrecision;
-                intCompressor.addMethod(jobInfo.jobParams.intByteComp.ToString());
+                mzCompressor.addMethod(jobInfo.config.mzIntComp.ToString());
+                mzCompressor.addMethod(jobInfo.config.mzByteComp.ToString());
+                mzCompressor.precision = jobInfo.config.mzPrecision;
+                intCompressor.addMethod(jobInfo.config.intByteComp.ToString());
             }
 
             coms.Add(mzCompressor);
@@ -704,13 +704,13 @@ namespace AirdPro.Converters
 
             airdInfo.compressors = coms;
 
-            airdInfo.ignoreZeroIntensityPoint = jobInfo.jobParams.ignoreZeroIntensity;
+            airdInfo.ignoreZeroIntensityPoint = jobInfo.config.ignoreZeroIntensity;
             //Features Info
             featuresMap.Add(Features.raw_id, msd.id);
-            featuresMap.Add(Features.ignore_zero_intensity, jobInfo.jobParams.ignoreZeroIntensity);
+            featuresMap.Add(Features.ignore_zero_intensity, jobInfo.config.ignoreZeroIntensity);
             featuresMap.Add(Features.source_file_format, jobInfo.format);
             featuresMap.Add(Features.byte_order, ByteOrder.LITTLE_ENDIAN);
-            featuresMap.Add(Features.aird_algorithm, jobInfo.jobParams.getCompressorStr());
+            featuresMap.Add(Features.aird_algorithm, jobInfo.config.getCompressorStr());
             airdInfo.features = FeaturesUtil.toString(featuresMap);
             airdInfo.version = SoftwareInfo.VERSION;
             airdInfo.versionCode = SoftwareInfo.VERSION_CODE;

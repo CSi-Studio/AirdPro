@@ -25,7 +25,7 @@ namespace AirdPro.Domains.Convert
         //C:/data/plasma.wiff,作为job的ID存在
         public string jobId;
         //用于转换的参数
-        public JobParams jobParams;
+        public ConversionConfig config;
         //DIA-Swath,PRM,DDA. see AirdType
         public string type;
         //是否是IonMobility文件
@@ -33,9 +33,7 @@ namespace AirdPro.Domains.Convert
         //文件的格式,全部大写: WIFF, RAW. See FileFormat.cs
         public string format;
         //C:/data/plasma.wiff
-        public string inputFilePath;
-        //转换后的文件输出路径 D://aird
-        public string outputFolderPath;
+        public string inputPath;
         //文件本名 plasma
         public string airdFileName;
         //例如: D://aird
@@ -60,31 +58,29 @@ namespace AirdPro.Domains.Convert
         {
         }
 
-        public JobInfo(string inputFilePath, string outputFolderPath, 
-            string type, JobParams jobParams, ListViewItem item)
+        public JobInfo(string inputPath, string type, ConversionConfig config, ListViewItem item)
         {
-            this.jobId = inputFilePath + jobParams;
-            this.inputFilePath = inputFilePath;
-            this.outputFolderPath = outputFolderPath;
+            this.jobId = inputPath + config;
+            this.inputPath = inputPath;
             this.type = type;
             // 二代压缩算法StackZDPD目前不支持COMMON模式
-            if (type.Equals(AirdType.COMMON) && jobParams.stack)
+            if (type.Equals(AirdType.COMMON) && config.stack)
             {
                 throw new Exception("Stack Layer Algorithm is not support for COMMON mode");
             }
-            this.jobParams = jobParams;
-            format = Path.GetExtension(inputFilePath).Replace(".","").ToUpper();
-            airdFileName = FileNameUtil.buildOutputFileName(inputFilePath);
-            airdFilePath = Path.Combine(outputFolderPath, airdFileName + jobParams.suffix + ".aird");
-            airdJsonFilePath = Path.Combine(outputFolderPath, airdFileName + jobParams.suffix + ".json");
+            this.config = config;
+            format = Path.GetExtension(inputPath).Replace(".","").ToUpper();
+            airdFileName = FileNameUtil.buildOutputFileName(inputPath);
+            airdFilePath = Path.Combine(config.outputPath, airdFileName + config.suffix + ".aird");
+            airdJsonFilePath = Path.Combine(config.outputPath, airdFileName + config.suffix + ".json");
             this.cancellationTokenSource = new CancellationTokenSource();
             this.progress = new Progress<string>((progressValue) =>
             {
                 item.SubItems[2].Text = progressValue;
             });
-            item.SubItems[4].Text = jobParams.getCompressorStr();
-            item.SubItems[5].Text = outputFolderPath;
-            item.SubItems[3].Text = System.Convert.ToString(Math.Log10(jobParams.mzPrecision))+"dp"; 
+            item.SubItems[4].Text = config.getCompressorStr();
+            item.SubItems[5].Text = config.outputPath;
+            item.SubItems[3].Text = System.Convert.ToString(Math.Log10(config.mzPrecision))+"dp"; 
         }
 
         public JobInfo log(string content)
@@ -130,16 +126,16 @@ namespace AirdPro.Domains.Convert
         public string getJsonInfo()
         {
             string jobInfo = "";
-            jobInfo += "inputFilePath:" + inputFilePath + "\r\n";
-            jobInfo += "outputFolderPath:" + outputFolderPath + "\r\n";
+            jobInfo += "inpuPath:" + inputPath + "\r\n";
+            jobInfo += "outputPath:" + config.outputPath + "\r\n";
             jobInfo += "airdFileName:" + airdFileName + "\r\n";
             jobInfo += "airdFilePath:" + airdFilePath + "\r\n";
             jobInfo += "airdJsonFilePath:" + airdJsonFilePath + "\r\n";
-            jobInfo += "ignoreZeroIntensity:" + jobParams.ignoreZeroIntensity + "\r\n";
-            jobInfo += "suffix:" + jobParams.suffix + "\r\n";
+            jobInfo += "ignoreZeroIntensity:" + config.ignoreZeroIntensity + "\r\n";
+            jobInfo += "suffix:" + config.suffix + "\r\n";
             jobInfo += "threadId:" + threadId + "\r\n";
-            jobInfo += "ThreadAccelerate:" + jobParams.threadAccelerate + "\r\n";
-            jobInfo += "mzPrecision:" + jobParams.mzPrecision + "\r\n";
+            jobInfo += "ThreadAccelerate:" + config.threadAccelerate + "\r\n";
+            jobInfo += "mzPrecision:" + config.mzPrecision + "\r\n";
             // jobInfo += "compressor:" + (jobParams.airdAlgorithm == 1 ? "ZDPD" : ("Stack-ZDPD:" + (Math.Pow(2, jobParams.digit))) + " Layers\r\n");
             return jobInfo;
         }

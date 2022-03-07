@@ -15,10 +15,10 @@ using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Forms
 {
-    public partial class FileFolderSelector : Form
+    public partial class VendorFileSelectorForm : Form
     {
         private AirdForm airdForm;
-        public FileFolderSelector(AirdForm form)
+        public VendorFileSelectorForm(AirdForm form)
         {
             InitializeComponent();
             this.airdForm = form;
@@ -97,6 +97,7 @@ namespace AirdPro.Forms
                 {
                     tbPaths.Text = tbPaths.Text + filePath + Const.Change_Line;
                 }
+                
             }
         }
     }

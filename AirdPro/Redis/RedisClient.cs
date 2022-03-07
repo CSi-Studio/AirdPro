@@ -126,13 +126,13 @@ namespace AirdPro.Redis
                             valueStr = value.ToString();
                             // 目前远程任务还不支持第二代压缩算法
                             RemoteConvertJob job = JsonConvert.DeserializeObject<RemoteConvertJob>(valueStr);
-                            JobParams jobParams = new JobParams();
-                            jobParams.ignoreZeroIntensity = true;
-                            jobParams.threadAccelerate = true;
-                            jobParams.suffix = "";
-                            jobParams.creator = "LIMS Admin";
-                            jobParams.mzPrecision = (int)Math.Ceiling(1 / job.mzPrecision);
-
+                            ConversionConfig conversionConfig = new ConversionConfig();
+                            conversionConfig.ignoreZeroIntensity = true;
+                            conversionConfig.threadAccelerate = true;
+                            conversionConfig.suffix = "";
+                            conversionConfig.creator = "LIMS Admin";
+                            conversionConfig.mzPrecision = (int)Math.Ceiling(1 / job.mzPrecision);
+                            conversionConfig.outputPath = job.targetPath;
                             string[] items = new string[5];
                             ListViewItem item = new ListViewItem(items);
                             item.SubItems[0].Text = job.sourcePath;
@@ -141,8 +141,7 @@ namespace AirdPro.Redis
                             item.SubItems[3].Text = Convert.ToString(job.mzPrecision);
                             item.SubItems[4].Text = job.getAirdAlgorithmStr();
                             item.SubItems[5].Text = job.targetPath;
-                            JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath,
-                                job.type, jobParams, item);
+                            JobInfo jobInfo = new JobInfo(job.sourcePath,job.type, conversionConfig, item);
                             if (!ConvertTaskManager.getInstance().jobTable.Contains(jobInfo.jobId))
                             {
                                 Program.mainForm.lvFileList.Items.Add(item);

@@ -156,29 +156,27 @@
     <Compile Include="Converters\DDAPasef .cs" />
     <Compile Include="Converters\DIAPasef.cs" />
     <Compile Include="Domains\Job\JobInfo.cs" />
-    <Compile Include="Domains\Job\JobParams.cs" />
+    <Compile Include="Domains\Job\ConversionConfig.cs" />
     <Compile Include="Domains\Job\RemoteConvertJob.cs" />
     <Compile Include="Domains\Log.cs" />
     <Compile Include="Domains\Sort\IntArrayNode.cs" />
-    <Compile Include="Forms\ConfigCustomization.cs">
+    <Compile Include="Forms\ConversionConfigForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ConfigCustomization.Designer.cs">
-      <DependentUpon>ConfigCustomization.cs</DependentUpon>
+    <Compile Include="Forms\ConversionConfigForm.Designer.cs">
+      <DependentUpon>ConversionConfigForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ConfigListView.cs">
+    <Compile Include="Forms\ConversionConfigListForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ConfigListView.Designer.cs">
-      <DependentUpon>ConfigListView.cs</DependentUpon>
+    <Compile Include="Forms\ConversionConfigListForm.Designer.cs">
+      <DependentUpon>ConversionConfigListForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Config\ConfigParamsSubject.cs" />
-    <Compile Include="Forms\Config\ConfigSubject.cs" />
-    <Compile Include="Forms\FileFolderSelector.cs">
+    <Compile Include="Forms\VendorFileSelectorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FileFolderSelector.Designer.cs">
-      <DependentUpon>FileFolderSelector.cs</DependentUpon>
+    <Compile Include="Forms\VendorFileSelectorForm.Designer.cs">
+      <DependentUpon>VendorFileSelectorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\JobDetailForm.cs">
       <SubType>Form</SubType>
@@ -199,12 +197,6 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Settings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Settings.Designer.cs">
-      <DependentUpon>Settings.cs</DependentUpon>
-    </Compile>
     <Compile Include="Converters\DDA.cs" />
     <Compile Include="Converters\DIA.cs" />
     <Compile Include="Converters\IConverter.cs" />
@@ -212,18 +204,21 @@
     <Compile Include="Converters\ScanningSWATH.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Storage\Config\ConversionConfigHandler.cs" />
+    <Compile Include="Storage\Observer.cs" />
+    <Compile Include="Storage\Subject.cs" />
     <EmbeddedResource Include="Forms\AirdForm.resx">
       <DependentUpon>AirdForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ConfigCustomization.resx">
-      <DependentUpon>ConfigCustomization.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ConversionConfigForm.resx">
+      <DependentUpon>ConversionConfigForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ConfigListView.resx">
-      <DependentUpon>ConfigListView.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ConversionConfigListForm.resx">
+      <DependentUpon>ConversionConfigListForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FileFolderSelector.resx">
-      <DependentUpon>FileFolderSelector.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\VendorFileSelectorForm.resx">
+      <DependentUpon>VendorFileSelectorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\JobDetailForm.resx">
       <DependentUpon>JobDetailForm.cs</DependentUpon>

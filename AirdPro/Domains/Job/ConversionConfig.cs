@@ -13,7 +13,7 @@ using AirdPro.Constants;
 
 namespace AirdPro.Domains.Convert
 {
-    public class JobParams
+    public class ConversionConfig
     {
         /**
          * Ignore the mz-intensity pairs whose intensity is zero.
@@ -22,10 +22,10 @@ namespace AirdPro.Domains.Convert
         public bool ignoreZeroIntensity = true;
 
         /**
-         * the decimal point of the mz. The default value is 0.0001
-         * mz精度,默认保留到小数点后第4位
+         * the decimal point of the mz. The default value is 0.00001
+         * mz精度,默认保留到小数点后第5位
          */
-        public int mzPrecision = 10000;
+        public int mzPrecision = 100000;
 
         /**
          * if using the multi thread for acceleration. The default value is true
@@ -43,7 +43,12 @@ namespace AirdPro.Domains.Convert
          * The operator's name
          * 操作员姓名
          */
-        public string creator;
+        public string creator = "Admin";
+
+        /**
+         * 文件的输出路径
+         */
+        public string outputPath;
 
         /**
          * 用于mz压缩的int数组压缩方法
@@ -72,15 +77,13 @@ namespace AirdPro.Domains.Convert
          */
         public int digit = 8;
 
-
-        public JobParams()
+        public ConversionConfig()
         {
         }
 
         public String getCompressorStr()
         {
-            return mzIntComp.ToString() + "|" + mzByteComp.ToString() + "|" + intByteComp.ToString();
-            // return airdAlgorithm == 1 ? "ZDPD" : ("Stack-ZDPD:" + Math.Pow(2, digit).ToString() + " Layers");
+            return mzIntComp + "|" + mzByteComp + "|" + intByteComp;
         }
     }
 }

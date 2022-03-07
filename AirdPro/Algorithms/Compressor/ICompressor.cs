@@ -32,11 +32,11 @@ namespace AirdPro.Algorithms
 
         public ICompressor(IConverter converter)
         {
-            this.multiThread = converter.jobInfo.jobParams.threadAccelerate;
-            this.mzPrecision = converter.jobInfo.jobParams.mzPrecision;
-            this.ignoreZero = converter.jobInfo.jobParams.ignoreZeroIntensity;
+            this.multiThread = converter.jobInfo.config.threadAccelerate;
+            this.mzPrecision = converter.jobInfo.config.mzPrecision;
+            this.ignoreZero = converter.jobInfo.config.ignoreZeroIntensity;
             this.includeCV = true;
-            this.digit = converter.jobInfo.jobParams.digit;
+            this.digit = converter.jobInfo.config.digit;
         }
 
         public abstract void compressMS1(IConverter converter, BlockIndex index);

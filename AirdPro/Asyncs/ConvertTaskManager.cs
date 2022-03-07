@@ -157,7 +157,7 @@ namespace AirdPro.Asyncs
                 converter = new DIAPasef(jobInfo);
             }
 
-            if (!jobInfo.jobParams.stack)
+            if (!jobInfo.config.stack)
             {
                 comp = new CoreComp(converter);
             }
@@ -167,7 +167,7 @@ namespace AirdPro.Asyncs
                 comp.mobilityByteComp = new Zlib();
             }
 
-            switch (jobInfo.jobParams.mzIntComp)
+            switch (jobInfo.config.mzIntComp)
             {
                 case IntCompType.IBP:
                     comp.mzIntComp = new IntegratedBinPacking();
@@ -177,7 +177,7 @@ namespace AirdPro.Asyncs
                     break;
             }
 
-            switch (jobInfo.jobParams.mzByteComp)
+            switch (jobInfo.config.mzByteComp)
             {
                 case ByteCompType.Zlib:
                     comp.mzByteComp = new Zlib();
@@ -193,7 +193,7 @@ namespace AirdPro.Asyncs
                     break;
             }
 
-            switch (jobInfo.jobParams.intByteComp)
+            switch (jobInfo.config.intByteComp)
             {
                 case ByteCompType.Zlib:
                     comp.intByteComp = new Zlib();

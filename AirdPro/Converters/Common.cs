@@ -50,7 +50,7 @@ namespace AirdPro.Converters
             var ms1Index = new BlockIndex(1);
             var ms2Index = new BlockIndex(2);
             jobInfo.log("Preprocessing:" + totalSize, "Preprocessing");
-            if (jobInfo.jobParams.threadAccelerate)
+            if (jobInfo.config.threadAccelerate)
             {
                 var ms1Table = Hashtable.Synchronized(new Hashtable());
                 var ms2Table = Hashtable.Synchronized(new Hashtable());

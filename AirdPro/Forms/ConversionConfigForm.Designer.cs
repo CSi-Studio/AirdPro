@@ -1,6 +1,6 @@
 ﻿namespace AirdPro.Forms
 {
-    partial class ConfigCustomization
+    partial class ConversionConfigForm
     {
         /// <summary>
         /// Required designer variable.
@@ -386,7 +386,7 @@
             this.btnSaveConfig.UseVisualStyleBackColor = true;
             this.btnSaveConfig.Click += new System.EventHandler(this.btnSaveConfig_Click);
             // 
-            // ConfigCustomization
+            // ConversionConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -419,8 +419,9 @@
             this.Controls.Add(this.lblConfigOutputPath);
             this.Controls.Add(this.btnConfigChooseFolder);
             this.Controls.Add(this.tbConfigFolderPath);
-            this.Name = "ConfigCustomization";
-            this.Text = "ConfigCustomization";
+            this.Name = "ConversionConfigForm";
+            this.Text = "Conversion Config";
+            this.Load += new System.EventHandler(this.ConversionConfigForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

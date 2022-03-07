@@ -397,22 +397,22 @@
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="customization.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>183, 22</value>
   </data>
   <data name="customization.Text" xml:space="preserve">
-    <value>Customization</value>
+    <value>Conversion Config</value>
   </data>
   <data name="configList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>183, 22</value>
   </data>
   <data name="configList.Text" xml:space="preserve">
     <value>Config List</value>
   </data>
   <data name="menuConfiguration.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 21</value>
+    <value>66, 21</value>
   </data>
   <data name="menuConfiguration.Text" xml:space="preserve">
-    <value>Configuration</value>
+    <value>Settings</value>
   </data>
   <data name="menuConfig.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>

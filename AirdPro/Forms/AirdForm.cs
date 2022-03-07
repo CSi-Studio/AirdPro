@@ -22,32 +22,29 @@ using System.Net;
 using Newtonsoft.Json;
 using System.Text;
 using System.IO;
-using AirdPro.Forms.Config;
+using AirdPro.Domains.Job;
+using AirdPro.Storage;
 
 namespace AirdPro.Forms
 {
     public partial class AirdForm : Form
     {
         ArrayList currentFiles = new ArrayList();
-        FileFolderSelector customPathForm;
-        ConfigCustomization configCustomization;
-        ConfigListView configListView;
-        public string hostIP;
+        VendorFileSelectorForm fileSelector;
+        ConversionConfigForm conversionConfigForm;
+        ConversionConfigListForm conversionConfigListForm;
+        public ConversionConfigHandler conversionConfigHandler;
+
         public AirdForm()
         {
             InitializeComponent();
-            ConfigSubject configSubject = new ConfigParamsSubject();
-            ConfigListView configListView = new ConfigListView();
-            configSubject.addObserver(new ConfigNotifyEventHandler(configListView.Receive));
-            configSubject.publishConfigInfo();
-            
+            conversionConfigHandler = new ConversionConfigHandler();
         }
        
         private void ProproForm_Load(object sender, EventArgs e)
         {
-            creatADefaultConfig();
-            this.Text = SoftwareInfo.getVersion() + " - " + getHostIP();
-            this.cbMzPrecision.SelectedIndex = 1; //默认选择精确到小数点后4位的精度
+            this.Text = SoftwareInfo.getVersion() + " - " + NetworkUtil.getHostIP();
+            this.cbMzPrecision.SelectedIndex = 1; //默认选择精确到小数点后5位的精度
            
             foreach (string intCompType in Enum.GetNames(typeof(IntCompType)))
             {
@@ -96,7 +93,7 @@ namespace AirdPro.Forms
             {
                 if (!ConvertTaskManager.getInstance().jobTable.ContainsKey(item.SubItems[0].Text))
                 {
-                    JobParams jobParams = new  JobParams
+                    ConversionConfig conversionConfig = new  ConversionConfig
                     {
                         ignoreZeroIntensity = cbIsZeroIntensityIgnore.Checked,
                         threadAccelerate = cbThreadAccelerate.Checked,
@@ -108,10 +105,11 @@ namespace AirdPro.Forms
                         mzByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), mzByteComp.SelectedItem.ToString()),
                         intByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), intByteComp.SelectedItem.ToString()),
                         digit = (int)Math.Log(int.Parse(cbStackLayers.SelectedItem.ToString()), 2),
+                        outputPath = tbFolderPath.Text
                     };
-
-                    JobInfo jobInfo = new JobInfo(item.SubItems[0].Text, tbFolderPath.Text,
-                        item.SubItems[1].Text, jobParams, item);
+                    item.Tag = conversionConfig;
+                    JobInfo jobInfo = new JobInfo(item.SubItems[0].Text, 
+                        item.SubItems[1].Text, conversionConfig, item);
 
                     ConvertTaskManager.getInstance().pushJob(jobInfo);
                 }
@@ -305,19 +303,20 @@ namespace AirdPro.Forms
 
         private void btnCustomerPath_Click(object sender, EventArgs e)
         {
-            if (customPathForm == null || customPathForm.IsDisposed)
+            if (fileSelector == null || fileSelector.IsDisposed)
             {
-                customPathForm = new FileFolderSelector(this);
+                fileSelector = new VendorFileSelectorForm(this);
             }
-            customPathForm.clearInfos();
-            customPathForm.Show();
+            fileSelector.clearInfos();
+            fileSelector.Show();
         }
 
         //查看列表选中对象的详细参数
+        //TODO 俊杰
         private void lvFileList_DoubleClick(object sender, EventArgs e)
         {
             int index = lvFileList.FocusedItem.Index; //获取选中Item的索引值
-            JobParams jobParams = new JobParams();
+            ConversionConfig conversionConfig = new ConversionConfig();
             JobDetailForm details = new JobDetailForm();
             if(lvFileList.SelectedItems.Count == 0 ) //判断选中的不为0
             {
@@ -329,26 +328,12 @@ namespace AirdPro.Forms
                 details.tbFileName.Text = FileNameUtil.buildOutputFileName(details.tbInputFilePath.Text);
                 details.tbFileType.Text = lvFileList.Items[index].SubItems[1].Text;
                 details.tbOutputFilePath.Text = lvFileList.Items[index].SubItems[5].Text;
-                if(cbIsZeroIntensityIgnore.Checked)
-                {
-                    details.tbZeroIntensity.Text = "Ignore";
-                }
-                else
-                {
-                    details.tbZeroIntensity.Text = "Not Ignore";
-                }
-                if(cbThreadAccelerate.Checked)
-                {
-                    details.tbMultithreading.Text = "True";
-                }
-                else
-                {
-                    details.tbMultithreading.Text = "False";
-                }
+                details.tbZeroIntensity.Text = cbIsZeroIntensityIgnore.Checked? "Ignore": "Not Ignore";
+                details.tbMultithreading.Text = cbThreadAccelerate.Checked.ToString();
                 details.tbMzPrecision.Text = lvFileList.Items[index].SubItems[3].Text;
-                details.tbMzIntCompressor.Text = Convert.ToString(jobParams.mzIntComp);
-                details.tbMzByteCompressor.Text = Convert.ToString(jobParams.mzByteComp);
-                details.tbIntensityByteCompressor.Text = Convert.ToString(jobParams.intByteComp);
+                details.tbMzIntCompressor.Text = Convert.ToString(conversionConfig.mzIntComp);
+                details.tbMzByteCompressor.Text = Convert.ToString(conversionConfig.mzByteComp);
+                details.tbIntensityByteCompressor.Text = Convert.ToString(conversionConfig.intByteComp);
                 if (cbStack.Checked)
                 {
                     details.tbStackStatus.Text = "Open";
@@ -365,64 +350,28 @@ namespace AirdPro.Forms
             }
         }
 
-        //程序启动后自动保存一份默认参数配置，且不可被覆盖更改
-        public FileStream defaultConfigStream;
-        public void creatADefaultConfig()
-        {
-            string str = Environment.CurrentDirectory;
-            string defaultConfigPath = Path.Combine(str, "DefaultConfig.json");
-            if (File.Exists(defaultConfigPath))
-            {
-               
-            }
-            else
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(defaultConfigPath));
-                JobParams jobParams = new JobParams();
-                JsonSerializerSettings jsonSetting = new JsonSerializerSettings
-                { NullValueHandling = NullValueHandling.Ignore };
-                String defaultConfigStr = JsonConvert.SerializeObject(jobParams, jsonSetting);
-                byte[] defaultConfigBytes = Encoding.Default.GetBytes(defaultConfigStr);
-                using (defaultConfigStream = new FileStream(defaultConfigPath, FileMode.OpenOrCreate))
-                {
-                    defaultConfigStream.Write(defaultConfigBytes, 0, defaultConfigBytes.Length);
-                }
-            }  
-        }
-
         //打开定制化参数窗口
         private void ConfigCustom(object sender, EventArgs e)
         {
-            if(configCustomization == null)
+            if(conversionConfigForm == null || conversionConfigForm.IsDisposed)
             {
-                configCustomization = new ConfigCustomization();
+                conversionConfigForm = new ConversionConfigForm(this.conversionConfigHandler);
             }
             
-            configCustomization.Show();
+            conversionConfigForm.Show();
         }
-        //获取本地IP的方法
-        public string getHostIP()
-        {
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
-            {
-                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-                {
-                    hostIP = Convert.ToString(ip);
-                    return hostIP;
-                }
-            }
-            return null;
-        }
+       
 
         //打开输入的定制化参数列表
-        private void ConfigList(object sender, EventArgs e)
+        private void openConversionConfigListForm(object sender, EventArgs e)
         {
-            if (configListView == null || configListView.IsDisposed)
+            if (conversionConfigListForm == null || conversionConfigListForm.IsDisposed)
             {
-                configListView = new ConfigListView();
+                conversionConfigListForm = new ConversionConfigListForm();
+                conversionConfigHandler.attach(conversionConfigListForm);
             }
-            configListView.Show();
+            conversionConfigListForm.Show();
+           
         }
     }
 }
