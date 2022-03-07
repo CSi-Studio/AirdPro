@@ -160,11 +160,31 @@
     <Compile Include="Domains\Job\RemoteConvertJob.cs" />
     <Compile Include="Domains\Log.cs" />
     <Compile Include="Domains\Sort\IntArrayNode.cs" />
+    <Compile Include="Forms\ConfigCustomization.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ConfigCustomization.Designer.cs">
+      <DependentUpon>ConfigCustomization.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ConfigListView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ConfigListView.Designer.cs">
+      <DependentUpon>ConfigListView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Config\ConfigParamsSubject.cs" />
+    <Compile Include="Forms\Config\ConfigSubject.cs" />
     <Compile Include="Forms\FileFolderSelector.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FileFolderSelector.Designer.cs">
       <DependentUpon>FileFolderSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\JobDetailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\JobDetailForm.Designer.cs">
+      <DependentUpon>JobDetailForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Redis\RedisClient.cs" />
     <Compile Include="Forms\AirdForm.cs">
@@ -196,8 +216,17 @@
       <DependentUpon>AirdForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ConfigCustomization.resx">
+      <DependentUpon>ConfigCustomization.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ConfigListView.resx">
+      <DependentUpon>ConfigListView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileFolderSelector.resx">
       <DependentUpon>FileFolderSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\JobDetailForm.resx">
+      <DependentUpon>JobDetailForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -294,6 +323,7 @@
       <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(SolutionDir)ImportLibs\*.*" "$(TargetDir)"</PostBuildEvent>

@@ -96,7 +96,7 @@ namespace AirdPro.Forms
             // aliyunOSSToolStripMenuItem
             // 
             this.aliyunOSSToolStripMenuItem.Name = "aliyunOSSToolStripMenuItem";
-            this.aliyunOSSToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aliyunOSSToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.aliyunOSSToolStripMenuItem.Text = "Aliyun-OSS";
             // 
             // menuSettings

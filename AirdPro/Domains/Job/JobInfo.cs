@@ -51,6 +51,7 @@ namespace AirdPro.Domains.Convert
         //出现异常错误的时候进行重试的次数,每一个job会被自动重试2次
         public int retryTimes = 3;
 
+
         public bool refreshReport = true;
 
         public CancellationTokenSource cancellationTokenSource;
@@ -62,7 +63,7 @@ namespace AirdPro.Domains.Convert
         public JobInfo(string inputFilePath, string outputFolderPath, 
             string type, JobParams jobParams, ListViewItem item)
         {
-            this.jobId = inputFilePath;
+            this.jobId = inputFilePath + jobParams;
             this.inputFilePath = inputFilePath;
             this.outputFolderPath = outputFolderPath;
             this.type = type;
@@ -83,7 +84,7 @@ namespace AirdPro.Domains.Convert
             });
             item.SubItems[4].Text = jobParams.getCompressorStr();
             item.SubItems[5].Text = outputFolderPath;
-            item.SubItems[3].Text = System.Convert.ToString(jobParams.mzPrecision);
+            item.SubItems[3].Text = System.Convert.ToString(Math.Log10(jobParams.mzPrecision))+"dp"; 
         }
 
         public JobInfo log(string content)

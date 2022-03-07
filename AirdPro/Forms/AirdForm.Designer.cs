@@ -54,6 +54,11 @@ namespace AirdPro.Forms
             this.headerOutput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnDeleteFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
+            this.menuConfig = new System.Windows.Forms.MenuStrip();
+            this.menuConfiguration = new System.Windows.Forms.ToolStripMenuItem();
+            this.customization = new System.Windows.Forms.ToolStripMenuItem();
+            this.configList = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblDp = new System.Windows.Forms.Label();
             this.cbStack = new System.Windows.Forms.CheckBox();
             this.lblIntCompA = new System.Windows.Forms.Label();
             this.intByteComp = new System.Windows.Forms.ComboBox();
@@ -85,12 +90,11 @@ namespace AirdPro.Forms
             this.timerConsumer = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
-            this.lblDp = new System.Windows.Forms.Label();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
             this.container.SuspendLayout();
+            this.menuConfig.SuspendLayout();
             this.SuspendLayout();
             // 
             // container
@@ -107,6 +111,7 @@ namespace AirdPro.Forms
             this.container.Panel1.Controls.Add(this.lvFileList);
             this.container.Panel1.Controls.Add(this.btnDeleteFiles);
             this.container.Panel1.Controls.Add(this.btnConvert);
+            this.container.Panel1.Controls.Add(this.menuConfig);
             // 
             // container.Panel2
             // 
@@ -186,6 +191,7 @@ namespace AirdPro.Forms
             this.lvFileList.UseCompatibleStateImageBehavior = false;
             this.lvFileList.View = System.Windows.Forms.View.Details;
             this.lvFileList.SelectedIndexChanged += new System.EventHandler(this.lvFileList_SelectedIndexChanged);
+            this.lvFileList.DoubleClick += new System.EventHandler(this.lvFileList_DoubleClick);
             // 
             // headerFilePath
             // 
@@ -224,6 +230,38 @@ namespace AirdPro.Forms
             this.btnConvert.Name = "btnConvert";
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
+            // 
+            // menuConfig
+            // 
+            resources.ApplyResources(this.menuConfig, "menuConfig");
+            this.menuConfig.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuConfiguration});
+            this.menuConfig.Name = "menuConfig";
+            // 
+            // menuConfiguration
+            // 
+            this.menuConfiguration.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.customization,
+            this.configList});
+            this.menuConfiguration.Name = "menuConfiguration";
+            resources.ApplyResources(this.menuConfiguration, "menuConfiguration");
+            // 
+            // customization
+            // 
+            this.customization.Name = "customization";
+            resources.ApplyResources(this.customization, "customization");
+            this.customization.Click += new System.EventHandler(this.ConfigCustom);
+            // 
+            // configList
+            // 
+            this.configList.Name = "configList";
+            resources.ApplyResources(this.configList, "configList");
+            this.configList.Click += new System.EventHandler(this.ConfigList);
+            // 
+            // lblDp
+            // 
+            resources.ApplyResources(this.lblDp, "lblDp");
+            this.lblDp.Name = "lblDp";
             // 
             // cbStack
             // 
@@ -420,24 +458,23 @@ namespace AirdPro.Forms
             resources.ApplyResources(this.ofd, "ofd");
             this.ofd.Multiselect = true;
             // 
-            // lblDp
-            // 
-            resources.ApplyResources(this.lblDp, "lblDp");
-            this.lblDp.Name = "lblDp";
-            // 
             // AirdForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             resources.ApplyResources(this, "$this");
             this.Controls.Add(this.container);
             this.DoubleBuffered = true;
+            this.MainMenuStrip = this.menuConfig;
             this.Name = "AirdForm";
             this.Load += new System.EventHandler(this.ProproForm_Load);
             this.container.Panel1.ResumeLayout(false);
+            this.container.Panel1.PerformLayout();
             this.container.Panel2.ResumeLayout(false);
             this.container.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.container)).EndInit();
             this.container.ResumeLayout(false);
+            this.menuConfig.ResumeLayout(false);
+            this.menuConfig.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -488,8 +525,11 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ComboBox intByteComp;
         private System.Windows.Forms.CheckBox cbStack;
         private System.Windows.Forms.ColumnHeader headerPrecision;
-        private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label lblDp;
+        private System.Windows.Forms.MenuStrip menuConfig;
+        private System.Windows.Forms.ToolStripMenuItem menuConfiguration;
+        private System.Windows.Forms.ToolStripMenuItem customization;
+        private System.Windows.Forms.ToolStripMenuItem configList;
     }
 }
 
