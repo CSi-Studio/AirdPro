@@ -91,12 +91,15 @@ namespace AirdPro.Forms
 
         private void btnFolderSelector_Click(object sender, EventArgs e)
         {
+            betterFolderBrowser.RootFolder = airdForm.rootFolderPath;
             if (betterFolderBrowser.ShowDialog(this) == DialogResult.OK)
             {
                 foreach (var filePath in betterFolderBrowser.SelectedPaths)
                 {
                     tbPaths.Text = tbPaths.Text + filePath + Const.Change_Line;
                 }
+
+                airdForm.rootFolderPath = tbPaths.Text;
             }
         }
     }

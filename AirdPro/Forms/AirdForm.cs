@@ -33,6 +33,7 @@ namespace AirdPro.Forms
         ConfigCustomization configCustomization;
         ConfigListView configListView;
         public string hostIP;
+        public string rootFolderPath;
         public AirdForm()
         {
             InitializeComponent();
