@@ -4,7 +4,7 @@ using AirdPro.Domains.Job;
 
 namespace AirdPro.Storage;
 
-public interface Observer
+public interface Observer<T>
 {
-    public void update(Dictionary<string, ConversionConfig> configMap);
+    public void update(T configs);
 }

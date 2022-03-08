@@ -7,7 +7,7 @@ using AirdPro.Storage;
 
 namespace AirdPro.Forms
 {
-    public partial class ConversionConfigListForm : Form, Observer
+    public partial class ConversionConfigListForm : Form, Observer<Dictionary<string, ConversionConfig>>
     {
         public ConversionConfigListForm()
         {
@@ -15,7 +15,7 @@ namespace AirdPro.Forms
         }
         private void ConversionConfigListForm_Load(object sender, EventArgs e)
         {
-
+           
         }
         public void update(Dictionary<string, ConversionConfig> configMap)
         {

@@ -15,7 +15,7 @@ public class ConversionConfigHandler:Subject
     private static string CONFIG_PATH = Path.Combine(Environment.CurrentDirectory, "ConversionConfig.json");
     private Dictionary<string, ConversionConfig> configMap = new Dictionary<string, ConversionConfig>();
 
-    private HashSet<Observer> observers = new HashSet<Observer>();
+    private HashSet<Observer<Dictionary<string, ConversionConfig>>> observers = new HashSet<Observer<Dictionary<string, ConversionConfig>>>();
 
     public ConversionConfigHandler()
     {
@@ -92,13 +92,13 @@ public class ConversionConfigHandler:Subject
         }
     }
 
-    public void attach(Observer observer)
+    public void attach(Observer<Dictionary<string, ConversionConfig>> observer)
     {
         observers.Add(observer);
         notify();
     }
 
-    public void detach(Observer observer)
+    public void detach(Observer<Dictionary<string, ConversionConfig>> observer)
     {
         observers.Remove(observer);
         notify();
@@ -106,7 +106,7 @@ public class ConversionConfigHandler:Subject
 
     public void notify()
     {
-        foreach (Observer observer in observers)
+        foreach (Observer<Dictionary<string, ConversionConfig>> observer in observers)
         {
             observer.update(configMap);
         }
