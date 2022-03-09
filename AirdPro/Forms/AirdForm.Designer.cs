@@ -41,7 +41,6 @@ namespace AirdPro.Forms
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AirdForm));
             this.container = new System.Windows.Forms.SplitContainer();
-            this.btnSelectVendorFiles = new System.Windows.Forms.Button();
             this.btnClearError = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.lblFileSelectedInfo = new System.Windows.Forms.Label();
@@ -55,9 +54,12 @@ namespace AirdPro.Forms
             this.btnDeleteFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
             this.menuConfig = new System.Windows.Forms.MenuStrip();
+            this.filesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuConfiguration = new System.Windows.Forms.ToolStripMenuItem();
             this.customization = new System.Windows.Forms.ToolStripMenuItem();
             this.configList = new System.Windows.Forms.ToolStripMenuItem();
+            this.globalSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblDp = new System.Windows.Forms.Label();
             this.cbStack = new System.Windows.Forms.CheckBox();
             this.lblIntCompA = new System.Windows.Forms.Label();
@@ -68,11 +70,6 @@ namespace AirdPro.Forms
             this.cbStackLayers = new System.Windows.Forms.ComboBox();
             this.lblMzIntComp = new System.Windows.Forms.Label();
             this.mzIntComp = new System.Windows.Forms.ComboBox();
-            this.btnDisconnect = new System.Windows.Forms.Button();
-            this.lblConnectStatus = new System.Windows.Forms.Label();
-            this.lblIP = new System.Windows.Forms.Label();
-            this.tbHostAndPort = new System.Windows.Forms.TextBox();
-            this.btnConnect = new System.Windows.Forms.Button();
             this.lblOperator = new System.Windows.Forms.Label();
             this.tbOperator = new System.Windows.Forms.TextBox();
             this.lblMzPrecision = new System.Windows.Forms.Label();
@@ -87,7 +84,6 @@ namespace AirdPro.Forms
             this.btnChooseFolder = new System.Windows.Forms.Button();
             this.tbFolderPath = new System.Windows.Forms.TextBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.timerConsumer = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
@@ -104,7 +100,6 @@ namespace AirdPro.Forms
             // 
             // container.Panel1
             // 
-            this.container.Panel1.Controls.Add(this.btnSelectVendorFiles);
             this.container.Panel1.Controls.Add(this.btnClearError);
             this.container.Panel1.Controls.Add(this.btnClear);
             this.container.Panel1.Controls.Add(this.lblFileSelectedInfo);
@@ -125,11 +120,6 @@ namespace AirdPro.Forms
             this.container.Panel2.Controls.Add(this.cbStackLayers);
             this.container.Panel2.Controls.Add(this.lblMzIntComp);
             this.container.Panel2.Controls.Add(this.mzIntComp);
-            this.container.Panel2.Controls.Add(this.btnDisconnect);
-            this.container.Panel2.Controls.Add(this.lblConnectStatus);
-            this.container.Panel2.Controls.Add(this.lblIP);
-            this.container.Panel2.Controls.Add(this.tbHostAndPort);
-            this.container.Panel2.Controls.Add(this.btnConnect);
             this.container.Panel2.Controls.Add(this.lblOperator);
             this.container.Panel2.Controls.Add(this.tbOperator);
             this.container.Panel2.Controls.Add(this.lblMzPrecision);
@@ -144,13 +134,6 @@ namespace AirdPro.Forms
             this.container.Panel2.Controls.Add(this.btnChooseFolder);
             this.container.Panel2.Controls.Add(this.tbFolderPath);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
-            // 
-            // btnSelectVendorFiles
-            // 
-            resources.ApplyResources(this.btnSelectVendorFiles, "btnSelectVendorFiles");
-            this.btnSelectVendorFiles.Name = "btnSelectVendorFiles";
-            this.btnSelectVendorFiles.UseVisualStyleBackColor = true;
-            this.btnSelectVendorFiles.Click += new System.EventHandler(this.btnCustomerPath_Click);
             // 
             // btnClearError
             // 
@@ -235,14 +218,29 @@ namespace AirdPro.Forms
             // 
             resources.ApplyResources(this.menuConfig, "menuConfig");
             this.menuConfig.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.filesToolStripMenuItem,
             this.menuConfiguration});
             this.menuConfig.Name = "menuConfig";
+            // 
+            // filesToolStripMenuItem
+            // 
+            this.filesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.selectFilesToolStripMenuItem});
+            this.filesToolStripMenuItem.Name = "filesToolStripMenuItem";
+            resources.ApplyResources(this.filesToolStripMenuItem, "filesToolStripMenuItem");
+            // 
+            // selectFilesToolStripMenuItem
+            // 
+            this.selectFilesToolStripMenuItem.Name = "selectFilesToolStripMenuItem";
+            resources.ApplyResources(this.selectFilesToolStripMenuItem, "selectFilesToolStripMenuItem");
+            this.selectFilesToolStripMenuItem.Click += new System.EventHandler(this.selectFilesToolStripMenuItem_Click);
             // 
             // menuConfiguration
             // 
             this.menuConfiguration.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.customization,
-            this.configList});
+            this.configList,
+            this.globalSettingsToolStripMenuItem});
             this.menuConfiguration.Name = "menuConfiguration";
             resources.ApplyResources(this.menuConfiguration, "menuConfiguration");
             // 
@@ -257,6 +255,12 @@ namespace AirdPro.Forms
             this.configList.Name = "configList";
             resources.ApplyResources(this.configList, "configList");
             this.configList.Click += new System.EventHandler(this.openConversionConfigListForm);
+            // 
+            // globalSettingsToolStripMenuItem
+            // 
+            this.globalSettingsToolStripMenuItem.Name = "globalSettingsToolStripMenuItem";
+            resources.ApplyResources(this.globalSettingsToolStripMenuItem, "globalSettingsToolStripMenuItem");
+            this.globalSettingsToolStripMenuItem.Click += new System.EventHandler(this.globalSettingsToolStripMenuItem_Click);
             // 
             // lblDp
             // 
@@ -326,36 +330,6 @@ namespace AirdPro.Forms
             resources.ApplyResources(this.mzIntComp, "mzIntComp");
             this.mzIntComp.Name = "mzIntComp";
             this.ttAlgorithm.SetToolTip(this.mzIntComp, resources.GetString("mzIntComp.ToolTip"));
-            // 
-            // btnDisconnect
-            // 
-            resources.ApplyResources(this.btnDisconnect, "btnDisconnect");
-            this.btnDisconnect.Name = "btnDisconnect";
-            this.btnDisconnect.UseVisualStyleBackColor = true;
-            this.btnDisconnect.Click += new System.EventHandler(this.btnDisconnect_Click);
-            // 
-            // lblConnectStatus
-            // 
-            resources.ApplyResources(this.lblConnectStatus, "lblConnectStatus");
-            this.lblConnectStatus.ForeColor = System.Drawing.Color.Red;
-            this.lblConnectStatus.Name = "lblConnectStatus";
-            // 
-            // lblIP
-            // 
-            resources.ApplyResources(this.lblIP, "lblIP");
-            this.lblIP.Name = "lblIP";
-            // 
-            // tbHostAndPort
-            // 
-            resources.ApplyResources(this.tbHostAndPort, "tbHostAndPort");
-            this.tbHostAndPort.Name = "tbHostAndPort";
-            // 
-            // btnConnect
-            // 
-            resources.ApplyResources(this.btnConnect, "btnConnect");
-            this.btnConnect.Name = "btnConnect";
-            this.btnConnect.UseVisualStyleBackColor = true;
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
             // lblOperator
             // 
@@ -447,11 +421,6 @@ namespace AirdPro.Forms
             this.timer.Enabled = true;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
-            // timerConsumer
-            // 
-            this.timerConsumer.Interval = 3000;
-            this.timerConsumer.Tick += new System.EventHandler(this.consumer_Tick);
-            // 
             // ofd
             // 
             resources.ApplyResources(this.ofd, "ofd");
@@ -501,17 +470,10 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Label lblMzPrecision;
         private System.Windows.Forms.Label lblOperator;
         private System.Windows.Forms.TextBox tbOperator;
-        private System.Windows.Forms.Label lblIP;
-        private System.Windows.Forms.TextBox tbHostAndPort;
-        private System.Windows.Forms.Button btnConnect;
-        private System.Windows.Forms.Timer timerConsumer;
         public System.Windows.Forms.ListView lvFileList;
-        private System.Windows.Forms.Button btnDisconnect;
-        public System.Windows.Forms.Label lblConnectStatus;
         private System.Windows.Forms.Button btnClearError;
         private System.Windows.Forms.ColumnHeader headerOutput;
         private System.Windows.Forms.OpenFileDialog ofd;
-        private System.Windows.Forms.Button btnSelectVendorFiles;
         private System.Windows.Forms.Label lblMzIntComp;
         private System.Windows.Forms.ComboBox mzIntComp;
         private System.Windows.Forms.Label lblStackLayers;
@@ -529,6 +491,9 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ToolStripMenuItem menuConfiguration;
         private System.Windows.Forms.ToolStripMenuItem customization;
         private System.Windows.Forms.ToolStripMenuItem configList;
+        private System.Windows.Forms.ToolStripMenuItem globalSettingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem filesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectFilesToolStripMenuItem;
     }
 }
 

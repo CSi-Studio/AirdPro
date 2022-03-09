@@ -74,6 +74,7 @@ namespace AirdPro.Forms
             {
                 airdForm.addFile(path, expType);
             }
+            
             this.Hide();
         }
 

@@ -24,8 +24,8 @@ namespace AirdPro.Redis
         private static RedisClient instance;
         private ConnectionMultiplexer redis;
         private string hostAndPort;
-
         private IDatabase db;
+        
 
         private RedisClient()
         { 
@@ -74,19 +74,16 @@ namespace AirdPro.Redis
         {
             if (redis != null && redis.IsConnected)
             {
-                Program.mainForm.lblConnectStatus.Text="Connected";
                 return true;
             }
             else
             {
                 if(redis != null && redis.IsConnected)
                 {
-                    Program.mainForm.lblConnectStatus.Text = "Connected";
                     return true;
                 }
                 else
                 {
-                    Program.mainForm.lblConnectStatus.Text = "Not Connect";
                     return false;
                 }
             }

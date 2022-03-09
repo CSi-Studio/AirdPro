@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 
 namespace AirdPro.Domains.Job;
 
-public class ConversionConfigHandler:Subject
+public class ConversionConfigHandler:Subject<Dictionary<string, ConversionConfig>>
 {
     private static string DEFAULT = "Default";
     private static string CONFIG_PATH = Path.Combine(Environment.CurrentDirectory, "ConversionConfig.json");

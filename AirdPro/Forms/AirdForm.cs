@@ -10,20 +10,13 @@
 
 using AirdPro.Asyncs;
 using AirdPro.Constants;
+using AirdPro.Domains.Convert;
+using AirdPro.Domains.Job;
+using AirdPro.Redis;
+using AirdPro.Utils;
 using System;
 using System.Collections;
-using System.Drawing;
 using System.Windows.Forms;
-using AirdPro.Domains.Convert;
-using AirdPro.Redis;
-using ThermoFisher.CommonCore.Data;
-using AirdPro.Utils;
-using System.Net;
-using Newtonsoft.Json;
-using System.Text;
-using System.IO;
-using AirdPro.Domains.Job;
-using AirdPro.Storage;
 
 namespace AirdPro.Forms
 {
@@ -33,8 +26,10 @@ namespace AirdPro.Forms
         VendorFileSelectorForm fileSelector;
         ConversionConfigForm conversionConfigForm;
         ConversionConfigListForm conversionConfigListForm;
+        private GlobalSettingForm globalSettingForm;
         public ConversionConfigHandler conversionConfigHandler;
         public string rootFolderPath;
+
         public AirdForm()
         {
             InitializeComponent();
@@ -258,57 +253,14 @@ namespace AirdPro.Forms
             tbFileNameSuffix.Text = suffix;
         }
 
-        private void btnConnect_Click(object sender, EventArgs e)
-        {
-            if (tbHostAndPort.Text.IsNullOrEmpty())
-            {
-                timerConsumer.Enabled = false;
-                MessageBox.Show("LIMS IP不能为空,监听器暂时关闭");
-                return;
-            }
-            bool initResult = RedisClient.getInstance().connect(tbHostAndPort.Text);
-            if (initResult)
-            {
-                lblConnectStatus.Text = "Connected";
-                lblConnectStatus.ForeColor = Color.Green;
-                timerConsumer.Enabled = true;
-            }
-            else
-            {
-                MessageBox.Show("连接失败,请检查LIMS IP字符串是否配置正确,监听器暂时关闭");
-                lblConnectStatus.Text = "Not Connect";
-                lblConnectStatus.ForeColor = Color.Red;
-                timerConsumer.Enabled = false;
-            }
-        }
-
-        //当Redis连接建立的时候持续的监听相关队列的消息
-        private void consumer_Tick(object sender, EventArgs e)
-        {
-           RedisClient.getInstance().consume();
-        }
-
         private void btnClearError_Click(object sender, EventArgs e)
         {
             ConvertTaskManager.getInstance().errorJob.Clear();
         }
 
-        private void btnDisconnect_Click(object sender, EventArgs e)
-        {
-            timerConsumer.Enabled = false;
-            RedisClient.getInstance().disconnect();
-            lblConnectStatus.Text = "Not Connect";
-            lblConnectStatus.ForeColor = Color.Red;
-        }
-
         private void btnCustomerPath_Click(object sender, EventArgs e)
         {
-            if (fileSelector == null || fileSelector.IsDisposed)
-            {
-                fileSelector = new VendorFileSelectorForm(this);
-            }
-            fileSelector.clearInfos();
-            fileSelector.Show();
+            
         }
 
         //查看列表选中对象的详细参数
@@ -372,6 +324,26 @@ namespace AirdPro.Forms
             }
             conversionConfigListForm.Show();
            
+        }
+
+        private void selectFilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (fileSelector == null || fileSelector.IsDisposed)
+            {
+                fileSelector = new VendorFileSelectorForm(this);
+            }
+            fileSelector.clearInfos();
+            fileSelector.Show();
+        }
+
+        private void globalSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (globalSettingForm == null || globalSettingForm.IsDisposed)
+            {
+                globalSettingForm = new GlobalSettingForm();
+            }
+
+            
         }
     }
 }

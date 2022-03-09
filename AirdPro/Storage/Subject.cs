@@ -3,10 +3,10 @@ using AirdPro.Domains.Convert;
 
 namespace AirdPro.Storage;
 
-public interface Subject
+public interface Subject<T>
 {
-    public void attach(Observer<Dictionary<string, ConversionConfig>> observer);
-    public void detach(Observer<Dictionary<string, ConversionConfig>> observer);
+    public void attach(Observer<T> observer);
+    public void detach(Observer<T> observer);
 
     public void notify();
 }

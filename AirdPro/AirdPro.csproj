@@ -155,8 +155,9 @@
     <Compile Include="Converters\Common.cs" />
     <Compile Include="Converters\DDAPasef .cs" />
     <Compile Include="Converters\DIAPasef.cs" />
+    <Compile Include="Domains\Config\GlobalConfig.cs" />
     <Compile Include="Domains\Job\JobInfo.cs" />
-    <Compile Include="Domains\Job\ConversionConfig.cs" />
+    <Compile Include="Domains\Config\ConversionConfig.cs" />
     <Compile Include="Domains\Job\RemoteConvertJob.cs" />
     <Compile Include="Domains\Log.cs" />
     <Compile Include="Domains\Sort\IntArrayNode.cs" />
@@ -171,6 +172,12 @@
     </Compile>
     <Compile Include="Forms\ConversionConfigListForm.Designer.cs">
       <DependentUpon>ConversionConfigListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\GlobalSettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GlobalSettingForm.Designer.cs">
+      <DependentUpon>GlobalSettingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\VendorFileSelectorForm.cs">
       <SubType>Form</SubType>
@@ -205,6 +212,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\Config\ConversionConfigHandler.cs" />
+    <Compile Include="Storage\Config\GlobalConfigHandler.cs" />
     <Compile Include="Storage\Observer.cs" />
     <Compile Include="Storage\Subject.cs" />
     <EmbeddedResource Include="Forms\AirdForm.resx">
@@ -216,6 +224,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ConversionConfigListForm.resx">
       <DependentUpon>ConversionConfigListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GlobalSettingForm.resx">
+      <DependentUpon>GlobalSettingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\VendorFileSelectorForm.resx">
       <DependentUpon>VendorFileSelectorForm.cs</DependentUpon>
