@@ -24,11 +24,10 @@ namespace AirdPro.Forms
     {
         ArrayList currentFiles = new ArrayList();
         VendorFileSelectorForm fileSelector;
-        ConversionConfigForm conversionConfigForm;
         ConversionConfigListForm conversionConfigListForm;
         private GlobalSettingForm globalSettingForm;
         public ConversionConfigHandler conversionConfigHandler;
-        public string rootFolderPath;
+        public string lastOpenPath;
 
         public AirdForm()
         {
@@ -323,18 +322,6 @@ namespace AirdPro.Forms
             }
         }
 
-        //打开定制化参数窗口
-        private void ConfigCustom(object sender, EventArgs e)
-        {
-            if(conversionConfigForm == null || conversionConfigForm.IsDisposed)
-            {
-                conversionConfigForm = new ConversionConfigForm(this.conversionConfigHandler);
-            }
-            
-            conversionConfigForm.Show();
-        }
-       
-
         //打开输入的定制化参数列表
         private void openConversionConfigListForm(object sender, EventArgs e)
         {
@@ -364,7 +351,7 @@ namespace AirdPro.Forms
                 globalSettingForm = new GlobalSettingForm();
             }
 
-            
+            globalSettingForm.Show();
         }
     }
 }

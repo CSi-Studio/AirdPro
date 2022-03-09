@@ -367,7 +367,7 @@
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="selectFilesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>116, 22</value>
   </data>
   <data name="selectFilesToolStripMenuItem.Text" xml:space="preserve">
     <value>Import</value>
@@ -378,20 +378,14 @@
   <data name="filesToolStripMenuItem.Text" xml:space="preserve">
     <value>Files</value>
   </data>
-  <data name="customization.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 22</value>
-  </data>
-  <data name="customization.Text" xml:space="preserve">
-    <value>Conversion Config</value>
-  </data>
   <data name="configList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="configList.Text" xml:space="preserve">
-    <value>Config List</value>
+    <value>Conversion</value>
   </data>
   <data name="globalSettingsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="globalSettingsToolStripMenuItem.Text" xml:space="preserve">
     <value>Options</value>
@@ -2390,12 +2384,6 @@
     <value>menuConfiguration</value>
   </data>
   <data name="&gt;&gt;menuConfiguration.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;customization.Name" xml:space="preserve">
-    <value>customization</value>
-  </data>
-  <data name="&gt;&gt;customization.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;configList.Name" xml:space="preserve">

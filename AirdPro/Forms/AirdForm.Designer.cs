@@ -57,7 +57,6 @@ namespace AirdPro.Forms
             this.filesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuConfiguration = new System.Windows.Forms.ToolStripMenuItem();
-            this.customization = new System.Windows.Forms.ToolStripMenuItem();
             this.configList = new System.Windows.Forms.ToolStripMenuItem();
             this.globalSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblDp = new System.Windows.Forms.Label();
@@ -238,17 +237,10 @@ namespace AirdPro.Forms
             // menuConfiguration
             // 
             this.menuConfiguration.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.customization,
             this.configList,
             this.globalSettingsToolStripMenuItem});
             this.menuConfiguration.Name = "menuConfiguration";
             resources.ApplyResources(this.menuConfiguration, "menuConfiguration");
-            // 
-            // customization
-            // 
-            this.customization.Name = "customization";
-            resources.ApplyResources(this.customization, "customization");
-            this.customization.Click += new System.EventHandler(this.ConfigCustom);
             // 
             // configList
             // 
@@ -489,7 +481,6 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Label lblDp;
         private System.Windows.Forms.MenuStrip menuConfig;
         private System.Windows.Forms.ToolStripMenuItem menuConfiguration;
-        private System.Windows.Forms.ToolStripMenuItem customization;
         private System.Windows.Forms.ToolStripMenuItem configList;
         private System.Windows.Forms.ToolStripMenuItem globalSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem filesToolStripMenuItem;

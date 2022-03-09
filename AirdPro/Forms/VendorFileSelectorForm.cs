@@ -92,7 +92,7 @@ namespace AirdPro.Forms
 
         private void btnFolderSelector_Click(object sender, EventArgs e)
         {
-            betterFolderBrowser.RootFolder = airdForm.rootFolderPath;
+            betterFolderBrowser.RootFolder = airdForm.lastOpenPath;
             if (betterFolderBrowser.ShowDialog(this) == DialogResult.OK)
             {
                 foreach (var filePath in betterFolderBrowser.SelectedPaths)
@@ -100,7 +100,7 @@ namespace AirdPro.Forms
                     tbPaths.Text = tbPaths.Text + filePath + Const.Change_Line;
                 }
 
-                airdForm.rootFolderPath = tbPaths.Text;
+                airdForm.lastOpenPath = tbPaths.Text;
             }
         }
     }

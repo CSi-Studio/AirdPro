@@ -68,11 +68,12 @@ public class ConversionConfigHandler:Subject<Dictionary<string, ConversionConfig
         }
     }
 
-    public void read()
+    public Dictionary<string, ConversionConfig> read()
     {
         initConfig();
         this.configMap = JsonConvert.DeserializeObject<Dictionary<string, ConversionConfig>>(File.ReadAllText(CONFIG_PATH));
         notify();
+        return configMap;
     }
 
     public void initConfig()

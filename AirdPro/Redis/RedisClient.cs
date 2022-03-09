@@ -127,7 +127,7 @@ namespace AirdPro.Redis
                             conversionConfig.ignoreZeroIntensity = true;
                             conversionConfig.threadAccelerate = true;
                             conversionConfig.suffix = "";
-                            conversionConfig.creator = "LIMS Admin";
+                            conversionConfig.creator = "LIMSPro";
                             conversionConfig.mzPrecision = (int)Math.Ceiling(1 / job.mzPrecision);
                             conversionConfig.outputPath = job.targetPath;
                             string[] items = new string[5];
