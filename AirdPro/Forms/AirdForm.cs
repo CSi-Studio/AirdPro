@@ -349,5 +349,18 @@ namespace AirdPro.Forms
 
             globalSettingForm.Show();
         }
+
+        private void rerun_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("Hello");
+        }
+
+        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in lvFileList.SelectedItems)
+            {
+                removeFile(item);
+            }
+        }
     }
 }
