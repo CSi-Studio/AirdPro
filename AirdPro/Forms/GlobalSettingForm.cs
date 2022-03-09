@@ -16,12 +16,10 @@ namespace AirdPro.Forms
 {
     public partial class GlobalSettingForm : Form
     {
-        private GlobalConfigHandler configHandler;
         public GlobalSettingForm()
         {
             InitializeComponent();
-            configHandler = new GlobalConfigHandler();
-            updateWithConfig(configHandler.config);
+            updateWithConfig(Program.globalConfigHandler.config);
         }
 
         private void updateWithConfig(GlobalConfig config)
@@ -84,7 +82,7 @@ namespace AirdPro.Forms
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            configHandler.saveConfig(new GlobalConfig(tbLastOpenPath.Text, tbRedisHost.Text, tbRedisPort.Text));
+            Program.globalConfigHandler.saveConfig(new GlobalConfig(tbLastOpenPath.Text, tbRedisHost.Text, tbRedisPort.Text));
             this.Hide();
         }
     }

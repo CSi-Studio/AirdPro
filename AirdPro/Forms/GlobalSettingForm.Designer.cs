@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GlobalSettingForm));
             this.btnDisconnect = new System.Windows.Forms.Button();
             this.lblIP = new System.Windows.Forms.Label();
             this.tbRedisHost = new System.Windows.Forms.TextBox();
@@ -178,6 +179,7 @@
             // 
             // GlobalSettingForm
             // 
+            this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(312, 184);
@@ -192,8 +194,13 @@
             this.Controls.Add(this.lblIP);
             this.Controls.Add(this.tbRedisHost);
             this.Controls.Add(this.btnConnect);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "GlobalSettingForm";
-            this.Text = "Global Setting";
+            this.ShowIcon = false;
+            this.Text = "Global Settings";
             this.Load += new System.EventHandler(this.GlobalSettingForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

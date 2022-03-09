@@ -15,11 +15,9 @@ namespace AirdPro.Forms
     {
         private ConversionConfig config = new ConversionConfig();
         public AirdForm airdForm;
-        private ConversionConfigHandler handler;
-        public ConversionConfigListForm(ConversionConfigHandler handler,AirdForm airdForm)
+        public ConversionConfigListForm(AirdForm airdForm)
         {
             InitializeComponent();
-            this.handler = handler;
             this.airdForm = airdForm;
             this.initConfigInfo();
         }
@@ -73,7 +71,8 @@ namespace AirdPro.Forms
         private void btnSaveToLocal_Click(object sender, EventArgs e)
         {
             setConfigInfo();
-            handler.saveConfig(tbNameConfig.Text, config);
+            Program.conversionConfigHandler.saveConfig(tbNameConfig.Text, config);
+            MessageBox.Show("Save Config Successful!");
         }
 
         //设置所有参数
@@ -178,14 +177,14 @@ namespace AirdPro.Forms
                 foreach (ListViewItem item in configs)
                 {
                     string configName = item.SubItems[0].Text;
-                    handler.removeConfig(configName);
+                    Program.conversionConfigHandler.removeConfig(configName);
                 }
             }
             else
             {
                 int index = lvConfigList.FocusedItem.Index;//获取指定当个项的索引值
                 string configName = lvConfigList.Items[index].SubItems[0].Text;
-                handler.removeConfig(configName);
+                Program.conversionConfigHandler.removeConfig(configName);
             }
             
         }

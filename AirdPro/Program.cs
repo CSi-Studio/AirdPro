@@ -18,6 +18,8 @@ namespace AirdPro
     internal static class Program
     {
         public static AirdForm mainForm { get; private set; }
+        public static GlobalConfigHandler globalConfigHandler { get; private set; }
+        public static ConversionConfigHandler conversionConfigHandler { get; private set; }
 
         /// <summary>
         ///     The main entry point for the application.
@@ -29,6 +31,9 @@ namespace AirdPro
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
+                globalConfigHandler = new GlobalConfigHandler();
+                conversionConfigHandler = new ConversionConfigHandler();
+
                 mainForm = new AirdForm();
                 Application.Run(mainForm);
             }

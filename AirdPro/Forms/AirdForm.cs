@@ -26,14 +26,11 @@ namespace AirdPro.Forms
         VendorFileSelectorForm fileSelector;
         ConversionConfigListForm conversionConfigListForm;
         private GlobalSettingForm globalSettingForm;
-        public ConversionConfigHandler conversionConfigHandler;
         public string lastOpenPath;
 
         public AirdForm()
         {
             InitializeComponent();
-            conversionConfigHandler = new ConversionConfigHandler();
-
         }
 
         public void applyNowConfig(ConversionConfig conversionConfig)
@@ -293,7 +290,7 @@ namespace AirdPro.Forms
             ConversionConfig conversionConfig = new ConversionConfig();
             conversionConfig = (ConversionConfig)lvFileList.Items[index].Tag;
             ConversionConfigListForm conversionConfigListForm =
-                new ConversionConfigListForm(this.conversionConfigHandler, this);
+                new ConversionConfigListForm(this);
             if (lvFileList.SelectedItems.Count == 0 ) //判断选中的不为0
             {
                 return;
@@ -327,8 +324,8 @@ namespace AirdPro.Forms
         {
             if (conversionConfigListForm == null || conversionConfigListForm.IsDisposed)
             {
-                conversionConfigListForm = new ConversionConfigListForm(this.conversionConfigHandler,this);
-                conversionConfigHandler.attach(conversionConfigListForm);
+                conversionConfigListForm = new ConversionConfigListForm(this);
+                Program.conversionConfigHandler.attach(conversionConfigListForm);
             }
             conversionConfigListForm.Show();
            
