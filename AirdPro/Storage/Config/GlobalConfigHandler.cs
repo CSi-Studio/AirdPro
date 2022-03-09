@@ -4,7 +4,7 @@ using AirdPro.Storage;
 
 namespace AirdPro.Domains.Job;
 
-public class GlobalConfigHandler : Subject<>
+public class GlobalConfigHandler : Subject<GlobalConfig>
 {
 
     public void attach(Observer<GlobalConfig> observer)
