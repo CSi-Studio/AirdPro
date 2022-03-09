@@ -2,7 +2,7 @@
 
 public class GlobalConfig
 {
-    public string lastOpenPath;
+    public string defaultOpenPath;
     public string redisHost;
     public string redisPort;
 
@@ -12,9 +12,9 @@ public class GlobalConfig
         this.redisPort = "6379";
     }
 
-    public GlobalConfig(string lastOpenPath, string redisHost, string redisPort)
+    public GlobalConfig(string defaultOpenPath, string redisHost, string redisPort)
     {
-        this.lastOpenPath = lastOpenPath;
+        this.defaultOpenPath = defaultOpenPath;
         this.redisHost = redisHost;
         this.redisPort = redisPort;
     }

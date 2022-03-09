@@ -24,7 +24,7 @@ namespace AirdPro.Forms
 
         private void updateWithConfig(GlobalConfig config)
         {
-            this.tbLastOpenPath.Text = config.lastOpenPath;
+            this.tbLastOpenPath.Text = config.defaultOpenPath;
             this.tbRedisHost.Text = config.redisHost;
             this.tbRedisPort.Text = config.redisPort;
         }
