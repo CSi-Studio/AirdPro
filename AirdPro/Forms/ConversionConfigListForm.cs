@@ -14,13 +14,15 @@ namespace AirdPro.Forms
     public partial class ConversionConfigListForm : Form, Observer<Dictionary<string, ConversionConfig>>
     {
         private ConversionConfig config = new ConversionConfig();
-        public AirdForm airdForm;
+        public VendorFileSelectorForm vendor;
+        private AirdForm airdForm;
         private ConversionConfigHandler handler;
-        public ConversionConfigListForm(ConversionConfigHandler handler,AirdForm airdForm)
+        public ConversionConfigListForm(ConversionConfigHandler handler,AirdForm airdForm, VendorFileSelectorForm vendor)
         {
             InitializeComponent();
             this.handler = handler;
             this.airdForm = airdForm;
+            this.vendor = vendor;
             this.initConfigInfo();
         }
 
@@ -126,6 +128,7 @@ namespace AirdPro.Forms
         {
             setConfigInfo();
             airdForm.applyNowConfig(config);
+            vendor.applyNowFileSelector(tbNameConfig.Text,config);
             this.Hide();
         }
 

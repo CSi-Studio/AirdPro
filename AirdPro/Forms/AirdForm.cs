@@ -293,7 +293,7 @@ namespace AirdPro.Forms
             ConversionConfig conversionConfig = new ConversionConfig();
             conversionConfig = (ConversionConfig)lvFileList.Items[index].Tag;
             ConversionConfigListForm conversionConfigListForm =
-                new ConversionConfigListForm(this.conversionConfigHandler, this);
+                new ConversionConfigListForm(this.conversionConfigHandler, this, this.fileSelector);
             if (lvFileList.SelectedItems.Count == 0 ) //判断选中的不为0
             {
                 return;
@@ -327,7 +327,7 @@ namespace AirdPro.Forms
         {
             if (conversionConfigListForm == null || conversionConfigListForm.IsDisposed)
             {
-                conversionConfigListForm = new ConversionConfigListForm(this.conversionConfigHandler,this);
+                conversionConfigListForm = new ConversionConfigListForm(this.conversionConfigHandler,this,this.fileSelector);
                 conversionConfigHandler.attach(conversionConfigListForm);
             }
             conversionConfigListForm.Show();
@@ -338,7 +338,8 @@ namespace AirdPro.Forms
         {
             if (fileSelector == null || fileSelector.IsDisposed)
             {
-                fileSelector = new VendorFileSelectorForm(this);
+                fileSelector = new VendorFileSelectorForm();
+                conversionConfigHandler.attach(fileSelector);
             }
             fileSelector.clearInfos();
             fileSelector.Show();

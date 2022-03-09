@@ -33,6 +33,8 @@ namespace AirdPro.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VendorFileSelectorForm));
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.gBoxMode = new System.Windows.Forms.GroupBox();
+            this.radioButton6 = new System.Windows.Forms.RadioButton();
+            this.radioButton5 = new System.Windows.Forms.RadioButton();
             this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
@@ -42,8 +44,7 @@ namespace AirdPro.Forms
             this.betterFolderBrowser = new WK.Libraries.BetterFolderBrowserNS.BetterFolderBrowser(this.components);
             this.btnFolderSelector = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.radioButton5 = new System.Windows.Forms.RadioButton();
-            this.radioButton6 = new System.Windows.Forms.RadioButton();
+            this.btnCreateConfigs = new System.Windows.Forms.Button();
             this.gBoxMode.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -75,6 +76,30 @@ namespace AirdPro.Forms
             this.gBoxMode.TabIndex = 2;
             this.gBoxMode.TabStop = false;
             this.gBoxMode.Text = "Acquisition Mode";
+            // 
+            // radioButton6
+            // 
+            this.radioButton6.AutoSize = true;
+            this.radioButton6.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.radioButton6.Location = new System.Drawing.Point(8, 44);
+            this.radioButton6.Name = "radioButton6";
+            this.radioButton6.Size = new System.Drawing.Size(92, 21);
+            this.radioButton6.TabIndex = 6;
+            this.radioButton6.TabStop = true;
+            this.radioButton6.Text = "DDA_PASEF";
+            this.radioButton6.UseVisualStyleBackColor = true;
+            // 
+            // radioButton5
+            // 
+            this.radioButton5.AutoSize = true;
+            this.radioButton5.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.radioButton5.Location = new System.Drawing.Point(8, 100);
+            this.radioButton5.Name = "radioButton5";
+            this.radioButton5.Size = new System.Drawing.Size(87, 21);
+            this.radioButton5.TabIndex = 5;
+            this.radioButton5.TabStop = true;
+            this.radioButton5.Text = "DIA_PASEF";
+            this.radioButton5.UseVisualStyleBackColor = true;
             // 
             // radioButton4
             // 
@@ -128,7 +153,7 @@ namespace AirdPro.Forms
             // 
             this.btnFileSelector.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnFileSelector.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnFileSelector.Location = new System.Drawing.Point(712, 355);
+            this.btnFileSelector.Location = new System.Drawing.Point(712, 275);
             this.btnFileSelector.Name = "btnFileSelector";
             this.btnFileSelector.Size = new System.Drawing.Size(152, 39);
             this.btnFileSelector.TabIndex = 4;
@@ -158,7 +183,7 @@ namespace AirdPro.Forms
             // 
             this.btnFolderSelector.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnFolderSelector.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnFolderSelector.Location = new System.Drawing.Point(712, 315);
+            this.btnFolderSelector.Location = new System.Drawing.Point(712, 235);
             this.btnFolderSelector.Name = "btnFolderSelector";
             this.btnFolderSelector.Size = new System.Drawing.Size(152, 39);
             this.btnFolderSelector.TabIndex = 5;
@@ -172,42 +197,31 @@ namespace AirdPro.Forms
             this.openFileDialog.Filter = "Vendor Files|*.wiff;*raw";
             this.openFileDialog.Multiselect = true;
             // 
-            // radioButton5
+            // btnCreateConfigs
             // 
-            this.radioButton5.AutoSize = true;
-            this.radioButton5.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.radioButton5.Location = new System.Drawing.Point(8, 100);
-            this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(87, 21);
-            this.radioButton5.TabIndex = 5;
-            this.radioButton5.TabStop = true;
-            this.radioButton5.Text = "DIA_PASEF";
-            this.radioButton5.UseVisualStyleBackColor = true;
+            this.btnCreateConfigs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCreateConfigs.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnCreateConfigs.Location = new System.Drawing.Point(713, 366);
+            this.btnCreateConfigs.Name = "btnCreateConfigs";
+            this.btnCreateConfigs.Size = new System.Drawing.Size(152, 39);
+            this.btnCreateConfigs.TabIndex = 6;
+            this.btnCreateConfigs.Text = "Apply Configs";
+            this.btnCreateConfigs.UseVisualStyleBackColor = true;
+            this.btnCreateConfigs.Click += new System.EventHandler(this.btnCreateConfigs_Click);
             // 
-            // radioButton6
-            // 
-            this.radioButton6.AutoSize = true;
-            this.radioButton6.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.radioButton6.Location = new System.Drawing.Point(8, 44);
-            this.radioButton6.Name = "radioButton6";
-            this.radioButton6.Size = new System.Drawing.Size(92, 21);
-            this.radioButton6.TabIndex = 6;
-            this.radioButton6.TabStop = true;
-            this.radioButton6.Text = "DDA_PASEF";
-            this.radioButton6.UseVisualStyleBackColor = true;
-            // 
-            // FileFolderSelector
+            // VendorFileSelectorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(868, 450);
+            this.Controls.Add(this.btnCreateConfigs);
             this.Controls.Add(this.btnFolderSelector);
             this.Controls.Add(this.btnFileSelector);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.gBoxMode);
             this.Controls.Add(this.tbPaths);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "FileFolderSelector";
+            this.Name = "VendorFileSelectorForm";
             this.Text = "File/Folder Selector";
             this.Load += new System.EventHandler(this.CustomPathForm_Load);
             this.gBoxMode.ResumeLayout(false);
@@ -231,5 +245,6 @@ namespace AirdPro.Forms
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.RadioButton radioButton6;
         private System.Windows.Forms.RadioButton radioButton5;
+        private System.Windows.Forms.Button btnCreateConfigs;
     }
 }

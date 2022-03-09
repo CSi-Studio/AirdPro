@@ -11,18 +11,29 @@
 using System;
 using System.Windows.Forms;
 using AirdPro.Constants;
+using AirdPro.Domains.Job;
 using ThermoFisher.CommonCore.Data;
+using AirdPro.Storage;
+using AirdPro.Domains.Convert;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace AirdPro.Forms
 {
-    public partial class VendorFileSelectorForm : Form
+    public partial class VendorFileSelectorForm : Form, Observer<Dictionary<string, ConversionConfig>>
     {
-        private AirdForm airdForm;
-        public VendorFileSelectorForm(AirdForm form)
+        private bool isClearInfo = false;
+        Dictionary<string, ConversionConfig> configMap = new Dictionary<string, ConversionConfig>();
+        private ConversionConfigListForm configListForm;
+        private ConversionConfigHandler handler = new ConversionConfigHandler();
+        private AirdForm airdForm = new AirdForm();
+        public VendorFileSelectorForm()
         {
             InitializeComponent();
-            this.airdForm = form;
+            configListForm = new ConversionConfigListForm(this.handler, airdForm,this);
             betterFolderBrowser.Multiselect = true;
+
         }
 
         private void CustomPathForm_Load(object sender, EventArgs e)
@@ -80,6 +91,10 @@ namespace AirdPro.Forms
 
         private void btnFileSelector_Click(object sender, EventArgs e)
         {
+            if (isClearInfo)
+            {
+                this.clearInfos();
+            }
             if (openFileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 foreach (var filePath in openFileDialog.FileNames)
@@ -102,6 +117,47 @@ namespace AirdPro.Forms
 
                 airdForm.lastOpenPath = tbPaths.Text;
             }
+        }
+
+        //选择已有参数，或者重新编辑参数，并将参数应用于选中的单个或一批文件
+        private void btnCreateConfigs_Click(object sender, EventArgs e)
+        {
+            
+            configListForm.Show();
+            using (StreamReader file = File.OpenText(Path.Combine(Environment.CurrentDirectory, "ConversionConfig.json")))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                configMap = (Dictionary<string, ConversionConfig>)serializer.Deserialize(file,
+                    typeof(Dictionary<string, ConversionConfig>));
+            }
+            isClearInfo = true;
+
+        }
+
+        public void update(Dictionary<string, ConversionConfig> configMap)
+        {
+            configListForm.lvConfigList.Items.Clear();
+            foreach (var configEntry in configMap)
+            {
+                ListViewItem item = new ListViewItem(new string[]
+                {
+                    configEntry.Key,
+                    configEntry.Value.creator,
+                    configEntry.Value.mzPrecision.ToString(),
+                    configEntry.Value.getCompressorStr(),
+                    configEntry.Value.outputPath
+                });
+                configListForm.lvConfigList.Items.Add(item);
+            }
+
+        }
+
+        public void applyNowFileSelector(string configName, ConversionConfig config)
+        {
+            tbPaths.Text = tbPaths.Text + configName + Const.Change_Line;
+            tbPaths.Text = tbPaths.Text + config.creator + Const.Change_Line;
+            tbPaths.Text = tbPaths.Text + config.mzPrecision + Const.Change_Line;
+            tbPaths.Text = tbPaths.Text + config.outputPath + Const.Change_Line;
         }
     }
 }
