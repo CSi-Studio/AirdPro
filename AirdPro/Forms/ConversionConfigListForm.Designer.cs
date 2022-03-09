@@ -428,6 +428,7 @@
             this.Controls.Add(this.tbConfigFolderPath);
             this.Controls.Add(this.lvConfigList);
             this.Name = "ConversionConfigListForm";
+            this.ShowIcon = false;
             this.Text = "Conversion Config List";
             this.Load += new System.EventHandler(this.ConversionConfigListForm_Load);
             this.ResumeLayout(false);

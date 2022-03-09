@@ -24,6 +24,8 @@ namespace AirdPro.Domains.Convert
 
         //C:/data/plasma.wiff,作为job的ID存在
         public string jobId;
+        //任务状态
+        public string status;
         //用于转换的参数
         public ConversionConfig config;
         //DIA-Swath,PRM,DDA. see AirdType
@@ -80,7 +82,8 @@ namespace AirdPro.Domains.Convert
             });
             item.SubItems[4].Text = config.getCompressorStr();
             item.SubItems[5].Text = config.outputPath;
-            item.SubItems[3].Text = System.Convert.ToString(Math.Log10(config.mzPrecision))+"dp"; 
+            item.SubItems[3].Text = System.Convert.ToString(Math.Log10(config.mzPrecision))+"dp";
+            status = ProcessingStatus.WAITING;
         }
 
         public JobInfo log(string content)

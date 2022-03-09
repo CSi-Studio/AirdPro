@@ -13,6 +13,7 @@ using AirdPro.Converters;
 using AirdPro.Domains.Convert;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,7 +41,7 @@ namespace AirdPro.Asyncs
         }
 
         //需要进行处理的Job
-        private Queue<JobInfo> jobQueue = new Queue<JobInfo>();
+        ConcurrentQueue<JobInfo> jobQueue = new ConcurrentQueue<JobInfo>();
         TaskFactory fac = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(1));
 
         //存放全部的Job信息,用于根据JobId判定当前的Job是否已经存在
@@ -48,12 +49,17 @@ namespace AirdPro.Asyncs
         //当某一个Job执行异常的时候会存储入本队列中
         public Hashtable errorJob = new Hashtable();
 
+        public Hashtable finishedJob = new Hashtable();
+
+        //加入一个新的转换任务
         public void pushJob(JobInfo job)
         {
+            //如果该任务已经在任务列表了,那么将它从任务列表里面移除
             if (errorJob.Contains(job.jobId))
             {
                 errorJob.Remove(job.jobId);
             }
+            
             if (!jobTable.Contains(job.jobId))
             {
                 jobQueue.Enqueue(job);
@@ -63,13 +69,13 @@ namespace AirdPro.Asyncs
 
         public void clear()
         {
-            jobQueue.Clear();
+            jobQueue = new ConcurrentQueue<JobInfo>();
             jobTable.Clear();
         }
 
         public void run()
         {
-            Boolean again = true; //本次run执行完毕以后是否立即再执行一轮
+            bool again = true; //本次run执行完毕以后是否立即再执行一轮
 
             while (again)
             {
@@ -82,7 +88,7 @@ namespace AirdPro.Asyncs
                 JobInfo jobInfo = null;
                 try
                 {
-                    jobInfo = jobQueue.Dequeue();
+                    jobQueue.TryDequeue(out jobInfo);
                 }
                 catch { }
 
@@ -94,7 +100,6 @@ namespace AirdPro.Asyncs
 
                 fac.StartNew(() =>
                 {
-                    Console.Out.WriteLine("Start Convert");
                     jobInfo.threadId = "ThreadId:" + Thread.CurrentThread.ManagedThreadId;
                     while (jobInfo.retryTimes > 0)
                     {

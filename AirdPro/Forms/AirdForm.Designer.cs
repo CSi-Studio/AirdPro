@@ -85,11 +85,15 @@ namespace AirdPro.Forms
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
+            this.contentMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.rerun = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
             this.container.SuspendLayout();
             this.menuConfig.SuspendLayout();
+            this.contentMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // container
@@ -163,6 +167,7 @@ namespace AirdPro.Forms
             this.headerPrecision,
             this.headerCompressor,
             this.headerOutput});
+            this.lvFileList.ContextMenuStrip = this.contentMenu;
             this.lvFileList.FullRowSelect = true;
             this.lvFileList.GridLines = true;
             this.lvFileList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -216,6 +221,7 @@ namespace AirdPro.Forms
             // menuConfig
             // 
             resources.ApplyResources(this.menuConfig, "menuConfig");
+            this.menuConfig.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuConfig.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.filesToolStripMenuItem,
             this.menuConfiguration});
@@ -418,6 +424,27 @@ namespace AirdPro.Forms
             resources.ApplyResources(this.ofd, "ofd");
             this.ofd.Multiselect = true;
             // 
+            // contentMenu
+            // 
+            this.contentMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contentMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.rerun,
+            this.removeToolStripMenuItem});
+            this.contentMenu.Name = "contentMenu";
+            resources.ApplyResources(this.contentMenu, "contentMenu");
+            // 
+            // rerun
+            // 
+            this.rerun.Name = "rerun";
+            resources.ApplyResources(this.rerun, "rerun");
+            this.rerun.Click += new System.EventHandler(this.rerun_Click);
+            // 
+            // removeToolStripMenuItem
+            // 
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            resources.ApplyResources(this.removeToolStripMenuItem, "removeToolStripMenuItem");
+            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
+            // 
             // AirdForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -435,6 +462,7 @@ namespace AirdPro.Forms
             this.container.ResumeLayout(false);
             this.menuConfig.ResumeLayout(false);
             this.menuConfig.PerformLayout();
+            this.contentMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -485,6 +513,9 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ToolStripMenuItem globalSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem filesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem selectFilesToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contentMenu;
+        private System.Windows.Forms.ToolStripMenuItem rerun;
+        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
     }
 }
 
