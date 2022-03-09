@@ -155,9 +155,9 @@
     <Compile Include="Converters\Common.cs" />
     <Compile Include="Converters\DDAPasef .cs" />
     <Compile Include="Converters\DIAPasef.cs" />
-    <Compile Include="Domains\Config\GlobalConfig.cs" />
+    <Compile Include="Storage\Config\GlobalConfig.cs" />
     <Compile Include="Domains\Job\JobInfo.cs" />
-    <Compile Include="Domains\Config\ConversionConfig.cs" />
+    <Compile Include="Storage\Config\ConversionConfig.cs" />
     <Compile Include="Domains\Job\RemoteConvertJob.cs" />
     <Compile Include="Domains\Log.cs" />
     <Compile Include="Domains\Sort\IntArrayNode.cs" />
@@ -211,8 +211,8 @@
     <Compile Include="Converters\ScanningSWATH.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Storage\Config\ConversionConfigHandler.cs" />
-    <Compile Include="Storage\Config\GlobalConfigHandler.cs" />
+    <Compile Include="Storage\Handler\ConversionConfigHandler.cs" />
+    <Compile Include="Storage\Handler\GlobalConfigHandler.cs" />
     <Compile Include="Storage\Observer.cs" />
     <Compile Include="Storage\Subject.cs" />
     <EmbeddedResource Include="Forms\AirdForm.resx">
