@@ -13,7 +13,7 @@ public class ConversionConfigHandler:Subject<Dictionary<string, ConversionConfig
 {
     private static string DEFAULT = "Default";
     private static string CONFIG_PATH = Path.Combine(Environment.CurrentDirectory, "ConversionConfig.json");
-    private Dictionary<string, ConversionConfig> configMap = new Dictionary<string, ConversionConfig>();
+    public Dictionary<string, ConversionConfig> configMap = new Dictionary<string, ConversionConfig>();
 
     private HashSet<Observer<Dictionary<string, ConversionConfig>>> observers = new HashSet<Observer<Dictionary<string, ConversionConfig>>>();
 

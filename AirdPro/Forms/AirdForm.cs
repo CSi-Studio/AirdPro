@@ -34,6 +34,30 @@ namespace AirdPro.Forms
         {
             InitializeComponent();
             conversionConfigHandler = new ConversionConfigHandler();
+
+        }
+
+        public void applyNowConfig(ConversionConfig conversionConfig)
+        {
+            tbFolderPath.Text = conversionConfig.outputPath;
+            cbIsZeroIntensityIgnore.Checked = conversionConfig.ignoreZeroIntensity;
+            cbThreadAccelerate.Checked = conversionConfig.threadAccelerate;
+            cbMzPrecision.Text = conversionConfig.mzPrecision.ToString();
+            mzIntComp.Text = conversionConfig.mzIntComp.ToString();
+            mzByteComp.Text = conversionConfig.mzByteComp.ToString();
+            intByteComp.Text = conversionConfig.intByteComp.ToString();
+            if (conversionConfig.stack)
+            {
+                cbStack.Checked = true;
+                cbStackLayers.Text = Math.Pow(2, conversionConfig.digit).ToString();
+            }
+            else
+            {
+                cbStack.Checked = false;
+            }
+
+            tbFileNameSuffix.Text = conversionConfig.suffix;
+            tbOperator.Text = conversionConfig.creator;
         }
        
         private void ProproForm_Load(object sender, EventArgs e)
@@ -130,7 +154,7 @@ namespace AirdPro.Forms
         }
         public void addFile(string fileName, string expType)
         {
-            if (fileName != "" && !currentFiles.Contains(fileName))
+            if (fileName != "" )
             {
                 ListViewItem item = new ListViewItem(new string[]{fileName, expType, "Waiting","","",""});
                 item.ToolTipText = fileName;
@@ -264,41 +288,38 @@ namespace AirdPro.Forms
         }
 
         //查看列表选中对象的详细参数
-        //TODO 俊杰
         private void lvFileList_DoubleClick(object sender, EventArgs e)
         {
             int index = lvFileList.FocusedItem.Index; //获取选中Item的索引值
             ConversionConfig conversionConfig = new ConversionConfig();
-            JobDetailForm details = new JobDetailForm();
-            if(lvFileList.SelectedItems.Count == 0 ) //判断选中的不为0
+            conversionConfig = (ConversionConfig)lvFileList.Items[index].Tag;
+            ConversionConfigListForm conversionConfigListForm =
+                new ConversionConfigListForm(this.conversionConfigHandler, this);
+            if (lvFileList.SelectedItems.Count == 0 ) //判断选中的不为0
             {
                 return;
             }
             else
             {
-                details.tbInputFilePath.Text = lvFileList.Items[index].SubItems[0].Text;
-                details.tbFileName.Text = FileNameUtil.buildOutputFileName(details.tbInputFilePath.Text);
-                details.tbFileType.Text = lvFileList.Items[index].SubItems[1].Text;
-                details.tbOutputFilePath.Text = lvFileList.Items[index].SubItems[5].Text;
-                details.tbZeroIntensity.Text = cbIsZeroIntensityIgnore.Checked? "Ignore": "Not Ignore";
-                details.tbMultithreading.Text = cbThreadAccelerate.Checked.ToString();
-                details.tbMzPrecision.Text = lvFileList.Items[index].SubItems[3].Text;
-                details.tbMzIntCompressor.Text = Convert.ToString(conversionConfig.mzIntComp);
-                details.tbMzByteCompressor.Text = Convert.ToString(conversionConfig.mzByteComp);
-                details.tbIntensityByteCompressor.Text = Convert.ToString(conversionConfig.intByteComp);
-                if (cbStack.Checked)
+                conversionConfigListForm.tbConfigFolderPath.Text = conversionConfig.outputPath;
+                conversionConfigListForm.tbConfigFileNameSuffix.Text = conversionConfig.suffix;
+                conversionConfigListForm.tbConfigOperator.Text = conversionConfig.creator;
+                conversionConfigListForm.cbConfigIsZeroIntensityIgnore.Checked = conversionConfig.ignoreZeroIntensity;
+                conversionConfigListForm.cbConfigThreadAccelerate.Checked = conversionConfig.threadAccelerate;
+                conversionConfigListForm.cbConfigMzPrecision.Text = Math.Log10(conversionConfig.mzPrecision).ToString();
+                conversionConfigListForm.configMzIntComp.Text = conversionConfig.mzIntComp.ToString();
+                conversionConfigListForm.configMzByteComp.Text = conversionConfig.mzByteComp.ToString();
+                conversionConfigListForm.configIntByteComp.Text = conversionConfig.intByteComp.ToString();
+                if (conversionConfig.stack)
                 {
-                    details.tbStackStatus.Text = "Open";
-                    details.tbStackLayers.Text = cbStackLayers.Text;
+                    conversionConfigListForm.cbConfigStack.Checked = true;
+                    conversionConfigListForm.cbConfigStackLayers.Text = Math.Pow(2, conversionConfig.digit).ToString();
                 }
                 else
                 {
-                    details.tbStackStatus.Text = "Not Open";
+                    conversionConfigListForm.cbConfigStack.Checked = false;
                 }
-                
-                details.tbFileSuffix.Text = tbFileNameSuffix.Text;
-                details.tbOperator.Text = tbOperator.Text;
-                details.Show();
+                conversionConfigListForm.Show();
             }
         }
 
@@ -319,7 +340,7 @@ namespace AirdPro.Forms
         {
             if (conversionConfigListForm == null || conversionConfigListForm.IsDisposed)
             {
-                conversionConfigListForm = new ConversionConfigListForm();
+                conversionConfigListForm = new ConversionConfigListForm(this.conversionConfigHandler,this);
                 conversionConfigHandler.attach(conversionConfigListForm);
             }
             conversionConfigListForm.Show();
