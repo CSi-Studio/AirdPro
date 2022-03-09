@@ -26,6 +26,7 @@ namespace AirdPro.Forms
         VendorFileSelectorForm fileSelector;
         ConversionConfigListForm conversionConfigListForm; 
         GlobalSettingForm globalSettingForm;
+        private ConversionConfigHandler handler = new ConversionConfigHandler();
 
         public AirdForm()
         {
@@ -293,7 +294,7 @@ namespace AirdPro.Forms
 
             int index = lvFileList.FocusedItem.Index; //获取选中Item的索引值
             ConversionConfig conversionConfig = (ConversionConfig) lvFileList.Items[index].Tag;
-            ConversionConfigListForm conversionConfigListForm = new ConversionConfigListForm(this);
+            ConversionConfigListForm conversionConfigListForm = new ConversionConfigListForm(this.handler,this,this.fileSelector);
 
             conversionConfigListForm.tbConfigFolderPath.Text = conversionConfig.outputPath;
             conversionConfigListForm.tbConfigFileNameSuffix.Text = conversionConfig.suffix;
@@ -322,7 +323,7 @@ namespace AirdPro.Forms
         {
             if (conversionConfigListForm == null || conversionConfigListForm.IsDisposed)
             {
-                conversionConfigListForm = new ConversionConfigListForm(this);
+                conversionConfigListForm = new ConversionConfigListForm(this.handler, this, this.fileSelector);
                 Program.conversionConfigHandler.attach(conversionConfigListForm);
             }
 
@@ -334,7 +335,7 @@ namespace AirdPro.Forms
             if (fileSelector == null || fileSelector.IsDisposed)
             {
                 fileSelector = new VendorFileSelectorForm();
-                conversionConfigHandler.attach(fileSelector);
+                Program.conversionConfigHandler.attach(fileSelector);
             }
 
             fileSelector.clearInfos();
