@@ -17,6 +17,7 @@ using AirdPro.Utils;
 using System;
 using System.Collections;
 using System.Windows.Forms;
+using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Forms
 {
@@ -74,7 +75,7 @@ namespace AirdPro.Forms
 
         public void addFile(string inputPath, string type, ConversionConfig config)
         {
-            if (inputPath != "")
+            if (!inputPath.IsNullOrEmpty())
             {
                 JobInfo jobInfo = new JobInfo()
                 {
@@ -192,7 +193,6 @@ namespace AirdPro.Forms
             if (configListForm == null || configListForm.IsDisposed)
             {
                 configListForm = new ConversionConfigListForm();
-                Program.conversionConfigHandler.attach(configListForm);
             }
 
             configListForm.Show();
@@ -203,7 +203,6 @@ namespace AirdPro.Forms
             if (fileSelector == null || fileSelector.IsDisposed)
             {
                 fileSelector = new VendorFileSelectorForm();
-                Program.conversionConfigHandler.attach(fileSelector);
             }
 
             fileSelector.clearInfos();
@@ -265,7 +264,7 @@ namespace AirdPro.Forms
                 jobInfo.config.getCompressorStr(),
                 jobInfo.config.ignoreZeroIntensity.ToString(),
                 jobInfo.config.suffix,
-                jobInfo.config.outputPath
+                jobInfo.outputPath
             };
             return itemInfo;
         }

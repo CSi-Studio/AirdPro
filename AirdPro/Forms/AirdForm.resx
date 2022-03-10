@@ -125,9 +125,6 @@
   <data name="container.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="lvFileList.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
   <data name="headerJobId.Text" xml:space="preserve">
     <value>ID</value>
   </data>
@@ -216,14 +213,17 @@
   <data name="&gt;&gt;contentMenu.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="lvFileList.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="lvFileList.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="lvFileList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 28</value>
+    <value>0, 25</value>
   </data>
   <data name="lvFileList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1194, 670</value>
+    <value>1200, 676</value>
   </data>
   <data name="lvFileList.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -360,9 +360,6 @@
   <data name="&gt;&gt;lblRun.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="btnConvert.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
   <data name="btnConvert.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
   </data>
@@ -397,7 +394,7 @@
     <value>1</value>
   </data>
   <data name="tbConsole.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="tbConsole.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 55</value>

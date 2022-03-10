@@ -15,22 +15,18 @@ using ThermoFisher.CommonCore.Data;
 using AirdPro.Storage;
 using AirdPro.Domains.Convert;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.IO;
 
 namespace AirdPro.Forms
 {
     public partial class VendorFileSelectorForm : Form, Observer<Dictionary<string, ConversionConfig>>
     {
-        private bool isClearInfo = false;
-        private ConversionConfigListForm configListForm;
-        private ConversionConfig config;
-
         public VendorFileSelectorForm()
         {
             InitializeComponent();
-            configListForm = new ConversionConfigListForm(this);
+            Program.conversionConfigHandler.attach(this);
             betterFolderBrowser.Multiselect = true;
+            tbConfigFolderPath.Text = Program.globalConfigHandler.config.defaultOpenPath;
+            cbConfig.SelectedIndex = 0;
         }
 
         private void CustomPathForm_Load(object sender, EventArgs e)
@@ -69,7 +65,7 @@ namespace AirdPro.Forms
                 return;
             }
 
-            if (config == null)
+            if (cbConfig.SelectedText.IsNullOrEmpty())
             {
                 MessageBox.Show("Choose one conversion config first!");
                 return;
@@ -86,7 +82,7 @@ namespace AirdPro.Forms
 
             foreach (var path in pathList)
             {
-                Program.airdForm.addFile(path, expType, config);
+                Program.airdForm.addFile(path, expType, Program.conversionConfigHandler.configMap[cbConfig.SelectedText]);
             }
             
             this.Hide();
@@ -94,10 +90,6 @@ namespace AirdPro.Forms
 
         private void btnFileSelector_Click(object sender, EventArgs e)
         {
-            if (isClearInfo)
-            {
-                this.clearInfos();
-            }
             if (openFileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 foreach (var filePath in openFileDialog.FileNames)
@@ -123,32 +115,17 @@ namespace AirdPro.Forms
          //选择已有参数，或者重新编辑参数，并将参数应用于选中的单个或一批文件
          private void btnCreateConfigs_Click(object sender, EventArgs e)
          {
+             ConversionConfigListForm configListForm = new ConversionConfigListForm();
              configListForm.Show();
-             using (StreamReader file = File.OpenText(Path.Combine(Environment.CurrentDirectory, "ConversionConfig.json")))
-             {
-                 JsonSerializer serializer = new JsonSerializer();
-                 Program.conversionConfigHandler.configMap = (Dictionary<string, ConversionConfig>)serializer.Deserialize(file,
-                     typeof(Dictionary<string, ConversionConfig>));
-             }
-             isClearInfo = true;
          }
 
         public void update(Dictionary<string, ConversionConfig> configMap)
         {
-            configListForm.lvConfigList.Items.Clear();
+            cbConfig.Items.Clear();
             foreach (var configEntry in configMap)
             {
-                ListViewItem item = new ListViewItem(new string[]
-                {
-                    configEntry.Key,
-                    configEntry.Value.creator,
-                    configEntry.Value.mzPrecision.ToString(),
-                    configEntry.Value.getCompressorStr(),
-                    configEntry.Value.outputPath
-                });
-                configListForm.lvConfigList.Items.Add(item);
+                cbConfig.Items.Add(configEntry.Key);
             }
-
         }
 
         public void applyNowFileSelector(string configName, ConversionConfig config)
@@ -156,7 +133,21 @@ namespace AirdPro.Forms
             tbPaths.Text = tbPaths.Text + configName + Const.Change_Line;
             tbPaths.Text = tbPaths.Text + config.creator + Const.Change_Line;
             tbPaths.Text = tbPaths.Text + config.mzPrecision + Const.Change_Line;
-            tbPaths.Text = tbPaths.Text + config.outputPath + Const.Change_Line;
+        }
+
+        private void btnConfigChooseFolder_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.SelectedPath = tbConfigFolderPath.Text;
+            if (fbd.ShowDialog(this) == DialogResult.OK)
+            {
+                tbConfigFolderPath.Text = fbd.SelectedPath;
+            }
+        }
+
+        private void VendorFileSelectorForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Program.conversionConfigHandler.detach(this);
         }
     }
 }

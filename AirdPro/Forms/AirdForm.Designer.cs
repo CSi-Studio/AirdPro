@@ -96,7 +96,7 @@ namespace AirdPro.Forms
             // 
             // lvFileList
             // 
-            resources.ApplyResources(this.lvFileList, "lvFileList");
+            this.lvFileList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.headerJobId,
             this.headerFilePath,
@@ -108,6 +108,7 @@ namespace AirdPro.Forms
             this.headerSuffix,
             this.headerOutput});
             this.lvFileList.ContextMenuStrip = this.contentMenu;
+            resources.ApplyResources(this.lvFileList, "lvFileList");
             this.lvFileList.FullRowSelect = true;
             this.lvFileList.GridLines = true;
             this.lvFileList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -237,8 +238,8 @@ namespace AirdPro.Forms
             // 
             // btnConvert
             // 
-            resources.ApplyResources(this.btnConvert, "btnConvert");
             this.btnConvert.BackgroundImage = global::AirdPro.Properties.Resources.run;
+            resources.ApplyResources(this.btnConvert, "btnConvert");
             this.btnConvert.FlatAppearance.BorderSize = 0;
             this.btnConvert.Name = "btnConvert";
             this.btnConvert.UseVisualStyleBackColor = true;

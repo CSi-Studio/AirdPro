@@ -26,6 +26,8 @@ namespace AirdPro.Domains.Convert
         public string jobId;
         //任务状态
         public string status;
+        //文件的输出路径
+        public string outputPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
         //用于转换的参数
         public ConversionConfig config;
         //DIA-Swath,PRM,DDA. see AirdType
@@ -60,11 +62,12 @@ namespace AirdPro.Domains.Convert
         {
         }
 
-        public JobInfo(string inputPath, string type, ConversionConfig config, ListViewItem item)
+        public JobInfo(string inputPath, string outputPath, string type, ConversionConfig config, ListViewItem item)
         {
             this.jobId = inputPath + config.GetHashCode();
             this.inputPath = inputPath;
             this.type = type;
+            this.outputPath = outputPath;
             // 二代压缩算法StackZDPD目前不支持COMMON模式
             if (type.Equals(AirdType.COMMON) && config.stack)
             {
@@ -73,15 +76,15 @@ namespace AirdPro.Domains.Convert
             this.config = config;
             format = Path.GetExtension(inputPath).Replace(".","").ToUpper();
             airdFileName = FileNameUtil.buildOutputFileName(inputPath);
-            airdFilePath = Path.Combine(config.outputPath, airdFileName + config.suffix + ".aird");
-            airdJsonFilePath = Path.Combine(config.outputPath, airdFileName + config.suffix + ".json");
-            this.cancellationTokenSource = new CancellationTokenSource();
-            this.progress = new Progress<string>((progressValue) =>
+            airdFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".aird");
+            airdJsonFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".json");
+            cancellationTokenSource = new CancellationTokenSource();
+            progress = new Progress<string>((progressValue) =>
             {
                 item.SubItems[2].Text = progressValue;
             });
             item.SubItems[4].Text = config.getCompressorStr();
-            item.SubItems[5].Text = config.outputPath;
+            item.SubItems[5].Text = outputPath;
             item.SubItems[3].Text = System.Convert.ToString(Math.Log10(config.mzPrecision))+"dp";
             status = ProcessingStatus.WAITING;
         }
@@ -130,7 +133,7 @@ namespace AirdPro.Domains.Convert
         {
             string jobInfo = "";
             jobInfo += "inpuPath:" + inputPath + "\r\n";
-            jobInfo += "outputPath:" + config.outputPath + "\r\n";
+            jobInfo += "outputPath:" + outputPath + "\r\n";
             jobInfo += "airdFileName:" + airdFileName + "\r\n";
             jobInfo += "airdFilePath:" + airdFilePath + "\r\n";
             jobInfo += "airdJsonFilePath:" + airdJsonFilePath + "\r\n";

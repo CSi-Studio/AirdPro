@@ -129,7 +129,7 @@ namespace AirdPro.Redis
                             conversionConfig.suffix = "";
                             conversionConfig.creator = "LIMSPro";
                             conversionConfig.mzPrecision = (int)Math.Ceiling(1 / job.mzPrecision);
-                            conversionConfig.outputPath = job.targetPath;
+                 
                             string[] items = new string[5];
                             ListViewItem item = new ListViewItem(items);
                             item.SubItems[0].Text = job.sourcePath;
@@ -138,7 +138,7 @@ namespace AirdPro.Redis
                             item.SubItems[3].Text = Convert.ToString(job.mzPrecision);
                             item.SubItems[4].Text = job.getAirdAlgorithmStr();
                             item.SubItems[5].Text = job.targetPath;
-                            JobInfo jobInfo = new JobInfo(job.sourcePath,job.type, conversionConfig, item);
+                            JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath,job.type, conversionConfig, item);
                             if (!ConvertTaskManager.getInstance().jobTable.Contains(jobInfo.jobId))
                             {
                                 Program.airdForm.lvFileList.Items.Add(item);

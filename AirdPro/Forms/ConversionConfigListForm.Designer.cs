@@ -54,9 +54,6 @@
             this.cbConfigMzPrecision = new System.Windows.Forms.ComboBox();
             this.cbConfigThreadAccelerate = new System.Windows.Forms.CheckBox();
             this.cbConfigIsZeroIntensityIgnore = new System.Windows.Forms.CheckBox();
-            this.lblConfigOutputPath = new System.Windows.Forms.Label();
-            this.btnConfigChooseFolder = new System.Windows.Forms.Button();
-            this.tbConfigFolderPath = new System.Windows.Forms.TextBox();
             this.btnApplyNow = new System.Windows.Forms.Button();
             this.contextMenu.SuspendLayout();
             this.SuspendLayout();
@@ -354,40 +351,6 @@
             this.cbConfigIsZeroIntensityIgnore.UseVisualStyleBackColor = true;
             this.cbConfigIsZeroIntensityIgnore.CheckedChanged += new System.EventHandler(this.cbConfigIsZeroIntensityIgnore_CheckedChanged);
             // 
-            // lblConfigOutputPath
-            // 
-            this.lblConfigOutputPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblConfigOutputPath.AutoSize = true;
-            this.lblConfigOutputPath.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.lblConfigOutputPath.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lblConfigOutputPath.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblConfigOutputPath.Location = new System.Drawing.Point(226, 55);
-            this.lblConfigOutputPath.Name = "lblConfigOutputPath";
-            this.lblConfigOutputPath.Size = new System.Drawing.Size(75, 16);
-            this.lblConfigOutputPath.TabIndex = 116;
-            this.lblConfigOutputPath.Text = "Output Path:";
-            // 
-            // btnConfigChooseFolder
-            // 
-            this.btnConfigChooseFolder.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnConfigChooseFolder.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnConfigChooseFolder.Location = new System.Drawing.Point(586, 50);
-            this.btnConfigChooseFolder.Name = "btnConfigChooseFolder";
-            this.btnConfigChooseFolder.Size = new System.Drawing.Size(75, 26);
-            this.btnConfigChooseFolder.TabIndex = 117;
-            this.btnConfigChooseFolder.Text = "Browser";
-            this.btnConfigChooseFolder.UseVisualStyleBackColor = true;
-            this.btnConfigChooseFolder.Click += new System.EventHandler(this.btnConfigChooseFolder_Click);
-            // 
-            // tbConfigFolderPath
-            // 
-            this.tbConfigFolderPath.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.tbConfigFolderPath.Location = new System.Drawing.Point(307, 51);
-            this.tbConfigFolderPath.Name = "tbConfigFolderPath";
-            this.tbConfigFolderPath.Size = new System.Drawing.Size(273, 23);
-            this.tbConfigFolderPath.TabIndex = 115;
-            // 
             // btnApplyNow
             // 
             this.btnApplyNow.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -427,13 +390,11 @@
             this.Controls.Add(this.cbConfigMzPrecision);
             this.Controls.Add(this.cbConfigThreadAccelerate);
             this.Controls.Add(this.cbConfigIsZeroIntensityIgnore);
-            this.Controls.Add(this.lblConfigOutputPath);
-            this.Controls.Add(this.btnConfigChooseFolder);
-            this.Controls.Add(this.tbConfigFolderPath);
             this.Controls.Add(this.lvConfigList);
             this.Name = "ConversionConfigListForm";
             this.ShowIcon = false;
             this.Text = "Conversion Config List";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ConversionConfigListForm_FormClosed);
             this.Load += new System.EventHandler(this.ConversionConfigListForm_Load);
             this.contextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -455,11 +416,8 @@
         private System.Windows.Forms.Label lblConfigFileNameTag;
         private System.Windows.Forms.Label lblDp;
         private System.Windows.Forms.Label lblMzPrecision;
-        private System.Windows.Forms.Label lblConfigOutputPath;
-        private System.Windows.Forms.Button btnConfigChooseFolder;
         private System.Windows.Forms.Button btnApplyNow;
         public System.Windows.Forms.TextBox tbNameConfig;
-        public System.Windows.Forms.TextBox tbConfigFolderPath;
         public System.Windows.Forms.TextBox tbConfigFileNameSuffix;
         public System.Windows.Forms.TextBox tbConfigOperator;
         public System.Windows.Forms.CheckBox cbConfigIsZeroIntensityIgnore;

@@ -46,11 +46,6 @@ namespace AirdPro.Domains.Convert
         public string creator = Environment.UserName;
 
         /**
-         * 文件的输出路径
-         */
-        public string outputPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-
-        /**
          * 用于mz压缩的int数组压缩方法
          */
         public IntCompType mzIntComp = IntCompType.IBP;

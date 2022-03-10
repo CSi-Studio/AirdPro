@@ -18,6 +18,7 @@ namespace AirdPro.Forms
         public ConversionConfigListForm()
         {
             InitializeComponent();
+            Program.conversionConfigHandler.attach(this);
             btnApplyNow.Visible = false;
         }
 
@@ -54,18 +55,8 @@ namespace AirdPro.Forms
                     configEntry.Value.creator,
                     configEntry.Value.mzPrecision.ToString(),
                     configEntry.Value.getCompressorStr(),
-                    configEntry.Value.outputPath
                 });
                 lvConfigList.Items.Add(item);
-            }
-        }
-
-        private void btnConfigChooseFolder_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            if (fbd.ShowDialog(this) == DialogResult.OK)
-            {
-                tbConfigFolderPath.Text = fbd.SelectedPath;
             }
         }
 
@@ -99,7 +90,6 @@ namespace AirdPro.Forms
         {
             ConversionConfig config = new ConversionConfig();
             config.mzPrecision = (int) Math.Pow(10, int.Parse(cbConfigMzPrecision.Text));
-            config.outputPath = tbConfigFolderPath.Text;
             config.ignoreZeroIntensity = cbConfigIsZeroIntensityIgnore.Checked;
             config.threadAccelerate = cbConfigThreadAccelerate.Checked;
 
@@ -144,7 +134,6 @@ namespace AirdPro.Forms
         public void showConfig(string name, ConversionConfig config)
         {
             tbNameConfig.Text = name;
-            tbConfigFolderPath.Text = config.outputPath;
             tbConfigFileNameSuffix.Text = config.suffix;
             tbConfigOperator.Text = config.creator;
             cbConfigIsZeroIntensityIgnore.Checked = config.ignoreZeroIntensity;
@@ -178,6 +167,21 @@ namespace AirdPro.Forms
                 Program.conversionConfigHandler.removeConfig(configNames);
             }
            
+        }
+
+        private void lblConfigOutputPath_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tbConfigFolderPath_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ConversionConfigListForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Program.conversionConfigHandler.detach(this);
         }
     }
 }
