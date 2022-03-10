@@ -16,6 +16,7 @@ using AirdPro.Redis;
 using AirdPro.Utils;
 using System;
 using System.Collections;
+using System.Drawing;
 using System.Windows.Forms;
 using ThermoFisher.CommonCore.Data;
 
@@ -268,6 +269,55 @@ namespace AirdPro.Forms
             };
             return itemInfo;
         }
-        
+
+        private void redisConsumer_Tick(object sender, EventArgs e)
+        {
+            RedisClient.getInstance().consume();
+        }
+
+        private void btnRedisConnect_Click(object sender, EventArgs e)
+        {
+            string connectLink = Program.globalConfigHandler.getRedisConnectStr();
+            if (connectLink.IsNullOrEmpty())
+            {
+                redisConsumer.Enabled = false;
+                MessageBox.Show("Redis Host Cannot Be Empty");
+                return;
+            }
+
+            bool initResult = RedisClient.getInstance().connect(connectLink);
+            if (initResult)
+            {
+                updateRedisStatus(true);
+            }
+            else
+            {
+                MessageBox.Show("Connect failed, please check the redis ip and port.");
+                redisConsumer.Enabled = false;
+                updateRedisStatus(false);
+            }
+        }
+
+        private void updateRedisStatus(bool connected)
+        {
+            if (connected)
+            {
+                btnRedisConnect.BackgroundImage = global::AirdPro.Properties.Resources.Connected;
+                lblRedisStatus.Text = "Connected";
+                lblRedisStatus.ForeColor = Color.Green;
+            }
+            else
+            {
+                btnRedisConnect.BackgroundImage = global::AirdPro.Properties.Resources.DisConnect;
+                lblRedisStatus.Text = "Not Connected";
+                lblRedisStatus.ForeColor = Color.Red;
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            RedisClient.getInstance().disconnect();
+            updateRedisStatus(false);
+        }
     }
 }

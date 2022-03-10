@@ -105,9 +105,10 @@ namespace AirdPro.Redis
                 }
             }
         }
-        public void consume()
+        public bool consume()
         {
-            if (check())
+            bool check = this.check();
+            if (check)
             {
                 int i = 10;
                 bool needToExe = false;
@@ -162,16 +163,19 @@ namespace AirdPro.Redis
                 {
                     ConvertTaskManager.getInstance().run();
                 }
-               
-
             }
+
+            return check;
         }
 
         public void disconnect()
         {
-            redis.Close();
-            redis = null;
-            db = null;
+            if (redis != null)
+            {
+                redis.Close();
+                redis = null;
+                db = null;
+            }
         }
     }
 }

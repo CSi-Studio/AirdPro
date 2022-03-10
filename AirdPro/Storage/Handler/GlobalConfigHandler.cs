@@ -19,6 +19,12 @@ public class GlobalConfigHandler : Subject<GlobalConfig>
     {
         read();
     }
+
+    public string getRedisConnectStr()
+    {
+        return config.redisHost + ":" + config.redisPort;
+    }
+
     public GlobalConfig read()
     {
         initConfig();

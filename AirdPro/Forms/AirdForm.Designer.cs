@@ -42,11 +42,14 @@ namespace AirdPro.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AirdForm));
             this.container = new System.Windows.Forms.SplitContainer();
             this.lvFileList = new System.Windows.Forms.ListView();
+            this.headerJobId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerFilePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerProgress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerPrecision = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerCompressor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerIgnoreZero = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerSuffix = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerOutput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contentMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.rerun = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,21 +57,23 @@ namespace AirdPro.Forms
             this.menuConfig = new System.Windows.Forms.MenuStrip();
             this.filesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuConfiguration = new System.Windows.Forms.ToolStripMenuItem();
-            this.configList = new System.Windows.Forms.ToolStripMenuItem();
-            this.globalSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cleanFinishedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cleanErrorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tbConsole = new System.Windows.Forms.TextBox();
+            this.menuConfiguration = new System.Windows.Forms.ToolStripMenuItem();
+            this.configList = new System.Windows.Forms.ToolStripMenuItem();
+            this.globalSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblRedisStatus = new System.Windows.Forms.Label();
+            this.btnRedisConnect = new System.Windows.Forms.Button();
+            this.lblConvert = new System.Windows.Forms.Label();
             this.btnConvert = new System.Windows.Forms.Button();
+            this.tbConsole = new System.Windows.Forms.TextBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
-            this.lblRun = new System.Windows.Forms.Label();
-            this.headerJobId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.headerIgnoreZero = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.headerSuffix = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.redisConsumer = new System.Windows.Forms.Timer(this.components);
+            this.btnRedisDisconnect = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -89,7 +94,11 @@ namespace AirdPro.Forms
             // 
             // container.Panel2
             // 
-            this.container.Panel2.Controls.Add(this.lblRun);
+            this.container.Panel2.Controls.Add(this.label1);
+            this.container.Panel2.Controls.Add(this.btnRedisDisconnect);
+            this.container.Panel2.Controls.Add(this.lblRedisStatus);
+            this.container.Panel2.Controls.Add(this.btnRedisConnect);
+            this.container.Panel2.Controls.Add(this.lblConvert);
             this.container.Panel2.Controls.Add(this.btnConvert);
             this.container.Panel2.Controls.Add(this.tbConsole);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
@@ -121,6 +130,10 @@ namespace AirdPro.Forms
             this.lvFileList.SelectedIndexChanged += new System.EventHandler(this.lvFileList_SelectedIndexChanged);
             this.lvFileList.DoubleClick += new System.EventHandler(this.lvFileList_DoubleClick);
             // 
+            // headerJobId
+            // 
+            resources.ApplyResources(this.headerJobId, "headerJobId");
+            // 
             // headerFilePath
             // 
             resources.ApplyResources(this.headerFilePath, "headerFilePath");
@@ -140,6 +153,14 @@ namespace AirdPro.Forms
             // headerCompressor
             // 
             resources.ApplyResources(this.headerCompressor, "headerCompressor");
+            // 
+            // headerIgnoreZero
+            // 
+            resources.ApplyResources(this.headerIgnoreZero, "headerIgnoreZero");
+            // 
+            // headerSuffix
+            // 
+            resources.ApplyResources(this.headerSuffix, "headerSuffix");
             // 
             // headerOutput
             // 
@@ -189,26 +210,6 @@ namespace AirdPro.Forms
             resources.ApplyResources(this.selectFilesToolStripMenuItem, "selectFilesToolStripMenuItem");
             this.selectFilesToolStripMenuItem.Click += new System.EventHandler(this.selectFilesToolStripMenuItem_Click);
             // 
-            // menuConfiguration
-            // 
-            this.menuConfiguration.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.configList,
-            this.globalSettingsToolStripMenuItem});
-            this.menuConfiguration.Name = "menuConfiguration";
-            resources.ApplyResources(this.menuConfiguration, "menuConfiguration");
-            // 
-            // configList
-            // 
-            this.configList.Name = "configList";
-            resources.ApplyResources(this.configList, "configList");
-            this.configList.Click += new System.EventHandler(this.openConversionConfigListForm);
-            // 
-            // globalSettingsToolStripMenuItem
-            // 
-            this.globalSettingsToolStripMenuItem.Name = "globalSettingsToolStripMenuItem";
-            resources.ApplyResources(this.globalSettingsToolStripMenuItem, "globalSettingsToolStripMenuItem");
-            this.globalSettingsToolStripMenuItem.Click += new System.EventHandler(this.globalSettingsToolStripMenuItem_Click);
-            // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -229,21 +230,61 @@ namespace AirdPro.Forms
             resources.ApplyResources(this.cleanErrorsToolStripMenuItem, "cleanErrorsToolStripMenuItem");
             this.cleanErrorsToolStripMenuItem.Click += new System.EventHandler(this.cleanErrorsToolStripMenuItem_Click);
             // 
+            // menuConfiguration
+            // 
+            this.menuConfiguration.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.configList,
+            this.globalSettingsToolStripMenuItem});
+            this.menuConfiguration.Name = "menuConfiguration";
+            resources.ApplyResources(this.menuConfiguration, "menuConfiguration");
+            // 
+            // configList
+            // 
+            this.configList.Name = "configList";
+            resources.ApplyResources(this.configList, "configList");
+            this.configList.Click += new System.EventHandler(this.openConversionConfigListForm);
+            // 
+            // globalSettingsToolStripMenuItem
+            // 
+            this.globalSettingsToolStripMenuItem.Name = "globalSettingsToolStripMenuItem";
+            resources.ApplyResources(this.globalSettingsToolStripMenuItem, "globalSettingsToolStripMenuItem");
+            this.globalSettingsToolStripMenuItem.Click += new System.EventHandler(this.globalSettingsToolStripMenuItem_Click);
+            // 
+            // lblRedisStatus
+            // 
+            resources.ApplyResources(this.lblRedisStatus, "lblRedisStatus");
+            this.lblRedisStatus.ForeColor = System.Drawing.Color.Red;
+            this.lblRedisStatus.Name = "lblRedisStatus";
+            // 
+            // btnRedisConnect
+            // 
+            this.btnRedisConnect.BackgroundImage = global::AirdPro.Properties.Resources.DisConnect;
+            resources.ApplyResources(this.btnRedisConnect, "btnRedisConnect");
+            this.btnRedisConnect.FlatAppearance.BorderSize = 0;
+            this.btnRedisConnect.Name = "btnRedisConnect";
+            this.btnRedisConnect.UseVisualStyleBackColor = true;
+            this.btnRedisConnect.Click += new System.EventHandler(this.btnRedisConnect_Click);
+            // 
+            // lblConvert
+            // 
+            resources.ApplyResources(this.lblConvert, "lblConvert");
+            this.lblConvert.Name = "lblConvert";
+            // 
+            // btnConvert
+            // 
+            this.btnConvert.BackgroundImage = global::AirdPro.Properties.Resources.Convert;
+            resources.ApplyResources(this.btnConvert, "btnConvert");
+            this.btnConvert.FlatAppearance.BorderSize = 0;
+            this.btnConvert.Name = "btnConvert";
+            this.btnConvert.UseVisualStyleBackColor = true;
+            this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
+            // 
             // tbConsole
             // 
             resources.ApplyResources(this.tbConsole, "tbConsole");
             this.tbConsole.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.tbConsole.ForeColor = System.Drawing.SystemColors.Window;
             this.tbConsole.Name = "tbConsole";
-            // 
-            // btnConvert
-            // 
-            this.btnConvert.BackgroundImage = global::AirdPro.Properties.Resources.run;
-            resources.ApplyResources(this.btnConvert, "btnConvert");
-            this.btnConvert.FlatAppearance.BorderSize = 0;
-            this.btnConvert.Name = "btnConvert";
-            this.btnConvert.UseVisualStyleBackColor = true;
-            this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
             // 
             // timer
             // 
@@ -255,22 +296,23 @@ namespace AirdPro.Forms
             resources.ApplyResources(this.ofd, "ofd");
             this.ofd.Multiselect = true;
             // 
-            // lblRun
+            // redisConsumer
             // 
-            resources.ApplyResources(this.lblRun, "lblRun");
-            this.lblRun.Name = "lblRun";
+            this.redisConsumer.Interval = 3000;
+            this.redisConsumer.Tick += new System.EventHandler(this.redisConsumer_Tick);
             // 
-            // headerJobId
+            // btnRedisDisconnect
             // 
-            resources.ApplyResources(this.headerJobId, "headerJobId");
+            resources.ApplyResources(this.btnRedisDisconnect, "btnRedisDisconnect");
+            this.btnRedisDisconnect.FlatAppearance.BorderSize = 0;
+            this.btnRedisDisconnect.Name = "btnRedisDisconnect";
+            this.btnRedisDisconnect.UseVisualStyleBackColor = true;
+            this.btnRedisDisconnect.Click += new System.EventHandler(this.button1_Click);
             // 
-            // headerIgnoreZero
+            // label1
             // 
-            resources.ApplyResources(this.headerIgnoreZero, "headerIgnoreZero");
-            // 
-            // headerSuffix
-            // 
-            resources.ApplyResources(this.headerSuffix, "headerSuffix");
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
             // 
             // AirdForm
             // 
@@ -320,10 +362,15 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cleanFinishedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cleanErrorsToolStripMenuItem;
-        private System.Windows.Forms.Label lblRun;
+        private System.Windows.Forms.Label lblConvert;
         private System.Windows.Forms.ColumnHeader headerJobId;
         private System.Windows.Forms.ColumnHeader headerIgnoreZero;
         private System.Windows.Forms.ColumnHeader headerSuffix;
+        private System.Windows.Forms.Timer redisConsumer;
+        private System.Windows.Forms.Button btnRedisConnect;
+        private System.Windows.Forms.Label lblRedisStatus;
+        private System.Windows.Forms.Button btnRedisDisconnect;
+        private System.Windows.Forms.Label label1;
     }
 }
 
