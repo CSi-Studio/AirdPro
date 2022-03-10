@@ -155,6 +155,11 @@
     <Compile Include="Converters\Common.cs" />
     <Compile Include="Converters\DDAPasef .cs" />
     <Compile Include="Converters\DIAPasef.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Domains\FileLogs\APPLog.cs" />
     <Compile Include="Storage\Config\GlobalConfig.cs" />
     <Compile Include="Domains\Job\JobInfo.cs" />
@@ -213,14 +218,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="app.config" />
     <None Include="log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -240,6 +240,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <Content Include="Properties\DisConnect.png" />
+    <Content Include="Properties\Connected.png" />
+    <Content Include="Properties\Convert.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
@@ -279,10 +282,10 @@
       <Version>5.1.0</Version>
     </PackageReference>
     <PackageReference Include="StackExchange.Redis">
-      <Version>2.5.27-prerelease</Version>
+      <Version>2.5.43</Version>
     </PackageReference>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
-      <Version>6.0.2-mauipre.1.22102.15</Version>
+      <Version>7.0.0-preview.1.22076.8</Version>
     </PackageReference>
     <PackageReference Include="xunit">
       <Version>2.4.2-pre.12</Version>

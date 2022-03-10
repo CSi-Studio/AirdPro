@@ -105,9 +105,10 @@ namespace AirdPro.Redis
                 }
             }
         }
-        public void consume()
+        public bool consume()
         {
-            if (check())
+            bool check = this.check();
+            if (check)
             {
                 int i = 10;
                 bool needToExe = false;
@@ -129,19 +130,12 @@ namespace AirdPro.Redis
                             conversionConfig.suffix = "";
                             conversionConfig.creator = "LIMSPro";
                             conversionConfig.mzPrecision = (int)Math.Ceiling(1 / job.mzPrecision);
-                            conversionConfig.outputPath = job.targetPath;
-                            string[] items = new string[5];
-                            ListViewItem item = new ListViewItem(items);
-                            item.SubItems[0].Text = job.sourcePath;
-                            item.SubItems[1].Text = job.type;
-                            item.SubItems[2].Text = "Waiting";
-                            item.SubItems[3].Text = Convert.ToString(job.mzPrecision);
-                            item.SubItems[4].Text = job.getAirdAlgorithmStr();
-                            item.SubItems[5].Text = job.targetPath;
-                            JobInfo jobInfo = new JobInfo(job.sourcePath,job.type, conversionConfig, item);
-                            if (!ConvertTaskManager.getInstance().jobTable.Contains(jobInfo.jobId))
+                            
+                            JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
+                            ListViewItem item = jobInfo.buildItem();
+                            if (!ConvertTaskManager.getInstance().jobTable.Contains(jobInfo.getJobId()))
                             {
-                                Program.mainForm.lvFileList.Items.Add(item);
+                                Program.airdForm.lvFileList.Items.Add(item);
                                 ConvertTaskManager.getInstance().pushJob(jobInfo);
                                 needToExe = true;
                             }
@@ -162,16 +156,19 @@ namespace AirdPro.Redis
                 {
                     ConvertTaskManager.getInstance().run();
                 }
-               
-
             }
+
+            return check;
         }
 
         public void disconnect()
         {
-            redis.Close();
-            redis = null;
-            db = null;
+            if (redis != null)
+            {
+                redis.Close();
+                redis = null;
+                db = null;
+            }
         }
     }
 }

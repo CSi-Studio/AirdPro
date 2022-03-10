@@ -43,6 +43,17 @@ public class ConversionConfigHandler:Subject<Dictionary<string, ConversionConfig
         notify();
     }
 
+    public void removeConfig(List<string> nameList)
+    {
+        foreach (string name in nameList)
+        {
+            this.configMap.Remove(name);
+        }
+       
+        save();
+        notify();
+    }
+
     public void save()
     {
         if (!File.Exists(CONFIG_PATH))
@@ -50,7 +61,7 @@ public class ConversionConfigHandler:Subject<Dictionary<string, ConversionConfig
             Directory.CreateDirectory(Path.GetDirectoryName(CONFIG_PATH));
             JsonSerializerSettings jsonSetting = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
             string defaultConfigStr = JsonConvert.SerializeObject(configMap, jsonSetting);
-            byte[] defaultConfigBytes = Encoding.Default.GetBytes(defaultConfigStr);
+            byte[] defaultConfigBytes = Encoding.UTF8.GetBytes(defaultConfigStr);
             using (FileStream defaultConfigStream = new FileStream(CONFIG_PATH, FileMode.Create))
             {
                 defaultConfigStream.Write(defaultConfigBytes, 0, defaultConfigBytes.Length);
@@ -60,7 +71,7 @@ public class ConversionConfigHandler:Subject<Dictionary<string, ConversionConfig
         {
             JsonSerializerSettings jsonSetting = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
             string defaultConfigStr = JsonConvert.SerializeObject(configMap, jsonSetting);
-            byte[] defaultConfigBytes = Encoding.Default.GetBytes(defaultConfigStr);
+            byte[] defaultConfigBytes = Encoding.UTF8.GetBytes(defaultConfigStr);
             using (FileStream defaultConfigStream = new FileStream(CONFIG_PATH, FileMode.Truncate))
             {
                 defaultConfigStream.Write(defaultConfigBytes, 0, defaultConfigBytes.Length);
@@ -85,7 +96,7 @@ public class ConversionConfigHandler:Subject<Dictionary<string, ConversionConfig
             JsonSerializerSettings jsonSetting = new JsonSerializerSettings
                 { NullValueHandling = NullValueHandling.Ignore };
             string defaultConfigStr = JsonConvert.SerializeObject(configMap, jsonSetting);
-            byte[] defaultConfigBytes = Encoding.Default.GetBytes(defaultConfigStr);
+            byte[] defaultConfigBytes = Encoding.UTF8.GetBytes(defaultConfigStr);
             using (FileStream defaultConfigStream = new FileStream(CONFIG_PATH, FileMode.OpenOrCreate))
             {
                 defaultConfigStream.Write(defaultConfigBytes, 0, defaultConfigBytes.Length);

@@ -19,6 +19,12 @@ public class GlobalConfigHandler : Subject<GlobalConfig>
     {
         read();
     }
+
+    public string getRedisConnectStr()
+    {
+        return config.redisHost + ":" + config.redisPort;
+    }
+
     public GlobalConfig read()
     {
         initConfig();
@@ -42,7 +48,7 @@ public class GlobalConfigHandler : Subject<GlobalConfig>
             JsonSerializerSettings jsonSetting = new JsonSerializerSettings
                 { NullValueHandling = NullValueHandling.Ignore };
             string defaultConfigStr = JsonConvert.SerializeObject(config, jsonSetting);
-            byte[] defaultConfigBytes = Encoding.Default.GetBytes(defaultConfigStr);
+            byte[] defaultConfigBytes = Encoding.UTF8.GetBytes(defaultConfigStr);
             using (FileStream defaultConfigStream = new FileStream(CONFIG_PATH, FileMode.OpenOrCreate))
             {
                 defaultConfigStream.Write(defaultConfigBytes, 0, defaultConfigBytes.Length);
@@ -57,7 +63,7 @@ public class GlobalConfigHandler : Subject<GlobalConfig>
             Directory.CreateDirectory(Path.GetDirectoryName(CONFIG_PATH));
             JsonSerializerSettings jsonSetting = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
             string defaultConfigStr = JsonConvert.SerializeObject(config, jsonSetting);
-            byte[] defaultConfigBytes = Encoding.Default.GetBytes(defaultConfigStr);
+            byte[] defaultConfigBytes = Encoding.UTF8.GetBytes(defaultConfigStr);
             using (FileStream defaultConfigStream = new FileStream(CONFIG_PATH, FileMode.Create))
             {
                 defaultConfigStream.Write(defaultConfigBytes, 0, defaultConfigBytes.Length);
@@ -67,7 +73,7 @@ public class GlobalConfigHandler : Subject<GlobalConfig>
         {
             JsonSerializerSettings jsonSetting = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
             string defaultConfigStr = JsonConvert.SerializeObject(config, jsonSetting);
-            byte[] defaultConfigBytes = Encoding.Default.GetBytes(defaultConfigStr);
+            byte[] defaultConfigBytes = Encoding.UTF8.GetBytes(defaultConfigStr);
             using (FileStream defaultConfigStream = new FileStream(CONFIG_PATH, FileMode.Truncate))
             {
                 defaultConfigStream.Write(defaultConfigBytes, 0, defaultConfigBytes.Length);

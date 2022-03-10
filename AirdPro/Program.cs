@@ -17,7 +17,7 @@ namespace AirdPro
 {
     internal static class Program
     {
-        public static AirdForm mainForm { get; private set; }
+        public static AirdForm airdForm { get; private set; }
         public static GlobalConfigHandler globalConfigHandler { get; private set; }
         public static ConversionConfigHandler conversionConfigHandler { get; private set; }
 
@@ -34,8 +34,8 @@ namespace AirdPro
                 globalConfigHandler = new GlobalConfigHandler();
                 conversionConfigHandler = new ConversionConfigHandler();
 
-                mainForm = new AirdForm();
-                Application.Run(mainForm);
+                airdForm = new AirdForm();
+                Application.Run(airdForm);
             }
             catch (Exception e)
             {

@@ -125,105 +125,12 @@
   <data name="container.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="btnClearError.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="btnClearError.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
-  </data>
-  <data name="btnClearError.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnClearError.Location" type="System.Drawing.Point, System.Drawing">
-    <value>113, 672</value>
-  </data>
-  <data name="btnClearError.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 25</value>
+  <data name="headerJobId.Text" xml:space="preserve">
+    <value>ID</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="btnClearError.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="btnClearError.Text" xml:space="preserve">
-    <value>Clear Errors</value>
-  </data>
-  <data name="&gt;&gt;btnClearError.Name" xml:space="preserve">
-    <value>btnClearError</value>
-  </data>
-  <data name="&gt;&gt;btnClearError.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnClearError.Parent" xml:space="preserve">
-    <value>container.Panel1</value>
-  </data>
-  <data name="&gt;&gt;btnClearError.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="btnClear.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="btnClear.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
-  </data>
-  <data name="btnClear.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnClear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 672</value>
-  </data>
-  <data name="btnClear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 25</value>
-  </data>
-  <data name="btnClear.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="btnClear.Text" xml:space="preserve">
-    <value>Clear Finished</value>
-  </data>
-  <data name="&gt;&gt;btnClear.Name" xml:space="preserve">
-    <value>btnClear</value>
-  </data>
-  <data name="&gt;&gt;btnClear.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnClear.Parent" xml:space="preserve">
-    <value>container.Panel1</value>
-  </data>
-  <data name="&gt;&gt;btnClear.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="lblFileSelectedInfo.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="lblFileSelectedInfo.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 9pt</value>
-  </data>
-  <data name="lblFileSelectedInfo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 650</value>
-  </data>
-  <data name="lblFileSelectedInfo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 17</value>
-  </data>
-  <data name="lblFileSelectedInfo.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="lblFileSelectedInfo.Text" xml:space="preserve">
-    <value>No file is selected</value>
-  </data>
-  <data name="&gt;&gt;lblFileSelectedInfo.Name" xml:space="preserve">
-    <value>lblFileSelectedInfo</value>
-  </data>
-  <data name="&gt;&gt;lblFileSelectedInfo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblFileSelectedInfo.Parent" xml:space="preserve">
-    <value>container.Panel1</value>
-  </data>
-  <data name="&gt;&gt;lblFileSelectedInfo.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="lvFileList.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="headerJobId.Width" type="System.Int32, mscorlib">
+    <value>112</value>
   </data>
   <data name="headerFilePath.Text" xml:space="preserve">
     <value>FilePath</value>
@@ -231,14 +138,14 @@
   <data name="headerFilePath.Width" type="System.Int32, mscorlib">
     <value>200</value>
   </data>
-  <data name="headerExpType.Text" xml:space="preserve">
+  <data name="headerType.Text" xml:space="preserve">
     <value>Type</value>
   </data>
-  <data name="headerExpType.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+  <data name="headerType.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Center</value>
   </data>
-  <data name="headerExpType.Width" type="System.Int32, mscorlib">
-    <value>120</value>
+  <data name="headerType.Width" type="System.Int32, mscorlib">
+    <value>70</value>
   </data>
   <data name="headerProgress.Text" xml:space="preserve">
     <value>Progress</value>
@@ -253,7 +160,7 @@
     <value>Precision</value>
   </data>
   <data name="headerPrecision.Width" type="System.Int32, mscorlib">
-    <value>150</value>
+    <value>76</value>
   </data>
   <data name="headerCompressor.Text" xml:space="preserve">
     <value>Compressor</value>
@@ -262,31 +169,43 @@
     <value>Center</value>
   </data>
   <data name="headerCompressor.Width" type="System.Int32, mscorlib">
-    <value>100</value>
+    <value>108</value>
+  </data>
+  <data name="headerIgnoreZero.Text" xml:space="preserve">
+    <value>IgnoreZero</value>
+  </data>
+  <data name="headerIgnoreZero.Width" type="System.Int32, mscorlib">
+    <value>99</value>
+  </data>
+  <data name="headerSuffix.Text" xml:space="preserve">
+    <value>Suffix</value>
+  </data>
+  <data name="headerSuffix.Width" type="System.Int32, mscorlib">
+    <value>105</value>
   </data>
   <data name="headerOutput.Text" xml:space="preserve">
     <value>Output</value>
   </data>
   <data name="headerOutput.Width" type="System.Int32, mscorlib">
-    <value>250</value>
+    <value>296</value>
   </data>
   <metadata name="contentMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>574, 16</value>
+    <value>403, 18</value>
   </metadata>
   <data name="rerun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>210, 24</value>
+    <value>123, 22</value>
   </data>
   <data name="rerun.Text" xml:space="preserve">
     <value>Rerun</value>
   </data>
   <data name="removeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>210, 24</value>
+    <value>123, 22</value>
   </data>
   <data name="removeToolStripMenuItem.Text" xml:space="preserve">
     <value>Remove</value>
   </data>
   <data name="contentMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>211, 80</value>
+    <value>124, 48</value>
   </data>
   <data name="&gt;&gt;contentMenu.Name" xml:space="preserve">
     <value>contentMenu</value>
@@ -294,14 +213,17 @@
   <data name="&gt;&gt;contentMenu.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="lvFileList.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="lvFileList.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="lvFileList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 28</value>
+    <value>0, 25</value>
   </data>
   <data name="lvFileList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>909, 614</value>
+    <value>1200, 676</value>
   </data>
   <data name="lvFileList.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -316,106 +238,58 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;lvFileList.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="btnDeleteFiles.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="btnDeleteFiles.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
-  </data>
-  <data name="btnDeleteFiles.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnDeleteFiles.Location" type="System.Drawing.Point, System.Drawing">
-    <value>219, 672</value>
-  </data>
-  <data name="btnDeleteFiles.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 25</value>
-  </data>
-  <data name="btnDeleteFiles.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="btnDeleteFiles.Text" xml:space="preserve">
-    <value>Delete Files</value>
-  </data>
-  <data name="&gt;&gt;btnDeleteFiles.Name" xml:space="preserve">
-    <value>btnDeleteFiles</value>
-  </data>
-  <data name="&gt;&gt;btnDeleteFiles.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnDeleteFiles.Parent" xml:space="preserve">
-    <value>container.Panel1</value>
-  </data>
-  <data name="&gt;&gt;btnDeleteFiles.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="btnConvert.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="btnConvert.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 12pt</value>
-  </data>
-  <data name="btnConvert.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnConvert.Location" type="System.Drawing.Point, System.Drawing">
-    <value>760, 647</value>
-  </data>
-  <data name="btnConvert.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 46</value>
-  </data>
-  <data name="btnConvert.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="btnConvert.Text" xml:space="preserve">
-    <value>Start Convert</value>
-  </data>
-  <data name="&gt;&gt;btnConvert.Name" xml:space="preserve">
-    <value>btnConvert</value>
-  </data>
-  <data name="&gt;&gt;btnConvert.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnConvert.Parent" xml:space="preserve">
-    <value>container.Panel1</value>
-  </data>
-  <data name="&gt;&gt;btnConvert.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>0</value>
   </data>
   <metadata name="menuConfig.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>426, 16</value>
+    <value>285, 18</value>
   </metadata>
   <data name="menuConfig.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="selectFilesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 26</value>
+    <value>116, 22</value>
   </data>
   <data name="selectFilesToolStripMenuItem.Text" xml:space="preserve">
     <value>Import</value>
   </data>
   <data name="filesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 24</value>
+    <value>45, 21</value>
   </data>
   <data name="filesToolStripMenuItem.Text" xml:space="preserve">
     <value>Files</value>
   </data>
+  <data name="cleanFinishedToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>159, 22</value>
+  </data>
+  <data name="cleanFinishedToolStripMenuItem.Text" xml:space="preserve">
+    <value>Clean Finished</value>
+  </data>
+  <data name="cleanErrorsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>159, 22</value>
+  </data>
+  <data name="cleanErrorsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Clean Errors</value>
+  </data>
+  <data name="editToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>42, 21</value>
+  </data>
+  <data name="editToolStripMenuItem.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
   <data name="configList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 26</value>
+    <value>141, 22</value>
   </data>
   <data name="configList.Text" xml:space="preserve">
     <value>Conversion</value>
   </data>
   <data name="globalSettingsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 26</value>
+    <value>141, 22</value>
   </data>
   <data name="globalSettingsToolStripMenuItem.Text" xml:space="preserve">
     <value>Options</value>
   </data>
   <data name="menuConfiguration.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 24</value>
+    <value>66, 21</value>
   </data>
   <data name="menuConfiguration.Text" xml:space="preserve">
     <value>Settings</value>
@@ -424,7 +298,7 @@
     <value>0, 0</value>
   </data>
   <data name="menuConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>915, 28</value>
+    <value>1200, 25</value>
   </data>
   <data name="menuConfig.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -442,7 +316,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;menuConfig.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;container.Panel1.Name" xml:space="preserve">
     <value>container.Panel1</value>
@@ -456,596 +330,206 @@
   <data name="&gt;&gt;container.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="lblDp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="lblDp.AutoSize" type="System.Boolean, mscorlib">
+  <data name="lblRedisMessageCenter.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblDp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="lblRedisMessageCenter.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 10pt</value>
+  </data>
+  <data name="lblRedisMessageCenter.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lblDp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>534, 62</value>
+  <data name="lblRedisMessageCenter.Location" type="System.Drawing.Point, System.Drawing">
+    <value>160, 1</value>
   </data>
-  <data name="lblDp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 20</value>
+  <data name="lblRedisMessageCenter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>156, 20</value>
   </data>
-  <data name="lblDp.TabIndex" type="System.Int32, mscorlib">
-    <value>38</value>
+  <data name="lblRedisMessageCenter.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
   </data>
-  <data name="lblDp.Text" xml:space="preserve">
-    <value>dp</value>
+  <data name="lblRedisMessageCenter.Text" xml:space="preserve">
+    <value>Redis Message Center</value>
   </data>
-  <data name="&gt;&gt;lblDp.Name" xml:space="preserve">
-    <value>lblDp</value>
+  <data name="&gt;&gt;lblRedisMessageCenter.Name" xml:space="preserve">
+    <value>lblRedisMessageCenter</value>
   </data>
-  <data name="&gt;&gt;lblDp.Type" xml:space="preserve">
+  <data name="&gt;&gt;lblRedisMessageCenter.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblDp.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lblRedisMessageCenter.Parent" xml:space="preserve">
     <value>container.Panel2</value>
   </data>
-  <data name="&gt;&gt;lblDp.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lblRedisMessageCenter.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="cbStack.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="btnRedisDisconnect.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
   </data>
-  <data name="cbStack.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="cbStack.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 171</value>
-  </data>
-  <data name="cbStack.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 24</value>
-  </data>
-  <data name="cbStack.TabIndex" type="System.Int32, mscorlib">
-    <value>37</value>
-  </data>
-  <data name="cbStack.Text" xml:space="preserve">
-    <value>Stack</value>
-  </data>
-  <data name="&gt;&gt;cbStack.Name" xml:space="preserve">
-    <value>cbStack</value>
-  </data>
-  <data name="&gt;&gt;cbStack.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbStack.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
-  </data>
-  <data name="&gt;&gt;cbStack.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="lblIntCompA.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="lblIntCompA.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblIntCompA.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblIntCompA.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 136</value>
-  </data>
-  <data name="lblIntCompA.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 20</value>
-  </data>
-  <data name="lblIntCompA.TabIndex" type="System.Int32, mscorlib">
-    <value>36</value>
-  </data>
-  <data name="lblIntCompA.Text" xml:space="preserve">
-    <value>intensity byte compressor</value>
-  </data>
-  <data name="&gt;&gt;lblIntCompA.Name" xml:space="preserve">
-    <value>lblIntCompA</value>
-  </data>
-  <data name="&gt;&gt;lblIntCompA.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblIntCompA.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
-  </data>
-  <data name="&gt;&gt;lblIntCompA.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="intByteComp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>174, 133</value>
-  </data>
-  <data name="intByteComp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 28</value>
-  </data>
-  <data name="intByteComp.TabIndex" type="System.Int32, mscorlib">
-    <value>35</value>
-  </data>
-  <metadata name="ttAlgorithm.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>306, 16</value>
-  </metadata>
-  <data name="intByteComp.ToolTip" xml:space="preserve">
-    <value>Stack-ZDPD only support for DIA</value>
-  </data>
-  <data name="&gt;&gt;intByteComp.Name" xml:space="preserve">
-    <value>intByteComp</value>
-  </data>
-  <data name="&gt;&gt;intByteComp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;intByteComp.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
-  </data>
-  <data name="&gt;&gt;intByteComp.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="lblMzByteComp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="lblMzByteComp.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblMzByteComp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblMzByteComp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>247, 101</value>
-  </data>
-  <data name="lblMzByteComp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>164, 20</value>
-  </data>
-  <data name="lblMzByteComp.TabIndex" type="System.Int32, mscorlib">
-    <value>32</value>
-  </data>
-  <data name="lblMzByteComp.Text" xml:space="preserve">
-    <value>m/z byte compressor</value>
-  </data>
-  <data name="&gt;&gt;lblMzByteComp.Name" xml:space="preserve">
-    <value>lblMzByteComp</value>
-  </data>
-  <data name="&gt;&gt;lblMzByteComp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblMzByteComp.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
-  </data>
-  <data name="&gt;&gt;lblMzByteComp.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="mzByteComp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>386, 98</value>
-  </data>
-  <data name="mzByteComp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 28</value>
-  </data>
-  <data name="mzByteComp.TabIndex" type="System.Int32, mscorlib">
-    <value>31</value>
-  </data>
-  <data name="mzByteComp.ToolTip" xml:space="preserve">
-    <value>Stack-ZDPD only support for DIA</value>
-  </data>
-  <data name="&gt;&gt;mzByteComp.Name" xml:space="preserve">
-    <value>mzByteComp</value>
-  </data>
-  <data name="&gt;&gt;mzByteComp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mzByteComp.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
-  </data>
-  <data name="&gt;&gt;mzByteComp.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="lblStackLayers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="lblStackLayers.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblStackLayers.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblStackLayers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 171</value>
-  </data>
-  <data name="lblStackLayers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 20</value>
-  </data>
-  <data name="lblStackLayers.TabIndex" type="System.Int32, mscorlib">
-    <value>30</value>
-  </data>
-  <data name="lblStackLayers.Text" xml:space="preserve">
-    <value>Layers</value>
-  </data>
-  <data name="&gt;&gt;lblStackLayers.Name" xml:space="preserve">
-    <value>lblStackLayers</value>
-  </data>
-  <data name="&gt;&gt;lblStackLayers.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblStackLayers.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
-  </data>
-  <data name="&gt;&gt;lblStackLayers.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="cbStackLayers.Items" xml:space="preserve">
-    <value>32</value>
-  </data>
-  <data name="cbStackLayers.Items1" xml:space="preserve">
-    <value>64</value>
-  </data>
-  <data name="cbStackLayers.Items2" xml:space="preserve">
-    <value>128</value>
-  </data>
-  <data name="cbStackLayers.Items3" xml:space="preserve">
-    <value>256</value>
-  </data>
-  <data name="cbStackLayers.Items4" xml:space="preserve">
-    <value>512</value>
-  </data>
-  <data name="cbStackLayers.Items5" xml:space="preserve">
-    <value>1024</value>
-  </data>
-  <data name="cbStackLayers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>158, 167</value>
-  </data>
-  <data name="cbStackLayers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 28</value>
-  </data>
-  <data name="cbStackLayers.TabIndex" type="System.Int32, mscorlib">
-    <value>29</value>
-  </data>
-  <data name="&gt;&gt;cbStackLayers.Name" xml:space="preserve">
-    <value>cbStackLayers</value>
-  </data>
-  <data name="&gt;&gt;cbStackLayers.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbStackLayers.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
-  </data>
-  <data name="&gt;&gt;cbStackLayers.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="lblMzIntComp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="lblMzIntComp.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblMzIntComp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblMzIntComp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 101</value>
-  </data>
-  <data name="lblMzIntComp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 20</value>
-  </data>
-  <data name="lblMzIntComp.TabIndex" type="System.Int32, mscorlib">
-    <value>28</value>
-  </data>
-  <data name="lblMzIntComp.Text" xml:space="preserve">
-    <value>m/z int compressor</value>
-  </data>
-  <data name="&gt;&gt;lblMzIntComp.Name" xml:space="preserve">
-    <value>lblMzIntComp</value>
-  </data>
-  <data name="&gt;&gt;lblMzIntComp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblMzIntComp.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
-  </data>
-  <data name="&gt;&gt;lblMzIntComp.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="mzIntComp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>137, 98</value>
-  </data>
-  <data name="mzIntComp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 28</value>
-  </data>
-  <data name="mzIntComp.TabIndex" type="System.Int32, mscorlib">
-    <value>27</value>
-  </data>
-  <data name="mzIntComp.ToolTip" xml:space="preserve">
-    <value>Stack-ZDPD only support for DIA</value>
-  </data>
-  <data name="&gt;&gt;mzIntComp.Name" xml:space="preserve">
-    <value>mzIntComp</value>
-  </data>
-  <data name="&gt;&gt;mzIntComp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mzIntComp.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
-  </data>
-  <data name="&gt;&gt;mzIntComp.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="lblOperator.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="lblOperator.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblOperator.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="btnRedisDisconnect.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 9pt</value>
   </data>
-  <data name="lblOperator.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="btnRedisDisconnect.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lblOperator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>292, 205</value>
+  <data name="btnRedisDisconnect.Location" type="System.Drawing.Point, System.Drawing">
+    <value>215, 46</value>
   </data>
-  <data name="lblOperator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 20</value>
+  <data name="btnRedisDisconnect.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 24</value>
   </data>
-  <data name="lblOperator.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
-  </data>
-  <data name="lblOperator.Text" xml:space="preserve">
-    <value>Operator</value>
-  </data>
-  <data name="&gt;&gt;lblOperator.Name" xml:space="preserve">
-    <value>lblOperator</value>
-  </data>
-  <data name="&gt;&gt;lblOperator.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblOperator.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
-  </data>
-  <data name="&gt;&gt;lblOperator.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="tbOperator.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 9pt</value>
-  </data>
-  <data name="tbOperator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>360, 202</value>
-  </data>
-  <data name="tbOperator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 27</value>
-  </data>
-  <data name="tbOperator.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
-  </data>
-  <data name="&gt;&gt;tbOperator.Name" xml:space="preserve">
-    <value>tbOperator</value>
-  </data>
-  <data name="&gt;&gt;tbOperator.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbOperator.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
-  </data>
-  <data name="&gt;&gt;tbOperator.ZOrder" xml:space="preserve">
+  <data name="btnRedisDisconnect.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="lblMzPrecision.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="btnRedisDisconnect.Text" xml:space="preserve">
+    <value>Disconnect</value>
   </data>
-  <data name="lblMzPrecision.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;btnRedisDisconnect.Name" xml:space="preserve">
+    <value>btnRedisDisconnect</value>
   </data>
-  <data name="lblMzPrecision.Location" type="System.Drawing.Point, System.Drawing">
-    <value>439, 61</value>
+  <data name="&gt;&gt;btnRedisDisconnect.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="lblMzPrecision.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 20</value>
-  </data>
-  <data name="lblMzPrecision.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
-  </data>
-  <data name="lblMzPrecision.Text" xml:space="preserve">
-    <value>m/z</value>
-  </data>
-  <data name="&gt;&gt;lblMzPrecision.Name" xml:space="preserve">
-    <value>lblMzPrecision</value>
-  </data>
-  <data name="&gt;&gt;lblMzPrecision.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblMzPrecision.Parent" xml:space="preserve">
+  <data name="&gt;&gt;btnRedisDisconnect.Parent" xml:space="preserve">
     <value>container.Panel2</value>
   </data>
-  <data name="&gt;&gt;lblMzPrecision.ZOrder" xml:space="preserve">
-    <value>12</value>
+  <data name="&gt;&gt;btnRedisDisconnect.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="cbMzPrecision.Items" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="cbMzPrecision.Items1" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="cbMzPrecision.Items2" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="cbMzPrecision.Location" type="System.Drawing.Point, System.Drawing">
-    <value>475, 58</value>
-  </data>
-  <data name="cbMzPrecision.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 28</value>
-  </data>
-  <data name="cbMzPrecision.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
-  </data>
-  <data name="&gt;&gt;cbMzPrecision.Name" xml:space="preserve">
-    <value>cbMzPrecision</value>
-  </data>
-  <data name="&gt;&gt;cbMzPrecision.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbMzPrecision.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
-  </data>
-  <data name="&gt;&gt;cbMzPrecision.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="cbThreadAccelerate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="cbThreadAccelerate.AutoSize" type="System.Boolean, mscorlib">
+  <data name="lblRedisStatus.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbThreadAccelerate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="lblRedisStatus.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 9pt</value>
+  </data>
+  <data name="lblRedisStatus.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbThreadAccelerate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>240, 62</value>
+  <data name="lblRedisStatus.Location" type="System.Drawing.Point, System.Drawing">
+    <value>215, 26</value>
   </data>
-  <data name="cbThreadAccelerate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 24</value>
+  <data name="lblRedisStatus.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 17</value>
   </data>
-  <data name="cbThreadAccelerate.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
+  <data name="lblRedisStatus.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
   </data>
-  <data name="cbThreadAccelerate.Text" xml:space="preserve">
-    <value>Multithreading</value>
+  <data name="lblRedisStatus.Text" xml:space="preserve">
+    <value>Not Connected</value>
   </data>
-  <data name="&gt;&gt;cbThreadAccelerate.Name" xml:space="preserve">
-    <value>cbThreadAccelerate</value>
+  <data name="&gt;&gt;lblRedisStatus.Name" xml:space="preserve">
+    <value>lblRedisStatus</value>
   </data>
-  <data name="&gt;&gt;cbThreadAccelerate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbThreadAccelerate.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
-  </data>
-  <data name="&gt;&gt;cbThreadAccelerate.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="lblFileNameTag.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="lblFileNameTag.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblFileNameTag.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 9pt</value>
-  </data>
-  <data name="lblFileNameTag.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblFileNameTag.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 205</value>
-  </data>
-  <data name="lblFileNameTag.Size" type="System.Drawing.Size, System.Drawing">
-    <value>78, 20</value>
-  </data>
-  <data name="lblFileNameTag.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="lblFileNameTag.Text" xml:space="preserve">
-    <value>File Suffix</value>
-  </data>
-  <data name="&gt;&gt;lblFileNameTag.Name" xml:space="preserve">
-    <value>lblFileNameTag</value>
-  </data>
-  <data name="&gt;&gt;lblFileNameTag.Type" xml:space="preserve">
+  <data name="&gt;&gt;lblRedisStatus.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblFileNameTag.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lblRedisStatus.Parent" xml:space="preserve">
     <value>container.Panel2</value>
   </data>
-  <data name="&gt;&gt;lblFileNameTag.ZOrder" xml:space="preserve">
-    <value>15</value>
+  <data name="&gt;&gt;lblRedisStatus.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
-  <data name="tbFileNameSuffix.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 9pt</value>
+  <data name="btnRedisConnect.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
   </data>
-  <data name="tbFileNameSuffix.Location" type="System.Drawing.Point, System.Drawing">
-    <value>88, 202</value>
+  <data name="btnRedisConnect.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 12pt</value>
   </data>
-  <data name="tbFileNameSuffix.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 27</value>
+  <data name="btnRedisConnect.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="tbFileNameSuffix.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+  <data name="btnRedisConnect.Location" type="System.Drawing.Point, System.Drawing">
+    <value>161, 23</value>
   </data>
-  <data name="&gt;&gt;tbFileNameSuffix.Name" xml:space="preserve">
-    <value>tbFileNameSuffix</value>
+  <data name="btnRedisConnect.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 50</value>
   </data>
-  <data name="&gt;&gt;tbFileNameSuffix.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="btnRedisConnect.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
   </data>
-  <data name="&gt;&gt;tbFileNameSuffix.Parent" xml:space="preserve">
+  <data name="btnRedisConnect.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;btnRedisConnect.Name" xml:space="preserve">
+    <value>btnRedisConnect</value>
+  </data>
+  <data name="&gt;&gt;btnRedisConnect.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnRedisConnect.Parent" xml:space="preserve">
     <value>container.Panel2</value>
   </data>
-  <data name="&gt;&gt;tbFileNameSuffix.ZOrder" xml:space="preserve">
-    <value>16</value>
+  <data name="&gt;&gt;btnRedisConnect.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
-  <data name="cbIsZeroIntensityIgnore.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="cbIsZeroIntensityIgnore.AutoSize" type="System.Boolean, mscorlib">
+  <data name="lblConvert.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbIsZeroIntensityIgnore.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 62</value>
+  <data name="lblConvert.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 10pt</value>
   </data>
-  <data name="cbIsZeroIntensityIgnore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 24</value>
+  <data name="lblConvert.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 2</value>
   </data>
-  <data name="cbIsZeroIntensityIgnore.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+  <data name="lblConvert.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 20</value>
   </data>
-  <data name="cbIsZeroIntensityIgnore.Text" xml:space="preserve">
-    <value>Ignore Zero Intensity</value>
-  </data>
-  <data name="&gt;&gt;cbIsZeroIntensityIgnore.Name" xml:space="preserve">
-    <value>cbIsZeroIntensityIgnore</value>
-  </data>
-  <data name="&gt;&gt;cbIsZeroIntensityIgnore.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbIsZeroIntensityIgnore.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
-  </data>
-  <data name="&gt;&gt;cbIsZeroIntensityIgnore.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="lblConsole.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="lblConsole.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lblConsole.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 9pt</value>
-  </data>
-  <data name="lblConsole.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 314</value>
-  </data>
-  <data name="lblConsole.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 20</value>
-  </data>
-  <data name="lblConsole.TabIndex" type="System.Int32, mscorlib">
+  <data name="lblConvert.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="lblConsole.Text" xml:space="preserve">
-    <value>Console</value>
+  <data name="lblConvert.Text" xml:space="preserve">
+    <value>Convert</value>
   </data>
-  <data name="&gt;&gt;lblConsole.Name" xml:space="preserve">
-    <value>lblConsole</value>
+  <data name="&gt;&gt;lblConvert.Name" xml:space="preserve">
+    <value>lblConvert</value>
   </data>
-  <data name="&gt;&gt;lblConsole.Type" xml:space="preserve">
+  <data name="&gt;&gt;lblConvert.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblConsole.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lblConvert.Parent" xml:space="preserve">
     <value>container.Panel2</value>
   </data>
-  <data name="&gt;&gt;lblConsole.ZOrder" xml:space="preserve">
-    <value>18</value>
+  <data name="&gt;&gt;lblConvert.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="btnConvert.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="btnConvert.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 12pt</value>
+  </data>
+  <data name="btnConvert.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnConvert.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 23</value>
+  </data>
+  <data name="btnConvert.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 50</value>
+  </data>
+  <data name="btnConvert.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="btnConvert.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;btnConvert.Name" xml:space="preserve">
+    <value>btnConvert</value>
+  </data>
+  <data name="&gt;&gt;btnConvert.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnConvert.Parent" xml:space="preserve">
+    <value>container.Panel2</value>
+  </data>
+  <data name="&gt;&gt;btnConvert.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="tbConsole.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="tbConsole.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 337</value>
+    <value>3, 79</value>
   </data>
   <data name="tbConsole.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1054,7 +538,7 @@
     <value>Vertical</value>
   </data>
   <data name="tbConsole.Size" type="System.Drawing.Size, System.Drawing">
-    <value>600, 352</value>
+    <value>316, 622</value>
   </data>
   <data name="tbConsole.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1072,100 +556,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbConsole.ZOrder" xml:space="preserve">
-    <value>19</value>
-  </data>
-  <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
-  </data>
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 9</value>
-  </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 20</value>
-  </data>
-  <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Output Path:</value>
-  </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
-  </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
-  </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>20</value>
-  </data>
-  <data name="btnChooseFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnChooseFolder.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 8pt</value>
-  </data>
-  <data name="btnChooseFolder.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnChooseFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>514, 28</value>
-  </data>
-  <data name="btnChooseFolder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 26</value>
-  </data>
-  <data name="btnChooseFolder.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
-  </data>
-  <data name="btnChooseFolder.Text" xml:space="preserve">
-    <value>Browser</value>
-  </data>
-  <data name="&gt;&gt;btnChooseFolder.Name" xml:space="preserve">
-    <value>btnChooseFolder</value>
-  </data>
-  <data name="&gt;&gt;btnChooseFolder.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnChooseFolder.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
-  </data>
-  <data name="&gt;&gt;btnChooseFolder.ZOrder" xml:space="preserve">
-    <value>21</value>
-  </data>
-  <data name="tbFolderPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="tbFolderPath.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 9pt</value>
-  </data>
-  <data name="tbFolderPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 29</value>
-  </data>
-  <data name="tbFolderPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>493, 27</value>
-  </data>
-  <data name="tbFolderPath.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;tbFolderPath.Name" xml:space="preserve">
-    <value>tbFolderPath</value>
-  </data>
-  <data name="&gt;&gt;tbFolderPath.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbFolderPath.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
-  </data>
-  <data name="&gt;&gt;tbFolderPath.ZOrder" xml:space="preserve">
-    <value>22</value>
   </data>
   <data name="container.Panel2.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 9pt</value>
@@ -1186,7 +577,7 @@
     <value>1526, 701</value>
   </data>
   <data name="container.SplitterDistance" type="System.Int32, mscorlib">
-    <value>915</value>
+    <value>1200</value>
   </data>
   <data name="container.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -1207,11 +598,17 @@
     <value>17, 17</value>
   </metadata>
   <metadata name="ofd.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>234, 16</value>
+    <value>93, 18</value>
   </metadata>
   <data name="ofd.Filter" xml:space="preserve">
     <value>Vendor Format|*.wiff;*.raw;</value>
   </data>
+  <metadata name="ttAlgorithm.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>165, 18</value>
+  </metadata>
+  <metadata name="redisConsumer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>534, 18</value>
+  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -2356,16 +1753,22 @@
   <data name="$this.Text" xml:space="preserve">
     <value>AirdPro</value>
   </data>
+  <data name="&gt;&gt;headerJobId.Name" xml:space="preserve">
+    <value>headerJobId</value>
+  </data>
+  <data name="&gt;&gt;headerJobId.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;headerFilePath.Name" xml:space="preserve">
     <value>headerFilePath</value>
   </data>
   <data name="&gt;&gt;headerFilePath.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;headerExpType.Name" xml:space="preserve">
-    <value>headerExpType</value>
+  <data name="&gt;&gt;headerType.Name" xml:space="preserve">
+    <value>headerType</value>
   </data>
-  <data name="&gt;&gt;headerExpType.Type" xml:space="preserve">
+  <data name="&gt;&gt;headerType.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;headerProgress.Name" xml:space="preserve">
@@ -2386,11 +1789,35 @@
   <data name="&gt;&gt;headerCompressor.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;headerIgnoreZero.Name" xml:space="preserve">
+    <value>headerIgnoreZero</value>
+  </data>
+  <data name="&gt;&gt;headerIgnoreZero.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;headerSuffix.Name" xml:space="preserve">
+    <value>headerSuffix</value>
+  </data>
+  <data name="&gt;&gt;headerSuffix.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;headerOutput.Name" xml:space="preserve">
     <value>headerOutput</value>
   </data>
   <data name="&gt;&gt;headerOutput.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rerun.Name" xml:space="preserve">
+    <value>rerun</value>
+  </data>
+  <data name="&gt;&gt;rerun.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;removeToolStripMenuItem.Name" xml:space="preserve">
+    <value>removeToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;removeToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;filesToolStripMenuItem.Name" xml:space="preserve">
     <value>filesToolStripMenuItem</value>
@@ -2402,6 +1829,24 @@
     <value>selectFilesToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;selectFilesToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;editToolStripMenuItem.Name" xml:space="preserve">
+    <value>editToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;editToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cleanFinishedToolStripMenuItem.Name" xml:space="preserve">
+    <value>cleanFinishedToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;cleanFinishedToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cleanErrorsToolStripMenuItem.Name" xml:space="preserve">
+    <value>cleanErrorsToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;cleanErrorsToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;menuConfiguration.Name" xml:space="preserve">
@@ -2440,17 +1885,11 @@
   <data name="&gt;&gt;ttAlgorithm.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;rerun.Name" xml:space="preserve">
-    <value>rerun</value>
+  <data name="&gt;&gt;redisConsumer.Name" xml:space="preserve">
+    <value>redisConsumer</value>
   </data>
-  <data name="&gt;&gt;rerun.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;removeToolStripMenuItem.Name" xml:space="preserve">
-    <value>removeToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;removeToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;redisConsumer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>AirdForm</value>

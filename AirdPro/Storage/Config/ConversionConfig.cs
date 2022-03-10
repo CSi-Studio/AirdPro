@@ -43,12 +43,7 @@ namespace AirdPro.Domains.Convert
          * The operator's name
          * 操作员姓名
          */
-        public string creator = "Admin";
-
-        /**
-         * 文件的输出路径
-         */
-        public string outputPath;
+        public string creator = Environment.UserName;
 
         /**
          * 用于mz压缩的int数组压缩方法
@@ -81,9 +76,14 @@ namespace AirdPro.Domains.Convert
         {
         }
 
-        public String getCompressorStr()
+        public string getCompressorStr()
         {
             return mzIntComp + "|" + mzByteComp + "|" + intByteComp;
+        }
+
+        public string getMzPrecisionStr()
+        {
+           return ((int) Math.Log10(mzPrecision)).ToString();
         }
     }
 }
