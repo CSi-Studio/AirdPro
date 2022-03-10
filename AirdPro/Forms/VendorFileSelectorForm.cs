@@ -47,7 +47,7 @@ namespace AirdPro.Forms
             }
         }
 
-        private void btnOK_Click(object sender, EventArgs e)
+        private void addToList()
         {
             string expType = null;
             for (int i = 0; i < gBoxMode.Controls.Count; i++)
@@ -92,8 +92,18 @@ namespace AirdPro.Forms
             {
                 Program.airdForm.addFile(path, outputPath, expType, config);
             }
-            
-            this.Hide();
+        }
+        private void btnAddAndContinue_Click(object sender, EventArgs e)
+        {
+            addToList();
+            clearInfos();
+        }
+
+        private void btnAddAndClose_Click(object sender, EventArgs e)
+        {
+            addToList();
+            clearInfos();
+            Hide();
         }
 
         private void btnFileSelector_Click(object sender, EventArgs e)
@@ -157,5 +167,7 @@ namespace AirdPro.Forms
         {
             Program.conversionConfigHandler.detach(this);
         }
+
+        
     }
 }

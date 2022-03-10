@@ -38,14 +38,14 @@ namespace AirdPro.Forms
             this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.btnOK = new System.Windows.Forms.Button();
+            this.btnAddAndContinue = new System.Windows.Forms.Button();
             this.btnFileSelector = new System.Windows.Forms.Button();
             this.tbPaths = new System.Windows.Forms.TextBox();
             this.betterFolderBrowser = new WK.Libraries.BetterFolderBrowserNS.BetterFolderBrowser(this.components);
             this.btnFolderSelector = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.btnEditConfigs = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnAddAndClose = new System.Windows.Forms.Button();
             this.lblConfigOutputPath = new System.Windows.Forms.Label();
             this.btnConfigChooseFolder = new System.Windows.Forms.Button();
             this.tbOutputPath = new System.Windows.Forms.TextBox();
@@ -143,17 +143,17 @@ namespace AirdPro.Forms
             this.radioButton2.Text = "DIA";
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
-            // btnOK
+            // btnAddAndContinue
             // 
-            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnOK.Location = new System.Drawing.Point(505, 408);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(172, 38);
-            this.btnOK.TabIndex = 3;
-            this.btnOK.Text = "Add and Continue";
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            this.btnAddAndContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddAndContinue.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnAddAndContinue.Location = new System.Drawing.Point(505, 408);
+            this.btnAddAndContinue.Name = "btnAddAndContinue";
+            this.btnAddAndContinue.Size = new System.Drawing.Size(172, 38);
+            this.btnAddAndContinue.TabIndex = 3;
+            this.btnAddAndContinue.Text = "Add and Continue";
+            this.btnAddAndContinue.UseVisualStyleBackColor = true;
+            this.btnAddAndContinue.Click += new System.EventHandler(this.btnAddAndContinue_Click);
             // 
             // btnFileSelector
             // 
@@ -215,16 +215,17 @@ namespace AirdPro.Forms
             this.btnEditConfigs.UseVisualStyleBackColor = true;
             this.btnEditConfigs.Click += new System.EventHandler(this.btnCreateConfigs_Click);
             // 
-            // button1
+            // btnAddAndClose
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(683, 408);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(181, 38);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Add and Close";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnAddAndClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddAndClose.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnAddAndClose.Location = new System.Drawing.Point(683, 408);
+            this.btnAddAndClose.Name = "btnAddAndClose";
+            this.btnAddAndClose.Size = new System.Drawing.Size(181, 38);
+            this.btnAddAndClose.TabIndex = 7;
+            this.btnAddAndClose.Text = "Add and Close";
+            this.btnAddAndClose.UseVisualStyleBackColor = true;
+            this.btnAddAndClose.Click += new System.EventHandler(this.btnAddAndClose_Click);
             // 
             // lblConfigOutputPath
             // 
@@ -291,11 +292,11 @@ namespace AirdPro.Forms
             this.Controls.Add(this.lblConfigOutputPath);
             this.Controls.Add(this.btnConfigChooseFolder);
             this.Controls.Add(this.tbOutputPath);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnAddAndClose);
             this.Controls.Add(this.btnEditConfigs);
             this.Controls.Add(this.btnFolderSelector);
             this.Controls.Add(this.btnFileSelector);
-            this.Controls.Add(this.btnOK);
+            this.Controls.Add(this.btnAddAndContinue);
             this.Controls.Add(this.gBoxMode);
             this.Controls.Add(this.tbPaths);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -316,7 +317,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.RadioButton radioButton4;
         private System.Windows.Forms.RadioButton radioButton3;
         private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.Button btnOK;
+        private System.Windows.Forms.Button btnAddAndContinue;
         private System.Windows.Forms.Button btnFileSelector;
         private System.Windows.Forms.TextBox tbPaths;
         private WK.Libraries.BetterFolderBrowserNS.BetterFolderBrowser betterFolderBrowser;
@@ -325,7 +326,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.RadioButton radioButton6;
         private System.Windows.Forms.RadioButton radioButton5;
         private System.Windows.Forms.Button btnEditConfigs;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnAddAndClose;
         private System.Windows.Forms.Label lblConfigOutputPath;
         private System.Windows.Forms.Button btnConfigChooseFolder;
         public System.Windows.Forms.TextBox tbOutputPath;
