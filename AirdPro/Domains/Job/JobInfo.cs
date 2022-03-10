@@ -15,6 +15,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using AirdPro.Constants;
+using AirdPro.Domains.FileLogs;
 using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Domains.Convert

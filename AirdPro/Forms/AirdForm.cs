@@ -43,7 +43,6 @@ namespace AirdPro.Forms
         {
             this.Text = SoftwareInfo.getVersion() + " - " + NetworkUtil.getHostIP();
             RedisClient.getInstance();
-            AppLog.WriteInfo("Test log info",true);
             ConvertTaskManager.getInstance().run();
         }
 
