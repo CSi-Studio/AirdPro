@@ -15,6 +15,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using AirdPro.Constants;
+using AirdPro.Domains.FileLogs;
 
 namespace AirdPro.Domains.Convert
 { 
@@ -90,6 +91,7 @@ namespace AirdPro.Domains.Convert
         {
             Log log = new Log(DateTime.Now, content);
             logs.Add(log);
+            AppLog.WriteInfo(content,true);
             Console.Out.WriteLine(content);
             return this;
         }
@@ -111,6 +113,7 @@ namespace AirdPro.Domains.Convert
             {
                 Log log = new Log(DateTime.Now, content);
                 logs.Add(log);
+                AppLog.WriteInfo(content, true);
                 Console.Out.WriteLine(content);
             }
            
@@ -122,6 +125,7 @@ namespace AirdPro.Domains.Convert
             progress.Report("Error");
             Log log = new Log(DateTime.Now, content);
             logs.Add(log);
+            AppLog.WriteError(content, true);
             Console.Out.WriteLine(content);
             throw new Exception(content);
         }

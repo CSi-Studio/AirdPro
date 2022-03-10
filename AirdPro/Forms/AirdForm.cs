@@ -17,6 +17,7 @@ using AirdPro.Utils;
 using System;
 using System.Collections;
 using System.Windows.Forms;
+using AirdPro.Domains.FileLogs;
 
 namespace AirdPro.Forms
 {
@@ -79,6 +80,7 @@ namespace AirdPro.Forms
             this.tbFolderPath.Text = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             this.tbOperator.Text = Environment.UserName;
             RedisClient.getInstance();
+            AppLog.WriteInfo("Test log info",true);
             ConvertTaskManager.getInstance().run();
         }
 
