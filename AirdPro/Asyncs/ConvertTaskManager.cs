@@ -55,15 +55,15 @@ namespace AirdPro.Asyncs
         public void pushJob(JobInfo job)
         {
             //如果该任务已经在任务列表了,那么将它从任务列表里面移除
-            if (errorJob.Contains(job.jobId))
+            if (errorJob.Contains(job.getJobId()))
             {
-                errorJob.Remove(job.jobId);
+                errorJob.Remove(job.getJobId());
             }
             
-            if (!jobTable.Contains(job.jobId))
+            if (!jobTable.Contains(job.getJobId()))
             {
                 jobQueue.Enqueue(job);
-                jobTable.Add(job.jobId, job);
+                jobTable.Add(job.getJobId(), job);
             }
         }
 
@@ -119,7 +119,7 @@ namespace AirdPro.Asyncs
                             else
                             {
                                 jobInfo.setStatus(ERROR);
-                                errorJob.Add(jobInfo.jobId, jobInfo);
+                                errorJob.Add(jobInfo.getJobId(), jobInfo);
                             }
                         }
                     }

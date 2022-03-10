@@ -82,7 +82,6 @@ namespace AirdPro.Forms
             }
             ConversionConfig config = buildConfigInfo();
             Program.conversionConfigHandler.saveConfig(tbNameConfig.Text, config);
-            MessageBox.Show("Save Config Successful!");
         }
 
         //设置所有参数

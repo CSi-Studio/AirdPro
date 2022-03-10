@@ -15,6 +15,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using AirdPro.Constants;
+using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Domains.Convert
 { 
@@ -23,7 +24,7 @@ namespace AirdPro.Domains.Convert
         //以C:/data/plasma.wiff为例
 
         //C:/data/plasma.wiff,作为job的ID存在
-        public string jobId;
+        private string jobId;
         //任务状态
         public string status;
         //文件的输出路径
@@ -53,16 +54,9 @@ namespace AirdPro.Domains.Convert
         //出现异常错误的时候进行重试的次数,每一个job会被自动重试2次
         public int retryTimes = 3;
 
-
         public bool refreshReport = true;
 
-        public CancellationTokenSource cancellationTokenSource;
-
-        public JobInfo()
-        {
-        }
-
-        public JobInfo(string inputPath, string outputPath, string type, ConversionConfig config, ListViewItem item)
+        public JobInfo(string inputPath, string outputPath, string type, ConversionConfig config)
         {
             this.jobId = inputPath + config.GetHashCode();
             this.inputPath = inputPath;
@@ -78,15 +72,17 @@ namespace AirdPro.Domains.Convert
             airdFileName = FileNameUtil.buildOutputFileName(inputPath);
             airdFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".aird");
             airdJsonFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".json");
-            cancellationTokenSource = new CancellationTokenSource();
+            status = ProcessingStatus.WAITING;
+        }
+
+        public void bindItem(ListViewItem item)
+        {
             progress = new Progress<string>((progressValue) =>
             {
-                item.SubItems[2].Text = progressValue;
+                item.SubItems[3].Text = progressValue;
             });
-            item.SubItems[4].Text = config.getCompressorStr();
-            item.SubItems[5].Text = outputPath;
-            item.SubItems[3].Text = System.Convert.ToString(Math.Log10(config.mzPrecision))+"dp";
-            status = ProcessingStatus.WAITING;
+            item.ToolTipText = inputPath;
+            item.Tag = this;
         }
 
         public JobInfo log(string content)
@@ -144,6 +140,41 @@ namespace AirdPro.Domains.Convert
             jobInfo += "mzPrecision:" + config.mzPrecision + "\r\n";
             // jobInfo += "compressor:" + (jobParams.airdAlgorithm == 1 ? "ZDPD" : ("Stack-ZDPD:" + (Math.Pow(2, jobParams.digit))) + " Layers\r\n");
             return jobInfo;
+        }
+
+        public string getJobId()
+        {
+            if (jobId.IsNullOrEmpty())
+            {
+                jobId = inputPath.GetHashCode().ToString() +
+                        (outputPath + config.getCompressorStr() + config.getMzPrecisionStr() +
+                         config.ignoreZeroIntensity).GetHashCode();
+            }
+
+            return jobId;
+        }
+
+        public ListViewItem buildItem()
+        {
+            string[] itemInfo = new string[]{
+                getJobId(),
+                inputPath,
+                type,
+                status,
+                config.getMzPrecisionStr(),
+                config.getCompressorStr(),
+                config.ignoreZeroIntensity.ToString(),
+                config.suffix,
+                outputPath
+            };
+            ListViewItem item = new ListViewItem(itemInfo);
+            progress = new Progress<string>((progressValue) =>
+            {
+                item.SubItems[3].Text = progressValue;
+            });
+            item.ToolTipText = outputPath;
+            item.Tag = this;
+            return item;
         }
     }
 }

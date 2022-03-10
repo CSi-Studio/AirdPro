@@ -61,7 +61,7 @@
             // headerConfigName
             // 
             this.headerConfigName.Text = "Config Name";
-            this.headerConfigName.Width = 200;
+            this.headerConfigName.Width = 208;
             // 
             // lvConfigList
             // 
@@ -81,7 +81,7 @@
             this.lvConfigList.Name = "lvConfigList";
             this.lvConfigList.ShowGroups = false;
             this.lvConfigList.ShowItemToolTips = true;
-            this.lvConfigList.Size = new System.Drawing.Size(195, 355);
+            this.lvConfigList.Size = new System.Drawing.Size(214, 355);
             this.lvConfigList.TabIndex = 8;
             this.lvConfigList.UseCompatibleStateImageBehavior = false;
             this.lvConfigList.View = System.Windows.Forms.View.Details;

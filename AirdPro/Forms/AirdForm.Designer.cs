@@ -63,6 +63,8 @@ namespace AirdPro.Forms
             this.menuConfiguration = new System.Windows.Forms.ToolStripMenuItem();
             this.configList = new System.Windows.Forms.ToolStripMenuItem();
             this.globalSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblRedisMessageCenter = new System.Windows.Forms.Label();
+            this.btnRedisDisconnect = new System.Windows.Forms.Button();
             this.lblRedisStatus = new System.Windows.Forms.Label();
             this.btnRedisConnect = new System.Windows.Forms.Button();
             this.lblConvert = new System.Windows.Forms.Label();
@@ -72,8 +74,6 @@ namespace AirdPro.Forms
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
             this.redisConsumer = new System.Windows.Forms.Timer(this.components);
-            this.btnRedisDisconnect = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -94,7 +94,7 @@ namespace AirdPro.Forms
             // 
             // container.Panel2
             // 
-            this.container.Panel2.Controls.Add(this.label1);
+            this.container.Panel2.Controls.Add(this.lblRedisMessageCenter);
             this.container.Panel2.Controls.Add(this.btnRedisDisconnect);
             this.container.Panel2.Controls.Add(this.lblRedisStatus);
             this.container.Panel2.Controls.Add(this.btnRedisConnect);
@@ -250,6 +250,19 @@ namespace AirdPro.Forms
             resources.ApplyResources(this.globalSettingsToolStripMenuItem, "globalSettingsToolStripMenuItem");
             this.globalSettingsToolStripMenuItem.Click += new System.EventHandler(this.globalSettingsToolStripMenuItem_Click);
             // 
+            // lblRedisMessageCenter
+            // 
+            resources.ApplyResources(this.lblRedisMessageCenter, "lblRedisMessageCenter");
+            this.lblRedisMessageCenter.Name = "lblRedisMessageCenter";
+            // 
+            // btnRedisDisconnect
+            // 
+            resources.ApplyResources(this.btnRedisDisconnect, "btnRedisDisconnect");
+            this.btnRedisDisconnect.FlatAppearance.BorderSize = 0;
+            this.btnRedisDisconnect.Name = "btnRedisDisconnect";
+            this.btnRedisDisconnect.UseVisualStyleBackColor = true;
+            this.btnRedisDisconnect.Click += new System.EventHandler(this.btnRedisDisconnect_Click);
+            // 
             // lblRedisStatus
             // 
             resources.ApplyResources(this.lblRedisStatus, "lblRedisStatus");
@@ -300,19 +313,6 @@ namespace AirdPro.Forms
             // 
             this.redisConsumer.Interval = 3000;
             this.redisConsumer.Tick += new System.EventHandler(this.redisConsumer_Tick);
-            // 
-            // btnRedisDisconnect
-            // 
-            resources.ApplyResources(this.btnRedisDisconnect, "btnRedisDisconnect");
-            this.btnRedisDisconnect.FlatAppearance.BorderSize = 0;
-            this.btnRedisDisconnect.Name = "btnRedisDisconnect";
-            this.btnRedisDisconnect.UseVisualStyleBackColor = true;
-            this.btnRedisDisconnect.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
             // 
             // AirdForm
             // 
@@ -370,7 +370,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Button btnRedisConnect;
         private System.Windows.Forms.Label lblRedisStatus;
         private System.Windows.Forms.Button btnRedisDisconnect;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblRedisMessageCenter;
     }
 }
 

@@ -24,7 +24,7 @@ namespace AirdPro.Forms
 {
     public partial class AirdForm : Form
     {
-        ArrayList currentFiles = new ArrayList();
+        ArrayList jobIdList = new ArrayList();
         VendorFileSelectorForm fileSelector;
         ConversionConfigListForm configListForm; 
         GlobalSettingForm globalSettingForm;
@@ -57,7 +57,7 @@ namespace AirdPro.Forms
             foreach (ListViewItem item in lvFileList.Items)
             {
                 JobInfo jobInfo = (JobInfo)item.Tag;
-                if (!ConvertTaskManager.getInstance().jobTable.ContainsKey(jobInfo.jobId))
+                if (!ConvertTaskManager.getInstance().jobTable.ContainsKey(jobInfo.getJobId()))
                 {
                     item.Tag = jobInfo;
                     ConvertTaskManager.getInstance().pushJob(jobInfo);
@@ -74,29 +74,21 @@ namespace AirdPro.Forms
             }
         }
 
-        public void addFile(string inputPath, string type, ConversionConfig config)
+        public void addFile(string inputPath, string outputPath, string type, ConversionConfig config)
         {
             if (!inputPath.IsNullOrEmpty())
             {
-                JobInfo jobInfo = new JobInfo()
-                {
-                    inputPath = inputPath,
-                    type = type,
-                    status = ProcessingStatus.WAITING,
-                    config = config
-                };
-                
-                ListViewItem item = new ListViewItem(buildItem(jobInfo));
-                item.ToolTipText = inputPath;
+                JobInfo jobInfo = new JobInfo(inputPath, outputPath, type, config);
+                ListViewItem item = jobInfo.buildItem();
+            
                 lvFileList.Items.Add(item);
-                currentFiles.Add(inputPath);
-                
+                jobIdList.Add(jobInfo.getJobId());
             }
         }
 
         private void removeFile(ListViewItem fileItem)
         {
-            currentFiles.Remove(fileItem.Text);
+            jobIdList.Remove(fileItem.Text);
             fileItem.Remove();
             ConvertTaskManager.getInstance().jobTable.Remove(fileItem.Text);
         }
@@ -229,7 +221,11 @@ namespace AirdPro.Forms
         {
             foreach (ListViewItem item in lvFileList.SelectedItems)
             {
-                removeFile(item);
+                JobInfo jobInfo = (JobInfo) item.Tag;
+                if (!jobInfo.status.Equals(ProcessingStatus.RUNNING))
+                {
+                    removeFile(item);
+                }
             }
         }
 
@@ -242,7 +238,7 @@ namespace AirdPro.Forms
                     if (item.SubItems[2].Text.Equals("Finished"))
                     {
                         item.Remove();
-                        currentFiles.Remove(item.SubItems[0].Text);
+                        jobIdList.Remove(item.SubItems[0].Text);
                         ConvertTaskManager.getInstance().jobTable.Remove(item.SubItems[0].Text);
                     }
                 }
@@ -252,22 +248,6 @@ namespace AirdPro.Forms
         private void cleanErrorsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ConvertTaskManager.getInstance().errorJob.Clear();
-        }
-
-        public string[] buildItem(JobInfo jobInfo)
-        {
-            string[] itemInfo = new string[]{
-                jobInfo.jobId,
-                jobInfo.inputPath,
-                jobInfo.type, 
-                jobInfo.status,
-                jobInfo.config.getMzPrecisionStr(),
-                jobInfo.config.getCompressorStr(),
-                jobInfo.config.ignoreZeroIntensity.ToString(),
-                jobInfo.config.suffix,
-                jobInfo.outputPath
-            };
-            return itemInfo;
         }
 
         private void redisConsumer_Tick(object sender, EventArgs e)
@@ -314,7 +294,7 @@ namespace AirdPro.Forms
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnRedisDisconnect_Click(object sender, EventArgs e)
         {
             RedisClient.getInstance().disconnect();
             updateRedisStatus(false);

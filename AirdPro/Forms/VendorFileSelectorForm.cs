@@ -25,7 +25,7 @@ namespace AirdPro.Forms
             InitializeComponent();
             Program.conversionConfigHandler.attach(this);
             betterFolderBrowser.Multiselect = true;
-            tbConfigFolderPath.Text = Program.globalConfigHandler.config.defaultOpenPath;
+            tbOutputPath.Text = Program.globalConfigHandler.config.defaultOpenPath;
             cbConfig.SelectedIndex = 0;
         }
 
@@ -65,14 +65,22 @@ namespace AirdPro.Forms
                 return;
             }
 
-            if (cbConfig.SelectedText.IsNullOrEmpty())
+            if (cbConfig.SelectedItem.ToString().IsNullOrEmpty() || !Program.conversionConfigHandler.configMap.ContainsKey(cbConfig.SelectedItem.ToString()))
             {
                 MessageBox.Show("Choose one conversion config first!");
                 return;
             }
 
-            var paths = tbPaths.Text;
+            ConversionConfig config = Program.conversionConfigHandler.configMap[cbConfig.SelectedItem.ToString()];
 
+            string outputPath = tbOutputPath.Text;
+            if (outputPath.IsNullOrEmpty())
+            {
+                MessageBox.Show("Set your output path first!");
+                return;
+            }
+
+            var paths = tbPaths.Text;
             if (paths.IsNullOrEmpty())
             {
                 MessageBox.Show("Input your own paths first!");
@@ -82,7 +90,7 @@ namespace AirdPro.Forms
 
             foreach (var path in pathList)
             {
-                Program.airdForm.addFile(path, expType, Program.conversionConfigHandler.configMap[cbConfig.SelectedText]);
+                Program.airdForm.addFile(path, outputPath, expType, config);
             }
             
             this.Hide();
@@ -138,10 +146,10 @@ namespace AirdPro.Forms
         private void btnConfigChooseFolder_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
-            fbd.SelectedPath = tbConfigFolderPath.Text;
+            fbd.SelectedPath = tbOutputPath.Text;
             if (fbd.ShowDialog(this) == DialogResult.OK)
             {
-                tbConfigFolderPath.Text = fbd.SelectedPath;
+                tbOutputPath.Text = fbd.SelectedPath;
             }
         }
 

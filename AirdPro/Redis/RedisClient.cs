@@ -130,17 +130,10 @@ namespace AirdPro.Redis
                             conversionConfig.suffix = "";
                             conversionConfig.creator = "LIMSPro";
                             conversionConfig.mzPrecision = (int)Math.Ceiling(1 / job.mzPrecision);
-                 
-                            string[] items = new string[5];
-                            ListViewItem item = new ListViewItem(items);
-                            item.SubItems[0].Text = job.sourcePath;
-                            item.SubItems[1].Text = job.type;
-                            item.SubItems[2].Text = "Waiting";
-                            item.SubItems[3].Text = Convert.ToString(job.mzPrecision);
-                            item.SubItems[4].Text = job.getAirdAlgorithmStr();
-                            item.SubItems[5].Text = job.targetPath;
-                            JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath,job.type, conversionConfig, item);
-                            if (!ConvertTaskManager.getInstance().jobTable.Contains(jobInfo.jobId))
+                            
+                            JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
+                            ListViewItem item = jobInfo.buildItem();
+                            if (!ConvertTaskManager.getInstance().jobTable.Contains(jobInfo.getJobId()))
                             {
                                 Program.airdForm.lvFileList.Items.Add(item);
                                 ConvertTaskManager.getInstance().pushJob(jobInfo);
