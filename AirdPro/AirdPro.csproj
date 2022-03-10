@@ -156,7 +156,6 @@
     <Compile Include="Converters\DDAPasef .cs" />
     <Compile Include="Converters\DIAPasef.cs" />
     <Compile Include="Domains\FileLogs\APPLog.cs" />
-    <Compile Include="Domains\FileLogs\APPLogTest.cs" />
     <Compile Include="Storage\Config\GlobalConfig.cs" />
     <Compile Include="Domains\Job\JobInfo.cs" />
     <Compile Include="Storage\Config\ConversionConfig.cs" />
