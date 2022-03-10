@@ -142,7 +142,6 @@ namespace AirdPro.Domains.Convert
             jobInfo += "threadId:" + threadId + "\r\n";
             jobInfo += "ThreadAccelerate:" + config.threadAccelerate + "\r\n";
             jobInfo += "mzPrecision:" + config.mzPrecision + "\r\n";
-            // jobInfo += "compressor:" + (jobParams.airdAlgorithm == 1 ? "ZDPD" : ("Stack-ZDPD:" + (Math.Pow(2, jobParams.digit))) + " Layers\r\n");
             return jobInfo;
         }
 
