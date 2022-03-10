@@ -26,7 +26,6 @@ namespace AirdPro.Forms
         VendorFileSelectorForm fileSelector;
         ConversionConfigListForm conversionConfigListForm; 
         GlobalSettingForm globalSettingForm;
-        private ConversionConfigHandler handler = new ConversionConfigHandler();
 
         public AirdForm()
         {
@@ -118,17 +117,13 @@ namespace AirdPro.Forms
                         mzPrecision = (int) Math.Pow(10, int.Parse(cbMzPrecision.Text)),
                         stack = cbStack.Checked, // 是否使用stack layer压缩算法
                         mzIntComp = (IntCompType) Enum.Parse(typeof(IntCompType), mzIntComp.SelectedItem.ToString()),
-                        mzByteComp =
-                            (ByteCompType) Enum.Parse(typeof(ByteCompType), mzByteComp.SelectedItem.ToString()),
-                        intByteComp =
-                            (ByteCompType) Enum.Parse(typeof(ByteCompType), intByteComp.SelectedItem.ToString()),
+                        mzByteComp = (ByteCompType) Enum.Parse(typeof(ByteCompType), mzByteComp.SelectedItem.ToString()),
+                        intByteComp = (ByteCompType) Enum.Parse(typeof(ByteCompType), intByteComp.SelectedItem.ToString()),
                         digit = (int) Math.Log(int.Parse(cbStackLayers.SelectedItem.ToString()), 2),
                         outputPath = tbFolderPath.Text
                     };
-                    item.Tag = conversionConfig;
-                    JobInfo jobInfo = new JobInfo(item.SubItems[0].Text,
-                        item.SubItems[1].Text, conversionConfig, item);
-
+                    JobInfo jobInfo = new JobInfo(item.SubItems[0].Text, item.SubItems[1].Text, conversionConfig, item);
+                    item.Tag = jobInfo;
                     ConvertTaskManager.getInstance().pushJob(jobInfo);
                 }
             }
@@ -293,8 +288,9 @@ namespace AirdPro.Forms
             }
 
             int index = lvFileList.FocusedItem.Index; //获取选中Item的索引值
-            ConversionConfig conversionConfig = (ConversionConfig) lvFileList.Items[index].Tag;
-            ConversionConfigListForm conversionConfigListForm = new ConversionConfigListForm(this.handler,this,this.fileSelector);
+            JobInfo jobInfo = (JobInfo)lvFileList.Items[index].Tag;
+            ConversionConfig conversionConfig = jobInfo.config;
+            ConversionConfigListForm conversionConfigListForm = new ConversionConfigListForm(this.fileSelector);
 
             conversionConfigListForm.tbConfigFolderPath.Text = conversionConfig.outputPath;
             conversionConfigListForm.tbConfigFileNameSuffix.Text = conversionConfig.suffix;
@@ -323,7 +319,7 @@ namespace AirdPro.Forms
         {
             if (conversionConfigListForm == null || conversionConfigListForm.IsDisposed)
             {
-                conversionConfigListForm = new ConversionConfigListForm(this.handler, this, this.fileSelector);
+                conversionConfigListForm = new ConversionConfigListForm();
                 Program.conversionConfigHandler.attach(conversionConfigListForm);
             }
 

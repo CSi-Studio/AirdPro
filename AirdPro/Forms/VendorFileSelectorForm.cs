@@ -24,14 +24,12 @@ namespace AirdPro.Forms
     public partial class VendorFileSelectorForm : Form, Observer<Dictionary<string, ConversionConfig>>
     {
         private bool isClearInfo = false;
-        Dictionary<string, ConversionConfig> configMap = new Dictionary<string, ConversionConfig>();
         private ConversionConfigListForm configListForm;
-        private ConversionConfigHandler handler = new ConversionConfigHandler();
-        private AirdForm airdForm = new AirdForm();
+
         public VendorFileSelectorForm()
         {
             InitializeComponent();
-            configListForm = new ConversionConfigListForm(this.handler, airdForm,this);
+            configListForm = new ConversionConfigListForm(this);
             betterFolderBrowser.Multiselect = true;
 
         }
@@ -83,7 +81,7 @@ namespace AirdPro.Forms
 
             foreach (var path in pathList)
             {
-                airdForm.addFile(path, expType);
+                Program.airdForm.addFile(path, expType);
             }
             
             this.Hide();
@@ -117,20 +115,18 @@ namespace AirdPro.Forms
             }
         }
 
-        //选择已有参数，或者重新编辑参数，并将参数应用于选中的单个或一批文件
-        private void btnCreateConfigs_Click(object sender, EventArgs e)
-        {
-            
-            configListForm.Show();
-            using (StreamReader file = File.OpenText(Path.Combine(Environment.CurrentDirectory, "ConversionConfig.json")))
-            {
-                JsonSerializer serializer = new JsonSerializer();
-                configMap = (Dictionary<string, ConversionConfig>)serializer.Deserialize(file,
-                    typeof(Dictionary<string, ConversionConfig>));
-            }
-            isClearInfo = true;
-
-        }
+         //选择已有参数，或者重新编辑参数，并将参数应用于选中的单个或一批文件
+         private void btnCreateConfigs_Click(object sender, EventArgs e)
+         {
+             configListForm.Show();
+             using (StreamReader file = File.OpenText(Path.Combine(Environment.CurrentDirectory, "ConversionConfig.json")))
+             {
+                 JsonSerializer serializer = new JsonSerializer();
+                 Program.conversionConfigHandler.configMap = (Dictionary<string, ConversionConfig>)serializer.Deserialize(file,
+                     typeof(Dictionary<string, ConversionConfig>));
+             }
+             isClearInfo = true;
+         }
 
         public void update(Dictionary<string, ConversionConfig> configMap)
         {

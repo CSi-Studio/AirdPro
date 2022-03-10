@@ -51,6 +51,9 @@ namespace AirdPro.Forms
             this.headerPrecision = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerCompressor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerOutput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.contentMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.rerun = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnDeleteFiles = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
             this.menuConfig = new System.Windows.Forms.MenuStrip();
@@ -85,15 +88,12 @@ namespace AirdPro.Forms
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
-            this.contentMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.rerun = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
             this.container.SuspendLayout();
-            this.menuConfig.SuspendLayout();
             this.contentMenu.SuspendLayout();
+            this.menuConfig.SuspendLayout();
             this.SuspendLayout();
             // 
             // container
@@ -203,6 +203,27 @@ namespace AirdPro.Forms
             // headerOutput
             // 
             resources.ApplyResources(this.headerOutput, "headerOutput");
+            // 
+            // contentMenu
+            // 
+            this.contentMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contentMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.rerun,
+            this.removeToolStripMenuItem});
+            this.contentMenu.Name = "contentMenu";
+            resources.ApplyResources(this.contentMenu, "contentMenu");
+            // 
+            // rerun
+            // 
+            this.rerun.Name = "rerun";
+            resources.ApplyResources(this.rerun, "rerun");
+            this.rerun.Click += new System.EventHandler(this.rerun_Click);
+            // 
+            // removeToolStripMenuItem
+            // 
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            resources.ApplyResources(this.removeToolStripMenuItem, "removeToolStripMenuItem");
+            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
             // 
             // btnDeleteFiles
             // 
@@ -424,27 +445,6 @@ namespace AirdPro.Forms
             resources.ApplyResources(this.ofd, "ofd");
             this.ofd.Multiselect = true;
             // 
-            // contentMenu
-            // 
-            this.contentMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contentMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.rerun,
-            this.removeToolStripMenuItem});
-            this.contentMenu.Name = "contentMenu";
-            resources.ApplyResources(this.contentMenu, "contentMenu");
-            // 
-            // rerun
-            // 
-            this.rerun.Name = "rerun";
-            resources.ApplyResources(this.rerun, "rerun");
-            this.rerun.Click += new System.EventHandler(this.rerun_Click);
-            // 
-            // removeToolStripMenuItem
-            // 
-            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            resources.ApplyResources(this.removeToolStripMenuItem, "removeToolStripMenuItem");
-            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
-            // 
             // AirdForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -460,9 +460,9 @@ namespace AirdPro.Forms
             this.container.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.container)).EndInit();
             this.container.ResumeLayout(false);
+            this.contentMenu.ResumeLayout(false);
             this.menuConfig.ResumeLayout(false);
             this.menuConfig.PerformLayout();
-            this.contentMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

@@ -141,7 +141,7 @@ namespace AirdPro.Redis
                             JobInfo jobInfo = new JobInfo(job.sourcePath,job.type, conversionConfig, item);
                             if (!ConvertTaskManager.getInstance().jobTable.Contains(jobInfo.jobId))
                             {
-                                Program.mainForm.lvFileList.Items.Add(item);
+                                Program.airdForm.lvFileList.Items.Add(item);
                                 ConvertTaskManager.getInstance().pushJob(jobInfo);
                                 needToExe = true;
                             }

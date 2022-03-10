@@ -43,6 +43,17 @@ public class ConversionConfigHandler:Subject<Dictionary<string, ConversionConfig
         notify();
     }
 
+    public void removeConfig(List<string> nameList)
+    {
+        foreach (string name in nameList)
+        {
+            this.configMap.Remove(name);
+        }
+       
+        save();
+        notify();
+    }
+
     public void save()
     {
         if (!File.Exists(CONFIG_PATH))
