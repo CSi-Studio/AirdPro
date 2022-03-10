@@ -62,7 +62,7 @@ namespace AirdPro.Domains.Convert
 
         public JobInfo(string inputPath, string type, ConversionConfig config, ListViewItem item)
         {
-            this.jobId = inputPath + config;
+            this.jobId = inputPath + config.GetHashCode();
             this.inputPath = inputPath;
             this.type = type;
             // 二代压缩算法StackZDPD目前不支持COMMON模式

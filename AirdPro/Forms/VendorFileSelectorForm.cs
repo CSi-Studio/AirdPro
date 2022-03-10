@@ -11,7 +11,6 @@
 using System;
 using System.Windows.Forms;
 using AirdPro.Constants;
-using AirdPro.Domains.Job;
 using ThermoFisher.CommonCore.Data;
 using AirdPro.Storage;
 using AirdPro.Domains.Convert;
@@ -25,13 +24,13 @@ namespace AirdPro.Forms
     {
         private bool isClearInfo = false;
         private ConversionConfigListForm configListForm;
+        private ConversionConfig config;
 
         public VendorFileSelectorForm()
         {
             InitializeComponent();
             configListForm = new ConversionConfigListForm(this);
             betterFolderBrowser.Multiselect = true;
-
         }
 
         private void CustomPathForm_Load(object sender, EventArgs e)
@@ -70,6 +69,12 @@ namespace AirdPro.Forms
                 return;
             }
 
+            if (config == null)
+            {
+                MessageBox.Show("Choose one conversion config first!");
+                return;
+            }
+
             var paths = tbPaths.Text;
 
             if (paths.IsNullOrEmpty())
@@ -81,7 +86,7 @@ namespace AirdPro.Forms
 
             foreach (var path in pathList)
             {
-                Program.airdForm.addFile(path, expType);
+                Program.airdForm.addFile(path, expType, config);
             }
             
             this.Hide();

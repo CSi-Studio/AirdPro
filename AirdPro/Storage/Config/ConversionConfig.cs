@@ -81,9 +81,14 @@ namespace AirdPro.Domains.Convert
         {
         }
 
-        public String getCompressorStr()
+        public string getCompressorStr()
         {
             return mzIntComp + "|" + mzByteComp + "|" + intByteComp;
+        }
+
+        public string getMzPrecisionStr()
+        {
+           return ((int) Math.Log10(mzPrecision)).ToString();
         }
     }
 }

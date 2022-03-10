@@ -24,7 +24,7 @@ namespace AirdPro.Forms
     {
         ArrayList currentFiles = new ArrayList();
         VendorFileSelectorForm fileSelector;
-        ConversionConfigListForm conversionConfigListForm; 
+        ConversionConfigListForm configListForm; 
         GlobalSettingForm globalSettingForm;
 
         public AirdForm()
@@ -34,70 +34,18 @@ namespace AirdPro.Forms
 
         public void applyNowConfig(ConversionConfig conversionConfig)
         {
-            tbFolderPath.Text = conversionConfig.outputPath;
-            cbIsZeroIntensityIgnore.Checked = conversionConfig.ignoreZeroIntensity;
-            cbThreadAccelerate.Checked = conversionConfig.threadAccelerate;
-            cbMzPrecision.Text = conversionConfig.mzPrecision.ToString();
-            mzIntComp.Text = conversionConfig.mzIntComp.ToString();
-            mzByteComp.Text = conversionConfig.mzByteComp.ToString();
-            intByteComp.Text = conversionConfig.intByteComp.ToString();
-            if (conversionConfig.stack)
-            {
-                cbStack.Checked = true;
-                cbStackLayers.Text = Math.Pow(2, conversionConfig.digit).ToString();
-            }
-            else
-            {
-                cbStack.Checked = false;
-            }
-
-            tbFileNameSuffix.Text = conversionConfig.suffix;
-            tbOperator.Text = conversionConfig.creator;
+            
         }
 
         private void ProproForm_Load(object sender, EventArgs e)
         {
             this.Text = SoftwareInfo.getVersion() + " - " + NetworkUtil.getHostIP();
-            this.cbMzPrecision.SelectedIndex = 1; //默认选择精确到小数点后5位的精度
-
-            foreach (string intCompType in Enum.GetNames(typeof(IntCompType)))
-            {
-                this.mzIntComp.Items.Add(intCompType);
-            }
-
-            foreach (string byteCompType in Enum.GetNames(typeof(ByteCompType)))
-            {
-                this.mzByteComp.Items.Add(byteCompType);
-                this.intByteComp.Items.Add(byteCompType);
-            }
-
-            this.mzIntComp.SelectedItem = IntCompType.IBP.ToString(); //mz数组默认选择IBP的压缩内核
-            this.mzByteComp.SelectedItem = ByteCompType.Zlib.ToString(); //mz数组默认选择Zlib的压缩内核
-            this.intByteComp.SelectedItem = ByteCompType.Zlib.ToString(); //intensity数组默认选择Zlib的压缩内核
-            this.cbStackLayers.SelectedItem = "256"; //当使用Stack Layer堆叠的时候,默认堆叠256层
-            this.tbFolderPath.Text = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            this.tbOperator.Text = Environment.UserName;
             RedisClient.getInstance();
             ConvertTaskManager.getInstance().run();
         }
 
-        private void btnChooseFolder_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            if (fbd.ShowDialog(this) == DialogResult.OK)
-            {
-                tbFolderPath.Text = fbd.SelectedPath;
-            }
-        }
-
         private void btnConvert_Click(object sender, EventArgs e)
         {
-            if (tbFolderPath.Text == "")
-            {
-                MessageBox.Show("Output folder path is empty!");
-                return;
-            }
-
             if (lvFileList.Items.Count == 0)
             {
                 MessageBox.Show("No file is selected!");
@@ -106,23 +54,9 @@ namespace AirdPro.Forms
 
             foreach (ListViewItem item in lvFileList.Items)
             {
-                if (!ConvertTaskManager.getInstance().jobTable.ContainsKey(item.SubItems[0].Text))
+                JobInfo jobInfo = (JobInfo)item.Tag;
+                if (!ConvertTaskManager.getInstance().jobTable.ContainsKey(jobInfo.jobId))
                 {
-                    ConversionConfig conversionConfig = new ConversionConfig
-                    {
-                        ignoreZeroIntensity = cbIsZeroIntensityIgnore.Checked,
-                        threadAccelerate = cbThreadAccelerate.Checked,
-                        suffix = tbFileNameSuffix.Text,
-                        creator = tbOperator.Text,
-                        mzPrecision = (int) Math.Pow(10, int.Parse(cbMzPrecision.Text)),
-                        stack = cbStack.Checked, // 是否使用stack layer压缩算法
-                        mzIntComp = (IntCompType) Enum.Parse(typeof(IntCompType), mzIntComp.SelectedItem.ToString()),
-                        mzByteComp = (ByteCompType) Enum.Parse(typeof(ByteCompType), mzByteComp.SelectedItem.ToString()),
-                        intByteComp = (ByteCompType) Enum.Parse(typeof(ByteCompType), intByteComp.SelectedItem.ToString()),
-                        digit = (int) Math.Log(int.Parse(cbStackLayers.SelectedItem.ToString()), 2),
-                        outputPath = tbFolderPath.Text
-                    };
-                    JobInfo jobInfo = new JobInfo(item.SubItems[0].Text, item.SubItems[1].Text, conversionConfig, item);
                     item.Tag = jobInfo;
                     ConvertTaskManager.getInstance().pushJob(jobInfo);
                 }
@@ -138,38 +72,29 @@ namespace AirdPro.Forms
             }
         }
 
-        private void btnDeleteFiles_Click(object sender, EventArgs e)
+        public void addFile(string inputPath, string type, ConversionConfig config)
         {
-            foreach (ListViewItem item in lvFileList.SelectedItems)
+            if (inputPath != "")
             {
-                removeFile(item);
-            }
-        }
-
-        public void addFile(string fileName, string expType)
-        {
-            if (fileName != "")
-            {
-                ListViewItem item = new ListViewItem(new string[] {fileName, expType, "Waiting", "", "", ""});
-                item.ToolTipText = fileName;
+                JobInfo jobInfo = new JobInfo()
+                {
+                    inputPath = inputPath,
+                    type = type,
+                    status = ProcessingStatus.WAITING,
+                    config = config
+                };
+                
+                ListViewItem item = new ListViewItem(buildItem(jobInfo));
+                item.ToolTipText = inputPath;
                 lvFileList.Items.Add(item);
-                currentFiles.Add(fileName);
-                lblFileSelectedInfo.Text = currentFiles.Count + " files selected";
+                currentFiles.Add(inputPath);
+                
             }
         }
 
         private void removeFile(ListViewItem fileItem)
         {
             currentFiles.Remove(fileItem.Text);
-            if (currentFiles.Count == 0)
-            {
-                lblFileSelectedInfo.Text = "No file is selected";
-            }
-            else
-            {
-                lblFileSelectedInfo.Text = currentFiles.Count + " files are selected";
-            }
-
             fileItem.Remove();
             ConvertTaskManager.getInstance().jobTable.Remove(fileItem.Text);
         }
@@ -241,44 +166,6 @@ namespace AirdPro.Forms
             }
         }
 
-        private void btnClear_Click(object sender, EventArgs e)
-        {
-            if (lvFileList.Items.Count != 0)
-            {
-                foreach (ListViewItem item in lvFileList.Items)
-                {
-                    if (item.SubItems[2].Text.Equals("Finished"))
-                    {
-                        item.Remove();
-                        currentFiles.Remove(item.SubItems[0].Text);
-                        ConvertTaskManager.getInstance().jobTable.Remove(item.SubItems[0].Text);
-                    }
-                }
-            }
-        }
-
-        private void cbIsZeroIntensityIgnore_CheckedChanged(object sender, EventArgs e)
-        {
-            showFileSuffix();
-        }
-
-        public void showFileSuffix()
-        {
-            string suffix = "";
-
-            if (!cbIsZeroIntensityIgnore.Checked)
-            {
-                suffix += "_with_zero";
-            }
-
-            tbFileNameSuffix.Text = suffix;
-        }
-
-        private void btnClearError_Click(object sender, EventArgs e)
-        {
-            ConvertTaskManager.getInstance().errorJob.Clear();
-        }
-
         //查看列表选中对象的详细参数
         private void lvFileList_DoubleClick(object sender, EventArgs e)
         {
@@ -289,41 +176,26 @@ namespace AirdPro.Forms
 
             int index = lvFileList.FocusedItem.Index; //获取选中Item的索引值
             JobInfo jobInfo = (JobInfo)lvFileList.Items[index].Tag;
-            ConversionConfig conversionConfig = jobInfo.config;
-            ConversionConfigListForm conversionConfigListForm = new ConversionConfigListForm(this.fileSelector);
+            ConversionConfig config = jobInfo.config;
 
-            conversionConfigListForm.tbConfigFolderPath.Text = conversionConfig.outputPath;
-            conversionConfigListForm.tbConfigFileNameSuffix.Text = conversionConfig.suffix;
-            conversionConfigListForm.tbConfigOperator.Text = conversionConfig.creator;
-            conversionConfigListForm.cbConfigIsZeroIntensityIgnore.Checked = conversionConfig.ignoreZeroIntensity;
-            conversionConfigListForm.cbConfigThreadAccelerate.Checked = conversionConfig.threadAccelerate;
-            conversionConfigListForm.cbConfigMzPrecision.Text = Math.Log10(conversionConfig.mzPrecision).ToString();
-            conversionConfigListForm.configMzIntComp.Text = conversionConfig.mzIntComp.ToString();
-            conversionConfigListForm.configMzByteComp.Text = conversionConfig.mzByteComp.ToString();
-            conversionConfigListForm.configIntByteComp.Text = conversionConfig.intByteComp.ToString();
-            if (conversionConfig.stack)
+            if (configListForm == null || configListForm.IsDisposed)
             {
-                conversionConfigListForm.cbConfigStack.Checked = true;
-                conversionConfigListForm.cbConfigStackLayers.Text = Math.Pow(2, conversionConfig.digit).ToString();
+                configListForm = new ConversionConfigListForm(this.fileSelector);
             }
-            else
-            {
-                conversionConfigListForm.cbConfigStack.Checked = false;
-            }
-
-            conversionConfigListForm.Show();
+            configListForm.showConfig("",config);
+            configListForm.Show();
         }
 
         //打开输入的定制化参数列表
         private void openConversionConfigListForm(object sender, EventArgs e)
         {
-            if (conversionConfigListForm == null || conversionConfigListForm.IsDisposed)
+            if (configListForm == null || configListForm.IsDisposed)
             {
-                conversionConfigListForm = new ConversionConfigListForm();
-                Program.conversionConfigHandler.attach(conversionConfigListForm);
+                configListForm = new ConversionConfigListForm();
+                Program.conversionConfigHandler.attach(configListForm);
             }
 
-            conversionConfigListForm.Show();
+            configListForm.Show();
         }
 
         private void selectFilesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -360,5 +232,43 @@ namespace AirdPro.Forms
                 removeFile(item);
             }
         }
+
+        private void cleanFinishedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (lvFileList.Items.Count != 0)
+            {
+                foreach (ListViewItem item in lvFileList.Items)
+                {
+                    if (item.SubItems[2].Text.Equals("Finished"))
+                    {
+                        item.Remove();
+                        currentFiles.Remove(item.SubItems[0].Text);
+                        ConvertTaskManager.getInstance().jobTable.Remove(item.SubItems[0].Text);
+                    }
+                }
+            }
+        }
+
+        private void cleanErrorsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ConvertTaskManager.getInstance().errorJob.Clear();
+        }
+
+        public string[] buildItem(JobInfo jobInfo)
+        {
+            string[] itemInfo = new string[]{
+                jobInfo.jobId,
+                jobInfo.inputPath,
+                jobInfo.type, 
+                jobInfo.status,
+                jobInfo.config.getMzPrecisionStr(),
+                jobInfo.config.getCompressorStr(),
+                jobInfo.config.ignoreZeroIntensity.ToString(),
+                jobInfo.config.suffix,
+                jobInfo.config.outputPath
+            };
+            return itemInfo;
+        }
+        
     }
 }
