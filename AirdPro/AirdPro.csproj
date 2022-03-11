@@ -156,10 +156,11 @@
     <Compile Include="Converters\Common.cs" />
     <Compile Include="Converters\DDAPasef .cs" />
     <Compile Include="Converters\DIAPasef.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+    <Compile Include="Forms\HelpAboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\HelpAboutForm.Designer.cs">
+      <DependentUpon>HelpAboutForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Domains\FileLogs\APPLog.cs" />
     <Compile Include="Storage\Config\GlobalConfig.cs" />
@@ -214,13 +215,15 @@
     <EmbeddedResource Include="Forms\GlobalSettingForm.resx">
       <DependentUpon>GlobalSettingForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\HelpAboutForm.resx">
+      <DependentUpon>HelpAboutForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\VendorFileSelectorForm.resx">
       <DependentUpon>VendorFileSelectorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="log4net.config">
@@ -244,6 +247,7 @@
     <Content Include="Properties\DisConnect.png" />
     <Content Include="Properties\Connected.png" />
     <Content Include="Properties\Convert.png" />
+    <None Include="Resources\AirdProIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">

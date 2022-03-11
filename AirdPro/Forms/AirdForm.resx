@@ -295,7 +295,7 @@
     <value>Settings</value>
   </data>
   <data name="compouterToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>111, 22</value>
   </data>
   <data name="compouterToolStripMenuItem.Text" xml:space="preserve">
     <value>About</value>
@@ -479,6 +479,9 @@
   </data>
   <data name="lblConvert.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 10pt</value>
+  </data>
+  <data name="lblConvert.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="lblConvert.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 2</value>
@@ -1761,6 +1764,9 @@
         ////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////8=
 </value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>AirdPro</value>

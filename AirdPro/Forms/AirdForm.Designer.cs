@@ -68,14 +68,14 @@ namespace AirdPro.Forms
             this.lblRedisMessageCenter = new System.Windows.Forms.Label();
             this.btnRedisDisconnect = new System.Windows.Forms.Button();
             this.lblRedisStatus = new System.Windows.Forms.Label();
-            this.btnRedisConnect = new System.Windows.Forms.Button();
             this.lblConvert = new System.Windows.Forms.Label();
-            this.btnConvert = new System.Windows.Forms.Button();
             this.tbConsole = new System.Windows.Forms.TextBox();
             this.logTimer = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
             this.redisConsumer = new System.Windows.Forms.Timer(this.components);
+            this.btnRedisConnect = new System.Windows.Forms.Button();
+            this.btnConvert = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -284,28 +284,10 @@ namespace AirdPro.Forms
             this.lblRedisStatus.ForeColor = System.Drawing.Color.Red;
             this.lblRedisStatus.Name = "lblRedisStatus";
             // 
-            // btnRedisConnect
-            // 
-            this.btnRedisConnect.BackgroundImage = global::AirdPro.Properties.Resources.DisConnect;
-            resources.ApplyResources(this.btnRedisConnect, "btnRedisConnect");
-            this.btnRedisConnect.FlatAppearance.BorderSize = 0;
-            this.btnRedisConnect.Name = "btnRedisConnect";
-            this.btnRedisConnect.UseVisualStyleBackColor = true;
-            this.btnRedisConnect.Click += new System.EventHandler(this.btnRedisConnect_Click);
-            // 
             // lblConvert
             // 
             resources.ApplyResources(this.lblConvert, "lblConvert");
             this.lblConvert.Name = "lblConvert";
-            // 
-            // btnConvert
-            // 
-            this.btnConvert.BackgroundImage = global::AirdPro.Properties.Resources.Convert;
-            resources.ApplyResources(this.btnConvert, "btnConvert");
-            this.btnConvert.FlatAppearance.BorderSize = 0;
-            this.btnConvert.Name = "btnConvert";
-            this.btnConvert.UseVisualStyleBackColor = true;
-            this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
             // 
             // tbConsole
             // 
@@ -328,6 +310,24 @@ namespace AirdPro.Forms
             // 
             this.redisConsumer.Interval = 3000;
             this.redisConsumer.Tick += new System.EventHandler(this.redisConsumer_Tick);
+            // 
+            // btnRedisConnect
+            // 
+            this.btnRedisConnect.BackgroundImage = global::AirdPro.Properties.Resources.DisConnect;
+            resources.ApplyResources(this.btnRedisConnect, "btnRedisConnect");
+            this.btnRedisConnect.FlatAppearance.BorderSize = 0;
+            this.btnRedisConnect.Name = "btnRedisConnect";
+            this.btnRedisConnect.UseVisualStyleBackColor = true;
+            this.btnRedisConnect.Click += new System.EventHandler(this.btnRedisConnect_Click);
+            // 
+            // btnConvert
+            // 
+            this.btnConvert.BackgroundImage = global::AirdPro.Properties.Resources.Convert;
+            resources.ApplyResources(this.btnConvert, "btnConvert");
+            this.btnConvert.FlatAppearance.BorderSize = 0;
+            this.btnConvert.Name = "btnConvert";
+            this.btnConvert.UseVisualStyleBackColor = true;
+            this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
             // 
             // AirdForm
             // 
