@@ -247,7 +247,7 @@
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="selectFilesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>116, 22</value>
   </data>
   <data name="selectFilesToolStripMenuItem.Text" xml:space="preserve">
     <value>Import</value>
@@ -295,7 +295,7 @@
     <value>Settings</value>
   </data>
   <data name="compouterToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="compouterToolStripMenuItem.Text" xml:space="preserve">
     <value>About</value>
@@ -1830,9 +1830,6 @@
         ////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////8=
 </value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>AirdPro</value>

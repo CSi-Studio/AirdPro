@@ -28,6 +28,7 @@ namespace AirdPro.Forms
         VendorFileSelectorForm fileSelector;
         ConversionConfigListForm configListForm; 
         GlobalSettingForm globalSettingForm;
+        HelpAboutForm aboutForm;
 
         public AirdForm()
         {
@@ -309,6 +310,15 @@ namespace AirdPro.Forms
 
             fileSelector.clearInfos();
             fileSelector.Show();
+        }
+
+        private void compouterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (aboutForm == null || aboutForm.IsDisposed)
+            {
+                aboutForm = new HelpAboutForm();
+            }
+            aboutForm.Show();
         }
     }
 }
