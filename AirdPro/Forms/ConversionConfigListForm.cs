@@ -168,19 +168,21 @@ namespace AirdPro.Forms
            
         }
 
-        private void lblConfigOutputPath_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tbConfigFolderPath_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void ConversionConfigListForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Program.conversionConfigHandler.detach(this);
+        }
+
+        private void cbConfigStack_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbConfigStack.Checked)
+            {
+                cbConfigStackLayers.Visible = true;
+            }
+            else
+            {
+                cbConfigStackLayers.Visible = false;
+            }
         }
     }
 }

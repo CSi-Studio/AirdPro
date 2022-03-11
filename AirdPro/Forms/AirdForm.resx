@@ -247,7 +247,7 @@
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="selectFilesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>116, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="selectFilesToolStripMenuItem.Text" xml:space="preserve">
     <value>Import</value>
@@ -295,7 +295,7 @@
     <value>Settings</value>
   </data>
   <data name="compouterToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>111, 22</value>
   </data>
   <data name="compouterToolStripMenuItem.Text" xml:space="preserve">
     <value>About</value>
@@ -342,6 +342,72 @@
   <data name="&gt;&gt;container.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="lblImport.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblImport.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 10pt</value>
+  </data>
+  <data name="lblImport.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblImport.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 2</value>
+  </data>
+  <data name="lblImport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>54, 20</value>
+  </data>
+  <data name="lblImport.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="lblImport.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="&gt;&gt;lblImport.Name" xml:space="preserve">
+    <value>lblImport</value>
+  </data>
+  <data name="&gt;&gt;lblImport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblImport.Parent" xml:space="preserve">
+    <value>container.Panel2</value>
+  </data>
+  <data name="&gt;&gt;lblImport.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnImport.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="btnImport.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 12pt</value>
+  </data>
+  <data name="btnImport.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnImport.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 23</value>
+  </data>
+  <data name="btnImport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 50</value>
+  </data>
+  <data name="btnImport.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="btnImport.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;btnImport.Name" xml:space="preserve">
+    <value>btnImport</value>
+  </data>
+  <data name="&gt;&gt;btnImport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnImport.Parent" xml:space="preserve">
+    <value>container.Panel2</value>
+  </data>
+  <data name="&gt;&gt;btnImport.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="lblRedisMessageCenter.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -373,7 +439,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblRedisMessageCenter.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="btnRedisDisconnect.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
@@ -406,7 +472,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;btnRedisDisconnect.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="lblRedisStatus.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -439,7 +505,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblRedisStatus.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="btnRedisConnect.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
@@ -472,7 +538,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;btnRedisConnect.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="lblConvert.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -480,8 +546,11 @@
   <data name="lblConvert.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 10pt</value>
   </data>
+  <data name="lblConvert.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="lblConvert.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 2</value>
+    <value>84, 2</value>
   </data>
   <data name="lblConvert.Size" type="System.Drawing.Size, System.Drawing">
     <value>61, 20</value>
@@ -502,7 +571,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;lblConvert.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="btnConvert.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
@@ -514,7 +583,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnConvert.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 23</value>
+    <value>89, 23</value>
   </data>
   <data name="btnConvert.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
@@ -535,13 +604,13 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;btnConvert.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="tbConsole.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="tbConsole.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-6, 79</value>
+    <value>6, 79</value>
   </data>
   <data name="tbConsole.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -568,7 +637,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbConsole.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="container.Panel2.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 9pt</value>

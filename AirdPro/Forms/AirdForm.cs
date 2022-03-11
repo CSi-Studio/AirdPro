@@ -299,5 +299,16 @@ namespace AirdPro.Forms
             RedisClient.getInstance().disconnect();
             updateRedisStatus(false);
         }
+
+        private void btnImport_Click(object sender, EventArgs e)
+        {
+            if (fileSelector == null || fileSelector.IsDisposed)
+            {
+                fileSelector = new VendorFileSelectorForm();
+            }
+
+            fileSelector.clearInfos();
+            fileSelector.Show();
+        }
     }
 }
