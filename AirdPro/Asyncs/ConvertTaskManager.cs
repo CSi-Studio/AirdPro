@@ -14,7 +14,6 @@ using AirdPro.Domains.Convert;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AirdPro.Algorithms;
@@ -43,13 +42,11 @@ namespace AirdPro.Asyncs
         //需要进行处理的Job
         ConcurrentQueue<JobInfo> jobQueue = new ConcurrentQueue<JobInfo>();
         TaskFactory fac = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(1));
-
+        
         //存放全部的Job信息,用于根据JobId判定当前的Job是否已经存在
         public Hashtable jobTable = new Hashtable();
         //当某一个Job执行异常的时候会存储入本队列中
         public Hashtable errorJob = new Hashtable();
-
-        public Hashtable finishedJob = new Hashtable();
 
         //加入一个新的转换任务
         public void pushJob(JobInfo job)

@@ -98,7 +98,7 @@ namespace AirdPro.Forms
             printLog();
         }
 
-        private void timer_Tick(object sender, EventArgs e)
+        private void logTimer_Tick(object sender, EventArgs e)
         {
             printLog();
             refresh();
@@ -235,7 +235,7 @@ namespace AirdPro.Forms
             {
                 foreach (ListViewItem item in lvFileList.Items)
                 {
-                    if (item.SubItems[2].Text.Equals("Finished"))
+                    if (item.SubItems[ItemName.PROGRESS].Text.Equals("Finished"))
                     {
                         item.Remove();
                         jobIdList.Remove(item.SubItems[0].Text);

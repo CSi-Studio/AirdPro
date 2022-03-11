@@ -63,6 +63,8 @@ namespace AirdPro.Forms
             this.menuConfiguration = new System.Windows.Forms.ToolStripMenuItem();
             this.configList = new System.Windows.Forms.ToolStripMenuItem();
             this.globalSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.compouterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblRedisMessageCenter = new System.Windows.Forms.Label();
             this.btnRedisDisconnect = new System.Windows.Forms.Button();
             this.lblRedisStatus = new System.Windows.Forms.Label();
@@ -70,7 +72,7 @@ namespace AirdPro.Forms
             this.lblConvert = new System.Windows.Forms.Label();
             this.btnConvert = new System.Windows.Forms.Button();
             this.tbConsole = new System.Windows.Forms.TextBox();
-            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.logTimer = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
             this.redisConsumer = new System.Windows.Forms.Timer(this.components);
@@ -194,7 +196,8 @@ namespace AirdPro.Forms
             this.menuConfig.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.filesToolStripMenuItem,
             this.editToolStripMenuItem,
-            this.menuConfiguration});
+            this.menuConfiguration,
+            this.helpToolStripMenuItem});
             this.menuConfig.Name = "menuConfig";
             // 
             // filesToolStripMenuItem
@@ -250,6 +253,18 @@ namespace AirdPro.Forms
             resources.ApplyResources(this.globalSettingsToolStripMenuItem, "globalSettingsToolStripMenuItem");
             this.globalSettingsToolStripMenuItem.Click += new System.EventHandler(this.globalSettingsToolStripMenuItem_Click);
             // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.compouterToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
+            // 
+            // compouterToolStripMenuItem
+            // 
+            this.compouterToolStripMenuItem.Name = "compouterToolStripMenuItem";
+            resources.ApplyResources(this.compouterToolStripMenuItem, "compouterToolStripMenuItem");
+            // 
             // lblRedisMessageCenter
             // 
             resources.ApplyResources(this.lblRedisMessageCenter, "lblRedisMessageCenter");
@@ -299,10 +314,10 @@ namespace AirdPro.Forms
             this.tbConsole.ForeColor = System.Drawing.SystemColors.Window;
             this.tbConsole.Name = "tbConsole";
             // 
-            // timer
+            // logTimer
             // 
-            this.timer.Enabled = true;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            this.logTimer.Enabled = true;
+            this.logTimer.Tick += new System.EventHandler(this.logTimer_Tick);
             // 
             // ofd
             // 
@@ -342,7 +357,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.TextBox tbConsole;
         private System.Windows.Forms.ColumnHeader headerFilePath;
         private System.Windows.Forms.ColumnHeader headerProgress;
-        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Timer logTimer;
         private System.Windows.Forms.ColumnHeader headerType;
         public System.Windows.Forms.ListView lvFileList;
         private System.Windows.Forms.ColumnHeader headerOutput;
@@ -371,6 +386,8 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Label lblRedisStatus;
         private System.Windows.Forms.Button btnRedisDisconnect;
         private System.Windows.Forms.Label lblRedisMessageCenter;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem compouterToolStripMenuItem;
     }
 }
 

@@ -145,6 +145,7 @@
     <Compile Include="Constants\Activator.cs" />
     <Compile Include="Constants\ByteOrder.cs" />
     <Compile Include="Constants\FileFormat.cs" />
+    <Compile Include="Constants\ItemName.cs" />
     <Compile Include="Constants\MobilityType.cs" />
     <Compile Include="Constants\RedisConst.cs" />
     <Compile Include="Constants\Const.cs" />
