@@ -250,6 +250,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <Content Include="Properties\Import.png" />
     <Content Include="Properties\DisConnect.png" />
     <Content Include="Properties\Connected.png" />
     <Content Include="Properties\Convert.png" />

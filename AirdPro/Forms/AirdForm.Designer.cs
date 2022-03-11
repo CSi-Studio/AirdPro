@@ -65,6 +65,8 @@ namespace AirdPro.Forms
             this.globalSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compouterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblImport = new System.Windows.Forms.Label();
+            this.btnImport = new System.Windows.Forms.Button();
             this.lblRedisMessageCenter = new System.Windows.Forms.Label();
             this.btnRedisDisconnect = new System.Windows.Forms.Button();
             this.lblRedisStatus = new System.Windows.Forms.Label();
@@ -96,6 +98,8 @@ namespace AirdPro.Forms
             // 
             // container.Panel2
             // 
+            this.container.Panel2.Controls.Add(this.lblImport);
+            this.container.Panel2.Controls.Add(this.btnImport);
             this.container.Panel2.Controls.Add(this.lblRedisMessageCenter);
             this.container.Panel2.Controls.Add(this.btnRedisDisconnect);
             this.container.Panel2.Controls.Add(this.lblRedisStatus);
@@ -265,6 +269,20 @@ namespace AirdPro.Forms
             this.compouterToolStripMenuItem.Name = "compouterToolStripMenuItem";
             resources.ApplyResources(this.compouterToolStripMenuItem, "compouterToolStripMenuItem");
             // 
+            // lblImport
+            // 
+            resources.ApplyResources(this.lblImport, "lblImport");
+            this.lblImport.Name = "lblImport";
+            // 
+            // btnImport
+            // 
+            this.btnImport.BackgroundImage = global::AirdPro.Properties.Resources.Import;
+            resources.ApplyResources(this.btnImport, "btnImport");
+            this.btnImport.FlatAppearance.BorderSize = 0;
+            this.btnImport.Name = "btnImport";
+            this.btnImport.UseVisualStyleBackColor = true;
+            this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
+            // 
             // lblRedisMessageCenter
             // 
             resources.ApplyResources(this.lblRedisMessageCenter, "lblRedisMessageCenter");
@@ -388,6 +406,8 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Label lblRedisMessageCenter;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem compouterToolStripMenuItem;
+        private System.Windows.Forms.Label lblImport;
+        private System.Windows.Forms.Button btnImport;
     }
 }
 
