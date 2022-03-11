@@ -163,6 +163,11 @@
       <DependentUpon>HelpAboutForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Domains\FileLogs\APPLog.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Storage\Config\GlobalConfig.cs" />
     <Compile Include="Domains\Job\JobInfo.cs" />
     <Compile Include="Storage\Config\ConversionConfig.cs" />
@@ -224,6 +229,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="log4net.config">
