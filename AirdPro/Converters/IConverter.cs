@@ -77,7 +77,6 @@ namespace AirdPro.Converters
         {
             stopwatch.Stop();
             jobInfo.refreshReport = true;
-            jobInfo.retryTimes = 0;
             jobInfo.log("Finished! Total Cost: " + stopwatch.Elapsed.TotalSeconds + " seconds", "Finished");
         }
 

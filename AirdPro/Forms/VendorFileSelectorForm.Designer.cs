@@ -223,7 +223,7 @@ namespace AirdPro.Forms
             this.btnAddAndClose.Name = "btnAddAndClose";
             this.btnAddAndClose.Size = new System.Drawing.Size(181, 38);
             this.btnAddAndClose.TabIndex = 7;
-            this.btnAddAndClose.Text = "Add and Close";
+            this.btnAddAndClose.Text = "Add";
             this.btnAddAndClose.UseVisualStyleBackColor = true;
             this.btnAddAndClose.Click += new System.EventHandler(this.btnAddAndClose_Click);
             // 

@@ -47,7 +47,7 @@ namespace AirdPro.Forms
             }
         }
 
-        private void addToList()
+        private bool addToList()
         {
             string expType = null;
             for (int i = 0; i < gBoxMode.Controls.Count; i++)
@@ -62,13 +62,13 @@ namespace AirdPro.Forms
             if (expType == null)
             {
                 MessageBox.Show("Choose one acquisition mode first!");
-                return;
+                return false;
             }
 
             if (cbConfig.SelectedItem.ToString().IsNullOrEmpty() || !Program.conversionConfigHandler.configMap.ContainsKey(cbConfig.SelectedItem.ToString()))
             {
                 MessageBox.Show("Choose one conversion config first!");
-                return;
+                return false;
             }
 
             ConversionConfig config = Program.conversionConfigHandler.configMap[cbConfig.SelectedItem.ToString()];
@@ -77,14 +77,14 @@ namespace AirdPro.Forms
             if (outputPath.IsNullOrEmpty())
             {
                 MessageBox.Show("Set your output path first!");
-                return;
+                return false;
             }
 
             var paths = tbPaths.Text;
             if (paths.IsNullOrEmpty())
             {
                 MessageBox.Show("Input your own paths first!");
-                return;
+                return false;
             }
             var pathList = paths.Split(Const.Change_Line.ToCharArray());
 
@@ -92,18 +92,26 @@ namespace AirdPro.Forms
             {
                 Program.airdForm.addFile(path, outputPath, expType, config);
             }
+
+            return true;
         }
         private void btnAddAndContinue_Click(object sender, EventArgs e)
         {
-            addToList();
-            clearInfos();
+            bool addResult = addToList();
+            if (addResult)
+            {
+                clearInfos();
+            }
         }
 
         private void btnAddAndClose_Click(object sender, EventArgs e)
         {
-            addToList();
-            clearInfos();
-            Hide();
+            bool addResult = addToList();
+            if (addResult)
+            {
+                clearInfos();
+                Hide();
+            } 
         }
 
         private void btnFileSelector_Click(object sender, EventArgs e)
@@ -146,13 +154,6 @@ namespace AirdPro.Forms
             }
         }
 
-        public void applyNowFileSelector(string configName, ConversionConfig config)
-        {
-            tbPaths.Text = tbPaths.Text + configName + Const.Change_Line;
-            tbPaths.Text = tbPaths.Text + config.creator + Const.Change_Line;
-            tbPaths.Text = tbPaths.Text + config.mzPrecision + Const.Change_Line;
-        }
-
         private void btnConfigChooseFolder_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
@@ -167,7 +168,5 @@ namespace AirdPro.Forms
         {
             Program.conversionConfigHandler.detach(this);
         }
-
-        
     }
 }

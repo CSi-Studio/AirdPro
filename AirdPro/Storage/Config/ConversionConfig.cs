@@ -48,17 +48,17 @@ namespace AirdPro.Domains.Convert
         /**
          * 用于mz压缩的int数组压缩方法
          */
-        public IntCompType mzIntComp = IntCompType.IBP;
+        public IntCompType mzIntComp = IntCompType.IVB;
 
         /**
          * 用于mz压缩的byte数组压缩方法
          */
-        public ByteCompType mzByteComp = ByteCompType.Zlib;
+        public ByteCompType mzByteComp = ByteCompType.Zstd;
 
         /**
          * 用于intensity压缩的byte数组压缩方法
          */
-        public ByteCompType intByteComp = ByteCompType.Zlib;
+        public ByteCompType intByteComp = ByteCompType.Zstd;
 
         /**
          * 是否使用stack layer压缩

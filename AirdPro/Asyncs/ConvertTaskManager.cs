@@ -14,6 +14,7 @@ using AirdPro.Domains.Convert;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AirdPro.Algorithms;
@@ -40,23 +41,21 @@ namespace AirdPro.Asyncs
         }
 
         //需要进行处理的Job
-        ConcurrentQueue<JobInfo> jobQueue = new ConcurrentQueue<JobInfo>();
+        Queue<JobInfo> jobQueue = new Queue<JobInfo>();
         TaskFactory fac = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(1));
         
         //存放全部的Job信息,用于根据JobId判定当前的Job是否已经存在
         public Hashtable jobTable = new Hashtable();
-        //当某一个Job执行异常的时候会存储入本队列中
-        public Hashtable errorJob = new Hashtable();
+        public Hashtable finishedTable = new Hashtable();
 
         //加入一个新的转换任务
         public void pushJob(JobInfo job)
         {
-            //如果该任务已经在任务列表了,那么将它从任务列表里面移除
-            if (errorJob.Contains(job.getJobId()))
+            if (finishedTable.ContainsKey(job.getJobId()))
             {
-                errorJob.Remove(job.getJobId());
+                finishedTable.Remove(job.getJobId());
             }
-            
+
             if (!jobTable.Contains(job.getJobId()))
             {
                 jobQueue.Enqueue(job);
@@ -66,32 +65,29 @@ namespace AirdPro.Asyncs
 
         public void clear()
         {
-            jobQueue = new ConcurrentQueue<JobInfo>();
+            jobQueue.Clear();
             jobTable.Clear();
         }
 
         public void run()
         {
-            bool again = true; //本次run执行完毕以后是否立即再执行一轮
-
-            while (again)
+            while (true)
             {
                 //如果队列中没有待执行的任务,那么进行休眠当前进程两秒
                 if (jobQueue.Count == 0)
                 {
-                    again = false;
                     return;
                 }
+
                 JobInfo jobInfo = null;
                 try
-                {
-                    jobQueue.TryDequeue(out jobInfo);
+                { 
+                    jobInfo = jobQueue.Dequeue();
                 }
                 catch { }
 
                 if (jobInfo == null)
                 {
-                    again = false;
                     return;
                 }
 
@@ -104,6 +100,7 @@ namespace AirdPro.Asyncs
                         {
                             jobInfo.setStatus(RUNNING);
                             tryConvert(jobInfo);
+                            jobInfo.retryTimes = 0; //成功转换以后不需要在重试
                         }
                         catch (Exception ex)
                         {
@@ -116,17 +113,18 @@ namespace AirdPro.Asyncs
                             else
                             {
                                 jobInfo.setStatus(ERROR);
-                                errorJob.Add(jobInfo.getJobId(), jobInfo);
                             }
                         }
                     }
+                    jobTable.Remove(jobInfo.getJobId());
+                    finishedTable.Add(jobInfo.getJobId(), jobInfo);
                 });
             }
         }
 
         public void tryConvert(JobInfo jobInfo)
         {
-            ICompressor comp = null;
+            ICompressor comp;
             IConverter converter = null;
             if (jobInfo.type.Equals(AirdType.DIA_SWATH))
             {

@@ -34,7 +34,7 @@ namespace AirdPro.Forms
             InitializeComponent();
         }
 
-        public void applyNowConfig(ConversionConfig conversionConfig)
+        public void applyConfig(ConversionConfig conversionConfig)
         {
             
         }
@@ -110,7 +110,7 @@ namespace AirdPro.Forms
             {
                 ListViewItem item = lvFileList.SelectedItems[lvFileList.SelectedItems.Count - 1];
                 string content = "";
-                JobInfo job = null;
+                JobInfo job;
                 if (ConvertTaskManager.getInstance().jobTable[item.Text] != null)
                 {
                     job = ConvertTaskManager.getInstance().jobTable[item.Text] as JobInfo;
@@ -123,9 +123,9 @@ namespace AirdPro.Forms
                     string jobInfo = job.getJsonInfo();
                     content += jobInfo + "\r\n";
                 }
-                else if (ConvertTaskManager.getInstance().errorJob[item.Text] != null)
+                else if (ConvertTaskManager.getInstance().finishedTable[item.Text] != null)
                 {
-                    job = ConvertTaskManager.getInstance().errorJob[item.Text] as JobInfo;
+                    job = ConvertTaskManager.getInstance().finishedTable[item.Text] as JobInfo;
 
                     for (int i = job.logs.Count - 1; i >= 0; i--)
                     {
@@ -169,15 +169,17 @@ namespace AirdPro.Forms
             }
 
             int index = lvFileList.FocusedItem.Index; //获取选中Item的索引值
-            JobInfo jobInfo = (JobInfo)lvFileList.Items[index].Tag;
+            ListViewItem item = lvFileList.Items[index];
+            JobInfo jobInfo = (JobInfo) (item.Tag);
             ConversionConfig config = jobInfo.config;
 
             if (configListForm == null || configListForm.IsDisposed)
             {
-                configListForm = new ConversionConfigListForm(this.fileSelector);
+                configListForm = new ConversionConfigListForm(item);
             }
-            configListForm.showConfig("",config);
+            //以下代码的顺序不能换,必须先Show,再执行showConfig操作
             configListForm.Show();
+            configListForm.showConfig("", config);
         }
 
         //打开输入的定制化参数列表
@@ -247,7 +249,7 @@ namespace AirdPro.Forms
 
         private void cleanErrorsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ConvertTaskManager.getInstance().errorJob.Clear();
+            ConvertTaskManager.getInstance().finishedTable.Clear();
         }
 
         private void redisConsumer_Tick(object sender, EventArgs e)
@@ -272,7 +274,7 @@ namespace AirdPro.Forms
             }
             else
             {
-                MessageBox.Show("Connect failed, please check the redis ip and port.");
+                MessageBox.Show("Connect failed, please check the redis host and port.");
                 redisConsumer.Enabled = false;
                 updateRedisStatus(false);
             }
@@ -282,13 +284,13 @@ namespace AirdPro.Forms
         {
             if (connected)
             {
-                btnRedisConnect.BackgroundImage = global::AirdPro.Properties.Resources.Connected;
+                btnRedisConnect.BackgroundImage = Properties.Resources.Connected;
                 lblRedisStatus.Text = "Connected";
                 lblRedisStatus.ForeColor = Color.Green;
             }
             else
             {
-                btnRedisConnect.BackgroundImage = global::AirdPro.Properties.Resources.DisConnect;
+                btnRedisConnect.BackgroundImage = Properties.Resources.DisConnect;
                 lblRedisStatus.Text = "Not Connected";
                 lblRedisStatus.ForeColor = Color.Red;
             }

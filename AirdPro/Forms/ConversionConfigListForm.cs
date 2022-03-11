@@ -3,30 +3,26 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using AirdPro.Domains.Convert;
 using AirdPro.Storage;
-using AirdPro.Domains.Job;
 using AirdPro.Constants;
-using Newtonsoft.Json;
-using System.IO;
 using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Forms
 {
     public partial class ConversionConfigListForm : Form, Observer<Dictionary<string, ConversionConfig>>
     {
-        public VendorFileSelectorForm vendor = null;
-
+        private ListViewItem item;
         public ConversionConfigListForm()
         {
             InitializeComponent();
             Program.conversionConfigHandler.attach(this);
-            btnApplyNow.Visible = false;
+            btnApply.Visible = false;
         }
 
-        public ConversionConfigListForm(VendorFileSelectorForm vendor)
+        public ConversionConfigListForm(ListViewItem item)
         {
             InitializeComponent();
-            this.vendor = vendor;
-            btnApplyNow.Visible = true;
+            this.item = item;
+            btnApply.Visible = true;
         }
 
         private void ConversionConfigListForm_Load(object sender, EventArgs e)
@@ -113,12 +109,20 @@ namespace AirdPro.Forms
         }
 
         //不存储进内存，直接应用于当前文件
-        private void btnApplyNow_Click(object sender, EventArgs e)
+        private void btnApply_Click(object sender, EventArgs e)
         {
             ConversionConfig config = buildConfigInfo();
-            Program.airdForm.applyNowConfig(config);
-            vendor.applyNowFileSelector(tbNameConfig.Text, config);
-            this.Hide();
+            JobInfo jobInfo = (JobInfo) (item.Tag);
+            jobInfo.config = config;
+            if (jobInfo.status.Equals(ProcessingStatus.RUNNING))
+            {
+                MessageBox.Show("Running Job cannot be modified");
+            }
+            else
+            {
+                jobInfo.refreshItem(item);   
+            }
+            Hide();
         }
 
         private void lvConfigList_SelectedIndexChanged(object sender, EventArgs e)
@@ -137,14 +141,14 @@ namespace AirdPro.Forms
             tbConfigOperator.Text = config.creator;
             cbConfigIsZeroIntensityIgnore.Checked = config.ignoreZeroIntensity;
             cbConfigThreadAccelerate.Checked = config.threadAccelerate;
-            cbConfigMzPrecision.Text = ((int) Math.Log10(config.mzPrecision)).ToString();
-            configMzIntComp.Text = config.mzIntComp.ToString();
-            configMzByteComp.Text = config.mzByteComp.ToString();
-            configIntByteComp.Text = config.intByteComp.ToString();
+            cbConfigMzPrecision.SelectedItem = ((int) Math.Log10(config.mzPrecision)).ToString();
+            configMzIntComp.SelectedItem = config.mzIntComp.ToString();
+            configMzByteComp.SelectedItem = config.mzByteComp.ToString();
+            configIntByteComp.SelectedItem = config.intByteComp.ToString();
             if (config.stack)
             {
                 cbConfigStack.Checked = true;
-                cbConfigStackLayers.Text = Convert.ToString(Math.Pow(2, config.digit));
+                cbConfigStackLayers.SelectedItem = Convert.ToString(Math.Pow(2, config.digit));
             }
             else
             {

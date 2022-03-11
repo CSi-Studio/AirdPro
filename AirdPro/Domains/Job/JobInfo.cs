@@ -59,7 +59,7 @@ namespace AirdPro.Domains.Convert
 
         public JobInfo(string inputPath, string outputPath, string type, ConversionConfig config)
         {
-            this.jobId = inputPath + config.GetHashCode();
+            jobId = inputPath + config.GetHashCode();
             this.inputPath = inputPath;
             this.type = type;
             this.outputPath = outputPath;
@@ -76,14 +76,27 @@ namespace AirdPro.Domains.Convert
             status = ProcessingStatus.WAITING;
         }
 
-        public void bindItem(ListViewItem item)
+        public ListViewItem buildItem()
         {
+            string[] itemInfo = new string[]{
+                getJobId(),
+                inputPath,
+                type,
+                status,
+                config.getMzPrecisionStr(),
+                config.getCompressorStr(),
+                config.ignoreZeroIntensity.ToString(),
+                config.suffix,
+                outputPath
+            };
+            ListViewItem item = new ListViewItem(itemInfo);
             progress = new Progress<string>((progressValue) =>
             {
-                item.SubItems[3].Text = progressValue;
+                item.SubItems[ItemName.PROGRESS].Text = progressValue;
             });
-            item.ToolTipText = inputPath;
+            item.ToolTipText = outputPath;
             item.Tag = this;
+            return item;
         }
 
         public JobInfo log(string content)
@@ -141,7 +154,8 @@ namespace AirdPro.Domains.Convert
             jobInfo += "suffix:" + config.suffix + "\r\n";
             jobInfo += "threadId:" + threadId + "\r\n";
             jobInfo += "ThreadAccelerate:" + config.threadAccelerate + "\r\n";
-            jobInfo += "mzPrecision:" + config.mzPrecision + "\r\n";
+            jobInfo += "mzPrecision:" + config.getMzPrecisionStr() + "\r\n";
+            jobInfo += "compressor:" + config.getCompressorStr() + "\r\n";
             return jobInfo;
         }
 
@@ -157,27 +171,16 @@ namespace AirdPro.Domains.Convert
             return jobId;
         }
 
-        public ListViewItem buildItem()
+        public void refreshItem(ListViewItem item)
         {
-            string[] itemInfo = new string[]{
-                getJobId(),
-                inputPath,
-                type,
-                status,
-                config.getMzPrecisionStr(),
-                config.getCompressorStr(),
-                config.ignoreZeroIntensity.ToString(),
-                config.suffix,
-                outputPath
-            };
-            ListViewItem item = new ListViewItem(itemInfo);
-            progress = new Progress<string>((progressValue) =>
-            {
-                item.SubItems[3].Text = progressValue;
-            });
-            item.ToolTipText = outputPath;
-            item.Tag = this;
-            return item;
+            item.SubItems[ItemName.JOB_ID].Text = jobId;
+            item.SubItems[ItemName.INPUT_PATH].Text = inputPath;
+            item.SubItems[ItemName.TYPE].Text = type;
+            item.SubItems[ItemName.PRECISION].Text = config.getMzPrecisionStr();
+            item.SubItems[ItemName.COMPRESSOR].Text = config.getCompressorStr();
+            item.SubItems[ItemName.IGNORE_ZERO].Text = config.ignoreZeroIntensity.ToString();
+            item.SubItems[ItemName.SUFFIX].Text = config.suffix;
+            item.SubItems[ItemName.OUTPUT_PATH].Text = outputPath;
         }
     }
 }
