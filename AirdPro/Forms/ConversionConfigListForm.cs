@@ -16,6 +16,7 @@ namespace AirdPro.Forms
             InitializeComponent();
             Program.conversionConfigHandler.attach(this);
             btnApply.Visible = false;
+            btnSaveToLocal.Visible = true;
         }
 
         public ConversionConfigListForm(ListViewItem item)
@@ -23,6 +24,7 @@ namespace AirdPro.Forms
             InitializeComponent();
             this.item = item;
             btnApply.Visible = true;
+            btnSaveToLocal.Visible = false;
         }
 
         private void ConversionConfigListForm_Load(object sender, EventArgs e)
