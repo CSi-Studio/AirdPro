@@ -19,7 +19,7 @@ namespace AirdPro.Constants
 
         public static string getVersion()
         {
-            return "AirdPro Version" + SoftwareInfo.VERSION;
+            return "AirdPro Version " + SoftwareInfo.VERSION;
         }
 
         public static string getDescription()

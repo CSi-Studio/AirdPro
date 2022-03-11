@@ -268,6 +268,7 @@ namespace AirdPro.Forms
             // 
             this.compouterToolStripMenuItem.Name = "compouterToolStripMenuItem";
             resources.ApplyResources(this.compouterToolStripMenuItem, "compouterToolStripMenuItem");
+            this.compouterToolStripMenuItem.Click += new System.EventHandler(this.compouterToolStripMenuItem_Click);
             // 
             // lblImport
             // 

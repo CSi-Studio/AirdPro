@@ -112,6 +112,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\ImportLibs\Interop.EDAL.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="pwiz_bindings_cli, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ImportLibs\pwiz_bindings_cli.dll</HintPath>
@@ -121,6 +122,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
@@ -156,12 +158,19 @@
     <Compile Include="Converters\Common.cs" />
     <Compile Include="Converters\DDAPasef .cs" />
     <Compile Include="Converters\DIAPasef.cs" />
+    <Compile Include="Domains\HardwareInfo\HardwareInfo.cs" />
+    <Compile Include="Domains\FileLogs\APPLog.cs" />
+    <Compile Include="Forms\HelpAboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\HelpAboutForm.Designer.cs">
+      <DependentUpon>HelpAboutForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Domains\FileLogs\APPLog.cs" />
     <Compile Include="Storage\Config\GlobalConfig.cs" />
     <Compile Include="Domains\Job\JobInfo.cs" />
     <Compile Include="Storage\Config\ConversionConfig.cs" />
@@ -214,6 +223,9 @@
     <EmbeddedResource Include="Forms\GlobalSettingForm.resx">
       <DependentUpon>GlobalSettingForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\HelpAboutForm.resx">
+      <DependentUpon>HelpAboutForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\VendorFileSelectorForm.resx">
       <DependentUpon>VendorFileSelectorForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -245,6 +257,9 @@
     <Content Include="Properties\DisConnect.png" />
     <Content Include="Properties\Connected.png" />
     <Content Include="Properties\Convert.png" />
+    <None Include="Resources\AirdProLogoBlack.png" />
+    <None Include="Resources\AirdProLogo.png" />
+    <None Include="Resources\AirdProIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
