@@ -55,7 +55,7 @@
             this.lblSoftwareVersion.AutoSize = true;
             this.lblSoftwareVersion.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSoftwareVersion.ForeColor = System.Drawing.Color.DimGray;
-            this.lblSoftwareVersion.Location = new System.Drawing.Point(173, 68);
+            this.lblSoftwareVersion.Location = new System.Drawing.Point(160, 12);
             this.lblSoftwareVersion.Name = "lblSoftwareVersion";
             this.lblSoftwareVersion.Size = new System.Drawing.Size(114, 19);
             this.lblSoftwareVersion.TabIndex = 3;
@@ -65,7 +65,7 @@
             // 
             this.lblCPUInfo.AutoSize = true;
             this.lblCPUInfo.Font = new System.Drawing.Font("Calibri", 10F);
-            this.lblCPUInfo.Location = new System.Drawing.Point(161, 326);
+            this.lblCPUInfo.Location = new System.Drawing.Point(161, 291);
             this.lblCPUInfo.Name = "lblCPUInfo";
             this.lblCPUInfo.Size = new System.Drawing.Size(50, 17);
             this.lblCPUInfo.TabIndex = 4;
@@ -75,7 +75,7 @@
             // 
             this.lblPhysicMemory.AutoSize = true;
             this.lblPhysicMemory.Font = new System.Drawing.Font("Calibri", 10F);
-            this.lblPhysicMemory.Location = new System.Drawing.Point(161, 366);
+            this.lblPhysicMemory.Location = new System.Drawing.Point(161, 331);
             this.lblPhysicMemory.Name = "lblPhysicMemory";
             this.lblPhysicMemory.Size = new System.Drawing.Size(103, 17);
             this.lblPhysicMemory.TabIndex = 5;
@@ -85,7 +85,7 @@
             // 
             this.lblOpVersion.AutoSize = true;
             this.lblOpVersion.Font = new System.Drawing.Font("Calibri", 10F);
-            this.lblOpVersion.Location = new System.Drawing.Point(161, 286);
+            this.lblOpVersion.Location = new System.Drawing.Point(161, 251);
             this.lblOpVersion.Name = "lblOpVersion";
             this.lblOpVersion.Size = new System.Drawing.Size(65, 17);
             this.lblOpVersion.TabIndex = 6;
@@ -95,7 +95,7 @@
             // 
             this.llLicense.AutoSize = true;
             this.llLicense.Font = new System.Drawing.Font("Calibri", 10F);
-            this.llLicense.Location = new System.Drawing.Point(534, 34);
+            this.llLicense.Location = new System.Drawing.Point(403, 12);
             this.llLicense.Name = "llLicense";
             this.llLicense.Size = new System.Drawing.Size(87, 17);
             this.llLicense.TabIndex = 7;
@@ -107,7 +107,7 @@
             // 
             this.llAirdProGitee.AutoSize = true;
             this.llAirdProGitee.Font = new System.Drawing.Font("Calibri", 10F);
-            this.llAirdProGitee.Location = new System.Drawing.Point(534, 89);
+            this.llAirdProGitee.Location = new System.Drawing.Point(403, 67);
             this.llAirdProGitee.Name = "llAirdProGitee";
             this.llAirdProGitee.Size = new System.Drawing.Size(56, 17);
             this.llAirdProGitee.TabIndex = 8;
@@ -119,7 +119,7 @@
             // 
             this.llAirdProonGithub.AutoSize = true;
             this.llAirdProonGithub.Font = new System.Drawing.Font("Calibri", 10F);
-            this.llAirdProonGithub.Location = new System.Drawing.Point(610, 89);
+            this.llAirdProonGithub.Location = new System.Drawing.Point(479, 67);
             this.llAirdProonGithub.Name = "llAirdProonGithub";
             this.llAirdProonGithub.Size = new System.Drawing.Size(63, 17);
             this.llAirdProonGithub.TabIndex = 9;
@@ -131,7 +131,7 @@
             // 
             this.llAirdProSdkGitee.AutoSize = true;
             this.llAirdProSdkGitee.Font = new System.Drawing.Font("Calibri", 10F);
-            this.llAirdProSdkGitee.Location = new System.Drawing.Point(534, 146);
+            this.llAirdProSdkGitee.Location = new System.Drawing.Point(403, 124);
             this.llAirdProSdkGitee.Name = "llAirdProSdkGitee";
             this.llAirdProSdkGitee.Size = new System.Drawing.Size(56, 17);
             this.llAirdProSdkGitee.TabIndex = 10;
@@ -143,7 +143,7 @@
             // 
             this.llAirdProSDKGithub.AutoSize = true;
             this.llAirdProSDKGithub.Font = new System.Drawing.Font("Calibri", 10F);
-            this.llAirdProSDKGithub.Location = new System.Drawing.Point(610, 146);
+            this.llAirdProSDKGithub.Location = new System.Drawing.Point(479, 124);
             this.llAirdProSDKGithub.Name = "llAirdProSDKGithub";
             this.llAirdProSDKGithub.Size = new System.Drawing.Size(63, 17);
             this.llAirdProSDKGithub.TabIndex = 11;
@@ -155,7 +155,7 @@
             // 
             this.llAirdProPaper.AutoSize = true;
             this.llAirdProPaper.Font = new System.Drawing.Font("Calibri", 10F);
-            this.llAirdProPaper.Location = new System.Drawing.Point(642, 181);
+            this.llAirdProPaper.Location = new System.Drawing.Point(511, 159);
             this.llAirdProPaper.Name = "llAirdProPaper";
             this.llAirdProPaper.Size = new System.Drawing.Size(34, 17);
             this.llAirdProPaper.TabIndex = 12;
@@ -167,7 +167,7 @@
             // 
             this.lblCompanyInfo.AutoSize = true;
             this.lblCompanyInfo.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCompanyInfo.Location = new System.Drawing.Point(31, 149);
+            this.lblCompanyInfo.Location = new System.Drawing.Point(30, 135);
             this.lblCompanyInfo.Name = "lblCompanyInfo";
             this.lblCompanyInfo.Size = new System.Drawing.Size(94, 19);
             this.lblCompanyInfo.TabIndex = 13;
@@ -176,9 +176,9 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::AirdPro.Properties.Resources.AirdProLogoBlack;
-            this.pictureBox1.Location = new System.Drawing.Point(31, 31);
+            this.pictureBox1.Location = new System.Drawing.Point(21, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(120, 87);
+            this.pictureBox1.Size = new System.Drawing.Size(120, 110);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -187,7 +187,7 @@
             // 
             this.lblOPName.AutoSize = true;
             this.lblOPName.Font = new System.Drawing.Font("Calibri", 10F);
-            this.lblOPName.Location = new System.Drawing.Point(31, 286);
+            this.lblOPName.Location = new System.Drawing.Point(31, 251);
             this.lblOPName.Name = "lblOPName";
             this.lblOPName.Size = new System.Drawing.Size(127, 17);
             this.lblOPName.TabIndex = 14;
@@ -197,7 +197,7 @@
             // 
             this.lblCPUName.AutoSize = true;
             this.lblCPUName.Font = new System.Drawing.Font("Calibri", 10F);
-            this.lblCPUName.Location = new System.Drawing.Point(31, 326);
+            this.lblCPUName.Location = new System.Drawing.Point(31, 291);
             this.lblCPUName.Name = "lblCPUName";
             this.lblCPUName.Size = new System.Drawing.Size(50, 17);
             this.lblCPUName.TabIndex = 15;
@@ -207,7 +207,7 @@
             // 
             this.lblPhysicMemoryName.AutoSize = true;
             this.lblPhysicMemoryName.Font = new System.Drawing.Font("Calibri", 10F);
-            this.lblPhysicMemoryName.Location = new System.Drawing.Point(31, 366);
+            this.lblPhysicMemoryName.Location = new System.Drawing.Point(31, 331);
             this.lblPhysicMemoryName.Name = "lblPhysicMemoryName";
             this.lblPhysicMemoryName.Size = new System.Drawing.Size(122, 17);
             this.lblPhysicMemoryName.TabIndex = 16;
@@ -219,7 +219,7 @@
             this.lblComupterInfoName.BackColor = System.Drawing.Color.WhiteSmoke;
             this.lblComupterInfoName.Font = new System.Drawing.Font("Calibri", 12F);
             this.lblComupterInfoName.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblComupterInfoName.Location = new System.Drawing.Point(31, 246);
+            this.lblComupterInfoName.Location = new System.Drawing.Point(31, 211);
             this.lblComupterInfoName.Name = "lblComupterInfoName";
             this.lblComupterInfoName.Size = new System.Drawing.Size(174, 19);
             this.lblComupterInfoName.TabIndex = 17;
@@ -229,7 +229,7 @@
             // 
             this.lbl1.AutoSize = true;
             this.lbl1.Font = new System.Drawing.Font("Calibri", 10F);
-            this.lbl1.Location = new System.Drawing.Point(534, 69);
+            this.lbl1.Location = new System.Drawing.Point(403, 47);
             this.lbl1.Name = "lbl1";
             this.lbl1.Size = new System.Drawing.Size(101, 17);
             this.lbl1.TabIndex = 18;
@@ -239,7 +239,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Calibri", 10F);
-            this.label1.Location = new System.Drawing.Point(534, 124);
+            this.label1.Location = new System.Drawing.Point(403, 102);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(139, 17);
             this.label1.TabIndex = 19;
@@ -249,7 +249,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Calibri", 10F);
-            this.label2.Location = new System.Drawing.Point(534, 181);
+            this.label2.Location = new System.Drawing.Point(403, 159);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(111, 17);
             this.label2.TabIndex = 20;
@@ -260,7 +260,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(700, 433);
+            this.ClientSize = new System.Drawing.Size(585, 371);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lbl1);
@@ -281,6 +281,7 @@
             this.Controls.Add(this.lblSoftwareVersion);
             this.Controls.Add(this.pictureBox1);
             this.Name = "HelpAboutForm";
+            this.ShowIcon = false;
             this.Text = "About AirdPro";
             this.Load += new System.EventHandler(this.HelpAboutForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
