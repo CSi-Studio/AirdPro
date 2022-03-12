@@ -65,7 +65,7 @@
             // 
             this.lblCPUInfo.AutoSize = true;
             this.lblCPUInfo.Font = new System.Drawing.Font("Calibri", 10F);
-            this.lblCPUInfo.Location = new System.Drawing.Point(161, 291);
+            this.lblCPUInfo.Location = new System.Drawing.Point(148, 277);
             this.lblCPUInfo.Name = "lblCPUInfo";
             this.lblCPUInfo.Size = new System.Drawing.Size(50, 17);
             this.lblCPUInfo.TabIndex = 4;
@@ -75,7 +75,7 @@
             // 
             this.lblPhysicMemory.AutoSize = true;
             this.lblPhysicMemory.Font = new System.Drawing.Font("Calibri", 10F);
-            this.lblPhysicMemory.Location = new System.Drawing.Point(161, 331);
+            this.lblPhysicMemory.Location = new System.Drawing.Point(148, 317);
             this.lblPhysicMemory.Name = "lblPhysicMemory";
             this.lblPhysicMemory.Size = new System.Drawing.Size(103, 17);
             this.lblPhysicMemory.TabIndex = 5;
@@ -85,7 +85,7 @@
             // 
             this.lblOpVersion.AutoSize = true;
             this.lblOpVersion.Font = new System.Drawing.Font("Calibri", 10F);
-            this.lblOpVersion.Location = new System.Drawing.Point(161, 251);
+            this.lblOpVersion.Location = new System.Drawing.Point(148, 237);
             this.lblOpVersion.Name = "lblOpVersion";
             this.lblOpVersion.Size = new System.Drawing.Size(65, 17);
             this.lblOpVersion.TabIndex = 6;
@@ -187,7 +187,7 @@
             // 
             this.lblOPName.AutoSize = true;
             this.lblOPName.Font = new System.Drawing.Font("Calibri", 10F);
-            this.lblOPName.Location = new System.Drawing.Point(31, 251);
+            this.lblOPName.Location = new System.Drawing.Point(18, 237);
             this.lblOPName.Name = "lblOPName";
             this.lblOPName.Size = new System.Drawing.Size(127, 17);
             this.lblOPName.TabIndex = 14;
@@ -197,7 +197,7 @@
             // 
             this.lblCPUName.AutoSize = true;
             this.lblCPUName.Font = new System.Drawing.Font("Calibri", 10F);
-            this.lblCPUName.Location = new System.Drawing.Point(31, 291);
+            this.lblCPUName.Location = new System.Drawing.Point(18, 277);
             this.lblCPUName.Name = "lblCPUName";
             this.lblCPUName.Size = new System.Drawing.Size(50, 17);
             this.lblCPUName.TabIndex = 15;
@@ -207,7 +207,7 @@
             // 
             this.lblPhysicMemoryName.AutoSize = true;
             this.lblPhysicMemoryName.Font = new System.Drawing.Font("Calibri", 10F);
-            this.lblPhysicMemoryName.Location = new System.Drawing.Point(31, 331);
+            this.lblPhysicMemoryName.Location = new System.Drawing.Point(18, 317);
             this.lblPhysicMemoryName.Name = "lblPhysicMemoryName";
             this.lblPhysicMemoryName.Size = new System.Drawing.Size(122, 17);
             this.lblPhysicMemoryName.TabIndex = 16;
@@ -216,10 +216,10 @@
             // lblComupterInfoName
             // 
             this.lblComupterInfoName.AutoSize = true;
-            this.lblComupterInfoName.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.lblComupterInfoName.BackColor = System.Drawing.Color.Transparent;
             this.lblComupterInfoName.Font = new System.Drawing.Font("Calibri", 12F);
             this.lblComupterInfoName.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblComupterInfoName.Location = new System.Drawing.Point(31, 211);
+            this.lblComupterInfoName.Location = new System.Drawing.Point(17, 206);
             this.lblComupterInfoName.Name = "lblComupterInfoName";
             this.lblComupterInfoName.Size = new System.Drawing.Size(174, 19);
             this.lblComupterInfoName.TabIndex = 17;
