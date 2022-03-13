@@ -57,7 +57,7 @@ namespace AirdPro.Converters
         protected string msType; //Profile, Centroided
         protected string polarity; //Negative, Positive
         protected string rtUnit; //Minute, Second
-        protected string ccsUnit;
+        protected string mobilityUnit;
         protected string mobilityType;
 
         public IConverter(JobInfo jobInfo)
@@ -101,24 +101,24 @@ namespace AirdPro.Converters
 
         protected float parseMobility(Scan scan)
         {
-            float ccs = 0f;
+            float mobility = 0f;
             if (scan.hasCVParamChild(CVID.MS_inverse_reduced_ion_mobility))
             {
                 CVParam cv = scan.cvParamChild(CVID.MS_inverse_reduced_ion_mobility);
-                ccs = float.Parse(cv.value.ToString());
-                ccsUnit = cv.unitsName;
+                mobility = float.Parse(cv.value.ToString());
+                mobilityUnit = cv.unitsName;
                 mobilityType = MobilityType.TIMS;
             }
 
             if (scan.hasCVParamChild(CVID.MS_ion_mobility_drift_time))
             {
                 CVParam cv = scan.cvParamChild(CVID.MS_ion_mobility_drift_time);
-                ccs = float.Parse(cv.value.ToString());
-                ccsUnit = cv.unitsName;
+                mobility = float.Parse(cv.value.ToString());
+                mobilityUnit = cv.unitsName;
                 mobilityType = MobilityType.DTIMS;
             }
 
-            return ccs;
+            return mobility;
         }
 
         protected long parseTIC(Spectrum spectrum)
@@ -561,7 +561,7 @@ namespace AirdPro.Converters
             airdInfo.activator = activator;
             airdInfo.energy = energy;
             airdInfo.rtUnit = rtUnit;
-            airdInfo.ccsUnit = ccsUnit;
+            airdInfo.ccsUnit = mobilityUnit;
             airdInfo.mobilityType = mobilityType;
             airdInfo.msType = msType;
             airdInfo.polarity = polarity;

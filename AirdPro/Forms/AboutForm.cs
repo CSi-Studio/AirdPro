@@ -14,9 +14,9 @@ using AirdPro.DomainsCore.Aird;
 
 namespace AirdPro.Forms
 {
-    public partial class HelpAboutForm : Form
+    public partial class AboutForm : Form
     {
-        public HelpAboutForm()
+        public AboutForm()
         {
             InitializeComponent();
         }

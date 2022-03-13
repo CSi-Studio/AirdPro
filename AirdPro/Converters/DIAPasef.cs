@@ -54,7 +54,7 @@ namespace AirdPro.Converters
             {
                 MsIndex ms1Index = null; //清空ms1Index
                 jobInfo.log(null, "Pre:" + i + "/" + totalSize);
-                Spectrum spectrum = spectrumList.spectrum(i);
+                Spectrum spectrum = spectrumList.spectrum(i, true); //由于pwiz代码的原因,在DIA-PASEF下的采集模式直接读取binary数据性能差距也不大
                 string msLevel = parseMsLevel(spectrum);
                 //如果是MS1,开始聚合ms1的光谱
                 while (msLevel.Equals(MsLevel.MS1))
@@ -65,19 +65,19 @@ namespace AirdPro.Converters
                         ms1Index = parseMS1(spectrum, i);
                         ms1Index.mobilities = new List<float>();
                         ms1Index.scanNums = new List<int>();
+                        ms1Index.spectra = new List<Spectrum>();
                     }
-                    else
-                    {
-                        ms1Index.tic += parseTIC(spectrum);
-                    }
+                   
+                    ms1Index.tic += parseTIC(spectrum);
                     float mobility = parseMobility(spectrum.scanList.scans[0]);
                     ms1Index.scanNums.Add(i);
                     ms1Index.mobilities.Add(mobility);
+                    ms1Index.spectra.Add(spectrum);
                     i++;
                     if (i < totalSize)
                     {
                         jobInfo.log(null, "Pre:" + i + "/" + totalSize);
-                        spectrum = spectrumList.spectrum(i);
+                        spectrum = spectrumList.spectrum(i, true);
                         msLevel = parseMsLevel(spectrum);
                     }
                     else
@@ -85,7 +85,7 @@ namespace AirdPro.Converters
                         break;
                     }
                 }
-
+                
                 if (ms1Index != null)
                 {
                     ms1List.Add(ms1Index);
@@ -104,6 +104,7 @@ namespace AirdPro.Converters
                         ms2Index = parseMS2(spectrum, i, parentNum);
                         ms2Index.mobilities = new List<float>();
                         ms2Index.scanNums = new List<int>();
+                        ms2Index.spectra = new List<Spectrum>();
                         lastPrecursorMz = precursorMz;
                         if (!rangeTable.Contains(ms2Index.precursorMz))
                         {
@@ -112,10 +113,9 @@ namespace AirdPro.Converters
                             rangeTable.Add(ms2Index.precursorMz, range);
                         }
                     }
-                    else
-                    {
-                        ms2Index.tic += parseTIC(spectrum);
-                    }
+                    
+                    ms2Index.spectra.Add(spectrum);
+                    ms2Index.tic += parseTIC(spectrum);
                     float mobility = parseMobility(spectrum.scanList.scans[0]);
                     ms2Index.scanNums.Add(i);
                     ms2Index.mobilities.Add(mobility);
@@ -123,7 +123,7 @@ namespace AirdPro.Converters
                     if (i < totalSize)
                     {
                         jobInfo.log(null, "Pre:" + i + "/" + totalSize);
-                        spectrum = spectrumList.spectrum(i);
+                        spectrum = spectrumList.spectrum(i, true);
                         msLevel = parseMsLevel(spectrum);
                     }
                     else

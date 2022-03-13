@@ -1,6 +1,6 @@
 ﻿namespace AirdPro.Forms
 {
-    partial class HelpAboutForm
+    partial class AboutForm
     {
         /// <summary>
         /// Required designer variable.
