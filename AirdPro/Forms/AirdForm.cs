@@ -217,7 +217,29 @@ namespace AirdPro.Forms
 
         private void rerun_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Hello");
+            bool success = true;
+            foreach (ListViewItem item in lvFileList.SelectedItems)
+            {
+                JobInfo jobInfo = (JobInfo)item.Tag;
+                if (jobInfo.status.Equals(ProcessingStatus.FINISHED) || jobInfo.status.Equals(ProcessingStatus.ERROR))
+                {
+                    if (ConvertTaskManager.getInstance().finishedTable.ContainsKey(jobInfo.getJobId()))
+                    {
+                        ConvertTaskManager.getInstance().finishedTable.Remove(jobInfo.getJobId());
+                    }
+                    
+                    ConvertTaskManager.getInstance().pushJob(jobInfo);
+                    jobInfo.refreshItem(item);
+                }
+                else
+                {
+                    success = false;
+                }
+            }
+            if (!success)
+            {
+                MessageBox.Show("Only Finished or Error Jobs can rerun");
+            }
         }
 
         private void removeToolStripMenuItem_Click(object sender, EventArgs e)

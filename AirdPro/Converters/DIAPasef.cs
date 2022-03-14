@@ -54,7 +54,7 @@ namespace AirdPro.Converters
             {
                 MsIndex ms1Index = null; //清空ms1Index
                 jobInfo.log(null, "Pre:" + i + "/" + totalSize);
-                Spectrum spectrum = spectrumList.spectrum(i, true); //由于pwiz代码的原因,在DIA-PASEF下的采集模式直接读取binary数据性能差距也不大
+                Spectrum spectrum = spectrumList.spectrum(i, true);
                 string msLevel = parseMsLevel(spectrum);
                 //如果是MS1,开始聚合ms1的光谱
                 while (msLevel.Equals(MsLevel.MS1))

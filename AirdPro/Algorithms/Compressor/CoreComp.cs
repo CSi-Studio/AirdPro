@@ -43,7 +43,7 @@ namespace AirdPro.Algorithms
                     TempScan ts = new TempScan(ms1Index.num, ms1Index.rt, ms1Index.tic, ms1Index.cvList);
                     if (converter.jobInfo.ionMobility)
                     {
-                        compressMobility(converter.spectrumList, ms1Index, ts);
+                        compressMobility(ms1Index, ts);
                     }
                     else
                     {
@@ -62,7 +62,7 @@ namespace AirdPro.Algorithms
                     TempScan ts = new TempScan(ms1Index.num, ms1Index.rt, ms1Index.tic, ms1Index.cvList);
                     if (converter.jobInfo.ionMobility)
                     {
-                        compressMobility(converter.spectrumList, ms1Index, ts);
+                        compressMobility(ms1Index, ts);
                     }
                     else
                     {
@@ -85,7 +85,7 @@ namespace AirdPro.Algorithms
                     TempScan ts = new TempScan(ms2Index.num, ms2Index.rt, ms2Index.tic, ms2Index.cvList);
                     if (converter.jobInfo.ionMobility)
                     {
-                        compressMobility(converter.spectrumList, ms2Index, ts);
+                        compressMobility(ms2Index, ts);
                     }
                     else
                     {
@@ -100,10 +100,9 @@ namespace AirdPro.Algorithms
                 foreach (MsIndex ms2Index in ms2List)
                 {
                     TempScan ts = new TempScan(ms2Index.num, ms2Index.rt, ms2Index.tic, ms2Index.cvList);
-                    // compress(converter.spectrumList.spectrum(ms2Index.num, true), ts);
                     if (converter.jobInfo.ionMobility)
                     {
-                        compressMobility(converter.spectrumList, ms2Index, ts);
+                        compressMobility(ms2Index, ts);
                     }
                     else
                     {
@@ -149,16 +148,20 @@ namespace AirdPro.Algorithms
             ts.intArrayBytes = compressedIntArray;
         }
 
-        public void compressMobility(SpectrumList spectrumList, MsIndex msIndex, TempScan ts)
+   
+        public void compressMobility(MsIndex msIndex, TempScan ts)
         {
-            List<int> scanNums = msIndex.scanNums;
-            Spectrum frame = new Spectrum();
+            if (msIndex.spectra == null || msIndex.spectra.Count == 0)
+            {
+                return;
+            }
+
             List<TimsData> dataList = new List<TimsData>();
             int totalSize = 0;
-            for (var i = 0; i < scanNums.Count; i++)
+            for (var i = 0; i < msIndex.spectra.Count; i++)
             {
                 float mobility = msIndex.mobilities[i];
-                Spectrum spectrum = spectrumList.spectrum(i, true);
+                Spectrum spectrum = msIndex.spectra[i];
                 BinaryDataDouble mzData = spectrum.getMZArray().data;
                 BinaryDataDouble intData = spectrum.getIntensityArray().data;
                 var size = mzData.Count;

@@ -163,7 +163,7 @@ namespace AirdPro.Domains.Convert
         {
             if (jobId.IsNullOrEmpty())
             {
-                jobId = inputPath.GetHashCode().ToString() +
+                jobId = inputPath.GetHashCode()+"-"+
                         (outputPath + config.getCompressorStr() + config.getMzPrecisionStr() +
                          config.ignoreZeroIntensity).GetHashCode();
             }
