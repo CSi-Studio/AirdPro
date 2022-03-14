@@ -160,6 +160,7 @@ namespace AirdPro.Asyncs
             if (!jobInfo.config.stack)
             {
                 comp = new CoreComp(converter);
+                comp.mobilityByteComp = new Zlib();
             }
             else
             {

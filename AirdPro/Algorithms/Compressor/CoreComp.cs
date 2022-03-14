@@ -181,9 +181,14 @@ namespace AirdPro.Algorithms
                 });
             }
 
+            if (totalSize == 0)
+            {
+                return;
+            }
+
             int[] mzArray = new int[totalSize];
             float[] intensityArray = new float[totalSize];
-            float[] mobilityArray = new float[totalSize];
+            int[] mobilityArray = new int[totalSize];
             
             for (int i = 0; i < totalSize; i++)
             {
@@ -194,7 +199,7 @@ namespace AirdPro.Algorithms
 
             int[] compressedMzArray = mzIntComp.encode(mzArray);
             byte[] compressedIntArray = intByteComp.encode(ByteTrans.floatToByte(intensityArray));
-            byte[] compressedMobilityArray = mobilityByteComp.encode(ByteTrans.floatToByte(mobilityArray));
+            byte[] compressedMobilityArray = mobilityByteComp.encode(ByteTrans.intToByte(mobilityArray));
 
             ts.mzArrayBytes = mzByteComp.encode(ByteTrans.intToByte(compressedMzArray));
             ts.intArrayBytes = compressedIntArray;
