@@ -15,7 +15,7 @@ namespace Compress
         //使用VariableByte算法对已经压缩的int数组进行解压缩
         public int[] decode(int[] compressed)
         {
-            int[] sortedInts = new IntegratedIntCompressor(new IntegratedVariableByte()).compress(compressed);
+            int[] sortedInts = new IntegratedIntCompressor(new IntegratedVariableByte()).uncompress(compressed);
             return sortedInts;
         }
     }

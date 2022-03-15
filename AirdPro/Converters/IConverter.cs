@@ -44,8 +44,9 @@ namespace AirdPro.Converters
         protected Hashtable rangeTable = new Hashtable(); //用于存放SWATH窗口的信息,key为mz
         protected List<BlockIndex> indexList = new List<BlockIndex>(); //用于存储的全局的SWATH List
         protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
-        public ConcurrentBag<MsIndex> ms1List = new ConcurrentBag<MsIndex>(); //用于存放MS1索引及基础信息,泛型为MsIndex
+        public List<MsIndex> ms1List = new List<MsIndex>(); //用于存放MS1索引及基础信息,泛型为MsIndex
         protected Hashtable featuresMap = new Hashtable();
+        public ConcurrentDictionary<double, int> mobilityDict;
         public ICompressor compressor;
 
         protected long fileSize; //厂商文件大小
@@ -109,8 +110,7 @@ namespace AirdPro.Converters
                 mobilityUnit = cv.unitsName;
                 mobilityType = MobilityType.TIMS;
             }
-
-            if (scan.hasCVParamChild(CVID.MS_ion_mobility_drift_time))
+            else if (scan.hasCVParamChild(CVID.MS_ion_mobility_drift_time))
             {
                 CVParam cv = scan.cvParamChild(CVID.MS_ion_mobility_drift_time);
                 mobility = float.Parse(cv.value.ToString());
@@ -268,9 +268,27 @@ namespace AirdPro.Converters
         protected void readVendorFile()
         {
             jobInfo.log("Prepare to Parse Vendor File", "Prepare");
-            msd = new MSDataFile(jobInfo.inputPath);
-            jobInfo.log("Adapting Vendor File API", "Adapting");
+            // msd = new MSDataFile(jobInfo.inputPath);
+            
 
+            ReaderList readerList = ReaderList.FullReaderList;
+            var readerConfig = new ReaderConfig
+            {
+                combineIonMobilitySpectra = true,
+                ignoreZeroIntensityPoints = jobInfo.config.ignoreZeroIntensity
+            };
+
+            MSDataList msInfo = new MSDataList();
+            readerList.read(jobInfo.inputPath, msInfo, readerConfig);
+            if (msInfo == null || msInfo.Count == 0)
+            {
+                jobInfo.logError("Reading Vendor File Error, Run is Null");
+                return;
+            }
+
+            msd = msInfo[0];
+            jobInfo.log("Adapting Vendor File API", "Adapting");
+            
             List<string> filter = new List<string>();
             SpectrumListFactory.wrap(msd, filter); //这一步操作可以帮助加快Wiff文件的初始化速度
 
@@ -681,6 +699,7 @@ namespace AirdPro.Converters
             List<Compressor> coms = new List<Compressor>();
             Compressor mzCompressor = new Compressor(Compressor.TARGET_MZ);
             Compressor intCompressor = new Compressor(Compressor.TARGET_INTENSITY);
+            Compressor mobiCompressor = new Compressor(Compressor.TARGET_MOBILITY);
             if (jobInfo.config.stack)
             {
                 mzCompressor.addMethod(jobInfo.config.mzIntComp.ToString());
@@ -695,12 +714,18 @@ namespace AirdPro.Converters
                 mzCompressor.addMethod(jobInfo.config.mzIntComp.ToString());
                 mzCompressor.addMethod(jobInfo.config.mzByteComp.ToString());
                 mzCompressor.precision = jobInfo.config.mzPrecision;
+
+                intCompressor.addMethod(jobInfo.config.intIntComp.ToString());
                 intCompressor.addMethod(jobInfo.config.intByteComp.ToString());
+
+                mobiCompressor.addMethod(jobInfo.config.mobiIntComp.ToString());
+                mobiCompressor.addMethod(jobInfo.config.mobiByteComp.ToString());
+                mobiCompressor.precision = jobInfo.config.mobiPrecision;
             }
 
             coms.Add(mzCompressor);
             coms.Add(intCompressor);
-
+            coms.Add(mobiCompressor);
             airdInfo.compressors = coms;
 
             airdInfo.ignoreZeroIntensityPoint = jobInfo.config.ignoreZeroIntensity;

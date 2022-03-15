@@ -27,8 +27,10 @@ namespace AirdPro.Algorithms
 
         public IntComp mzIntComp;
         public ByteComp mzByteComp;
+        public IntComp intIntComp;
         public ByteComp intByteComp;
-        public ByteComp mobilityByteComp;
+        public IntComp mobiIntComp;
+        public ByteComp mobiByteComp;
 
         public ICompressor(IConverter converter)
         {

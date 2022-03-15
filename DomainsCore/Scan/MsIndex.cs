@@ -27,12 +27,6 @@ namespace AirdPro.DomainsCore.Aird
         //对应的ms1的序号
         public int pNum;
 
-        //the scan of each frame, only used in Ion-Mobility
-        public List<int> scanNums;
-
-        //ion-mobility
-        public List<float> mobilities;
-
         //序号
         public int num;
 
@@ -53,8 +47,5 @@ namespace AirdPro.DomainsCore.Aird
 
         //PSI CV PSI可控词汇表
         public List<CV> cvList;
-
-        //专用于PASEF类型的数据存储,会将光谱图直接存储下来
-        public List<Spectrum> spectra;
     }
 }

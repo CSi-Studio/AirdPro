@@ -157,15 +157,42 @@ namespace AirdPro.Asyncs
                 converter = new DIAPasef(jobInfo);
             }
 
-            if (!jobInfo.config.stack)
+            if (jobInfo.config.stack)
             {
-                comp = new CoreComp(converter);
-                comp.mobilityByteComp = new Zlib();
+                comp = new StackComp(converter);
+                comp.mobiByteComp = new ZSTD();
             }
             else
             {
-                comp = new StackComp(converter);
-                comp.mobilityByteComp = new Zlib();
+                comp = new CoreComp(converter);
+                switch (jobInfo.config.mobiIntComp)
+                {
+                    case IntCompType.IBP:
+                        comp.mobiIntComp = new IntegratedBinPacking();
+                        break;
+                    case IntCompType.IVB:
+                        comp.mobiIntComp = new IntegratedVarByte();
+                        break;
+                    case IntCompType.VB:
+                        comp.mobiIntComp = new VarByte();
+                        break;
+                }
+
+                switch (jobInfo.config.mobiByteComp)
+                {
+                    case ByteCompType.Zlib:
+                        comp.mobiByteComp = new Zlib();
+                        break;
+                    case ByteCompType.Zstd:
+                        comp.mobiByteComp = new ZSTD();
+                        break;
+                    case ByteCompType.Snappy:
+                        comp.mobiByteComp = new Snappier();
+                        break;
+                    case ByteCompType.Brotli:
+                        comp.mobiByteComp = new Brotlier();
+                        break;
+                }
             }
 
             switch (jobInfo.config.mzIntComp)
@@ -175,6 +202,9 @@ namespace AirdPro.Asyncs
                     break;
                 case IntCompType.IVB:
                     comp.mzIntComp = new IntegratedVarByte();
+                    break;
+                case IntCompType.VB:
+                    comp.mzIntComp = new VarByte();
                     break;
             }
 
@@ -191,6 +221,19 @@ namespace AirdPro.Asyncs
                     break;
                 case ByteCompType.Brotli:
                     comp.mzByteComp = new Brotlier();
+                    break;
+            }
+
+            switch (jobInfo.config.intIntComp)
+            {
+                case IntCompType.IBP:
+                    comp.intIntComp = new IntegratedBinPacking();
+                    break;
+                case IntCompType.IVB:
+                    comp.intIntComp = new IntegratedVarByte();
+                    break;
+                case IntCompType.VB:
+                    comp.intIntComp = new VarByte();
                     break;
             }
 

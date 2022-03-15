@@ -16,12 +16,7 @@ namespace AirdPro.DomainsCore.Aird
     {
         public static string TARGET_MZ = "mz";
         public static string TARGET_INTENSITY = "intensity";
-
-        public static string METHOD_ZDVB = "ZDVB";
-        public static string METHOD_ZVB = "ZVB";
-        public static string METHOD_ZDPD = "ZDPD";
-        public static string METHOD_STACK_ZDPD = "Stack-ZDPD";
-        public static string METHOD_ZLIB = "zlib";
+        public static string TARGET_MOBILITY = "mobility";
 
         /**
          * Compression target, support for mz and intensity

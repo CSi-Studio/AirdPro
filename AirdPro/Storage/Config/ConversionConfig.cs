@@ -22,10 +22,16 @@ namespace AirdPro.Domains.Convert
         public bool ignoreZeroIntensity = true;
 
         /**
-         * the decimal point of the mz. The default value is 0.00001
+         * the decimal point of the mz. The default value is 5dp
          * mz精度,默认保留到小数点后第5位
          */
         public int mzPrecision = 100000;
+
+        /**
+         * the decimal point of the mobility. The default value is 5dp
+         * mobility精度,默认保留到小数点后第5位
+         */
+        public int mobiPrecision = 100000;
 
         /**
          * if using the multi thread for acceleration. The default value is true
@@ -56,9 +62,24 @@ namespace AirdPro.Domains.Convert
         public ByteCompType mzByteComp = ByteCompType.Zstd;
 
         /**
+         * 用于intensity压缩的int数组压缩方法
+         */
+        public IntCompType intIntComp = IntCompType.VB;
+
+        /**
          * 用于intensity压缩的byte数组压缩方法
          */
         public ByteCompType intByteComp = ByteCompType.Zstd;
+
+        /**
+         * 用于mobility压缩的int数组压缩方法
+         */
+        public IntCompType mobiIntComp = IntCompType.VB;
+
+        /**
+         * 用于mobility压缩的byte数组压缩方法
+         */
+        public ByteCompType mobiByteComp = ByteCompType.Zstd;
 
         /**
          * 是否使用stack layer压缩
@@ -78,12 +99,17 @@ namespace AirdPro.Domains.Convert
 
         public string getCompressorStr()
         {
-            return mzIntComp + "|" + mzByteComp + "|" + intByteComp;
+            return mzIntComp + "-" + mzByteComp + "|" + intIntComp+"-" + intByteComp+ "|" + mobiIntComp+ "-" + mobiByteComp;
         }
 
         public string getMzPrecisionStr()
         {
-           return ((int) Math.Log10(mzPrecision)).ToString();
+           return ((int) Math.Log10(mzPrecision)) +"dp";
+        }
+
+        public string getMobiPrecisionStr()
+        {
+            return ((int)Math.Log10(mobiPrecision))+"dp";
         }
     }
 }

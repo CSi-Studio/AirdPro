@@ -155,6 +155,7 @@ namespace AirdPro.Domains.Convert
             jobInfo += "threadId:" + threadId + "\r\n";
             jobInfo += "ThreadAccelerate:" + config.threadAccelerate + "\r\n";
             jobInfo += "mzPrecision:" + config.getMzPrecisionStr() + "\r\n";
+            jobInfo += "mobiPrecision:" + config.getMobiPrecisionStr() + "\r\n";
             jobInfo += "compressor:" + config.getCompressorStr() + "\r\n";
             return jobInfo;
         }
@@ -163,9 +164,8 @@ namespace AirdPro.Domains.Convert
         {
             if (jobId.IsNullOrEmpty())
             {
-                jobId = inputPath.GetHashCode()+"-"+
-                        (outputPath + config.getCompressorStr() + config.getMzPrecisionStr() +
-                         config.ignoreZeroIntensity).GetHashCode();
+                jobId = (inputPath+ outputPath + config.getCompressorStr() + config.getMzPrecisionStr() +
+                         config.ignoreZeroIntensity).GetHashCode() + "";
             }
 
             return jobId;

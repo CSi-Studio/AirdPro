@@ -31,13 +31,16 @@ namespace AirdPro.Forms
         {
             foreach (string intCompType in Enum.GetNames(typeof(IntCompType)))
             {
-                configMzIntComp.Items.Add(intCompType);
+                cbMzIntComp.Items.Add(intCompType);
+                cbIntIntComp.Items.Add(intCompType);
+                cbMobiIntComp.Items.Add(intCompType);
             }
 
             foreach (string byteCompType in Enum.GetNames(typeof(ByteCompType)))
             {
-                configMzByteComp.Items.Add(byteCompType);
-                configIntByteComp.Items.Add(byteCompType);
+                cbMzByteComp.Items.Add(byteCompType);
+                cbIntByteComp.Items.Add(byteCompType);
+                cbMobiByteComp.Items.Add(byteCompType);
             }
             showConfig("", new ConversionConfig());
         }
@@ -87,14 +90,17 @@ namespace AirdPro.Forms
         {
             ConversionConfig config = new ConversionConfig();
             config.mzPrecision = (int) Math.Pow(10, int.Parse(cbConfigMzPrecision.Text));
+            config.mobiPrecision = (int) Math.Pow(10, int.Parse(cbMobiPrecision.Text));
             config.ignoreZeroIntensity = cbConfigIsZeroIntensityIgnore.Checked;
             config.threadAccelerate = cbConfigThreadAccelerate.Checked;
 
-            config.mzIntComp = (IntCompType) Enum.Parse(typeof(IntCompType), configMzIntComp.SelectedItem.ToString());
-            config.mzByteComp =
-                (ByteCompType) Enum.Parse(typeof(ByteCompType), configMzByteComp.SelectedItem.ToString());
-            config.intByteComp =
-                (ByteCompType) Enum.Parse(typeof(ByteCompType), configIntByteComp.SelectedItem.ToString());
+            config.mzIntComp = (IntCompType) Enum.Parse(typeof(IntCompType), cbMzIntComp.SelectedItem.ToString());
+            config.mzByteComp = (ByteCompType) Enum.Parse(typeof(ByteCompType), cbMzByteComp.SelectedItem.ToString());
+            config.intIntComp = (IntCompType) Enum.Parse(typeof(IntCompType), cbIntIntComp.SelectedItem.ToString());
+            config.intByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), cbIntByteComp.SelectedItem.ToString());
+            config.mobiIntComp = (IntCompType)Enum.Parse(typeof(IntCompType), cbMobiIntComp.SelectedItem.ToString());
+            config.mobiByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), cbMobiByteComp.SelectedItem.ToString());
+
             if (cbConfigStack.Checked)
             {
                 config.stack = true;
@@ -144,9 +150,13 @@ namespace AirdPro.Forms
             cbConfigIsZeroIntensityIgnore.Checked = config.ignoreZeroIntensity;
             cbConfigThreadAccelerate.Checked = config.threadAccelerate;
             cbConfigMzPrecision.SelectedItem = ((int) Math.Log10(config.mzPrecision)).ToString();
-            configMzIntComp.SelectedItem = config.mzIntComp.ToString();
-            configMzByteComp.SelectedItem = config.mzByteComp.ToString();
-            configIntByteComp.SelectedItem = config.intByteComp.ToString();
+            cbMobiPrecision.SelectedItem = ((int) Math.Log10(config.mobiPrecision)).ToString();
+            cbMzIntComp.SelectedItem = config.mzIntComp.ToString();
+            cbMzByteComp.SelectedItem = config.mzByteComp.ToString();
+            cbIntIntComp.SelectedItem = config.intIntComp.ToString();
+            cbIntByteComp.SelectedItem = config.intByteComp.ToString();
+            cbMobiIntComp.SelectedItem = config.mobiIntComp.ToString();
+            cbMobiByteComp.SelectedItem = config.mobiByteComp.ToString();
             if (config.stack)
             {
                 cbConfigStack.Checked = true;

@@ -2,11 +2,11 @@
 
 public class TimsData
 { 
-    public float mobility;
+    public double mobility;
     public double mz;
     public double intensity;
 
-    public TimsData(float mobility, double mz, double intensity)
+    public TimsData(double mobility, double mz, double intensity)
     {
         this.mobility = mobility;
         this.mz = mz;

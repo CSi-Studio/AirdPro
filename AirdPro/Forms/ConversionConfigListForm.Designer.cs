@@ -37,13 +37,13 @@
             this.tbNameConfig = new System.Windows.Forms.TextBox();
             this.lblNameConfig = new System.Windows.Forms.Label();
             this.cbConfigStack = new System.Windows.Forms.CheckBox();
-            this.lblConfigIntCompA = new System.Windows.Forms.Label();
-            this.configIntByteComp = new System.Windows.Forms.ComboBox();
+            this.lblConfigIntIntComp = new System.Windows.Forms.Label();
+            this.cbIntIntComp = new System.Windows.Forms.ComboBox();
             this.lblConfigMzByteComp = new System.Windows.Forms.Label();
-            this.configMzByteComp = new System.Windows.Forms.ComboBox();
+            this.cbMzByteComp = new System.Windows.Forms.ComboBox();
             this.cbConfigStackLayers = new System.Windows.Forms.ComboBox();
             this.lblConfigMzIntComp = new System.Windows.Forms.Label();
-            this.configMzIntComp = new System.Windows.Forms.ComboBox();
+            this.cbMzIntComp = new System.Windows.Forms.ComboBox();
             this.lblConfigOperator = new System.Windows.Forms.Label();
             this.tbConfigOperator = new System.Windows.Forms.TextBox();
             this.lblConfigFileNameTag = new System.Windows.Forms.Label();
@@ -54,6 +54,15 @@
             this.cbConfigThreadAccelerate = new System.Windows.Forms.CheckBox();
             this.cbConfigIsZeroIntensityIgnore = new System.Windows.Forms.CheckBox();
             this.btnApply = new System.Windows.Forms.Button();
+            this.lblConfigIntByteComp = new System.Windows.Forms.Label();
+            this.cbIntByteComp = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cbMobiByteComp = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cbMobiPrecision = new System.Windows.Forms.ComboBox();
+            this.cbMobiIntComp = new System.Windows.Forms.ComboBox();
+            this.lblConfigMobiIntComp = new System.Windows.Forms.Label();
             this.contextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -79,7 +88,7 @@
             this.lvConfigList.Name = "lvConfigList";
             this.lvConfigList.ShowGroups = false;
             this.lvConfigList.ShowItemToolTips = true;
-            this.lvConfigList.Size = new System.Drawing.Size(213, 355);
+            this.lvConfigList.Size = new System.Drawing.Size(213, 478);
             this.lvConfigList.TabIndex = 8;
             this.lvConfigList.UseCompatibleStateImageBehavior = false;
             this.lvConfigList.View = System.Windows.Forms.View.Details;
@@ -103,7 +112,7 @@
             // 
             this.btnSaveToLocal.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnSaveToLocal.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnSaveToLocal.Location = new System.Drawing.Point(373, 316);
+            this.btnSaveToLocal.Location = new System.Drawing.Point(380, 432);
             this.btnSaveToLocal.Name = "btnSaveToLocal";
             this.btnSaveToLocal.Size = new System.Drawing.Size(116, 38);
             this.btnSaveToLocal.TabIndex = 138;
@@ -148,28 +157,28 @@
             this.cbConfigStack.UseVisualStyleBackColor = true;
             this.cbConfigStack.CheckedChanged += new System.EventHandler(this.cbConfigStack_CheckedChanged);
             // 
-            // lblConfigIntCompA
+            // lblConfigIntIntComp
             // 
-            this.lblConfigIntCompA.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lblConfigIntIntComp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblConfigIntCompA.AutoSize = true;
-            this.lblConfigIntCompA.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblConfigIntCompA.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblConfigIntCompA.Location = new System.Drawing.Point(220, 281);
-            this.lblConfigIntCompA.Name = "lblConfigIntCompA";
-            this.lblConfigIntCompA.Size = new System.Drawing.Size(158, 17);
-            this.lblConfigIntCompA.TabIndex = 134;
-            this.lblConfigIntCompA.Text = "intensity byte compressor";
+            this.lblConfigIntIntComp.AutoSize = true;
+            this.lblConfigIntIntComp.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblConfigIntIntComp.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.lblConfigIntIntComp.Location = new System.Drawing.Point(220, 290);
+            this.lblConfigIntIntComp.Name = "lblConfigIntIntComp";
+            this.lblConfigIntIntComp.Size = new System.Drawing.Size(147, 17);
+            this.lblConfigIntIntComp.TabIndex = 134;
+            this.lblConfigIntIntComp.Text = "intensity int compressor";
             // 
-            // configIntByteComp
+            // cbIntIntComp
             // 
-            this.configIntByteComp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.configIntByteComp.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.configIntByteComp.FormattingEnabled = true;
-            this.configIntByteComp.Location = new System.Drawing.Point(401, 278);
-            this.configIntByteComp.Name = "configIntByteComp";
-            this.configIntByteComp.Size = new System.Drawing.Size(82, 25);
-            this.configIntByteComp.TabIndex = 133;
+            this.cbIntIntComp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbIntIntComp.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbIntIntComp.FormattingEnabled = true;
+            this.cbIntIntComp.Location = new System.Drawing.Point(401, 287);
+            this.cbIntIntComp.Name = "cbIntIntComp";
+            this.cbIntIntComp.Size = new System.Drawing.Size(82, 25);
+            this.cbIntIntComp.TabIndex = 133;
             // 
             // lblConfigMzByteComp
             // 
@@ -184,15 +193,15 @@
             this.lblConfigMzByteComp.TabIndex = 132;
             this.lblConfigMzByteComp.Text = "m/z byte compressor";
             // 
-            // configMzByteComp
+            // cbMzByteComp
             // 
-            this.configMzByteComp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.configMzByteComp.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.configMzByteComp.FormattingEnabled = true;
-            this.configMzByteComp.Location = new System.Drawing.Point(401, 251);
-            this.configMzByteComp.Name = "configMzByteComp";
-            this.configMzByteComp.Size = new System.Drawing.Size(82, 25);
-            this.configMzByteComp.TabIndex = 131;
+            this.cbMzByteComp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMzByteComp.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbMzByteComp.FormattingEnabled = true;
+            this.cbMzByteComp.Location = new System.Drawing.Point(401, 251);
+            this.cbMzByteComp.Name = "cbMzByteComp";
+            this.cbMzByteComp.Size = new System.Drawing.Size(82, 25);
+            this.cbMzByteComp.TabIndex = 131;
             // 
             // cbConfigStackLayers
             // 
@@ -225,15 +234,15 @@
             this.lblConfigMzIntComp.TabIndex = 128;
             this.lblConfigMzIntComp.Text = "m/z int compressor";
             // 
-            // configMzIntComp
+            // cbMzIntComp
             // 
-            this.configMzIntComp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.configMzIntComp.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.configMzIntComp.FormattingEnabled = true;
-            this.configMzIntComp.Location = new System.Drawing.Point(401, 224);
-            this.configMzIntComp.Name = "configMzIntComp";
-            this.configMzIntComp.Size = new System.Drawing.Size(82, 25);
-            this.configMzIntComp.TabIndex = 127;
+            this.cbMzIntComp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMzIntComp.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbMzIntComp.FormattingEnabled = true;
+            this.cbMzIntComp.Location = new System.Drawing.Point(401, 224);
+            this.cbMzIntComp.Name = "cbMzIntComp";
+            this.cbMzIntComp.Size = new System.Drawing.Size(82, 25);
+            this.cbMzIntComp.TabIndex = 127;
             // 
             // lblConfigOperator
             // 
@@ -286,7 +295,7 @@
             this.lblDp.AutoSize = true;
             this.lblDp.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblDp.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblDp.Location = new System.Drawing.Point(465, 197);
+            this.lblDp.Location = new System.Drawing.Point(308, 197);
             this.lblDp.Name = "lblDp";
             this.lblDp.Size = new System.Drawing.Size(24, 17);
             this.lblDp.TabIndex = 122;
@@ -299,7 +308,7 @@
             this.lblMzPrecision.AutoSize = true;
             this.lblMzPrecision.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblMzPrecision.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblMzPrecision.Location = new System.Drawing.Point(283, 198);
+            this.lblMzPrecision.Location = new System.Drawing.Point(220, 197);
             this.lblMzPrecision.Name = "lblMzPrecision";
             this.lblMzPrecision.Size = new System.Drawing.Size(30, 17);
             this.lblMzPrecision.TabIndex = 121;
@@ -314,9 +323,9 @@
             "4",
             "5",
             "6"});
-            this.cbConfigMzPrecision.Location = new System.Drawing.Point(401, 194);
+            this.cbConfigMzPrecision.Location = new System.Drawing.Point(254, 193);
             this.cbConfigMzPrecision.Name = "cbConfigMzPrecision";
-            this.cbConfigMzPrecision.Size = new System.Drawing.Size(58, 25);
+            this.cbConfigMzPrecision.Size = new System.Drawing.Size(48, 25);
             this.cbConfigMzPrecision.TabIndex = 120;
             // 
             // cbConfigThreadAccelerate
@@ -356,7 +365,7 @@
             // 
             this.btnApply.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnApply.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnApply.Location = new System.Drawing.Point(229, 316);
+            this.btnApply.Location = new System.Drawing.Point(236, 432);
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(116, 38);
             this.btnApply.TabIndex = 139;
@@ -364,23 +373,140 @@
             this.btnApply.UseVisualStyleBackColor = true;
             this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
             // 
+            // lblConfigIntByteComp
+            // 
+            this.lblConfigIntByteComp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblConfigIntByteComp.AutoSize = true;
+            this.lblConfigIntByteComp.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblConfigIntByteComp.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.lblConfigIntByteComp.Location = new System.Drawing.Point(220, 318);
+            this.lblConfigIntByteComp.Name = "lblConfigIntByteComp";
+            this.lblConfigIntByteComp.Size = new System.Drawing.Size(158, 17);
+            this.lblConfigIntByteComp.TabIndex = 143;
+            this.lblConfigIntByteComp.Text = "intensity byte compressor";
+            // 
+            // cbIntByteComp
+            // 
+            this.cbIntByteComp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbIntByteComp.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbIntByteComp.FormattingEnabled = true;
+            this.cbIntByteComp.Location = new System.Drawing.Point(401, 315);
+            this.cbIntByteComp.Name = "cbIntByteComp";
+            this.cbIntByteComp.Size = new System.Drawing.Size(82, 25);
+            this.cbIntByteComp.TabIndex = 142;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label3.Location = new System.Drawing.Point(220, 380);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(141, 17);
+            this.label3.TabIndex = 145;
+            this.label3.Text = "mobi byte compressor";
+            // 
+            // cbMobiByteComp
+            // 
+            this.cbMobiByteComp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMobiByteComp.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbMobiByteComp.FormattingEnabled = true;
+            this.cbMobiByteComp.Location = new System.Drawing.Point(401, 377);
+            this.cbMobiByteComp.Name = "cbMobiByteComp";
+            this.cbMobiByteComp.Size = new System.Drawing.Size(82, 25);
+            this.cbMobiByteComp.TabIndex = 144;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label1.Location = new System.Drawing.Point(477, 197);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(24, 17);
+            this.label1.TabIndex = 148;
+            this.label1.Text = "dp";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label2.Location = new System.Drawing.Point(377, 197);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(38, 17);
+            this.label2.TabIndex = 147;
+            this.label2.Text = "mobi";
+            // 
+            // cbMobiPrecision
+            // 
+            this.cbMobiPrecision.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMobiPrecision.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbMobiPrecision.FormattingEnabled = true;
+            this.cbMobiPrecision.Items.AddRange(new object[] {
+            "5",
+            "6"});
+            this.cbMobiPrecision.Location = new System.Drawing.Point(421, 193);
+            this.cbMobiPrecision.Name = "cbMobiPrecision";
+            this.cbMobiPrecision.Size = new System.Drawing.Size(48, 25);
+            this.cbMobiPrecision.TabIndex = 146;
+            // 
+            // cbMobiIntComp
+            // 
+            this.cbMobiIntComp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMobiIntComp.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbMobiIntComp.FormattingEnabled = true;
+            this.cbMobiIntComp.Location = new System.Drawing.Point(401, 346);
+            this.cbMobiIntComp.Name = "cbMobiIntComp";
+            this.cbMobiIntComp.Size = new System.Drawing.Size(82, 25);
+            this.cbMobiIntComp.TabIndex = 140;
+            // 
+            // lblConfigMobiIntComp
+            // 
+            this.lblConfigMobiIntComp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblConfigMobiIntComp.AutoSize = true;
+            this.lblConfigMobiIntComp.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblConfigMobiIntComp.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.lblConfigMobiIntComp.Location = new System.Drawing.Point(233, 349);
+            this.lblConfigMobiIntComp.Name = "lblConfigMobiIntComp";
+            this.lblConfigMobiIntComp.Size = new System.Drawing.Size(130, 17);
+            this.lblConfigMobiIntComp.TabIndex = 141;
+            this.lblConfigMobiIntComp.Text = "mobi int compressor";
+            // 
             // ConversionConfigListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(506, 359);
+            this.ClientSize = new System.Drawing.Size(514, 482);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.cbMobiPrecision);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.cbMobiByteComp);
+            this.Controls.Add(this.lblConfigIntByteComp);
+            this.Controls.Add(this.cbIntByteComp);
+            this.Controls.Add(this.lblConfigMobiIntComp);
+            this.Controls.Add(this.cbMobiIntComp);
             this.Controls.Add(this.btnApply);
             this.Controls.Add(this.btnSaveToLocal);
             this.Controls.Add(this.tbNameConfig);
             this.Controls.Add(this.lblNameConfig);
             this.Controls.Add(this.cbConfigStack);
-            this.Controls.Add(this.lblConfigIntCompA);
-            this.Controls.Add(this.configIntByteComp);
+            this.Controls.Add(this.lblConfigIntIntComp);
+            this.Controls.Add(this.cbIntIntComp);
             this.Controls.Add(this.lblConfigMzByteComp);
-            this.Controls.Add(this.configMzByteComp);
+            this.Controls.Add(this.cbMzByteComp);
             this.Controls.Add(this.cbConfigStackLayers);
             this.Controls.Add(this.lblConfigMzIntComp);
-            this.Controls.Add(this.configMzIntComp);
+            this.Controls.Add(this.cbMzIntComp);
             this.Controls.Add(this.lblConfigOperator);
             this.Controls.Add(this.tbConfigOperator);
             this.Controls.Add(this.lblConfigFileNameTag);
@@ -408,7 +534,7 @@
         public System.Windows.Forms.ListView lvConfigList;
         private System.Windows.Forms.Button btnSaveToLocal;
         private System.Windows.Forms.Label lblNameConfig;
-        private System.Windows.Forms.Label lblConfigIntCompA;
+        private System.Windows.Forms.Label lblConfigIntIntComp;
         private System.Windows.Forms.Label lblConfigMzByteComp;
         private System.Windows.Forms.Label lblConfigMzIntComp;
         private System.Windows.Forms.Label lblConfigOperator;
@@ -422,12 +548,21 @@
         public System.Windows.Forms.CheckBox cbConfigIsZeroIntensityIgnore;
         public System.Windows.Forms.CheckBox cbConfigThreadAccelerate;
         public System.Windows.Forms.ComboBox cbConfigMzPrecision;
-        public System.Windows.Forms.ComboBox configMzIntComp;
-        public System.Windows.Forms.ComboBox configMzByteComp;
-        public System.Windows.Forms.ComboBox configIntByteComp;
+        public System.Windows.Forms.ComboBox cbMzIntComp;
+        public System.Windows.Forms.ComboBox cbMzByteComp;
+        public System.Windows.Forms.ComboBox cbIntIntComp;
         public System.Windows.Forms.CheckBox cbConfigStack;
         public System.Windows.Forms.ComboBox cbConfigStackLayers;
         private System.Windows.Forms.ContextMenuStrip contextMenu;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.Label lblConfigIntByteComp;
+        public System.Windows.Forms.ComboBox cbIntByteComp;
+        private System.Windows.Forms.Label label3;
+        public System.Windows.Forms.ComboBox cbMobiByteComp;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        public System.Windows.Forms.ComboBox cbMobiPrecision;
+        public System.Windows.Forms.ComboBox cbMobiIntComp;
+        private System.Windows.Forms.Label lblConfigMobiIntComp;
     }
 }

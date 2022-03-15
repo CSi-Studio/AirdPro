@@ -32,6 +32,7 @@ namespace AirdPro.Forms
         private void CustomPathForm_Load(object sender, EventArgs e)
         {
             tbPaths.Text = string.Empty;
+            tbPaths.Text = "D:\\proteomics\\LFQ_timsTOFPro_diaPASEF_Human_01.d";
         }
 
         public void clearInfos()
