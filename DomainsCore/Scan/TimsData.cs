@@ -2,13 +2,13 @@
 
 public class TimsData
 { 
-    public double mobility;
+    public int mobilityNo;
     public double mz;
     public double intensity;
 
-    public TimsData(double mobility, double mz, double intensity)
+    public TimsData(int mobilityNo, double mz, double intensity)
     {
-        this.mobility = mobility;
+        this.mobilityNo = mobilityNo;
         this.mz = mz;
         this.intensity = intensity;
     }

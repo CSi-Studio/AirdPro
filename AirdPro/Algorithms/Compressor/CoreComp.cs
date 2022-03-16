@@ -31,7 +31,6 @@ namespace AirdPro.Algorithms
         public CoreComp(IConverter converter) : base(converter)
         {
         }
-        ConcurrentDictionary<float, int> mobiDict = new ConcurrentDictionary<float, int>();
         private int id=-1;
         public override void compressMS1(IConverter converter, BlockIndex index)
         {
@@ -76,11 +75,7 @@ namespace AirdPro.Algorithms
                     {
                         if (converter.jobInfo.ionMobility)
                         {
-                            HashSet<int> mobilities = compressMobility(spectrum, ts);
-                            lock (locker2)
-                            {
-                                totalMobilities.UnionWith(mobilities);
-                            }
+                            compressMobility(spectrum, ts);
                         }
                         else
                         {
@@ -177,7 +172,7 @@ namespace AirdPro.Algorithms
             ts.intArrayBytes = compressedIntArray;
         }
 
-        public HashSet<float> compressMobility(Spectrum spectrum, TempScan ts)
+        public void compressMobility(Spectrum spectrum, TempScan ts)
         {
             double[] mzData = spectrum.getMZArray().data.Storage();
             double[] intData = spectrum.getIntensityArray().data.Storage();
@@ -194,28 +189,26 @@ namespace AirdPro.Algorithms
             TimsData[] dataArray = new TimsData[size];
             for (int t = 0; t < size; t++)
             {
-                dataArray[t] = new TimsData(mobiData[t], mzData[t], intData[t]);
+                dataArray[t] = new TimsData(mobiDict[mobiData[t]], mzData[t], intData[t]);
             }
             Array.Sort(dataArray, (p1, p2) => p1.mz.CompareTo(p2.mz));
             int[] mzArray = new int[size];
             int[] intensityArray = new int[size];
-            float[] mobilityArray = new float[size];
+            int[] mobilityNoArray = new int[size];
             for (int i = 0; i < size; i++)
             {
                 mzArray[i] = Convert.ToInt32(dataArray[i].mz * mzPrecision);
                 intensityArray[i] = getIntensity(dataArray[i].intensity);
-                mobilityArray[i] = (float) (dataArray[i].mobility);
+                mobilityNoArray[i] = dataArray[i].mobilityNo;
             }
 
             byte[] compressedMzArray = mzByteComp.encode(ByteTrans.intToByte(mzIntComp.encode(mzArray)));
             byte[] compressedIntArray = intByteComp.encode(ByteTrans.intToByte(intIntComp.encode(intensityArray)));
-            byte[] compressedMobilityArray = mobiByteComp.encode(ByteTrans.floatToByte(mobilityArray));
-
+            byte[] compressedMobilityArray = mobiByteComp.encode(ByteTrans.intToByte(mobiIntComp.encode(mobilityNoArray)));
+           
             ts.mzArrayBytes = compressedMzArray;
             ts.intArrayBytes = compressedIntArray;
             ts.mobilityArrayBytes = compressedMobilityArray;
-
-            return new HashSet<float>(mobilityArray);
         }
 
         private int getIntensity(double target)

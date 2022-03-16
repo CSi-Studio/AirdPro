@@ -46,7 +46,7 @@ namespace AirdPro.Converters
         protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
         public List<MsIndex> ms1List = new List<MsIndex>(); //用于存放MS1索引及基础信息,泛型为MsIndex
         protected Hashtable featuresMap = new Hashtable();
-        public ConcurrentDictionary<double, int> mobilityDict;
+        public Dictionary<double, int> mobiDict;
         public ICompressor compressor;
 
         protected long fileSize; //厂商文件大小
@@ -268,9 +268,23 @@ namespace AirdPro.Converters
         protected void readVendorFile()
         {
             jobInfo.log("Prepare to Parse Vendor File", "Prepare");
-            // msd = new MSDataFile(jobInfo.inputPath);
-            
 
+            long handle = TdfUtil.tims_open(jobInfo.inputPath, 1);
+            double[] scanNums = new double[2000];
+            for (int i = 0; i < scanNums.Length; i++)
+            {
+                scanNums[i] = i;
+            }
+            double[] mobility = new double[2000];
+            TdfUtil.tims_scannum_to_oneoverk0(handle, 1, scanNums, mobility, scanNums.Length);
+            TdfUtil.tims_close(handle);
+            mobiDict = new Dictionary<double, int>();
+            for (int i = 0; i < mobility.Length; i++)
+            {
+                mobiDict.Add(mobility[i],i);
+            }
+
+            compressor.mobiDict = mobiDict;
             ReaderList readerList = ReaderList.FullReaderList;
             var readerConfig = new ReaderConfig
             {
@@ -302,7 +316,7 @@ namespace AirdPro.Converters
                 totalSize = spectrumList.size();
                 jobInfo.log("Adapting Finished, Total Spectra:" + totalSize);
             }
-
+            
             switch (jobInfo.format)
             {
                 case FileFormat.WIFF:

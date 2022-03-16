@@ -26,7 +26,7 @@ namespace AirdPro.Forms
     {
         ArrayList jobIdList = new ArrayList();
         VendorFileSelectorForm fileSelector;
-        ConversionConfigListForm configListForm; 
+        ConversionConfigListForm configListForm;
         GlobalSettingForm globalSettingForm;
         AboutForm aboutForm;
 
@@ -37,7 +37,6 @@ namespace AirdPro.Forms
 
         public void applyConfig(ConversionConfig conversionConfig)
         {
-            
         }
 
         private void ProproForm_Load(object sender, EventArgs e)
@@ -57,7 +56,7 @@ namespace AirdPro.Forms
 
             foreach (ListViewItem item in lvFileList.Items)
             {
-                JobInfo jobInfo = (JobInfo)item.Tag;
+                JobInfo jobInfo = (JobInfo) item.Tag;
                 if (!ConvertTaskManager.getInstance().jobTable.ContainsKey(jobInfo.getJobId()))
                 {
                     item.Tag = jobInfo;
@@ -81,7 +80,7 @@ namespace AirdPro.Forms
             {
                 JobInfo jobInfo = new JobInfo(inputPath, outputPath, type, config);
                 ListViewItem item = jobInfo.buildItem();
-            
+
                 lvFileList.Items.Add(item);
                 jobIdList.Add(jobInfo.getJobId());
             }
@@ -178,6 +177,7 @@ namespace AirdPro.Forms
             {
                 configListForm = new ConversionConfigListForm(item);
             }
+
             //以下代码的顺序不能换,必须先Show,再执行showConfig操作
             configListForm.Show();
             configListForm.showConfig("", config);
@@ -217,28 +217,21 @@ namespace AirdPro.Forms
 
         private void rerun_Click(object sender, EventArgs e)
         {
-            bool success = true;
             foreach (ListViewItem item in lvFileList.SelectedItems)
             {
-                JobInfo jobInfo = (JobInfo)item.Tag;
-                if (jobInfo.status.Equals(ProcessingStatus.FINISHED) || jobInfo.status.Equals(ProcessingStatus.ERROR))
+                JobInfo jobInfo = (JobInfo) item.Tag;
+                if (ConvertTaskManager.getInstance().finishedTable.ContainsKey(jobInfo.getJobId()))
                 {
-                    if (ConvertTaskManager.getInstance().finishedTable.ContainsKey(jobInfo.getJobId()))
-                    {
-                        ConvertTaskManager.getInstance().finishedTable.Remove(jobInfo.getJobId());
-                    }
-                    
+                    ConvertTaskManager.getInstance().finishedTable.Remove(jobInfo.getJobId());
                     ConvertTaskManager.getInstance().pushJob(jobInfo);
                     jobInfo.refreshItem(item);
                 }
                 else
                 {
-                    success = false;
+                    MessageBox.Show("Only finished job can rerun");
                 }
-            }
-            if (!success)
-            {
-                MessageBox.Show("Only Finished or Error Jobs can rerun");
+
+                
             }
         }
 
@@ -342,6 +335,7 @@ namespace AirdPro.Forms
             {
                 aboutForm = new AboutForm();
             }
+
             aboutForm.Show();
         }
     }

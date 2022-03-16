@@ -66,7 +66,7 @@ namespace AirdPro.Forms
                 return false;
             }
 
-            if (cbConfig.SelectedItem.ToString().IsNullOrEmpty() || !Program.conversionConfigHandler.configMap.ContainsKey(cbConfig.SelectedItem.ToString()))
+            if (cbConfig.SelectedItem == null || cbConfig.SelectedItem.ToString().IsNullOrEmpty() || !Program.conversionConfigHandler.configMap.ContainsKey(cbConfig.SelectedItem.ToString()))
             {
                 MessageBox.Show("Choose one conversion config first!");
                 return false;
