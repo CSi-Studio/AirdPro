@@ -19,7 +19,6 @@ using pwiz.CLI.data;
 using pwiz.CLI.msdata;
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -43,11 +42,17 @@ namespace AirdPro.Converters
         protected List<WindowRange> ranges = new List<WindowRange>(); //SWATH Window的窗口
         protected Hashtable rangeTable = new Hashtable(); //用于存放SWATH窗口的信息,key为mz
         protected List<BlockIndex> indexList = new List<BlockIndex>(); //用于存储的全局的SWATH List
-        protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
+
+        protected Hashtable
+            ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
+
         public List<MsIndex> ms1List = new List<MsIndex>(); //用于存放MS1索引及基础信息,泛型为MsIndex
         protected Hashtable featuresMap = new Hashtable();
-        public Dictionary<double, int> mobiDict;
         public ICompressor compressor;
+
+        public double[] mobiArray;
+        public Dictionary<double, int> mobiDict;
+        public MobiInfo mobiInfo = new MobiInfo();
 
         protected long fileSize; //厂商文件大小
         protected long startPosition = 0; //文件指针
@@ -58,8 +63,6 @@ namespace AirdPro.Converters
         protected string msType; //Profile, Centroided
         protected string polarity; //Negative, Positive
         protected string rtUnit; //Minute, Second
-        protected string mobilityUnit;
-        protected string mobilityType;
 
         public IConverter(JobInfo jobInfo)
         {
@@ -100,25 +103,28 @@ namespace AirdPro.Converters
             return time;
         }
 
-        protected float parseMobility(Scan scan)
+        protected void parseMobility(Scan scan)
         {
-            float mobility = 0f;
+            if (mobiInfo.unit != null && mobiInfo.type != null)
+            {
+                return;
+            }
+
+            // float mobility = 0f;
             if (scan.hasCVParamChild(CVID.MS_inverse_reduced_ion_mobility))
             {
                 CVParam cv = scan.cvParamChild(CVID.MS_inverse_reduced_ion_mobility);
-                mobility = float.Parse(cv.value.ToString());
-                mobilityUnit = cv.unitsName;
-                mobilityType = MobilityType.TIMS;
+                // mobility = float.Parse(cv.value.ToString());
+                mobiInfo.unit = cv.unitsName;
+                mobiInfo.type = MobilityType.TIMS;
             }
             else if (scan.hasCVParamChild(CVID.MS_ion_mobility_drift_time))
             {
                 CVParam cv = scan.cvParamChild(CVID.MS_ion_mobility_drift_time);
-                mobility = float.Parse(cv.value.ToString());
-                mobilityUnit = cv.unitsName;
-                mobilityType = MobilityType.DTIMS;
+                // mobility = float.Parse(cv.value.ToString());
+                mobiInfo.unit = cv.unitsName;
+                mobiInfo.type = MobilityType.DTIMS;
             }
-
-            return mobility;
         }
 
         protected long parseTIC(Spectrum spectrum)
@@ -138,6 +144,11 @@ namespace AirdPro.Converters
          */
         protected void parsePolarity(Spectrum spectrum)
         {
+            if (polarity != null)
+            {
+                return;
+            }
+
             if (!spectrum.cvParamChild(CVID.MS_negative_scan).cvid.Equals(CVID.CVID_Unknown))
             {
                 polarity = Polarity.NEGATIVE;
@@ -153,6 +164,11 @@ namespace AirdPro.Converters
          */
         protected void parseMsType(Spectrum spectrum)
         {
+            if (msType != null)
+            {
+                return;
+            }
+
             if (!spectrum.cvParamChild(CVID.MS_profile_spectrum).cvid.Equals(CVID.CVID_Unknown))
             {
                 msType = MSType.PROFILE;
@@ -175,6 +191,11 @@ namespace AirdPro.Converters
         {
             //这个解析仅做一次,也就是仅分析第一个scan的activation
             if (activation == null)
+            {
+                return;
+            }
+
+            if (activator != null)
             {
                 return;
             }
@@ -260,7 +281,7 @@ namespace AirdPro.Converters
                     index.mobilities.Add(ts.mobilityArrayBytes.Length);
                     airdStream.Write(ts.mobilityArrayBytes, 0, ts.mobilityArrayBytes.Length);
                 }
-                
+
                 // startPosition = startPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length
             }
         }
@@ -268,23 +289,6 @@ namespace AirdPro.Converters
         protected void readVendorFile()
         {
             jobInfo.log("Prepare to Parse Vendor File", "Prepare");
-
-            long handle = TdfUtil.tims_open(jobInfo.inputPath, 1);
-            double[] scanNums = new double[2000];
-            for (int i = 0; i < scanNums.Length; i++)
-            {
-                scanNums[i] = i;
-            }
-            double[] mobility = new double[2000];
-            TdfUtil.tims_scannum_to_oneoverk0(handle, 1, scanNums, mobility, scanNums.Length);
-            TdfUtil.tims_close(handle);
-            mobiDict = new Dictionary<double, int>();
-            for (int i = 0; i < mobility.Length; i++)
-            {
-                mobiDict.Add(mobility[i],i);
-            }
-
-            compressor.mobiDict = mobiDict;
             ReaderList readerList = ReaderList.FullReaderList;
             var readerConfig = new ReaderConfig
             {
@@ -302,7 +306,7 @@ namespace AirdPro.Converters
 
             msd = msInfo[0];
             jobInfo.log("Adapting Vendor File API", "Adapting");
-            
+
             List<string> filter = new List<string>();
             SpectrumListFactory.wrap(msd, filter); //这一步操作可以帮助加快Wiff文件的初始化速度
 
@@ -316,7 +320,7 @@ namespace AirdPro.Converters
                 totalSize = spectrumList.size();
                 jobInfo.log("Adapting Finished, Total Spectra:" + totalSize);
             }
-            
+
             switch (jobInfo.format)
             {
                 case FileFormat.WIFF:
@@ -332,6 +336,29 @@ namespace AirdPro.Converters
                     if (raw.Exists) fileSize += raw.Length;
                     break;
             }
+        }
+
+        public void initMobi()
+        {
+            jobInfo.log("Init Mobility Array");
+            long handle = TdfUtil.tims_open(jobInfo.inputPath, 1);
+            double[] scanNums = new double[2000];
+            for (int i = 0; i < scanNums.Length; i++)
+            {
+                scanNums[i] = i;
+            }
+
+            double[] mobility = new double[2000];
+            TdfUtil.tims_scannum_to_oneoverk0(handle, 1, scanNums, mobility, scanNums.Length);
+            TdfUtil.tims_close(handle);
+            mobiDict = new Dictionary<double, int>();
+            for (int i = 0; i < mobility.Length; i++)
+            {
+                mobiDict.Add(mobility[i], i);
+            }
+
+            mobiArray = mobility;
+            compressor.mobiDict = mobiDict;
         }
 
         //将最终的数据写入文件中
@@ -351,7 +378,7 @@ namespace AirdPro.Converters
             ranges = new List<WindowRange>();
             indexList = new List<BlockIndex>();
         }
-        
+
         //DDA模式下,key为ms2Index.pNum, DIA模式下,key为ms2Index.precursorMz
         protected void addToMS2Map(Object key, MsIndex ms2Index)
         {
@@ -379,6 +406,7 @@ namespace AirdPro.Converters
 
             ms1.rt = parseRT(scan);
             ms1.tic = parseTIC(spectrum);
+            parseMobility(scan);
             if (msType == null) parseMsType(spectrum);
             if (polarity == null) parsePolarity(spectrum);
 
@@ -416,9 +444,10 @@ namespace AirdPro.Converters
                         .cvParamChild(CVID.MS_isolation_window_upper_offset).value);
                 throw e;
             }
+
             if (spectrum.scanList.scans.Count != 1) return ms2;
 
-            if (activator == null) parseActivator(spectrum.precursors[0].activation);
+            parseActivator(spectrum.precursors[0].activation);
             Scan scan = spectrum.scanList.scans[0];
 
             ms2.cvList = CV.trans(spectrum.cvParams);
@@ -426,6 +455,21 @@ namespace AirdPro.Converters
             ms2.rt = parseRT(scan);
             ms2.tic = parseTIC(spectrum);
             return ms2;
+        }
+
+        protected void compressMobiDict()
+        {
+            int[] mobiIntArray = new int[mobiArray.Length];
+            for (var i = 0; i < mobiArray.Length; i++)
+            {
+                mobiIntArray[i] = (int) Math.Round(mobiArray[i] * AirdInfo.PRECISION_MOBI);
+            }
+
+            byte[] compressedMobiData = new ZSTD().encode(ByteTrans.intToByte(new IntegratedVarByte().encode(mobiIntArray)));
+            mobiInfo.dictStart = startPosition;
+            startPosition += compressedMobiData.Length;
+            airdStream.Write(compressedMobiData, 0, compressedMobiData.Length);
+            mobiInfo.dictEnd = startPosition;
         }
 
         protected void compressMS1Block()
@@ -488,6 +532,7 @@ namespace AirdPro.Converters
                     {
                         range.charge = index.precursorCharge;
                     }
+
                     ms2Ranges.Add(range);
                     TempScan ts = new TempScan(index.num, index.rt, index.tic, index.cvList);
                     compressor.compress(spectrumList.spectrum(index.num, true), ts);
@@ -525,13 +570,13 @@ namespace AirdPro.Converters
                     {
                         result = 0;
                     }
-                    
                 }
                 catch (FormatException e)
                 {
                     jobInfo.log(cvid + "-重试次数-" + retryTimes + "-Result:" + result);
                     jobInfo.log(e.StackTrace);
                 }
+
                 retryTimes--;
             }
 
@@ -593,8 +638,8 @@ namespace AirdPro.Converters
             airdInfo.activator = activator;
             airdInfo.energy = energy;
             airdInfo.rtUnit = rtUnit;
-            airdInfo.ccsUnit = mobilityUnit;
-            airdInfo.mobilityType = mobilityType;
+
+            airdInfo.mobiInfo = mobiInfo;
             airdInfo.msType = msType;
             airdInfo.polarity = polarity;
             //Scan index and window range info
@@ -731,6 +776,7 @@ namespace AirdPro.Converters
 
                 intCompressor.addMethod(jobInfo.config.intIntComp.ToString());
                 intCompressor.addMethod(jobInfo.config.intByteComp.ToString());
+                mobiCompressor.precision = 10;
 
                 mobiCompressor.addMethod(jobInfo.config.mobiIntComp.ToString());
                 mobiCompressor.addMethod(jobInfo.config.mobiByteComp.ToString());

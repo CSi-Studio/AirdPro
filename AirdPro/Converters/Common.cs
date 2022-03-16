@@ -12,7 +12,6 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using AirdPro.Constants;
 using AirdPro.DomainsCore.Aird;
 using AirdPro.Domains.Convert;
@@ -84,10 +83,7 @@ namespace AirdPro.Converters
                         }
                         else
                         {
-                            if (activator == null)
-                            {
-                                parseActivator(spectrum.precursors[0].activation);
-                            }
+                            parseActivator(spectrum.precursors[0].activation);
                             ms2Table.Add(i, ts);
                         }
                     }

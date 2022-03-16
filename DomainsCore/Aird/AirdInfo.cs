@@ -15,6 +15,8 @@ namespace AirdPro.DomainsCore.Aird
 {
     public class AirdInfo
     {
+        public const int PRECISION_MOBI = 10000000; //Mobi Array采用IVB+Zstd的压缩方式进行存储,精确到小数点后7位
+
         /**
          * Instrument information list
          */
@@ -95,16 +97,6 @@ namespace AirdPro.DomainsCore.Aird
         public string rtUnit;
 
         /**
-         * ion mobility ccs unit
-         */
-        public string ccsUnit;
-
-        /**
-         * ion mobility type
-         */
-        public string mobilityType;
-
-        /**
          * polarity
          */
         public string polarity;
@@ -162,5 +154,11 @@ namespace AirdPro.DomainsCore.Aird
          * Aird的版本编码
          */
         public int versionCode;
+
+        /**
+         * Use in ion mobility acquisition method
+         * 如果是Mobility采集模式,本字段会启用
+         */
+        public MobiInfo mobiInfo = new MobiInfo();
     }
 }

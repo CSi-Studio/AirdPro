@@ -30,7 +30,9 @@ namespace AirdPro.Converters
                 using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                 {
                     readVendorFile(); //准备读取Vendor文件
+                    initMobi();
                     pretreatment(); //MS1和MS2分开建立索引
+                    compressMobiDict();
                     compressMS1Block(); //处理MS1,并将索引写入文件流中
                     compressMS2BlockForDDA(); //处理MS2,并将索引写入文件流中
                     writeToAirdInfoFile(); //将Info数据写入文件
@@ -46,6 +48,7 @@ namespace AirdPro.Converters
             jobInfo.log("Pretreatment:" + totalSize, "Pretreatment");
             for (var i = 0; i < totalSize; i++)
             {
+                jobInfo.log(null, "Pre:" + i + "/" + totalSize);
                 Spectrum spectrum = spectrumList.spectrum(i);
                 string msLevel = parseMsLevel(spectrum);
 
@@ -81,7 +84,6 @@ namespace AirdPro.Converters
                         MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
                         addToMS2Map(ms2Index.pNum, ms2Index); //如果这个谱图是MS2
                     }
-
                 }
             }
 

@@ -14,6 +14,7 @@ using AirdPro.DomainsCore.Aird;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Compress;
@@ -27,11 +28,10 @@ namespace AirdPro.Algorithms
     public class CoreComp : ICompressor
     {
         private static readonly object locker = new object();
-        private static readonly object locker2 = new object();
         public CoreComp(IConverter converter) : base(converter)
         {
         }
-        private int id=-1;
+
         public override void compressMS1(IConverter converter, BlockIndex index)
         {
             if (multiThread)
@@ -150,7 +150,7 @@ namespace AirdPro.Algorithms
             }
 
             int[] mzArray = new int[size];
-            float[] intensityArray = new float[size];
+            int[] intensityArray = new int[size];
             int j = 0;
             for (int t = 0; t < size; t++)
             {
@@ -162,13 +162,13 @@ namespace AirdPro.Algorithms
 
             int[] mzSubArray = new int[j];
             Array.Copy(mzArray, mzSubArray, j);
-            float[] intensitySubArray = new float[j];
+            int[] intensitySubArray = new int[j];
             Array.Copy(intensityArray, intensitySubArray, j);
 
-            int[] compressedMzSubArray = mzIntComp.encode(mzSubArray);
-            byte[] compressedIntArray = intByteComp.encode(ByteTrans.floatToByte(intensitySubArray));
-
-            ts.mzArrayBytes = mzByteComp.encode(ByteTrans.intToByte(compressedMzSubArray));
+            byte[] compressedMzArray = mzByteComp.encode(ByteTrans.intToByte(mzIntComp.encode(mzSubArray)));
+            byte[] compressedIntArray = intByteComp.encode(ByteTrans.intToByte(intIntComp.encode(intensitySubArray)));
+            
+            ts.mzArrayBytes = compressedMzArray;
             ts.intArrayBytes = compressedIntArray;
         }
 
@@ -205,7 +205,7 @@ namespace AirdPro.Algorithms
             byte[] compressedMzArray = mzByteComp.encode(ByteTrans.intToByte(mzIntComp.encode(mzArray)));
             byte[] compressedIntArray = intByteComp.encode(ByteTrans.intToByte(intIntComp.encode(intensityArray)));
             byte[] compressedMobilityArray = mobiByteComp.encode(ByteTrans.intToByte(mobiIntComp.encode(mobilityNoArray)));
-            
+
             ts.mzArrayBytes = compressedMzArray;
             ts.intArrayBytes = compressedIntArray;
             ts.mobilityArrayBytes = compressedMobilityArray;
@@ -216,12 +216,12 @@ namespace AirdPro.Algorithms
             int result;
             try
             {
-                result = Convert.ToInt32(Math.Round(target)); //精确到小数点后一位
+                result = Convert.ToInt32(Math.Round(target*10)); //精确到小数点后一位
             }
             catch (Exception e)
             {
-                //超出Integer可以表达的最大值,使用-log2进行转换
-                result = -Convert.ToInt32(Math.Log(target) / Math.Log(2) * 10000);
+                //超出Integer可以表达的最大值,使用-log2进行转换,保留5位有效数字
+                result = -Convert.ToInt32(Math.Log(target*10) / Math.Log(2) * 100000);
                 Console.WriteLine("出现一个超级值:" + target + ",转换后为:" + result);
             }
 
