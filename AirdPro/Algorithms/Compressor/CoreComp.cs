@@ -184,7 +184,6 @@ namespace AirdPro.Algorithms
                                 spectrum.getArrayByCVID(pwiz.CLI.cv.CVID.MS_raw_inverse_reduced_ion_mobility_array)
                                     ?.data.Storage();
 
-
             var size = mzData.Length;
             TimsData[] dataArray = new TimsData[size];
             for (int t = 0; t < size; t++)
@@ -205,7 +204,7 @@ namespace AirdPro.Algorithms
             byte[] compressedMzArray = mzByteComp.encode(ByteTrans.intToByte(mzIntComp.encode(mzArray)));
             byte[] compressedIntArray = intByteComp.encode(ByteTrans.intToByte(intIntComp.encode(intensityArray)));
             byte[] compressedMobilityArray = mobiByteComp.encode(ByteTrans.intToByte(mobiIntComp.encode(mobilityNoArray)));
-
+           
             ts.mzArrayBytes = compressedMzArray;
             ts.intArrayBytes = compressedIntArray;
             ts.mobilityArrayBytes = compressedMobilityArray;

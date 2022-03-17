@@ -12,9 +12,9 @@ namespace AirdPro.Constants
 {
     class SoftwareInfo
     {
-        public static string VERSION = "2.2.0";
-        public static int VERSION_CODE = 207;
-        public static string CLIENT_VERSION_DESCRIPTION = "PASEF Mode Support, New Compressor: ZDVB";
+        public static string VERSION = "3.0.0";
+        public static int VERSION_CODE = 301;
+        public static string CLIENT_VERSION_DESCRIPTION = "PASEF Mode Support, New Compressors Framework";
         public static string NAME = "AirdPro";
 
         public static string getVersion()
