@@ -32,6 +32,7 @@ namespace AirdPro.Algorithms
         public IntComp mobiIntComp;
         public ByteComp mobiByteComp;
         public Dictionary<double, int> mobiDict;
+        public int intensityPrecision;
 
         public ICompressor(IConverter converter)
         {

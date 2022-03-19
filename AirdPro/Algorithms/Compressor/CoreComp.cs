@@ -12,16 +12,11 @@ using System;
 using AirdPro.Converters;
 using AirdPro.DomainsCore.Aird;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Compress;
-using CSharpFastPFOR.Port;
 using pwiz.CLI.msdata;
 using pwiz.CLI.util;
-using ThermoFisher.CommonCore.Data.Interfaces;
 
 namespace AirdPro.Algorithms
 {
@@ -204,7 +199,7 @@ namespace AirdPro.Algorithms
             byte[] compressedMzArray = mzByteComp.encode(ByteTrans.intToByte(mzIntComp.encode(mzArray)));
             byte[] compressedIntArray = intByteComp.encode(ByteTrans.intToByte(intIntComp.encode(intensityArray)));
             byte[] compressedMobilityArray = mobiByteComp.encode(ByteTrans.intToByte(mobiIntComp.encode(mobilityNoArray)));
-           
+
             ts.mzArrayBytes = compressedMzArray;
             ts.intArrayBytes = compressedIntArray;
             ts.mobilityArrayBytes = compressedMobilityArray;
@@ -215,12 +210,12 @@ namespace AirdPro.Algorithms
             int result;
             try
             {
-                result = Convert.ToInt32(Math.Round(target*10)); //精确到小数点后一位
+                result = Convert.ToInt32(Math.Round(target*intensityPrecision)); //精确到小数点后一位
             }
             catch (Exception e)
             {
                 //超出Integer可以表达的最大值,使用-log2进行转换,保留5位有效数字
-                result = -Convert.ToInt32(Math.Log(target*10) / Math.Log(2) * 100000);
+                result = -Convert.ToInt32(Math.Log(target* intensityPrecision) / Math.Log(2) * 100000);
                 Console.WriteLine("出现一个超级值:" + target + ",转换后为:" + result);
             }
 

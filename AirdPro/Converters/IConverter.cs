@@ -42,9 +42,7 @@ namespace AirdPro.Converters
         protected List<WindowRange> ranges = new List<WindowRange>(); //SWATH Window的窗口
         protected Hashtable rangeTable = new Hashtable(); //用于存放SWATH窗口的信息,key为mz
         protected List<BlockIndex> indexList = new List<BlockIndex>(); //用于存储的全局的SWATH List
-
-        protected Hashtable
-            ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
+        protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
 
         public List<MsIndex> ms1List = new List<MsIndex>(); //用于存放MS1索引及基础信息,泛型为MsIndex
         protected Hashtable featuresMap = new Hashtable();
@@ -63,6 +61,7 @@ namespace AirdPro.Converters
         protected string msType; //Profile, Centroided
         protected string polarity; //Negative, Positive
         protected string rtUnit; //Minute, Second
+        protected int intensityPrecision = 1; //Intensity默认精确到个位数
 
         public IConverter(JobInfo jobInfo)
         {
@@ -88,6 +87,53 @@ namespace AirdPro.Converters
         {
             Directory.CreateDirectory(Path.GetDirectoryName(jobInfo.airdFilePath));
             Directory.CreateDirectory(Path.GetDirectoryName(jobInfo.airdJsonFilePath));
+        }
+        public void initMobi()
+        {
+            jobInfo.log("Init Mobility Array");
+            long handle = TdfUtil.tims_open(jobInfo.inputPath, 1);
+            double[] scanNums = new double[2000];
+            for (int i = 0; i < scanNums.Length; i++)
+            {
+                scanNums[i] = i;
+            }
+
+            double[] mobility = new double[2000];
+            TdfUtil.tims_scannum_to_oneoverk0(handle, 1, scanNums, mobility, scanNums.Length);
+            TdfUtil.tims_close(handle);
+            mobiDict = new Dictionary<double, int>();
+            for (short i = 0; i < mobility.Length; i++)
+            {
+                mobiDict.Add(mobility[i], i);
+            }
+
+            mobiArray = mobility;
+            compressor.mobiDict = mobiDict;
+        }
+
+        protected void predictForIntensityPrecision()
+        {
+            Random rd = new Random();
+            HashSet<int> nums = new HashSet<int>();
+            for (int i = 0; i < 5; i++)
+            {
+                nums.Add(rd.Next(1, totalSize));
+            }
+            for (var i = 0; i < nums.Count; i++)
+            {
+                Spectrum spectrum = spectrumList.spectrum(i, true);
+                foreach (double d in spectrum.getIntensityArray().data.Storage())
+                {
+                    if ((d - (int) d) != 0) //如果随机采集到的intensity是精确到小数点后一位的,精确确定为10,即精确到小数点后一位
+                    {
+                        intensityPrecision = 10;
+                        return;
+                    }
+                }
+            }
+
+            intensityPrecision = 1;
+            compressor.intensityPrecision = intensityPrecision;
         }
 
         protected string parseMsLevel(Spectrum spectrum)
@@ -336,29 +382,6 @@ namespace AirdPro.Converters
                     if (raw.Exists) fileSize += raw.Length;
                     break;
             }
-        }
-
-        public void initMobi()
-        {
-            jobInfo.log("Init Mobility Array");
-            long handle = TdfUtil.tims_open(jobInfo.inputPath, 1);
-            double[] scanNums = new double[2000];
-            for (int i = 0; i < scanNums.Length; i++)
-            {
-                scanNums[i] = i;
-            }
-
-            double[] mobility = new double[2000];
-            TdfUtil.tims_scannum_to_oneoverk0(handle, 1, scanNums, mobility, scanNums.Length);
-            TdfUtil.tims_close(handle);
-            mobiDict = new Dictionary<double, int>();
-            for (int i = 0; i < mobility.Length; i++)
-            {
-                mobiDict.Add(mobility[i], i);
-            }
-
-            mobiArray = mobility;
-            compressor.mobiDict = mobiDict;
         }
 
         //将最终的数据写入文件中
@@ -776,7 +799,7 @@ namespace AirdPro.Converters
 
                 intCompressor.addMethod(jobInfo.config.intIntComp.ToString());
                 intCompressor.addMethod(jobInfo.config.intByteComp.ToString());
-                mobiCompressor.precision = 10;
+                mobiCompressor.precision = intensityPrecision;
 
                 mobiCompressor.addMethod(jobInfo.config.mobiIntComp.ToString());
                 mobiCompressor.addMethod(jobInfo.config.mobiByteComp.ToString());

@@ -4,6 +4,17 @@ namespace AirdPro.Algorithms
 {
     public class ByteTrans
     {
+        //将short数组转化为byte数组
+        public static byte[] shortToByte(short[] src)
+        {
+            var bytes = new byte[src.Length * 2];
+            for (var i = 0; i < src.Length; i++)
+            {
+                BitConverter.GetBytes(src[i]).CopyTo(bytes, i * 2);
+            }
+            return bytes;
+        }
+
         //将int数组转化为byte数组
         public static byte[] intToByte(int[] src)
         {

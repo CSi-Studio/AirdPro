@@ -30,6 +30,7 @@ namespace AirdPro.Converters
                 using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                 {
                     readVendorFile(); //准备读取Vendor文件
+                    predictForIntensityPrecision(); //预测intensity需要保留的精度
                     pretreatment(); //MS1和MS2分开建立索引
                     compressMS1Block(); //处理MS1,并将索引写入文件流中
                     compressMS2BlockForDDA(); //处理MS2,并将索引写入文件流中
