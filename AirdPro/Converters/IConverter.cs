@@ -24,6 +24,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using AirdPro.Algorithms;
+using AirdPro.Asyncs;
 using Compress;
 using ByteOrder = AirdPro.Constants.ByteOrder;
 using CV = AirdPro.DomainsCore.Aird.CV;
@@ -119,6 +120,9 @@ namespace AirdPro.Converters
             {
                 nums.Add(rd.Next(1, totalSize));
             }
+
+
+            bool findIt = false;
             for (var i = 0; i < nums.Count; i++)
             {
                 Spectrum spectrum = spectrumList.spectrum(i, true);
@@ -126,14 +130,28 @@ namespace AirdPro.Converters
                 {
                     if ((d - (int) d) != 0) //如果随机采集到的intensity是精确到小数点后一位的,精确确定为10,即精确到小数点后一位
                     {
-                        intensityPrecision = 10;
-                        return;
+                        findIt = true;
+                        break;
                     }
+                }
+
+                if (findIt)
+                {
+                    break;
                 }
             }
 
-            intensityPrecision = 1;
+            if (findIt)
+            {
+                intensityPrecision = 10;
+            }
+            else
+            {
+                intensityPrecision = 1;
+            }
+            
             compressor.intensityPrecision = intensityPrecision;
+            jobInfo.log("Intensity Precision:" + intensityPrecision);
         }
 
         protected string parseMsLevel(Spectrum spectrum)

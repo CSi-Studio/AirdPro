@@ -25,10 +25,13 @@ namespace AirdPro.Forms
         {
             HardwareInfo hardwareInfo = new HardwareInfo();
             lblSoftwareVersion.Text = SoftwareInfo.getVersion();
-            lblCompanyInfo.Text = "CopyRight © 2022"+ "\r\n"+ "CSi (HangZhou) Biotechnology Corporation co.,ltd." + "\r\n" + "All rights reserved.";
+            lblCompanyInfo.Text = "CopyRight © 2022 CSi (HangZhou) Biotechnology Corporation co.,ltd. All rights reserved.";
             lblCPUInfo.Text =  hardwareInfo.cpuInfo;
             lblPhysicMemory.Text = hardwareInfo.physicMemory;
             lblOpVersion.Text = hardwareInfo.opVersion + " " + hardwareInfo.systemType;
+            lblDesc.Text = SoftwareInfo.getDescription();
+            tbPaperZDPD.Text = "https://doi.org/10.1186/s12859-021-04490-0 \r\n" +
+                "Lu, M., An, S., Wang, R. et al. Aird: a computation-oriented mass spectrometry data format enables a higher compression ratio and less decoding time. BMC Bioinformatics 23, 35 (2022).";
         }
 
         //查看许可证状态

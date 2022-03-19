@@ -15,6 +15,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using pwiz.CLI.cv;
 using pwiz.CLI.msdata;
 using pwiz.CLI.util;
 
@@ -171,12 +172,12 @@ namespace AirdPro.Algorithms
         {
             double[] mzData = spectrum.getMZArray().data.Storage();
             double[] intData = spectrum.getIntensityArray().data.Storage();
-            double[] mobiData = spectrum.getArrayByCVID(pwiz.CLI.cv.CVID.MS_mean_ion_mobility_drift_time_array)?.data
+            double[] mobiData = spectrum.getArrayByCVID(CVID.MS_mean_ion_mobility_drift_time_array)?.data
                                     .Storage() ??
-                                spectrum.getArrayByCVID(pwiz.CLI.cv.CVID.MS_mean_inverse_reduced_ion_mobility_array)
+                                spectrum.getArrayByCVID(CVID.MS_mean_inverse_reduced_ion_mobility_array)
                                     ?.data.Storage() ??
-                                spectrum.getArrayByCVID(pwiz.CLI.cv.CVID.MS_raw_ion_mobility_array)?.data.Storage() ??
-                                spectrum.getArrayByCVID(pwiz.CLI.cv.CVID.MS_raw_inverse_reduced_ion_mobility_array)
+                                spectrum.getArrayByCVID(CVID.MS_raw_ion_mobility_array)?.data.Storage() ??
+                                spectrum.getArrayByCVID(CVID.MS_raw_inverse_reduced_ion_mobility_array)
                                     ?.data.Storage();
 
             var size = mzData.Length;
@@ -216,7 +217,7 @@ namespace AirdPro.Algorithms
             {
                 //超出Integer可以表达的最大值,使用-log2进行转换,保留5位有效数字
                 result = -Convert.ToInt32(Math.Log(target* intensityPrecision) / Math.Log(2) * 100000);
-                Console.WriteLine("出现一个超级值:" + target + ",转换后为:" + result);
+                Console.WriteLine("A Bigger Integer Appears:" + target + ", after conversion:" + result);
             }
 
             return result;
