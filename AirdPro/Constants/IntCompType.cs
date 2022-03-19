@@ -15,5 +15,6 @@ namespace AirdPro.Constants
         IBP = 0, //Integrated Binary Packing
         IVB = 1, //Integrated Variable Byte
         VB = 2, //Variable Byte
+        BP = 3, //Binary Packing
     }
 }

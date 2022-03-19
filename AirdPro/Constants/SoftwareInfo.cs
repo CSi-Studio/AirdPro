@@ -15,7 +15,10 @@ namespace AirdPro.Constants
         public static string VERSION = "3.0.0";
         public static int VERSION_CODE = 301;
         public static string CLIENT_VERSION_DESCRIPTION = "1. PASEF Mode Support;\r\n" +
-                                                          "2. Intensity Precision Prediction;\r\n" +
+                                                          "2. Intensity Precision " +
+                                                          "Predict" +
+                                                          "" +
+                                                          "ion;\r\n" +
                                                           "3. Mapping For Mobility Compression:\r\n" +
                                                           "4. Combinable compressor for Byte and Integer Array:\r\n" +
                                                           "  For Byte: Brotli, Snappy, Zstd, Zlib;\r\n" +

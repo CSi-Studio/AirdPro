@@ -155,7 +155,6 @@ namespace AirdPro.Domains.Convert
             jobInfo += "threadId:" + threadId + "\r\n";
             jobInfo += "ThreadAccelerate:" + config.threadAccelerate + "\r\n";
             jobInfo += "mzPrecision:" + config.getMzPrecisionStr() + "\r\n";
-            jobInfo += "mobiPrecision:" + config.getMobiPrecisionStr() + "\r\n";
             jobInfo += "compressor:" + config.getCompressorStr() + "\r\n";
             return jobInfo;
         }

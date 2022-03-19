@@ -821,7 +821,6 @@ namespace AirdPro.Converters
 
                 mobiCompressor.addMethod(jobInfo.config.mobiIntComp.ToString());
                 mobiCompressor.addMethod(jobInfo.config.mobiByteComp.ToString());
-                mobiCompressor.precision = jobInfo.config.mobiPrecision;
             }
 
             coms.Add(mzCompressor);

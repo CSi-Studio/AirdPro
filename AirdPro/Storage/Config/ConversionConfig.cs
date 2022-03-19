@@ -28,12 +28,6 @@ namespace AirdPro.Domains.Convert
         public int mzPrecision = 100000;
 
         /**
-         * the decimal point of the mobility. The default value is 5dp
-         * mobility精度,默认保留到小数点后第5位
-         */
-        public int mobiPrecision = 100000;
-
-        /**
          * if using the multi thread for acceleration. The default value is true
          * 是否使用CPU多核加速,默认加速
          */
@@ -105,11 +99,6 @@ namespace AirdPro.Domains.Convert
         public string getMzPrecisionStr()
         {
            return ((int) Math.Log10(mzPrecision)) +"dp";
-        }
-
-        public string getMobiPrecisionStr()
-        {
-            return ((int)Math.Log10(mobiPrecision))+"dp";
         }
     }
 }

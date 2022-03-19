@@ -58,9 +58,6 @@
             this.cbIntByteComp = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.cbMobiByteComp = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cbMobiPrecision = new System.Windows.Forms.ComboBox();
             this.cbMobiIntComp = new System.Windows.Forms.ComboBox();
             this.lblConfigMobiIntComp = new System.Windows.Forms.Label();
             this.contextMenu.SuspendLayout();
@@ -295,7 +292,7 @@
             this.lblDp.AutoSize = true;
             this.lblDp.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblDp.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblDp.Location = new System.Drawing.Point(308, 197);
+            this.lblDp.Location = new System.Drawing.Point(455, 197);
             this.lblDp.Name = "lblDp";
             this.lblDp.Size = new System.Drawing.Size(24, 17);
             this.lblDp.TabIndex = 122;
@@ -308,7 +305,7 @@
             this.lblMzPrecision.AutoSize = true;
             this.lblMzPrecision.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblMzPrecision.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblMzPrecision.Location = new System.Drawing.Point(220, 197);
+            this.lblMzPrecision.Location = new System.Drawing.Point(285, 197);
             this.lblMzPrecision.Name = "lblMzPrecision";
             this.lblMzPrecision.Size = new System.Drawing.Size(30, 17);
             this.lblMzPrecision.TabIndex = 121;
@@ -323,7 +320,7 @@
             "4",
             "5",
             "6"});
-            this.cbConfigMzPrecision.Location = new System.Drawing.Point(254, 193);
+            this.cbConfigMzPrecision.Location = new System.Drawing.Point(401, 193);
             this.cbConfigMzPrecision.Name = "cbConfigMzPrecision";
             this.cbConfigMzPrecision.Size = new System.Drawing.Size(48, 25);
             this.cbConfigMzPrecision.TabIndex = 120;
@@ -419,45 +416,6 @@
             this.cbMobiByteComp.Size = new System.Drawing.Size(82, 25);
             this.cbMobiByteComp.TabIndex = 144;
             // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label1.Location = new System.Drawing.Point(477, 197);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(24, 17);
-            this.label1.TabIndex = 148;
-            this.label1.Text = "dp";
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label2.Location = new System.Drawing.Point(377, 197);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 17);
-            this.label2.TabIndex = 147;
-            this.label2.Text = "mobi";
-            // 
-            // cbMobiPrecision
-            // 
-            this.cbMobiPrecision.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbMobiPrecision.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cbMobiPrecision.FormattingEnabled = true;
-            this.cbMobiPrecision.Items.AddRange(new object[] {
-            "5",
-            "6"});
-            this.cbMobiPrecision.Location = new System.Drawing.Point(421, 193);
-            this.cbMobiPrecision.Name = "cbMobiPrecision";
-            this.cbMobiPrecision.Size = new System.Drawing.Size(48, 25);
-            this.cbMobiPrecision.TabIndex = 146;
-            // 
             // cbMobiIntComp
             // 
             this.cbMobiIntComp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -486,9 +444,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(514, 482);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.cbMobiPrecision);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.cbMobiByteComp);
             this.Controls.Add(this.lblConfigIntByteComp);
@@ -559,9 +514,6 @@
         public System.Windows.Forms.ComboBox cbIntByteComp;
         private System.Windows.Forms.Label label3;
         public System.Windows.Forms.ComboBox cbMobiByteComp;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        public System.Windows.Forms.ComboBox cbMobiPrecision;
         public System.Windows.Forms.ComboBox cbMobiIntComp;
         private System.Windows.Forms.Label lblConfigMobiIntComp;
     }

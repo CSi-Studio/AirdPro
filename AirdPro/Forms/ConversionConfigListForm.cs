@@ -90,7 +90,6 @@ namespace AirdPro.Forms
         {
             ConversionConfig config = new ConversionConfig();
             config.mzPrecision = (int) Math.Pow(10, int.Parse(cbConfigMzPrecision.Text));
-            config.mobiPrecision = (int) Math.Pow(10, int.Parse(cbMobiPrecision.Text));
             config.ignoreZeroIntensity = cbConfigIsZeroIntensityIgnore.Checked;
             config.threadAccelerate = cbConfigThreadAccelerate.Checked;
 
@@ -150,7 +149,6 @@ namespace AirdPro.Forms
             cbConfigIsZeroIntensityIgnore.Checked = config.ignoreZeroIntensity;
             cbConfigThreadAccelerate.Checked = config.threadAccelerate;
             cbConfigMzPrecision.SelectedItem = ((int) Math.Log10(config.mzPrecision)).ToString();
-            cbMobiPrecision.SelectedItem = ((int) Math.Log10(config.mobiPrecision)).ToString();
             cbMzIntComp.SelectedItem = config.mzIntComp.ToString();
             cbMzByteComp.SelectedItem = config.mzByteComp.ToString();
             cbIntIntComp.SelectedItem = config.intIntComp.ToString();
