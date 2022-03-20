@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using AirdPro.Algorithms;
+using AirdPro.Constants;
 using BrotliSharpLib;
 using IronSnappy;
 using ZstdNet;
@@ -8,6 +9,11 @@ namespace Compress
 {
     public class Brotlier:ByteComp
     {
+        public string getName()
+        {
+            return ByteCompType.Brotli.ToString();
+        }
+
         public byte[] encode(byte[] data)
         {
             byte[] compressed = Brotli.CompressBuffer(data, 0, data.Length);

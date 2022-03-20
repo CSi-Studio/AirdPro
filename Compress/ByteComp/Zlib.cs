@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using AirdPro.Constants;
 using Compress;
 using Ionic.Zlib;
 
@@ -7,6 +8,11 @@ namespace AirdPro.Algorithms
     public class Zlib:ByteComp
     {
         //使用zlib将byte数组压缩
+        public string getName()
+        {
+            return ByteCompType.Zlib.ToString();
+        }
+
         public byte[] encode(byte[] data)
         {
             using (var ms = new MemoryStream())

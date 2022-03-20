@@ -1,10 +1,16 @@
-﻿using CSharpFastPFOR;
+﻿using AirdPro.Constants;
+using CSharpFastPFOR;
 
 namespace Compress
 {
     public class BinPacking:IntComp
     {
         //使用VariableByte算法将未排序的int数组进行压缩
+        public string getName()
+        {
+            return IntCompType.BP.ToString();
+        }
+
         public int[] encode(int[] uncompressed)
         {
             int[] compressedInts = new IntCompressor(new BinaryPacking()).compress(uncompressed);

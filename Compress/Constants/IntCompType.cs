@@ -12,6 +12,7 @@ namespace AirdPro.Constants
 {
     public enum IntCompType
     {
+        Empty = -1, //Empty, No Compressor
         IBP = 0, //Integrated Binary Packing
         IVB = 1, //Integrated Variable Byte
         VB = 2, //Variable Byte

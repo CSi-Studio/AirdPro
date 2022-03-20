@@ -217,7 +217,7 @@ namespace AirdPro.Algorithms
             {
                 //超出Integer可以表达的最大值,使用-log2进行转换,保留5位有效数字
                 result = -Convert.ToInt32(Math.Log(target* intensityPrecision) / Math.Log(2) * 100000);
-                Console.WriteLine("A Bigger Integer Appears:" + target + ", after conversion:" + result);
+                Console.WriteLine("A Huge Integer Appears:" + target + ", after conversion:" + result);
             }
 
             return result;

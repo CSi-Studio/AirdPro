@@ -142,8 +142,6 @@
     <Compile Include="Algorithms\Compressor\CoreComp.cs" />
     <Compile Include="Asyncs\ConvertTaskManager.cs" />
     <Compile Include="Asyncs\LimitedConcurrencyLevelTaskScheduler.cs" />
-    <Compile Include="Constants\IntCompType.cs" />
-    <Compile Include="Constants\ByteCompType.cs" />
     <Compile Include="Constants\Activator.cs" />
     <Compile Include="Constants\ByteOrder.cs" />
     <Compile Include="Constants\FileFormat.cs" />
@@ -329,7 +327,9 @@
       <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Test\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(SolutionDir)ImportLibs\*.*" "$(TargetDir)"</PostBuildEvent>
