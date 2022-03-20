@@ -17,5 +17,8 @@ namespace AirdPro.Constants
         IVB = 1, //Integrated Variable Byte
         VB = 2, //Variable Byte
         BP = 3, //Binary Packing
+        NewPFD = 4, //NewPFDS16
+        OptPFD = 5, //OptPFDS16
+        Simple = 6, //Simple16
     }
 }

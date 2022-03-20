@@ -856,7 +856,7 @@ namespace AirdPro.Converters
         };
         List<IntComp> intCompList = new List<IntComp>()
         {
-            new VarByte(), new BinPacking(), new Empty()
+            new VarByte(), new BinPacking(), new NewPFDS16er(), new OptPFDS16Ser(),new Simple16er(), new Empty()
         };
 
         public void testCode()

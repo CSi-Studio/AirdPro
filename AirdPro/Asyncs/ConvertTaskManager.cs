@@ -167,14 +167,11 @@ namespace AirdPro.Asyncs
                 comp = new CoreComp(converter);
                 switch (jobInfo.config.mobiIntComp)
                 {
-                    case IntCompType.IBP:
-                        comp.mobiIntComp = new IntegratedBinPacking();
-                        break;
-                    case IntCompType.IVB:
-                        comp.mobiIntComp = new IntegratedVarByte();
-                        break;
                     case IntCompType.VB:
                         comp.mobiIntComp = new VarByte();
+                        break;
+                    case IntCompType.BP:
+                        comp.mobiIntComp = new BinPacking();
                         break;
                 }
 
@@ -203,9 +200,6 @@ namespace AirdPro.Asyncs
                 case IntCompType.IVB:
                     comp.mzIntComp = new IntegratedVarByte();
                     break;
-                case IntCompType.VB:
-                    comp.mzIntComp = new VarByte();
-                    break;
             }
 
             switch (jobInfo.config.mzByteComp)
@@ -226,14 +220,11 @@ namespace AirdPro.Asyncs
 
             switch (jobInfo.config.intIntComp)
             {
-                case IntCompType.IBP:
-                    comp.intIntComp = new IntegratedBinPacking();
-                    break;
-                case IntCompType.IVB:
-                    comp.intIntComp = new IntegratedVarByte();
-                    break;
                 case IntCompType.VB:
                     comp.intIntComp = new VarByte();
+                    break;
+                case IntCompType.BP:
+                    comp.intIntComp = new BinPacking();
                     break;
             }
 

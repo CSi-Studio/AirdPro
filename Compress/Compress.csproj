@@ -13,6 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="IntComp\S16er" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BrotliSharpLib" Version="0.3.3" />
     <PackageReference Include="IronSnappy" Version="1.3.0" />
     <PackageReference Include="log4net" Version="2.0.14" />
