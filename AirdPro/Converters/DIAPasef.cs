@@ -31,13 +31,13 @@ namespace AirdPro.Converters
                     readVendorFile(); //准备读取Vendor文件
                     initMobi();
                     predictForIntensityPrecision(); //预测intensity需要保留的精度
-                    testCode();
-                    return;
-                    // pretreatment(); //预处理谱图,将MS1和MS2谱图分开存储
-                    // compressMobiDict();
-                    // compressMS1Block();
-                    // compressMS2BlockForDIA();
-                    // writeToAirdInfoFile(); //将Info数据写入文件
+                    // testCode();
+                    // return;
+                    pretreatment(); //预处理谱图,将MS1和MS2谱图分开存储
+                    compressMobiDict();
+                    compressMS1Block();
+                    compressMS2BlockForDIA();
+                    writeToAirdInfoFile(); //将Info数据写入文件
                 }
             }
 
