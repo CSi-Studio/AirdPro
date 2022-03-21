@@ -1,28 +1,29 @@
 ﻿using System.IO;
 using AirdPro.Algorithms;
 using AirdPro.Constants;
-using BrotliSharpLib;
 using IronSnappy;
 using ZstdNet;
 
 namespace Compress
 {
-    public class Brotlier:ByteComp
+    public class SnappyWrapper:ByteComp
     {
+
+        //使用zstd将byte数组压缩
         public string getName()
         {
-            return ByteCompType.Brotli.ToString();
+            return ByteCompType.Snappy.ToString();
         }
 
         public byte[] encode(byte[] data)
         {
-            byte[] compressed = Brotli.CompressBuffer(data, 0, data.Length);
+            byte[] compressed = Snappy.Encode(data);
             return compressed;
         }
 
         public byte[] decode(byte[] data)
         {
-            byte[] uncompressed = Brotli.DecompressBuffer(data, 0, data.Length);
+            byte[] uncompressed = Snappy.Decode(data);
             return uncompressed;
         }
 

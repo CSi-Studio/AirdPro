@@ -3,7 +3,7 @@ using CSharpFastPFOR;
 
 namespace Compress
 {
-    public class NewPFDS16er : IntComp
+    public class NewPFDS16Wrapper : IntComp
     {
         public string getName()
         {

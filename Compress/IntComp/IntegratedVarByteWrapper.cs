@@ -4,7 +4,7 @@ using CSharpFastPFOR.Differential;
 
 namespace Compress
 {
-    public class IntegratedVarByte:IntComp
+    public class IntegratedVarByteWrapper:IntComp
     {
         //使用VariableByte算法将排序了的int数组进行压缩
         public string getName()

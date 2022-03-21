@@ -5,7 +5,7 @@ using Ionic.Zlib;
 
 namespace AirdPro.Algorithms
 {
-    public class Zlib:ByteComp
+    public class ZlibWrapper:ByteComp
     {
         //使用zlib将byte数组压缩
         public string getName()

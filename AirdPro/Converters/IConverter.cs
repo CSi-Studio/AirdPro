@@ -511,7 +511,7 @@ namespace AirdPro.Converters
             }
 
             byte[] compressedMobiData =
-                new ZSTD().encode(ByteTrans.intToByte(new IntegratedVarByte().encode(mobiIntArray)));
+                new ZstdWrapper().encode(ByteTrans.intToByte(new IntegratedVarByteWrapper().encode(mobiIntArray)));
             mobiInfo.dictStart = startPosition;
             startPosition += compressedMobiData.Length;
             airdStream.Write(compressedMobiData, 0, compressedMobiData.Length);
@@ -848,15 +848,15 @@ namespace AirdPro.Converters
 
         List<ByteComp> byteCompList = new List<ByteComp>()
         {
-            new Brotlier(), new Snappier(), new ZSTD(), new Zlib()
+            new BrotliWrapper(), new SnappyWrapper(), new ZstdWrapper(), new ZlibWrapper()
         };
         List<IntComp> integratedIntCompList = new List<IntComp>()
         {
-            new IntegratedVarByte(), new IntegratedBinPacking()
+            new IntegratedVarByteWrapper(), new IntegratedBinPackingWrapper()
         };
         List<IntComp> intCompList = new List<IntComp>()
         {
-            new VarByte(), new BinPacking(), new NewPFDS16er(), new OptPFDS16Ser(),new Simple16er(), new Empty()
+            new VarByteWrapper(), new BinPackingWrapper(), new NewPFDS16Wrapper(), new OptPFDS16Ser(),new Simple16Wrapper(), new Empty()
         };
 
         public void testCode()
@@ -970,9 +970,9 @@ namespace AirdPro.Converters
                 byte[] compInt = null;
                 byte[] compMobi = null;
 
-                byte[] zlibMz = new Zlib().encode(ByteTrans.intToByte(mzArray));
-                byte[] zlibIntensity = new Zlib().encode(ByteTrans.intToByte(intensityArray));
-                byte[] zlibMobi = new Zlib().encode(ByteTrans.intToByte(mobilityNoArray));
+                byte[] zlibMz = new ZlibWrapper().encode(ByteTrans.intToByte(mzArray));
+                byte[] zlibIntensity = new ZlibWrapper().encode(ByteTrans.intToByte(intensityArray));
+                byte[] zlibMobi = new ZlibWrapper().encode(ByteTrans.intToByte(mobilityNoArray));
 
                 originSizeMz += mzArray.Length;
                 originSizeIntensity += intensityArray.Length;

@@ -3,7 +3,7 @@ using CSharpFastPFOR;
 
 namespace Compress
 {
-    public class Simple16er:IntComp
+    public class Simple16Wrapper:IntComp
     {
         public string getName()
         {

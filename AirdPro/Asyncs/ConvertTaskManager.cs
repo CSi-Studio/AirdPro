@@ -160,7 +160,7 @@ namespace AirdPro.Asyncs
             if (jobInfo.config.stack)
             {
                 comp = new StackComp(converter);
-                comp.mobiByteComp = new ZSTD();
+                comp.mobiByteComp = new ZstdWrapper();
             }
             else
             {
@@ -168,26 +168,26 @@ namespace AirdPro.Asyncs
                 switch (jobInfo.config.mobiIntComp)
                 {
                     case IntCompType.VB:
-                        comp.mobiIntComp = new VarByte();
+                        comp.mobiIntComp = new VarByteWrapper();
                         break;
                     case IntCompType.BP:
-                        comp.mobiIntComp = new BinPacking();
+                        comp.mobiIntComp = new BinPackingWrapper();
                         break;
                 }
 
                 switch (jobInfo.config.mobiByteComp)
                 {
                     case ByteCompType.Zlib:
-                        comp.mobiByteComp = new Zlib();
+                        comp.mobiByteComp = new ZlibWrapper();
                         break;
                     case ByteCompType.Zstd:
-                        comp.mobiByteComp = new ZSTD();
+                        comp.mobiByteComp = new ZstdWrapper();
                         break;
                     case ByteCompType.Snappy:
-                        comp.mobiByteComp = new Snappier();
+                        comp.mobiByteComp = new SnappyWrapper();
                         break;
                     case ByteCompType.Brotli:
-                        comp.mobiByteComp = new Brotlier();
+                        comp.mobiByteComp = new BrotliWrapper();
                         break;
                 }
             }
@@ -195,52 +195,52 @@ namespace AirdPro.Asyncs
             switch (jobInfo.config.mzIntComp)
             {
                 case IntCompType.IBP:
-                    comp.mzIntComp = new IntegratedBinPacking();
+                    comp.mzIntComp = new IntegratedBinPackingWrapper();
                     break;
                 case IntCompType.IVB:
-                    comp.mzIntComp = new IntegratedVarByte();
+                    comp.mzIntComp = new IntegratedVarByteWrapper();
                     break;
             }
 
             switch (jobInfo.config.mzByteComp)
             {
                 case ByteCompType.Zlib:
-                    comp.mzByteComp = new Zlib();
+                    comp.mzByteComp = new ZlibWrapper();
                     break;
                 case ByteCompType.Zstd:
-                    comp.mzByteComp = new ZSTD();
+                    comp.mzByteComp = new ZstdWrapper();
                     break;
                 case ByteCompType.Snappy:
-                    comp.mzByteComp = new Snappier();
+                    comp.mzByteComp = new SnappyWrapper();
                     break;
                 case ByteCompType.Brotli:
-                    comp.mzByteComp = new Brotlier();
+                    comp.mzByteComp = new BrotliWrapper();
                     break;
             }
 
             switch (jobInfo.config.intIntComp)
             {
                 case IntCompType.VB:
-                    comp.intIntComp = new VarByte();
+                    comp.intIntComp = new VarByteWrapper();
                     break;
                 case IntCompType.BP:
-                    comp.intIntComp = new BinPacking();
+                    comp.intIntComp = new BinPackingWrapper();
                     break;
             }
 
             switch (jobInfo.config.intByteComp)
             {
                 case ByteCompType.Zlib:
-                    comp.intByteComp = new Zlib();
+                    comp.intByteComp = new ZlibWrapper();
                     break;
                 case ByteCompType.Zstd:
-                    comp.intByteComp = new ZSTD();
+                    comp.intByteComp = new ZstdWrapper();
                     break;
                 case ByteCompType.Snappy:
-                    comp.intByteComp = new Snappier();
+                    comp.intByteComp = new SnappyWrapper();
                     break;
                 case ByteCompType.Brotli:
-                    comp.intByteComp = new Brotlier();
+                    comp.intByteComp = new BrotliWrapper();
                     break;
             }
 

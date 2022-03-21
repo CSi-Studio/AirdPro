@@ -3,7 +3,7 @@ using CSharpFastPFOR;
 
 namespace Compress
 {
-    public class VarByte:IntComp
+    public class VarByteWrapper:IntComp
     {
         //使用VariableByte算法将未排序的int数组进行压缩
         public string getName()
