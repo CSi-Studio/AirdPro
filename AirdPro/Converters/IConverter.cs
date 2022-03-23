@@ -44,10 +44,7 @@ namespace AirdPro.Converters
         protected List<WindowRange> ranges = new List<WindowRange>(); //SWATH Window的窗口
         protected Hashtable rangeTable = new Hashtable(); //用于存放SWATH窗口的信息,key为mz
         protected List<BlockIndex> indexList = new List<BlockIndex>(); //用于存储的全局的SWATH List
-
-        protected Hashtable
-            ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
-
+        protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
         public List<MsIndex> ms1List = new List<MsIndex>(); //用于存放MS1索引及基础信息,泛型为MsIndex
         protected Hashtable featuresMap = new Hashtable();
         public ICompressor compressor;
@@ -349,8 +346,6 @@ namespace AirdPro.Converters
                     index.mobilities.Add(ts.mobilityArrayBytes.Length);
                     airdStream.Write(ts.mobilityArrayBytes, 0, ts.mobilityArrayBytes.Length);
                 }
-
-                // startPosition = startPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length
             }
         }
 
@@ -859,28 +854,29 @@ namespace AirdPro.Converters
             new VarByteWrapper(), new BinPackingWrapper(), new NewPFDS16Wrapper(), new OptPFDS16Ser(),new Simple16Wrapper(), new Empty()
         };
 
-        public void testCode()
+        public void randomPick()
         {
+
             List<int[]> mzArrays = new List<int[]>();
             List<int[]> intensityArrays = new List<int[]>();
             List<int[]> mobiArrays = new List<int[]>();
             Random rn = new Random();
             List<int> logIndexs = new List<int>();
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < 50; i++)
             {
                 int index = rn.Next(0, totalSize);
                 logIndexs.Add(index);
-                List<int[]> dataList = testFetchSpectrum(index);
+                List<int[]> dataList = fetchSpectrum(index);
                 mzArrays.Add(dataList[0]);
                 intensityArrays.Add(dataList[1]);
                 mobiArrays.Add(dataList[2]);
                 Console.Write(index+"-");
             }
             Console.WriteLine("");
-            testComp(mzArrays, intensityArrays, mobiArrays);
+            compressForTargetArrays(mzArrays, intensityArrays, mobiArrays);
         }
 
-        public List<int[]> testFetchSpectrum(int index)
+        public List<int[]> fetchSpectrum(int index)
         {
             List<int[]> arrays = new List<int[]>();
             Spectrum spectrum = spectrumList.spectrum(index, true);
@@ -918,7 +914,7 @@ namespace AirdPro.Converters
             return arrays;
         }
 
-        public void testComp(List<int[]> mzArrays, List<int[]> intensityArrays, List<int[]> mobilityNoArrays)
+        public void compressForTargetArrays(List<int[]> mzArrays, List<int[]> intensityArrays, List<int[]> mobilityNoArrays)
         {
             Dictionary<string, long> compressTimeMap = new Dictionary<string, long>();
             Dictionary<string, long> decompressTimeMap = new Dictionary<string, long>();
@@ -966,9 +962,6 @@ namespace AirdPro.Converters
                 int[] mzArray = mzArrays[i];
                 int[] intensityArray = intensityArrays[i];
                 int[] mobilityNoArray = mobilityNoArrays[i];
-                byte[] compMz = null;
-                byte[] compInt = null;
-                byte[] compMobi = null;
 
                 byte[] zlibMz = new ZlibWrapper().encode(ByteTrans.intToByte(mzArray));
                 byte[] zlibIntensity = new ZlibWrapper().encode(ByteTrans.intToByte(intensityArray));
@@ -987,7 +980,7 @@ namespace AirdPro.Converters
                     foreach (ByteComp byteComp4Mz in byteCompList)
                     {
 
-                        compMz = byteComp4Mz.encode(ByteTrans.intToByte(intComp4Mz.encode(mzArray)));
+                        byte[] compMz = byteComp4Mz.encode(ByteTrans.intToByte(intComp4Mz.encode(mzArray)));
                         sizeMap[testGetKey("mz", intComp4Mz, byteComp4Mz)] += compMz.Length;
                     }
                 }
@@ -996,7 +989,7 @@ namespace AirdPro.Converters
                 {
                     foreach (ByteComp byteComp4Intensity in byteCompList)
                     {
-                        compInt = byteComp4Intensity.encode(ByteTrans.intToByte(intComp4Intensity.encode(intensityArray)));
+                        byte[] compInt = byteComp4Intensity.encode(ByteTrans.intToByte(intComp4Intensity.encode(intensityArray)));
                         sizeMap[testGetKey("intensity", intComp4Intensity, byteComp4Intensity)] += compInt.Length;
                     }
                 }
@@ -1005,7 +998,7 @@ namespace AirdPro.Converters
                 {
                     foreach (ByteComp byteComp4Mobi in byteCompList)
                     {
-                        compMobi = byteComp4Mobi.encode(ByteTrans.intToByte(intComp4Mobi.encode(mobilityNoArray)));
+                        byte[] compMobi = byteComp4Mobi.encode(ByteTrans.intToByte(intComp4Mobi.encode(mobilityNoArray)));
                         sizeMap[testGetKey("mobi", intComp4Mobi, byteComp4Mobi)] += compMobi.Length;
                     }
                 }
