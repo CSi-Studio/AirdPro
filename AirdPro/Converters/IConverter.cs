@@ -27,6 +27,7 @@ using System.Windows.Forms;
 using AirdPro.Algorithms;
 using AirdPro.Asyncs;
 using Compress;
+using CSharpFastPFOR.Port;
 using ByteOrder = AirdPro.Constants.ByteOrder;
 using CV = AirdPro.DomainsCore.Aird.CV;
 using Software = pwiz.CLI.msdata.Software;
@@ -854,26 +855,29 @@ namespace AirdPro.Converters
             new VarByteWrapper(), new BinPackingWrapper(), new NewPFDS16Wrapper(), new OptPFDS16Ser(),new Simple16Wrapper(), new Empty()
         };
 
-        public void randomPick()
+        public void randomPick(int randomNum, bool ionMobi)
         {
-
             List<int[]> mzArrays = new List<int[]>();
             List<int[]> intensityArrays = new List<int[]>();
-            List<int[]> mobiArrays = new List<int[]>();
+            List<int[]> mobiNoArrays = new List<int[]>();
             Random rn = new Random();
             List<int> logIndexs = new List<int>();
-            for (var i = 0; i < 50; i++)
+            for (var i = 0; i < randomNum; i++)
             {
                 int index = rn.Next(0, totalSize);
                 logIndexs.Add(index);
                 List<int[]> dataList = fetchSpectrum(index);
                 mzArrays.Add(dataList[0]);
                 intensityArrays.Add(dataList[1]);
-                mobiArrays.Add(dataList[2]);
+                if (ionMobi)
+                {
+                    mobiNoArrays.Add(dataList[2]);
+                }
+                
                 Console.Write(index+"-");
             }
             Console.WriteLine("");
-            compressForTargetArrays(mzArrays, intensityArrays, mobiArrays);
+            compressForTargetArrays(mzArrays, intensityArrays, mobiNoArrays, ionMobi);
         }
 
         public List<int[]> fetchSpectrum(int index)
@@ -914,15 +918,15 @@ namespace AirdPro.Converters
             return arrays;
         }
 
-        public void compressForTargetArrays(List<int[]> mzArrays, List<int[]> intensityArrays, List<int[]> mobilityNoArrays)
+        public void compressForTargetArrays(List<int[]> mzArrays, List<int[]> intensityArrays, List<int[]> mobilityNoArrays, bool ionMobi)
         {
             Dictionary<string, long> compressTimeMap = new Dictionary<string, long>();
             Dictionary<string, long> decompressTimeMap = new Dictionary<string, long>();
             Dictionary<string, long> sizeMap = new Dictionary<string, long>();
             long originSizeMz = 0;
             long originSizeIntensity = 0;
-            long originSizeMobi = 0; 
-            
+            long originSizeMobi = 0;
+
             long zlibSizeMz = 0;
             long zlibSizeIntensity = 0;
             long zlibSizeMobi = 0;
@@ -947,33 +951,40 @@ namespace AirdPro.Converters
                 }
             }
 
-            foreach (IntComp intComp4Mobi in intCompList)
+            if (ionMobi)
             {
-                foreach (ByteComp byteComp4Mobi in byteCompList)
+                foreach (IntComp intComp4Mobi in intCompList)
                 {
-                    compressTimeMap.Add(testGetKey("mobi", intComp4Mobi, byteComp4Mobi), 0);
-                    decompressTimeMap.Add(testGetKey("mobi", intComp4Mobi, byteComp4Mobi), 0);
-                    sizeMap.Add(testGetKey("mobi", intComp4Mobi, byteComp4Mobi), 0);
+                    foreach (ByteComp byteComp4Mobi in byteCompList)
+                    {
+                        compressTimeMap.Add(testGetKey("mobi", intComp4Mobi, byteComp4Mobi), 0);
+                        decompressTimeMap.Add(testGetKey("mobi", intComp4Mobi, byteComp4Mobi), 0);
+                        sizeMap.Add(testGetKey("mobi", intComp4Mobi, byteComp4Mobi), 0);
+                    }
                 }
             }
-
+            
             for (int i = 0; i < mzArrays.Count; i++)
             {
                 int[] mzArray = mzArrays[i];
-                int[] intensityArray = intensityArrays[i];
-                int[] mobilityNoArray = mobilityNoArrays[i];
-
                 byte[] zlibMz = new ZlibWrapper().encode(ByteTrans.intToByte(mzArray));
-                byte[] zlibIntensity = new ZlibWrapper().encode(ByteTrans.intToByte(intensityArray));
-                byte[] zlibMobi = new ZlibWrapper().encode(ByteTrans.intToByte(mobilityNoArray));
-
                 originSizeMz += mzArray.Length;
-                originSizeIntensity += intensityArray.Length;
-                originSizeMobi += mobiArray.Length;
+                zlibSizeMz += zlibMz.Length; //原始mz的仅使用Zlib进行压缩时的体积
 
-                zlibSizeMz += zlibMz.Length;
-                zlibSizeIntensity += zlibIntensity.Length;
-                zlibSizeMobi += zlibMobi.Length;
+                int[] intensityArray = intensityArrays[i];
+                byte[] zlibIntensity = new ZlibWrapper().encode(ByteTrans.intToByte(intensityArray));
+                originSizeIntensity += intensityArray.Length;
+                zlibSizeIntensity += zlibIntensity.Length; //原始intensity的仅使用Zlib进行压缩时的体积
+
+                int[] mobilityNoArray = null;
+                byte[] zlibMobi = null;
+                if (ionMobi)
+                {
+                    mobilityNoArray = mobilityNoArrays[i];
+                    zlibMobi = new ZlibWrapper().encode(ByteTrans.intToByte(mobilityNoArray));
+                    originSizeMobi += mobiArray.Length;
+                    zlibSizeMobi += zlibMobi.Length;
+                }
 
                 foreach (IntComp intComp4Mz in integratedIntCompList)
                 {
@@ -994,14 +1005,18 @@ namespace AirdPro.Converters
                     }
                 }
 
-                foreach (IntComp intComp4Mobi in intCompList)
+                if (ionMobi)
                 {
-                    foreach (ByteComp byteComp4Mobi in byteCompList)
+                    foreach (IntComp intComp4Mobi in intCompList)
                     {
-                        byte[] compMobi = byteComp4Mobi.encode(ByteTrans.intToByte(intComp4Mobi.encode(mobilityNoArray)));
-                        sizeMap[testGetKey("mobi", intComp4Mobi, byteComp4Mobi)] += compMobi.Length;
+                        foreach (ByteComp byteComp4Mobi in byteCompList)
+                        {
+                            byte[] compMobi = byteComp4Mobi.encode(ByteTrans.intToByte(intComp4Mobi.encode(mobilityNoArray)));
+                            sizeMap[testGetKey("mobi", intComp4Mobi, byteComp4Mobi)] += compMobi.Length;
+                        }
                     }
                 }
+               
             }
 
             Console.WriteLine("Origin Size:"+originSizeMz+"-"+originSizeIntensity+"-"+originSizeMobi);
