@@ -15,7 +15,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using pwiz.CLI.cv;
 using pwiz.CLI.msdata;
 using pwiz.CLI.util;
 

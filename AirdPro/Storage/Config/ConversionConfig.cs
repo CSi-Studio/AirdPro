@@ -9,9 +9,12 @@
  */
 
 using System;
+using System.Collections.Generic;
 using AirdPro.Constants;
+using Compress;
+using Compress.Enums;
 
-namespace AirdPro.Domains.Convert
+namespace AirdPro.Storage.Config
 {
     public class ConversionConfig
     {
@@ -53,7 +56,7 @@ namespace AirdPro.Domains.Convert
         /**
          * 用于mz压缩的int数组压缩方法
          */
-        public IntCompType mzIntComp = IntCompType.IVB;
+        public SortedIntCompType mzIntComp = SortedIntCompType.IVB;
 
         /**
          * 用于mz压缩的byte数组压缩方法
@@ -110,6 +113,14 @@ namespace AirdPro.Domains.Convert
         public string getMzPrecisionStr()
         {
            return ((int) Math.Log10(mzPrecision)) +"dp";
+        }
+
+        public List<ConversionConfig> buildExplorerConfigs()
+        {
+            List<ConversionConfig> configList = new List<ConversionConfig>();
+
+            
+            return configList;
         }
     }
 }

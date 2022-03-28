@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using AirdPro.Domains.Convert;
-using AirdPro.Storage;
+using AirdPro.Storage.Config;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
-namespace AirdPro.Domains.Job;
+namespace AirdPro.Storage.Handler;
 
 public class ConversionConfigHandler:Subject<Dictionary<string, ConversionConfig>>
 {

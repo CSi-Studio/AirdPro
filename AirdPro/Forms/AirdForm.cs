@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Drawing;
 using System.Windows.Forms;
+using AirdPro.Storage.Config;
 using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Forms

@@ -843,13 +843,13 @@ namespace AirdPro.Converters
         {
             new BrotliWrapper(), new SnappyWrapper(), new ZstdWrapper(), new ZlibWrapper()
         };
-        List<IntComp> integratedIntCompList = new List<IntComp>()
+        List<SortedIntComp> integratedIntCompList = new List<SortedIntComp>()
         {
             new IntegratedVarByteWrapper(), new IntegratedBinPackingWrapper()
         };
         List<IntComp> intCompList = new List<IntComp>()
         {
-            new VarByteWrapper(), new BinPackingWrapper(), new NewPFDS16Wrapper(), new OptPFDS16Ser(),new Simple16Wrapper(), new Empty()
+            new VarByteWrapper(), new BinPackingWrapper(), new NewPFDS16Wrapper(), new OptPFDS16Wrapper(),new Simple16Wrapper(), new Empty()
         };
 
         public void randomSampling(int randomNum, bool ionMobi)
@@ -921,13 +921,13 @@ namespace AirdPro.Converters
             long zlibSizeIntensity = 0;
             long zlibSizeMobi = 0;
 
-            foreach (IntComp intComp4Mz in integratedIntCompList)
+            foreach (SortedIntComp intComp4Mz in integratedIntCompList)
             {
                 foreach (ByteComp byteComp4Mz in byteCompList)
                 {
-                    compressTimeMap.Add(buildComboKey("mz",intComp4Mz, byteComp4Mz), 0);
-                    decompressTimeMap.Add(buildComboKey("mz", intComp4Mz, byteComp4Mz), 0);
-                    sizeMap.Add(buildComboKey("mz", intComp4Mz, byteComp4Mz), 0);
+                    compressTimeMap.Add(buildComboKey("mz",intComp4Mz.getName(), byteComp4Mz.getName()), 0);
+                    decompressTimeMap.Add(buildComboKey("mz", intComp4Mz.getName(), byteComp4Mz.getName()), 0);
+                    sizeMap.Add(buildComboKey("mz", intComp4Mz.getName(), byteComp4Mz.getName()), 0);
                 }
             }
 
@@ -935,9 +935,9 @@ namespace AirdPro.Converters
             {
                 foreach (ByteComp byteComp4Intensity in byteCompList)
                 {
-                    compressTimeMap.Add(buildComboKey("intensity", intComp4Intensity, byteComp4Intensity), 0);
-                    decompressTimeMap.Add(buildComboKey("intensity", intComp4Intensity, byteComp4Intensity), 0);
-                    sizeMap.Add(buildComboKey("intensity", intComp4Intensity, byteComp4Intensity), 0);
+                    compressTimeMap.Add(buildComboKey("intensity", intComp4Intensity.getName(), byteComp4Intensity.getName()), 0);
+                    decompressTimeMap.Add(buildComboKey("intensity", intComp4Intensity.getName(), byteComp4Intensity.getName()), 0);
+                    sizeMap.Add(buildComboKey("intensity", intComp4Intensity.getName(), byteComp4Intensity.getName()), 0);
                 }
             }
 
@@ -947,9 +947,9 @@ namespace AirdPro.Converters
                 {
                     foreach (ByteComp byteComp4Mobi in byteCompList)
                     {
-                        compressTimeMap.Add(buildComboKey("mobi", intComp4Mobi, byteComp4Mobi), 0);
-                        decompressTimeMap.Add(buildComboKey("mobi", intComp4Mobi, byteComp4Mobi), 0);
-                        sizeMap.Add(buildComboKey("mobi", intComp4Mobi, byteComp4Mobi), 0);
+                        compressTimeMap.Add(buildComboKey("mobi", intComp4Mobi.getName(), byteComp4Mobi.getName()), 0);
+                        decompressTimeMap.Add(buildComboKey("mobi", intComp4Mobi.getName(), byteComp4Mobi.getName()), 0);
+                        sizeMap.Add(buildComboKey("mobi", intComp4Mobi.getName(), byteComp4Mobi.getName()), 0);
                     }
                 }
             }
@@ -976,12 +976,12 @@ namespace AirdPro.Converters
                     zlibSizeMobi += zlibMobi.Length;
                 }
 
-                foreach (IntComp intComp4Mz in integratedIntCompList)
+                foreach (SortedIntComp intComp4Mz in integratedIntCompList)
                 {
                     foreach (ByteComp byteComp4Mz in byteCompList)
                     {
                         byte[] compMz = ComboComp.encode(intComp4Mz, byteComp4Mz, mzArray);
-                        sizeMap[buildComboKey("mz", intComp4Mz, byteComp4Mz)] += compMz.Length;
+                        sizeMap[buildComboKey("mz", intComp4Mz.getName(), byteComp4Mz.getName())] += compMz.Length;
                     }
                 }
 
@@ -990,7 +990,7 @@ namespace AirdPro.Converters
                     foreach (ByteComp byteComp4Intensity in byteCompList)
                     {
                         byte[] compInt = ComboComp.encode(intComp4Intensity, byteComp4Intensity, intensityArray);
-                        sizeMap[buildComboKey("intensity", intComp4Intensity, byteComp4Intensity)] += compInt.Length;
+                        sizeMap[buildComboKey("intensity", intComp4Intensity.getName(), byteComp4Intensity.getName())] += compInt.Length;
                     }
                 }
 
@@ -1001,7 +1001,7 @@ namespace AirdPro.Converters
                         foreach (ByteComp byteComp4Mobi in byteCompList)
                         {
                             byte[] compMobi = ComboComp.encode(intComp4Mobi, byteComp4Mobi, mobilityNoArray);
-                            sizeMap[buildComboKey("mobi", intComp4Mobi, byteComp4Mobi)] += compMobi.Length;
+                            sizeMap[buildComboKey("mobi", intComp4Mobi.getName(), byteComp4Mobi.getName())] += compMobi.Length;
                         }
                     }
                 }
@@ -1017,9 +1017,9 @@ namespace AirdPro.Converters
             }
         }
 
-        public string buildComboKey(string key, IntComp intComp, ByteComp byteComp)
+        public string buildComboKey(string key, string intCompName, string byteCompName)
         {
-            return key + "-" + intComp.getName() + "-" + byteComp.getName();
+            return key + "-" + intCompName + "-" + byteCompName;
         }
 
         public static double[] getMobilityData(Spectrum spectrum)

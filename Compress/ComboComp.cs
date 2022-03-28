@@ -23,4 +23,14 @@ public class ComboComp
     {
         return intComp.decode(ByteTrans.byteToInt(byteComp.decode(target)));
     }
+
+    public static byte[] encode(SortedIntComp sortedIntComp, ByteComp byteComp, int[] target)
+    {
+        return byteComp.encode(ByteTrans.intToByte(sortedIntComp.encode(target)));
+    }
+
+    public static int[] decode(SortedIntComp sortedIntComp, ByteComp byteComp, byte[] target)
+    {
+        return sortedIntComp.decode(ByteTrans.byteToInt(byteComp.decode(target)));
+    }
 }

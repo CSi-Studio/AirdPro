@@ -12,10 +12,10 @@ using AirdPro.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using System.Windows.Forms;
 using AirdPro.Constants;
 using AirdPro.Domains.FileLogs;
+using AirdPro.Storage.Config;
 using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Domains.Convert
@@ -35,7 +35,7 @@ namespace AirdPro.Domains.Convert
         //DIA-Swath,PRM,DDA. see AirdType
         public string type;
         //是否是IonMobility文件
-        public Boolean ionMobility = false;
+        public bool ionMobility = false;
         //文件的格式,全部大写: WIFF, RAW. See FileFormat.cs
         public string format;
         //C:/data/plasma.wiff

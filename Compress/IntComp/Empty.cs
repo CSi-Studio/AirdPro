@@ -3,19 +3,19 @@ using CSharpFastPFOR;
 
 namespace Compress
 {
-    public class Empty:IntComp
+    public class Empty : IntComp
     {
-        public string getName()
+        public override string getName()
         {
             return IntCompType.Empty.ToString();
         }
 
-        public int[] encode(int[] uncompressed)
+        public override int[] encode(int[] uncompressed)
         {
             return uncompressed;
         }
         
-        public int[] decode(int[] compressed)
+        public override int[] decode(int[] compressed)
         {
             return compressed;
         }

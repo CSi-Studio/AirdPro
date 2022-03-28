@@ -156,93 +156,24 @@ namespace AirdPro.Asyncs
                 converter = new DIAPasef(jobInfo);
             }
 
-            if (jobInfo.config.stack)
+            comp = jobInfo.config.stack ? new StackComp(converter) : new CoreComp(converter);
+
+            //如果是自动决策的,那么初始化的时候压缩内核都是空的,是不确定的.
+            if (!jobInfo.config.autoDesicion)
             {
-                comp = new StackComp(converter);
-                comp.mobiByteComp = new ZstdWrapper();
-            }
-            else
-            {
-                comp = new CoreComp(converter);
-                switch (jobInfo.config.mobiIntComp)
+                if (jobInfo.ionMobility)
                 {
-                    case IntCompType.VB:
-                        comp.mobiIntComp = new VarByteWrapper();
-                        break;
-                    case IntCompType.BP:
-                        comp.mobiIntComp = new BinPackingWrapper();
-                        break;
+                    comp.mobiIntComp = IntComp.build(jobInfo.config.mobiIntComp);
+                    comp.mobiByteComp = ByteComp.build(jobInfo.config.mobiByteComp);
                 }
 
-                switch (jobInfo.config.mobiByteComp)
-                {
-                    case ByteCompType.Zlib:
-                        comp.mobiByteComp = new ZlibWrapper();
-                        break;
-                    case ByteCompType.Zstd:
-                        comp.mobiByteComp = new ZstdWrapper();
-                        break;
-                    case ByteCompType.Snappy:
-                        comp.mobiByteComp = new SnappyWrapper();
-                        break;
-                    case ByteCompType.Brotli:
-                        comp.mobiByteComp = new BrotliWrapper();
-                        break;
-                }
-            }
+                comp.mzIntComp = SortedIntComp.build(jobInfo.config.mzIntComp);
+                comp.mzByteComp = ByteComp.build(jobInfo.config.mzByteComp);
 
-            switch (jobInfo.config.mzIntComp)
-            {
-                case IntCompType.IBP:
-                    comp.mzIntComp = new IntegratedBinPackingWrapper();
-                    break;
-                case IntCompType.IVB:
-                    comp.mzIntComp = new IntegratedVarByteWrapper();
-                    break;
+                comp.intIntComp = IntComp.build(jobInfo.config.intIntComp);
+                comp.intByteComp = ByteComp.build(jobInfo.config.intByteComp);
             }
-
-            switch (jobInfo.config.mzByteComp)
-            {
-                case ByteCompType.Zlib:
-                    comp.mzByteComp = new ZlibWrapper();
-                    break;
-                case ByteCompType.Zstd:
-                    comp.mzByteComp = new ZstdWrapper();
-                    break;
-                case ByteCompType.Snappy:
-                    comp.mzByteComp = new SnappyWrapper();
-                    break;
-                case ByteCompType.Brotli:
-                    comp.mzByteComp = new BrotliWrapper();
-                    break;
-            }
-
-            switch (jobInfo.config.intIntComp)
-            {
-                case IntCompType.VB:
-                    comp.intIntComp = new VarByteWrapper();
-                    break;
-                case IntCompType.BP:
-                    comp.intIntComp = new BinPackingWrapper();
-                    break;
-            }
-
-            switch (jobInfo.config.intByteComp)
-            {
-                case ByteCompType.Zlib:
-                    comp.intByteComp = new ZlibWrapper();
-                    break;
-                case ByteCompType.Zstd:
-                    comp.intByteComp = new ZstdWrapper();
-                    break;
-                case ByteCompType.Snappy:
-                    comp.intByteComp = new SnappyWrapper();
-                    break;
-                case ByteCompType.Brotli:
-                    comp.intByteComp = new BrotliWrapper();
-                    break;
-            }
-
+            
             converter.compressor = comp;
             converter.doConvert();
             jobInfo.setStatus(FINISHED);

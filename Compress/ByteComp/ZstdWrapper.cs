@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using AirdPro.Algorithms;
 using AirdPro.Constants;
+using Compress.Enums;
 using ZstdNet;
 
 namespace Compress
@@ -9,19 +10,19 @@ namespace Compress
     {
 
         //使用zstd将byte数组压缩
-        public string getName()
+        public override string getName()
         {
             return ByteCompType.Zstd.ToString();
         }
 
-        public byte[] encode(byte[] data)
+        public override byte[] encode(byte[] data)
         {
             var compressor = new Compressor();
             var compressedData = compressor.Wrap(data);
             return compressedData;
         }
 
-        public byte[] decode(byte[] data)
+        public override byte[] decode(byte[] data)
         {
             var decompressor = new Decompressor();
             var decompressedData = decompressor.Unwrap(data);

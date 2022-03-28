@@ -8,17 +8,11 @@
  * See the Mulan PSL v2 for more details.
  */
 
-namespace AirdPro.Constants
+namespace Compress.Enums
 {
-    public enum IntCompType
+    public enum SortedIntCompType
     {
-        Empty = -1, //Empty, No Compressor
         IBP = 0, //Integrated Binary Packing
         IVB = 1, //Integrated Variable Byte
-        VB = 2, //Variable Byte
-        BP = 3, //Binary Packing
-        NewPFD = 4, //NewPFDS16
-        OptPFD = 5, //OptPFDS16
-        Simple = 6, //Simple16
     }
 }

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using AirdPro.Domains.Convert;
 using AirdPro.Domains.Job;
 using AirdPro.Redis;
+using AirdPro.Storage.Config;
 using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Forms

@@ -5,18 +5,18 @@ namespace Compress
 {
     public class NewPFDS16Wrapper : IntComp
     {
-        public string getName()
+        public override string getName()
         {
             return IntCompType.NewPFD.ToString();
         }
 
-        public int[] encode(int[] uncompressed)
+        public override int[] encode(int[] uncompressed)
         {
             int[] compressedInts = new IntCompressor(new NewPFDS16()).compress(uncompressed);
             return compressedInts;
         }
 
-        public int[] decode(int[] compressed)
+        public override int[] decode(int[] compressed)
         {
             int[] sortedInts = new IntCompressor(new NewPFDS16()).uncompress(compressed);
             return sortedInts;

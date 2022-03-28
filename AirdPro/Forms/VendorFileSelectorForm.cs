@@ -15,6 +15,8 @@ using ThermoFisher.CommonCore.Data;
 using AirdPro.Storage;
 using AirdPro.Domains.Convert;
 using System.Collections.Generic;
+using AirdPro.Storage.Config;
+using AirdPro.Utils;
 
 namespace AirdPro.Forms
 {
@@ -92,7 +94,11 @@ namespace AirdPro.Forms
             {
                 if (config.autoExplorer)
                 {
-                    
+                    List<ConversionConfig> configList = config.buildExplorerConfigs();
+                    for (var i = 0; i < configList.Count; i++)
+                    {
+                        Program.airdForm.addFile(path, outputPath, expType, configList[i]);
+                    }
                 }
                 else
                 {

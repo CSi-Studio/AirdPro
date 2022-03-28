@@ -4,6 +4,8 @@ using System.Windows.Forms;
 using AirdPro.Domains.Convert;
 using AirdPro.Storage;
 using AirdPro.Constants;
+using AirdPro.Storage.Config;
+using Compress.Enums;
 using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Forms
@@ -89,7 +91,7 @@ namespace AirdPro.Forms
             //如果不是自动决策的,则会使用配置的组合压缩器
             if (!cbAutoDecision.Checked)
             {
-                config.mzIntComp = (IntCompType)Enum.Parse(typeof(IntCompType), cbMzIntComp.SelectedItem.ToString());
+                config.mzIntComp = (SortedIntCompType)Enum.Parse(typeof(SortedIntCompType), cbMzIntComp.SelectedItem.ToString());
                 config.mzByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), cbMzByteComp.SelectedItem.ToString());
                 config.intIntComp = (IntCompType)Enum.Parse(typeof(IntCompType), cbIntIntComp.SelectedItem.ToString());
                 config.intByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), cbIntByteComp.SelectedItem.ToString());

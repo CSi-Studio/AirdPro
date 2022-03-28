@@ -1,4 +1,4 @@
-﻿namespace AirdPro.Domains.Convert;
+﻿namespace AirdPro.Storage.Config;
 
 public class GlobalConfig
 {

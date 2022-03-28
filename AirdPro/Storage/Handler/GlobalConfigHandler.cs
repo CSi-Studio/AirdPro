@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using AirdPro.Domains.Convert;
 using AirdPro.Storage;
+using AirdPro.Storage.Config;
 using Newtonsoft.Json;
 
 namespace AirdPro.Domains.Job;
