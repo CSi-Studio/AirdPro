@@ -158,7 +158,7 @@
     <Compile Include="Converters\DDAPasef .cs" />
     <Compile Include="Converters\DIAPasef.cs" />
     <Compile Include="Domains\HardwareInfo\HardwareInfo.cs" />
-    <Compile Include="Domains\FileLogs\APPLog.cs" />
+    <Compile Include="Domains\FileLogs\AppLogs.cs" />
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -61,13 +61,13 @@ namespace AirdPro.Forms
 
             if (expType == null)
             {
-                MessageBox.Show("Choose one acquisition mode first!");
+                MessageBox.Show(MessageInfo.Choose_One_Acquisition_Mode_First);
                 return false;
             }
 
             if (cbConfig.SelectedItem == null || cbConfig.SelectedItem.ToString().IsNullOrEmpty() || !Program.conversionConfigHandler.configMap.ContainsKey(cbConfig.SelectedItem.ToString()))
             {
-                MessageBox.Show("Choose one conversion config first!");
+                MessageBox.Show(MessageInfo.Choose_One_Conversion_Config_First);
                 return false;
             }
 
@@ -76,21 +76,29 @@ namespace AirdPro.Forms
             string outputPath = tbOutputPath.Text;
             if (outputPath.IsNullOrEmpty())
             {
-                MessageBox.Show("Set your output path first!");
+                MessageBox.Show(MessageInfo.Set_Your_Output_Path_First);
                 return false;
             }
 
             var paths = tbPaths.Text;
             if (paths.IsNullOrEmpty())
             {
-                MessageBox.Show("Input your own paths first!");
+                MessageBox.Show(MessageInfo.Input_Your_Own_Paths_First);
                 return false;
             }
             var pathList = paths.Split(Const.Change_Line.ToCharArray());
 
             foreach (var path in pathList)
             {
-                Program.airdForm.addFile(path, outputPath, expType, config);
+                if (config.autoExplorer)
+                {
+                    
+                }
+                else
+                {
+                    Program.airdForm.addFile(path, outputPath, expType, config);
+                }
+               
             }
 
             return true;

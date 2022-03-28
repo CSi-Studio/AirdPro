@@ -9,13 +9,13 @@ using log4net.Appender;
 
 namespace AirdPro.Domains.FileLogs
 {
-    public class AppLog
+    public class AppLogs
     {
         private static string filepath = AppDomain.CurrentDomain.BaseDirectory + @"\SysLog\";
         //申明一个封装类ILog 的对象
         private static readonly ILog logComm = LogManager.GetLogger("AppLog");
 
-        static AppLog()
+        static AppLogs()
         {
             log4net.Config.XmlConfigurator.Configure(new FileInfo("log4net.config"));
 
