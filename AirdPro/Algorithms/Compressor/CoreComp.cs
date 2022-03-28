@@ -172,13 +172,7 @@ namespace AirdPro.Algorithms
         {
             double[] mzData = spectrum.getMZArray().data.Storage();
             double[] intData = spectrum.getIntensityArray().data.Storage();
-            double[] mobiData = spectrum.getArrayByCVID(CVID.MS_mean_ion_mobility_drift_time_array)?.data
-                                    .Storage() ??
-                                spectrum.getArrayByCVID(CVID.MS_mean_inverse_reduced_ion_mobility_array)
-                                    ?.data.Storage() ??
-                                spectrum.getArrayByCVID(CVID.MS_raw_ion_mobility_array)?.data.Storage() ??
-                                spectrum.getArrayByCVID(CVID.MS_raw_inverse_reduced_ion_mobility_array)
-                                    ?.data.Storage();
+            double[] mobiData = IConverter.getMobilityData(spectrum);
 
             var size = mzData.Length;
             TimsData[] dataArray = new TimsData[size];

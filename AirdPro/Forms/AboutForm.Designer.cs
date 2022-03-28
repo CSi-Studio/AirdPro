@@ -248,7 +248,7 @@
             // 
             this.lblDesc.AutoSize = true;
             this.lblDesc.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDesc.ForeColor = System.Drawing.Color.DimGray;
+            this.lblDesc.ForeColor = System.Drawing.Color.Black;
             this.lblDesc.Location = new System.Drawing.Point(133, 12);
             this.lblDesc.Name = "lblDesc";
             this.lblDesc.Size = new System.Drawing.Size(98, 19);
@@ -262,7 +262,7 @@
             this.tbPaperZDPD.Multiline = true;
             this.tbPaperZDPD.Name = "tbPaperZDPD";
             this.tbPaperZDPD.ReadOnly = true;
-            this.tbPaperZDPD.Size = new System.Drawing.Size(1092, 46);
+            this.tbPaperZDPD.Size = new System.Drawing.Size(707, 70);
             this.tbPaperZDPD.TabIndex = 23;
             this.tbPaperZDPD.Text = "Paper:ZDPD";
             // 
@@ -271,7 +271,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1152, 585);
+            this.ClientSize = new System.Drawing.Size(772, 585);
             this.Controls.Add(this.tbPaperZDPD);
             this.Controls.Add(this.lblDesc);
             this.Controls.Add(this.label2);

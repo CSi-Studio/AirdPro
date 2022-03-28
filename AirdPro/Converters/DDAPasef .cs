@@ -30,7 +30,7 @@ namespace AirdPro.Converters
                 using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                 {
                     readVendorFile(); //准备读取Vendor文件
-                    initMobi();
+                    initBrukerMobi();
                     predictForIntensityPrecision(); //预测intensity需要保留的精度
                     pretreatment(); //MS1和MS2分开建立索引
                     compressMobiDict();

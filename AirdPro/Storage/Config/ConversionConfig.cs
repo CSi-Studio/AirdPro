@@ -46,6 +46,11 @@ namespace AirdPro.Domains.Convert
         public string creator = Environment.UserName;
 
         /**
+         * 是否使用动态参数决策
+         */
+        public bool autoDesicion = true;
+
+        /**
          * 用于mz压缩的int数组压缩方法
          */
         public IntCompType mzIntComp = IntCompType.IVB;
@@ -86,6 +91,12 @@ namespace AirdPro.Domains.Convert
          * eg. if the layer's size is 256, then the digit is 8
          */
         public int digit = 8;
+
+        /**
+         * 是否开启自动探索模式方案下
+         * 自动探索模式下, AirdPro会对每一个转换的数据文件进行全组合模式的格式转换,并且自动配置相关后缀
+         */
+        public bool autoExplorer = false;
 
         public ConversionConfig()
         {
