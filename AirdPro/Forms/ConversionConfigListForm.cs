@@ -59,6 +59,7 @@ namespace AirdPro.Forms
                 cbIntByteComp.Items.Add(byteCompType);
                 cbMobiByteComp.Items.Add(byteCompType);
             }
+
             showConfig("", new ConversionConfig());
         }
 
@@ -70,9 +71,6 @@ namespace AirdPro.Forms
                 ListViewItem item = new ListViewItem(new string[]
                 {
                     configEntry.Key,
-                    configEntry.Value.creator,
-                    configEntry.Value.mzPrecision.ToString(),
-                    configEntry.Value.getCompressorStr(),
                 });
                 lvConfigList.Items.Add(item);
             }
@@ -101,12 +99,17 @@ namespace AirdPro.Forms
             //如果不是自动决策的,则会使用配置的组合压缩器
             if (!cbAutoDecision.Checked)
             {
-                config.mzIntComp = (SortedIntCompType)Enum.Parse(typeof(SortedIntCompType), cbMzIntComp.SelectedItem.ToString());
-                config.mzByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), cbMzByteComp.SelectedItem.ToString());
-                config.intIntComp = (IntCompType)Enum.Parse(typeof(IntCompType), cbIntIntComp.SelectedItem.ToString());
-                config.intByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), cbIntByteComp.SelectedItem.ToString());
-                config.mobiIntComp = (IntCompType)Enum.Parse(typeof(IntCompType), cbMobiIntComp.SelectedItem.ToString());
-                config.mobiByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), cbMobiByteComp.SelectedItem.ToString());
+                config.mzIntComp =
+                    (SortedIntCompType) Enum.Parse(typeof(SortedIntCompType), cbMzIntComp.SelectedItem.ToString());
+                config.mzByteComp =
+                    (ByteCompType) Enum.Parse(typeof(ByteCompType), cbMzByteComp.SelectedItem.ToString());
+                config.intIntComp = (IntCompType) Enum.Parse(typeof(IntCompType), cbIntIntComp.SelectedItem.ToString());
+                config.intByteComp =
+                    (ByteCompType) Enum.Parse(typeof(ByteCompType), cbIntByteComp.SelectedItem.ToString());
+                config.mobiIntComp =
+                    (IntCompType) Enum.Parse(typeof(IntCompType), cbMobiIntComp.SelectedItem.ToString());
+                config.mobiByteComp =
+                    (ByteCompType) Enum.Parse(typeof(ByteCompType), cbMobiByteComp.SelectedItem.ToString());
             }
 
             if (cbConfigStack.Checked)
@@ -134,6 +137,7 @@ namespace AirdPro.Forms
                 MessageBox.Show(MessageInfo.Config_Name_Cannot_Be_Empty);
                 return;
             }
+
             ConversionConfig config = buildConfigInfo();
             Program.conversionConfigHandler.saveConfig(tbNameConfig.Text, config);
         }
@@ -151,8 +155,9 @@ namespace AirdPro.Forms
             }
             else
             {
-                jobInfo.refreshItem(item);   
+                jobInfo.refreshItem(item);
             }
+
             Hide();
         }
 
@@ -188,10 +193,10 @@ namespace AirdPro.Forms
             {
                 cbConfigStack.Checked = false;
             }
+
             tableAutoDecision.Enabled = !config.autoDesicion;
             cbAutoDecision.Checked = config.autoDesicion;
             cbAutoExplore.Checked = config.autoExplorer;
-
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)

@@ -103,51 +103,77 @@ namespace AirdPro.Storage.Config
         {
         }
 
-        public string getCompressorStr()
-        {
-            return mzIntComp + "-" + mzByteComp + "|" + intIntComp+"-" + intByteComp+ "|" + mobiIntComp+ "-" + mobiByteComp;
-        }
-
         public string getMzPrecisionStr()
         {
-           return ((int) Math.Log10(mzPrecision)) +"dp";
+            return ((int) Math.Log10(mzPrecision)) + "dp";
         }
 
-        public List<ConversionConfig> buildExplorerConfigs()
+        public List<ConversionConfig> buildExplorerConfigs(bool mobility)
         {
             List<ConversionConfig> configList = new List<ConversionConfig>();
-            
+
             Array sortIntCompTypes = Enum.GetValues(typeof(SortedIntCompType));
             Array intCompTypes = Enum.GetValues(typeof(IntCompType));
             Array byteCompTypes = Enum.GetValues(typeof(ByteCompType));
+
+            SortedIntCompType mzIntComp;
+            ByteCompType mzByteComp;
+            IntCompType intIntComp;
+            ByteCompType intByteComp;
+            IntCompType mobiIntComp;
+            ByteCompType mobiByteComp;
+
             foreach (SortedIntCompType mzIntCompType in sortIntCompTypes)
             {
-                ConversionConfig config = (ConversionConfig)Clone();
-                config.mzIntComp = mzIntCompType;
+                mzIntComp = mzIntCompType;
                 foreach (ByteCompType mzByteCompType in byteCompTypes)
                 {
-                    config.mzByteComp = mzByteCompType;
+                    mzByteComp = mzByteCompType;
                     foreach (IntCompType intIntCompType in intCompTypes)
                     {
-                        config.intIntComp = intIntCompType;
+                        intIntComp = intIntCompType;
                         foreach (ByteCompType intByteCompType in byteCompTypes)
                         {
-                            config.intByteComp = intByteCompType;
-                            foreach (IntCompType mobiIntCompType in intCompTypes)
+                            intByteComp = intByteCompType;
+                            if (mobility)
                             {
-                                config.mobiIntComp = mobiIntCompType;
-                                foreach (ByteCompType mobiByteCompType in byteCompTypes)
+                                foreach (IntCompType mobiIntCompType in intCompTypes)
                                 {
-                                    config.mobiByteComp = mobiByteCompType;
+                                    mobiIntComp = mobiIntCompType;
+                                    foreach (ByteCompType mobiByteCompType in byteCompTypes)
+                                    {
+                                        mobiByteComp = mobiByteCompType;
+                                        ConversionConfig config = (ConversionConfig) Clone();
+                                        config.mzIntComp = mzIntComp;
+                                        config.mzByteComp = mzByteComp;
+                                        config.intIntComp = intIntComp;
+                                        config.intByteComp = intByteComp;
+                                        config.mobiIntComp = mobiIntComp;
+                                        config.mobiByteComp = mobiByteComp;
+                                        config.suffix =
+                                            "_" + mzIntComp + "_" + mzByteComp + "_" + intIntComp + "_" + intByteComp +
+                                            "_" + mobiIntComp + "_" +
+                                            mobiByteComp;
+                                        configList.Add(config);
+                                    }
                                 }
+                            }
+                            else
+                            {
+                                ConversionConfig config = (ConversionConfig) Clone();
+                                config.mzIntComp = mzIntComp;
+                                config.mzByteComp = mzByteComp;
+                                config.intIntComp = intIntComp;
+                                config.intByteComp = intByteComp;
+                                config.suffix = "_" + mzIntComp + "_" + mzByteComp + "_" + intIntComp + "_" +
+                                                intByteComp;
+                                configList.Add(config);
                             }
                         }
                     }
                 }
-
-                config.suffix = "_" + getCompressorStr();
-                configList.Add(config);
             }
+
             return configList;
         }
 

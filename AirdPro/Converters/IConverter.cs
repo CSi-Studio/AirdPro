@@ -42,7 +42,10 @@ namespace AirdPro.Converters
         protected List<WindowRange> ranges = new List<WindowRange>(); //SWATH Window的窗口
         protected Hashtable rangeTable = new Hashtable(); //用于存放SWATH窗口的信息,key为mz
         protected List<BlockIndex> indexList = new List<BlockIndex>(); //用于存储的全局的SWATH List
-        protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
+
+        protected Hashtable
+            ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
+
         public List<MsIndex> ms1List = new List<MsIndex>(); //用于存放MS1索引及基础信息,泛型为MsIndex
         protected Hashtable featuresMap = new Hashtable();
         public ICompressor compressor;
@@ -832,7 +835,7 @@ namespace AirdPro.Converters
             featuresMap.Add(Features.ignore_zero_intensity, jobInfo.config.ignoreZeroIntensity);
             featuresMap.Add(Features.source_file_format, jobInfo.format);
             featuresMap.Add(Features.byte_order, ByteOrder.LITTLE_ENDIAN);
-            featuresMap.Add(Features.aird_algorithm, jobInfo.config.getCompressorStr());
+            featuresMap.Add(Features.aird_algorithm, jobInfo.getCompressorStr());
             airdInfo.features = FeaturesUtil.toString(featuresMap);
             airdInfo.version = SoftwareInfo.VERSION;
             airdInfo.versionCode = SoftwareInfo.VERSION_CODE;
@@ -843,13 +846,16 @@ namespace AirdPro.Converters
         {
             new BrotliWrapper(), new SnappyWrapper(), new ZstdWrapper(), new ZlibWrapper()
         };
+
         List<SortedIntComp> integratedIntCompList = new List<SortedIntComp>()
         {
             new IntegratedVarByteWrapper(), new IntegratedBinPackingWrapper()
         };
+
         List<IntComp> intCompList = new List<IntComp>()
         {
-            new VarByteWrapper(), new BinPackingWrapper(), new NewPFDS16Wrapper(), new OptPFDS16Wrapper(),new Simple16Wrapper(), new Empty()
+            new VarByteWrapper(), new BinPackingWrapper(), new NewPFDS16Wrapper(), new OptPFDS16Wrapper(),
+            new Simple16Wrapper(), new Empty()
         };
 
         public void randomSampling(int randomNum, bool ionMobi)
@@ -870,9 +876,10 @@ namespace AirdPro.Converters
                 {
                     mobiNoArrays.Add(dataList[2]);
                 }
-                
-                Console.Write(index+"-");
+
+                Console.Write(index + "-");
             }
+
             compressForTargetArrays(mzArrays, intensityArrays, mobiNoArrays, ionMobi);
         }
 
@@ -908,7 +915,8 @@ namespace AirdPro.Converters
             return arrays;
         }
 
-        public void compressForTargetArrays(List<int[]> mzArrays, List<int[]> intensityArrays, List<int[]> mobilityNoArrays, bool ionMobi)
+        public void compressForTargetArrays(List<int[]> mzArrays, List<int[]> intensityArrays,
+            List<int[]> mobilityNoArrays, bool ionMobi)
         {
             Dictionary<string, long> compressTimeMap = new Dictionary<string, long>();
             Dictionary<string, long> decompressTimeMap = new Dictionary<string, long>();
@@ -925,7 +933,7 @@ namespace AirdPro.Converters
             {
                 foreach (ByteComp byteComp4Mz in byteCompList)
                 {
-                    compressTimeMap.Add(buildComboKey("mz",intComp4Mz.getName(), byteComp4Mz.getName()), 0);
+                    compressTimeMap.Add(buildComboKey("mz", intComp4Mz.getName(), byteComp4Mz.getName()), 0);
                     decompressTimeMap.Add(buildComboKey("mz", intComp4Mz.getName(), byteComp4Mz.getName()), 0);
                     sizeMap.Add(buildComboKey("mz", intComp4Mz.getName(), byteComp4Mz.getName()), 0);
                 }
@@ -935,9 +943,12 @@ namespace AirdPro.Converters
             {
                 foreach (ByteComp byteComp4Intensity in byteCompList)
                 {
-                    compressTimeMap.Add(buildComboKey("intensity", intComp4Intensity.getName(), byteComp4Intensity.getName()), 0);
-                    decompressTimeMap.Add(buildComboKey("intensity", intComp4Intensity.getName(), byteComp4Intensity.getName()), 0);
-                    sizeMap.Add(buildComboKey("intensity", intComp4Intensity.getName(), byteComp4Intensity.getName()), 0);
+                    compressTimeMap.Add(
+                        buildComboKey("intensity", intComp4Intensity.getName(), byteComp4Intensity.getName()), 0);
+                    decompressTimeMap.Add(
+                        buildComboKey("intensity", intComp4Intensity.getName(), byteComp4Intensity.getName()), 0);
+                    sizeMap.Add(buildComboKey("intensity", intComp4Intensity.getName(), byteComp4Intensity.getName()),
+                        0);
                 }
             }
 
@@ -948,12 +959,13 @@ namespace AirdPro.Converters
                     foreach (ByteComp byteComp4Mobi in byteCompList)
                     {
                         compressTimeMap.Add(buildComboKey("mobi", intComp4Mobi.getName(), byteComp4Mobi.getName()), 0);
-                        decompressTimeMap.Add(buildComboKey("mobi", intComp4Mobi.getName(), byteComp4Mobi.getName()), 0);
+                        decompressTimeMap.Add(buildComboKey("mobi", intComp4Mobi.getName(), byteComp4Mobi.getName()),
+                            0);
                         sizeMap.Add(buildComboKey("mobi", intComp4Mobi.getName(), byteComp4Mobi.getName()), 0);
                     }
                 }
             }
-            
+
             for (int i = 0; i < mzArrays.Count; i++)
             {
                 int[] mzArray = mzArrays[i];
@@ -971,7 +983,8 @@ namespace AirdPro.Converters
                 if (ionMobi)
                 {
                     mobilityNoArray = mobilityNoArrays[i];
-                    zlibMobi = ComboComp.encode(new ZlibWrapper(), mobilityNoArray); ;
+                    zlibMobi = ComboComp.encode(new ZlibWrapper(), mobilityNoArray);
+                    ;
                     originSizeMobi += mobiArray.Length;
                     zlibSizeMobi += zlibMobi.Length;
                 }
@@ -990,7 +1003,9 @@ namespace AirdPro.Converters
                     foreach (ByteComp byteComp4Intensity in byteCompList)
                     {
                         byte[] compInt = ComboComp.encode(intComp4Intensity, byteComp4Intensity, intensityArray);
-                        sizeMap[buildComboKey("intensity", intComp4Intensity.getName(), byteComp4Intensity.getName())] += compInt.Length;
+                        sizeMap
+                                [buildComboKey("intensity", intComp4Intensity.getName(), byteComp4Intensity.getName())] +=
+                            compInt.Length;
                     }
                 }
 
@@ -1001,11 +1016,11 @@ namespace AirdPro.Converters
                         foreach (ByteComp byteComp4Mobi in byteCompList)
                         {
                             byte[] compMobi = ComboComp.encode(intComp4Mobi, byteComp4Mobi, mobilityNoArray);
-                            sizeMap[buildComboKey("mobi", intComp4Mobi.getName(), byteComp4Mobi.getName())] += compMobi.Length;
+                            sizeMap[buildComboKey("mobi", intComp4Mobi.getName(), byteComp4Mobi.getName())] +=
+                                compMobi.Length;
                         }
                     }
                 }
-               
             }
 
             Console.WriteLine($@"Origin Size:{originSizeMz}-{originSizeIntensity}-{originSizeMobi}");
@@ -1025,12 +1040,12 @@ namespace AirdPro.Converters
         public static double[] getMobilityData(Spectrum spectrum)
         {
             return spectrum.getArrayByCVID(CVID.MS_mean_ion_mobility_drift_time_array)?.data
-                    .Storage() ??
-                spectrum.getArrayByCVID(CVID.MS_mean_inverse_reduced_ion_mobility_array)
-                    ?.data.Storage() ??
-                spectrum.getArrayByCVID(CVID.MS_raw_ion_mobility_array)?.data.Storage() ??
-                spectrum.getArrayByCVID(CVID.MS_raw_inverse_reduced_ion_mobility_array)
-                    ?.data.Storage();
+                       .Storage() ??
+                   spectrum.getArrayByCVID(CVID.MS_mean_inverse_reduced_ion_mobility_array)
+                       ?.data.Storage() ??
+                   spectrum.getArrayByCVID(CVID.MS_raw_ion_mobility_array)?.data.Storage() ??
+                   spectrum.getArrayByCVID(CVID.MS_raw_inverse_reduced_ion_mobility_array)
+                       ?.data.Storage();
         }
     }
 }

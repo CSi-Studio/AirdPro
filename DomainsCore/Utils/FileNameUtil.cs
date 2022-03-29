@@ -29,27 +29,28 @@ namespace AirdPro.Utils
     }
     public class FileNameUtil
     {
-        public static string buildOutputFileName(string inputFilePath)
+        public static string parseFileName(string inputFilePath)
         {
             var outputFileName = string.Empty;
 
             try
             {
                 if (string.IsNullOrEmpty(outputFileName))
-                    outputFileName = Path.GetFileNameWithoutExtension(inputFilePath) ?? string.Empty;
-
-                // this list is for Windows; it's a superset of the POSIX list
-                const string illegalFilename = "\\/*:?<>|\"";
-                foreach (var t in illegalFilename)
                 {
-                    if (outputFileName.Contains(t))
+                    outputFileName = Path.GetFileNameWithoutExtension(inputFilePath) ?? string.Empty;
+                }
+                
+                // this list is for Windows; it's a superset of the POSIX list
+                const string illegalChar = "\\/*:?<>|\"";
+                foreach (var illegal in illegalChar)
+                {
+                    if (outputFileName.Contains(illegal))
                     {
-                        outputFileName = outputFileName.Replace(t, '_');
+                        outputFileName = outputFileName.Replace(illegal, '_');
                     }   
                 }
                 
                 string newFilename = outputFileName;
-//                var fullPath = Path.Combine(outputPath, newFilename);
                 return newFilename;
             }
             catch (ArgumentException e)

@@ -159,8 +159,8 @@ namespace AirdPro.Asyncs
 
             comp = jobInfo.config.stack ? new StackComp(converter) : new CoreComp(converter);
 
-            //如果是自动决策的,那么初始化的时候压缩内核都是空的,是不确定的.
-            if (!jobInfo.config.autoDesicion)
+            //探索模式和非自动决策模式,会在此处初始化指定的压缩内核
+            if (jobInfo.config.autoExplorer || !jobInfo.config.autoDesicion)
             {
                 if (jobInfo.ionMobility)
                 {
