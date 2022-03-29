@@ -10,13 +10,11 @@
 
 using System;
 using System.Collections.Generic;
-using AirdPro.Constants;
-using Compress;
-using Compress.Enums;
+using AirdSDK.Compressor;
 
 namespace AirdPro.Storage.Config
 {
-    public class ConversionConfig
+    public class ConversionConfig : ICloneable
     {
         /**
          * Ignore the mz-intensity pairs whose intensity is zero.
@@ -118,9 +116,44 @@ namespace AirdPro.Storage.Config
         public List<ConversionConfig> buildExplorerConfigs()
         {
             List<ConversionConfig> configList = new List<ConversionConfig>();
-
             
+            Array sortIntCompTypes = Enum.GetValues(typeof(SortedIntCompType));
+            Array intCompTypes = Enum.GetValues(typeof(IntCompType));
+            Array byteCompTypes = Enum.GetValues(typeof(ByteCompType));
+            foreach (SortedIntCompType mzIntCompType in sortIntCompTypes)
+            {
+                ConversionConfig config = (ConversionConfig)Clone();
+                config.mzIntComp = mzIntCompType;
+                foreach (ByteCompType mzByteCompType in byteCompTypes)
+                {
+                    config.mzByteComp = mzByteCompType;
+                    foreach (IntCompType intIntCompType in intCompTypes)
+                    {
+                        config.intIntComp = intIntCompType;
+                        foreach (ByteCompType intByteCompType in byteCompTypes)
+                        {
+                            config.intByteComp = intByteCompType;
+                            foreach (IntCompType mobiIntCompType in intCompTypes)
+                            {
+                                config.mobiIntComp = mobiIntCompType;
+                                foreach (ByteCompType mobiByteCompType in byteCompTypes)
+                                {
+                                    config.mobiByteComp = mobiByteCompType;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                config.suffix = "_" + getCompressorStr();
+                configList.Add(config);
+            }
             return configList;
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
     }
 }

@@ -11,16 +11,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using AirdPro.Algorithms;
-using AirdPro.DomainsCore.Aird;
-using Compress;
-using CSharpFastPFOR;
+using AirdSDK.Domains;
 using CSharpFastPFOR.Port;
-// using Priority_Queue;
 
-namespace AirdPro.Utils
+namespace Compress
 {
     public class StackLayer
     {
@@ -31,7 +25,7 @@ namespace AirdPro.Utils
          * @param pair sorting method of mzArray
          * @return compressed mzArray
          */
-        public static Layers encode(List<int[]> arrGroup,IntComp intComp, ByteComp byteComp)
+        public static Layers encode(List<int[]> arrGroup, SortedIntComp intComp, ByteComp byteComp)
         {
             int stackLen = 0;  //记录堆叠数总长度
             foreach (int[] arr in arrGroup)
@@ -96,7 +90,7 @@ namespace AirdPro.Utils
          * @param layers compressed mzArray
          * @return decompressed mzArray
          */
-        public static List<int[]> decode(Layers layers, IntComp intComp, ByteComp byteComp)
+        public static List<int[]> decode(Layers layers, SortedIntComp intComp, ByteComp byteComp)
         {
             int[] stackArr = intComp.decode(ByteTrans.byteToInt(byteComp.decode(layers.mzArray)));
             int[] stackIndex = new int[stackArr.Length];

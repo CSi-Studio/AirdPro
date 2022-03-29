@@ -10,14 +10,15 @@
 
 using AirdPro.Constants;
 using AirdPro.Converters;
-using AirdPro.Domains.Convert;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AirdPro.Algorithms;
-using Compress;
+using AirdPro.Domains;
+using AirdSDK.Compressor;
+using AirdSDK.Enums;
 using static AirdPro.Constants.ProcessingStatus;
 
 namespace AirdPro.Asyncs

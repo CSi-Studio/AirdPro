@@ -12,9 +12,9 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Threading;
-using AirdPro.Constants;
-using AirdPro.DomainsCore.Aird;
-using AirdPro.Domains.Convert;
+using AirdPro.Domains;
+using AirdSDK.Domains;
+using AirdSDK.Enums;
 
 
 namespace AirdPro.Converters

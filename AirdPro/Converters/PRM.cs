@@ -11,9 +11,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using AirdPro.Constants;
-using AirdPro.DomainsCore.Aird;
-using AirdPro.Domains.Convert;
+using AirdPro.Domains;
+using AirdSDK.Domains;
+using AirdSDK.Enums;
 using pwiz.CLI.msdata;
 
 namespace AirdPro.Converters

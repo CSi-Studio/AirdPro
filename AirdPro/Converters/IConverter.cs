@@ -9,12 +9,9 @@
  */
 
 using AirdPro.Constants;
-using AirdPro.DomainsCore.Aird;
-using AirdPro.Domains.Convert;
 using AirdPro.Utils;
 using Newtonsoft.Json;
 using pwiz.CLI.analysis;
-using pwiz.CLI.cv;
 using pwiz.CLI.data;
 using pwiz.CLI.msdata;
 using System;
@@ -24,9 +21,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using AirdPro.Algorithms;
-using Compress;
+using AirdPro.Domains;
+using AirdSDK.Compressor;
+using AirdSDK.Domains;
+using pwiz.CLI.cv;
 using ByteOrder = AirdPro.Constants.ByteOrder;
-using CV = AirdPro.DomainsCore.Aird.CV;
+using CV = AirdSDK.Domains.CV;
 using Software = pwiz.CLI.msdata.Software;
 
 namespace AirdPro.Converters
@@ -664,7 +664,7 @@ namespace AirdPro.Converters
         protected AirdInfo buildBasicInfo()
         {
             AirdInfo airdInfo = new AirdInfo();
-            List<DomainsCore.Aird.Software> softwares = new List<DomainsCore.Aird.Software>();
+            List<AirdSDK.Domains.Software> softwares = new List<AirdSDK.Domains.Software>();
             List<ParentFile> parentFiles = new List<ParentFile>();
 
             //Basic Job Info
@@ -768,13 +768,13 @@ namespace AirdPro.Converters
             //Software Info
             foreach (Software soft in msd.softwareList)
             {
-                DomainsCore.Aird.Software software = new DomainsCore.Aird.Software();
+                AirdSDK.Domains.Software software = new AirdSDK.Domains.Software();
                 software.name = soft.id;
                 software.version = soft.version;
                 softwares.Add(software);
             }
 
-            DomainsCore.Aird.Software airdPro = new DomainsCore.Aird.Software();
+            AirdSDK.Domains.Software airdPro = new AirdSDK.Domains.Software();
             airdPro.name = SoftwareInfo.NAME;
             airdPro.version = SoftwareInfo.VERSION;
             airdPro.type = "DataFormatConversion";

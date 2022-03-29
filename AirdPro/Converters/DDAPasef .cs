@@ -8,11 +8,10 @@
  * See the Mulan PSL v2 for more details.
  */
 
-using AirdPro.Constants;
-using AirdPro.DomainsCore.Aird;
 using pwiz.CLI.msdata;
 using System.IO;
-using AirdPro.Domains.Convert;
+using AirdPro.Domains;
+using AirdSDK.Enums;
 
 namespace AirdPro.Converters
 {

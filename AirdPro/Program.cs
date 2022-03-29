@@ -9,9 +9,7 @@
  */
 
 using System;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using AirdPro.Domains.Job;
 using AirdPro.Forms;
 using AirdPro.Storage.Handler;
 

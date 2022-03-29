@@ -14,8 +14,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AirdPro.Converters;
-using AirdPro.DomainsCore.Aird;
-using AirdPro.Utils;
+using AirdPro.Domains;
+using AirdSDK.Compressor;
+using AirdSDK.Domains;
 using pwiz.CLI.msdata;
 using pwiz.CLI.util;
 

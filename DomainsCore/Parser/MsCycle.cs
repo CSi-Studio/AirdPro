@@ -8,10 +8,10 @@
  * See the Mulan PSL v2 for more details.
  */
 
-using AirdPro.DomainsCore.Aird;
 using System.Collections.Generic;
+using AirdSDK.Domains;
 
-namespace AirdPro.DomainsCore.Parser
+namespace AirdSDK.Parser
 {
 	public class MsCycle
 	{

@@ -13,10 +13,8 @@ using System.Windows.Forms;
 using AirdPro.Constants;
 using ThermoFisher.CommonCore.Data;
 using AirdPro.Storage;
-using AirdPro.Domains.Convert;
 using System.Collections.Generic;
 using AirdPro.Storage.Config;
-using AirdPro.Utils;
 
 namespace AirdPro.Forms
 {

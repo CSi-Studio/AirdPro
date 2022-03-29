@@ -8,11 +8,11 @@
  * See the Mulan PSL v2 for more details.
  */
 
-using System;
 using System.Collections.Generic;
 using AirdPro.Converters;
-using AirdPro.DomainsCore.Aird;
-using Compress;
+using AirdPro.Domains;
+using AirdSDK.Compressor;
+using AirdSDK.Domains;
 using pwiz.CLI.msdata;
 
 namespace AirdPro.Algorithms

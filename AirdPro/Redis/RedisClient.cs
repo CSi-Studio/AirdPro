@@ -13,8 +13,8 @@ using System.Windows.Forms;
 using AirdPro.Asyncs;
 using StackExchange.Redis;
 using AirdPro.Constants;
-using AirdPro.Domains.Convert;
-using AirdPro.Domains.Job;
+using AirdPro.Domains;
+using AirdPro.Storage.Config;
 using Newtonsoft.Json;
 
 namespace AirdPro.Redis

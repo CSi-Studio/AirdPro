@@ -14,11 +14,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using AirdPro.Constants;
-using AirdPro.Domains.FileLogs;
 using AirdPro.Storage.Config;
+using AirdSDK.Enums;
 using ThermoFisher.CommonCore.Data;
 
-namespace AirdPro.Domains.Convert
+namespace AirdPro.Domains
 { 
     public class JobInfo
     {
