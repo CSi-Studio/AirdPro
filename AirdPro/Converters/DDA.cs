@@ -17,8 +17,9 @@ namespace AirdPro.Converters
 {
     internal class DDA : IConverter
     {
-
-        public DDA(JobInfo jobInfo) : base(jobInfo) {}
+        public DDA(JobInfo jobInfo) : base(jobInfo)
+        {
+        }
 
         public override void doConvert()
         {
@@ -30,6 +31,7 @@ namespace AirdPro.Converters
                 {
                     readVendorFile(); //准备读取Vendor文件
                     predictForIntensityPrecision(); //预测intensity需要保留的精度
+                    predictForCombinableComps(); //预测最佳压缩组合
                     pretreatment(); //MS1和MS2分开建立索引
                     compressMS1Block(); //处理MS1,并将索引写入文件流中
                     compressMS2BlockForDDA(); //处理MS2,并将索引写入文件流中
@@ -48,7 +50,7 @@ namespace AirdPro.Converters
             {
                 Spectrum spectrum = spectrumList.spectrum(i);
                 string msLevel = parseMsLevel(spectrum);
-                
+
                 //最后一个谱图,单独判断
                 if (i == totalSize - 1)
                 {
@@ -62,7 +64,6 @@ namespace AirdPro.Converters
                         MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
                         addToMS2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
                     }
-                        
                 }
                 else
                 {
@@ -82,7 +83,6 @@ namespace AirdPro.Converters
                         MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
                         addToMS2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
                     }
-
                 }
             }
 
@@ -90,7 +90,5 @@ namespace AirdPro.Converters
             jobInfo.log("MS2 Group List Size:" + ms2Table.Count);
             jobInfo.log("Start Processing MS1 List");
         }
-
-      
     }
 }

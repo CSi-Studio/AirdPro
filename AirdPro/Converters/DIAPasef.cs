@@ -18,7 +18,9 @@ namespace AirdPro.Converters
 {
     internal class DIAPasef : IConverter
     {
-        public DIAPasef(JobInfo jobInfo) : base(jobInfo) {}
+        public DIAPasef(JobInfo jobInfo) : base(jobInfo)
+        {
+        }
 
         public override void doConvert()
         {
@@ -31,7 +33,8 @@ namespace AirdPro.Converters
                     readVendorFile(); //准备读取Vendor文件
                     initBrukerMobi();
                     predictForIntensityPrecision(); //预测intensity需要保留的精度
-                    randomSampling(50, true);
+                    predictForCombinableComps(); //预测最佳压缩组合
+                    // randomSampling(50, true);
                     pretreatment(); //预处理谱图,将MS1和MS2谱图分开存储
                     compressMobiDict();
                     compressMS1Block();
@@ -61,6 +64,7 @@ namespace AirdPro.Converters
                     parentNum = i;
                     ms1List.Add(parseMS1(spectrum, i));
                 }
+
                 //如果这个谱图是MS2
                 if (msLevel.Equals(MsLevel.MS2))
                 {
@@ -72,6 +76,7 @@ namespace AirdPro.Converters
                         ranges.Add(range);
                         rangeTable.Add(ms2Index.precursorMz, range);
                     }
+
                     //DIA的MS2Map以precursorMz为key
                     addToMS2Map(ms2Index.precursorMz, ms2Index);
                 }

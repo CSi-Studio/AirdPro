@@ -163,6 +163,7 @@
     <Compile Include="Domains\Scan\TempScan.cs" />
     <Compile Include="Domains\Scan\TempScanSZDPD.cs" />
     <Compile Include="Domains\Scan\TimsData.cs" />
+    <Compile Include="Domains\Sort\CompressStat.cs" />
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>

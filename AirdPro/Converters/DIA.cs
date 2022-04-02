@@ -18,22 +18,25 @@ namespace AirdPro.Converters
 {
     internal class DIA : IConverter
     {
-        public DIA(JobInfo jobInfo) : base(jobInfo) {}
+        public DIA(JobInfo jobInfo) : base(jobInfo)
+        {
+        }
 
         public override void doConvert()
         {
             start();
-            initDirectory();//创建文件夹
+            initDirectory(); //创建文件夹
             using (airdStream = new FileStream(jobInfo.airdFilePath, FileMode.Create))
             {
                 using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                 {
-                    readVendorFile();//准备读取Vendor文件
+                    readVendorFile(); //准备读取Vendor文件
                     predictForIntensityPrecision(); //预测intensity需要保留的精度
-                    pretreatment();//预处理谱图,将MS1和MS2谱图分开存储
+                    predictForCombinableComps(); //预测最佳压缩组合
+                    pretreatment(); //预处理谱图,将MS1和MS2谱图分开存储
                     compressMS1Block();
                     compressMS2BlockForDIA();
-                    writeToAirdInfoFile();//将Info数据写入文件
+                    writeToAirdInfoFile(); //将Info数据写入文件
                 }
             }
 
@@ -59,6 +62,7 @@ namespace AirdPro.Converters
                     parentNum = i;
                     ms1List.Add(parseMS1(spectrum, i));
                 }
+
                 //如果这个谱图是MS2
                 if (msLevel.Equals(MsLevel.MS2))
                 {
@@ -70,6 +74,7 @@ namespace AirdPro.Converters
                         ranges.Add(range);
                         rangeTable.Add(ms2Index.precursorMz, range);
                     }
+
                     //DIA的MS2Map以precursorMz为key
                     addToMS2Map(ms2Index.precursorMz, ms2Index);
                 }

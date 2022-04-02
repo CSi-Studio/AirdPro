@@ -65,6 +65,9 @@ namespace AirdPro.Converters
         protected string rtUnit; //Minute, Second
         protected int intensityPrecision = 1; //Intensity默认精确到个位数
 
+        protected int spectraNumForIntensityPrecisionPredict = 5;
+        protected int spectraNumForCombinableCompressorsPredict = 500;
+
         public IConverter(JobInfo jobInfo)
         {
             this.jobInfo = jobInfo;
@@ -114,15 +117,23 @@ namespace AirdPro.Converters
             compressor.mobiDict = mobiDict;
         }
 
+        protected void predictForCombinableComps()
+        {
+            jobInfo.log("predict for combinable compressors", "predicting");
+            randomSampling(spectraNumForCombinableCompressorsPredict, jobInfo.ionMobility);
+        }
+
+        /**
+         * num:采样数目,建议:5
+         */
         protected void predictForIntensityPrecision()
         {
             Random rd = new Random();
             HashSet<int> nums = new HashSet<int>();
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < spectraNumForIntensityPrecisionPredict; i++)
             {
                 nums.Add(rd.Next(1, totalSize));
             }
-
 
             bool findIt = false;
             for (var i = 0; i < nums.Count; i++)
@@ -869,7 +880,7 @@ namespace AirdPro.Converters
             {
                 int index = rn.Next(0, totalSize);
                 logIndexs.Add(index);
-                List<int[]> dataList = fetchSpectrum(index);
+                List<int[]> dataList = fetchSpectrum(index, ionMobi);
                 mzArrays.Add(dataList[0]);
                 intensityArrays.Add(dataList[1]);
                 if (ionMobi)
@@ -883,30 +894,42 @@ namespace AirdPro.Converters
             compressForTargetArrays(mzArrays, intensityArrays, mobiNoArrays, ionMobi);
         }
 
-        public List<int[]> fetchSpectrum(int index)
+        public List<int[]> fetchSpectrum(int index, bool mobi)
         {
             List<int[]> arrays = new List<int[]>();
             Spectrum spectrum = spectrumList.spectrum(index, true);
             double[] mzData = spectrum.getMZArray().data.Storage();
             double[] intData = spectrum.getIntensityArray().data.Storage();
-            double[] mobiData = getMobilityData(spectrum);
 
             var size = mzData.Length;
-            TimsData[] dataArray = new TimsData[size];
-            for (int t = 0; t < size; t++)
-            {
-                dataArray[t] = new TimsData(mobiDict[mobiData[t]], mzData[t], intData[t]);
-            }
-
-            Array.Sort(dataArray, (p1, p2) => p1.mz.CompareTo(p2.mz));
             int[] mzArray = new int[size];
             int[] intensityArray = new int[size];
             int[] mobilityNoArray = new int[size];
-            for (int i = 0; i < size; i++)
+
+            if (mobi)
             {
-                mzArray[i] = Convert.ToInt32(dataArray[i].mz * 100000);
-                intensityArray[i] = Convert.ToInt32(Math.Round(dataArray[i].intensity * intensityPrecision));
-                mobilityNoArray[i] = dataArray[i].mobilityNo;
+                double[] mobiData = SpectrumUtil.getMobilityData(spectrum);
+                TimsData[] dataArray = new TimsData[size];
+                for (int t = 0; t < size; t++)
+                {
+                    dataArray[t] = new TimsData(mobiDict[mobiData[t]], mzData[t], intData[t]);
+                }
+
+                Array.Sort(dataArray, (p1, p2) => p1.mz.CompareTo(p2.mz));
+                for (int i = 0; i < size; i++)
+                {
+                    mzArray[i] = Convert.ToInt32(dataArray[i].mz * jobInfo.config.mzPrecision);
+                    intensityArray[i] = Convert.ToInt32(Math.Round(dataArray[i].intensity * intensityPrecision));
+                    mobilityNoArray[i] = dataArray[i].mobilityNo;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < size; i++)
+                {
+                    mzArray[i] = Convert.ToInt32(mzData[i] * jobInfo.config.mzPrecision);
+                    intensityArray[i] = SpectrumUtil.fetchIntensity(intData[i], intensityPrecision);
+                }
             }
 
             arrays.Add(mzArray);
@@ -921,13 +944,6 @@ namespace AirdPro.Converters
             Dictionary<string, long> compressTimeMap = new Dictionary<string, long>();
             Dictionary<string, long> decompressTimeMap = new Dictionary<string, long>();
             Dictionary<string, long> sizeMap = new Dictionary<string, long>();
-            long originSizeMz = 0;
-            long originSizeIntensity = 0;
-            long originSizeMobi = 0;
-
-            long zlibSizeMz = 0;
-            long zlibSizeIntensity = 0;
-            long zlibSizeMobi = 0;
 
             foreach (SortedIntComp intComp4Mz in integratedIntCompList)
             {
@@ -966,70 +982,71 @@ namespace AirdPro.Converters
                 }
             }
 
-            for (int i = 0; i < mzArrays.Count; i++)
+            long originSizeMz = 0;
+            long originSizeIntensity = 0;
+            long originSizeMobi = 0;
+            foreach (SortedIntComp intComp4Mz in integratedIntCompList)
             {
-                int[] mzArray = mzArrays[i];
-                byte[] zlibMz = ComboComp.encode(new ZlibWrapper(), mzArray);
-                originSizeMz += mzArray.Length;
-                zlibSizeMz += zlibMz.Length; //原始mz的仅使用Zlib进行压缩时的体积
-
-                int[] intensityArray = intensityArrays[i];
-                byte[] zlibIntensity = ComboComp.encode(new ZlibWrapper(), intensityArray);
-                originSizeIntensity += intensityArray.Length;
-                zlibSizeIntensity += zlibIntensity.Length; //原始intensity的仅使用Zlib进行压缩时的体积
-
-                int[] mobilityNoArray = null;
-                byte[] zlibMobi = null;
-                if (ionMobi)
+                foreach (ByteComp byteComp4Mz in byteCompList)
                 {
-                    mobilityNoArray = mobilityNoArrays[i];
-                    zlibMobi = ComboComp.encode(new ZlibWrapper(), mobilityNoArray);
-                    ;
-                    originSizeMobi += mobiArray.Length;
-                    zlibSizeMobi += zlibMobi.Length;
+                    statForCompress(intComp4Mz, byteComp4Mz, mzArrays, "mz", sizeMap, compressTimeMap,
+                        decompressTimeMap);
                 }
+            }
 
-                foreach (SortedIntComp intComp4Mz in integratedIntCompList)
+            foreach (IntComp intComp4Intensity in intCompList)
+            {
+                foreach (ByteComp byteComp4Intensity in byteCompList)
                 {
-                    foreach (ByteComp byteComp4Mz in byteCompList)
-                    {
-                        byte[] compMz = ComboComp.encode(intComp4Mz, byteComp4Mz, mzArray);
-                        sizeMap[buildComboKey("mz", intComp4Mz.getName(), byteComp4Mz.getName())] += compMz.Length;
-                    }
+                    statForCompress(intComp4Intensity, byteComp4Intensity, intensityArrays, "intensity", sizeMap,
+                        compressTimeMap,
+                        decompressTimeMap);
                 }
+            }
 
-                foreach (IntComp intComp4Intensity in intCompList)
+            if (ionMobi)
+            {
+                foreach (IntComp intComp4Mobi in intCompList)
                 {
-                    foreach (ByteComp byteComp4Intensity in byteCompList)
+                    foreach (ByteComp byteComp4Mobi in byteCompList)
                     {
-                        byte[] compInt = ComboComp.encode(intComp4Intensity, byteComp4Intensity, intensityArray);
-                        sizeMap
-                                [buildComboKey("intensity", intComp4Intensity.getName(), byteComp4Intensity.getName())] +=
-                            compInt.Length;
-                    }
-                }
-
-                if (ionMobi)
-                {
-                    foreach (IntComp intComp4Mobi in intCompList)
-                    {
-                        foreach (ByteComp byteComp4Mobi in byteCompList)
-                        {
-                            byte[] compMobi = ComboComp.encode(intComp4Mobi, byteComp4Mobi, mobilityNoArray);
-                            sizeMap[buildComboKey("mobi", intComp4Mobi.getName(), byteComp4Mobi.getName())] +=
-                                compMobi.Length;
-                        }
+                        statForCompress(intComp4Mobi, byteComp4Mobi, mobilityNoArrays, "mobi", sizeMap,
+                            compressTimeMap,
+                            decompressTimeMap);
                     }
                 }
             }
 
-            Console.WriteLine($@"Origin Size:{originSizeMz}-{originSizeIntensity}-{originSizeMobi}");
-            Console.WriteLine($@"Zlib Size:{zlibSizeMz}-{zlibSizeIntensity}-{zlibSizeMobi}");
-            Console.WriteLine(@"-----------------------------------------------------------");
-            foreach (var keyValuePair in sizeMap)
+            jobInfo.log($@"Origin Size:{originSizeMz}-{originSizeIntensity}-{originSizeMobi}");
+            jobInfo.log(@"------------------------");
+
+            List<CompressStat> mzStatList = new List<CompressStat>();
+            List<CompressStat> intensityStatList = new List<CompressStat>();
+            List<CompressStat> mobiStatList = new List<CompressStat>();
+            foreach (KeyValuePair<string, long> pair in sizeMap)
             {
-                Console.WriteLine($@"{keyValuePair.Key}-{keyValuePair.Value}");
+                string key = pair.Key;
+                CompressStat stat = new CompressStat(key, sizeMap[key], compressTimeMap[key], decompressTimeMap[key]);
+                if (key.StartsWith("mz"))
+                {
+                    mzStatList.Add(stat);
+                }
+
+                if (pair.Key.StartsWith("intensity"))
+                {
+                    intensityStatList.Add(stat);
+                }
+
+                if (pair.Key.StartsWith("mobi"))
+                {
+                    mobiStatList.Add(stat);
+                }
             }
+
+            mzStatList.Sort((a, b) => a.size.CompareTo(b.size));
+            intensityStatList.Sort((a, b) => a.size.CompareTo(b.size));
+            mobiStatList.Sort((a, b) => a.size.CompareTo(b.size));
+            jobInfo.log(@"------------------------");
         }
 
         public string buildComboKey(string key, string intCompName, string byteCompName)
@@ -1037,15 +1054,36 @@ namespace AirdPro.Converters
             return key + "-" + intCompName + "-" + byteCompName;
         }
 
-        public static double[] getMobilityData(Spectrum spectrum)
+        public void statForCompress(IntComp intComp, ByteComp byteComp, List<int[]> arrays, string dim,
+            Dictionary<string, long> sizeMap, Dictionary<string, long> compressTimeMap,
+            Dictionary<string, long> decompressTimeMap)
         {
-            return spectrum.getArrayByCVID(CVID.MS_mean_ion_mobility_drift_time_array)?.data
-                       .Storage() ??
-                   spectrum.getArrayByCVID(CVID.MS_mean_inverse_reduced_ion_mobility_array)
-                       ?.data.Storage() ??
-                   spectrum.getArrayByCVID(CVID.MS_raw_ion_mobility_array)?.data.Storage() ??
-                   spectrum.getArrayByCVID(CVID.MS_raw_inverse_reduced_ion_mobility_array)
-                       ?.data.Storage();
+            string key = buildComboKey(dim, intComp.getName(), byteComp.getName());
+            Stopwatch watchMz = new Stopwatch();
+            int tempMzSize = 0;
+            watchMz.Start();
+            List<byte[]> encodeList = new List<byte[]>();
+            for (int i = 0; i < arrays.Count; i++)
+            {
+                byte[] compMz = ComboComp.encode(intComp, byteComp, arrays[i]);
+                tempMzSize += compMz.Length;
+                encodeList.Add(compMz);
+            }
+
+            sizeMap[key] = tempMzSize;
+            compressTimeMap[key] = watchMz.Elapsed.Ticks;
+            watchMz.Restart();
+            for (int i = 0; i < encodeList.Count; i++)
+            {
+                int[] mz = ComboComp.decode(intComp, byteComp, encodeList[i]);
+                if (mz.Length != arrays[i].Length)
+                {
+                    Console.WriteLine("Encoding Error");
+                }
+            }
+
+            decompressTimeMap[key] = watchMz.Elapsed.Ticks;
+            watchMz.Stop();
         }
     }
 }

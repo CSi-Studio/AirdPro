@@ -20,25 +20,28 @@ namespace AirdPro.Converters
 {
     internal class PRM : IConverter
     {
-
-        public PRM(JobInfo jobInfo) : base(jobInfo) {}
+        public PRM(JobInfo jobInfo) : base(jobInfo)
+        {
+        }
 
         public override void doConvert()
         {
             start();
-            initDirectory();//创建文件夹
+            initDirectory(); //创建文件夹
             using (airdStream = new FileStream(jobInfo.airdFilePath, FileMode.Create))
             {
                 using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                 {
-                    readVendorFile();//准备读取Vendor文件
+                    readVendorFile(); //准备读取Vendor文件
                     predictForIntensityPrecision(); //预测intensity需要保留的精度
-                    pretreatment();//预处理谱图,将MS1和MS2谱图分开存储
-                    compressMS1Block();//处理MS1,并将索引写入文件流中
-                    parseAndStoreMS2Block();//处理MS2,并将索引写入文件流中
-                    writeToAirdInfoFile();//将Info数据写入文件
+                    predictForCombinableComps(); //预测最佳压缩组合
+                    pretreatment(); //预处理谱图,将MS1和MS2谱图分开存储
+                    compressMS1Block(); //处理MS1,并将索引写入文件流中
+                    parseAndStoreMS2Block(); //处理MS2,并将索引写入文件流中
+                    writeToAirdInfoFile(); //将Info数据写入文件
                 }
             }
+
             finish();
         }
 
@@ -61,6 +64,7 @@ namespace AirdPro.Converters
                         ParallelLoopState.Break();
                         return;
                     }
+
                     //如果是MS2谱图,加入到谱图组
                     if (msLevel.Equals(MsLevel.MS2))
                     {
@@ -82,6 +86,7 @@ namespace AirdPro.Converters
                         ParallelLoopState.Break();
                         return;
                     }
+
                     if (msLevelNext.Equals(MsLevel.MS2))
                     {
                         parentNum = i;
@@ -118,12 +123,11 @@ namespace AirdPro.Converters
 
                 jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);
                 progress++;
-                compressor.compressMS2(this,ms2List, index);
+                compressor.compressMS2(this, ms2List, index);
                 index.endPtr = startPosition;
                 indexList.Add(index);
                 jobInfo.log("MS2 Group Finished:" + progress + "/" + ms2Table.Keys.Count);
             }
         }
-
     }
 }

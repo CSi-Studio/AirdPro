@@ -17,8 +17,9 @@ namespace AirdPro.Converters
 {
     internal class DDAPasef : IConverter
     {
-
-        public DDAPasef(JobInfo jobInfo) : base(jobInfo) { }
+        public DDAPasef(JobInfo jobInfo) : base(jobInfo)
+        {
+        }
 
         public override void doConvert()
         {
@@ -31,6 +32,7 @@ namespace AirdPro.Converters
                     readVendorFile(); //准备读取Vendor文件
                     initBrukerMobi();
                     predictForIntensityPrecision(); //预测intensity需要保留的精度
+                    predictForCombinableComps(); //预测最佳压缩组合
                     pretreatment(); //MS1和MS2分开建立索引
                     compressMobiDict();
                     compressMS1Block(); //处理MS1,并将索引写入文件流中
@@ -91,6 +93,5 @@ namespace AirdPro.Converters
             jobInfo.log("MS2 Group List Size:" + ms2Table.Count);
             jobInfo.log("Start Processing MS1 List");
         }
-
     }
 }

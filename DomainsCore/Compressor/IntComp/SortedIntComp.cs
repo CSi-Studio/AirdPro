@@ -12,12 +12,8 @@ using System;
 
 namespace AirdSDK.Compressor
 {
-    public abstract class SortedIntComp
+    public abstract class SortedIntComp : IntComp
     {
-        public abstract string getName();
-        public abstract int[] encode(int[] uncompressed);
-        public abstract int[] decode(int[] compressed);
-
         public static SortedIntComp build(SortedIntCompType type)
         {
             switch (type)
@@ -31,4 +27,3 @@ namespace AirdSDK.Compressor
         }
     }
 }
-

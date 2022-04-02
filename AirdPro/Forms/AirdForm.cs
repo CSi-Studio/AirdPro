@@ -35,10 +35,6 @@ namespace AirdPro.Forms
             InitializeComponent();
         }
 
-        public void applyConfig(ConversionConfig conversionConfig)
-        {
-        }
-
         private void ProproForm_Load(object sender, EventArgs e)
         {
             this.Text = SoftwareInfo.getVersion() + " - " + NetworkUtil.getHostIP();
@@ -230,8 +226,6 @@ namespace AirdPro.Forms
                 {
                     MessageBox.Show("Only finished job can rerun");
                 }
-
-                
             }
         }
 
