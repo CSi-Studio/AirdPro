@@ -23,7 +23,6 @@ namespace AirdSDK.Compressor
 
         public override int[] encode(int[] uncompressed)
         {
-
             int[] compressedInts = new IntCompressor(new NewPFDS16()).compress(uncompressed);
             return compressedInts;
         }
