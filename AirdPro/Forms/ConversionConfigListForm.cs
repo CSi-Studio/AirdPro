@@ -46,9 +46,13 @@ namespace AirdPro.Forms
 
         private void ConversionConfigListForm_Load(object sender, EventArgs e)
         {
+            foreach (string sortedIntCompType in Enum.GetNames(typeof(SortedIntCompType)))
+            {
+                cbMzIntComp.Items.Add(sortedIntCompType);
+            }
+
             foreach (string intCompType in Enum.GetNames(typeof(IntCompType)))
             {
-                cbMzIntComp.Items.Add(intCompType);
                 cbIntIntComp.Items.Add(intCompType);
                 cbMobiIntComp.Items.Add(intCompType);
             }
