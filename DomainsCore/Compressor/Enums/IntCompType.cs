@@ -17,7 +17,5 @@ namespace AirdSDK.Compressor
         BP = 3, //Binary Packing
         NewPFD = 4, //NewPFDS16
         OptPFD = 5, //OptPFDS16
-        Simple = 6 //Simple16
     }
 }
-

@@ -11,6 +11,7 @@
  * @author Daniel Lemire
  * 
  */
+
 namespace CSharpFastPFOR.Differential
 {
     public class Delta
@@ -49,6 +50,7 @@ namespace CSharpFastPFOR.Differential
             {
                 data[start + i] -= data[start + i - 1];
             }
+
             data[start] -= init;
             return nextinit;
         }
@@ -75,6 +77,7 @@ namespace CSharpFastPFOR.Differential
             {
                 @out[i] = data[start + i] - data[start + i - 1];
             }
+
             @out[0] = data[start] - init;
             return data[start + length - 1];
         }
@@ -158,6 +161,7 @@ namespace CSharpFastPFOR.Differential
             {
                 data[start + i] += data[start + i - 1];
             }
+
             return data[start + length - 1];
         }
     }

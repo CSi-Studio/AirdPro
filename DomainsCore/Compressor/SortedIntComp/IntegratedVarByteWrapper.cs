@@ -12,7 +12,7 @@ using CSharpFastPFOR.Differential;
 
 namespace AirdSDK.Compressor
 {
-    public class IntegratedVarByteWrapper:SortedIntComp
+    public class IntegratedVarByteWrapper : SortedIntComp
     {
         //使用VariableByte算法将排序了的int数组进行压缩
         public override string getName()

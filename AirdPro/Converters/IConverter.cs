@@ -112,6 +112,7 @@ namespace AirdPro.Converters
             {
                 mobiDict.Add(mobility[i], i);
             }
+
             mobiArray = mobility;
             compressor.mobiDict = mobiDict;
         }
@@ -864,8 +865,7 @@ namespace AirdPro.Converters
 
         List<IntComp> intCompList = new List<IntComp>()
         {
-            new VarByteWrapper(), new BinPackingWrapper(), new NewPFDS16Wrapper(), new OptPFDS16Wrapper(),
-            new Simple16Wrapper(), new Empty()
+            new VarByteWrapper(), new BinPackingWrapper(), new NewPFDWrapper(), new OptPFDWrapper(), new Empty()
         };
 
         public void randomSampling(int randomNum, bool ionMobi)
@@ -1052,7 +1052,7 @@ namespace AirdPro.Converters
             return key + "-" + intCompName + "-" + byteCompName;
         }
 
-        public void statForCompress(IntComp intComp, ByteComp byteComp, List<int[]> arrays, string dim,
+        public void statForCompress(BaseComp<int> intComp, ByteComp byteComp, List<int[]> arrays, string dim,
             Dictionary<string, long> sizeMap, Dictionary<string, long> compressTimeMap,
             Dictionary<string, long> decompressTimeMap)
         {

@@ -12,12 +12,8 @@ using System;
 
 namespace AirdSDK.Compressor
 {
-    public abstract class IntComp
+    public abstract class IntComp : BaseComp<int>
     {
-        public abstract string getName();
-        public abstract int[] encode(int[] uncompressed);
-        public abstract int[] decode(int[] compressed);
-
         public static IntComp build(IntCompType type)
         {
             switch (type)
@@ -26,12 +22,10 @@ namespace AirdSDK.Compressor
                     return new VarByteWrapper();
                 case IntCompType.BP:
                     return new BinPackingWrapper();
-                case IntCompType.Simple:
-                    return new Simple16Wrapper();
                 case IntCompType.NewPFD:
-                    return new NewPFDS16Wrapper();
+                    return new NewPFDWrapper();
                 case IntCompType.OptPFD:
-                    return new OptPFDS16Wrapper();
+                    return new OptPFDWrapper();
                 case IntCompType.Empty:
                     return new Empty();
                 default: throw new Exception("No Implementation for " + type);

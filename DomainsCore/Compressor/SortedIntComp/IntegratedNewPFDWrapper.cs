@@ -9,28 +9,30 @@
  */
 
 using CSharpFastPFOR;
+using CSharpFastPFOR.Differential;
 
 namespace AirdSDK.Compressor
 {
-    public class VarByteWrapper : IntComp
+    public class IntegratedNewPFDWrapper : SortedIntComp
     {
-        //使用VariableByte算法将未排序的int数组进行压缩
+        //使用VariableByte算法将排序了的int数组进行压缩
         public override string getName()
         {
-            return IntCompType.VB.ToString();
+            return SortedIntCompType.INewPFD.ToString();
         }
 
         public override int[] encode(int[] uncompressed)
         {
-            int[] intValues = new IntCompressor(new VariableByte()).compress(uncompressed);
-            return intValues;
+
+            int[] compressedInts = new IntCompressor(new NewPFDS16()).compress(uncompressed);
+            return compressedInts;
         }
 
         //使用VariableByte算法对已经压缩的int数组进行解压缩
         public override int[] decode(int[] compressed)
         {
-            int[] intValues = new IntCompressor(new VariableByte()).uncompress(compressed);
-            return intValues;
+            int[] sortedInts = new IntegratedIntCompressor(new IntegratedVariableByte()).uncompress(compressed);
+            return sortedInts;
         }
     }
 }

@@ -12,7 +12,7 @@ using CSharpFastPFOR;
 
 namespace AirdSDK.Compressor
 {
-    public class NewPFDS16Wrapper : IntComp
+    public class NewPFDWrapper : IntComp
     {
         public override string getName()
         {

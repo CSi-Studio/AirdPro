@@ -12,7 +12,7 @@ using CSharpFastPFOR;
 
 namespace AirdSDK.Compressor
 {
-    public class BinPackingWrapper:IntComp
+    public class BinPackingWrapper : IntComp
     {
         //使用VariableByte算法将未排序的int数组进行压缩
         public override string getName()

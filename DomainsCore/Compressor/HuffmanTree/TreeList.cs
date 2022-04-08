@@ -1,29 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/*
+ * Copyright (c) 2020 CSi Studio
+ * Aird and AirdPro are licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2. 
+ * You may obtain a copy of Mulan PSL v2 at:
+ *          http://license.coscl.org.cn/MulanPSL2 
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.  
+ * See the Mulan PSL v2 for more details.
+ */
 
-namespace AirdPro.Converters.HuffmanTree
+using System;
+using System.Collections.Generic;
+
+namespace AirdSDK.Compressor
 {
-     public class TreeList
+    public class TreeList
     {
         private int count = 0;
         private Node first = null;
-        private static String[] signTable = null;
-        private static String[] keyTable = null;
+        private static string[] signTable = null;
+        private static string[] keyTable = null;
+
         public TreeList(List<int> list)
         {
             List<int> tmpList = new List<int>();
-            for(int i = 0; i < list.Count; i++)
+            for (int i = 0; i < list.Count; i++)
             {
                 if (!tmpList.Contains(list[i]))
                 {
                     tmpList.Add(list[i]);
                 }
             }
-            signTable = new String[tmpList.Count];
-            keyTable = new String[tmpList.Count];
+
+            signTable = new string[tmpList.Count];
+            keyTable = new string[tmpList.Count];
         }
 
         public void AddHuffNum(int num)
@@ -39,34 +48,38 @@ namespace AirdPro.Converters.HuffmanTree
                 eTemp.link = first;
                 first = eTemp;
             }
+
             count++;
         }
 
         //增加数字，排出所有节点
         public void AddNum(int num)
         {
-            if(first == null)
+            if (first == null)
             {
                 AddHuffNum(num);
                 return;
             }
+
             Node tmp = first;
-            while(tmp != null)
+            while (tmp != null)
             {
-                if(tmp.data.Num == num)
+                if (tmp.data.Num == num)
                 {
                     tmp.data.IncFreq();
                     return;
                 }
+
                 tmp = tmp.link;
             }
+
             AddHuffNum(num);
         }
 
         //整理节点，按权重freq的升序排列
         public void SortTree()
         {
-            if(first != null && first.link != null)
+            if (first != null && first.link != null)
             {
                 Node tmp1;
                 Node tmp2;
@@ -74,7 +87,7 @@ namespace AirdPro.Converters.HuffmanTree
                 {
                     for (tmp2 = tmp1.link; tmp2 != null; tmp2 = tmp2.link)
                     {
-                        if(tmp1.data.Freq > tmp2.data.Freq)
+                        if (tmp1.data.Freq > tmp2.data.Freq)
                         {
                             HuffmanTree tmpHT = tmp1.data;
                             tmp1.data = tmp2.data;
@@ -94,12 +107,12 @@ namespace AirdPro.Converters.HuffmanTree
         //合并树节点及其权重freq，生成霍夫曼树
         public void MergeTree()
         {
-            if(first != null)
+            if (first != null)
             {
                 if (first.link != null)
                 {
                     HuffmanTree aTmp = RemoveTree();
-                    HuffmanTree bTmp = RemoveTree();//移除下一个
+                    HuffmanTree bTmp = RemoveTree(); //移除下一个
                     HuffmanTree sumTmp = new HuffmanTree(0);
                     sumTmp.LChild = aTmp;
                     sumTmp.RChild = bTmp;
@@ -112,14 +125,15 @@ namespace AirdPro.Converters.HuffmanTree
         //将第一个树节点返回，并且将后一个向前移动
         public HuffmanTree RemoveTree()
         {
-            if(first != null)
+            if (first != null)
             {
                 HuffmanTree hTmp;
                 hTmp = first.data;
                 first = first.link;
-                count --;
+                count--;
                 return hTmp;
             }
+
             return null;
         }
 
@@ -127,32 +141,36 @@ namespace AirdPro.Converters.HuffmanTree
         public void InsertTree(HuffmanTree hTmp)
         {
             Node eTmp = new Node(hTmp);
-            if(first == null)
+            if (first == null)
             {
                 first = eTmp;
             }
             else
             {
                 Node node = first;
-                while(node.link != null)
+                while (node.link != null)
                 {
-                    if(node.data.Freq <= hTmp.Freq && node.link.data.Freq >= hTmp.Freq)
+                    if (node.data.Freq <= hTmp.Freq && node.link.data.Freq >= hTmp.Freq)
                     {
                         break;
                     }
+
                     node = node.link;
                 }
+
                 eTmp.link = node.link;
                 node.link = eTmp;
             }
-            count ++;
+
+            count++;
         }
         //生成霍夫曼编码表
 
         static int pos = 0;
+
         static public void MakeKey(HuffmanTree tree, String code)
         {
-            if(tree.LChild == null)
+            if (tree.LChild == null)
             {
                 signTable[pos] = Convert.ToString(tree.Num);
                 keyTable[pos] = code;
@@ -166,6 +184,7 @@ namespace AirdPro.Converters.HuffmanTree
         }
 
         static String appendStr = "";
+
         //将输入的数组转换成新的编码字符
         static public List<byte> Translate(List<int> old)
         {
@@ -183,6 +202,7 @@ namespace AirdPro.Converters.HuffmanTree
                             newData.Add(append);
                             appendStr = appendStr.Remove(0, 8);
                         }
+
                         String str = appendStr + keyTable[j];
                         if (str.Length >= 8)
                         {
@@ -192,15 +212,19 @@ namespace AirdPro.Converters.HuffmanTree
                             newData.Add(b);
                             break;
                         }
+
                         appendStr = str;
                     }
                 }
             }
+
             return newData;
         }
 
         static String keyStr = "";
+
         static List<int> decodeSigns = new List<int>();
+
         //霍夫曼编码解码
         public List<int> readHuffmanCode(HuffmanTree htree, List<byte> result)
         {
@@ -221,8 +245,10 @@ namespace AirdPro.Converters.HuffmanTree
                             keyStr = keyStr + appendStr;
                             break;
                         }
+
                         decodeStr = byteToStr(decodeByte[i]);
                     }
+
                     if (decodeStr.Substring(0, 1).Equals("0"))
                     {
                         tree = tree.LChild;
@@ -238,6 +264,7 @@ namespace AirdPro.Converters.HuffmanTree
                         countNum++;
                     }
                 }
+
                 for (int j = 0; j < keyTable.Length; j++)
                 {
                     if (keyStr.Equals(keyTable[j]))
@@ -266,8 +293,8 @@ namespace AirdPro.Converters.HuffmanTree
                     j++;
                 }
             }
-            return temStr;
 
+            return temStr;
         }
 
         public String[] GetSignTable()

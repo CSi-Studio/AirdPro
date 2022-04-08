@@ -42,5 +42,15 @@ namespace AirdSDK.Compressor
         {
             return sortedIntComp.decode(ByteTrans.byteToInt(byteComp.decode(target)));
         }
+
+        public static byte[] encode(BaseComp<int> intComp, ByteComp byteComp, int[] target)
+        {
+            return byteComp.encode(ByteTrans.intToByte(intComp.encode(target)));
+        }
+
+        public static int[] decode(BaseComp<int> intComp, ByteComp byteComp, byte[] target)
+        {
+            return intComp.decode(ByteTrans.byteToInt(byteComp.decode(target)));
+        }
     }
 }

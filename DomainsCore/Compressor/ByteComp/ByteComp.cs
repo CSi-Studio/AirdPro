@@ -12,12 +12,8 @@ using System;
 
 namespace AirdSDK.Compressor
 {
-    public abstract class ByteComp
+    public abstract class ByteComp : BaseComp<byte>
     {
-        public abstract string getName();
-        public abstract byte[] encode(byte[] uncompressed);
-        public abstract byte[] decode(byte[] compressed);
-
         public static ByteComp build(ByteCompType type)
         {
             switch (type)
@@ -35,4 +31,3 @@ namespace AirdSDK.Compressor
         }
     }
 }
-

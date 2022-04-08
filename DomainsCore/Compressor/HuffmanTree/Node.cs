@@ -8,22 +8,16 @@
  * See the Mulan PSL v2 for more details.
  */
 
-using System;
-
 namespace AirdSDK.Compressor
 {
-    public abstract class SortedIntComp : IntComp
+    public class Node
     {
-        public static SortedIntComp build(SortedIntCompType type)
+        public HuffmanTree data;
+        public Node link;
+
+        public Node(HuffmanTree newData)
         {
-            switch (type)
-            {
-                case SortedIntCompType.IBP:
-                    return new IntegratedBinPackingWrapper();
-                case SortedIntCompType.IVB:
-                    return new IntegratedVarByteWrapper();
-                default: throw new Exception("No Implementation for " + type);
-            }
+            data = newData;
         }
     }
 }

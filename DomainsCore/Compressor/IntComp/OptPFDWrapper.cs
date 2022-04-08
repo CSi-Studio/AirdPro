@@ -12,22 +12,22 @@ using CSharpFastPFOR;
 
 namespace AirdSDK.Compressor
 {
-    public class Simple16Wrapper:IntComp
+    public class OptPFDWrapper : IntComp
     {
         public override string getName()
         {
-            return IntCompType.Simple.ToString();
+            return IntCompType.OptPFD.ToString();
         }
 
         public override int[] encode(int[] uncompressed)
         {
-            int[] compressedInts = new IntCompressor(new Simple16()).compress(uncompressed);
+            int[] compressedInts = new IntCompressor(new OptPFDS16()).compress(uncompressed);
             return compressedInts;
         }
-        
+
         public override int[] decode(int[] compressed)
         {
-            int[] sortedInts = new IntCompressor(new Simple16()).uncompress(compressed);
+            int[] sortedInts = new IntCompressor(new OptPFDS16()).uncompress(compressed);
             return sortedInts;
         }
     }
