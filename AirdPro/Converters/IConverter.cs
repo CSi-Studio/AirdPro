@@ -119,7 +119,7 @@ namespace AirdPro.Converters
         protected void predictForCombinableComps()
         {
             jobInfo.log("predict for combinable compressors", "predicting");
-            randomSampling(spectraNumForCombinableCompressorsPredict, jobInfo.ionMobility);
+            // randomSampling(spectraNumForCombinableCompressorsPredict, jobInfo.ionMobility);
         }
 
         /**
@@ -981,9 +981,10 @@ namespace AirdPro.Converters
                 }
             }
 
-            long originSizeMz = 0;
-            long originSizeIntensity = 0;
-            long originSizeMobi = 0;
+            long originSizeMz = mzArrays.Count * 4;
+            long originSizeIntensity = intensityArrays.Count * 4;
+            long originSizeMobi = mobilityNoArrays.Count * 4;
+
             foreach (SortedIntComp intComp4Mz in integratedIntCompList)
             {
                 foreach (ByteComp byteComp4Mz in byteCompList)
@@ -1016,9 +1017,6 @@ namespace AirdPro.Converters
                 }
             }
 
-            jobInfo.log($@"Origin Size:{originSizeMz}-{originSizeIntensity}-{originSizeMobi}");
-            jobInfo.log(@"------------------------");
-
             List<CompressStat> mzStatList = new List<CompressStat>();
             List<CompressStat> intensityStatList = new List<CompressStat>();
             List<CompressStat> mobiStatList = new List<CompressStat>();
@@ -1045,6 +1043,7 @@ namespace AirdPro.Converters
             mzStatList.Sort((a, b) => a.size.CompareTo(b.size));
             intensityStatList.Sort((a, b) => a.size.CompareTo(b.size));
             mobiStatList.Sort((a, b) => a.size.CompareTo(b.size));
+            jobInfo.log($@"Origin Size:{originSizeMz}-{originSizeIntensity}-{originSizeMobi}");
             jobInfo.log(@"------------------------");
         }
 
