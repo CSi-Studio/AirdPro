@@ -51,5 +51,17 @@ namespace AirdSDK.Compressor
         {
             freq++;
         }
+
+        public byte[] toBytes()
+        {
+            //TODO 童俊杰
+            return null;
+        }
+
+        public static HuffmanTree fromBytes(byte[] byteTree)
+        {
+            //TODO 童俊杰
+            return null;
+        }
     }
 }

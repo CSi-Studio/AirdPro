@@ -168,7 +168,7 @@ namespace AirdSDK.Compressor
 
         static int pos = 0;
 
-        static public void MakeKey(HuffmanTree tree, String code)
+        public static void MakeKey(HuffmanTree tree, String code)
         {
             if (tree.LChild == null)
             {
@@ -186,7 +186,7 @@ namespace AirdSDK.Compressor
         static String appendStr = "";
 
         //将输入的数组转换成新的编码字符
-        static public List<byte> Translate(List<int> old)
+        public static List<byte> Translate(List<int> old)
         {
             List<byte> newData = new List<byte>();
             for (int i = 0; i < old.Count; i++)
