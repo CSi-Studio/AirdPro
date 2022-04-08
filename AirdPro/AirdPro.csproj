@@ -156,6 +156,9 @@
     <Compile Include="Converters\Common.cs" />
     <Compile Include="Converters\DDAPasef .cs" />
     <Compile Include="Converters\DIAPasef.cs" />
+    <Compile Include="Converters\HuffmanTree\HuffmanTree.cs" />
+    <Compile Include="Converters\HuffmanTree\Node.cs" />
+    <Compile Include="Converters\HuffmanTree\TreeList.cs" />
     <Compile Include="Domains\HardwareInfo\HardwareInfo.cs" />
     <Compile Include="Domains\FileLogs\APPLog.cs" />
     <Compile Include="Forms\AboutForm.cs">
