@@ -12,46 +12,60 @@ using AirdPro.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using System.Windows.Forms;
 using AirdPro.Constants;
-using AirdPro.Domains.FileLogs;
+using AirdPro.Storage.Config;
+using AirdSDK.Enums;
 using ThermoFisher.CommonCore.Data;
 
-namespace AirdPro.Domains.Convert
-{ 
+namespace AirdPro.Domains
+{
     public class JobInfo
     {
         //以C:/data/plasma.wiff为例
 
         //C:/data/plasma.wiff,作为job的ID存在
         private string jobId;
+
         //任务状态
         public string status;
+
         //文件的输出路径
         public string outputPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+
         //用于转换的参数
         public ConversionConfig config;
+
         //DIA-Swath,PRM,DDA. see AirdType
         public string type;
+
         //是否是IonMobility文件
-        public Boolean ionMobility = false;
+        public bool ionMobility = false;
+
         //文件的格式,全部大写: WIFF, RAW. See FileFormat.cs
         public string format;
+
         //C:/data/plasma.wiff
         public string inputPath;
+
         //文件本名 plasma
         public string airdFileName;
+
         //例如: D://aird
         public string airdFilePath;
+
         //例如: D://aird/plasma.json
         public string airdJsonFilePath;
+
         //任务运行时产生的日志
         public List<Log> logs = new List<Log>();
+
         //任务运行时产生的进度信息
         private IProgress<string> progress;
+
         //任务的线程名称
         public string threadId;
+
         //出现异常错误的时候进行重试的次数,每一个job会被自动重试2次
         public int retryTimes = 3;
 
@@ -68,9 +82,10 @@ namespace AirdPro.Domains.Convert
             {
                 throw new Exception("Stack Layer Algorithm is not support for COMMON mode");
             }
+
             this.config = config;
-            format = Path.GetExtension(inputPath).Replace(".","").ToUpper();
-            airdFileName = FileNameUtil.buildOutputFileName(inputPath);
+            format = Path.GetExtension(inputPath).Replace(".", "").ToUpper();
+            airdFileName = FileNameUtil.parseFileName(inputPath);
             airdFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".aird");
             airdJsonFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".json");
             status = ProcessingStatus.WAITING;
@@ -78,13 +93,14 @@ namespace AirdPro.Domains.Convert
 
         public ListViewItem buildItem()
         {
-            string[] itemInfo = new string[]{
+            string[] itemInfo = new string[]
+            {
                 getJobId(),
                 inputPath,
                 type,
                 status,
                 config.getMzPrecisionStr(),
-                config.getCompressorStr(),
+                getCompressorStr(),
                 config.ignoreZeroIntensity.ToString(),
                 config.suffix,
                 outputPath
@@ -103,7 +119,7 @@ namespace AirdPro.Domains.Convert
         {
             Log log = new Log(DateTime.Now, content);
             logs.Add(log);
-            AppLog.WriteInfo(content,true);
+            AppLogs.WriteInfo(content, true);
             Console.Out.WriteLine(content);
             return this;
         }
@@ -120,15 +136,15 @@ namespace AirdPro.Domains.Convert
                 progress.Report(progressReport);
                 refreshReport = false;
             }
-            
+
             if (content != null)
             {
                 Log log = new Log(DateTime.Now, content);
                 logs.Add(log);
-                AppLog.WriteInfo(content, true);
+                AppLogs.WriteInfo(content, true);
                 Console.Out.WriteLine(content);
             }
-           
+
             return this;
         }
 
@@ -137,7 +153,7 @@ namespace AirdPro.Domains.Convert
             progress.Report("Error");
             Log log = new Log(DateTime.Now, content);
             logs.Add(log);
-            AppLog.WriteError(content, true);
+            AppLogs.WriteError(content, true);
             Console.Out.WriteLine(content);
             throw new Exception(content);
         }
@@ -155,7 +171,7 @@ namespace AirdPro.Domains.Convert
             jobInfo += "threadId:" + threadId + "\r\n";
             jobInfo += "ThreadAccelerate:" + config.threadAccelerate + "\r\n";
             jobInfo += "mzPrecision:" + config.getMzPrecisionStr() + "\r\n";
-            jobInfo += "compressor:" + config.getCompressorStr() + "\r\n";
+            jobInfo += "compressor:" + getCompressorStr() + "\r\n";
             return jobInfo;
         }
 
@@ -163,11 +179,25 @@ namespace AirdPro.Domains.Convert
         {
             if (jobId.IsNullOrEmpty())
             {
-                jobId = (inputPath+ outputPath + config.getCompressorStr() + config.getMzPrecisionStr() +
+                jobId = (inputPath + outputPath + getCompressorStr() + config.getMzPrecisionStr() +
                          config.ignoreZeroIntensity).GetHashCode() + "";
             }
 
             return jobId;
+        }
+
+        public string getCompressorStr()
+        {
+            if (ionMobility)
+            {
+                return config.mzIntComp + "_" + config.mzByteComp + "_" + config.intIntComp + "_" + config.intByteComp +
+                       "_" + config.mobiIntComp + "_" +
+                       config.mobiByteComp;
+            }
+            else
+            {
+                return config.mzIntComp + "_" + config.mzByteComp + "_" + config.intIntComp + "_" + config.intByteComp;
+            }
         }
 
         public void refreshItem(ListViewItem item)
@@ -176,7 +206,7 @@ namespace AirdPro.Domains.Convert
             item.SubItems[ItemName.INPUT_PATH].Text = inputPath;
             item.SubItems[ItemName.TYPE].Text = type;
             item.SubItems[ItemName.PRECISION].Text = config.getMzPrecisionStr();
-            item.SubItems[ItemName.COMPRESSOR].Text = config.getCompressorStr();
+            item.SubItems[ItemName.COMPRESSOR].Text = getCompressorStr();
             item.SubItems[ItemName.IGNORE_ZERO].Text = config.ignoreZeroIntensity.ToString();
             item.SubItems[ItemName.SUFFIX].Text = config.suffix;
             item.SubItems[ItemName.OUTPUT_PATH].Text = outputPath;

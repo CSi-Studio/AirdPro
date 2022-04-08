@@ -1,9 +1,21 @@
-﻿using System;
+﻿/*
+ * Copyright (c) 2020 CSi Studio
+ * Aird and AirdPro are licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2. 
+ * You may obtain a copy of Mulan PSL v2 at:
+ *          http://license.coscl.org.cn/MulanPSL2 
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.  
+ * See the Mulan PSL v2 for more details.
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using AirdPro.Domains.Convert;
 using AirdPro.Storage;
 using AirdPro.Constants;
+using AirdPro.Domains;
+using AirdPro.Storage.Config;
+using AirdSDK.Compressor;
 using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Forms
@@ -11,12 +23,15 @@ namespace AirdPro.Forms
     public partial class ConversionConfigListForm : Form, Observer<Dictionary<string, ConversionConfig>>
     {
         private ListViewItem item;
+
         public ConversionConfigListForm()
         {
             InitializeComponent();
             Program.conversionConfigHandler.attach(this);
             btnApply.Visible = false;
             btnSaveToLocal.Visible = true;
+            tableAutoDecision.Enabled = !cbAutoDecision.Checked;
+            cbConfigStackLayers.Enabled = cbConfigStack.Checked;
         }
 
         public ConversionConfigListForm(ListViewItem item)
@@ -25,6 +40,8 @@ namespace AirdPro.Forms
             this.item = item;
             btnApply.Visible = true;
             btnSaveToLocal.Visible = false;
+            tableAutoDecision.Enabled = !cbAutoDecision.Checked;
+            cbConfigStackLayers.Enabled = cbConfigStack.Checked;
         }
 
         private void ConversionConfigListForm_Load(object sender, EventArgs e)
@@ -42,6 +59,7 @@ namespace AirdPro.Forms
                 cbIntByteComp.Items.Add(byteCompType);
                 cbMobiByteComp.Items.Add(byteCompType);
             }
+
             showConfig("", new ConversionConfig());
         }
 
@@ -53,9 +71,6 @@ namespace AirdPro.Forms
                 ListViewItem item = new ListViewItem(new string[]
                 {
                     configEntry.Key,
-                    configEntry.Value.creator,
-                    configEntry.Value.mzPrecision.ToString(),
-                    configEntry.Value.getCompressorStr(),
                 });
                 lvConfigList.Items.Add(item);
             }
@@ -73,18 +88,6 @@ namespace AirdPro.Forms
             tbConfigFileNameSuffix.Text = suffix;
         }
 
-        //保存文件到本地
-        private void btnSaveToLocal_Click(object sender, EventArgs e)
-        {
-            if (tbNameConfig.Text.IsNullOrEmpty())
-            {
-                MessageBox.Show("Config Name Cannot Be Empty!");
-                return;
-            }
-            ConversionConfig config = buildConfigInfo();
-            Program.conversionConfigHandler.saveConfig(tbNameConfig.Text, config);
-        }
-
         //设置所有参数
         private ConversionConfig buildConfigInfo()
         {
@@ -93,12 +96,21 @@ namespace AirdPro.Forms
             config.ignoreZeroIntensity = cbConfigIsZeroIntensityIgnore.Checked;
             config.threadAccelerate = cbConfigThreadAccelerate.Checked;
 
-            config.mzIntComp = (IntCompType) Enum.Parse(typeof(IntCompType), cbMzIntComp.SelectedItem.ToString());
-            config.mzByteComp = (ByteCompType) Enum.Parse(typeof(ByteCompType), cbMzByteComp.SelectedItem.ToString());
-            config.intIntComp = (IntCompType) Enum.Parse(typeof(IntCompType), cbIntIntComp.SelectedItem.ToString());
-            config.intByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), cbIntByteComp.SelectedItem.ToString());
-            config.mobiIntComp = (IntCompType)Enum.Parse(typeof(IntCompType), cbMobiIntComp.SelectedItem.ToString());
-            config.mobiByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), cbMobiByteComp.SelectedItem.ToString());
+            //如果不是自动决策的,则会使用配置的组合压缩器
+            if (!cbAutoDecision.Checked)
+            {
+                config.mzIntComp =
+                    (SortedIntCompType) Enum.Parse(typeof(SortedIntCompType), cbMzIntComp.SelectedItem.ToString());
+                config.mzByteComp =
+                    (ByteCompType) Enum.Parse(typeof(ByteCompType), cbMzByteComp.SelectedItem.ToString());
+                config.intIntComp = (IntCompType) Enum.Parse(typeof(IntCompType), cbIntIntComp.SelectedItem.ToString());
+                config.intByteComp =
+                    (ByteCompType) Enum.Parse(typeof(ByteCompType), cbIntByteComp.SelectedItem.ToString());
+                config.mobiIntComp =
+                    (IntCompType) Enum.Parse(typeof(IntCompType), cbMobiIntComp.SelectedItem.ToString());
+                config.mobiByteComp =
+                    (ByteCompType) Enum.Parse(typeof(ByteCompType), cbMobiByteComp.SelectedItem.ToString());
+            }
 
             if (cbConfigStack.Checked)
             {
@@ -112,8 +124,24 @@ namespace AirdPro.Forms
 
             config.suffix = tbConfigFileNameSuffix.Text;
             config.creator = tbConfigOperator.Text;
+            config.autoDesicion = cbAutoDecision.Checked;
+            config.autoExplorer = cbAutoExplore.Checked;
             return config;
         }
+
+        //保存文件到本地
+        private void btnSaveToLocal_Click(object sender, EventArgs e)
+        {
+            if (tbNameConfig.Text.IsNullOrEmpty())
+            {
+                MessageBox.Show(MessageInfo.Config_Name_Cannot_Be_Empty);
+                return;
+            }
+
+            ConversionConfig config = buildConfigInfo();
+            Program.conversionConfigHandler.saveConfig(tbNameConfig.Text, config);
+        }
+
 
         //不存储进内存，直接应用于当前文件
         private void btnApply_Click(object sender, EventArgs e)
@@ -123,12 +151,13 @@ namespace AirdPro.Forms
             jobInfo.config = config;
             if (jobInfo.status.Equals(ProcessingStatus.RUNNING))
             {
-                MessageBox.Show("Running Job cannot be modified");
+                MessageBox.Show(MessageInfo.Running_Job_Cannot_Be_Modified);
             }
             else
             {
-                jobInfo.refreshItem(item);   
+                jobInfo.refreshItem(item);
             }
+
             Hide();
         }
 
@@ -164,7 +193,12 @@ namespace AirdPro.Forms
             {
                 cbConfigStack.Checked = false;
             }
+
+            tableAutoDecision.Enabled = !config.autoDesicion;
+            cbAutoDecision.Checked = config.autoDesicion;
+            cbAutoExplore.Checked = config.autoExplorer;
         }
+
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (lvConfigList.SelectedItems.Count != 0)
@@ -179,7 +213,6 @@ namespace AirdPro.Forms
 
                 Program.conversionConfigHandler.removeConfig(configNames);
             }
-           
         }
 
         private void ConversionConfigListForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -189,14 +222,12 @@ namespace AirdPro.Forms
 
         private void cbConfigStack_CheckedChanged(object sender, EventArgs e)
         {
-            if (cbConfigStack.Checked)
-            {
-                cbConfigStackLayers.Visible = true;
-            }
-            else
-            {
-                cbConfigStackLayers.Visible = false;
-            }
+            cbConfigStackLayers.Enabled = cbConfigStack.Checked;
+        }
+
+        private void cbAutoDecision_CheckedChanged(object sender, EventArgs e)
+        {
+            tableAutoDecision.Enabled = !cbAutoDecision.Checked;
         }
     }
 }

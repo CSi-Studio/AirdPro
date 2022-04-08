@@ -1,22 +1,32 @@
-﻿using AirdPro.Constants;
+﻿/*
+ * Copyright (c) 2020 CSi Studio
+ * Aird and AirdPro are licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2. 
+ * You may obtain a copy of Mulan PSL v2 at:
+ *          http://license.coscl.org.cn/MulanPSL2 
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.  
+ * See the Mulan PSL v2 for more details.
+ */
+
+using Compress.Enums;
 using CSharpFastPFOR;
 
 namespace Compress
 {
     public class Simple16Wrapper:IntComp
     {
-        public string getName()
+        public override string getName()
         {
             return IntCompType.Simple.ToString();
         }
 
-        public int[] encode(int[] uncompressed)
+        public override int[] encode(int[] uncompressed)
         {
             int[] compressedInts = new IntCompressor(new Simple16()).compress(uncompressed);
             return compressedInts;
         }
         
-        public int[] decode(int[] compressed)
+        public override int[] decode(int[] compressed)
         {
             int[] sortedInts = new IntCompressor(new Simple16()).uncompress(compressed);
             return sortedInts;

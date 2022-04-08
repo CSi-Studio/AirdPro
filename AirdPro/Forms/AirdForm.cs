@@ -10,14 +10,14 @@
 
 using AirdPro.Asyncs;
 using AirdPro.Constants;
-using AirdPro.Domains.Convert;
-using AirdPro.Domains.Job;
 using AirdPro.Redis;
 using AirdPro.Utils;
 using System;
 using System.Collections;
 using System.Drawing;
 using System.Windows.Forms;
+using AirdPro.Domains;
+using AirdPro.Storage.Config;
 using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Forms
@@ -33,10 +33,6 @@ namespace AirdPro.Forms
         public AirdForm()
         {
             InitializeComponent();
-        }
-
-        public void applyConfig(ConversionConfig conversionConfig)
-        {
         }
 
         private void ProproForm_Load(object sender, EventArgs e)
@@ -230,8 +226,6 @@ namespace AirdPro.Forms
                 {
                     MessageBox.Show("Only finished job can rerun");
                 }
-
-                
             }
         }
 

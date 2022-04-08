@@ -8,16 +8,15 @@
  * See the Mulan PSL v2 for more details.
  */
 
-using AirdPro.Constants;
-using AirdPro.DomainsCore.Aird;
 using pwiz.CLI.cv;
 using pwiz.CLI.msdata;
 using System;
 using System.Collections;
 using System.IO;
 using System.Threading.Tasks;
-using AirdPro.Domains.Convert;
-using CV = AirdPro.DomainsCore.Aird.CV;
+using AirdPro.Domains;
+using AirdSDK.Domains;
+using AirdSDK.Enums;
 
 namespace AirdPro.Converters
 {
@@ -158,7 +157,7 @@ namespace AirdPro.Converters
             }
             try
             {
-                TempScan ts = new TempScan(i, parseRT(spectrum.scanList.scans[0]), parseTIC(spectrum), CV.trans(spectrum.cvParams));
+                TempScan ts = new TempScan(i, parseRT(spectrum.scanList.scans[0]), parseTIC(spectrum), AirdSDK.Domains.CV.trans(spectrum.cvParams));
                 compressor.compress(spectrum, ts);
                 ms2List.Add(ts);
             }

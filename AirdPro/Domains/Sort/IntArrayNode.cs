@@ -10,7 +10,7 @@
 
 using Priority_Queue;
 
-namespace AirdPro.Domains.Sort
+namespace AirdPro.Domains
 {
     public class IntArrayNode : FastPriorityQueueNode
     {

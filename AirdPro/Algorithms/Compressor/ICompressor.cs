@@ -8,11 +8,11 @@
  * See the Mulan PSL v2 for more details.
  */
 
-using System;
 using System.Collections.Generic;
 using AirdPro.Converters;
-using AirdPro.DomainsCore.Aird;
-using Compress;
+using AirdPro.Domains;
+using AirdSDK.Compressor;
+using AirdSDK.Domains;
 using pwiz.CLI.msdata;
 
 namespace AirdPro.Algorithms
@@ -25,7 +25,7 @@ namespace AirdPro.Algorithms
         public bool includeCV = true;
         public int digit = 8;
 
-        public IntComp mzIntComp;
+        public SortedIntComp mzIntComp;
         public ByteComp mzByteComp;
         public IntComp intIntComp;
         public ByteComp intByteComp;

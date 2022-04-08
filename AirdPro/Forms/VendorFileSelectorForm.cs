@@ -13,8 +13,11 @@ using System.Windows.Forms;
 using AirdPro.Constants;
 using ThermoFisher.CommonCore.Data;
 using AirdPro.Storage;
-using AirdPro.Domains.Convert;
 using System.Collections.Generic;
+using System.IO;
+using AirdPro.Storage.Config;
+using AirdPro.Utils;
+using AirdSDK.Enums;
 
 namespace AirdPro.Forms
 {
@@ -61,13 +64,14 @@ namespace AirdPro.Forms
 
             if (expType == null)
             {
-                MessageBox.Show("Choose one acquisition mode first!");
+                MessageBox.Show(MessageInfo.Choose_One_Acquisition_Mode_First);
                 return false;
             }
 
-            if (cbConfig.SelectedItem == null || cbConfig.SelectedItem.ToString().IsNullOrEmpty() || !Program.conversionConfigHandler.configMap.ContainsKey(cbConfig.SelectedItem.ToString()))
+            if (cbConfig.SelectedItem == null || cbConfig.SelectedItem.ToString().IsNullOrEmpty() ||
+                !Program.conversionConfigHandler.configMap.ContainsKey(cbConfig.SelectedItem.ToString()))
             {
-                MessageBox.Show("Choose one conversion config first!");
+                MessageBox.Show(MessageInfo.Choose_One_Conversion_Config_First);
                 return false;
             }
 
@@ -76,25 +80,44 @@ namespace AirdPro.Forms
             string outputPath = tbOutputPath.Text;
             if (outputPath.IsNullOrEmpty())
             {
-                MessageBox.Show("Set your output path first!");
+                MessageBox.Show(MessageInfo.Set_Your_Output_Path_First);
                 return false;
             }
 
             var paths = tbPaths.Text;
             if (paths.IsNullOrEmpty())
             {
-                MessageBox.Show("Input your own paths first!");
+                MessageBox.Show(MessageInfo.Input_Your_Own_Paths_First);
                 return false;
             }
-            var pathList = paths.Split(Const.Change_Line.ToCharArray());
 
-            foreach (var path in pathList)
+            string[] pathList = paths.Split(Const.Change_Line.ToCharArray());
+
+            foreach (string path in pathList)
             {
-                Program.airdForm.addFile(path, outputPath, expType, config);
+                if (config.autoExplorer)
+                {
+                    List<ConversionConfig> configList = config.buildExplorerConfigs(
+                        expType.Equals(AirdType.DDA_PASEF)
+                        || expType.Equals(AirdType.DIA_PASEF)
+                        || expType.Equals(AirdType.PRM_PASEF));
+                    //如果是探索模式,则会额外增加一个以文件名称命名的文件夹的名称用于存储该文件的所有内核压缩模式
+                    string fileName = FileNameUtil.parseFileName(path).Replace("-", "_");
+                    outputPath = Path.Combine(outputPath, fileName);
+                    for (var i = 0; i < configList.Count; i++)
+                    {
+                        Program.airdForm.addFile(path, outputPath, expType, configList[i]);
+                    }
+                }
+                else
+                {
+                    Program.airdForm.addFile(path, outputPath, expType, config);
+                }
             }
 
             return true;
         }
+
         private void btnAddAndContinue_Click(object sender, EventArgs e)
         {
             bool addResult = addToList();
@@ -111,7 +134,7 @@ namespace AirdPro.Forms
             {
                 clearInfos();
                 Hide();
-            } 
+            }
         }
 
         private void btnFileSelector_Click(object sender, EventArgs e)
@@ -138,12 +161,12 @@ namespace AirdPro.Forms
             }
         }
 
-         //选择已有参数，或者重新编辑参数，并将参数应用于选中的单个或一批文件
-         private void btnCreateConfigs_Click(object sender, EventArgs e)
-         {
-             ConversionConfigListForm configListForm = new ConversionConfigListForm();
-             configListForm.Show();
-         }
+        //选择已有参数，或者重新编辑参数，并将参数应用于选中的单个或一批文件
+        private void btnCreateConfigs_Click(object sender, EventArgs e)
+        {
+            ConversionConfigListForm configListForm = new ConversionConfigListForm();
+            configListForm.Show();
+        }
 
         public void update(Dictionary<string, ConversionConfig> configMap)
         {

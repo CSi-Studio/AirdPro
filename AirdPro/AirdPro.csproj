@@ -143,6 +143,7 @@
     <Compile Include="Asyncs\ConvertTaskManager.cs" />
     <Compile Include="Asyncs\LimitedConcurrencyLevelTaskScheduler.cs" />
     <Compile Include="Constants\Activator.cs" />
+    <Compile Include="Constants\MessageInfo.cs" />
     <Compile Include="Constants\ByteOrder.cs" />
     <Compile Include="Constants\FileFormat.cs" />
     <Compile Include="Constants\ItemName.cs" />
@@ -160,7 +161,12 @@
     <Compile Include="Converters\HuffmanTree\Node.cs" />
     <Compile Include="Converters\HuffmanTree\TreeList.cs" />
     <Compile Include="Domains\HardwareInfo\HardwareInfo.cs" />
-    <Compile Include="Domains\FileLogs\APPLog.cs" />
+    <Compile Include="Domains\FileLogs\AppLogs.cs" />
+    <Compile Include="Domains\Scan\MsIndex.cs" />
+    <Compile Include="Domains\Scan\TempScan.cs" />
+    <Compile Include="Domains\Scan\TempScanSZDPD.cs" />
+    <Compile Include="Domains\Scan\TimsData.cs" />
+    <Compile Include="Domains\Sort\CompressStat.cs" />
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -313,21 +319,13 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Compress\Compress.csproj">
-      <Project>{862d073a-a261-449a-b021-9e057c62328e}</Project>
-      <Name>Compress</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DomainsCore\DomainsCore.csproj">
+    <ProjectReference Include="..\DomainsCore\AirdSDK.csproj">
       <Project>{870ee31c-23e3-4836-ac04-4feeb6c487b7}</Project>
-      <Name>DomainsCore</Name>
+      <Name>AirdSDK</Name>
     </ProjectReference>
     <ProjectReference Include="..\ThirdParty\ThirdParty.csproj">
       <Project>{ea1c54b8-2aef-44b3-8cb5-25b6c98f6ff2}</Project>
       <Name>ThirdParty</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utils\Utils.csproj">
-      <Project>{ee163949-2a01-4147-ad5a-456136c66c2c}</Project>
-      <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

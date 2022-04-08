@@ -8,7 +8,7 @@
  * See the Mulan PSL v2 for more details.
  */
 
-namespace AirdPro.DomainsCore.Parser
+namespace AirdSDK.Parser
 {
 	public class SpectrumDetail
 	{

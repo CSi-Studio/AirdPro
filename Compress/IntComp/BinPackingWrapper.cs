@@ -1,4 +1,14 @@
-﻿using AirdPro.Constants;
+﻿/*
+ * Copyright (c) 2020 CSi Studio
+ * Aird and AirdPro are licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2. 
+ * You may obtain a copy of Mulan PSL v2 at:
+ *          http://license.coscl.org.cn/MulanPSL2 
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.  
+ * See the Mulan PSL v2 for more details.
+ */
+
+using Compress.Enums;
 using CSharpFastPFOR;
 
 namespace Compress
@@ -6,12 +16,12 @@ namespace Compress
     public class BinPackingWrapper:IntComp
     {
         //使用VariableByte算法将未排序的int数组进行压缩
-        public string getName()
+        public override string getName()
         {
             return IntCompType.BP.ToString();
         }
 
-        public int[] encode(int[] uncompressed)
+        public override int[] encode(int[] uncompressed)
         {
             int[] compressedInts = new IntCompressor(new BinaryPacking()).compress(uncompressed);
             return compressedInts;
@@ -19,7 +29,7 @@ namespace Compress
 
 
         //使用VariableByte算法对已经压缩的int数组进行解压缩
-        public int[] decode(int[] compressed)
+        public override int[] decode(int[] compressed)
         {
             int[] sortedInts = new IntCompressor(new BinaryPacking()).uncompress(compressed);
             return sortedInts;

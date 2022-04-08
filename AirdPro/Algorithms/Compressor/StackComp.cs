@@ -14,8 +14,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AirdPro.Converters;
-using AirdPro.DomainsCore.Aird;
-using AirdPro.Utils;
+using AirdPro.Domains;
+using AirdSDK.Compressor;
+using AirdSDK.Domains;
 using pwiz.CLI.msdata;
 using pwiz.CLI.util;
 
@@ -23,12 +24,16 @@ namespace AirdPro.Algorithms
 {
     public class StackComp : ICompressor
     {
-        public StackComp(IConverter converter) : base(converter){}
+        public StackComp(IConverter converter) : base(converter)
+        {
+        }
 
         public override void compressMS1(IConverter converter, BlockIndex index)
         {
-            int layers = (int)Math.Pow(2, digit); //计算堆叠层数
-            int iter = converter.ms1List.Count % layers == 0 ? (converter.ms1List.Count / layers) : (converter.ms1List.Count / layers + 1); //计算循环周期
+            int layers = (int) Math.Pow(2, digit); //计算堆叠层数
+            int iter = converter.ms1List.Count % layers == 0
+                ? (converter.ms1List.Count / layers)
+                : (converter.ms1List.Count / layers + 1); //计算循环周期
             MsIndex[] ms1List = converter.ms1List.ToArray();
             if (multiThread)
             {
@@ -51,6 +56,7 @@ namespace AirdPro.Algorithms
                         {
                             break;
                         }
+
                         MsIndex scanIndex = ms1List[realNum];
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
@@ -84,6 +90,7 @@ namespace AirdPro.Algorithms
                         {
                             break;
                         }
+
                         MsIndex scanIndex = ms1List[realNum];
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
@@ -101,7 +108,7 @@ namespace AirdPro.Algorithms
 
         public override void compressMS2(IConverter converter, List<MsIndex> ms2List, BlockIndex index)
         {
-            int layers = (int)Math.Pow(2, digit); //计算堆叠层数
+            int layers = (int) Math.Pow(2, digit); //计算堆叠层数
             int iter = ms2List.Count % layers == 0 ? (ms2List.Count / layers) : (ms2List.Count / layers + 1); //计算循环周期
 
             if (multiThread)
@@ -122,6 +129,7 @@ namespace AirdPro.Algorithms
                         {
                             break;
                         }
+
                         MsIndex scanIndex = ms2List[realNum];
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
@@ -129,6 +137,7 @@ namespace AirdPro.Algorithms
                         cvs.Add(scanIndex.cvList);
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
+
                     TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, cvs);
                     compress(spectrumGroup, ts);
                     table.Add(i, ts);
@@ -151,6 +160,7 @@ namespace AirdPro.Algorithms
                         {
                             break;
                         }
+
                         MsIndex scanIndex = ms2List[realNum];
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
@@ -158,6 +168,7 @@ namespace AirdPro.Algorithms
                         cvs.Add(scanIndex.cvList);
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
+
                     TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, cvs);
                     compress(spectrumGroup, ts);
                     converter.addToIndex(index, ts);
@@ -191,10 +202,11 @@ namespace AirdPro.Algorithms
                     intensityList.Add(Convert.ToSingle(Math.Round(intData[t], 1))); //精确到小数点后一位
                     j++;
                 }
+
                 //空光谱的情况下会填充一个mz=0,intensity=0的点
                 if (j == 0)
                 {
-                    mzListGroup.Add(new int[] { 0 });
+                    mzListGroup.Add(new int[] {0});
                     intensityList.Add(0);
                 }
                 else
@@ -203,6 +215,7 @@ namespace AirdPro.Algorithms
                     Array.Copy(mzArray, mzSubArray, j);
                     mzListGroup.Add(mzSubArray);
                 }
+
                 //说明是一帧空光谱,那么直接在Aird文件中抹除这一帧的信息
                 intListAllGroup.AddRange(intensityList);
             }

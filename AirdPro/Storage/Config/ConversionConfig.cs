@@ -9,11 +9,12 @@
  */
 
 using System;
-using AirdPro.Constants;
+using System.Collections.Generic;
+using AirdSDK.Compressor;
 
-namespace AirdPro.Domains.Convert
+namespace AirdPro.Storage.Config
 {
-    public class ConversionConfig
+    public class ConversionConfig : ICloneable
     {
         /**
          * Ignore the mz-intensity pairs whose intensity is zero.
@@ -46,9 +47,14 @@ namespace AirdPro.Domains.Convert
         public string creator = Environment.UserName;
 
         /**
+         * 是否使用动态参数决策
+         */
+        public bool autoDesicion = true;
+
+        /**
          * 用于mz压缩的int数组压缩方法
          */
-        public IntCompType mzIntComp = IntCompType.IVB;
+        public SortedIntCompType mzIntComp = SortedIntCompType.IVB;
 
         /**
          * 用于mz压缩的byte数组压缩方法
@@ -87,18 +93,93 @@ namespace AirdPro.Domains.Convert
          */
         public int digit = 8;
 
+        /**
+         * 是否开启自动探索模式方案下
+         * 自动探索模式下, AirdPro会对每一个转换的数据文件进行全组合模式的格式转换,并且自动配置相关后缀
+         */
+        public bool autoExplorer = false;
+
         public ConversionConfig()
         {
         }
 
-        public string getCompressorStr()
-        {
-            return mzIntComp + "-" + mzByteComp + "|" + intIntComp+"-" + intByteComp+ "|" + mobiIntComp+ "-" + mobiByteComp;
-        }
-
         public string getMzPrecisionStr()
         {
-           return ((int) Math.Log10(mzPrecision)) +"dp";
+            return ((int) Math.Log10(mzPrecision)) + "dp";
+        }
+
+        public List<ConversionConfig> buildExplorerConfigs(bool mobility)
+        {
+            List<ConversionConfig> configList = new List<ConversionConfig>();
+
+            Array sortIntCompTypes = Enum.GetValues(typeof(SortedIntCompType));
+            Array intCompTypes = Enum.GetValues(typeof(IntCompType));
+            Array byteCompTypes = Enum.GetValues(typeof(ByteCompType));
+
+            SortedIntCompType mzIntComp;
+            ByteCompType mzByteComp;
+            IntCompType intIntComp;
+            ByteCompType intByteComp;
+            IntCompType mobiIntComp;
+            ByteCompType mobiByteComp;
+
+            foreach (SortedIntCompType mzIntCompType in sortIntCompTypes)
+            {
+                mzIntComp = mzIntCompType;
+                foreach (ByteCompType mzByteCompType in byteCompTypes)
+                {
+                    mzByteComp = mzByteCompType;
+                    foreach (IntCompType intIntCompType in intCompTypes)
+                    {
+                        intIntComp = intIntCompType;
+                        foreach (ByteCompType intByteCompType in byteCompTypes)
+                        {
+                            intByteComp = intByteCompType;
+                            if (mobility)
+                            {
+                                foreach (IntCompType mobiIntCompType in intCompTypes)
+                                {
+                                    mobiIntComp = mobiIntCompType;
+                                    foreach (ByteCompType mobiByteCompType in byteCompTypes)
+                                    {
+                                        mobiByteComp = mobiByteCompType;
+                                        ConversionConfig config = (ConversionConfig) Clone();
+                                        config.mzIntComp = mzIntComp;
+                                        config.mzByteComp = mzByteComp;
+                                        config.intIntComp = intIntComp;
+                                        config.intByteComp = intByteComp;
+                                        config.mobiIntComp = mobiIntComp;
+                                        config.mobiByteComp = mobiByteComp;
+                                        config.suffix =
+                                            "_" + mzIntComp + "_" + mzByteComp + "_" + intIntComp + "_" + intByteComp +
+                                            "_" + mobiIntComp + "_" +
+                                            mobiByteComp;
+                                        configList.Add(config);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                ConversionConfig config = (ConversionConfig) Clone();
+                                config.mzIntComp = mzIntComp;
+                                config.mzByteComp = mzByteComp;
+                                config.intIntComp = intIntComp;
+                                config.intByteComp = intByteComp;
+                                config.suffix = "_" + mzIntComp + "_" + mzByteComp + "_" + intIntComp + "_" +
+                                                intByteComp;
+                                configList.Add(config);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return configList;
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
     }
 }

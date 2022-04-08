@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DomainsCore\DomainsCore.csproj" />
+    <ProjectReference Include="..\DomainsCore\AirdSDK.csproj" />
     <ProjectReference Include="..\ThirdParty\ThirdParty.csproj" />
   </ItemGroup>
 
