@@ -112,7 +112,6 @@ namespace AirdPro.Converters
             {
                 mobiDict.Add(mobility[i], i);
             }
-
             mobiArray = mobility;
             compressor.mobiDict = mobiDict;
         }
