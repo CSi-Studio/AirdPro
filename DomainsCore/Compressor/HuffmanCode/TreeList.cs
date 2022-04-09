@@ -20,22 +20,21 @@ namespace AirdSDK.Compressor
         private static string[] signTable = null;
         private static string[] keyTable = null;
 
-        public TreeList(List<int> list)
+        public TreeList(int[] list)
         {
             List<int> tmpList = new List<int>();
-            for (int i = 0; i < list.Count; i++)
+            for (int i = 0; i < list.Length; i++)
             {
                 if (!tmpList.Contains(list[i]))
                 {
                     tmpList.Add(list[i]);
                 }
             }
-
             signTable = new string[tmpList.Count];
             keyTable = new string[tmpList.Count];
         }
 
-        public void AddHuffNum(int num)
+        public void addHuffNum(int num)
         {
             HuffmanTree hTemp = new HuffmanTree(num);
             Node eTemp = new Node(hTemp);
@@ -53,11 +52,11 @@ namespace AirdSDK.Compressor
         }
 
         //增加数字，排出所有节点
-        public void AddNum(int num)
+        public void addNum(int num)
         {
             if (first == null)
             {
-                AddHuffNum(num);
+                addHuffNum(num);
                 return;
             }
 
@@ -66,18 +65,18 @@ namespace AirdSDK.Compressor
             {
                 if (tmp.data.Num == num)
                 {
-                    tmp.data.IncFreq();
+                    tmp.data.incFreq();
                     return;
                 }
 
                 tmp = tmp.link;
             }
 
-            AddHuffNum(num);
+            addHuffNum(num);
         }
 
         //整理节点，按权重freq的升序排列
-        public void SortTree()
+        public void sortTree()
         {
             if (first != null && first.link != null)
             {
@@ -99,31 +98,32 @@ namespace AirdSDK.Compressor
         }
 
         //计数加入的数的个数
-        public int Length()
+        public int length()
         {
             return count;
         }
 
         //合并树节点及其权重freq，生成霍夫曼树
-        public void MergeTree()
+        public HuffmanTree mergeTree()
         {
+            HuffmanTree sumTmp = new HuffmanTree(0);
             if (first != null)
             {
                 if (first.link != null)
                 {
-                    HuffmanTree aTmp = RemoveTree();
-                    HuffmanTree bTmp = RemoveTree(); //移除下一个
-                    HuffmanTree sumTmp = new HuffmanTree(0);
+                    HuffmanTree aTmp = removeTree();
+                    HuffmanTree bTmp = removeTree(); //移除下一个
                     sumTmp.LChild = aTmp;
                     sumTmp.RChild = bTmp;
                     sumTmp.Freq = aTmp.Freq + bTmp.Freq;
-                    InsertTree(sumTmp);
+                    insertTree(sumTmp);
                 }
             }
+            return sumTmp;
         }
 
         //将第一个树节点返回，并且将后一个向前移动
-        public HuffmanTree RemoveTree()
+        public HuffmanTree removeTree()
         {
             if (first != null)
             {
@@ -138,7 +138,7 @@ namespace AirdSDK.Compressor
         }
 
         //将合并后的树节点重新插入霍夫曼树中
-        public void InsertTree(HuffmanTree hTmp)
+        public void insertTree(HuffmanTree hTmp)
         {
             Node eTmp = new Node(hTmp);
             if (first == null)
@@ -168,7 +168,7 @@ namespace AirdSDK.Compressor
 
         static int pos = 0;
 
-        public static void MakeKey(HuffmanTree tree, String code)
+        public static void makeKey(HuffmanTree tree, string code)
         {
             if (tree.LChild == null)
             {
@@ -178,18 +178,18 @@ namespace AirdSDK.Compressor
             }
             else
             {
-                MakeKey(tree.LChild, code + "0");
-                MakeKey(tree.RChild, code + "1");
+                makeKey(tree.LChild, code + "0");
+                makeKey(tree.RChild, code + "1");
             }
         }
 
-        static String appendStr = "";
+        static string appendStr = "";
 
         //将输入的数组转换成新的编码字符
-        public static List<byte> Translate(List<int> old)
+        public static List<byte> translate(int[] old)
         {
             List<byte> newData = new List<byte>();
-            for (int i = 0; i < old.Count; i++)
+            for (int i = 0; i < old.Length; i++)
             {
                 for (int j = 0; j < signTable.Length; j++)
                 {
@@ -197,16 +197,16 @@ namespace AirdSDK.Compressor
                     {
                         if (appendStr.Length > 8)
                         {
-                            String appendSubStr = appendStr.Substring(0, 8);
+                            string appendSubStr = appendStr.Substring(0, 8);
                             byte append = Convert.ToByte(appendSubStr, 2);
                             newData.Add(append);
                             appendStr = appendStr.Remove(0, 8);
                         }
 
-                        String str = appendStr + keyTable[j];
+                        string str = appendStr + keyTable[j];
                         if (str.Length >= 8)
                         {
-                            String subStr = str.Substring(0, 8);
+                            string subStr = str.Substring(0, 8);
                             byte b = Convert.ToByte(subStr, 2);
                             appendStr = str.Remove(0, 8);
                             newData.Add(b);
@@ -221,32 +221,32 @@ namespace AirdSDK.Compressor
             return newData;
         }
 
-        static String keyStr = "";
+        static string keyStr = "";
 
         static List<int> decodeSigns = new List<int>();
 
         //霍夫曼编码解码
-        public List<int> readHuffmanCode(HuffmanTree htree, List<byte> result)
+        public static int[] readHuffmanCode(int arrayNum, byte[] result, HuffmanTree hTree)
         {
-            List<byte> decodeByte = new List<byte>(result);
-            String decodeStr = byteToStr(decodeByte[0]);
+            int[] decodeArray = new int[arrayNum];
+            string decodeStr = TreeList.byteToStr(result[0]);
             int i = 0;
             int countNum = 1;
-            while (i < decodeByte.Count)
+            while (i < result.Length)
             {
-                HuffmanTree tree = htree;
+                HuffmanTree tree = hTree;
                 while (tree.LChild != null)
                 {
                     if (decodeStr.Equals(""))
                     {
                         i++;
-                        if (i == decodeByte.Count)
+                        if (i == result.Length)
                         {
                             keyStr = keyStr + appendStr;
                             break;
                         }
 
-                        decodeStr = byteToStr(decodeByte[i]);
+                        decodeStr = TreeList.byteToStr(result[i]);
                     }
 
                     if (decodeStr.Substring(0, 1).Equals("0"))
@@ -276,13 +276,18 @@ namespace AirdSDK.Compressor
                 }
             }
 
-            return decodeSigns;
+            for (int k = 0; k < decodeSigns.Count; k++)
+            {
+                decodeArray[k] = decodeSigns[k];
+            }
+
+            return decodeArray;
         }
 
-        public String byteToStr(Byte testByte)
+        public static string byteToStr(Byte testByte)
         {
             Byte bt = testByte;
-            String temStr = Convert.ToString(bt, 2);
+            string temStr = Convert.ToString(bt, 2);
             if (temStr.Length != 8)
             {
                 int i = 8 - temStr.Length;
@@ -293,16 +298,15 @@ namespace AirdSDK.Compressor
                     j++;
                 }
             }
-
             return temStr;
         }
 
-        public String[] GetSignTable()
+        public string[] getSignTable()
         {
             return signTable;
         }
 
-        public String[] GetKeyTable()
+        public string[] getKeyTable()
         {
             return keyTable;
         }

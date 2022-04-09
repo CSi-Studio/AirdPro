@@ -47,7 +47,7 @@ namespace AirdSDK.Compressor
             set { freq = value; }
         }
 
-        public void IncFreq()
+        public void incFreq()
         {
             freq++;
         }
