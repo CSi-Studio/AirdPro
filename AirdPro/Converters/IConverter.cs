@@ -120,7 +120,7 @@ namespace AirdPro.Converters
         protected void predictForCombinableComps()
         {
             jobInfo.log("predict for combinable compressors", "predicting");
-            // randomSampling(spectraNumForCombinableCompressorsPredict, jobInfo.ionMobility);
+            randomSampling(spectraNumForCombinableCompressorsPredict, jobInfo.ionMobility);
         }
 
         /**
@@ -418,9 +418,8 @@ namespace AirdPro.Converters
         {
             jobInfo.log("Writing Index File", "Writing Index File");
             AirdInfo airdInfo = buildBasicInfo();
-            JsonSerializerSettings jsonSetting = new JsonSerializerSettings
-                {NullValueHandling = NullValueHandling.Ignore};
-            string airdInfoStr = JsonConvert.SerializeObject(airdInfo, jsonSetting);
+            string airdInfoStr = JsonConvert.SerializeObject(airdInfo, new JsonSerializerSettings
+                {NullValueHandling = NullValueHandling.Ignore});
             byte[] airdBytes = Encoding.Default.GetBytes(airdInfoStr);
             airdJsonStream.Write(airdBytes, 0, airdBytes.Length);
         }
@@ -860,7 +859,8 @@ namespace AirdPro.Converters
 
         List<SortedIntComp> integratedIntCompList = new List<SortedIntComp>()
         {
-            new IntegratedVarByteWrapper(), new IntegratedBinPackingWrapper()
+            new IntegratedVarByteWrapper(), new IntegratedBinPackingWrapper(),
+            new IntegratedNewPFDWrapper(), new IntegratedOptPFDWrapper()
         };
 
         List<IntComp> intCompList = new List<IntComp>()
@@ -989,7 +989,7 @@ namespace AirdPro.Converters
             {
                 foreach (ByteComp byteComp4Mz in byteCompList)
                 {
-                    statForCompress(intComp4Mz, byteComp4Mz, mzArrays, "mz", sizeMap, compressTimeMap,
+                    StatUtil.stat4OneComboComp(intComp4Mz, byteComp4Mz, mzArrays, "mz", sizeMap, compressTimeMap,
                         decompressTimeMap);
                 }
             }
@@ -998,7 +998,8 @@ namespace AirdPro.Converters
             {
                 foreach (ByteComp byteComp4Intensity in byteCompList)
                 {
-                    statForCompress(intComp4Intensity, byteComp4Intensity, intensityArrays, "intensity", sizeMap,
+                    StatUtil.stat4OneComboComp(intComp4Intensity, byteComp4Intensity, intensityArrays, "intensity",
+                        sizeMap,
                         compressTimeMap,
                         decompressTimeMap);
                 }
@@ -1010,7 +1011,7 @@ namespace AirdPro.Converters
                 {
                     foreach (ByteComp byteComp4Mobi in byteCompList)
                     {
-                        statForCompress(intComp4Mobi, byteComp4Mobi, mobilityNoArrays, "mobi", sizeMap,
+                        StatUtil.stat4OneComboComp(intComp4Mobi, byteComp4Mobi, mobilityNoArrays, "mobi", sizeMap,
                             compressTimeMap,
                             decompressTimeMap);
                     }
@@ -1026,62 +1027,41 @@ namespace AirdPro.Converters
                 CompressStat stat = new CompressStat(key, sizeMap[key], compressTimeMap[key], decompressTimeMap[key]);
                 if (key.StartsWith("mz"))
                 {
+                    stat.key.Replace("mz-", "");
                     mzStatList.Add(stat);
                 }
 
                 if (pair.Key.StartsWith("intensity"))
                 {
+                    stat.key = stat.key.Replace("intensity-", "");
                     intensityStatList.Add(stat);
                 }
 
                 if (pair.Key.StartsWith("mobi"))
                 {
+                    stat.key = stat.key.Replace("mobi-", "");
                     mobiStatList.Add(stat);
                 }
             }
 
-            mzStatList.Sort((a, b) => a.size.CompareTo(b.size));
-            intensityStatList.Sort((a, b) => a.size.CompareTo(b.size));
-            mobiStatList.Sort((a, b) => a.size.CompareTo(b.size));
+            StatUtil.stat4ComboComp(mzStatList);
+            StatUtil.stat4ComboComp(intensityStatList);
+            StatUtil.stat4ComboComp(mobiStatList);
+
             jobInfo.log($@"Origin Size:{originSizeMz}-{originSizeIntensity}-{originSizeMobi}");
+            jobInfo.log(@"------------------------");
+            Console.WriteLine(JsonConvert.SerializeObject(mzStatList, new JsonSerializerSettings
+                {NullValueHandling = NullValueHandling.Ignore}));
+            Console.WriteLine(JsonConvert.SerializeObject(intensityStatList, new JsonSerializerSettings
+                {NullValueHandling = NullValueHandling.Ignore}));
+            Console.WriteLine(JsonConvert.SerializeObject(mobiStatList, new JsonSerializerSettings
+                {NullValueHandling = NullValueHandling.Ignore}));
             jobInfo.log(@"------------------------");
         }
 
         public string buildComboKey(string key, string intCompName, string byteCompName)
         {
             return key + "-" + intCompName + "-" + byteCompName;
-        }
-
-        public void statForCompress(BaseComp<int> intComp, ByteComp byteComp, List<int[]> arrays, string dim,
-            Dictionary<string, long> sizeMap, Dictionary<string, long> compressTimeMap,
-            Dictionary<string, long> decompressTimeMap)
-        {
-            string key = buildComboKey(dim, intComp.getName(), byteComp.getName());
-            Stopwatch watchMz = new Stopwatch();
-            int tempMzSize = 0;
-            watchMz.Start();
-            List<byte[]> encodeList = new List<byte[]>();
-            for (int i = 0; i < arrays.Count; i++)
-            {
-                byte[] compMz = ComboComp.encode(intComp, byteComp, arrays[i]);
-                tempMzSize += compMz.Length;
-                encodeList.Add(compMz);
-            }
-
-            sizeMap[key] = tempMzSize;
-            compressTimeMap[key] = watchMz.Elapsed.Ticks;
-            watchMz.Restart();
-            for (int i = 0; i < encodeList.Count; i++)
-            {
-                int[] mz = ComboComp.decode(intComp, byteComp, encodeList[i]);
-                if (mz.Length != arrays[i].Length)
-                {
-                    Console.WriteLine("Encoding Error");
-                }
-            }
-
-            decompressTimeMap[key] = watchMz.Elapsed.Ticks;
-            watchMz.Stop();
         }
     }
 }

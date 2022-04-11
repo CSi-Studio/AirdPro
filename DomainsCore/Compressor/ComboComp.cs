@@ -8,7 +8,6 @@
  * See the Mulan PSL v2 for more details.
  */
 
-
 namespace AirdSDK.Compressor
 {
     public class ComboComp

@@ -15,7 +15,7 @@ namespace AirdSDK.Compressor
 {
     public class IntegratedNewPFDWrapper : SortedIntComp
     {
-        //使用VariableByte算法将排序了的int数组进行压缩
+        //使用NewPFDS16算法将排序了的int数组进行压缩
         public override string getName()
         {
             return SortedIntCompType.INewPFD.ToString();
@@ -23,15 +23,17 @@ namespace AirdSDK.Compressor
 
         public override int[] encode(int[] uncompressed)
         {
-            int[] compressedInts = new IntCompressor(new NewPFDS16()).compress(uncompressed);
+            int[] deltaInts = delta(uncompressed);
+            int[] compressedInts = new IntCompressor(new NewPFDS16()).compress(deltaInts);
             return compressedInts;
         }
 
         //使用VariableByte算法对已经压缩的int数组进行解压缩
         public override int[] decode(int[] compressed)
         {
-            int[] sortedInts = new IntegratedIntCompressor(new IntegratedVariableByte()).uncompress(compressed);
-            return sortedInts;
+            int[] uncompressed = new IntCompressor(new NewPFDS16()).uncompress(compressed);
+            int[] ori = inverseDelta(uncompressed);
+            return ori;
         }
     }
 }

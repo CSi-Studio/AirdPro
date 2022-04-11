@@ -25,10 +25,11 @@ namespace AirdPro.Asyncs
 {
     internal class ConvertTaskManager
     {
-
         public static ConvertTaskManager instance;
 
-        public ConvertTaskManager() { }
+        public ConvertTaskManager()
+        {
+        }
 
         public static ConvertTaskManager getInstance()
         {
@@ -43,7 +44,7 @@ namespace AirdPro.Asyncs
         //需要进行处理的Job
         Queue<JobInfo> jobQueue = new Queue<JobInfo>();
         TaskFactory fac = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(1));
-        
+
         //存放全部的Job信息,用于根据JobId判定当前的Job是否已经存在
         public Hashtable jobTable = new Hashtable();
         public Hashtable finishedTable = new Hashtable();
@@ -81,10 +82,12 @@ namespace AirdPro.Asyncs
 
                 JobInfo jobInfo = null;
                 try
-                { 
+                {
                     jobInfo = jobQueue.Dequeue();
                 }
-                catch { }
+                catch
+                {
+                }
 
                 if (jobInfo == null)
                 {
@@ -116,6 +119,7 @@ namespace AirdPro.Asyncs
                             }
                         }
                     }
+
                     jobTable.Remove(jobInfo.getJobId());
                     finishedTable.Add(jobInfo.getJobId(), jobInfo);
                 });
@@ -174,7 +178,7 @@ namespace AirdPro.Asyncs
                 comp.intIntComp = IntComp.build(jobInfo.config.intIntComp);
                 comp.intByteComp = ByteComp.build(jobInfo.config.intByteComp);
             }
-            
+
             converter.compressor = comp;
             converter.doConvert();
             jobInfo.setStatus(FINISHED);

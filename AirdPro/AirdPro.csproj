@@ -158,12 +158,13 @@
     <Compile Include="Converters\DDAPasef .cs" />
     <Compile Include="Converters\DIAPasef.cs" />
     <Compile Include="Domains\HardwareInfo\HardwareInfo.cs" />
-    <Compile Include="Domains\FileLogs\AppLogs.cs" />
+    <Compile Include="Domains\Log\AppLogs.cs" />
     <Compile Include="Domains\Scan\MsIndex.cs" />
     <Compile Include="Domains\Scan\TempScan.cs" />
     <Compile Include="Domains\Scan\TempScanSZDPD.cs" />
     <Compile Include="Domains\Scan\TimsData.cs" />
     <Compile Include="Domains\Sort\CompressStat.cs" />
+    <Compile Include="Domains\Statistic\Stat.cs" />
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -179,7 +180,7 @@
     <Compile Include="Domains\Job\JobInfo.cs" />
     <Compile Include="Storage\Config\ConversionConfig.cs" />
     <Compile Include="Domains\Job\RemoteConvertJob.cs" />
-    <Compile Include="Domains\Log.cs" />
+    <Compile Include="Domains\Log\Log.cs" />
     <Compile Include="Domains\Sort\IntArrayNode.cs" />
     <Compile Include="Forms\ConversionConfigListForm.cs">
       <SubType>Form</SubType>
@@ -217,6 +218,7 @@
     <Compile Include="Storage\Handler\GlobalConfigHandler.cs" />
     <Compile Include="Storage\Observer.cs" />
     <Compile Include="Storage\Subject.cs" />
+    <Compile Include="Utils\StatUtil.cs" />
     <EmbeddedResource Include="Forms\AirdForm.resx">
       <DependentUpon>AirdForm.cs</DependentUpon>
       <SubType>Designer</SubType>
