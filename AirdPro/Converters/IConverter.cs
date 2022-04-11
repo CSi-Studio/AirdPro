@@ -1044,9 +1044,9 @@ namespace AirdPro.Converters
                 }
             }
 
-            StatUtil.stat4ComboComp(mzStatList);
-            StatUtil.stat4ComboComp(intensityStatList);
-            StatUtil.stat4ComboComp(mobiStatList);
+            StatUtil.calcBest(mzStatList);
+            StatUtil.calcBest(intensityStatList);
+            StatUtil.calcBest(mobiStatList);
 
             jobInfo.log($@"Origin Size:{originSizeMz}-{originSizeIntensity}-{originSizeMobi}");
             jobInfo.log(@"------------------------");

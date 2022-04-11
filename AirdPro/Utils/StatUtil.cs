@@ -77,7 +77,7 @@ public class StatUtil
         watchMz.Stop();
     }
 
-    public static void stat4ComboComp(List<CompressStat> statList)
+    public static void calcBest(List<CompressStat> statList)
     {
         statList.Sort((a, b) => a.size.CompareTo(b.size));
         List<double> sizeList = new List<double>();
@@ -89,6 +89,9 @@ public class StatUtil
             ctList.Add(stat.compressTime);
             dtList.Add(stat.decompressTime);
         });
+        Stat mzStat = new Stat(sizeList);
+        Stat ctStat = new Stat(ctList);
+        Stat dtStat = new Stat(dtList);
     }
 
     public static string buildComboKey(string key, string intCompName, string byteCompName)

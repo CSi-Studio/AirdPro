@@ -15,12 +15,15 @@ namespace AirdSDK.Compressor;
 public class HuffmanCoder
 {
     static int arrayNumCount;
+    static HuffmanTree codeTree = null;
+
     public static int[] toIntArray(List<int[]> mobiList)
     {
         for (int i = 0; i < mobiList.Count; i++)
         {
             arrayNumCount += mobiList[i].Length;
         }
+
         List<int> tmpList = new List<int>();
         for (int j = 0; j < mobiList.Count; j++)
         {
@@ -29,15 +32,17 @@ public class HuffmanCoder
                 tmpList.Add(mobiList[j][k]);
             }
         }
+
         int[] mobiArray = new int[arrayNumCount];
         for (int l = 0; l < arrayNumCount; l++)
         {
             mobiArray[l] = tmpList[l];
         }
+
         return mobiArray;
     }
 
-    static HuffmanTree codeTree = null;
+
     public static HuffmanTree buildTree(int[] mobiList)
     {
         TreeList treeList = new TreeList(mobiList);
@@ -45,11 +50,13 @@ public class HuffmanCoder
         {
             treeList.addNum(mobiList[k]);
         }
+
         treeList.sortTree();
         while (treeList.length() > 1)
         {
             codeTree = treeList.mergeTree();
         }
+
         return codeTree;
     }
 
@@ -62,13 +69,13 @@ public class HuffmanCoder
         {
             tmpByte[i] = resultByte[i];
         }
+
         return tmpByte;
     }
 
     public static int[] decode(byte[] target, HuffmanTree tree)
     {
-        int[] decodeInt = new int[arrayNumCount];
-        decodeInt = TreeList.readHuffmanCode(arrayNumCount, target, tree);
+        int[] decodeInt = TreeList.readHuffmanCode(arrayNumCount, target, tree);
         return decodeInt;
     }
 }

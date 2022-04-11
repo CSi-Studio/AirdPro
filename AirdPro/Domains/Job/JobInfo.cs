@@ -58,7 +58,7 @@ namespace AirdPro.Domains
         public string airdJsonFilePath;
 
         //任务运行时产生的日志
-        public List<Stat> logs = new List<Stat>();
+        public List<Log> logs = new List<Log>();
 
         //任务运行时产生的进度信息
         private IProgress<string> progress;
@@ -117,7 +117,7 @@ namespace AirdPro.Domains
 
         public JobInfo log(string content)
         {
-            Stat log = new Log(DateTime.Now, content);
+            Log log = new Log(DateTime.Now, content);
             logs.Add(log);
             AppLogs.WriteInfo(content, true);
             Console.Out.WriteLine(content);
@@ -139,7 +139,7 @@ namespace AirdPro.Domains
 
             if (content != null)
             {
-                Stat log = new Log(DateTime.Now, content);
+                Log log = new Log(DateTime.Now, content);
                 logs.Add(log);
                 AppLogs.WriteInfo(content, true);
                 Console.Out.WriteLine(content);
@@ -151,7 +151,7 @@ namespace AirdPro.Domains
         public void logError(string content)
         {
             progress.Report("Error");
-            Stat log = new Log(DateTime.Now, content);
+            Log log = new Log(DateTime.Now, content);
             logs.Add(log);
             AppLogs.WriteError(content, true);
             Console.Out.WriteLine(content);

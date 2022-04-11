@@ -21,6 +21,7 @@ namespace AirdPro.Domains
         public double mean = 0;
         public double variance = 0;
         public double std;
+        public List<double> norm;
 
         public Stat(List<double> numbers)
         {
@@ -41,6 +42,7 @@ namespace AirdPro.Domains
                 }
             }
 
+            //平均值
             mean = sum / length;
             double varianceSum = 0;
             for (int i = 0; i < length; i++)
@@ -48,8 +50,10 @@ namespace AirdPro.Domains
                 varianceSum += Math.Pow(numbers[i] - mean, 2);
             }
 
+            //方差
+            variance = varianceSum / length;
+            //标准差
             std = Math.Sqrt(varianceSum / (length - 1));
-            variance = sum / length;
         }
     }
 }
