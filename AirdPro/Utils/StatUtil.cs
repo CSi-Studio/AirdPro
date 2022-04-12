@@ -94,12 +94,11 @@ public class StatUtil
         string key = buildComboKey(dim, intComp.getName(), byteComp.getName());
         Stopwatch watchMz = new Stopwatch();
         watchMz.Start();
-        List<byte[]> encodeList = new List<byte[]>();
         int[] tempMobiHuffArray = HuffmanCoder.toIntArray(arrays);
         HuffmanTree huffmanTree = HuffmanCoder.buildTree(tempMobiHuffArray);
-        byte[] tempMobiHuffByte = HuffmanCoder.encode(tempMobiHuffArray,huffmanTree);
-        int tempMobiHuffSize = tempMobiHuffByte.Length;
-        sizeMap[key] = tempMobiHuffSize;
+        byte[] tempMobiHuffByte = HuffmanCoder.encode(tempMobiHuffArray, huffmanTree);
+        byte[] compressed = new ZstdWrapper().encode(tempMobiHuffByte);
+        sizeMap[key] = compressed.Length;
         compressTimeMap[key] = watchMz.Elapsed.Ticks;
         watchMz.Restart();
         int[] decodedMobiArray = HuffmanCoder.decode(tempMobiHuffByte, huffmanTree);
@@ -107,6 +106,7 @@ public class StatUtil
         {
             Console.WriteLine("Encoding Error");
         }
+
         decompressTimeMap[key] = watchMz.Elapsed.Ticks;
         watchMz.Stop();
     }
