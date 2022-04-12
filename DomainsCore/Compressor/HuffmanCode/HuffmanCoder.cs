@@ -17,6 +17,7 @@ public class HuffmanCoder
     static int arrayNumCount;
     static HuffmanTree codeTree = null;
 
+    //该函数传入int数组集合，返回int数组，并在构建霍夫曼树（buildTree）函数中作为传入参数使用
     public static int[] toIntArray(List<int[]> mobiList)
     {
         for (int i = 0; i < mobiList.Count; i++)
@@ -42,28 +43,29 @@ public class HuffmanCoder
         return mobiArray;
     }
 
-
-    public static HuffmanTree buildTree(int[] mobiList)
+    //直接调用此函数，可以建立霍夫曼树，该树用于编码和解码
+    public static HuffmanTree buildTree(int[] mobiIntArray)
     {
-        TreeList treeList = new TreeList(mobiList);
-        for (int k = 0; k < mobiList.Length; k++)
+        TreeList treeList = new TreeList(mobiIntArray); 
+        for (int k = 0; k < mobiIntArray.Length; k++)
         {
-            treeList.addNum(mobiList[k]);
+            treeList.addNum(mobiIntArray[k]); //提取int数组中出现的数字，并计算其权重（出现次数），除去重复出现的数字
         }
 
-        treeList.sortTree();
+        treeList.sortTree(); //按权重从小到大排列
         while (treeList.length() > 1)
         {
-            codeTree = treeList.mergeTree();
+            codeTree = treeList.mergeTree(); //合并最小权重的两个数，生成霍夫曼树
         }
 
         return codeTree;
     }
 
+    //调用此函数，用于霍夫曼编码
     public static byte[] encode(int[] target, HuffmanTree tree)
     {
-        TreeList.makeKey(tree, "");
-        List<byte> resultByte = TreeList.translate(target);
+        TreeList.makeKey(tree, ""); //获取每个数对应的编码表
+        List<byte> resultByte = TreeList.translate(target); //对应编码表转换成bit操作，用byte类型存储
         byte[] tmpByte = new byte[resultByte.Count];
         for (int i = 0; i < resultByte.Count; i++)
         {
@@ -73,9 +75,10 @@ public class HuffmanCoder
         return tmpByte;
     }
 
+    //调用此函数，进行霍夫曼解码
     public static int[] decode(byte[] target, HuffmanTree tree)
     {
-        int[] decodeInt = TreeList.readHuffmanCode(arrayNumCount, target, tree);
+        int[] decodeInt = TreeList.readHuffmanCode(arrayNumCount, target, tree); //利用构建的霍夫曼树进行解码
         return decodeInt;
     }
 }

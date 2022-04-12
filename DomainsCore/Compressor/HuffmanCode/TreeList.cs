@@ -19,7 +19,9 @@ namespace AirdSDK.Compressor
         private Node first = null;
         private static string[] signTable = null;
         private static string[] keyTable = null;
+        static int pos = 0;
 
+        //构造函数，除去重复出现的数字
         public TreeList(int[] list)
         {
             List<int> tmpList = new List<int>();
@@ -32,6 +34,13 @@ namespace AirdSDK.Compressor
             }
             signTable = new string[tmpList.Count];
             keyTable = new string[tmpList.Count];
+        }
+
+        //构造函数，用于从字典集合重构霍夫曼树
+        public TreeList(Node node, int treeCount)
+        {
+            first = node;
+            count = treeCount;
         }
 
         public void addHuffNum(int num)
@@ -51,7 +60,7 @@ namespace AirdSDK.Compressor
             count++;
         }
 
-        //增加数字，排出所有节点
+        //添加数字，并计算其权重（出现次数）
         public void addNum(int num)
         {
             if (first == null)
@@ -86,8 +95,15 @@ namespace AirdSDK.Compressor
                 {
                     for (tmp2 = tmp1.link; tmp2 != null; tmp2 = tmp2.link)
                     {
-                        if (tmp1.data.Freq > tmp2.data.Freq)
+                        if (tmp1.data.Freq >= tmp2.data.Freq)
                         {
+                            if (tmp1.data.Freq == tmp2.data.Freq)
+                            {
+                                if (tmp1.data.Num < tmp2.data.Num)
+                                {
+                                    continue;
+                                }
+                            }
                             HuffmanTree tmpHT = tmp1.data;
                             tmp1.data = tmp2.data;
                             tmp2.data = tmpHT;
@@ -164,10 +180,8 @@ namespace AirdSDK.Compressor
 
             count++;
         }
+        
         //生成霍夫曼编码表
-
-        static int pos = 0;
-
         public static void makeKey(HuffmanTree tree, string code)
         {
             if (tree.LChild == null)
@@ -301,12 +315,14 @@ namespace AirdSDK.Compressor
             return temStr;
         }
 
-        public string[] getSignTable()
+        //获取所有的（0-909）的数字
+        public static string[] getSignTable()
         {
             return signTable;
         }
 
-        public string[] getKeyTable()
+        //获取每个数字对应的编码
+        public static string[] getKeyTable()
         {
             return keyTable;
         }
