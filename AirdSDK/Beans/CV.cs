@@ -9,6 +9,7 @@
  */
 
 using System.Collections.Generic;
+using AirdSDK.Enums;
 using pwiz.CLI.cv;
 using pwiz.CLI.data;
 
@@ -34,7 +35,7 @@ namespace AirdSDK.Domains
             CVID.MS_ETD,
             CVID.MS_collision_energy
         };
-        
+
         public string cvid;
         public object value;
         public string units;
@@ -45,12 +46,12 @@ namespace AirdSDK.Domains
 
         public CV(CVParam param)
         {
-            this.cvid = ((int) param.cvid)+":"+param.name;
+            this.cvid = ((int) param.cvid) + ":" + param.name;
             this.value = param.value.ToString();
             int unitsId = (int) param.units;
             if (unitsId != -1)
             {
-                this.units = (int)param.units + ":"+ param.unitsName;
+                this.units = (int) param.units + ":" + param.unitsName;
             }
         }
 
@@ -60,6 +61,7 @@ namespace AirdSDK.Domains
             {
                 return null;
             }
+
             List<CV> cvList = new List<CV>();
             foreach (var cvParam in paramList)
             {
@@ -67,6 +69,7 @@ namespace AirdSDK.Domains
                 {
                     continue;
                 }
+
                 cvList.Add(new CV(cvParam));
             }
 

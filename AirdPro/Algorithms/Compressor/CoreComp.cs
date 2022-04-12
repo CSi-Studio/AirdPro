@@ -19,7 +19,6 @@ using AirdPro.Utils;
 using AirdSDK.Compressor;
 using AirdSDK.Domains;
 using pwiz.CLI.msdata;
-using pwiz.CLI.util;
 
 namespace AirdPro.Algorithms
 {
