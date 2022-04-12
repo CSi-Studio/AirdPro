@@ -66,7 +66,7 @@ namespace AirdPro.Converters
         protected int intensityPrecision = 1; //Intensity默认精确到个位数
 
         protected int spectraNumForIntensityPrecisionPredict = 5;
-        protected int spectraNumForCombinableCompressorsPredict = 500;
+        protected int spectraNumForCombinableCompressorsPredict = 100;
 
         public IConverter(JobInfo jobInfo)
         {
@@ -874,11 +874,11 @@ namespace AirdPro.Converters
             List<int[]> intensityArrays = new List<int[]>();
             List<int[]> mobiNoArrays = new List<int[]>();
             Random rn = new Random();
-            List<int> logIndexs = new List<int>();
+            List<int> logIndexes = new List<int>();
             for (var i = 0; i < randomNum; i++)
             {
                 int index = rn.Next(0, totalSize);
-                logIndexs.Add(index);
+                logIndexes.Add(index);
                 List<int[]> dataList = fetchSpectrum(index, ionMobi);
                 mzArrays.Add(dataList[0]);
                 intensityArrays.Add(dataList[1]);
@@ -977,6 +977,13 @@ namespace AirdPro.Converters
                         decompressTimeMap.Add(buildComboKey("mobi", intComp4Mobi.getName(), byteComp4Mobi.getName()),
                             0);
                         sizeMap.Add(buildComboKey("mobi", intComp4Mobi.getName(), byteComp4Mobi.getName()), 0);
+
+                        compressTimeMap.Add(buildComboKey("mobihuff", intComp4Mobi.getName(), byteComp4Mobi.getName()),
+                            0);
+                        decompressTimeMap.Add(
+                            buildComboKey("mobihuff", intComp4Mobi.getName(), byteComp4Mobi.getName()),
+                            0);
+                        sizeMap.Add(buildComboKey("mobihuff", intComp4Mobi.getName(), byteComp4Mobi.getName()), 0);
                     }
                 }
             }
@@ -1014,6 +1021,9 @@ namespace AirdPro.Converters
                         StatUtil.stat4OneComboComp(intComp4Mobi, byteComp4Mobi, mobilityNoArrays, "mobi", sizeMap,
                             compressTimeMap,
                             decompressTimeMap);
+                        StatUtil.stat4HuffmanCode(intComp4Mobi, byteComp4Mobi, mobilityNoArrays, "mobihuff", sizeMap,
+                            compressTimeMap,
+                            decompressTimeMap);
                     }
                 }
             }
@@ -1044,12 +1054,14 @@ namespace AirdPro.Converters
                 }
             }
 
-            StatUtil.calcBest(mzStatList);
-            StatUtil.calcBest(intensityStatList);
-            StatUtil.calcBest(mobiStatList);
+            int bestIndex4Mz = StatUtil.calcBestIndex(mzStatList);
+            int bestIndex4Intensity = StatUtil.calcBestIndex(intensityStatList);
+            int bestIndex4Mobi = StatUtil.calcBestIndex(mobiStatList);
 
             jobInfo.log($@"Origin Size:{originSizeMz}-{originSizeIntensity}-{originSizeMobi}");
             jobInfo.log(@"------------------------");
+            jobInfo.log(
+                $@"Best Combo Comp:{mzStatList[bestIndex4Mz].key}-{intensityStatList[bestIndex4Intensity].key}-{mobiStatList[bestIndex4Mobi].key}");
             Console.WriteLine(JsonConvert.SerializeObject(mzStatList, new JsonSerializerSettings
                 {NullValueHandling = NullValueHandling.Ignore}));
             Console.WriteLine(JsonConvert.SerializeObject(intensityStatList, new JsonSerializerSettings

@@ -21,39 +21,46 @@ namespace AirdPro.Domains
         public double mean = 0;
         public double variance = 0;
         public double std;
-        public List<double> norm;
+        public List<double> dataList;
+        public int size;
 
-        public Stat(List<double> numbers)
+        public Stat(List<double> dataList)
         {
-            int length = numbers.Count;
-            min = numbers[0];
-            max = numbers[0];
-            for (int i = 0; i < length; i++)
+            if (dataList.Count == 0)
             {
-                sum += numbers[i];
-                if (numbers[i] > max)
+                throw new Exception("Data list cannot be empty");
+            }
+
+            this.dataList = dataList;
+            size = dataList.Count;
+            min = dataList[0];
+            max = dataList[0];
+            for (int i = 0; i < size; i++)
+            {
+                sum += dataList[i];
+                if (dataList[i] > max)
                 {
-                    max = numbers[i];
+                    max = dataList[i];
                 }
 
-                if (numbers[i] < min)
+                if (dataList[i] < min)
                 {
-                    min = numbers[i];
+                    min = dataList[i];
                 }
             }
 
             //平均值
-            mean = sum / length;
+            mean = sum / size;
             double varianceSum = 0;
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < size; i++)
             {
-                varianceSum += Math.Pow(numbers[i] - mean, 2);
+                varianceSum += Math.Pow(dataList[i] - mean, 2);
             }
 
             //方差
-            variance = varianceSum / length;
+            variance = varianceSum / size;
             //标准差
-            std = Math.Sqrt(varianceSum / (length - 1));
+            std = Math.Sqrt(varianceSum / (size - 1));
         }
     }
 }

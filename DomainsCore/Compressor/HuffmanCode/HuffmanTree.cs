@@ -83,6 +83,7 @@ namespace AirdSDK.Compressor
                 tmpTree.freq = dicTree.ElementAt(i).Value;
                 huffmanTrees[i] = tmpTree;
             }
+
             Node first = new Node(huffmanTrees[0]);
             for (int k = 1; k < huffmanTrees.Length; k++)
             {
@@ -90,12 +91,14 @@ namespace AirdSDK.Compressor
                 tmpNode.link = first;
                 first = tmpNode;
             }
+
             TreeList treeList = new TreeList(first, dicTree.Count);
             treeList.sortTree();
             while (treeList.length() > 1)
             {
                 codeTree = treeList.mergeTree();
             }
+
             return codeTree;
         }
     }

@@ -18,8 +18,13 @@ namespace AirdPro.Utils;
 
 public class StatUtil
 {
-    List<double> minMaxNorm(List<double> numbers)
+    public static List<double> minMaxNorm(List<double> numbers)
     {
+        if (numbers.Count == 0)
+        {
+            return new List<double>();
+        }
+
         double min = numbers[0];
         double max = numbers[0];
         for (int i = 0; i < numbers.Count; i++)
@@ -36,6 +41,11 @@ public class StatUtil
         }
 
         double delta = max - min;
+        if (delta == 0)
+        {
+            throw new Exception("max - min = 0!");
+        }
+
         List<double> normList = new List<double>();
         for (var i = 0; i < numbers.Count; i++)
         {
@@ -77,7 +87,41 @@ public class StatUtil
         watchMz.Stop();
     }
 
-    public static void calcBest(List<CompressStat> statList)
+    public static void stat4HuffmanCode(BaseComp<int> intComp, ByteComp byteComp, List<int[]> arrays, string dim,
+        Dictionary<string, long> sizeMap, Dictionary<string, long> compressTimeMap,
+        Dictionary<string, long> decompressTimeMap)
+    {
+        string key = buildComboKey(dim, intComp.getName(), byteComp.getName());
+        Stopwatch watchMz = new Stopwatch();
+        int tempMzSize = 0;
+        watchMz.Start();
+        List<byte[]> encodeList = new List<byte[]>();
+        for (int i = 0; i < arrays.Count; i++)
+        {
+            //TODO 童俊杰
+            byte[] compMz = new byte[0];
+            tempMzSize += compMz.Length;
+            encodeList.Add(compMz);
+        }
+
+        sizeMap[key] = tempMzSize;
+        compressTimeMap[key] = watchMz.Elapsed.Ticks;
+        watchMz.Restart();
+        for (int i = 0; i < encodeList.Count; i++)
+        {
+            //TODO 童俊杰
+            int[] mz = ComboComp.decode(intComp, byteComp, encodeList[i]);
+            if (mz.Length != arrays[i].Length)
+            {
+                Console.WriteLine("Encoding Error");
+            }
+        }
+
+        decompressTimeMap[key] = watchMz.Elapsed.Ticks;
+        watchMz.Stop();
+    }
+
+    public static int calcBestIndex(List<CompressStat> statList)
     {
         statList.Sort((a, b) => a.size.CompareTo(b.size));
         List<double> sizeList = new List<double>();
@@ -89,9 +133,33 @@ public class StatUtil
             ctList.Add(stat.compressTime);
             dtList.Add(stat.decompressTime);
         });
-        Stat mzStat = new Stat(sizeList);
-        Stat ctStat = new Stat(ctList);
-        Stat dtStat = new Stat(dtList);
+
+        List<double> normSize = minMaxNorm(sizeList);
+        List<double> normCt = minMaxNorm(ctList);
+        List<double> normDt = minMaxNorm(dtList);
+        Stat sizeStat = new Stat(normSize);
+        // Stat ctStat = new Stat(normCt);
+        // Stat dtStat = new Stat(normDt);
+        int endIndex = -1;
+        for (int i = 0; i < sizeStat.size; i++)
+        {
+            if (sizeStat.dataList[i] < sizeStat.mean)
+            {
+                endIndex = i;
+            }
+        }
+
+        double bestValue = 1;
+        int bestIndex = -1;
+        for (int i = 0; i < endIndex; i++)
+        {
+            if ((normSize[i] + normCt[i] + normDt[i]) < bestValue)
+            {
+                bestIndex = i;
+            }
+        }
+
+        return bestIndex;
     }
 
     public static string buildComboKey(string key, string intCompName, string byteCompName)

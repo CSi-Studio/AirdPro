@@ -34,7 +34,6 @@ namespace AirdPro.Converters
                     initBrukerMobi();
                     predictForIntensityPrecision(); //预测intensity需要保留的精度
                     predictForCombinableComps(); //预测最佳压缩组合
-                    // randomSampling(50, true);
                     pretreatment(); //预处理谱图,将MS1和MS2谱图分开存储
                     compressMobiDict();
                     compressMS1Block();
