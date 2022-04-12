@@ -977,13 +977,6 @@ namespace AirdPro.Converters
                         decompressTimeMap.Add(buildComboKey("mobi", intComp4Mobi.getName(), byteComp4Mobi.getName()),
                             0);
                         sizeMap.Add(buildComboKey("mobi", intComp4Mobi.getName(), byteComp4Mobi.getName()), 0);
-
-                        compressTimeMap.Add(buildComboKey("mobihuff", intComp4Mobi.getName(), byteComp4Mobi.getName()),
-                            0);
-                        decompressTimeMap.Add(
-                            buildComboKey("mobihuff", intComp4Mobi.getName(), byteComp4Mobi.getName()),
-                            0);
-                        sizeMap.Add(buildComboKey("mobihuff", intComp4Mobi.getName(), byteComp4Mobi.getName()), 0);
                     }
                 }
             }
@@ -1021,9 +1014,6 @@ namespace AirdPro.Converters
                         StatUtil.stat4OneComboComp(intComp4Mobi, byteComp4Mobi, mobilityNoArrays, "mobi", sizeMap,
                             compressTimeMap,
                             decompressTimeMap);
-                        StatUtil.stat4HuffmanCode(intComp4Mobi, byteComp4Mobi, mobilityNoArrays, "mobihuff", sizeMap,
-                            compressTimeMap,
-                            decompressTimeMap);
                     }
                 }
             }
@@ -1056,12 +1046,20 @@ namespace AirdPro.Converters
 
             int bestIndex4Mz = StatUtil.calcBestIndex(mzStatList);
             int bestIndex4Intensity = StatUtil.calcBestIndex(intensityStatList);
-            int bestIndex4Mobi = StatUtil.calcBestIndex(mobiStatList);
+            if (ionMobi)
+            {
+                int bestIndex4Mobi = StatUtil.calcBestIndex(mobiStatList);
+                jobInfo.log($@"Origin Size:{originSizeMz}-{originSizeIntensity}-{originSizeMobi}");
+                jobInfo.log(@"------------------------");
+                jobInfo.log(
+                    $@"Best Combo Comp:{mzStatList[bestIndex4Mz].key}-{intensityStatList[bestIndex4Intensity].key}-{mobiStatList[bestIndex4Mobi].key}");
+            }
 
-            jobInfo.log($@"Origin Size:{originSizeMz}-{originSizeIntensity}-{originSizeMobi}");
+
+            jobInfo.log($@"Origin Size:{originSizeMz}-{originSizeIntensity}");
             jobInfo.log(@"------------------------");
             jobInfo.log(
-                $@"Best Combo Comp:{mzStatList[bestIndex4Mz].key}-{intensityStatList[bestIndex4Intensity].key}-{mobiStatList[bestIndex4Mobi].key}");
+                $@"Best Combo Comp:{mzStatList[bestIndex4Mz].key}-{intensityStatList[bestIndex4Intensity].key}");
             Console.WriteLine(JsonConvert.SerializeObject(mzStatList, new JsonSerializerSettings
                 {NullValueHandling = NullValueHandling.Ignore}));
             Console.WriteLine(JsonConvert.SerializeObject(intensityStatList, new JsonSerializerSettings
