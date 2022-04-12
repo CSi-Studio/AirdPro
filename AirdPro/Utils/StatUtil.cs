@@ -93,30 +93,20 @@ public class StatUtil
     {
         string key = buildComboKey(dim, intComp.getName(), byteComp.getName());
         Stopwatch watchMz = new Stopwatch();
-        int tempMzSize = 0;
         watchMz.Start();
         List<byte[]> encodeList = new List<byte[]>();
-        for (int i = 0; i < arrays.Count; i++)
-        {
-            //TODO 童俊杰
-            byte[] compMz = new byte[0];
-            tempMzSize += compMz.Length;
-            encodeList.Add(compMz);
-        }
-
-        sizeMap[key] = tempMzSize;
+        int[] tempMobiHuffArray = HuffmanCoder.toIntArray(arrays);
+        HuffmanTree huffmanTree = HuffmanCoder.buildTree(tempMobiHuffArray);
+        byte[] tempMobiHuffByte = HuffmanCoder.encode(tempMobiHuffArray,huffmanTree);
+        int tempMobiHuffSize = tempMobiHuffByte.Length;
+        sizeMap[key] = tempMobiHuffSize;
         compressTimeMap[key] = watchMz.Elapsed.Ticks;
         watchMz.Restart();
-        for (int i = 0; i < encodeList.Count; i++)
+        int[] decodedMobiArray = HuffmanCoder.decode(tempMobiHuffByte, huffmanTree);
+        if (decodedMobiArray.Length != tempMobiHuffArray.Length)
         {
-            //TODO 童俊杰
-            int[] mz = ComboComp.decode(intComp, byteComp, encodeList[i]);
-            if (mz.Length != arrays[i].Length)
-            {
-                Console.WriteLine("Encoding Error");
-            }
+            Console.WriteLine("Encoding Error");
         }
-
         decompressTimeMap[key] = watchMz.Elapsed.Ticks;
         watchMz.Stop();
     }
