@@ -103,10 +103,10 @@ namespace AirdPro.Forms
                         || expType.Equals(AirdType.PRM_PASEF));
                     //如果是探索模式,则会额外增加一个以文件名称命名的文件夹的名称用于存储该文件的所有内核压缩模式
                     string fileName = FileNameUtil.parseFileName(path).Replace("-", "_");
-                    outputPath = Path.Combine(outputPath, fileName);
+                    string newOutputPath = Path.Combine(outputPath, fileName);
                     for (var i = 0; i < configList.Count; i++)
                     {
-                        Program.airdForm.addFile(path, outputPath, expType, configList[i]);
+                        Program.airdForm.addFile(path, newOutputPath, expType, configList[i]);
                     }
                 }
                 else
