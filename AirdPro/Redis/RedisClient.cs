@@ -9,6 +9,7 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using AirdPro.Asyncs;
 using StackExchange.Redis;
@@ -25,19 +26,19 @@ namespace AirdPro.Redis
         private ConnectionMultiplexer redis;
         private string hostAndPort;
         private IDatabase db;
-        
+
 
         private RedisClient()
-        { 
-           
+        {
         }
 
         public static RedisClient getInstance()
         {
-            if(instance == null)
+            if (instance == null)
             {
                 instance = new RedisClient();
             }
+
             return instance;
         }
 
@@ -47,7 +48,7 @@ namespace AirdPro.Redis
             {
                 hostAndPort = hostAndPort + ":" + 6379;
             }
-           
+
             this.hostAndPort = hostAndPort;
             try
             {
@@ -56,10 +57,10 @@ namespace AirdPro.Redis
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                Debug.WriteLine(e.StackTrace);
                 return false;
             }
-           
+
             if (redis.IsConnected)
             {
                 return true;
@@ -78,7 +79,7 @@ namespace AirdPro.Redis
             }
             else
             {
-                if(redis != null && redis.IsConnected)
+                if (redis != null && redis.IsConnected)
                 {
                     return true;
                 }
@@ -101,10 +102,11 @@ namespace AirdPro.Redis
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.StackTrace);
+                    Debug.WriteLine(e.StackTrace);
                 }
             }
         }
+
         public bool consume()
         {
             bool check = this.check();
@@ -116,7 +118,7 @@ namespace AirdPro.Redis
                 {
                     String valueStr = null;
                     try
-                    { 
+                    {
                         RedisValue value = db.SetPop(RedisConst.Redis_Queue_Convert);
                         if (!value.IsNullOrEmpty)
                         {
@@ -129,8 +131,8 @@ namespace AirdPro.Redis
                             conversionConfig.threadAccelerate = true;
                             conversionConfig.suffix = "";
                             conversionConfig.creator = "LIMSPro";
-                            conversionConfig.mzPrecision = (int)Math.Ceiling(1 / job.mzPrecision);
-                            
+                            conversionConfig.mzPrecision = (int) Math.Ceiling(1 / job.mzPrecision);
+
                             JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
                             ListViewItem item = jobInfo.buildItem();
                             if (!ConvertTaskManager.getInstance().jobTable.Contains(jobInfo.getJobId()))
@@ -149,8 +151,10 @@ namespace AirdPro.Redis
                             db.SetAdd(RedisConst.Redis_Queue_Convert, valueStr);
                         }
                     }
+
                     i--;
                 }
+
                 //如果在Redis获取到了相关的转换任务
                 if (needToExe)
                 {

@@ -19,12 +19,14 @@ namespace AirdPro.Asyncs
     public class LimitedConcurrencyLevelTaskScheduler : TaskScheduler
     {
         /// <summary>Whether the current thread is processing work items.</summary> 
-        [ThreadStatic]
-        private static bool _currentThreadIsProcessingItems;
+        [ThreadStatic] private static bool _currentThreadIsProcessingItems;
+
         /// <summary>The list of tasks to be executed.</summary> 
         private readonly LinkedList<Task> _tasks = new LinkedList<Task>(); // protected by lock(_tasks) 
-                                                                           /// <summary>The maximum concurrency level allowed by this scheduler.</summary> 
+
+        /// <summary>The maximum concurrency level allowed by this scheduler.</summary> 
         private readonly int _maxDegreeOfParallelism;
+
         /// <summary>Whether the scheduler is currently processing work items.</summary> 
         private int _delegatesQueuedOrRunning = 0; // protected by lock(_tasks) 
 
@@ -52,7 +54,7 @@ namespace AirdPro.Asyncs
             // delegates currently queued or running to process tasks, schedule another. 
             lock (_tasks)
             {
-//                Console.WriteLine("Task Count : {0} ", _tasks.Count);
+//                Debug.WriteLine("Task Count : {0} ", _tasks.Count);
                 _tasks.AddLast(task);
                 if (_delegatesQueuedOrRunning < _maxDegreeOfParallelism)
                 {
@@ -61,8 +63,10 @@ namespace AirdPro.Asyncs
                 }
             }
         }
+
         int executingCount = 0;
         private static object executeLock = new object();
+
         /// <summary> 
         /// Informs the ThreadPool that there's work to be executed for this scheduler. 
         /// </summary> 
@@ -101,7 +105,10 @@ namespace AirdPro.Asyncs
                     }
                 }
                 // We're done processing items on the current thread 
-                finally { _currentThreadIsProcessingItems = false; }
+                finally
+                {
+                    _currentThreadIsProcessingItems = false;
+                }
             }, null);
         }
 
@@ -111,7 +118,6 @@ namespace AirdPro.Asyncs
         /// <returns>Whether the task could be executed on the current thread.</returns> 
         protected sealed override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued)
         {
-
             // If this thread isn't already processing a task, we don't support inlining 
             if (!_currentThreadIsProcessingItems) return false;
 
@@ -131,7 +137,10 @@ namespace AirdPro.Asyncs
         }
 
         /// <summary>Gets the maximum concurrency level supported by this scheduler.</summary> 
-        public sealed override int MaximumConcurrencyLevel { get { return _maxDegreeOfParallelism; } }
+        public sealed override int MaximumConcurrencyLevel
+        {
+            get { return _maxDegreeOfParallelism; }
+        }
 
         /// <summary>Gets an enumerable of the tasks currently scheduled on this scheduler.</summary> 
         /// <returns>An enumerable of the tasks currently scheduled.</returns> 

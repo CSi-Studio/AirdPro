@@ -62,10 +62,6 @@ namespace AirdSDK.Compressor
                     return new IntegratedBinPackingWrapper();
                 case SortedIntCompType.IVB:
                     return new IntegratedVarByteWrapper();
-                case SortedIntCompType.INewPFD:
-                    return new IntegratedNewPFDWrapper();
-                case SortedIntCompType.IOptPFD:
-                    return new IntegratedOptPFDWrapper();
                 default: throw new Exception("No Implementation for " + type);
             }
         }

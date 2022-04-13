@@ -22,10 +22,6 @@ namespace AirdSDK.Compressor
                     return new VarByteWrapper();
                 case IntCompType.BP:
                     return new BinPackingWrapper();
-                case IntCompType.NewPFD:
-                    return new NewPFDWrapper();
-                case IntCompType.OptPFD:
-                    return new OptPFDWrapper();
                 case IntCompType.Empty:
                     return new Empty();
                 default: throw new Exception("No Implementation for " + type);

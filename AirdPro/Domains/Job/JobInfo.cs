@@ -11,6 +11,7 @@
 using AirdPro.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using AirdPro.Constants;
@@ -120,7 +121,7 @@ namespace AirdPro.Domains
             Log log = new Log(DateTime.Now, content);
             logs.Add(log);
             AppLogs.WriteInfo(content, true);
-            Console.Out.WriteLine(content);
+            Debug.WriteLine(content);
             return this;
         }
 
@@ -142,7 +143,7 @@ namespace AirdPro.Domains
                 Log log = new Log(DateTime.Now, content);
                 logs.Add(log);
                 AppLogs.WriteInfo(content, true);
-                Console.Out.WriteLine(content);
+                Debug.WriteLine(content);
             }
 
             return this;
@@ -154,7 +155,7 @@ namespace AirdPro.Domains
             Log log = new Log(DateTime.Now, content);
             logs.Add(log);
             AppLogs.WriteError(content, true);
-            Console.Out.WriteLine(content);
+            Debug.WriteLine(content);
             throw new Exception(content);
         }
 

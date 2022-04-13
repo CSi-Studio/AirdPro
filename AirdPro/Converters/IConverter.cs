@@ -859,13 +859,15 @@ namespace AirdPro.Converters
 
         List<SortedIntComp> integratedIntCompList = new List<SortedIntComp>()
         {
-            new IntegratedVarByteWrapper(), new IntegratedBinPackingWrapper(),
-            new IntegratedNewPFDWrapper(), new IntegratedOptPFDWrapper()
+            new IntegratedVarByteWrapper(),
+            // new IntegratedBinPackingWrapper(),
         };
 
         List<IntComp> intCompList = new List<IntComp>()
         {
-            new VarByteWrapper(), new BinPackingWrapper(), new NewPFDWrapper(), new OptPFDWrapper(), new Empty()
+            new VarByteWrapper(),
+            new BinPackingWrapper(),
+            new Empty()
         };
 
         public void randomSampling(int randomNum, bool ionMobi)
@@ -887,7 +889,7 @@ namespace AirdPro.Converters
                     mobiNoArrays.Add(dataList[2]);
                 }
 
-                Console.Write(index + "-");
+                // Debug.WriteLine(index + "-");
             }
 
             compressForTargetArrays(mzArrays, intensityArrays, mobiNoArrays, ionMobi);
@@ -918,7 +920,7 @@ namespace AirdPro.Converters
                 for (int i = 0; i < size; i++)
                 {
                     mzArray[i] = Convert.ToInt32(dataArray[i].mz * jobInfo.config.mzPrecision);
-                    intensityArray[i] = Convert.ToInt32(Math.Round(dataArray[i].intensity * intensityPrecision));
+                    intensityArray[i] = SpectrumUtil.fetchIntensity(dataArray[i].intensity, intensityPrecision);
                     mobilityNoArray[i] = dataArray[i].mobilityNo;
                 }
             }
@@ -938,82 +940,47 @@ namespace AirdPro.Converters
         }
 
         public void compressForTargetArrays(List<int[]> mzArrays, List<int[]> intensityArrays,
-            List<int[]> mobilityNoArrays, bool ionMobi)
+            List<int[]> mobiNoArrays, bool ionMobi)
         {
-            Dictionary<string, long> compressTimeMap = new Dictionary<string, long>();
-            Dictionary<string, long> decompressTimeMap = new Dictionary<string, long>();
+            Dictionary<string, long> ctMap = new Dictionary<string, long>();
+            Dictionary<string, long> dtMap = new Dictionary<string, long>();
             Dictionary<string, long> sizeMap = new Dictionary<string, long>();
 
-            foreach (SortedIntComp intComp4Mz in integratedIntCompList)
+            foreach (SortedIntComp intComp in integratedIntCompList)
             {
-                foreach (ByteComp byteComp4Mz in byteCompList)
+                foreach (ByteComp byteComp in byteCompList)
                 {
-                    compressTimeMap.Add(buildComboKey("mz", intComp4Mz.getName(), byteComp4Mz.getName()), 0);
-                    decompressTimeMap.Add(buildComboKey("mz", intComp4Mz.getName(), byteComp4Mz.getName()), 0);
-                    sizeMap.Add(buildComboKey("mz", intComp4Mz.getName(), byteComp4Mz.getName()), 0);
+                    string key = buildComboKey("mz", intComp.getName(), byteComp.getName());
+                    ctMap.Add(key, 0);
+                    dtMap.Add(key, 0);
+                    sizeMap.Add(key, 0);
+                    StatUtil.stat4ComboComp(intComp, byteComp, mzArrays, key, sizeMap, ctMap, dtMap);
                 }
             }
 
-            foreach (IntComp intComp4Intensity in intCompList)
+            foreach (IntComp intComp in intCompList)
             {
-                foreach (ByteComp byteComp4Intensity in byteCompList)
+                foreach (ByteComp byteComp in byteCompList)
                 {
-                    compressTimeMap.Add(
-                        buildComboKey("intensity", intComp4Intensity.getName(), byteComp4Intensity.getName()), 0);
-                    decompressTimeMap.Add(
-                        buildComboKey("intensity", intComp4Intensity.getName(), byteComp4Intensity.getName()), 0);
-                    sizeMap.Add(buildComboKey("intensity", intComp4Intensity.getName(), byteComp4Intensity.getName()),
-                        0);
-                }
-            }
-
-            if (ionMobi)
-            {
-                foreach (IntComp intComp4Mobi in intCompList)
-                {
-                    foreach (ByteComp byteComp4Mobi in byteCompList)
-                    {
-                        compressTimeMap.Add(buildComboKey("mobi", intComp4Mobi.getName(), byteComp4Mobi.getName()), 0);
-                        decompressTimeMap.Add(buildComboKey("mobi", intComp4Mobi.getName(), byteComp4Mobi.getName()),
-                            0);
-                        sizeMap.Add(buildComboKey("mobi", intComp4Mobi.getName(), byteComp4Mobi.getName()), 0);
-                    }
-                }
-            }
-
-            long originSizeMz = mzArrays.Count * 4;
-            long originSizeIntensity = intensityArrays.Count * 4;
-            long originSizeMobi = mobilityNoArrays.Count * 4;
-
-            foreach (SortedIntComp intComp4Mz in integratedIntCompList)
-            {
-                foreach (ByteComp byteComp4Mz in byteCompList)
-                {
-                    StatUtil.stat4OneComboComp(intComp4Mz, byteComp4Mz, mzArrays, "mz", sizeMap, compressTimeMap,
-                        decompressTimeMap);
-                }
-            }
-
-            foreach (IntComp intComp4Intensity in intCompList)
-            {
-                foreach (ByteComp byteComp4Intensity in byteCompList)
-                {
-                    StatUtil.stat4OneComboComp(intComp4Intensity, byteComp4Intensity, intensityArrays, "intensity",
-                        sizeMap,
-                        compressTimeMap,
-                        decompressTimeMap);
+                    string key = buildComboKey("intensity", intComp.getName(), byteComp.getName());
+                    ctMap.Add(key, 0);
+                    dtMap.Add(key, 0);
+                    sizeMap.Add(key, 0);
+                    StatUtil.stat4ComboComp(intComp, byteComp, intensityArrays, key, sizeMap, ctMap, dtMap);
                 }
             }
 
             if (ionMobi)
             {
-                foreach (IntComp intComp4Mobi in intCompList)
+                foreach (IntComp intComp in intCompList)
                 {
-                    foreach (ByteComp byteComp4Mobi in byteCompList)
+                    foreach (ByteComp byteComp in byteCompList)
                     {
-                        StatUtil.stat4OneComboComp(intComp4Mobi, byteComp4Mobi, mobilityNoArrays, "mobi", sizeMap,
-                            compressTimeMap,
-                            decompressTimeMap);
+                        string key = buildComboKey("mobi", intComp.getName(), byteComp.getName());
+                        ctMap.Add(key, 0);
+                        dtMap.Add(key, 0);
+                        sizeMap.Add(key, 0);
+                        StatUtil.stat4ComboComp(intComp, byteComp, mobiNoArrays, key, sizeMap, ctMap, dtMap);
                     }
                 }
             }
@@ -1024,7 +991,7 @@ namespace AirdPro.Converters
             foreach (KeyValuePair<string, long> pair in sizeMap)
             {
                 string key = pair.Key;
-                CompressStat stat = new CompressStat(key, sizeMap[key], compressTimeMap[key], decompressTimeMap[key]);
+                CompressStat stat = new CompressStat(key, sizeMap[key], ctMap[key], dtMap[key]);
                 if (key.StartsWith("mz"))
                 {
                     stat.key.Replace("mz-", "");
@@ -1049,22 +1016,17 @@ namespace AirdPro.Converters
             if (ionMobi)
             {
                 int bestIndex4Mobi = StatUtil.calcBestIndex(mobiStatList);
-                jobInfo.log($@"Origin Size:{originSizeMz}-{originSizeIntensity}-{originSizeMobi}");
-                jobInfo.log(@"------------------------");
-                jobInfo.log(
-                    $@"Best Combo Comp:{mzStatList[bestIndex4Mz].key}-{intensityStatList[bestIndex4Intensity].key}-{mobiStatList[bestIndex4Mobi].key}");
+                jobInfo.log("Best Combo Comp--Mz:" + mzStatList[bestIndex4Mz].key + ",Intensity:" +
+                            intensityStatList[bestIndex4Intensity].key + ",Mobi:" + mobiStatList[bestIndex4Mobi].key);
             }
 
-
-            jobInfo.log($@"Origin Size:{originSizeMz}-{originSizeIntensity}");
-            jobInfo.log(@"------------------------");
-            jobInfo.log(
-                $@"Best Combo Comp:{mzStatList[bestIndex4Mz].key}-{intensityStatList[bestIndex4Intensity].key}");
-            Console.WriteLine(JsonConvert.SerializeObject(mzStatList, new JsonSerializerSettings
+            jobInfo.log("Best Combo Comp--Mz:" + mzStatList[bestIndex4Mz].key + ",Intensity:" +
+                        intensityStatList[bestIndex4Intensity].key);
+            Debug.WriteLine(JsonConvert.SerializeObject(mzStatList, new JsonSerializerSettings
                 {NullValueHandling = NullValueHandling.Ignore}));
-            Console.WriteLine(JsonConvert.SerializeObject(intensityStatList, new JsonSerializerSettings
+            Debug.WriteLine(JsonConvert.SerializeObject(intensityStatList, new JsonSerializerSettings
                 {NullValueHandling = NullValueHandling.Ignore}));
-            Console.WriteLine(JsonConvert.SerializeObject(mobiStatList, new JsonSerializerSettings
+            Debug.WriteLine(JsonConvert.SerializeObject(mobiStatList, new JsonSerializerSettings
                 {NullValueHandling = NullValueHandling.Ignore}));
             jobInfo.log(@"------------------------");
         }

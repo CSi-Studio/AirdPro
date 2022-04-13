@@ -15,7 +15,5 @@ namespace AirdSDK.Compressor
         Empty = -1, //Empty, No Compressor
         VB = 2, //Variable Byte
         BP = 3, //Binary Packing
-        NewPFD = 4, //NewPFDS16
-        OptPFD = 5, //OptPFDS16
     }
 }

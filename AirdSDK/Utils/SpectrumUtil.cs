@@ -9,6 +9,7 @@
  */
 
 using System;
+using System.Diagnostics;
 using pwiz.CLI.cv;
 using pwiz.CLI.msdata;
 
@@ -18,16 +19,15 @@ public class SpectrumUtil
 {
     public static int fetchIntensity(double target, int intensityPrecision)
     {
-        int result;
-        try
+        int result = 0;
+        double ori = target * intensityPrecision;
+        if (ori <= int.MaxValue)
         {
-            result = Convert.ToInt32(Math.Round(target * intensityPrecision)); //精确到小数点后一位
+            result = Convert.ToInt32(Math.Round(ori)); //精确到小数点后一位
         }
-        catch (Exception e)
+        else
         {
-            //超出Integer可以表达的最大值,使用-log2进行转换,保留5位有效数字
-            result = -Convert.ToInt32(Math.Log(target * intensityPrecision) / Math.Log(2) * 100000);
-            Console.WriteLine("A Huge Integer Appears:" + target + ", after conversion:" + result);
+            result = -Convert.ToInt32(Math.Log(ori) / Math.Log(2) * 100000);
         }
 
         return result;
@@ -35,7 +35,17 @@ public class SpectrumUtil
 
     public static int fetchMz(double target, int mzPrecision)
     {
-        return Convert.ToInt32(target * mzPrecision);
+        int result = -1;
+        try
+        {
+            result = Convert.ToInt32(target * mzPrecision);
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e.StackTrace);
+        }
+
+        return result;
     }
 
     public static double[] getMobilityData(Spectrum spectrum)

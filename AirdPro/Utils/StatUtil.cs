@@ -55,11 +55,11 @@ public class StatUtil
         return normList;
     }
 
-    public static void stat4OneComboComp(BaseComp<int> intComp, ByteComp byteComp, List<int[]> arrays, string dim,
+    public static void stat4ComboComp(BaseComp<int> intComp, ByteComp byteComp, List<int[]> arrays, string key,
         Dictionary<string, long> sizeMap, Dictionary<string, long> compressTimeMap,
         Dictionary<string, long> decompressTimeMap)
     {
-        string key = buildComboKey(dim, intComp.getName(), byteComp.getName());
+        // string key = buildComboKey(dim, intComp.getName(), byteComp.getName());
         Stopwatch watchMz = new Stopwatch();
         int tempMzSize = 0;
         watchMz.Start();
@@ -139,7 +139,7 @@ public class StatUtil
             }
         }
 
-        double bestValue = 1;
+        double bestValue = 3;
         int bestIndex = -1;
         for (int i = 0; i < endIndex; i++)
         {

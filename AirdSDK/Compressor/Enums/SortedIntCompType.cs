@@ -14,7 +14,5 @@ namespace AirdSDK.Compressor
     {
         IBP = 0, //Integrated Binary Packing
         IVB = 1, //Integrated Variable Byte
-        INewPFD = 2, //Integrated Variable Byte
-        IOptPFD = 3, //Integrated Variable Byte
     }
 }

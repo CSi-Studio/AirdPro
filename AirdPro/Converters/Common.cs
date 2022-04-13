@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using AirdPro.Domains;
@@ -21,7 +22,6 @@ namespace AirdPro.Converters
 {
     internal class Common : IConverter
     {
-
         public Common(JobInfo jobInfo) : base(jobInfo)
         {
         }
@@ -54,8 +54,8 @@ namespace AirdPro.Converters
                 var ms1Table = Hashtable.Synchronized(new Hashtable());
                 var ms2Table = Hashtable.Synchronized(new Hashtable());
                 int progress = 0;
-           
-                for(int i = 0; i < totalSize; i++)
+
+                for (int i = 0; i < totalSize; i++)
                 {
                     jobInfo.log(null, progress + "/" + totalSize);
                     Interlocked.Increment(ref progress);
@@ -75,6 +75,7 @@ namespace AirdPro.Converters
                         {
                             ts.cvs.AddRange(CV.trans(scan.cvParams));
                         }
+
                         compressor.compress(spectrum, ts);
                         var msLevel = parseMsLevel(spectrum);
                         if (msLevel.Equals(MsLevel.MS1))
@@ -89,7 +90,7 @@ namespace AirdPro.Converters
                     }
                     catch (Exception exception)
                     {
-                        Console.WriteLine("Num:" + i + "Exception!" + exception.Message);
+                        Debug.WriteLine("Num:" + i + "Exception!" + exception.Message);
                     }
                 }
 
@@ -105,6 +106,7 @@ namespace AirdPro.Converters
                     {
                         continue;
                     }
+
                     var scan = spectrum.scanList.scans[0];
                     var ts = new TempScan(i, parseRT(scan), parseTIC(spectrum), CV.trans(spectrum.cvParams));
 
@@ -131,7 +133,7 @@ namespace AirdPro.Converters
             keys.Sort();
             foreach (int key in keys)
             {
-                TempScan tempScan = (TempScan)table[key];
+                TempScan tempScan = (TempScan) table[key];
                 addToIndex(index, tempScan);
             }
         }
@@ -149,6 +151,5 @@ namespace AirdPro.Converters
             airdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
             airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
         }
-
     }
 }

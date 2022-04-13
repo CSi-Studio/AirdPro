@@ -14,7 +14,7 @@ namespace AirdSDK.Compressor
 {
     public class BinPackingWrapper : IntComp
     {
-        //使用VariableByte算法将未排序的int数组进行压缩
+        //使用BinaryPacking算法将未排序的int数组进行压缩
         public override string getName()
         {
             return IntCompType.BP.ToString();
@@ -26,8 +26,7 @@ namespace AirdSDK.Compressor
             return compressedInts;
         }
 
-
-        //使用VariableByte算法对已经压缩的int数组进行解压缩
+        //使用BinaryPacking算法对已经压缩的int数组进行解压缩
         public override int[] decode(int[] compressed)
         {
             int[] sortedInts = new IntCompressor(new BinaryPacking()).uncompress(compressed);
