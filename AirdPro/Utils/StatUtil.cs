@@ -141,11 +141,15 @@ public class StatUtil
 
         double bestValue = 3;
         int bestIndex = -1;
-        for (int i = 0; i < endIndex; i++)
+        List<double> totalList = new List<double>();
+        for (int i = 0; i <= endIndex; i++)
         {
-            if ((normSize[i] + normCt[i] + normDt[i]) < bestValue)
+            double total = normSize[i] + normCt[i] + normDt[i];
+            totalList.Add(total);
+            if (total < bestValue)
             {
                 bestIndex = i;
+                bestValue = total;
             }
         }
 

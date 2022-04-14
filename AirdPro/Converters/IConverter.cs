@@ -852,22 +852,19 @@ namespace AirdPro.Converters
             return airdInfo;
         }
 
-        List<ByteComp> byteCompList = new List<ByteComp>()
+        List<ByteComp> byteCompList = new()
         {
             new BrotliWrapper(), new SnappyWrapper(), new ZstdWrapper(), new ZlibWrapper()
         };
 
-        List<SortedIntComp> integratedIntCompList = new List<SortedIntComp>()
+        List<SortedIntComp> integratedIntCompList = new()
         {
-            new IntegratedVarByteWrapper(),
-            // new IntegratedBinPackingWrapper(),
+            new IntegratedVarByteWrapper(), new IntegratedBinPackingWrapper(),
         };
 
-        List<IntComp> intCompList = new List<IntComp>()
+        List<IntComp> intCompList = new()
         {
-            new VarByteWrapper(),
-            new BinPackingWrapper(),
-            new Empty()
+            new VarByteWrapper(), new BinPackingWrapper(), new Empty()
         };
 
         public void randomSampling(int randomNum, bool ionMobi)
@@ -888,8 +885,6 @@ namespace AirdPro.Converters
                 {
                     mobiNoArrays.Add(dataList[2]);
                 }
-
-                // Debug.WriteLine(index + "-");
             }
 
             compressForTargetArrays(mzArrays, intensityArrays, mobiNoArrays, ionMobi);
@@ -994,7 +989,7 @@ namespace AirdPro.Converters
                 CompressStat stat = new CompressStat(key, sizeMap[key], ctMap[key], dtMap[key]);
                 if (key.StartsWith("mz"))
                 {
-                    stat.key.Replace("mz-", "");
+                    stat.key = stat.key.Replace("mz-", "");
                     mzStatList.Add(stat);
                 }
 
