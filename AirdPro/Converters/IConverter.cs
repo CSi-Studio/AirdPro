@@ -119,7 +119,7 @@ namespace AirdPro.Converters
 
         protected void predictForCombinableComps()
         {
-            jobInfo.log("predict for combinable compressors", "predicting");
+            jobInfo.log("predict for combinable compressors:" + jobInfo.airdFileName, "predicting");
             randomSampling(spectraNumForCombinableCompressorsPredict, jobInfo.ionMobility);
         }
 
