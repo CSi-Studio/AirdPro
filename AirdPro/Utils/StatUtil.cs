@@ -60,20 +60,20 @@ public class StatUtil
         Dictionary<string, long> decompressTimeMap)
     {
         // string key = buildComboKey(dim, intComp.getName(), byteComp.getName());
-        Stopwatch watchMz = new Stopwatch();
-        int tempMzSize = 0;
-        watchMz.Start();
+        Stopwatch watch = new Stopwatch();
+        int tempSize = 0;
+        watch.Start();
         List<byte[]> encodeList = new List<byte[]>();
         for (int i = 0; i < arrays.Count; i++)
         {
-            byte[] compMz = ComboComp.encode(intComp, byteComp, arrays[i]);
-            tempMzSize += compMz.Length;
-            encodeList.Add(compMz);
+            byte[] comp = ComboComp.encode(intComp, byteComp, arrays[i]);
+            tempSize += comp.Length;
+            encodeList.Add(comp);
         }
 
-        sizeMap[key] = tempMzSize;
-        compressTimeMap[key] = watchMz.Elapsed.Ticks;
-        watchMz.Restart();
+        sizeMap[key] = tempSize;
+        compressTimeMap[key] = watch.Elapsed.Ticks;
+        watch.Restart();
         for (int i = 0; i < encodeList.Count; i++)
         {
             int[] mz = ComboComp.decode(intComp, byteComp, encodeList[i]);
@@ -83,8 +83,8 @@ public class StatUtil
             }
         }
 
-        decompressTimeMap[key] = watchMz.Elapsed.Ticks;
-        watchMz.Stop();
+        decompressTimeMap[key] = watch.Elapsed.Ticks;
+        watch.Stop();
     }
 
     public static void stat4HuffmanCode(BaseComp<int> intComp, ByteComp byteComp, List<int[]> arrays, string dim,

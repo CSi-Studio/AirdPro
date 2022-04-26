@@ -79,6 +79,7 @@ namespace AirdPro.Converters
         {
             stopwatch.Start();
             jobInfo.log("Ready To Start", "Starting");
+            AppLogs.WriteInfo("Base Info:" + jobInfo.getJsonInfo(), true);
         }
 
         public void finish()
