@@ -64,6 +64,7 @@ namespace AirdPro.Converters
         protected string polarity; //Negative, Positive
         protected string rtUnit; //Minute, Second
         protected int intensityPrecision = 1; //Intensity默认精确到个位数
+        protected int mobiPrecision = 10000000; //mobility默认精确到小数点后7位
 
         protected int spectraNumForIntensityPrecisionPredict = 5;
         protected int spectraNumForCombinableCompressorsPredict = 100;
@@ -118,9 +119,9 @@ namespace AirdPro.Converters
             compressor.mobiDict = mobiDict;
         }
 
-        protected void predictForCombinableComps()
+        protected void predictForComboComps()
         {
-            jobInfo.log("predict for combinable compressors:" + jobInfo.airdFileName, "predicting");
+            jobInfo.log("predict for combia compressors:" + jobInfo.airdFileName, "predicting");
             randomSampling(spectraNumForCombinableCompressorsPredict, jobInfo.ionMobility);
         }
 
@@ -355,8 +356,8 @@ namespace AirdPro.Converters
                 airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
                 if (ts.mobilityArrayBytes != null)
                 {
-                    startPosition += ts.mobilityArrayBytes.Length;
                     index.mobilities.Add(ts.mobilityArrayBytes.Length);
+                    startPosition += ts.mobilityArrayBytes.Length;
                     airdStream.Write(ts.mobilityArrayBytes, 0, ts.mobilityArrayBytes.Length);
                 }
             }
@@ -514,7 +515,7 @@ namespace AirdPro.Converters
             int[] mobiIntArray = new int[mobiArray.Length];
             for (var i = 0; i < mobiArray.Length; i++)
             {
-                mobiIntArray[i] = (int) Math.Round(mobiArray[i] * AirdInfo.PRECISION_MOBI);
+                mobiIntArray[i] = (int) Math.Round(mobiArray[i] * mobiPrecision);
             }
 
             byte[] compressedMobiData =
@@ -588,7 +589,15 @@ namespace AirdPro.Converters
 
                     ms2Ranges.Add(range);
                     TempScan ts = new TempScan(index.num, index.rt, index.tic, index.cvList);
-                    compressor.compress(spectrumList.spectrum(index.num, true), ts);
+                    if (jobInfo.ionMobility)
+                    {
+                        compressor.compressMobility(spectrumList.spectrum(index.num, true), ts);
+                    }
+                    else
+                    {
+                        compressor.compress(spectrumList.spectrum(index.num, true), ts);
+                    }
+
                     blockIndex.nums.Add(ts.num);
                     blockIndex.rts.Add(ts.rt);
                     blockIndex.tics.Add(ts.tic);
@@ -598,6 +607,12 @@ namespace AirdPro.Converters
                     startPosition = startPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;
                     airdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
                     airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
+                    if (ts.mobilityArrayBytes != null)
+                    {
+                        blockIndex.mobilities.Add(ts.mobilityArrayBytes.Length);
+                        startPosition += ts.mobilityArrayBytes.Length;
+                        airdStream.Write(ts.mobilityArrayBytes, 0, ts.mobilityArrayBytes.Length);
+                    }
                 }
 
                 blockIndex.rangeList = ms2Ranges;
@@ -833,6 +848,7 @@ namespace AirdPro.Converters
 
                 mobiCompressor.addMethod(jobInfo.config.mobiIntComp.ToString());
                 mobiCompressor.addMethod(jobInfo.config.mobiByteComp.ToString());
+                mobiCompressor.precision = mobiPrecision;
             }
 
             coms.Add(mzCompressor);

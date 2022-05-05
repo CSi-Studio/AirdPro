@@ -18,4 +18,3 @@ namespace AirdSDK.Domains
         public string type; //ion mobility type, see MobilityType
     }
 }
-

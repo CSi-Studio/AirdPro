@@ -173,7 +173,7 @@ namespace AirdPro.Algorithms
             ts.intArrayBytes = compressedIntArray;
         }
 
-        public void compressMobility(Spectrum spectrum, TempScan ts)
+        public override void compressMobility(Spectrum spectrum, TempScan ts)
         {
             double[] mzData = spectrum.getMZArray().data.Storage();
             double[] intData = spectrum.getIntensityArray().data.Storage();

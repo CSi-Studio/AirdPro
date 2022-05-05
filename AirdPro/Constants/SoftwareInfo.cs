@@ -12,13 +12,14 @@ namespace AirdPro.Constants
 {
     class SoftwareInfo
     {
-        public static string VERSION = "3.0.3";
-        public static int VERSION_CODE = 303;
+        public static string VERSION = "3.0.4";
+        public static int VERSION_CODE = 304;
 
         public static string CLIENT_VERSION_DESCRIPTION = "1. PASEF Mode Support;\r\n" +
                                                           "2. Dynamic Intensity Precision for big value(>2^31-1);\r\n " +
                                                           "3. Mapping For Mobility Compression:\r\n" +
-                                                          "4. Combinable compressor for Byte and Integer Array:\r\n" +
+                                                          "4. Dynamic Decider to predict best combination:\r\n" +
+                                                          "5. Combinable compressor for Byte and Integer Array:\r\n" +
                                                           "  For Byte: Brotli, Snappy, Zstd, Zlib;\r\n" +
                                                           "  For Integer:Variable Byte, Binary Packing\r\n";
 

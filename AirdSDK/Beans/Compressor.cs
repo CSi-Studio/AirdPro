@@ -35,7 +35,9 @@ namespace AirdSDK.Domains
          * 1000: 0.001, 3dp
          * 10000: 0.0001, 4dp
          * 100000: 0.00001, 5dp
-         * 压缩精度, 有1000,10000和100000三种,代表精确到小数点后3,4,5位
+         * 10000000: 0.0000001, 7dp
+         * mz压缩精度, 有1000,10000和100000三种,代表精确到小数点后3,4,5位
+         * mobility压缩精度, 目前只有10000000一种,代表精确到小数点后7位
          */
         public int precision;
 
@@ -56,6 +58,7 @@ namespace AirdSDK.Domains
             {
                 methods = new List<string>();
             }
+
             methods.Add(method);
         }
     }

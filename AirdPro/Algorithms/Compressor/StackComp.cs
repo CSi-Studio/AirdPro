@@ -181,6 +181,11 @@ namespace AirdPro.Algorithms
             throw new NotImplementedException();
         }
 
+        public override void compressMobility(Spectrum spectrum, TempScan ts)
+        {
+            throw new NotImplementedException();
+        }
+
         //Compress for Stack-ZDPD
         public void compress(List<Spectrum> spectrumGroup, TempScanSZDPD ts)
         {

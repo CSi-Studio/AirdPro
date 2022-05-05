@@ -15,8 +15,6 @@ namespace AirdSDK.Domains
 {
     public class AirdInfo
     {
-        public const int PRECISION_MOBI = 10000000; //Mobi Array采用IVB+Zstd的压缩方式进行存储,精确到小数点后7位
-
         /**
          * Instrument information list
          */
@@ -159,6 +157,6 @@ namespace AirdSDK.Domains
          * Use in ion mobility acquisition method
          * 如果是Mobility采集模式,本字段会启用
          */
-        public MobiInfo mobiInfo = new MobiInfo();
+        public MobiInfo mobiInfo;
     }
 }

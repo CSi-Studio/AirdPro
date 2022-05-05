@@ -48,5 +48,7 @@ namespace AirdPro.Algorithms
         public abstract void compressMS2(IConverter converter, List<MsIndex> ms2List, BlockIndex index);
 
         public abstract void compress(Spectrum spectrum, TempScan ts);
+
+        public abstract void compressMobility(Spectrum spectrum, TempScan ts);
     }
 }

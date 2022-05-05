@@ -34,7 +34,7 @@ namespace AirdPro.Converters
                 {
                     readVendorFile(); //准备读取Vendor文件
                     predictForIntensityPrecision(); //预测intensity需要保留的精度
-                    predictForCombinableComps(); //预测最佳压缩组合
+                    predictForComboComps(); //预测最佳压缩组合
                     pretreatment(); //预处理谱图,将MS1和MS2谱图分开存储
                     compressMS1Block(); //处理MS1,并将索引写入文件流中
                     parseAndStoreMS2Block(); //处理MS2,并将索引写入文件流中
