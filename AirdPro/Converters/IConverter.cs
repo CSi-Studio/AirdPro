@@ -36,23 +36,23 @@ namespace AirdPro.Converters
         protected MSData msd;
         public SpectrumList spectrumList;
         public JobInfo jobInfo;
-        protected Stopwatch stopwatch = new Stopwatch();
+        protected Stopwatch stopwatch = new();
         protected FileStream airdStream;
         protected FileStream airdJsonStream;
-        protected List<WindowRange> ranges = new List<WindowRange>(); //SWATH Window的窗口
-        protected Hashtable rangeTable = new Hashtable(); //用于存放SWATH窗口的信息,key为mz
-        protected List<BlockIndex> indexList = new List<BlockIndex>(); //用于存储的全局的SWATH List
+        protected List<WindowRange> ranges = new(); //SWATH Window的窗口
+        protected Hashtable rangeTable = new(); //用于存放SWATH窗口的信息,key为mz
+        protected List<BlockIndex> indexList = new(); //用于存储的全局的SWATH List
 
         protected Hashtable
             ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
 
-        public List<MsIndex> ms1List = new List<MsIndex>(); //用于存放MS1索引及基础信息,泛型为MsIndex
-        protected Hashtable featuresMap = new Hashtable();
+        public List<MsIndex> ms1List = new(); //用于存放MS1索引及基础信息,泛型为MsIndex
+        protected Hashtable featuresMap = new();
         public ICompressor compressor;
 
         public double[] mobiArray;
         public Dictionary<double, int> mobiDict;
-        public MobiInfo mobiInfo = new MobiInfo();
+        public MobiInfo mobiInfo = new();
 
         protected long fileSize; //厂商文件大小
         protected long startPosition = 0; //文件指针
@@ -67,7 +67,7 @@ namespace AirdPro.Converters
         protected int mobiPrecision = 10000000; //mobility默认精确到小数点后7位
 
         protected int spectraNumForIntensityPrecisionPredict = 5;
-        protected int spectraNumForCombinableCompressorsPredict = 100;
+        protected int spectraNumForComboCompPredict = 100;
 
         public IConverter(JobInfo jobInfo)
         {
@@ -122,7 +122,7 @@ namespace AirdPro.Converters
         protected void predictForComboComps()
         {
             jobInfo.log("predict for combia compressors:" + jobInfo.airdFileName, "predicting");
-            randomSampling(spectraNumForCombinableCompressorsPredict, jobInfo.ionMobility);
+            randomSampling(spectraNumForComboCompPredict, jobInfo.ionMobility);
         }
 
         /**
