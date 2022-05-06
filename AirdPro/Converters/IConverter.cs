@@ -79,7 +79,7 @@ namespace AirdPro.Converters
         public void start()
         {
             stopwatch.Start();
-            jobInfo.log("Ready To Start", "Starting");
+            jobInfo.log("Ready To Start", Status.Starting);
             AppLogs.WriteInfo("Base Info:" + jobInfo.getJsonInfo(), true);
         }
 
@@ -87,7 +87,7 @@ namespace AirdPro.Converters
         {
             stopwatch.Stop();
             jobInfo.refreshReport = true;
-            jobInfo.log("Finished! Total Cost: " + stopwatch.Elapsed.TotalSeconds + " seconds", "Finished");
+            jobInfo.log("Finished! Total Cost: " + stopwatch.Elapsed.TotalSeconds + " seconds", Status.Finished);
         }
 
         protected void initDirectory()
@@ -121,7 +121,7 @@ namespace AirdPro.Converters
 
         protected void predictForComboComps()
         {
-            jobInfo.log("predict for combia compressors:" + jobInfo.airdFileName, "predicting");
+            jobInfo.log("predict for combia compressors:" + jobInfo.airdFileName, Status.Predicting);
             randomSampling(spectraNumForComboCompPredict, jobInfo.ionMobility);
         }
 
@@ -365,7 +365,7 @@ namespace AirdPro.Converters
 
         protected void readVendorFile()
         {
-            jobInfo.log("Prepare to Parse Vendor File", "Prepare");
+            jobInfo.log("Prepare to Parse Vendor File", Status.Prepare);
             ReaderList readerList = ReaderList.FullReaderList;
             var readerConfig = new ReaderConfig
             {
@@ -382,7 +382,7 @@ namespace AirdPro.Converters
             }
 
             msd = msInfo[0];
-            jobInfo.log("Adapting Vendor File API", "Adapting");
+            jobInfo.log("Adapting Vendor File API", Status.Adapting);
 
             List<string> filter = new List<string>();
             SpectrumListFactory.wrap(msd, filter); //这一步操作可以帮助加快Wiff文件的初始化速度
@@ -418,7 +418,7 @@ namespace AirdPro.Converters
         //将最终的数据写入文件中
         public void writeToAirdInfoFile()
         {
-            jobInfo.log("Writing Index File", "Writing Index File");
+            jobInfo.log("Writing Index File", Status.Writing_Index_File);
             AirdInfo airdInfo = buildBasicInfo();
             string airdInfoStr = JsonConvert.SerializeObject(airdInfo, new JsonSerializerSettings
                 {NullValueHandling = NullValueHandling.Ignore});
@@ -550,12 +550,12 @@ namespace AirdPro.Converters
                 index.startPtr = startPosition;
                 index.setWindowRange(range);
 
-                jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);
+                jobInfo.log(null, Tag.progress(Tag.MS2, progress, ms2Table.Keys.Count));
                 progress++;
                 compressor.compressMS2(this, ms2List, index);
                 index.endPtr = startPosition;
                 indexList.Add(index);
-                jobInfo.log("MS2 Group Finished:" + progress + "/" + ms2Table.Keys.Count);
+                jobInfo.log(Tag.progress(Tag.MS2_Group_Finished, progress, ms2Table.Keys.Count));
             }
         }
 
@@ -576,7 +576,7 @@ namespace AirdPro.Converters
                 blockIndex.num = key;
                 //创建这一个block中每一个ms2的窗口序列
                 List<WindowRange> ms2Ranges = new List<WindowRange>();
-                jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);
+                jobInfo.log(null, Tag.progress(Tag.MS2, progress, ms2Table.Keys.Count));
                 progress++;
 
                 foreach (MsIndex index in tempIndexList)

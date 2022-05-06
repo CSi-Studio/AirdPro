@@ -13,6 +13,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using AirdPro.Constants;
 using AirdPro.Converters;
 using AirdPro.Domains;
 using AirdSDK.Compressor;
@@ -43,7 +44,7 @@ namespace AirdPro.Algorithms
                 Parallel.For(0, iter, (i, ParallelLoopState) =>
                 {
                     Interlocked.Increment(ref process);
-                    converter.jobInfo.log(null, "MS1:" + process + "/" + iter);
+                    converter.jobInfo.log(null, Tag.progress(Tag.MS1, process, iter));
                     List<float> rts = new List<float>();
                     List<int> nums = new List<int>();
                     List<long> tics = new List<long>();
@@ -76,7 +77,7 @@ namespace AirdPro.Algorithms
             {
                 for (int i = 0; i < iter; i++)
                 {
-                    converter.jobInfo.log(null, "MS1:" + i + "/" + iter);
+                    converter.jobInfo.log(null, Tag.progress(Tag.MS1, i, iter));
 
                     List<float> rts = new List<float>();
                     List<int> nums = new List<int>();

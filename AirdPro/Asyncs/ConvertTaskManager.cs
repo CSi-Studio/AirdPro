@@ -107,7 +107,7 @@ namespace AirdPro.Asyncs
                         }
                         catch (Exception ex)
                         {
-                            jobInfo.log(ex.ToString(), "Error");
+                            jobInfo.log(ex.ToString(), Status.Error);
                             jobInfo.retryTimes--;
                             if (jobInfo.retryTimes > 0)
                             {

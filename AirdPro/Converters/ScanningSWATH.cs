@@ -14,37 +14,44 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Threading.Tasks;
+using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdSDK.Domains;
 using AirdSDK.Enums;
 
+/**
+ * Code not released. Please do not use this code.
+ */
 namespace AirdPro.Converters
 {
     public class ScanningSWATH : IConverter
     {
-        private int progress;//进度计数器
-        Hashtable rangeMap = Hashtable.Synchronized(new Hashtable());//用于存储TargetMZ-SwathIndex
-        Hashtable ms2Map = Hashtable.Synchronized(new Hashtable());//用于存储TargetMZ-List<TempScan>
+        private int progress; //进度计数器
+        Hashtable rangeMap = Hashtable.Synchronized(new Hashtable()); //用于存储TargetMZ-SwathIndex
+        Hashtable ms2Map = Hashtable.Synchronized(new Hashtable()); //用于存储TargetMZ-List<TempScan>
 
-        public ScanningSWATH(JobInfo jobInfo) : base(jobInfo) { }
+        public ScanningSWATH(JobInfo jobInfo) : base(jobInfo)
+        {
+        }
 
         public override void doConvert()
         {
             start();
-            initDirectory();//创建文件夹
+            initDirectory(); //创建文件夹
             using (airdStream = new FileStream(jobInfo.airdFilePath, FileMode.Create))
             {
                 using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                 {
-                    readVendorFile();//准备读取Vendor文件
-                    initGlobalVar();//初始化全局变量
+                    readVendorFile(); //准备读取Vendor文件
+                    initGlobalVar(); //初始化全局变量
                     buildWindowsRanges(); //Getting SWATH Windows
-                    coreLoop();//核心扫描解析逻辑
-                    sortAndWrite();//整理最终的解析数据,并且写入文件
-                    writeToAirdInfoFile();//将Info数据写入文件
+                    coreLoop(); //核心扫描解析逻辑
+                    sortAndWrite(); //整理最终的解析数据,并且写入文件
+                    writeToAirdInfoFile(); //将Info数据写入文件
                     clearCache();
                 }
             }
+
             finish();
         }
 
@@ -53,7 +60,7 @@ namespace AirdPro.Converters
             totalSize = spectrumList.size();
             progress = 0;
             jobInfo.log("Total Spectra:" + totalSize);
-            startPosition = 0;//文件的存储位置,每一次解析完就会将指针往前挪移
+            startPosition = 0; //文件的存储位置,每一次解析完就会将指针往前挪移
         }
 
         /**
@@ -86,16 +93,17 @@ namespace AirdPro.Converters
                 i++;
                 spectrum = spectrumList.spectrum(i);
             }
+
             jobInfo.log("Finished Getting Windows");
         }
 
         private void coreLoop()
         {
-            jobInfo.log(null, progress + "/" + totalSize);
+            jobInfo.log(null, Tag.progress(progress, totalSize));
             Parallel.For(0, totalSize, (i, ParallelLoopState) =>
             {
                 scan(i);
-                if (progress % 100 == 0) jobInfo.log(null, progress + 1 + "/" + totalSize);
+                if (progress % 100 == 0) jobInfo.log(null, Tag.progress(progress + 1, totalSize));
                 progress++;
             });
         }
@@ -107,8 +115,8 @@ namespace AirdPro.Converters
             mzKeys.Sort(); //按mz顺序进行排序
             foreach (float key in mzKeys)
             {
-                BlockIndex swathIndex = (BlockIndex)rangeMap[key];
-                ArrayList tempScanList = (ArrayList)ms2Map[key];
+                BlockIndex swathIndex = (BlockIndex) rangeMap[key];
+                ArrayList tempScanList = (ArrayList) ms2Map[key];
                 swathIndex.level = 2;
                 swathIndex.startPtr = startPosition;
                 tempScanList.Sort();
@@ -131,6 +139,7 @@ namespace AirdPro.Converters
             {
                 return;
             }
+
             double targetMz = parsePrecursorParams(spectrum, CVID.MS_isolation_window_target_m_z);
             ArrayList ms2List = null;
             if (rangeMap.Contains(targetMz))
@@ -148,16 +157,18 @@ namespace AirdPro.Converters
                 addIndex.setWindowRange(range);
                 rangeMap.Add(targetMz, addIndex);
                 ms2Map.Add(targetMz, ArrayList.Synchronized(new ArrayList()));
-                ms2List = (ArrayList)ms2Map[targetMz];
+                ms2List = (ArrayList) ms2Map[targetMz];
             }
 
             if (spectrum.scanList.scans.Count != 1)
             {
                 return;
             }
+
             try
             {
-                TempScan ts = new TempScan(i, parseRT(spectrum.scanList.scans[0]), parseTIC(spectrum), AirdSDK.Domains.CV.trans(spectrum.cvParams));
+                TempScan ts = new TempScan(i, parseRT(spectrum.scanList.scans[0]), parseTIC(spectrum),
+                    AirdSDK.Domains.CV.trans(spectrum.cvParams));
                 compressor.compress(spectrum, ts);
                 ms2List.Add(ts);
             }

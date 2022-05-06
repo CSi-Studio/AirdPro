@@ -14,6 +14,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdPro.Utils;
 using AirdSDK.Compressor;
@@ -24,7 +25,7 @@ namespace AirdPro.Algorithms
 {
     public class CoreComp : ICompressor
     {
-        private static readonly object locker = new object();
+        private static readonly object locker = new();
 
         public CoreComp(IConverter converter) : base(converter)
         {
@@ -41,7 +42,7 @@ namespace AirdPro.Algorithms
                 Parallel.For(0, converter.ms1List.Count, (i, ParallelLoopState) =>
                 {
                     Interlocked.Increment(ref process);
-                    converter.jobInfo.log(null, "MS1:" + process + "/" + converter.ms1List.Count);
+                    converter.jobInfo.log(null, Tag.progress(Tag.MS1, process, converter.ms1List.Count));
                     MsIndex ms1Index = converter.ms1List[i];
                     TempScan ts = new TempScan(ms1Index.num, ms1Index.rt, ms1Index.tic, ms1Index.cvList);
                     Spectrum spectrum;
@@ -67,7 +68,7 @@ namespace AirdPro.Algorithms
             {
                 for (int i = 0; i < converter.ms1List.Count; i++)
                 {
-                    converter.jobInfo.log(null, "MS1:" + i + "/" + converter.ms1List.Count);
+                    converter.jobInfo.log(null, Tag.progress(Tag.MS1, i, converter.ms1List.Count));
                     MsIndex ms1Index = converter.ms1List[i];
                     TempScan ts = new TempScan(ms1Index.num, ms1Index.rt, ms1Index.tic, ms1Index.cvList);
                     using (var spectrum = converter.spectrumList.spectrum(ts.num, true))

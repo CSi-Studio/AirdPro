@@ -10,6 +10,7 @@
 
 using pwiz.CLI.msdata;
 using System.IO;
+using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdSDK.Domains;
 using AirdSDK.Enums;
@@ -47,13 +48,13 @@ namespace AirdPro.Converters
         protected void pretreatment()
         {
             int parentNum = 0;
-            jobInfo.log("Pretreatment:" + totalSize, "Pretreatment");
+            jobInfo.log(Tag.Pretreatment + totalSize, Status.Pretreatment);
             int progress = 0;
             // 预处理所有的MS谱图,将MS1与MS2的信息扫描以后放入对应的内存对象中
             for (int i = 0; i < totalSize; i++)
             {
                 progress++;
-                jobInfo.log(null, "Pre:" + progress + "/" + totalSize);
+                jobInfo.log(null, Tag.progress(Tag.Pre, progress, totalSize));
                 Spectrum spectrum = spectrumList.spectrum(i);
                 string msLevel = parseMsLevel(spectrum);
                 //如果这个谱图是MS1                          
@@ -80,10 +81,10 @@ namespace AirdPro.Converters
                 }
             }
 
-            jobInfo.log("Total SWATH Windows:" + ranges.Count);
-            jobInfo.log("Effective MS1 List Size:" + ms1List.Count);
-            jobInfo.log("MS2 Group List Size:" + ms2Table.Count);
-            jobInfo.log("Start Processing MS1 List");
+            jobInfo.log(Tag.Total_SWATH_WINDOWS + ranges.Count);
+            jobInfo.log(Tag.Effective_MS1_List_Size + ms1List.Count);
+            jobInfo.log(Tag.MS2_Group_List_Size + ms2Table.Count);
+            jobInfo.log(Tag.Start_Processing_MS1_List);
         }
     }
 }

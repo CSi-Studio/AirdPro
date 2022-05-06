@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdSDK.Domains;
 using AirdSDK.Enums;
@@ -49,10 +50,10 @@ namespace AirdPro.Converters
         protected void pretreatment()
         {
             int parentNum = 0;
-            jobInfo.log("Preprocessing:" + totalSize, "Preprocessing");
+            jobInfo.log(Status.tag_preprocessing + totalSize, Status.Preprocessing);
             Parallel.For(0, totalSize, (i, ParallelLoopState) =>
             {
-                jobInfo.log(null, (i + 1) + "/" + totalSize);
+                jobInfo.log(null, Tag.progress(Tag.Empty, (i + 1), totalSize));
                 Spectrum spectrum = spectrumList.spectrum(i);
                 string msLevel = parseMsLevel(spectrum);
                 //如果是最后一个谱图,那么单独判断
@@ -121,7 +122,7 @@ namespace AirdPro.Converters
                 index.setWindowRange(range); //顺便创建一个WindowRanges,用以让Propro服务端快速获取全局的窗口数目和mz区间
                 ranges.Add(range);
 
-                jobInfo.log(null, "MS2:" + progress + "/" + ms2Table.Keys.Count);
+                jobInfo.log(null, Tag.progress(Tag.MS2, progress, ms2Table.Keys.Count));
                 progress++;
                 compressor.compressMS2(this, ms2List, index);
                 index.endPtr = startPosition;

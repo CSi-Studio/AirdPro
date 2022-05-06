@@ -10,6 +10,7 @@
 
 using pwiz.CLI.msdata;
 using System.IO;
+using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdSDK.Enums;
 
@@ -47,10 +48,10 @@ namespace AirdPro.Converters
         private void pretreatment()
         {
             int parentNum = 0;
-            jobInfo.log("Pretreatment:" + totalSize, "Pretreatment");
+            jobInfo.log(Tag.Pretreatment + totalSize, Status.Pretreatment);
             for (var i = 0; i < totalSize; i++)
             {
-                jobInfo.log(null, "Pre:" + i + "/" + totalSize);
+                jobInfo.log(null, Tag.progress(Tag.Pre, i, totalSize));
                 Spectrum spectrum = spectrumList.spectrum(i);
                 string msLevel = parseMsLevel(spectrum);
 
@@ -89,9 +90,9 @@ namespace AirdPro.Converters
                 }
             }
 
-            jobInfo.log("Effective MS1 List Size:" + ms1List.Count);
-            jobInfo.log("MS2 Group List Size:" + ms2Table.Count);
-            jobInfo.log("Start Processing MS1 List");
+            jobInfo.log(Tag.Effective_MS1_List_Size + ms1List.Count);
+            jobInfo.log(Tag.MS2_Group_List_Size + ms2Table.Count);
+            jobInfo.log(Tag.Start_Processing_MS1_List);
         }
     }
 }

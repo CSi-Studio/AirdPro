@@ -13,6 +13,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdSDK.Domains;
 using AirdSDK.Enums;
@@ -48,7 +49,7 @@ namespace AirdPro.Converters
         {
             var ms1Index = new BlockIndex(1);
             var ms2Index = new BlockIndex(2);
-            jobInfo.log("Preprocessing:" + totalSize, "Preprocessing");
+            jobInfo.log(Tag.Preprocessing + totalSize, Status.Preprocessing);
             if (jobInfo.config.threadAccelerate)
             {
                 var ms1Table = Hashtable.Synchronized(new Hashtable());
@@ -57,7 +58,7 @@ namespace AirdPro.Converters
 
                 for (int i = 0; i < totalSize; i++)
                 {
-                    jobInfo.log(null, progress + "/" + totalSize);
+                    jobInfo.log(null, Tag.progress(progress, totalSize));
                     Interlocked.Increment(ref progress);
                     try
                     {
@@ -90,7 +91,7 @@ namespace AirdPro.Converters
                     }
                     catch (Exception exception)
                     {
-                        Debug.WriteLine("Num:" + i + "Exception!" + exception.Message);
+                        AppLogs.WriteError(Tag.Num + i + exception.Message, true);
                     }
                 }
 

@@ -130,11 +130,11 @@ namespace AirdPro.Domains
             progress.Report(status);
         }
 
-        public JobInfo log(string content, string progressReport)
+        public JobInfo log(string content, string status)
         {
             if (refreshReport)
             {
-                progress.Report(progressReport);
+                progress.Report(status);
                 refreshReport = false;
             }
 
@@ -151,7 +151,7 @@ namespace AirdPro.Domains
 
         public void logError(string content)
         {
-            progress.Report("Error");
+            progress.Report(Status.Error);
             Log log = new Log(DateTime.Now, content);
             logs.Add(log);
             AppLogs.WriteError(content, true);
@@ -162,17 +162,17 @@ namespace AirdPro.Domains
         public string getJsonInfo()
         {
             string jobInfo = "";
-            jobInfo += "inpuPath:" + inputPath + "\r\n";
-            jobInfo += "outputPath:" + outputPath + "\r\n";
-            jobInfo += "airdFileName:" + airdFileName + "\r\n";
-            jobInfo += "airdFilePath:" + airdFilePath + "\r\n";
-            jobInfo += "airdJsonFilePath:" + airdJsonFilePath + "\r\n";
-            jobInfo += "ignoreZeroIntensity:" + config.ignoreZeroIntensity + "\r\n";
-            jobInfo += "suffix:" + config.suffix + "\r\n";
-            jobInfo += "threadId:" + threadId + "\r\n";
-            jobInfo += "ThreadAccelerate:" + config.threadAccelerate + "\r\n";
-            jobInfo += "mzPrecision:" + config.getMzPrecisionStr() + "\r\n";
-            jobInfo += "compressor:" + getCompressorStr() + "\r\n";
+            jobInfo += "InpuPath:" + inputPath + Const.Change_Line;
+            jobInfo += "OutputPath:" + outputPath + Const.Change_Line;
+            jobInfo += "AirdFileName:" + airdFileName + Const.Change_Line;
+            jobInfo += "AirdFilePath:" + airdFilePath + Const.Change_Line;
+            jobInfo += "AirdJsonFilePath:" + airdJsonFilePath + Const.Change_Line;
+            jobInfo += "IgnoreZeroIntensity:" + config.ignoreZeroIntensity + Const.Change_Line;
+            jobInfo += "Suffix:" + config.suffix + Const.Change_Line;
+            jobInfo += "ThreadId:" + threadId + Const.Change_Line;
+            jobInfo += "ThreadAccelerate:" + config.threadAccelerate + Const.Change_Line;
+            jobInfo += "MzPrecision:" + config.getMzPrecisionStr() + Const.Change_Line;
+            jobInfo += "Compressor:" + getCompressorStr() + Const.Change_Line;
             return jobInfo;
         }
 
@@ -191,13 +191,15 @@ namespace AirdPro.Domains
         {
             if (ionMobility)
             {
-                return config.mzIntComp + "_" + config.mzByteComp + "_" + config.intIntComp + "_" + config.intByteComp +
-                       "_" + config.mobiIntComp + "_" +
+                return config.mzIntComp + Const.Dash + config.mzByteComp + Const.Dash + config.intIntComp + Const.Dash +
+                       config.intByteComp +
+                       Const.Dash + config.mobiIntComp + Const.Dash +
                        config.mobiByteComp;
             }
             else
             {
-                return config.mzIntComp + "_" + config.mzByteComp + "_" + config.intIntComp + "_" + config.intByteComp;
+                return config.mzIntComp + Const.Dash + config.mzByteComp + Const.Dash + config.intIntComp + Const.Dash +
+                       config.intByteComp;
             }
         }
 

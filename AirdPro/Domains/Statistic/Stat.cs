@@ -28,7 +28,7 @@ namespace AirdPro.Domains
         {
             if (dataList.Count == 0)
             {
-                throw new Exception("Data list cannot be empty");
+                throw new Exception("Data list cannot be Empty");
             }
 
             this.dataList = dataList;

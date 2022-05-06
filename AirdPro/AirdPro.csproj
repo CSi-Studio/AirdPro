@@ -143,6 +143,8 @@
     <Compile Include="Asyncs\ConvertTaskManager.cs" />
     <Compile Include="Asyncs\LimitedConcurrencyLevelTaskScheduler.cs" />
     <Compile Include="Constants\Activator.cs" />
+    <Compile Include="Constants\Tag.cs" />
+    <Compile Include="Constants\Status.cs" />
     <Compile Include="Constants\MessageInfo.cs" />
     <Compile Include="Constants\ByteOrder.cs" />
     <Compile Include="Constants\FileFormat.cs" />
@@ -153,6 +155,7 @@
     <Compile Include="Constants\MSType.cs" />
     <Compile Include="Constants\Polarity.cs" />
     <Compile Include="Constants\ProcessingStatus.cs" />
+    <Compile Include="Constants\ResultCode.cs" />
     <Compile Include="Constants\SoftwareInfo.cs" />
     <Compile Include="Converters\Common.cs" />
     <Compile Include="Converters\DDAPasef .cs" />
