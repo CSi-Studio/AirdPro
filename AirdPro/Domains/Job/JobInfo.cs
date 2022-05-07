@@ -64,6 +64,9 @@ namespace AirdPro.Domains
         //任务运行时产生的进度信息
         private IProgress<string> progress;
 
+        //任务运行时产生的组合压缩,在使用动态决策器时有效
+        private IProgress<string> compressor;
+
         //任务的线程名称
         public string threadId;
 
@@ -111,6 +114,10 @@ namespace AirdPro.Domains
             {
                 item.SubItems[ItemName.PROGRESS].Text = progressValue;
             });
+            compressor = new Progress<string>((compressor) =>
+            {
+                item.SubItems[ItemName.COMPRESSOR].Text = compressor;
+            });
             item.ToolTipText = outputPath;
             item.Tag = this;
             return item;
@@ -128,6 +135,11 @@ namespace AirdPro.Domains
         public void setStatus(string status)
         {
             progress.Report(status);
+        }
+
+        public void setComboComp(string comboComp)
+        {
+            compressor.Report(comboComp);
         }
 
         public JobInfo log(string content, string status)

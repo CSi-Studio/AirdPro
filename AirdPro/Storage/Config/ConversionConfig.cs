@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using AirdPro.Constants;
 using AirdSDK.Compressor;
 
 namespace AirdPro.Storage.Config
@@ -151,8 +152,8 @@ namespace AirdPro.Storage.Config
                                         config.mobiIntComp = mobiIntComp;
                                         config.mobiByteComp = mobiByteComp;
                                         config.suffix =
-                                            "_" + mzIntComp + "_" + mzByteComp + "_" + intIntComp + "_" + intByteComp +
-                                            "_" + mobiIntComp + "_" +
+                                            Const.Dash + mzIntComp + Const.Dash + mzByteComp + Const.Dash + intIntComp + Const.Dash + intByteComp +
+                                            Const.Dash + mobiIntComp + Const.Dash +
                                             mobiByteComp;
                                         configList.Add(config);
                                     }
@@ -165,7 +166,7 @@ namespace AirdPro.Storage.Config
                                 config.mzByteComp = mzByteComp;
                                 config.intIntComp = intIntComp;
                                 config.intByteComp = intByteComp;
-                                config.suffix = "_" + mzIntComp + "_" + mzByteComp + "_" + intIntComp + "_" +
+                                config.suffix = Const.Dash + mzIntComp + Const.Dash + mzByteComp + Const.Dash + intIntComp + Const.Dash +
                                                 intByteComp;
                                 configList.Add(config);
                             }

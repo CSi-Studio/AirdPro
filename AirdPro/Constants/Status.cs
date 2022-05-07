@@ -8,7 +8,7 @@ public class Status
     public static string Starting = "Starting";
     public static string Adapting = "Adapting";
     public static string Finished = "finished";
-    public static string Predicting = "predicting";
+    public static string Predicting = "Predicting";
     public static string Error = "Error";
     public static string Preprocessing = "Preprocessing";
     public static string Pretreatment = "Pretreatment";

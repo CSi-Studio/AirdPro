@@ -123,9 +123,15 @@ namespace AirdPro.Converters
 
         protected void predictForBestCombination()
         {
+            if (!jobInfo.config.autoDesicion)
+            {
+                return;
+            }
             jobInfo.log(Tag.Predict_For_Best_Combination + jobInfo.airdFileName, Status.Predicting);
             Combination combination = randomSampling(spectraNumForComboCompPredict, jobInfo.ionMobility);
-            combination.enable(jobInfo.config);
+            combination.enable(jobInfo.config, compressor);
+            jobInfo.config.autoDesicion = false;
+            jobInfo.setComboComp(jobInfo.getCompressorStr());
         }
 
         /**
