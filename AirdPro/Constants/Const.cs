@@ -15,5 +15,7 @@ namespace AirdPro.Constants
         public static string Change_Line = "\r\n";
         public static string Left_Slash = "/";
         public static string Dash = "_";
+        public static string COMMA = ",";
+        public static char Char_Dash = '_';
     }
 }

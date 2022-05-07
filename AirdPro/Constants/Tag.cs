@@ -14,7 +14,6 @@ public class Tag
 
     public static string SpectrumIndex = "SpectrumIndex";
     public static string SpectrumId = "SpectrumId";
-    public static string mz = "mz";
     public static string LowerOffset = "LowerOffset";
     public static string UpperOffset = "UpperOffset";
 
@@ -27,8 +26,18 @@ public class Tag
     public static string Best_Combo_Comp = "Best Combo Comp--Mz/Intensity/Mobi:";
     public static string Start_Processing_MS2_List = "Start Processing MS2 List:";
     public static string Write_Index_File = "Writing Index File";
+    public static string Predict_For_Best_Combination = "predict for best combination:";
+    public static string Init_Mobility_Array = "Init Mobility Array";
+    public static string Total_Time_Cost = "Total Time Cost(Second):";
+    public static string Ready_To_Start = "Ready To Start";
+    public static string BaseInfo = "Base Info:";
+    public static string Intensity_Precision = "Intensity Precision:";
+    public static string Prepare_To_Parse_Vendor_File = "Prepare to Parse Vendor File";
+    public static string Adapting_Vendor_File_API = "Adapting Vendor File API";
+    public static string Adapting_Finished = "Adapting Finished";
+    public static string Total_Spectra = "Total Spectra:";
 
-    public static string Key_MZ_Dash = "mz-";
+    public static string Key_MZ_Dash = "MZ-";
     public static string Key_Intensity_Dash = "intensity-";
     public static string Key_Mobi_Dash = "mobi-";
 

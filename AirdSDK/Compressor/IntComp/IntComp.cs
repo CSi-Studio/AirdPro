@@ -27,5 +27,19 @@ namespace AirdSDK.Compressor
                 default: throw new Exception("No Implementation for " + type);
             }
         }
+
+        public static IntCompType getType(string type)
+        {
+            switch (type)
+            {
+                case "VB":
+                    return IntCompType.VB;
+                case "BP":
+                    return IntCompType.BP;
+                case "Empty":
+                    return IntCompType.Empty;
+                default: throw new Exception("No Implementation for " + type);
+            }
+        }
     }
 }

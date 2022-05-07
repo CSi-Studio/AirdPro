@@ -164,6 +164,7 @@
     <Compile Include="Domains\HardwareInfo\HardwareInfo.cs" />
     <Compile Include="Domains\Logs\AppLogs.cs" />
     <Compile Include="Domains\Logs\Log.cs" />
+    <Compile Include="Domains\Scan\Combination.cs" />
     <Compile Include="Domains\Scan\MsIndex.cs" />
     <Compile Include="Domains\Scan\TempScan.cs" />
     <Compile Include="Domains\Scan\TempScanSZDPD.cs" />

@@ -30,7 +30,7 @@ namespace AirdPro.Domains
         //序号
         public int num;
 
-        //前体的荷质比,precursor mz
+        //前体的荷质比,precursor MZ
         public double precursorMz;
 
         //前体的带电量,未知时为0

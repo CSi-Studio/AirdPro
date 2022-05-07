@@ -65,5 +65,17 @@ namespace AirdSDK.Compressor
                 default: throw new Exception("No Implementation for " + type);
             }
         }
+
+        public static SortedIntCompType getType(string type)
+        {
+            switch (type)
+            {
+                case "IBP":
+                    return SortedIntCompType.IBP;
+                case "IVB":
+                    return SortedIntCompType.IVB;
+                default: throw new Exception("No Implementation for " + type);
+            }
+        }
     }
 }

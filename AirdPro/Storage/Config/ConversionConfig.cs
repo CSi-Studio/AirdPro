@@ -17,13 +17,13 @@ namespace AirdPro.Storage.Config
     public class ConversionConfig : ICloneable
     {
         /**
-         * Ignore the mz-intensity pairs whose intensity is zero.
+         * Ignore the MZ-intensity pairs whose intensity is zero.
          * 忽略intensity为0的数据
          */
         public bool ignoreZeroIntensity = true;
 
         /**
-         * the decimal point of the mz. The default value is 5dp
+         * the decimal point of the MZ. The default value is 5dp
          * mz精度,默认保留到小数点后第5位
          */
         public int mzPrecision = 100000;

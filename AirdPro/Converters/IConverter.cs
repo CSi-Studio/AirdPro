@@ -26,6 +26,7 @@ using AirdSDK.Compressor;
 using AirdSDK.Domains;
 using pwiz.CLI.cv;
 using ByteOrder = AirdPro.Constants.ByteOrder;
+using Combination = AirdPro.Domains.Combination;
 using CV = AirdSDK.Domains.CV;
 using Software = pwiz.CLI.msdata.Software;
 
@@ -79,15 +80,15 @@ namespace AirdPro.Converters
         public void start()
         {
             stopwatch.Start();
-            jobInfo.log("Ready To Start", Status.Starting);
-            AppLogs.WriteInfo("Base Info:" + jobInfo.getJsonInfo(), true);
+            jobInfo.log(Tag.Ready_To_Start, Status.Starting);
+            AppLogs.WriteInfo(Tag.BaseInfo + jobInfo.getJsonInfo(), true);
         }
 
         public void finish()
         {
             stopwatch.Stop();
             jobInfo.refreshReport = true;
-            jobInfo.log("Finished! Total Cost: " + stopwatch.Elapsed.TotalSeconds + " seconds", Status.Finished);
+            jobInfo.log(Tag.Total_Time_Cost + stopwatch.Elapsed.TotalSeconds, Status.Finished);
             clearCache();
         }
 
@@ -99,7 +100,7 @@ namespace AirdPro.Converters
 
         public void initBrukerMobi()
         {
-            jobInfo.log("Init Mobility Array");
+            jobInfo.log(Tag.Init_Mobility_Array);
             long handle = TdfUtil.tims_open(jobInfo.inputPath, 1);
             double[] scanNums = new double[2000];
             for (int i = 0; i < scanNums.Length; i++)
@@ -120,10 +121,11 @@ namespace AirdPro.Converters
             compressor.mobiDict = mobiDict;
         }
 
-        protected void predictForComboComps()
+        protected void predictForBestCombination()
         {
-            jobInfo.log("predict for combia compressors:" + jobInfo.airdFileName, Status.Predicting);
-            randomSampling(spectraNumForComboCompPredict, jobInfo.ionMobility);
+            jobInfo.log(Tag.Predict_For_Best_Combination + jobInfo.airdFileName, Status.Predicting);
+            Combination combination = randomSampling(spectraNumForComboCompPredict, jobInfo.ionMobility);
+            combination.enable(jobInfo.config);
         }
 
         /**
@@ -167,7 +169,7 @@ namespace AirdPro.Converters
             }
 
             compressor.intensityPrecision = intensityPrecision;
-            jobInfo.log("Intensity Precision:" + intensityPrecision);
+            jobInfo.log(Tag.Intensity_Precision + intensityPrecision);
         }
 
         protected string parseMsLevel(Spectrum spectrum)
@@ -366,7 +368,7 @@ namespace AirdPro.Converters
 
         protected void readVendorFile()
         {
-            jobInfo.log("Prepare to Parse Vendor File", Status.Prepare);
+            jobInfo.log(Tag.Prepare_To_Parse_Vendor_File, Status.Prepare);
             ReaderList readerList = ReaderList.FullReaderList;
             var readerConfig = new ReaderConfig
             {
@@ -378,12 +380,12 @@ namespace AirdPro.Converters
             readerList.read(jobInfo.inputPath, msInfo, readerConfig);
             if (msInfo == null || msInfo.Count == 0)
             {
-                jobInfo.logError("Reading Vendor File Error, Run is Null");
+                jobInfo.logError(ResultCode.Reading_Vendor_File_Error_Run_Is_Null);
                 return;
             }
 
             msd = msInfo[0];
-            jobInfo.log("Adapting Vendor File API", Status.Adapting);
+            jobInfo.log(Tag.Adapting_Vendor_File_API, Status.Adapting);
 
             List<string> filter = new List<string>();
             SpectrumListFactory.wrap(msd, filter); //这一步操作可以帮助加快Wiff文件的初始化速度
@@ -391,12 +393,12 @@ namespace AirdPro.Converters
             spectrumList = msd.run.spectrumList;
             if (spectrumList == null || spectrumList.empty())
             {
-                jobInfo.logError("No Spectra Found");
+                jobInfo.logError(ResultCode.No_Spectra_Found);
             }
             else
             {
                 totalSize = spectrumList.size();
-                jobInfo.log("Adapting Finished, Total Spectra:" + totalSize);
+                jobInfo.log(Tag.Adapting_Finished + Const.COMMA + Tag.Total_Spectra + totalSize);
             }
 
             switch (jobInfo.format)
@@ -496,7 +498,7 @@ namespace AirdPro.Converters
             {
                 jobInfo.log(ResultCode.Error).log(Tag.SpectrumIndex + spectrum.index)
                     .log(Tag.SpectrumId + spectrum.id)
-                    .log(Tag.mz + spectrum.precursors[0].isolationWindow
+                    .log(Tag.Key_MZ + spectrum.precursors[0].isolationWindow
                         .cvParamChild(CVID.MS_isolation_window_target_m_z).value)
                     .log(Tag.LowerOffset + spectrum.precursors[0].isolationWindow
                         .cvParamChild(CVID.MS_isolation_window_lower_offset).value)
@@ -891,7 +893,7 @@ namespace AirdPro.Converters
             new VarByteWrapper(), new BinPackingWrapper(), new Empty()
         };
 
-        public void randomSampling(int randomNum, bool ionMobi)
+        public Combination randomSampling(int randomNum, bool ionMobi)
         {
             List<int[]> mzArrays = new List<int[]>();
             List<int[]> intensityArrays = new List<int[]>();
@@ -911,7 +913,7 @@ namespace AirdPro.Converters
                 }
             }
 
-            compressForTargetArrays(mzArrays, intensityArrays, mobiNoArrays, ionMobi);
+            return compressForTargetArrays(mzArrays, intensityArrays, mobiNoArrays, ionMobi);
         }
 
         public List<int[]> fetchSpectrum(int index, bool mobi)
@@ -958,7 +960,7 @@ namespace AirdPro.Converters
             return arrays;
         }
 
-        public void compressForTargetArrays(List<int[]> mzArrays, List<int[]> intensityArrays,
+        public Combination compressForTargetArrays(List<int[]> mzArrays, List<int[]> intensityArrays,
             List<int[]> mobiNoArrays, bool ionMobi)
         {
             Dictionary<string, long> ctMap = new Dictionary<string, long>();
@@ -1032,16 +1034,25 @@ namespace AirdPro.Converters
 
             int bestIndex4Mz = StatUtil.calcBestIndex(mzStatList);
             int bestIndex4Intensity = StatUtil.calcBestIndex(intensityStatList);
+            Combination bestCombination = null;
             if (ionMobi)
             {
                 int bestIndex4Mobi = StatUtil.calcBestIndex(mobiStatList);
                 jobInfo.log(Tag.Best_Combo_Comp + mzStatList[bestIndex4Mz].key + Const.Left_Slash +
                             intensityStatList[bestIndex4Intensity].key + Const.Left_Slash +
                             mobiStatList[bestIndex4Mobi].key);
+                bestCombination = new Combination(mzStatList[bestIndex4Mz].key,
+                    intensityStatList[bestIndex4Intensity].key,
+                    mobiStatList[bestIndex4Mobi].key);
+            }
+            else
+            {
+                jobInfo.log(Tag.Best_Combo_Comp + mzStatList[bestIndex4Mz].key + Const.Left_Slash +
+                            intensityStatList[bestIndex4Intensity].key);
+                bestCombination = new Combination(mzStatList[bestIndex4Mz].key,
+                    intensityStatList[bestIndex4Intensity].key);
             }
 
-            jobInfo.log(Tag.Best_Combo_Comp + mzStatList[bestIndex4Mz].key + Const.Left_Slash +
-                        intensityStatList[bestIndex4Intensity].key);
             Debug.WriteLine(JsonConvert.SerializeObject(mzStatList, new JsonSerializerSettings
                 {NullValueHandling = NullValueHandling.Ignore}));
             Debug.WriteLine(JsonConvert.SerializeObject(intensityStatList, new JsonSerializerSettings
@@ -1049,6 +1060,7 @@ namespace AirdPro.Converters
             Debug.WriteLine(JsonConvert.SerializeObject(mobiStatList, new JsonSerializerSettings
                 {NullValueHandling = NullValueHandling.Ignore}));
             jobInfo.log(Tag.Split_Line);
+            return bestCombination;
         }
 
         public string buildComboKey(string key, string intCompName, string byteCompName)

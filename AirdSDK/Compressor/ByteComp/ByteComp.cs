@@ -29,5 +29,21 @@ namespace AirdSDK.Compressor
                 default: throw new Exception("No Implementation for " + type);
             }
         }
+
+        public static ByteCompType getType(string type)
+        {
+            switch (type)
+            {
+                case "Brotli":
+                    return ByteCompType.Brotli;
+                case "Snappy":
+                    return ByteCompType.Snappy;
+                case "Zstd":
+                    return ByteCompType.Zstd;
+                case "Zlib":
+                    return ByteCompType.Zlib;
+                default: throw new Exception("No Implementation for " + type);
+            }
+        }
     }
 }
