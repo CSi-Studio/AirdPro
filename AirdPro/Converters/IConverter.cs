@@ -88,6 +88,7 @@ namespace AirdPro.Converters
             stopwatch.Stop();
             jobInfo.refreshReport = true;
             jobInfo.log("Finished! Total Cost: " + stopwatch.Elapsed.TotalSeconds + " seconds", Status.Finished);
+            clearCache();
         }
 
         protected void initDirectory()
@@ -418,7 +419,7 @@ namespace AirdPro.Converters
         //将最终的数据写入文件中
         public void writeToAirdInfoFile()
         {
-            jobInfo.log("Writing Index File", Status.Writing_Index_File);
+            jobInfo.log(Tag.Write_Index_File, Status.Writing_Index_File);
             AirdInfo airdInfo = buildBasicInfo();
             string airdInfoStr = JsonConvert.SerializeObject(airdInfo, new JsonSerializerSettings
                 {NullValueHandling = NullValueHandling.Ignore});
@@ -428,8 +429,14 @@ namespace AirdPro.Converters
 
         public void clearCache()
         {
-            ranges = new List<WindowRange>();
-            indexList = new List<BlockIndex>();
+            ranges = new();
+            rangeTable = new();
+            indexList = new();
+            ms2Table = new();
+            ms1List = new();
+            featuresMap = new();
+            mobiDict = new();
+            mobiInfo = new();
         }
 
         //DDA模式下,key为ms2Index.pNum, DIA模式下,key为ms2Index.precursorMz
@@ -487,13 +494,13 @@ namespace AirdPro.Converters
             }
             catch (Exception e)
             {
-                jobInfo.log("ERROR:SpectrumIndex:" + spectrum.index)
-                    .log("ERROR:SpectrumId:" + spectrum.id)
-                    .log("ERROR: mz:" + spectrum.precursors[0].isolationWindow
+                jobInfo.log(ResultCode.Error).log(Tag.SpectrumIndex + spectrum.index)
+                    .log(Tag.SpectrumId + spectrum.id)
+                    .log(Tag.mz + spectrum.precursors[0].isolationWindow
                         .cvParamChild(CVID.MS_isolation_window_target_m_z).value)
-                    .log("ERROR: lowerOffset:" + spectrum.precursors[0].isolationWindow
+                    .log(Tag.LowerOffset + spectrum.precursors[0].isolationWindow
                         .cvParamChild(CVID.MS_isolation_window_lower_offset).value)
-                    .log("ERROR: upperOffset:" + spectrum.precursors[0].isolationWindow
+                    .log(Tag.UpperOffset + spectrum.precursors[0].isolationWindow
                         .cvParamChild(CVID.MS_isolation_window_upper_offset).value);
                 throw e;
             }
@@ -538,7 +545,7 @@ namespace AirdPro.Converters
 
         protected void compressMS2BlockForDIA()
         {
-            jobInfo.log("Start Processing MS2 List");
+            jobInfo.log(Tag.Start_Processing_MS2_List);
             int progress = 0;
             foreach (double precursorMz in ms2Table.Keys)
             {
@@ -563,7 +570,7 @@ namespace AirdPro.Converters
         protected void compressMS2BlockForDDA()
         {
             int progress = 0;
-            jobInfo.log("Start Processing MS2 List");
+            jobInfo.log(Tag.Start_Processing_MS2_List);
             ArrayList keys = new ArrayList(ms2Table.Keys);
             keys.Sort();
             foreach (int key in keys)
@@ -650,7 +657,7 @@ namespace AirdPro.Converters
 
             if (result < 0)
             {
-                throw new Exception("Parse Double Error:" + result);
+                throw new Exception(ResultCode.Parse_Double_Error + result);
             }
 
             return result;
@@ -684,7 +691,7 @@ namespace AirdPro.Converters
 
             if (result < 0)
             {
-                throw new Exception("Parse Integer Error:" + result);
+                throw new Exception(ResultCode.Parse_Integer_Error + result);
             }
 
             return result;
@@ -724,12 +731,12 @@ namespace AirdPro.Converters
                 //仪器设备信息
                 if (jobInfo.format.Equals(FileFormat.WIFF))
                 {
-                    instrument.manufacturer = "SCIEX";
+                    instrument.manufacturer = Manufacturer.SCIEX;
                 }
 
                 if (jobInfo.format.Equals(FileFormat.RAW))
                 {
-                    instrument.manufacturer = "THERMO";
+                    instrument.manufacturer = Manufacturer.Thermo;
                 }
 
                 //设备信息在不同的源文件格式中取法不同,有些是在instrumentConfigurationList中获取,有些是在paramGroups获取,因此出现了以下比较丑陋的写法
@@ -962,7 +969,7 @@ namespace AirdPro.Converters
             {
                 foreach (ByteComp byteComp in byteCompList)
                 {
-                    string key = buildComboKey("mz", intComp.getName(), byteComp.getName());
+                    string key = buildComboKey(Tag.Key_MZ, intComp.getName(), byteComp.getName());
                     ctMap.Add(key, 0);
                     dtMap.Add(key, 0);
                     sizeMap.Add(key, 0);
@@ -974,7 +981,7 @@ namespace AirdPro.Converters
             {
                 foreach (ByteComp byteComp in byteCompList)
                 {
-                    string key = buildComboKey("intensity", intComp.getName(), byteComp.getName());
+                    string key = buildComboKey(Tag.Key_Intensity, intComp.getName(), byteComp.getName());
                     ctMap.Add(key, 0);
                     dtMap.Add(key, 0);
                     sizeMap.Add(key, 0);
@@ -988,7 +995,7 @@ namespace AirdPro.Converters
                 {
                     foreach (ByteComp byteComp in byteCompList)
                     {
-                        string key = buildComboKey("mobi", intComp.getName(), byteComp.getName());
+                        string key = buildComboKey(Tag.Key_Mobi, intComp.getName(), byteComp.getName());
                         ctMap.Add(key, 0);
                         dtMap.Add(key, 0);
                         sizeMap.Add(key, 0);
@@ -1004,21 +1011,21 @@ namespace AirdPro.Converters
             {
                 string key = pair.Key;
                 CompressStat stat = new CompressStat(key, sizeMap[key], ctMap[key], dtMap[key]);
-                if (key.StartsWith("mz"))
+                if (key.StartsWith(Tag.Key_MZ))
                 {
-                    stat.key = stat.key.Replace("mz-", "");
+                    stat.key = stat.key.Replace(Tag.Key_MZ_Dash, Tag.Empty);
                     mzStatList.Add(stat);
                 }
 
-                if (pair.Key.StartsWith("intensity"))
+                if (pair.Key.StartsWith(Tag.Key_Intensity))
                 {
-                    stat.key = stat.key.Replace("intensity-", "");
+                    stat.key = stat.key.Replace(Tag.Key_Intensity_Dash, Tag.Empty);
                     intensityStatList.Add(stat);
                 }
 
-                if (pair.Key.StartsWith("mobi"))
+                if (pair.Key.StartsWith(Tag.Key_Mobi))
                 {
-                    stat.key = stat.key.Replace("mobi-", "");
+                    stat.key = stat.key.Replace(Tag.Key_Mobi_Dash, Tag.Empty);
                     mobiStatList.Add(stat);
                 }
             }
@@ -1028,11 +1035,12 @@ namespace AirdPro.Converters
             if (ionMobi)
             {
                 int bestIndex4Mobi = StatUtil.calcBestIndex(mobiStatList);
-                jobInfo.log("Best Combo Comp--Mz:" + mzStatList[bestIndex4Mz].key + ",Intensity:" +
-                            intensityStatList[bestIndex4Intensity].key + ",Mobi:" + mobiStatList[bestIndex4Mobi].key);
+                jobInfo.log(Tag.Best_Combo_Comp + mzStatList[bestIndex4Mz].key + Const.Left_Slash +
+                            intensityStatList[bestIndex4Intensity].key + Const.Left_Slash +
+                            mobiStatList[bestIndex4Mobi].key);
             }
 
-            jobInfo.log("Best Combo Comp--Mz:" + mzStatList[bestIndex4Mz].key + ",Intensity:" +
+            jobInfo.log(Tag.Best_Combo_Comp + mzStatList[bestIndex4Mz].key + Const.Left_Slash +
                         intensityStatList[bestIndex4Intensity].key);
             Debug.WriteLine(JsonConvert.SerializeObject(mzStatList, new JsonSerializerSettings
                 {NullValueHandling = NullValueHandling.Ignore}));
@@ -1040,12 +1048,12 @@ namespace AirdPro.Converters
                 {NullValueHandling = NullValueHandling.Ignore}));
             Debug.WriteLine(JsonConvert.SerializeObject(mobiStatList, new JsonSerializerSettings
                 {NullValueHandling = NullValueHandling.Ignore}));
-            jobInfo.log(@"------------------------");
+            jobInfo.log(Tag.Split_Line);
         }
 
         public string buildComboKey(string key, string intCompName, string byteCompName)
         {
-            return key + "-" + intCompName + "-" + byteCompName;
+            return key + Const.Dash + intCompName + Const.Dash + byteCompName;
         }
     }
 }

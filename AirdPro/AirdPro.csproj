@@ -143,6 +143,7 @@
     <Compile Include="Asyncs\ConvertTaskManager.cs" />
     <Compile Include="Asyncs\LimitedConcurrencyLevelTaskScheduler.cs" />
     <Compile Include="Constants\Activator.cs" />
+    <Compile Include="Constants\Manufacturer.cs" />
     <Compile Include="Constants\Tag.cs" />
     <Compile Include="Constants\Status.cs" />
     <Compile Include="Constants\MessageInfo.cs" />
