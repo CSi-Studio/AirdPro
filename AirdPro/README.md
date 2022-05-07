@@ -4,6 +4,16 @@ AirdPro is opensource under the MulanPSL2 license
 
 
 ## Version Description
+### V3.0.0
+- [New Feature] New Compressors Strategy: Combinable Compressors for m/z, intensity and mobility
+- [New Feature] Integer-Purpose Compressors: Variable Byte, Binary Packing
+- [New Feature] General-Purpose Compressors: Brotli, Snappy, Zstd, Zlib
+- [New Feature] Dynamic-Decider for Best ComboComp
+- [New Feature] New GUI for Version3.0
+- [New Feature] New Conversion Config Panel
+- [New Feature] New Software Config Panel
+
+
 ### V2.1.0
 - [New Feature] New compression algorithm ZDVB is released, which has 10%-20% compression performance improvement compared with ZDPD kernel.Furthermore, ZDVB provides faster decoding speed than ZDPD.
 - [New Feature] PASEF mode support for both DDA and DIA
