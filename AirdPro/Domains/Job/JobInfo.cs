@@ -189,6 +189,10 @@ namespace AirdPro.Domains
 
         public string getCompressorStr()
         {
+            if (config.autoDesicion)
+            {
+                return "Auto Decision";
+            }
             if (ionMobility)
             {
                 return config.mzIntComp + Const.Dash + config.mzByteComp + Const.Dash + config.intIntComp + Const.Dash +
