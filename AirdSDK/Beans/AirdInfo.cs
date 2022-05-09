@@ -16,6 +16,26 @@ namespace AirdSDK.Domains
     public class AirdInfo
     {
         /**
+        * Aird version
+        * Aird的版本号
+        */
+        public string version = "2.0.0";
+
+        /**
+         * Aird Code
+         * Aird的版本编码
+         */
+        public int versionCode = 5;
+
+        /**
+       * [Core Field]
+       * The array compressor strategy
+       * [核心字段]
+       * 数组压缩策略
+       */
+        public List<Compressor> compressors;
+
+        /**
          * Instrument information list
          */
         public List<Instrument> instruments;
@@ -39,14 +59,6 @@ namespace AirdSDK.Domains
 
         /**
          * [Core Field]
-         * The array compressor strategy
-         * [核心字段]
-         * 数组压缩策略
-         */
-        public List<Compressor> compressors;
-
-        /**
-         * [Core Field]
          * Store the window rangs which have been adjusted with experiment overlap
          * [核心字段]
          * 存储SWATH窗口信息,窗口已经根据overlap进行过调整
@@ -65,11 +77,29 @@ namespace AirdSDK.Domains
 
         /**
          * [Core Field]
-         * Experiment Type, Support for DIA/SWATH, PRM, DDA, SCANNING_SWATH, COMMON
+         * AirdType, Support for DIA/SWATH, PRM, DDA, SCANNING_SWATH, COMMON
          * [核心字段]
-         * 实验类型,目前支持DIA_SWATH,PRM,DDA,SCANNING_SWATH和COMMON 5种
+         * Aird支持的采集模式的类型,目前支持DIA,PRM,DDA, DDAPasef, DIAPasef, SCANNING_SWATH和COMMON 5种
          */
         public string type;
+
+        /**
+         * the vendor file size
+         * 原始文件的文件大小,单位byte
+         */
+        public long fileSize;
+
+        /**
+         * the total spectra count
+         * 总计拥有的光谱数
+         */
+        public long totalCount;
+
+        /**
+        * the aird file path.
+        * 转换压缩后的aird二进制文件路径,默认读取同目录下的同名文件,如果不存在才去读本字段对应的路径
+        */
+        public string airdPath;
 
         /**
         * See ActivationMethod: HCD,CID....
@@ -100,63 +130,33 @@ namespace AirdSDK.Domains
         public string polarity;
 
         /**
-         * the aird file path.
-         * 转换压缩后的aird二进制文件路径,默认读取同目录下的同名文件,如果不存在才去读本字段对应的路径
-         */
-        public string airdPath;
-
-        /**
-         * the vendor file size
-         * 原始文件的文件大小,单位byte
-         */
-        public long fileSize;
-
-        /**
-         * the total spectra count
-         * 总计拥有的光谱数
-         */
-        public long totalScanCount;
-
-        /**
-         * the aird file creator
-         * 实验的创建者
-         */
-        public string creator;
-
-        /**
-         * the create data
-         * 实验的创建日期
-         */
-        public DateTime createDate;
-
-        /**
-         * the features. See Features.cs
-         * 特征键值对,详情见Features.cs
-         */
-        public string features;
-
-        /**
          * If ignore the point which intensity = 0
          * 是否忽略intensity为0的点
          */
         public bool ignoreZeroIntensityPoint = true;
 
         /**
-         * Aird version
-         * Aird的版本号
-         */
-        public string version;
-
-        /**
-         * Aird Code
-         * Aird的版本编码
-         */
-        public int versionCode;
-
-        /**
          * Use in ion mobility acquisition method
          * 如果是Mobility采集模式,本字段会启用
          */
         public MobiInfo mobiInfo;
+
+        /**
+        * the aird file creator
+        * 实验的创建者
+        */
+        public string creator;
+
+        /**
+        * the features. See Features.cs
+        * 特征键值对,详情见Features.cs
+        */
+        public string features;
+
+        /**
+        * the create data
+        * 文件的创建日期
+        */
+        public string createDate;
     }
 }

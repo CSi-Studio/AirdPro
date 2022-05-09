@@ -24,6 +24,7 @@ using AirdPro.Algorithms;
 using AirdPro.Domains;
 using AirdSDK.Compressor;
 using AirdSDK.Domains;
+using Microsoft.VisualBasic;
 using pwiz.CLI.cv;
 using ByteOrder = AirdPro.Constants.ByteOrder;
 using Combination = AirdPro.Domains.Combination;
@@ -127,6 +128,7 @@ namespace AirdPro.Converters
             {
                 return;
             }
+
             jobInfo.log(Tag.Predict_For_Best_Combination + jobInfo.airdFileName, Status.Predicting);
             Combination combination = randomSampling(spectraNumForComboCompPredict, jobInfo.ionMobility);
             combination.enable(jobInfo.config, compressor);
@@ -714,9 +716,9 @@ namespace AirdPro.Converters
             //Basic Job Info
             airdInfo.airdPath = jobInfo.airdFilePath;
             airdInfo.fileSize = fileSize;
-            airdInfo.createDate = new DateTime();
+            airdInfo.createDate = DateTime.Now.ToString();
             airdInfo.type = jobInfo.type;
-            airdInfo.totalScanCount = msd.run.spectrumList.size();
+            airdInfo.totalCount = msd.run.spectrumList.size();
             airdInfo.creator = jobInfo.config.creator;
             airdInfo.activator = activator;
             airdInfo.energy = energy;
