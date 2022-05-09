@@ -40,11 +40,14 @@ Aird Data File Suffix: .aird <br/>
 Aird Index File and Aird Data File show be stored in the same directory with the same file name but with different suffix, so that AirdScanUtil.class can scan both of the two files with the same file name;<br/>
 When dealing with Spectra, we advice that you should process with SWATH Window one by one so that we can control the Memory
 
-#Aird SDK
+# Aird SDK
 You can read the data using AirdSDK for secondary development. 
 Visit AirdSDK project for more detail: https://github.com/CSi-Studio/Aird-SDK
 
-#Batch Conversion Task with Redis
+# Technology of Aird
+
+
+# Batch Conversion Task with Redis
 After install the Redis Server. You should input your custom Redis Server IP and Port in the Message Center InputBox and Click Connect button to see if the AirdPro has connnected to the Redis Server.
 In the AirdPro. We have already input a IP:Port string "192.168.31.88:6379" as an demo sample
 The Redis Channel is Database0, The redis key is "ConvertTask", the value should be a Set data structure of a specific json model called "ConvertJob".
