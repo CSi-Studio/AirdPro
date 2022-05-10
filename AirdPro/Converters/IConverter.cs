@@ -132,8 +132,9 @@ namespace AirdPro.Converters
             jobInfo.log(Tag.Predict_For_Best_Combination + jobInfo.airdFileName, Status.Predicting);
             Combination combination = randomSampling(spectraNumForComboCompPredict, jobInfo.ionMobility);
             combination.enable(jobInfo.config, compressor);
+            jobInfo.log(jobInfo.getCompressorStr());
             jobInfo.config.autoDesicion = false;
-            jobInfo.setComboComp(jobInfo.getCompressorStr());
+            jobInfo.setCombination(jobInfo.getCompressorStr());
         }
 
         /**
@@ -1067,7 +1068,6 @@ namespace AirdPro.Converters
                 {NullValueHandling = NullValueHandling.Ignore}));
             Debug.WriteLine(JsonConvert.SerializeObject(mobiStatList, new JsonSerializerSettings
                 {NullValueHandling = NullValueHandling.Ignore}));
-            jobInfo.log(Tag.Split_Line);
             return bestCombination;
         }
 

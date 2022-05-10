@@ -137,9 +137,9 @@ namespace AirdPro.Domains
             progress.Report(status);
         }
 
-        public void setComboComp(string comboComp)
+        public void setCombination(string combination)
         {
-            compressor.Report(comboComp);
+            compressor.Report(combination);
         }
 
         public JobInfo log(string content, string status)
@@ -205,6 +205,7 @@ namespace AirdPro.Domains
             {
                 return "Auto Decision";
             }
+
             if (ionMobility)
             {
                 return config.mzIntComp + Const.Dash + config.mzByteComp + Const.Dash + config.intIntComp + Const.Dash +

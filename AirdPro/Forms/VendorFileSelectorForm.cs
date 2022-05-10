@@ -75,7 +75,8 @@ namespace AirdPro.Forms
                 return false;
             }
 
-            ConversionConfig config = Program.conversionConfigHandler.configMap[cbConfig.SelectedItem.ToString()];
+            ConversionConfig config = Program.conversionConfigHandler
+                .configMap[cbConfig.SelectedItem.ToString()];
 
             string outputPath = tbOutputPath.Text;
             if (outputPath.IsNullOrEmpty())
@@ -111,7 +112,7 @@ namespace AirdPro.Forms
                 }
                 else
                 {
-                    Program.airdForm.addFile(path, outputPath, expType, config);
+                    Program.airdForm.addFile(path, outputPath, expType, (ConversionConfig) config.Clone());
                 }
             }
 

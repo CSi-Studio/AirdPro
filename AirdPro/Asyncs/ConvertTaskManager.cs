@@ -96,14 +96,14 @@ namespace AirdPro.Asyncs
 
                 fac.StartNew(() =>
                 {
-                    jobInfo.threadId = "ThreadId:" + Thread.CurrentThread.ManagedThreadId;
+                    jobInfo.threadId = Tag.Thread_Id + Thread.CurrentThread.ManagedThreadId;
                     while (jobInfo.retryTimes > 0)
                     {
                         try
                         {
                             jobInfo.setStatus(RUNNING);
                             tryConvert(jobInfo);
-                            jobInfo.retryTimes = 0; //成功转换以后不需要在重试
+                            break;
                         }
                         catch (Exception ex)
                         {
@@ -111,7 +111,7 @@ namespace AirdPro.Asyncs
                             jobInfo.retryTimes--;
                             if (jobInfo.retryTimes > 0)
                             {
-                                jobInfo.log("Retrying...left retry times:" + jobInfo.retryTimes);
+                                jobInfo.log(Tag.Retrying_Left_Retry_Times + jobInfo.retryTimes);
                             }
                             else
                             {
@@ -182,6 +182,7 @@ namespace AirdPro.Asyncs
             converter.compressor = comp;
             converter.doConvert();
             jobInfo.setStatus(FINISHED);
+            converter = null;
         }
     }
 }
