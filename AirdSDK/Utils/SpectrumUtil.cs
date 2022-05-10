@@ -23,7 +23,7 @@ public class SpectrumUtil
         double ori = target * intensityPrecision;
         if (ori <= int.MaxValue)
         {
-            result = Convert.ToInt32(Math.Round(ori)); //精确到小数点后一位
+            result = Convert.ToInt32(Math.Round(ori)); //整数后第一位
         }
         else
         {

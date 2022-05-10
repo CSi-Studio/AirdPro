@@ -24,7 +24,6 @@ using AirdPro.Algorithms;
 using AirdPro.Domains;
 using AirdSDK.Compressor;
 using AirdSDK.Domains;
-using Microsoft.VisualBasic;
 using pwiz.CLI.cv;
 using ByteOrder = AirdPro.Constants.ByteOrder;
 using Combination = AirdPro.Domains.Combination;
@@ -862,7 +861,7 @@ namespace AirdPro.Converters
 
                 intCompressor.addMethod(jobInfo.config.intIntComp.ToString());
                 intCompressor.addMethod(jobInfo.config.intByteComp.ToString());
-                mobiCompressor.precision = intensityPrecision;
+                intCompressor.precision = intensityPrecision;
 
                 mobiCompressor.addMethod(jobInfo.config.mobiIntComp.ToString());
                 mobiCompressor.addMethod(jobInfo.config.mobiByteComp.ToString());
