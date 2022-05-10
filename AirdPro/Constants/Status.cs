@@ -14,10 +14,14 @@ public class Status
     public static string Pretreatment = "Pretreatment";
     public static string Writing_Index_File = "Writing Index File";
 
+    public static string Redis_Connected = "Connected";
+    public static string Redis_Not_Connected = "Not Connected";
+
     public static string empty = "";
     public static string tag_ms1 = "MS1:";
     public static string tag_ms2 = "MS2:";
     public static string tag_preprocessing = "Preprocessing:";
+
 
     public static string progress(string tag, int progress, int total)
     {

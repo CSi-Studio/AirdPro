@@ -15,19 +15,21 @@ namespace AirdPro.Storage.Config
         public string defaultOpenPath;
         public string redisHost;
         public string redisPort;
+        public int maxTasks;
 
         public GlobalConfig()
         {
             this.redisHost = "127.0.0.1";
             this.redisPort = "6379";
+            this.maxTasks = 1;
         }
 
-        public GlobalConfig(string defaultOpenPath, string redisHost, string redisPort)
+        public GlobalConfig(string defaultOpenPath, string redisHost, string redisPort, int maxTasks)
         {
             this.defaultOpenPath = defaultOpenPath;
             this.redisHost = redisHost;
             this.redisPort = redisPort;
+            this.maxTasks = maxTasks;
         }
     }
 }
-

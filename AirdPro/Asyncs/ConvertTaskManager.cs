@@ -27,8 +27,19 @@ namespace AirdPro.Asyncs
     {
         public static ConvertTaskManager instance;
 
+        public TaskFactory fac = null;
+
+        public Queue<JobInfo> jobQueue = new();
+
+        //存放全部的Job信息,用于根据JobId判定当前的Job是否已经存在
+        public Hashtable jobTable = new();
+
+        //存放已经完成转换的JobInfo,不管是否转换成功
+        public Hashtable finishedTable = new();
+
         public ConvertTaskManager()
         {
+            fac = new(new LimitedConcurrencyLevelTaskScheduler(Program.globalConfigHandler.config.maxTasks));
         }
 
         public static ConvertTaskManager getInstance()
@@ -41,15 +52,8 @@ namespace AirdPro.Asyncs
             return instance;
         }
 
-        //需要进行处理的Job
-        Queue<JobInfo> jobQueue = new Queue<JobInfo>();
-        TaskFactory fac = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(1));
 
-        //存放全部的Job信息,用于根据JobId判定当前的Job是否已经存在
-        public Hashtable jobTable = new Hashtable();
-        public Hashtable finishedTable = new Hashtable();
-
-        //加入一个新的转换任务
+        //加入一个新的转换任务,如果该任务已经在转换完毕的列表内,则将其重新放入待转换队列重新转换
         public void pushJob(JobInfo job)
         {
             if (finishedTable.ContainsKey(job.getJobId()))
@@ -64,10 +68,19 @@ namespace AirdPro.Asyncs
             }
         }
 
-        public void clear()
+        //将一个任务置为已完成状态
+        public void finishedJob(JobInfo jobInfo)
         {
-            jobQueue.Clear();
-            jobTable.Clear();
+            jobTable.Remove(jobInfo.getJobId());
+            finishedTable.Add(jobInfo.getJobId(), jobInfo);
+        }
+
+        //删除一个任务
+        public void removeJob(JobInfo jobInfo)
+        {
+            jobInfo.tokenSource.Cancel();
+            jobTable.Remove(jobInfo.getJobId());
+            finishedTable.Remove(jobInfo.getJobId());
         }
 
         public void run()
@@ -96,7 +109,7 @@ namespace AirdPro.Asyncs
 
                 fac.StartNew(() =>
                 {
-                    jobInfo.threadId = Tag.Thread_Id + Thread.CurrentThread.ManagedThreadId;
+                    jobInfo.threadId = Thread.CurrentThread.ManagedThreadId;
                     while (jobInfo.retryTimes > 0)
                     {
                         try
@@ -120,9 +133,8 @@ namespace AirdPro.Asyncs
                         }
                     }
 
-                    jobTable.Remove(jobInfo.getJobId());
-                    finishedTable.Add(jobInfo.getJobId(), jobInfo);
-                });
+                    finishedJob(jobInfo);
+                }, jobInfo.tokenSource.Token);
             }
         }
 
@@ -183,6 +195,12 @@ namespace AirdPro.Asyncs
             converter.doConvert();
             jobInfo.setStatus(FINISHED);
             converter = null;
+        }
+
+        public void clear()
+        {
+            jobQueue.Clear();
+            jobTable.Clear();
         }
     }
 }

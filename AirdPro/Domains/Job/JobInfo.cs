@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using AirdPro.Constants;
 using AirdPro.Storage.Config;
@@ -67,8 +68,11 @@ namespace AirdPro.Domains
         //任务运行时产生的组合压缩,在使用动态决策器时有效
         private IProgress<string> compressor;
 
-        //任务的线程名称
-        public string threadId;
+        //任务的线程ID,当未分配线程ID时为-1
+        public int threadId = -1;
+
+        //分配一个线程终止用的token
+        public CancellationTokenSource tokenSource = new CancellationTokenSource();
 
         //出现异常错误的时候进行重试的次数,每一个job会被自动重试2次
         public int retryTimes = 3;
@@ -134,6 +138,7 @@ namespace AirdPro.Domains
 
         public void setStatus(string status)
         {
+            this.status = status;
             progress.Report(status);
         }
 
@@ -173,18 +178,18 @@ namespace AirdPro.Domains
 
         public string getJsonInfo()
         {
-            string jobInfo = "";
-            jobInfo += "InpuPath:" + inputPath + Const.Change_Line;
-            jobInfo += "OutputPath:" + outputPath + Const.Change_Line;
-            jobInfo += "AirdFileName:" + airdFileName + Const.Change_Line;
-            jobInfo += "AirdFilePath:" + airdFilePath + Const.Change_Line;
-            jobInfo += "AirdJsonFilePath:" + airdJsonFilePath + Const.Change_Line;
-            jobInfo += "IgnoreZeroIntensity:" + config.ignoreZeroIntensity + Const.Change_Line;
-            jobInfo += "Suffix:" + config.suffix + Const.Change_Line;
-            jobInfo += "ThreadId:" + threadId + Const.Change_Line;
-            jobInfo += "ThreadAccelerate:" + config.threadAccelerate + Const.Change_Line;
-            jobInfo += "MzPrecision:" + config.getMzPrecisionStr() + Const.Change_Line;
-            jobInfo += "Compressor:" + getCompressorStr() + Const.Change_Line;
+            string jobInfo = Tag.Empty;
+            jobInfo += Tag.Input_Path + inputPath + Const.Change_Line;
+            jobInfo += Tag.Output_Path + outputPath + Const.Change_Line;
+            jobInfo += Tag.Aird_File_Name + airdFileName + Const.Change_Line;
+            jobInfo += Tag.Aird_File_Path + airdFilePath + Const.Change_Line;
+            jobInfo += Tag.Aird_Json_File_Path + airdJsonFilePath + Const.Change_Line;
+            jobInfo += Tag.Ignore_Zero_Intensity + config.ignoreZeroIntensity + Const.Change_Line;
+            jobInfo += Tag.Suffix + config.suffix + Const.Change_Line;
+            jobInfo += Tag.Thread_Id + threadId + Const.Change_Line;
+            jobInfo += Tag.Thread_Accelerate + config.threadAccelerate + Const.Change_Line;
+            jobInfo += Tag.Mz_Precision + config.getMzPrecisionStr() + Const.Change_Line;
+            jobInfo += Tag.Compressor + getCompressorStr() + Const.Change_Line;
             return jobInfo;
         }
 
@@ -203,7 +208,7 @@ namespace AirdPro.Domains
         {
             if (config.autoDesicion)
             {
-                return "Auto Decision";
+                return Tag.Auto_Decision;
             }
 
             if (ionMobility)

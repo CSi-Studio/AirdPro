@@ -277,16 +277,16 @@
     <value>Edit</value>
   </data>
   <data name="configList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>141, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="configList.Text" xml:space="preserve">
-    <value>Conversion</value>
+    <value>Convert Setting</value>
   </data>
   <data name="globalSettingsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>141, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="globalSettingsToolStripMenuItem.Text" xml:space="preserve">
-    <value>Options</value>
+    <value>Global Setting</value>
   </data>
   <data name="menuConfiguration.Size" type="System.Drawing.Size, System.Drawing">
     <value>66, 21</value>
@@ -295,7 +295,7 @@
     <value>Settings</value>
   </data>
   <data name="compouterToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>111, 22</value>
   </data>
   <data name="compouterToolStripMenuItem.Text" xml:space="preserve">
     <value>About</value>

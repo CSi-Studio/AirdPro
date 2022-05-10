@@ -24,7 +24,7 @@ namespace AirdPro.Forms
 {
     public partial class AirdForm : Form
     {
-        ArrayList jobIdList = new ArrayList();
+        ArrayList jobIdList = new();
         VendorFileSelectorForm fileSelector;
         ConversionConfigListForm configListForm;
         GlobalSettingForm globalSettingForm;
@@ -37,7 +37,7 @@ namespace AirdPro.Forms
 
         private void ProproForm_Load(object sender, EventArgs e)
         {
-            this.Text = SoftwareInfo.getVersion() + " - " + NetworkUtil.getHostIP();
+            this.Text = SoftwareInfo.getVersion() + Const.Dash + NetworkUtil.getHostIP();
             RedisClient.getInstance();
             ConvertTaskManager.getInstance().run();
         }
@@ -46,14 +46,14 @@ namespace AirdPro.Forms
         {
             if (lvFileList.Items.Count == 0)
             {
-                MessageBox.Show("No file is selected!");
+                MessageBox.Show(Constants.Tag.No_File_Is_Selected);
                 return;
             }
 
             foreach (ListViewItem item in lvFileList.Items)
             {
                 JobInfo jobInfo = (JobInfo) item.Tag;
-                if (!ConvertTaskManager.getInstance().jobTable.ContainsKey(jobInfo.getJobId()))
+                if (!ConvertTaskManager.getInstance().finishedTable.ContainsKey(jobInfo.getJobId()))
                 {
                     item.Tag = jobInfo;
                     ConvertTaskManager.getInstance().pushJob(jobInfo);
@@ -84,9 +84,17 @@ namespace AirdPro.Forms
 
         private void removeFile(ListViewItem fileItem)
         {
+            JobInfo jobInfo = (JobInfo) fileItem.Tag;
+            if (jobInfo.threadId != -1 &&
+                (!jobInfo.status.Equals(Status.Finished) || !jobInfo.status.Equals(Status.Error)))
+            {
+                MessageBox.Show(Constants.Tag.Cannot_Be_Deleted_When_Running);
+                return;
+            }
+
             jobIdList.Remove(fileItem.Text);
             fileItem.Remove();
-            ConvertTaskManager.getInstance().jobTable.Remove(fileItem.Text);
+            ConvertTaskManager.getInstance().removeJob(jobInfo);
         }
 
         private void lvFileList_SelectedIndexChanged(object sender, EventArgs e)
@@ -105,7 +113,7 @@ namespace AirdPro.Forms
             if (lvFileList.SelectedItems.Count != 0)
             {
                 ListViewItem item = lvFileList.SelectedItems[lvFileList.SelectedItems.Count - 1];
-                string content = "";
+                string content = Constants.Tag.Empty;
                 JobInfo job;
                 if (ConvertTaskManager.getInstance().jobTable[item.Text] != null)
                 {
@@ -113,11 +121,11 @@ namespace AirdPro.Forms
 
                     for (int i = job.logs.Count - 1; i >= 0; i--)
                     {
-                        content += job.logs[i].dateTime + "   " + job.logs[i].content + "\r\n";
+                        content += job.logs[i].dateTime + " " + job.logs[i].content + Const.Change_Line;
                     }
 
                     string jobInfo = job.getJsonInfo();
-                    content += jobInfo + "\r\n";
+                    content += jobInfo + Const.Change_Line;
                 }
                 else if (ConvertTaskManager.getInstance().finishedTable[item.Text] != null)
                 {
@@ -125,22 +133,22 @@ namespace AirdPro.Forms
 
                     for (int i = job.logs.Count - 1; i >= 0; i--)
                     {
-                        content += job.logs[i].dateTime + "   " + job.logs[i].content + "\r\n";
+                        content += job.logs[i].dateTime + " " + job.logs[i].content + Const.Change_Line;
                     }
 
                     string jobInfo = job.getJsonInfo();
-                    content += jobInfo + "\r\n";
+                    content += jobInfo + Const.Change_Line;
                 }
                 else
                 {
-                    content = "Not start converting!";
+                    content = Constants.Tag.Not_Start_Converting;
                 }
 
                 tbConsole.Text = content;
             }
             else
             {
-                tbConsole.Text = "select item to watch logs";
+                tbConsole.Text = Constants.Tag.Select_Item_To_Watch_Logs;
             }
         }
 
@@ -176,7 +184,7 @@ namespace AirdPro.Forms
 
             //以下代码的顺序不能换,必须先Show,再执行showConfig操作
             configListForm.Show();
-            configListForm.showConfig("", config);
+            configListForm.showConfig(Constants.Tag.Empty, config);
         }
 
         //打开输入的定制化参数列表
@@ -224,7 +232,7 @@ namespace AirdPro.Forms
                 }
                 else
                 {
-                    MessageBox.Show("Only finished job can rerun");
+                    MessageBox.Show(Constants.Tag.Only_Finished_Job_Can_Rerun);
                 }
             }
         }
@@ -247,7 +255,7 @@ namespace AirdPro.Forms
             {
                 foreach (ListViewItem item in lvFileList.Items)
                 {
-                    if (item.SubItems[ItemName.PROGRESS].Text.Equals("Finished"))
+                    if (item.SubItems[ItemName.PROGRESS].Text.Equals(Status.Finished))
                     {
                         item.Remove();
                         jobIdList.Remove(item.SubItems[0].Text);
@@ -273,7 +281,7 @@ namespace AirdPro.Forms
             if (connectLink.IsNullOrEmpty())
             {
                 redisConsumer.Enabled = false;
-                MessageBox.Show("Redis Host Cannot Be Empty");
+                MessageBox.Show(Constants.Tag.Redis_Host_Cannot_Be_Empty);
                 return;
             }
 
@@ -284,7 +292,7 @@ namespace AirdPro.Forms
             }
             else
             {
-                MessageBox.Show("Connect failed, please check the redis host and port.");
+                MessageBox.Show(Constants.Tag.Connect_Failed_Please_Check_The_Redis_Host_And_Port);
                 redisConsumer.Enabled = false;
                 updateRedisStatus(false);
             }
@@ -295,13 +303,13 @@ namespace AirdPro.Forms
             if (connected)
             {
                 btnRedisConnect.BackgroundImage = Properties.Resources.Connected;
-                lblRedisStatus.Text = "Connected";
+                lblRedisStatus.Text = Status.Redis_Connected;
                 lblRedisStatus.ForeColor = Color.Green;
             }
             else
             {
                 btnRedisConnect.BackgroundImage = Properties.Resources.DisConnect;
-                lblRedisStatus.Text = "Not Connected";
+                lblRedisStatus.Text = Status.Redis_Not_Connected;
                 lblRedisStatus.ForeColor = Color.Red;
             }
         }
