@@ -99,7 +99,7 @@ namespace AirdSDK.Domains
          * 用于存储KV键值对
          */
         public string features;
-        
+
         public WindowRange getWindowRange()
         {
             if (rangeList == null || rangeList.Count == 0)
@@ -118,6 +118,7 @@ namespace AirdSDK.Domains
             {
                 rangeList = new List<WindowRange>();
             }
+
             rangeList.Add(wr);
         }
 

@@ -181,6 +181,14 @@ namespace AirdPro.Algorithms
             double[] mobiData = SpectrumUtil.getMobilityData(spectrum);
 
             var size = mzData.Length;
+            if (size == 0)
+            {
+                ts.mzArrayBytes = new byte[0];
+                ts.intArrayBytes = new byte[0];
+                ts.mobilityArrayBytes = new byte[0];
+                return;
+            }
+
             TimsData[] dataArray = new TimsData[size];
             for (int t = 0; t < size; t++)
             {

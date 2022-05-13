@@ -26,7 +26,9 @@ namespace AirdSDK.Domains
 
         public string features;
 
-        public WindowRange() { }
+        public WindowRange()
+        {
+        }
 
         public WindowRange(double start, double end, double mz)
         {
