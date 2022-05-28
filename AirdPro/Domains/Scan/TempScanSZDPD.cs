@@ -17,28 +17,23 @@ namespace AirdPro.Domains
     public class TempScanSZDPD:IComparable
     {
         public List<int> nums;
-        public List<float> rts;
+        public List<double> rts;
         public List<long> tics;
+        public List<double> basePeakIntensities;
+        public List<double> basePeakMzs;
         public List<List<CV>> cvs;
         public byte[] mzArrayBytes;
         public byte[] intArrayBytes;
         public byte[] tagArrayBytes;
 
-        public TempScanSZDPD(List<int> nums, List<float> rts, List<long> tics, List<List<CV>> cvs)
+        public TempScanSZDPD(List<int> nums, List<double> rts, List<long> tics, List<double> basePeakIntensities, List<double> basePeakMzs, List<List<CV>> cvs)
         {
             this.nums = nums;
             this.rts = rts;
             this.tics = tics;
+            this.basePeakIntensities = basePeakIntensities;
+            this.basePeakMzs = basePeakMzs;
             this.cvs = cvs;
-        }
-
-        public TempScanSZDPD(List<int> nums, List<float> rts, byte[] mzArrayBytes, byte[] intArrayBytes, byte[] tagArrayBytes)
-        {
-            this.nums = nums;
-            this.rts = rts;
-            this.mzArrayBytes = mzArrayBytes;
-            this.intArrayBytes = intArrayBytes;
-            this.tagArrayBytes = tagArrayBytes;
         }
 
         public int CompareTo(object obj)

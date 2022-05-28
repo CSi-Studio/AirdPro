@@ -37,7 +37,6 @@
             this.llAirdProonGithub = new System.Windows.Forms.LinkLabel();
             this.llAirdProSdkGitee = new System.Windows.Forms.LinkLabel();
             this.llAirdProSDKGithub = new System.Windows.Forms.LinkLabel();
-            this.llAirdProPaper = new System.Windows.Forms.LinkLabel();
             this.lblCompanyInfo = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lblOPName = new System.Windows.Forms.Label();
@@ -152,23 +151,11 @@
             this.llAirdProSDKGithub.Text = "on Github";
             this.llAirdProSDKGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AirdProSDKGithub_Click);
             // 
-            // llAirdProPaper
-            // 
-            this.llAirdProPaper.AutoSize = true;
-            this.llAirdProPaper.Font = new System.Drawing.Font("Calibri", 10F);
-            this.llAirdProPaper.Location = new System.Drawing.Point(7, 439);
-            this.llAirdProPaper.Name = "llAirdProPaper";
-            this.llAirdProPaper.Size = new System.Drawing.Size(41, 17);
-            this.llAirdProPaper.TabIndex = 12;
-            this.llAirdProPaper.TabStop = true;
-            this.llAirdProPaper.Text = "Paper";
-            this.llAirdProPaper.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AirdProPaperCitation_Click);
-            // 
             // lblCompanyInfo
             // 
             this.lblCompanyInfo.AutoSize = true;
             this.lblCompanyInfo.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCompanyInfo.Location = new System.Drawing.Point(6, 522);
+            this.lblCompanyInfo.Location = new System.Drawing.Point(8, 557);
             this.lblCompanyInfo.Name = "lblCompanyInfo";
             this.lblCompanyInfo.Size = new System.Drawing.Size(94, 19);
             this.lblCompanyInfo.TabIndex = 13;
@@ -238,7 +225,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Calibri", 10F);
-            this.label2.Location = new System.Drawing.Point(7, 415);
+            this.label2.Location = new System.Drawing.Point(9, 391);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(111, 17);
             this.label2.TabIndex = 20;
@@ -258,11 +245,11 @@
             // tbPaperZDPD
             // 
             this.tbPaperZDPD.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbPaperZDPD.Location = new System.Drawing.Point(53, 439);
+            this.tbPaperZDPD.Location = new System.Drawing.Point(10, 414);
             this.tbPaperZDPD.Multiline = true;
             this.tbPaperZDPD.Name = "tbPaperZDPD";
             this.tbPaperZDPD.ReadOnly = true;
-            this.tbPaperZDPD.Size = new System.Drawing.Size(707, 70);
+            this.tbPaperZDPD.Size = new System.Drawing.Size(750, 140);
             this.tbPaperZDPD.TabIndex = 23;
             this.tbPaperZDPD.Text = "Paper:ZDPD";
             // 
@@ -281,7 +268,6 @@
             this.Controls.Add(this.lblCPUName);
             this.Controls.Add(this.lblOPName);
             this.Controls.Add(this.lblCompanyInfo);
-            this.Controls.Add(this.llAirdProPaper);
             this.Controls.Add(this.llAirdProSDKGithub);
             this.Controls.Add(this.llAirdProSdkGitee);
             this.Controls.Add(this.llAirdProonGithub);
@@ -314,7 +300,6 @@
         private System.Windows.Forms.LinkLabel llAirdProonGithub;
         private System.Windows.Forms.LinkLabel llAirdProSdkGitee;
         private System.Windows.Forms.LinkLabel llAirdProSDKGithub;
-        private System.Windows.Forms.LinkLabel llAirdProPaper;
         private System.Windows.Forms.Label lblCompanyInfo;
         private System.Windows.Forms.Label lblOPName;
         private System.Windows.Forms.Label lblCPUName;

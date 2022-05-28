@@ -45,9 +45,11 @@ namespace AirdPro.Algorithms
                 {
                     Interlocked.Increment(ref process);
                     converter.jobInfo.log(null, Tag.progress(Tag.MS1, process, iter));
-                    List<float> rts = new List<float>();
+                    List<double> rts = new List<double>();
                     List<int> nums = new List<int>();
                     List<long> tics = new List<long>();
+                    List<double> basePeakIntensities = new List<double>();
+                    List<double> basePeakMzs = new List<double>();
                     List<List<CV>> cvs = new List<List<CV>>();
                     List<Spectrum> spectrumGroup = new List<Spectrum>();
                     for (int k = 0; k < layers; k++)
@@ -62,11 +64,13 @@ namespace AirdPro.Algorithms
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
                         tics.Add(scanIndex.tic);
+                        basePeakIntensities.Add(scanIndex.basePeakIntensity);
+                        basePeakMzs.Add(scanIndex.basePeakMz);
                         cvs.Add(scanIndex.cvList);
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
 
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, cvs);
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs, cvs);
 
                     compress(spectrumGroup, ts);
                     table.Add(i, ts);
@@ -79,9 +83,11 @@ namespace AirdPro.Algorithms
                 {
                     converter.jobInfo.log(null, Tag.progress(Tag.MS1, i, iter));
 
-                    List<float> rts = new List<float>();
+                    List<double> rts = new List<double>();
                     List<int> nums = new List<int>();
                     List<long> tics = new List<long>();
+                    List<double> basePeakIntensities = new List<double>();
+                    List<double> basePeakMzs = new List<double>();
                     List<List<CV>> cvs = new List<List<CV>>();
                     List<Spectrum> spectrumGroup = new List<Spectrum>();
                     for (int k = 0; k < layers; k++)
@@ -96,11 +102,13 @@ namespace AirdPro.Algorithms
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
                         tics.Add(scanIndex.tic);
+                        basePeakIntensities.Add(scanIndex.basePeakIntensity);
+                        basePeakMzs.Add(scanIndex.basePeakMz);
                         cvs.Add(scanIndex.cvList);
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
 
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, cvs);
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs, cvs);
                     compress(spectrumGroup, ts);
                     converter.addToIndex(index, ts);
                 }
@@ -118,9 +126,11 @@ namespace AirdPro.Algorithms
                 //使用多线程处理数据提取与压缩
                 Parallel.For(0, iter, (i, ParallelLoopState) =>
                 {
-                    List<float> rts = new List<float>();
+                    List<double> rts = new List<double>();
                     List<int> nums = new List<int>();
                     List<long> tics = new List<long>();
+                    List<double> basePeakIntensities = new List<double>();
+                    List<double> basePeakMzs = new List<double>();
                     List<List<CV>> cvs = new List<List<CV>>();
                     List<Spectrum> spectrumGroup = new List<Spectrum>();
                     for (int k = 0; k < layers; k++)
@@ -135,11 +145,13 @@ namespace AirdPro.Algorithms
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
                         tics.Add(scanIndex.tic);
+                        basePeakIntensities.Add(scanIndex.basePeakIntensity);
+                        basePeakMzs.Add(scanIndex.basePeakMz);
                         cvs.Add(scanIndex.cvList);
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
 
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, cvs);
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs, cvs);
                     compress(spectrumGroup, ts);
                     table.Add(i, ts);
                 });
@@ -149,9 +161,11 @@ namespace AirdPro.Algorithms
             {
                 for (int i = 0; i < iter; i++)
                 {
-                    List<float> rts = new List<float>();
+                    List<double> rts = new List<double>();
                     List<int> nums = new List<int>();
                     List<long> tics = new List<long>();
+                    List<double> basePeakIntensities = new List<double>();
+                    List<double> basePeakMzs = new List<double>();
                     List<List<CV>> cvs = new List<List<CV>>();
                     List<Spectrum> spectrumGroup = new List<Spectrum>();
                     for (int k = 0; k < layers; k++)
@@ -166,11 +180,13 @@ namespace AirdPro.Algorithms
                         rts.Add(scanIndex.rt);
                         nums.Add(scanIndex.num);
                         tics.Add(scanIndex.tic);
+                        basePeakIntensities.Add(scanIndex.basePeakIntensity);
+                        basePeakMzs.Add(scanIndex.basePeakMz);
                         cvs.Add(scanIndex.cvList);
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
 
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, cvs);
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs, cvs);
                     compress(spectrumGroup, ts);
                     converter.addToIndex(index, ts);
                 }

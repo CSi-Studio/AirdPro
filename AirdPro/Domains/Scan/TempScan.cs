@@ -18,28 +18,24 @@ namespace AirdPro.Domains
     public class TempScan:IComparable
     {
         public int num;
-        public float rt;
+        public double rt;
         public long tic;
+        public double basePeakIntensity;
+        public double basePeakMz;
         public List<CV> cvs;
 
         public byte[] mzArrayBytes;
         public byte[] intArrayBytes;
         public byte[] mobilityArrayBytes;
 
-        public TempScan(int num, float rt, long tic, List<CV> cvs)
+        public TempScan(int num, double rt, long tic, double basePeakIntensity, double basePeakMz, List<CV> cvs)
         {
             this.num = num;
             this.rt = rt;
             this.tic = tic;
+            this.basePeakIntensity = basePeakIntensity;
+            this.basePeakMz = basePeakMz;
             this.cvs = cvs;
-        }
-
-        public TempScan(int num, float rt, byte[] mzArrayBytes, byte[] intArrayBytes)
-        {
-            this.num = num;
-            this.rt = rt;
-            this.mzArrayBytes = mzArrayBytes;
-            this.intArrayBytes = intArrayBytes;
         }
 
         public int CompareTo(object obj)

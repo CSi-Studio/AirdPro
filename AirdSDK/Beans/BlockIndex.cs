@@ -54,13 +54,25 @@ namespace AirdSDK.Domains
          * Every Spectrum's RT in the block
          * 所有该块中的rt时间列表
          */
-        public List<float> rts = new List<float>();
+        public List<double> rts = new List<double>();
 
         /**
          * Every Spectrum's total intensity in the block
          * 所有该块中的tic列表
          */
         public List<long> tics = new List<long>();
+
+        /**
+         * Every Spectrum's total base peak intensity in the block
+         * 所有该块中的tic列表
+         */
+        public List<double> basePeakIntensities = new List<double>();
+
+        /**
+        * Every Spectrum's total base peak mz in the block
+        * 所有该块中的tic列表
+        */
+        public List<double> basePeakMzs = new List<double>();
 
         /**
          * COMMON type: it store the start position of every compressed mz block

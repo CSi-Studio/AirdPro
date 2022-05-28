@@ -12,8 +12,8 @@ namespace AirdPro.Constants
 {
     class SoftwareInfo
     {
-        public static string VERSION = "3.0.4";
-        public static int VERSION_CODE = 304;
+        public static string VERSION = "3.0.5";
+        public static int VERSION_CODE = 305;
 
         public static string CLIENT_VERSION_DESCRIPTION = "1. PASEF Mode Support;\r\n" +
                                                           "2. Dynamic Intensity Precision for big value(>2^31-1);\r\n " +

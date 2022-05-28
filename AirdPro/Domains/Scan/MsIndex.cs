@@ -19,10 +19,16 @@ namespace AirdPro.Domains
         public int level;
 
         //retention time
-        public float rt;
+        public double rt;
 
         //tic数值
         public long tic = 0;
+
+        //base peak intensity
+        public double basePeakIntensity;
+
+        //base peak mz
+        public double basePeakMz;
 
         //对应的ms1的序号
         public int pNum;

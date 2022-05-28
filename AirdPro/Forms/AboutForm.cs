@@ -32,8 +32,10 @@ namespace AirdPro.Forms
             lblPhysicMemory.Text = hardwareInfo.physicMemory;
             lblOpVersion.Text = hardwareInfo.opVersion + " " + hardwareInfo.systemType;
             lblDesc.Text = SoftwareInfo.getDescription();
-            tbPaperZDPD.Text = "https://doi.org/10.1186/s12859-021-04490-0 \r\n" +
-                "Lu, M., An, S., Wang, R. et al. Aird: a computation-oriented mass spectrometry data format enables a higher compression ratio and less decoding time. BMC Bioinformatics 23, 35 (2022).";
+            tbPaperZDPD.Text = 
+            "Lu, M., An, S., Wang, R. et al. Aird: a computation-oriented mass spectrometry data format enables a higher compression ratio and less decoding time. BMC Bioinformatics 23, 35 (2022).\r\n"+
+            "Wang,J. et al. StackZDPD: a novel encoding scheme for mass spectrometry data optimized for speed and compression ratio. Scientific Reports, 12, 5384.(2022)"
+            ;
         }
 
         //查看许可证状态
@@ -67,11 +69,6 @@ namespace AirdPro.Forms
             llAirdProSDKGithub.LinkVisited = true;
             Process.Start("https://github.com/CSi-Studio/Aird-SDK");
         }
-        //查看AirdPro论文引用
-        private void AirdProPaperCitation_Click(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            llAirdProPaper.LinkVisited = true;
-            Process.Start("https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-021-04490-0");
-        }
+    
     }
 }

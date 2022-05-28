@@ -68,7 +68,7 @@ namespace AirdPro.Converters
         protected int mobiPrecision = 10000000; //mobility默认精确到小数点后7位
 
         protected int spectraNumForIntensityPrecisionPredict = 5;
-        protected int spectraNumForComboCompPredict = 100;
+        protected int spectraNumForComboCompPredict = 300;
 
         public IConverter(JobInfo jobInfo)
         {
@@ -185,10 +185,10 @@ namespace AirdPro.Converters
             return spectrum.cvParamChild(CVID.MS_ms_level).value.ToString();
         }
 
-        protected float parseRT(Scan scan)
+        protected double parseRT(Scan scan)
         {
             CVParam cv = scan.cvParamChild(CVID.MS_scan_start_time);
-            float time = float.Parse(cv.value.ToString());
+            double time = double.Parse(cv.value.ToString());
             rtUnit = cv.unitsName;
             return time;
         }
@@ -222,6 +222,30 @@ namespace AirdPro.Converters
             try
             {
                 return Convert.ToInt64(Convert.ToDouble(spectrum.cvParamChild(CVID.MS_TIC).value.ToString()));
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+        }
+
+        protected double parseBasePeakIntensity(Spectrum spectrum)
+        {
+            try
+            {
+                return double.Parse(spectrum.cvParamChild(CVID.MS_base_peak_intensity).value.ToString());
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+        }
+
+        protected double parseBasePeakMz(Spectrum spectrum)
+        {
+            try
+            {
+                return double.Parse(spectrum.cvParamChild(CVID.MS_base_peak_m_z).value.ToString());
             }
             catch (Exception e)
             {
@@ -342,6 +366,8 @@ namespace AirdPro.Converters
                 index.nums.AddRange(ts.nums);
                 index.rts.AddRange(ts.rts);
                 index.tics.AddRange(ts.tics);
+                index.basePeakIntensities.AddRange(ts.basePeakIntensities);
+                index.basePeakMzs.AddRange(ts.basePeakMzs);
                 index.cvList.AddRange(ts.cvs);
                 index.mzs.Add(ts.mzArrayBytes.Length);
                 index.ints.Add(ts.intArrayBytes.Length);
@@ -359,6 +385,8 @@ namespace AirdPro.Converters
                 index.nums.Add(ts.num);
                 index.rts.Add(ts.rt);
                 index.tics.Add(ts.tic);
+                index.basePeakIntensities.Add(ts.basePeakIntensity);
+                index.basePeakMzs.Add(ts.basePeakMz);
                 index.cvList.Add(ts.cvs);
                 index.mzs.Add(ts.mzArrayBytes.Length);
                 index.ints.Add(ts.intArrayBytes.Length);
@@ -476,6 +504,8 @@ namespace AirdPro.Converters
 
             ms1.rt = parseRT(scan);
             ms1.tic = parseTIC(spectrum);
+            ms1.basePeakIntensity = parseBasePeakIntensity(spectrum);
+            ms1.basePeakMz = parseBasePeakMz(spectrum);
             parseMobility(scan);
             if (msType == null) parseMsType(spectrum);
             if (polarity == null) parsePolarity(spectrum);
@@ -524,6 +554,8 @@ namespace AirdPro.Converters
             if (scan.cvParams != null) ms2.cvList.AddRange(CV.trans(scan.cvParams));
             ms2.rt = parseRT(scan);
             ms2.tic = parseTIC(spectrum);
+            ms2.basePeakIntensity = parseBasePeakIntensity(spectrum);
+            ms2.basePeakMz = parseBasePeakMz(spectrum);
             return ms2;
         }
 
@@ -605,7 +637,7 @@ namespace AirdPro.Converters
                     }
 
                     ms2Ranges.Add(range);
-                    TempScan ts = new TempScan(index.num, index.rt, index.tic, index.cvList);
+                    TempScan ts = new TempScan(index.num, index.rt, index.tic, index.basePeakIntensity, index.basePeakMz, index.cvList);
                     if (jobInfo.ionMobility)
                     {
                         compressor.compressMobility(spectrumList.spectrum(index.num, true), ts);
@@ -618,6 +650,8 @@ namespace AirdPro.Converters
                     blockIndex.nums.Add(ts.num);
                     blockIndex.rts.Add(ts.rt);
                     blockIndex.tics.Add(ts.tic);
+                    blockIndex.basePeakIntensities.Add(ts.basePeakIntensity);
+                    blockIndex.basePeakMzs.Add(ts.basePeakMz);
                     blockIndex.cvList.Add(ts.cvs);
                     blockIndex.mzs.Add(ts.mzArrayBytes.Length);
                     blockIndex.ints.Add(ts.intArrayBytes.Length);

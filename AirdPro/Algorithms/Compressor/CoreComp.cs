@@ -44,7 +44,7 @@ namespace AirdPro.Algorithms
                     Interlocked.Increment(ref process);
                     converter.jobInfo.log(null, Tag.progress(Tag.MS1, process, converter.ms1List.Count));
                     MsIndex ms1Index = converter.ms1List[i];
-                    TempScan ts = new TempScan(ms1Index.num, ms1Index.rt, ms1Index.tic, ms1Index.cvList);
+                    TempScan ts = new TempScan(ms1Index.num, ms1Index.rt, ms1Index.tic, ms1Index.basePeakIntensity, ms1Index.basePeakMz, ms1Index.cvList);
                     Spectrum spectrum;
                     lock (locker)
                     {
@@ -70,7 +70,7 @@ namespace AirdPro.Algorithms
                 {
                     converter.jobInfo.log(null, Tag.progress(Tag.MS1, i, converter.ms1List.Count));
                     MsIndex ms1Index = converter.ms1List[i];
-                    TempScan ts = new TempScan(ms1Index.num, ms1Index.rt, ms1Index.tic, ms1Index.cvList);
+                    TempScan ts = new TempScan(ms1Index.num, ms1Index.rt, ms1Index.tic, ms1Index.basePeakIntensity, ms1Index.basePeakMz, ms1Index.cvList);
                     using (var spectrum = converter.spectrumList.spectrum(ts.num, true))
                     {
                         if (converter.jobInfo.ionMobility)
@@ -97,7 +97,7 @@ namespace AirdPro.Algorithms
                 Parallel.For(0, ms2List.Count, (i, ParallelLoopState) =>
                 {
                     MsIndex ms2Index = ms2List[i];
-                    TempScan ts = new TempScan(ms2Index.num, ms2Index.rt, ms2Index.tic, ms2Index.cvList);
+                    TempScan ts = new TempScan(ms2Index.num, ms2Index.rt, ms2Index.tic, ms2Index.basePeakIntensity, ms2Index.basePeakMz, ms2Index.cvList);
                     Spectrum spectrum;
                     lock (locker)
                     {
@@ -121,7 +121,7 @@ namespace AirdPro.Algorithms
             {
                 foreach (MsIndex ms2Index in ms2List)
                 {
-                    TempScan ts = new TempScan(ms2Index.num, ms2Index.rt, ms2Index.tic, ms2Index.cvList);
+                    TempScan ts = new TempScan(ms2Index.num, ms2Index.rt, ms2Index.tic, ms2Index.basePeakIntensity, ms2Index.basePeakMz, ms2Index.cvList);
                     using (var spectrum = converter.spectrumList.spectrum(ts.num, true))
                     {
                         if (converter.jobInfo.ionMobility)
