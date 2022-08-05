@@ -20,6 +20,6 @@ namespace AirdPro.Domains
         public int mzPrecision;
         public string creator;
         public string suffix;
-        public Boolean ignoreZeroIntensity = true;
+        public bool ignoreZeroIntensity = true;
     }
 }
