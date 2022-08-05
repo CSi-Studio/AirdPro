@@ -26,7 +26,7 @@ namespace AirdPro.Redis
         private ConnectionMultiplexer redis;
         private string hostAndPort;
         private IDatabase db;
-
+        private int db_num = 1;
 
         private RedisClient()
         {
@@ -53,7 +53,7 @@ namespace AirdPro.Redis
             try
             {
                 redis = ConnectionMultiplexer.Connect(hostAndPort);
-                db = redis.GetDatabase();
+                db = redis.GetDatabase(db_num);
             }
             catch (Exception e)
             {
@@ -98,7 +98,7 @@ namespace AirdPro.Redis
                 try
                 {
                     redis = ConnectionMultiplexer.Connect(hostAndPort);
-                    db = redis.GetDatabase();
+                    db = redis.GetDatabase(db_num);
                 }
                 catch (Exception e)
                 {
@@ -113,7 +113,7 @@ namespace AirdPro.Redis
             if (check)
             {
                 int i = 10;
-                bool needToExe = false;
+                bool needToExecute = false;
                 while (i > 0)
                 {
                     String valueStr = null;
@@ -128,10 +128,12 @@ namespace AirdPro.Redis
                             RemoteConvertJob job = JsonConvert.DeserializeObject<RemoteConvertJob>(valueStr);
                             ConversionConfig conversionConfig = new ConversionConfig();
                             conversionConfig.ignoreZeroIntensity = true;
+                            conversionConfig.autoDesicion = true;
                             conversionConfig.threadAccelerate = true;
-                            conversionConfig.suffix = "";
-                            conversionConfig.creator = "LIMSPro";
-                            conversionConfig.mzPrecision = (int) Math.Ceiling(1 / job.mzPrecision);
+                            conversionConfig.suffix = job.suffix;
+                            conversionConfig.ignoreZeroIntensity = job.ignoreZeroIntensity;
+                            conversionConfig.creator = job.creator;
+                            conversionConfig.mzPrecision = job.mzPrecision;
 
                             JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
                             ListViewItem item = jobInfo.buildItem();
@@ -139,7 +141,7 @@ namespace AirdPro.Redis
                             {
                                 Program.airdForm.lvFileList.Items.Add(item);
                                 ConvertTaskManager.getInstance().pushJob(jobInfo);
-                                needToExe = true;
+                                needToExecute = true;
                             }
                         }
                     }
@@ -156,7 +158,7 @@ namespace AirdPro.Redis
                 }
 
                 //如果在Redis获取到了相关的转换任务
-                if (needToExe)
+                if (needToExecute)
                 {
                     ConvertTaskManager.getInstance().run();
                 }

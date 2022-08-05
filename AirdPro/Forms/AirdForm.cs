@@ -85,8 +85,7 @@ namespace AirdPro.Forms
         private void removeFile(ListViewItem fileItem)
         {
             JobInfo jobInfo = (JobInfo) fileItem.Tag;
-            if (jobInfo.threadId != -1 &&
-                (!jobInfo.status.Equals(Status.Finished) || !jobInfo.status.Equals(Status.Error)))
+            if (jobInfo.threadId != -1 && !jobInfo.status.Equals(Status.Finished))
             {
                 MessageBox.Show(Constants.Tag.Cannot_Be_Deleted_When_Running);
                 return;
@@ -288,6 +287,7 @@ namespace AirdPro.Forms
             bool initResult = RedisClient.getInstance().connect(connectLink);
             if (initResult)
             {
+                redisConsumer.Enabled = true;
                 updateRedisStatus(true);
             }
             else
