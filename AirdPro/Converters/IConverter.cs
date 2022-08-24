@@ -63,7 +63,6 @@ namespace AirdPro.Converters
         protected float energy; //轰击能
         protected string msType; //Profile, Centroided
         protected string polarity; //Negative, Positive
-        protected string rtUnit; //Minute, Second
         protected int intensityPrecision = 1; //Intensity默认精确到个位数
         protected int mobiPrecision = 10000000; //mobility默认精确到小数点后7位
 
@@ -189,8 +188,19 @@ namespace AirdPro.Converters
         {
             CVParam cv = scan.cvParamChild(CVID.MS_scan_start_time);
             double time = double.Parse(cv.value.ToString());
-            rtUnit = cv.unitsName;
-            return time;
+            if (cv.unitsName.Equals("minute"))
+            {
+                return time * 60;
+            }
+            else if (cv.unitsName.Equals("second"))
+            {
+                return time;
+            }
+            else
+            {
+                jobInfo.log("Unknown Time Unit:" + cv.unitsName + "!");
+                throw new Exception("Unknown Time Unit:" + cv.unitsName + "!");
+            }
         }
 
         protected void parseMobility(Scan scan)
@@ -637,7 +647,8 @@ namespace AirdPro.Converters
                     }
 
                     ms2Ranges.Add(range);
-                    TempScan ts = new TempScan(index.num, index.rt, index.tic, index.basePeakIntensity, index.basePeakMz, index.cvList);
+                    TempScan ts = new TempScan(index.num, index.rt, index.tic, index.basePeakIntensity,
+                        index.basePeakMz, index.cvList);
                     if (jobInfo.ionMobility)
                     {
                         compressor.compressMobility(spectrumList.spectrum(index.num, true), ts);
@@ -756,7 +767,7 @@ namespace AirdPro.Converters
             airdInfo.creator = jobInfo.config.creator;
             airdInfo.activator = activator;
             airdInfo.energy = energy;
-            airdInfo.rtUnit = rtUnit;
+            // airdInfo.rtUnit = rtUnit;
 
             airdInfo.mobiInfo = mobiInfo;
             airdInfo.msType = msType;

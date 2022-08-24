@@ -122,7 +122,7 @@ namespace AirdSDK.Domains
          * rt unit
          * rt的时间单位
          */
-        public string rtUnit;
+        // public string rtUnit;
 
         /**
          * polarity
