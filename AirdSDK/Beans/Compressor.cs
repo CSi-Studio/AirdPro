@@ -8,7 +8,9 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using System;
 using System.Collections.Generic;
+using CSharpFastPFOR.Port;
 
 namespace AirdSDK.Domains
 {
@@ -47,6 +49,11 @@ namespace AirdSDK.Domains
          */
         public int digit;
 
+        /**
+         * ByteOrder,Aird格式的默认ByteOrder为LITTLE_ENDIAN,此项为扩展项,目前仅支持默认值LITTLE_ENDIAN ByteOrder
+         */
+        public string byteOrder;
+
         public Compressor(string target)
         {
             this.target = target;
@@ -60,6 +67,11 @@ namespace AirdSDK.Domains
             }
 
             methods.Add(method);
+        }
+
+        public ByteOrder fetchByteOrder()
+        {
+            return ByteOrder.LITTLE_ENDIAN;
         }
     }
 }

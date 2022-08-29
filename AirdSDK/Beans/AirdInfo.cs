@@ -120,9 +120,9 @@ namespace AirdSDK.Domains
 
         /**
          * rt unit
-         * rt的时间单位
+         * rt的时间单位, Aird格式下统一为秒
          */
-        // public string rtUnit;
+        public string rtUnit = "second";
 
         /**
          * polarity

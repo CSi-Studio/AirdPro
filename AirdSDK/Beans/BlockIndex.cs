@@ -8,6 +8,7 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using CSharpFastPFOR.Port;
 using System.Collections.Generic;
 
 namespace AirdSDK.Domains
@@ -82,6 +83,12 @@ namespace AirdSDK.Domains
         public List<long> mzs = new List<long>();
 
         /**
+        * Only using Stack ZDPD. The compressed list for tags of every mz. 
+        * 一个块中所有子谱图的mz原层码的压缩后的数组大小列表
+        */
+        public List<long> tags = new List<long>();
+
+        /**
          * COMMON type: it store the start position of every compressed intensity block
          * Other types: it store the size of every compressed intensity block
          * 一个块中所有子谱图的intensity的压缩后的大小列表,当为Common类型时,每一个存储的不是块大小,而是起始位置
@@ -93,12 +100,6 @@ namespace AirdSDK.Domains
          * 一个块中所有子谱图的mobility的压缩后的大小列表
          */
         public List<long> mobilities = new List<long>();
-
-        /**
-         * Only using Stack ZDPD. The compressed list for tags of every mz. 
-         * 一个块中所有子谱图的mz原层码的压缩后的数组大小列表
-         */
-        public List<long> tags = new List<long>();
 
         /**
          * PSI CV
@@ -141,6 +142,18 @@ namespace AirdSDK.Domains
         public BlockIndex(int level)
         {
             this.level = level;
+        }
+
+        public int getParentNum()
+        {
+            if (level.Equals(2))
+            {
+                return num;
+            }
+            else
+            {
+                return -1;
+            }
         }
     }
 }

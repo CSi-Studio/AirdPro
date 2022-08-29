@@ -8,6 +8,7 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using System;
 using System.Collections.Generic;
 
 namespace AirdSDK.Domains
@@ -20,16 +21,21 @@ namespace AirdSDK.Domains
         //设备仪器厂商
         public string manufacturer;
 
+        //电离方式 Ionisation Method
+        public string ionisation;
+
+        //仪器分辨率 The Instrument Resolution
+        public string resolution;
+
         //设备类型
         public string model;
 
-        public string ionisation;
-
-        public string resolution;
-        
+        //来源 source
         public List<string> source = new List<string>();
+
         //分析方式
         public List<string> analyzer = new List<string>();
+
         //探测器
         public List<string> detector = new List<string>();
     }
