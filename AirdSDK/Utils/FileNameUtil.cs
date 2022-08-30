@@ -11,22 +11,17 @@
 using System;
 using System.IO;
 using System.Linq;
+using AirdSDK.Constants;
 
 namespace AirdPro.Utils
 {
-    public class SuffixConst
-    {
-        public static string JSON = ".json";
-        public static string AIRD = ".aird";
-    }
-
-    public class SymbolConst
-    {
-        public static string COMMA = ",";
-        public static string TAB = "\t";
-        public static string DOT = ".";
-        public static string CHANGE_LINE = "\r\n";
-    }
+    // public class SymbolConst
+    // {
+    //     public static string COMMA = ",";
+    //     public static string TAB = "\t";
+    //     public static string DOT = ".";
+    //     public static string CHANGE_LINE = "\r\n";
+    // }
     public class FileNameUtil
     {
         public static string parseFileName(string inputFilePath)
