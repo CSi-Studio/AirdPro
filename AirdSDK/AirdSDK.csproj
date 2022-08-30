@@ -29,4 +29,10 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Constants\" />
+    <Folder Include="Parser\" />
+    <Folder Include="Exception\" />
+  </ItemGroup>
+
 </Project>

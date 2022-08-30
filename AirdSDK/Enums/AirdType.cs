@@ -12,13 +12,13 @@ namespace AirdSDK.Enums
 {
     public static class AirdType
     {
-        public const string DIA_PASEF = "DIA_PASEF"; 
-        public const string DDA_PASEF = "DDA_PASEF"; 
+        public const string DIA_PASEF = "DIA_PASEF";
+        public const string DDA_PASEF = "DDA_PASEF";
         public const string PRM_PASEF = "PRM_PASEF";
         public const string DIA_SWATH = "DIA"; // Precursor-mz -> MS2 Group
         public const string PRM = "PRM"; // Precursor-mz -> MS2 Group
         public const string SCANNING_SWATH = "SCANNING_SWATH"; // 
         public const string DDA = "DDA"; // MS1 -> MS2 Group
-        public const string COMMON = "Common"; // RT
+        public const string COMMON = "COMMON"; // RT
     }
 }
