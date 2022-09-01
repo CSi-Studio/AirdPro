@@ -8,7 +8,7 @@
  * See the Mulan PSL v2 for more details.
  */
 
-namespace AirdSDK.Domains
+namespace AirdSDK.Beans
 {
     public class Layers
     {
@@ -30,7 +30,9 @@ namespace AirdSDK.Domains
          */
         public int digit;
 
-        public Layers() { }
+        public Layers()
+        {
+        }
 
         public Layers(byte[] mzArray, byte[] tagArray, int digit)
         {

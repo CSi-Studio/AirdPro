@@ -10,12 +10,11 @@
 
 using System;
 using System.Collections;
-using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using AirdPro.Constants;
 using AirdPro.Domains;
-using AirdSDK.Domains;
+using AirdSDK.Beans;
 using AirdSDK.Enums;
 
 
@@ -71,7 +70,8 @@ namespace AirdPro.Converters
                         }
 
                         var scan = spectrum.scanList.scans[0];
-                        var ts = new TempScan(i, parseRT(scan), parseTIC(spectrum), parseBasePeakIntensity(spectrum), parseBasePeakMz(spectrum), CV.trans(spectrum.cvParams));
+                        var ts = new TempScan(i, parseRT(scan), parseTIC(spectrum), parseBasePeakIntensity(spectrum),
+                            parseBasePeakMz(spectrum), CV.trans(spectrum.cvParams));
                         if (scan.cvParams != null)
                         {
                             ts.cvs.AddRange(CV.trans(scan.cvParams));
@@ -109,7 +109,8 @@ namespace AirdPro.Converters
                     }
 
                     var scan = spectrum.scanList.scans[0];
-                    var ts = new TempScan(i, parseRT(scan), parseTIC(spectrum), parseBasePeakIntensity(spectrum), parseBasePeakMz(spectrum), CV.trans(spectrum.cvParams));
+                    var ts = new TempScan(i, parseRT(scan), parseTIC(spectrum), parseBasePeakIntensity(spectrum),
+                        parseBasePeakMz(spectrum), CV.trans(spectrum.cvParams));
 
                     compressor.compress(spectrum, ts);
                     var msLevel = parseMsLevel(spectrum);

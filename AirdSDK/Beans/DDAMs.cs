@@ -8,12 +8,10 @@
  * See the Mulan PSL v2 for more details.
  */
 
-using CSharpFastPFOR.Port;
-using System;
 using System.Collections.Generic;
-using AirdSDK.Domains.common;
+using AirdSDK.Beans.Common;
 
-namespace AirdSDK.Domains
+namespace AirdSDK.Beans
 {
     public class DDAMs
     {

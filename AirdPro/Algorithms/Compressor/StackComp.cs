@@ -16,8 +16,8 @@ using System.Threading.Tasks;
 using AirdPro.Constants;
 using AirdPro.Converters;
 using AirdPro.Domains;
+using AirdSDK.Beans;
 using AirdSDK.Compressor;
-using AirdSDK.Domains;
 using pwiz.CLI.msdata;
 using pwiz.CLI.util;
 

@@ -8,7 +8,7 @@
  * See the Mulan PSL v2 for more details.
  */
 
-namespace AirdSDK.Domains
+namespace AirdSDK.Beans
 {
     /**
      * Path to all the ancestor files (up to the native acquisition file) used to generate the current Aird instance document.

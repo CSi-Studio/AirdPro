@@ -10,12 +10,12 @@
 
 using System;
 using System.Collections.Generic;
-using AirdSDK.Domains;
+using AirdSDK.Beans;
 
 namespace AirdPro.Domains
 {
     //包含mz,intensity数组
-    public class TempScan:IComparable
+    public class TempScan : IComparable
     {
         public int num;
         public double rt;

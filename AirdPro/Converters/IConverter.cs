@@ -22,12 +22,12 @@ using System.IO;
 using System.Text;
 using AirdPro.Algorithms;
 using AirdPro.Domains;
+using AirdSDK.Beans;
 using AirdSDK.Compressor;
-using AirdSDK.Domains;
 using pwiz.CLI.cv;
 using ByteOrder = AirdPro.Constants.ByteOrder;
 using Combination = AirdPro.Domains.Combination;
-using CV = AirdSDK.Domains.CV;
+using CV = AirdSDK.Beans.CV;
 using Software = pwiz.CLI.msdata.Software;
 
 namespace AirdPro.Converters
@@ -755,7 +755,7 @@ namespace AirdPro.Converters
         protected AirdInfo buildBasicInfo()
         {
             AirdInfo airdInfo = new AirdInfo();
-            List<AirdSDK.Domains.Software> softwares = new List<AirdSDK.Domains.Software>();
+            List<AirdSDK.Beans.Software> softwares = new List<AirdSDK.Beans.Software>();
             List<ParentFile> parentFiles = new List<ParentFile>();
 
             //Basic Job Info
@@ -859,13 +859,13 @@ namespace AirdPro.Converters
             //Software Info
             foreach (Software soft in msd.softwareList)
             {
-                AirdSDK.Domains.Software software = new AirdSDK.Domains.Software();
+                AirdSDK.Beans.Software software = new AirdSDK.Beans.Software();
                 software.name = soft.id;
                 software.version = soft.version;
                 softwares.Add(software);
             }
 
-            AirdSDK.Domains.Software airdPro = new AirdSDK.Domains.Software();
+            AirdSDK.Beans.Software airdPro = new AirdSDK.Beans.Software();
             airdPro.name = SoftwareInfo.NAME;
             airdPro.version = SoftwareInfo.VERSION;
             airdPro.type = "DataFormatConversion";

@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace AirdPro.Utils;
 
@@ -14,5 +13,6 @@ public class FileUtil
     public static string readFile(FileInfo file)
     {
         string content = File.ReadAllText(file.FullName);
+        return content;
     }
 }

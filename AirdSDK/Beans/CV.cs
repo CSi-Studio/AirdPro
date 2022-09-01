@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using pwiz.CLI.cv;
 using pwiz.CLI.data;
 
-namespace AirdSDK.Domains
+namespace AirdSDK.Beans
 {
     public class CV
     {

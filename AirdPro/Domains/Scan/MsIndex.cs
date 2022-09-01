@@ -9,7 +9,7 @@
  */
 
 using System.Collections.Generic;
-using AirdSDK.Domains;
+using AirdSDK.Beans;
 
 namespace AirdPro.Domains
 {

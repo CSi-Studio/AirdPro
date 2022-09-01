@@ -24,7 +24,7 @@ namespace AirdSDK.Compressor
                     return new BinPackingWrapper();
                 case IntCompType.Empty:
                     return new Empty();
-                default: throw new Exception("No Implementation for " + type);
+                default: throw new System.Exception("No Implementation for " + type);
             }
         }
 
@@ -38,7 +38,7 @@ namespace AirdSDK.Compressor
                     return IntCompType.BP;
                 case "Empty":
                     return IntCompType.Empty;
-                default: throw new Exception("No Implementation for " + type);
+                default: throw new System.Exception("No Implementation for " + type);
             }
         }
     }

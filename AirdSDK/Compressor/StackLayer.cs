@@ -11,7 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using AirdSDK.Domains;
+using AirdSDK.Beans;
 using CSharpFastPFOR.Port;
 
 namespace AirdSDK.Compressor
@@ -27,7 +27,7 @@ namespace AirdSDK.Compressor
          */
         public static Layers encode(List<int[]> arrGroup, SortedIntComp intComp, ByteComp byteComp)
         {
-            int stackLen = 0;  //记录堆叠数总长度
+            int stackLen = 0; //记录堆叠数总长度
             foreach (int[] arr in arrGroup)
             {
                 stackLen += arr.Length;
@@ -49,11 +49,12 @@ namespace AirdSDK.Compressor
             int[] stackIndex = new int[stackLen];
             for (int i = 0; i < stackLen; i++)
             {
-                stackArr[i] = stackSort[i,0];
-                stackIndex[i] = stackSort[i,1];
+                stackArr[i] = stackSort[i, 0];
+                stackIndex[i] = stackSort[i, 1];
             }
+
             //index移位存储
-            int digit = (int)Math.Ceiling(Math.Log(arrGroup.Count) / Math.Log(2));
+            int digit = (int) Math.Ceiling(Math.Log(arrGroup.Count) / Math.Log(2));
             int indexLen = (stackLen * digit - 1) / 8 + 1;
             byte[] value = new byte[8 * indexLen];
             for (int i = 0; i < stackLen; i++)
@@ -61,9 +62,10 @@ namespace AirdSDK.Compressor
                 int fromIndex = digit * i;
                 for (int j = 0; j < digit; j++)
                 {
-                    value[fromIndex + j] = (byte)((stackIndex[i] >> j) & 1);
+                    value[fromIndex + j] = (byte) ((stackIndex[i] >> j) & 1);
                 }
             }
+
             //把8个byte并为1个byte，用byte数组存是因为zlib压缩的是byte
             byte[] indexShift = new byte[indexLen];
             for (int i = 0; i < indexLen; i++)
@@ -72,9 +74,10 @@ namespace AirdSDK.Compressor
                 for (int j = 0; j < 8; j++)
                 {
                     temp += value[8 * i + j] << j;
-                    indexShift[i] = (byte)temp;
+                    indexShift[i] = (byte) temp;
                 }
             }
+
             //数组用fastPFor压缩，index用zlib压缩，并记录层数
             Layers layers = new Layers();
             layers.mzArray = byteComp.encode(ByteTrans.intToByte(intComp.encode(stackArr)));
@@ -102,9 +105,10 @@ namespace AirdSDK.Compressor
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    value[8 * i + j] = (byte)(((tagShift[i] & 0xff) >> j) & 1);
+                    value[8 * i + j] = (byte) (((tagShift[i] & 0xff) >> j) & 1);
                 }
             }
+
             //还原为int类型的index
             for (int i = 0; i < stackIndex.Length; i++)
             {
@@ -116,12 +120,12 @@ namespace AirdSDK.Compressor
 
             //统计index数组中各个元素出现的次数
             Hashtable table = new Hashtable();
-            
+
             foreach (int index in stackIndex)
             {
                 if (table.ContainsKey(index))
                 {
-                    table[index] = (int)table[index] + 1;
+                    table[index] = (int) table[index] + 1;
                 }
                 else
                 {
@@ -134,13 +138,15 @@ namespace AirdSDK.Compressor
             int arrNum = table.Keys.Count;
             for (int i = 0; i < arrNum; i++)
             {
-                arrGroup.Add(new int[(int)table[i]]);
+                arrGroup.Add(new int[(int) table[i]]);
             }
+
             int[] p = new int[arrNum];
             for (int i = 0; i < stackIndex.Length; i++)
             {
                 arrGroup[stackIndex[i]][p[stackIndex[i]]++] = stackArr[i];
             }
+
             return arrGroup;
         }
 
@@ -152,12 +158,13 @@ namespace AirdSDK.Compressor
          */
         private static int[][] getFullSortArray(List<int[]> arrGroup)
         {
-            int stackLen = 0;//记录堆叠数总长度
+            int stackLen = 0; //记录堆叠数总长度
             foreach (int[] arr in arrGroup)
             {
                 stackLen += arr.Length;
             }
-            int[][] stackSort = new int[stackLen][];//二维数组分别存储堆叠数字和层号
+
+            int[][] stackSort = new int[stackLen][]; //二维数组分别存储堆叠数字和层号
 
             int index = 0;
             int arrLen = 0;
@@ -165,15 +172,14 @@ namespace AirdSDK.Compressor
             {
                 for (int i = 0; i < arr.Length; i++)
                 {
-                    stackSort[i + arrLen] = new []{ arr[i] , index};
+                    stackSort[i + arrLen] = new[] {arr[i], index};
                 }
+
                 index++;
                 arrLen += arr.Length;
             }
-            Array.Sort(stackSort, delegate(int[] t1, int[] t2)
-            {
-                return t1[0].CompareTo(t2[0]);
-            });//根据堆叠数对二维数组升序排列
+
+            Array.Sort(stackSort, delegate(int[] t1, int[] t2) { return t1[0].CompareTo(t2[0]); }); //根据堆叠数对二维数组升序排列
             return stackSort;
         }
 
@@ -193,10 +199,11 @@ namespace AirdSDK.Compressor
                 Arrays.fill(indexes, i);
                 indexGroup.Add(indexes);
             }
-            int mergeTimes = (int)Math.Log(arrGroup.Count, 2);
+
+            int mergeTimes = (int) Math.Log(arrGroup.Count, 2);
             for (int i = 1; i <= mergeTimes; i++)
             {
-                int stepWidth = (int)Math.Pow(2, i);
+                int stepWidth = (int) Math.Pow(2, i);
                 int tempMergeTime = arrGroup.Count / stepWidth;
 
                 for (int j = 0; j < tempMergeTime; j++)
@@ -220,6 +227,7 @@ namespace AirdSDK.Compressor
                             index++;
                             continue;
                         }
+
                         if (index2 >= dataArr2.Length)
                         {
                             dataArr[index] = dataArr1[index1];
@@ -241,21 +249,25 @@ namespace AirdSDK.Compressor
                             indexArr[index] = indexArr2[index2];
                             index2++;
                         }
+
                         index++;
                     }
+
                     indexGroup[leftIndex] = indexArr;
                     arrGroup[leftIndex] = dataArr;
-                }//single thread
-                 //            });//multi threads
+                } //single thread
+                //            });//multi threads
             }
+
             int[] arr = arrGroup[0];
             int[] indexArray = indexGroup[0];
-            int[,] resultArr = new int[arr.Length,2];
+            int[,] resultArr = new int[arr.Length, 2];
             for (int i = 0; i < arr.Length; i++)
             {
-                resultArr[i,0] = arr[i];
-                resultArr[i,1] = indexArray[i];
+                resultArr[i, 0] = arr[i];
+                resultArr[i, 1] = indexArray[i];
             }
+
             return resultArr;
         }
 

@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace AirdSDK.Domains
+namespace AirdSDK.Beans
 {
     /**
      * Description of any manipulation (from the first conversion to aird format until the creation of the current aird instance document) applied to the data.
@@ -28,6 +28,7 @@ namespace AirdSDK.Domains
             {
                 processingOperations = new List<string>();
             }
+
             processingOperations.Add(processingOperation);
         }
     }

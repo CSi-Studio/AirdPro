@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using AirdPro.Utils;
+using AirdSDK.Beans;
 using AirdSDK.Constants;
-using AirdSDK.Domains;
 using Newtonsoft.Json;
 
 public class AirdScanUtil
@@ -68,6 +68,17 @@ public class AirdScanUtil
         {
             return null;
         }
+
         return indexPath.Substring(0, indexPath.LastIndexOf(SymbolConst.DOT)) + SuffixConst.AIRD;
+    }
+
+    public static string getIndexPathByAirdPath(String airdPath)
+    {
+        if (airdPath == null || !airdPath.Contains(SymbolConst.DOT) || !airdPath.EndsWith(SuffixConst.AIRD))
+        {
+            return null;
+        }
+
+        return airdPath.Substring(0, airdPath.LastIndexOf(SymbolConst.DOT)) + SuffixConst.JSON;
     }
 }

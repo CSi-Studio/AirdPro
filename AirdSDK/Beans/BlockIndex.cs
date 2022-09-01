@@ -8,10 +8,9 @@
  * See the Mulan PSL v2 for more details.
  */
 
-using CSharpFastPFOR.Port;
 using System.Collections.Generic;
 
-namespace AirdSDK.Domains
+namespace AirdSDK.Beans
 {
     public class BlockIndex
     {
@@ -80,26 +79,26 @@ namespace AirdSDK.Domains
          * Other types: it store the size of every compressed mz block
          * 一个块中所有子谱图的mz的压缩后的大小列表,当为Common类型时,每一个存储的不是块大小,而是起始位置
          */
-        public List<long> mzs = new List<long>();
+        public List<int> mzs = new List<int>();
 
         /**
         * Only using Stack ZDPD. The compressed list for tags of every mz. 
         * 一个块中所有子谱图的mz原层码的压缩后的数组大小列表
         */
-        public List<long> tags = new List<long>();
+        public List<int> tags = new List<int>();
 
         /**
          * COMMON type: it store the start position of every compressed intensity block
          * Other types: it store the size of every compressed intensity block
          * 一个块中所有子谱图的intensity的压缩后的大小列表,当为Common类型时,每一个存储的不是块大小,而是起始位置
          */
-        public List<long> ints = new List<long>();
+        public List<int> ints = new List<int>();
 
         /**
          * Ion Mobility types: it store the size of every compressed intensity block
          * 一个块中所有子谱图的mobility的压缩后的大小列表
          */
-        public List<long> mobilities = new List<long>();
+        public List<int> mobilities = new List<int>();
 
         /**
          * PSI CV

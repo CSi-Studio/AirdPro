@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AirdSDK.Domains
+namespace AirdSDK.Beans
 {
     /**
      * General information about the MS instrument.

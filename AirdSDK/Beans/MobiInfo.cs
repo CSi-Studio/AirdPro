@@ -8,7 +8,7 @@
  * See the Mulan PSL v2 for more details.
  */
 
-namespace AirdSDK.Domains
+namespace AirdSDK.Beans
 {
     public class MobiInfo
     {

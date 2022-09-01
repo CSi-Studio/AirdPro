@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AirdSDK.Domains
+namespace AirdSDK.Beans
 {
     public class AirdInfo
     {
@@ -33,7 +33,7 @@ namespace AirdSDK.Domains
        * [核心字段]
        * 数组压缩策略
        */
-        public List<Compressor> compressors;
+        public List<Beans.Compressor> compressors;
 
         /**
          * Instrument information list

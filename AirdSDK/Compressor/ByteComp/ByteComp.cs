@@ -26,7 +26,7 @@ namespace AirdSDK.Compressor
                     return new ZstdWrapper();
                 case ByteCompType.Zlib:
                     return new ZlibWrapper();
-                default: throw new Exception("No Implementation for " + type);
+                default: throw new System.Exception("No Implementation for " + type);
             }
         }
 
@@ -42,7 +42,7 @@ namespace AirdSDK.Compressor
                     return ByteCompType.Zstd;
                 case "Zlib":
                     return ByteCompType.Zlib;
-                default: throw new Exception("No Implementation for " + type);
+                default: throw new System.Exception("No Implementation for " + type);
             }
         }
     }

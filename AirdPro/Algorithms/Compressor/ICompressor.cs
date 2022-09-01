@@ -11,8 +11,8 @@
 using System.Collections.Generic;
 using AirdPro.Converters;
 using AirdPro.Domains;
+using AirdSDK.Beans;
 using AirdSDK.Compressor;
-using AirdSDK.Domains;
 using pwiz.CLI.msdata;
 
 namespace AirdPro.Algorithms

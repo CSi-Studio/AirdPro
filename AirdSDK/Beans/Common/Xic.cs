@@ -8,17 +8,28 @@
  * See the Mulan PSL v2 for more details.
  */
 
-namespace AirdSDK.Beans
+namespace AirdSDK.Beans.Common;
+
+public class Xic
 {
-    public class Software
+    public double[] rts;
+    public double[] ints;
+    public double[] mzs;
+
+    public Xic()
     {
-        //软件名称
-        public string name;
+    }
 
+    public Xic(double[] rts, double[] ints, double[] mzs)
+    {
+        this.rts = rts;
+        this.ints = ints;
+        this.mzs = mzs;
+    }
 
-        public string type = "acquisition";
-
-        //软件版本号
-        public string version;
+    public Xic(double[] rts, double[] ints)
+    {
+        this.rts = rts;
+        this.ints = ints;
     }
 }

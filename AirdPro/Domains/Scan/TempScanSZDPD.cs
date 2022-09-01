@@ -10,11 +10,11 @@
 
 using System;
 using System.Collections.Generic;
-using AirdSDK.Domains;
+using AirdSDK.Beans;
 
 namespace AirdPro.Domains
 {
-    public class TempScanSZDPD:IComparable
+    public class TempScanSZDPD : IComparable
     {
         public List<int> nums;
         public List<double> rts;
@@ -26,7 +26,8 @@ namespace AirdPro.Domains
         public byte[] intArrayBytes;
         public byte[] tagArrayBytes;
 
-        public TempScanSZDPD(List<int> nums, List<double> rts, List<long> tics, List<double> basePeakIntensities, List<double> basePeakMzs, List<List<CV>> cvs)
+        public TempScanSZDPD(List<int> nums, List<double> rts, List<long> tics, List<double> basePeakIntensities,
+            List<double> basePeakMzs, List<List<CV>> cvs)
         {
             this.nums = nums;
             this.rts = rts;

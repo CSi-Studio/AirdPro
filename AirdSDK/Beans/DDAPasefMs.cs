@@ -1,10 +1,10 @@
 ﻿using CSharpFastPFOR.Port;
 using System.Collections.Generic;
 using System;
-using AirdSDK.Domains.common;
 using System.Linq;
+using AirdSDK.Beans.Common;
 
-namespace AirdSDK.Domains;
+namespace AirdSDK.Beans;
 
 public class DDAPasefMs
 {
