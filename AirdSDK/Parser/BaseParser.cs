@@ -584,4 +584,17 @@ public abstract class BaseParser
         fs.Read(reader, 0, reader.Length);
         return getSpectrum(reader, 0, mzOffsets[index], intOffsets[index]);
     }
+
+    /**
+    * get mz values only for aird file 默认从Aird文件中读取,编码Order为LITTLE_ENDIAN,精度为小数点后三位
+    *
+    * @param value 压缩后的数组
+    * @return 解压缩后的数组
+    */
+    public double[] getMzs(byte[] value)
+    {
+        return getMzs(value, 0, value.Length);
+    }
+
+
 }
