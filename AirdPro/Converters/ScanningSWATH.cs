@@ -16,7 +16,7 @@ using System.IO;
 using System.Threading.Tasks;
 using AirdPro.Constants;
 using AirdPro.Domains;
-using AirdSDK.Domains;
+using AirdSDK.Beans;
 using AirdSDK.Enums;
 
 /**
@@ -167,8 +167,9 @@ namespace AirdPro.Converters
 
             try
             {
-                TempScan ts = new TempScan(i, parseRT(spectrum.scanList.scans[0]), parseTIC(spectrum), parseBasePeakIntensity(spectrum), parseBasePeakMz(spectrum),
-                    AirdSDK.Domains.CV.trans(spectrum.cvParams));
+                TempScan ts = new TempScan(i, parseRT(spectrum.scanList.scans[0]), parseTIC(spectrum),
+                    parseBasePeakIntensity(spectrum), parseBasePeakMz(spectrum),
+                    AirdSDK.Beans.CV.trans(spectrum.cvParams));
                 compressor.compress(spectrum, ts);
                 ms2List.Add(ts);
             }

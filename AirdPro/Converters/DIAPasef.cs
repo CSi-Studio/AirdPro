@@ -12,7 +12,7 @@ using pwiz.CLI.msdata;
 using System.IO;
 using AirdPro.Constants;
 using AirdPro.Domains;
-using AirdSDK.Domains;
+using AirdSDK.Beans;
 using AirdSDK.Enums;
 
 namespace AirdPro.Converters

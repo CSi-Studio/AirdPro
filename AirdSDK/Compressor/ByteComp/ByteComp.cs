@@ -9,6 +9,7 @@
  */
 
 using System;
+using AirdSDK.Enums;
 
 namespace AirdSDK.Compressor
 {
@@ -45,5 +46,7 @@ namespace AirdSDK.Compressor
                 default: throw new System.Exception("No Implementation for " + type);
             }
         }
+
+        public abstract byte[] decode(byte[] input, int offset, int length);
     }
 }

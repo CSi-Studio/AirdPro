@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using AirdPro.Constants;
 using AirdSDK.Compressor;
+using AirdSDK.Enums;
 
 namespace AirdPro.Storage.Config
 {

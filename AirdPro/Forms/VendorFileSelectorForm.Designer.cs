@@ -35,7 +35,6 @@ namespace AirdPro.Forms
             this.gBoxMode = new System.Windows.Forms.GroupBox();
             this.radioButton6 = new System.Windows.Forms.RadioButton();
             this.radioButton5 = new System.Windows.Forms.RadioButton();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.btnAddAndContinue = new System.Windows.Forms.Button();
@@ -71,14 +70,13 @@ namespace AirdPro.Forms
             this.gBoxMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.gBoxMode.Controls.Add(this.radioButton6);
             this.gBoxMode.Controls.Add(this.radioButton5);
-            this.gBoxMode.Controls.Add(this.radioButton4);
             this.gBoxMode.Controls.Add(this.radioButton3);
             this.gBoxMode.Controls.Add(this.radioButton2);
             this.gBoxMode.Controls.Add(this.radioButton1);
             this.gBoxMode.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.gBoxMode.Location = new System.Drawing.Point(505, 3);
             this.gBoxMode.Name = "gBoxMode";
-            this.gBoxMode.Size = new System.Drawing.Size(126, 197);
+            this.gBoxMode.Size = new System.Drawing.Size(126, 175);
             this.gBoxMode.TabIndex = 2;
             this.gBoxMode.TabStop = false;
             this.gBoxMode.Text = "Acquisition Mode";
@@ -87,7 +85,7 @@ namespace AirdPro.Forms
             // 
             this.radioButton6.AutoSize = true;
             this.radioButton6.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.radioButton6.Location = new System.Drawing.Point(8, 44);
+            this.radioButton6.Location = new System.Drawing.Point(8, 50);
             this.radioButton6.Name = "radioButton6";
             this.radioButton6.Size = new System.Drawing.Size(92, 21);
             this.radioButton6.TabIndex = 6;
@@ -99,7 +97,7 @@ namespace AirdPro.Forms
             // 
             this.radioButton5.AutoSize = true;
             this.radioButton5.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.radioButton5.Location = new System.Drawing.Point(8, 100);
+            this.radioButton5.Location = new System.Drawing.Point(8, 111);
             this.radioButton5.Name = "radioButton5";
             this.radioButton5.Size = new System.Drawing.Size(87, 21);
             this.radioButton5.TabIndex = 5;
@@ -107,23 +105,11 @@ namespace AirdPro.Forms
             this.radioButton5.Text = "DIA_PASEF";
             this.radioButton5.UseVisualStyleBackColor = true;
             // 
-            // radioButton4
-            // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.radioButton4.Location = new System.Drawing.Point(8, 161);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(79, 21);
-            this.radioButton4.TabIndex = 4;
-            this.radioButton4.TabStop = true;
-            this.radioButton4.Text = "Common";
-            this.radioButton4.UseVisualStyleBackColor = true;
-            // 
             // radioButton3
             // 
             this.radioButton3.AutoSize = true;
             this.radioButton3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.radioButton3.Location = new System.Drawing.Point(8, 139);
+            this.radioButton3.Location = new System.Drawing.Point(8, 145);
             this.radioButton3.Name = "radioButton3";
             this.radioButton3.Size = new System.Drawing.Size(53, 21);
             this.radioButton3.TabIndex = 3;
@@ -135,7 +121,7 @@ namespace AirdPro.Forms
             // 
             this.radioButton2.AutoSize = true;
             this.radioButton2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.radioButton2.Location = new System.Drawing.Point(8, 76);
+            this.radioButton2.Location = new System.Drawing.Point(8, 79);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(47, 21);
             this.radioButton2.TabIndex = 2;
@@ -314,7 +300,6 @@ namespace AirdPro.Forms
         #endregion
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.GroupBox gBoxMode;
-        private System.Windows.Forms.RadioButton radioButton4;
         private System.Windows.Forms.RadioButton radioButton3;
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.Button btnAddAndContinue;

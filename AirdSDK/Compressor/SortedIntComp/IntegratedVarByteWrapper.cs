@@ -22,15 +22,15 @@ namespace AirdSDK.Compressor
 
         public override int[] encode(int[] uncompressed)
         {
-            int[] compressedInts = new IntegratedIntCompressor(new IntegratedVariableByte()).compress(uncompressed);
-            return compressedInts;
+            int[] compressed = new IntegratedIntCompressor(new IntegratedVariableByte()).compress(uncompressed);
+            return compressed;
         }
 
         //使用VariableByte算法对已经压缩的int数组进行解压缩
         public override int[] decode(int[] compressed)
         {
-            int[] sortedInts = new IntegratedIntCompressor(new IntegratedVariableByte()).uncompress(compressed);
-            return sortedInts;
+            int[] uncompressed = new IntegratedIntCompressor(new IntegratedVariableByte()).uncompress(compressed);
+            return uncompressed;
         }
     }
 }

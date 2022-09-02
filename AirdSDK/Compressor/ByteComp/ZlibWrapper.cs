@@ -8,12 +8,15 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using System;
 using System.IO;
+using AirdSDK.Enums;
 using Ionic.Zlib;
+using IronSnappy;
 
 namespace AirdSDK.Compressor
 {
-    public class ZlibWrapper:ByteComp
+    public class ZlibWrapper : ByteComp
     {
         //使用zlib将byte数组压缩
         public override string getName()
@@ -36,6 +39,14 @@ namespace AirdSDK.Compressor
         public override byte[] decode(byte[] data)
         {
             return ZlibStream.UncompressBuffer(data);
+        }
+
+        public override byte[] decode(byte[] input, int offset, int length)
+        {
+            byte[] result = new byte[length];
+            Array.Copy(input, offset, result, 0, length);
+            byte[] uncompressed = ZlibStream.UncompressBuffer(result);
+            return uncompressed;
         }
     }
 }

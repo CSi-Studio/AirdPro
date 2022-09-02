@@ -2,7 +2,6 @@
 using AirdPro.Constants;
 using AirdPro.Storage.Config;
 using AirdSDK.Compressor;
-using AirdSDK.Domains;
 
 namespace AirdPro.Domains;
 

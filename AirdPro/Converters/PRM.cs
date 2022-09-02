@@ -13,7 +13,7 @@ using System.IO;
 using System.Threading.Tasks;
 using AirdPro.Constants;
 using AirdPro.Domains;
-using AirdSDK.Domains;
+using AirdSDK.Beans;
 using AirdSDK.Enums;
 using pwiz.CLI.msdata;
 

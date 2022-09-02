@@ -142,7 +142,7 @@ namespace AirdPro.Asyncs
         {
             ICompressor comp;
             IConverter converter = null;
-            if (jobInfo.type.Equals(AirdType.DIA_SWATH))
+            if (jobInfo.type.Equals(AirdType.DIA))
             {
                 converter = new DIA(jobInfo);
             }
@@ -157,10 +157,6 @@ namespace AirdPro.Asyncs
             else if (jobInfo.type.Equals(AirdType.DDA))
             {
                 converter = new DDA(jobInfo);
-            }
-            else if (jobInfo.type.Equals(AirdType.COMMON))
-            {
-                converter = new Common(jobInfo);
             }
             else if (jobInfo.type.Equals(AirdType.DDA_PASEF))
             {

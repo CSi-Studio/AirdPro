@@ -9,6 +9,8 @@
  */
 
 
+using AirdSDK.Enums;
+
 namespace AirdSDK.Compressor
 {
     public class Empty : IntComp
@@ -22,7 +24,7 @@ namespace AirdSDK.Compressor
         {
             return uncompressed;
         }
-        
+
         public override int[] decode(int[] compressed)
         {
             return compressed;

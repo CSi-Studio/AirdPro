@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using AirdPro.Utils;
@@ -172,9 +173,6 @@ public abstract class BaseParser
                     break;
                 case "PRM":
                     baseParser = new PRMParser(indexFile.FullName, airdInfo);
-                    break;
-                case "COMMON":
-                    baseParser = new CommonParser(indexFile.FullName, airdInfo);
                     break;
                 default: throw new System.Exception("Unexpected value: " + airdInfo.type);
             }
@@ -596,5 +594,185 @@ public abstract class BaseParser
         return getMzs(value, 0, value.Length);
     }
 
+    /**
+   * get mz values only for aird file 默认从Aird文件中读取,编码Order为LITTLE_ENDIAN,精度为小数点后三位
+   *
+   * @param value  压缩后的数组
+   * @param offset 起始位置
+   * @param length 读取长度
+   * @return 解压缩后的数组
+   */
+    public double[] getMzs(byte[] value, int offset, int length)
+    {
+        byte[] decodedData = mzByteComp.decode(value, offset, length);
+        int[] intValues = ByteTrans.byteToInt(decodedData);
+        intValues = mzIntComp.decode(intValues);
+        double[] doubleValues = new double[intValues.Length];
+        for (int index = 0; index < intValues.Length; index++)
+        {
+            doubleValues[index] = intValues[index] / mzPrecision;
+        }
 
+        return doubleValues;
+    }
+
+    /**
+    * get mz values only for aird file 默认从Aird文件中读取,编码Order为LITTLE_ENDIAN
+    *
+    * @param value 加密的数组
+    * @return 解压缩后的数组
+    */
+    public int[] getMzsAsInteger(byte[] value)
+    {
+        return getMzsAsInteger(value, 0, value.Length);
+    }
+
+    /**
+   * get mz values only for aird file 默认从Aird文件中读取,编码Order为LITTLE_ENDIAN,精度为小数点后三位
+   *
+   * @param value  压缩后的数组
+   * @param offset 起始位置
+   * @param length 读取长度
+   * @return 解压缩后的数组
+   */
+    public int[] getMzsAsInteger(byte[] value, int offset, int length)
+    {
+        byte[] decodedData = mzByteComp.decode(value, offset, length);
+        int[] intValues = ByteTrans.byteToInt(decodedData);
+        intValues = mzIntComp.decode(intValues);
+        return intValues;
+    }
+
+    /**
+    * get intensity values only for aird file
+    *
+    * @param value 压缩的数组
+    * @return 解压缩后的数组
+    */
+    public double[] getInts(byte[] value)
+    {
+        return getInts(value, 0, value.Length);
+    }
+
+    /**
+    * get intensity values from the start point with a specified length
+    *
+    * @param value  the original array
+    * @param start  the start point
+    * @param length the specified length
+    * @return the decompression intensity array
+    */
+    public double[] getInts(byte[] value, int start, int length)
+    {
+        byte[] decodedData = intByteComp.decode(value, start, length);
+        int[] intValues = ByteTrans.byteToInt(decodedData);
+        intValues = intIntComp.decode(intValues);
+
+        double[] intensityValues = new double[intValues.Length];
+        for (int i = 0; i < intValues.Length; i++)
+        {
+            double intensity = intValues[i];
+            if (intensity < 0)
+            {
+                intensity = Math.Pow(2, -intensity / 100000d);
+            }
+
+            intensityValues[i] = intensity / intPrecision;
+        }
+
+        return intensityValues;
+    }
+
+    /**
+    * get intensity values from the start point with a specified length
+    *
+    * @param value  the original array
+    * @param start  the start point
+    * @param length the specified length
+    * @return the decompression intensity array
+    */
+    public double[] getMobilities(byte[] value, int start, int length)
+    {
+        byte[] decodedData = mobiByteComp.decode(value, start, length);
+        int[] intValues = ByteTrans.byteToInt(decodedData);
+        intValues = mobiIntComp.decode(intValues);
+        double[] mobilities = new double[intValues.Length];
+        for (int i = 0; i < intValues.Length; i++)
+        {
+            mobilities[i] = mobiDict[intValues[i]];
+        }
+
+        return mobilities;
+    }
+
+    /**
+   * get tag values only for aird file 默认从Aird文件中读取,编码Order为LITTLE_ENDIAN,精度为小数点后三位
+   *
+   * @param value 压缩后的数组
+   * @return 解压缩后的数组
+   */
+    public int[] getTags(byte[] value)
+    {
+        byte[] decodedData = new ZlibWrapper().decode(value);
+        byte[] byteValue = new byte[decodedData.Length * 8];
+        for (int i = 0; i < decodedData.Length; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                byteValue[8 * i + j] = (byte) (((decodedData[i] & 0xff) >> j) & 1);
+            }
+        }
+
+        int digit = mzCompressor.digit;
+        int[] tags = new int[byteValue.Length / digit];
+        for (int i = 0; i < tags.Length; i++)
+        {
+            for (int j = 0; j < digit; j++)
+            {
+                tags[i] += byteValue[digit * i + j] << j;
+            }
+        }
+
+        return tags;
+    }
+
+    /**
+     * get tag values only for aird file 默认从Aird文件中读取,编码Order为LITTLE_ENDIAN,精度为小数点后三位
+     *
+     * @param value  压缩后的数组
+     * @param start  起始位置
+     * @param length 读取长度
+     * @return 解压缩后的数组
+     */
+    public int[] getTags(byte[] value, int start, int length)
+    {
+        byte[] tagShift = new ZlibWrapper().decode(value, start, length);
+        //        byteBuffer.order(mzCompressor.getByteOrder());
+
+        byte[] byteValue = new byte[tagShift.Length * 8];
+        for (int i = 0; i < tagShift.Length; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                byteValue[8 * i + j] = (byte) (((tagShift[i] & 0xff) >> j) & 1);
+            }
+        }
+
+        int digit = mzCompressor.digit;
+        int[] tags = new int[byteValue.Length / digit];
+        for (int i = 0; i < tags.Length; i++)
+        {
+            for (int j = 0; j < digit; j++)
+            {
+                tags[i] += byteValue[digit * i + j] << j;
+            }
+        }
+
+        return tags;
+    }
+
+    public String getType()
+    {
+        return airdInfo == null ? null : airdInfo.type;
+    }
 }

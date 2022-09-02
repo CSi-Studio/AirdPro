@@ -85,12 +85,6 @@ namespace AirdPro.Domains
             this.inputPath = inputPath;
             this.type = type;
             this.outputPath = outputPath;
-            // 二代压缩算法StackZDPD目前不支持COMMON模式
-            if (type.Equals(AirdType.COMMON) && config.stack)
-            {
-                throw new Exception("Stack Layer Algorithm is not support for COMMON mode");
-            }
-
             this.config = config;
             format = Path.GetExtension(inputPath).Replace(".", "").ToUpper();
             airdFileName = FileNameUtil.parseFileName(inputPath);

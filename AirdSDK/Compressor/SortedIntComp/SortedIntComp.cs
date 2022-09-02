@@ -9,6 +9,7 @@
  */
 
 using System;
+using AirdSDK.Enums;
 
 namespace AirdSDK.Compressor
 {

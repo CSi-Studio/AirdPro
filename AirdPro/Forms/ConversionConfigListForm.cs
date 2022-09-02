@@ -17,6 +17,7 @@ using AirdPro.Domains;
 using AirdPro.Storage.Config;
 using AirdSDK.Compressor;
 using ThermoFisher.CommonCore.Data;
+using AirdSDK.Enums;
 
 namespace AirdPro.Forms
 {

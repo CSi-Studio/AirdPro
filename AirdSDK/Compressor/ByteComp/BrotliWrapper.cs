@@ -8,6 +8,7 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using AirdSDK.Enums;
 using BrotliSharpLib;
 
 namespace AirdSDK.Compressor
@@ -29,6 +30,12 @@ namespace AirdSDK.Compressor
         public override byte[] decode(byte[] data)
         {
             byte[] uncompressed = Brotli.DecompressBuffer(data, 0, data.Length);
+            return uncompressed;
+        }
+
+        public override byte[] decode(byte[] input, int offset, int length)
+        {
+            byte[] uncompressed = Brotli.DecompressBuffer(input, offset, length);
             return uncompressed;
         }
     }

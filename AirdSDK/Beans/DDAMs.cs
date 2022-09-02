@@ -8,6 +8,7 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using System;
 using System.Collections.Generic;
 using AirdSDK.Beans.Common;
 
@@ -18,36 +19,46 @@ namespace AirdSDK.Beans
         /**
       * order number for current spectrum
       */
-        int num;
+        public int num;
 
         /**
          * Retention Time, unit: reference from raw file, default is second required
          */
-        double rt;
+        public double rt;
 
         /**
          * the tic data for current scan
          */
-        long tic;
+        public long tic;
 
         /**
          * cvList for current scan
          */
-        List<CV> cvList;
+        public List<CV> cvList;
 
         /**
          * the window range for current scan
          */
-        WindowRange range;
+        public WindowRange range;
 
         /**
          * the ms1 spectrum data pairs required
          */
-        Spectrum spectrum;
+        public Spectrum spectrum;
 
         /**
          * related ms2 list
          */
-        List<DDAMs> ms2List;
+        public List<DDAMs> ms2List;
+
+        public DDAMs()
+        {
+        }
+
+        public DDAMs(double rt, Spectrum spectrum)
+        {
+            this.rt = rt;
+            this.spectrum = spectrum;
+        }
     }
 }

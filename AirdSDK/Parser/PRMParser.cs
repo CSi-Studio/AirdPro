@@ -2,7 +2,7 @@
 
 namespace AirdSDK.Parser;
 
-public class PRMParser : BaseParser
+public class PRMParser : DIAParser
 {
     public PRMParser(string indexFilePath) : base(indexFilePath)
     {

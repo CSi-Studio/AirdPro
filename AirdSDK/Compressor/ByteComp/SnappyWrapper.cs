@@ -8,13 +8,16 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using AirdSDK.Enums;
+using BrotliSharpLib;
+using CSharpFastPFOR.Port;
 using IronSnappy;
+using System;
 
 namespace AirdSDK.Compressor
 {
-    public class SnappyWrapper:ByteComp
+    public class SnappyWrapper : ByteComp
     {
-
         //使用zstd将byte数组压缩
         public override string getName()
         {
@@ -33,5 +36,12 @@ namespace AirdSDK.Compressor
             return uncompressed;
         }
 
+        public override byte[] decode(byte[] input, int offset, int length)
+        {
+            byte[] result = new byte[length];
+            Array.Copy(input, offset, result, 0, length);
+            byte[] uncompressed = Snappy.Decode(result);
+            return uncompressed;
+        }
     }
 }
