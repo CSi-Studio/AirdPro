@@ -252,6 +252,7 @@
             this.tbPaperZDPD.Size = new System.Drawing.Size(750, 140);
             this.tbPaperZDPD.TabIndex = 23;
             this.tbPaperZDPD.Text = "Paper:ZDPD";
+            this.tbPaperZDPD.TextChanged += new System.EventHandler(this.tbPaperZDPD_TextChanged);
             // 
             // AboutForm
             // 
