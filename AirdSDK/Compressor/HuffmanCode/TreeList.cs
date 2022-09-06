@@ -32,6 +32,7 @@ namespace AirdSDK.Compressor
                     tmpList.Add(list[i]);
                 }
             }
+
             signTable = new string[tmpList.Count];
             keyTable = new string[tmpList.Count];
         }
@@ -104,6 +105,7 @@ namespace AirdSDK.Compressor
                                     continue;
                                 }
                             }
+
                             HuffmanTree tmpHT = tmp1.data;
                             tmp1.data = tmp2.data;
                             tmp2.data = tmpHT;
@@ -135,6 +137,7 @@ namespace AirdSDK.Compressor
                     insertTree(sumTmp);
                 }
             }
+
             return sumTmp;
         }
 
@@ -180,7 +183,7 @@ namespace AirdSDK.Compressor
 
             count++;
         }
-        
+
         //生成霍夫曼编码表
         public static void makeKey(HuffmanTree tree, string code)
         {
@@ -312,6 +315,7 @@ namespace AirdSDK.Compressor
                     j++;
                 }
             }
+
             return temStr;
         }
 

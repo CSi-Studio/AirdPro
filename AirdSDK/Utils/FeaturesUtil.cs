@@ -15,7 +15,6 @@ namespace AirdPro.Utils
 {
     public class FeaturesUtil
     {
-
         public static char SP = ';';
         public static char SSP = ':';
 
@@ -37,6 +36,7 @@ namespace AirdPro.Utils
                     sb.Append(key).Append(SSP).Append(val).Append(SP);
                 }
             }
+
             return sb.ToString();
         }
 
@@ -46,7 +46,8 @@ namespace AirdPro.Utils
          * @param str (格式比如为: "k:v;k:v;k:v")
          * @return
          */
-        public static Hashtable toMap(string str) {
+        public static Hashtable toMap(string str)
+        {
             Hashtable attrs = new Hashtable();
             if (str != null)
             {
@@ -60,9 +61,10 @@ namespace AirdPro.Utils
                         {
                             attrs.Add(ar[0], ar[1]);
                         }
-                    }  
+                    }
                 }
             }
+
             return attrs;
         }
     }

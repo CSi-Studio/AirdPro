@@ -23,7 +23,8 @@ namespace AirdPro.Storage.Handler
         private static string CONFIG_PATH = Path.Combine(Environment.CurrentDirectory, "ConversionConfig.json");
         public Dictionary<string, ConversionConfig> configMap = new Dictionary<string, ConversionConfig>();
 
-        private HashSet<Observer<Dictionary<string, ConversionConfig>>> observers = new HashSet<Observer<Dictionary<string, ConversionConfig>>>();
+        private HashSet<Observer<Dictionary<string, ConversionConfig>>> observers =
+            new HashSet<Observer<Dictionary<string, ConversionConfig>>>();
 
         public ConversionConfigHandler()
         {
@@ -40,6 +41,7 @@ namespace AirdPro.Storage.Handler
             {
                 this.configMap.Add(name, config);
             }
+
             save();
             notify();
         }
@@ -67,7 +69,8 @@ namespace AirdPro.Storage.Handler
             if (!File.Exists(CONFIG_PATH))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(CONFIG_PATH));
-                JsonSerializerSettings jsonSetting = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+                JsonSerializerSettings jsonSetting = new JsonSerializerSettings
+                    {NullValueHandling = NullValueHandling.Ignore};
                 string defaultConfigStr = JsonConvert.SerializeObject(configMap, jsonSetting);
                 byte[] defaultConfigBytes = Encoding.UTF8.GetBytes(defaultConfigStr);
                 using (FileStream defaultConfigStream = new FileStream(CONFIG_PATH, FileMode.Create))
@@ -77,7 +80,8 @@ namespace AirdPro.Storage.Handler
             }
             else
             {
-                JsonSerializerSettings jsonSetting = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+                JsonSerializerSettings jsonSetting = new JsonSerializerSettings
+                    {NullValueHandling = NullValueHandling.Ignore};
                 string defaultConfigStr = JsonConvert.SerializeObject(configMap, jsonSetting);
                 byte[] defaultConfigBytes = Encoding.UTF8.GetBytes(defaultConfigStr);
                 using (FileStream defaultConfigStream = new FileStream(CONFIG_PATH, FileMode.Truncate))
@@ -90,7 +94,8 @@ namespace AirdPro.Storage.Handler
         public Dictionary<string, ConversionConfig> read()
         {
             initConfig();
-            this.configMap = JsonConvert.DeserializeObject<Dictionary<string, ConversionConfig>>(File.ReadAllText(CONFIG_PATH));
+            this.configMap =
+                JsonConvert.DeserializeObject<Dictionary<string, ConversionConfig>>(File.ReadAllText(CONFIG_PATH));
             notify();
             return configMap;
         }
@@ -102,7 +107,7 @@ namespace AirdPro.Storage.Handler
                 Directory.CreateDirectory(Path.GetDirectoryName(CONFIG_PATH));
                 configMap.Add(DEFAULT, new ConversionConfig());
                 JsonSerializerSettings jsonSetting = new JsonSerializerSettings
-                { NullValueHandling = NullValueHandling.Ignore };
+                    {NullValueHandling = NullValueHandling.Ignore};
                 string defaultConfigStr = JsonConvert.SerializeObject(configMap, jsonSetting);
                 byte[] defaultConfigBytes = Encoding.UTF8.GetBytes(defaultConfigStr);
                 using (FileStream defaultConfigStream = new FileStream(CONFIG_PATH, FileMode.OpenOrCreate))
@@ -133,4 +138,3 @@ namespace AirdPro.Storage.Handler
         }
     }
 }
-

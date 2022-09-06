@@ -21,4 +21,3 @@ namespace AirdPro.Constants
         public static string Input_Your_Own_Paths_First = "Input your own paths first!";
     }
 }
-

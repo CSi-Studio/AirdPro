@@ -23,4 +23,3 @@ namespace AirdPro.Constants
         public static int OUTPUT_PATH = 8;
     }
 }
-

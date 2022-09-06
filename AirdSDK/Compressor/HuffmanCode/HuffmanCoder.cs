@@ -46,7 +46,7 @@ public class HuffmanCoder
     //直接调用此函数，可以建立霍夫曼树，该树用于编码和解码
     public static HuffmanTree buildTree(int[] mobiIntArray)
     {
-        TreeList treeList = new TreeList(mobiIntArray); 
+        TreeList treeList = new TreeList(mobiIntArray);
         for (int k = 0; k < mobiIntArray.Length; k++)
         {
             treeList.addNum(mobiIntArray[k]); //提取int数组中出现的数字，并计算其权重（出现次数），除去重复出现的数字

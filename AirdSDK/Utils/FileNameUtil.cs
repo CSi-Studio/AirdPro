@@ -34,7 +34,7 @@ namespace AirdPro.Utils
                 {
                     outputFileName = Path.GetFileNameWithoutExtension(inputFilePath) ?? string.Empty;
                 }
-                
+
                 // this list is for Windows; it's a superset of the POSIX list
                 const string illegalChar = "\\/*:?<>|\"";
                 foreach (var illegal in illegalChar)
@@ -42,9 +42,9 @@ namespace AirdPro.Utils
                     if (outputFileName.Contains(illegal))
                     {
                         outputFileName = outputFileName.Replace(illegal, '_');
-                    }   
+                    }
                 }
-                
+
                 string newFilename = outputFileName;
                 return newFilename;
             }
@@ -63,10 +63,12 @@ namespace AirdPro.Utils
         */
         public static string getAirdPathByIndexPath(string indexPath)
         {
-            if (string.IsNullOrEmpty(indexPath) || !indexPath.Contains(SymbolConst.DOT) || !(Path.GetExtension(indexPath).ToLower() == SuffixConst.JSON))
+            if (string.IsNullOrEmpty(indexPath) || !indexPath.Contains(SymbolConst.DOT) ||
+                !(Path.GetExtension(indexPath).ToLower() == SuffixConst.JSON))
             {
                 return null;
             }
+
             return indexPath.Substring(0, indexPath.LastIndexOf(SymbolConst.DOT)) + SuffixConst.AIRD;
         }
 
@@ -76,10 +78,12 @@ namespace AirdPro.Utils
         /// <returns> 索引文件路径 </returns>
         public static string getIndexPathByAirdPath(string airdPath)
         {
-            if (string.IsNullOrEmpty(airdPath) || !airdPath.Contains(SymbolConst.DOT) || !airdPath.EndsWith(SuffixConst.AIRD, StringComparison.Ordinal))
+            if (string.IsNullOrEmpty(airdPath) || !airdPath.Contains(SymbolConst.DOT) ||
+                !airdPath.EndsWith(SuffixConst.AIRD, StringComparison.Ordinal))
             {
                 return null;
             }
+
             return airdPath.Substring(0, airdPath.LastIndexOf(SymbolConst.DOT)) + SuffixConst.JSON;
         }
 
@@ -91,14 +95,15 @@ namespace AirdPro.Utils
         public static bool airdFileVerification(string path)
         {
             bool value = File.Exists(path);
-            if(path.EndsWith(SuffixConst.AIRD, StringComparison.Ordinal))
+            if (path.EndsWith(SuffixConst.AIRD, StringComparison.Ordinal))
             {
                 value = value && File.Exists(getIndexPathByAirdPath(path));
             }
-            else if(path.EndsWith(SuffixConst.JSON, StringComparison.Ordinal))
+            else if (path.EndsWith(SuffixConst.JSON, StringComparison.Ordinal))
             {
                 value = value && File.Exists(getAirdPathByIndexPath(path));
             }
+
             return value;
         }
 
@@ -113,10 +118,12 @@ namespace AirdPro.Utils
             {
                 return null;
             }
-            if(path.EndsWith(SuffixConst.AIRD, StringComparison.Ordinal))
+
+            if (path.EndsWith(SuffixConst.AIRD, StringComparison.Ordinal))
             {
                 return getIndexPathByAirdPath(path);
             }
+
             return path;
         }
     }

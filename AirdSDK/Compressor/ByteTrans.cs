@@ -22,6 +22,7 @@ namespace AirdSDK.Compressor
             {
                 BitConverter.GetBytes(src[i]).CopyTo(bytes, i * 2);
             }
+
             return bytes;
         }
 
@@ -33,6 +34,7 @@ namespace AirdSDK.Compressor
             {
                 BitConverter.GetBytes(src[i]).CopyTo(bytes, i * 4);
             }
+
             return bytes;
         }
 
@@ -44,6 +46,7 @@ namespace AirdSDK.Compressor
             {
                 BitConverter.GetBytes(src[i]).CopyTo(bytes, i * 4);
             }
+
             return bytes;
         }
 
