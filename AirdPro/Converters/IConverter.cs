@@ -1,6 +1,6 @@
 ﻿/*
  * Copyright (c) 2020 CSi Studio
- * Aird and AirdPro are licensed under Mulan PSL v2.
+ * AirdSDK and AirdPro are licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2. 
  * You may obtain a copy of Mulan PSL v2 at:
  *          http://license.coscl.org.cn/MulanPSL2 
@@ -509,8 +509,8 @@ namespace AirdPro.Converters
             ms1.num = index;
             if (spectrum.scanList.scans.Count != 1) return ms1;
             Scan scan = spectrum.scanList.scans[0];
-            ms1.cvList = CV.trans(spectrum.cvParams);
-            if (scan.cvParams != null) ms1.cvList.AddRange(CV.trans(scan.cvParams));
+            ms1.cvList = CVUtil.trans(spectrum.cvParams);
+            if (scan.cvParams != null) ms1.cvList.AddRange(CVUtil.trans(scan.cvParams));
 
             ms1.rt = parseRT(scan);
             ms1.tic = parseTIC(spectrum);
@@ -560,8 +560,8 @@ namespace AirdPro.Converters
             parseActivator(spectrum.precursors[0].activation);
             Scan scan = spectrum.scanList.scans[0];
 
-            ms2.cvList = CV.trans(spectrum.cvParams);
-            if (scan.cvParams != null) ms2.cvList.AddRange(CV.trans(scan.cvParams));
+            ms2.cvList = CVUtil.trans(spectrum.cvParams);
+            if (scan.cvParams != null) ms2.cvList.AddRange(CVUtil.trans(scan.cvParams));
             ms2.rt = parseRT(scan);
             ms2.tic = parseTIC(spectrum);
             ms2.basePeakIntensity = parseBasePeakIntensity(spectrum);

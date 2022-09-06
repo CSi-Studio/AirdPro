@@ -3,6 +3,16 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>AirdSDK</Title>
+    <Version>2.0.3.1-beta1</Version>
+    <Company>CSi_Studio</Company>
+    <Authors>LuMiaoShan</Authors>
+    <Description>Aird SDK for C#</Description>
+	<PackageId>AirdSDK</PackageId>
+    <PackageIcon>AirdProLogo.png</PackageIcon>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -20,16 +30,21 @@
     <PackageReference Include="ZstdNet" Version="1.4.5" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="pwiz_bindings_cli">
-      <HintPath>..\ImportLibs\pwiz_bindings_cli.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
+	<ItemGroup>
     <Folder Include="Constants\" />
     <Folder Include="Parser\" />
     <Folder Include="Exception\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="AirdProLogo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
