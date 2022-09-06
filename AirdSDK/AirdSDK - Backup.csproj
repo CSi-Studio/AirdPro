@@ -21,6 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ThirdParty\ThirdParty.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="pwiz_bindings_cli">
       <HintPath>..\ImportLibs\pwiz_bindings_cli.dll</HintPath>
     </Reference>

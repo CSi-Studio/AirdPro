@@ -327,10 +327,6 @@
       <Project>{02aa6048-fe7e-402f-a9ec-d91020814634}</Project>
       <Name>AirdSDK</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ThirdParty\ThirdParty.csproj">
-      <Project>{ea1c54b8-2aef-44b3-8cb5-25b6c98f6ff2}</Project>
-      <Name>ThirdParty</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Test\" />
