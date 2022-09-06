@@ -8,7 +8,7 @@
  * See the Mulan PSL v2 for more details.
  */
 
-using System;
+
 using System.Collections.Generic;
 
 namespace AirdSDK.Beans

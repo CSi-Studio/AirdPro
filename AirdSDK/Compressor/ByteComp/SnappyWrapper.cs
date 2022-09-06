@@ -9,8 +9,6 @@
  */
 
 using AirdSDK.Enums;
-using BrotliSharpLib;
-using CSharpFastPFOR.Port;
 using IronSnappy;
 using System;
 

@@ -9,7 +9,6 @@
  */
 
 using AirdSDK.Enums;
-using Ionic.Zlib;
 using System;
 using ZstdNet;
 

@@ -25,7 +25,7 @@ public class AirdScanUtil
         FileInfo[] fileList = root.GetFiles();
         List<FileInfo> indexFileList = new List<FileInfo>();
 
-        if (fileList == null)
+        if (fileList.Length == 0)
         {
             return null;
         }
