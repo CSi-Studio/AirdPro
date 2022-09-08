@@ -177,6 +177,12 @@
     <Compile Include="Forms\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -206,11 +212,11 @@
       <DependentUpon>VendorFileSelectorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Redis\RedisClient.cs" />
-    <Compile Include="Forms\AirdForm.cs">
+    <Compile Include="Forms\ConversionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AirdForm.Designer.cs">
-      <DependentUpon>AirdForm.cs</DependentUpon>
+    <Compile Include="Forms\ConversionForm.Designer.cs">
+      <DependentUpon>ConversionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Converters\DDA.cs" />
     <Compile Include="Converters\DIA.cs" />
@@ -226,8 +232,8 @@
     <Compile Include="Utils\CVUtil.cs" />
     <Compile Include="Utils\SpectrumUtil.cs" />
     <Compile Include="Utils\StatUtil.cs" />
-    <EmbeddedResource Include="Forms\AirdForm.resx">
-      <DependentUpon>AirdForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ConversionForm.resx">
+      <DependentUpon>ConversionForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ConversionConfigListForm.resx">
@@ -238,6 +244,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\VendorFileSelectorForm.resx">
       <DependentUpon>VendorFileSelectorForm.cs</DependentUpon>
@@ -270,6 +279,11 @@
     <Content Include="Properties\DisConnect.png" />
     <Content Include="Properties\Connected.png" />
     <Content Include="Properties\Convert.png" />
+    <Content Include="Resources\ConversionCenter.png" />
+    <Content Include="Resources\AirdManager.png" />
+    <Content Include="Resources\CleanFinished.png" />
+    <Content Include="Resources\CleanErrors.png" />
+    <Content Include="Resources\Setting.png" />
     <None Include="Resources\AirdProLogoBlack.png" />
     <None Include="Resources\AirdProLogo.png" />
     <None Include="Resources\AirdProIcon.png" />

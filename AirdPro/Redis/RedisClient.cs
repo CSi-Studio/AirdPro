@@ -139,7 +139,7 @@ namespace AirdPro.Redis
                             ListViewItem item = jobInfo.buildItem();
                             if (!ConvertTaskManager.getInstance().jobTable.Contains(jobInfo.getJobId()))
                             {
-                                Program.airdForm.lvFileList.Items.Add(item);
+                                Program.conversionForm.lvFileList.Items.Add(item);
                                 ConvertTaskManager.getInstance().pushJob(jobInfo);
                                 needToExecute = true;
                             }

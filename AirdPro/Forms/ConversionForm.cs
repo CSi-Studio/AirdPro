@@ -22,7 +22,7 @@ using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Forms
 {
-    public partial class AirdForm : Form
+    public partial class ConversionForm : Form
     {
         ArrayList jobIdList = new();
         VendorFileSelectorForm fileSelector;
@@ -30,7 +30,7 @@ namespace AirdPro.Forms
         GlobalSettingForm globalSettingForm;
         AboutForm aboutForm;
 
-        public AirdForm()
+        public ConversionForm()
         {
             InitializeComponent();
         }
@@ -186,17 +186,6 @@ namespace AirdPro.Forms
             configListForm.showConfig(Constants.Tag.Empty, config);
         }
 
-        //打开输入的定制化参数列表
-        private void openConversionConfigListForm(object sender, EventArgs e)
-        {
-            if (configListForm == null || configListForm.IsDisposed)
-            {
-                configListForm = new ConversionConfigListForm();
-            }
-
-            configListForm.Show();
-        }
-
         private void selectFilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (fileSelector == null || fileSelector.IsDisposed)
@@ -248,33 +237,12 @@ namespace AirdPro.Forms
             }
         }
 
-        private void cleanFinishedToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (lvFileList.Items.Count != 0)
-            {
-                foreach (ListViewItem item in lvFileList.Items)
-                {
-                    if (item.SubItems[ItemName.PROGRESS].Text.Equals(Status.Finished))
-                    {
-                        item.Remove();
-                        jobIdList.Remove(item.SubItems[0].Text);
-                        ConvertTaskManager.getInstance().jobTable.Remove(item.SubItems[0].Text);
-                    }
-                }
-            }
-        }
-
-        private void cleanErrorsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ConvertTaskManager.getInstance().finishedTable.Clear();
-        }
-
         private void redisConsumer_Tick(object sender, EventArgs e)
         {
             RedisClient.getInstance().consume();
         }
 
-        private void btnRedisConnect_Click(object sender, EventArgs e)
+        public void connectToRedis()
         {
             string connectLink = Program.globalConfigHandler.getRedisConnectStr();
             if (connectLink.IsNullOrEmpty())
@@ -298,26 +266,26 @@ namespace AirdPro.Forms
             }
         }
 
+        public void disconnectFromRedis()
+        {
+            RedisClient.getInstance().disconnect();
+            updateRedisStatus(false);
+        }
+
         private void updateRedisStatus(bool connected)
         {
             if (connected)
             {
-                btnRedisConnect.BackgroundImage = Properties.Resources.Connected;
+                btnRedis.BackgroundImage = Properties.Resources.Connected;
                 lblRedisStatus.Text = Status.Redis_Connected;
                 lblRedisStatus.ForeColor = Color.Green;
             }
             else
             {
-                btnRedisConnect.BackgroundImage = Properties.Resources.DisConnect;
+                btnRedis.BackgroundImage = Properties.Resources.DisConnect;
                 lblRedisStatus.Text = Status.Redis_Not_Connected;
                 lblRedisStatus.ForeColor = Color.Red;
             }
-        }
-
-        private void btnRedisDisconnect_Click(object sender, EventArgs e)
-        {
-            RedisClient.getInstance().disconnect();
-            updateRedisStatus(false);
         }
 
         private void btnImport_Click(object sender, EventArgs e)
@@ -339,6 +307,67 @@ namespace AirdPro.Forms
             }
 
             aboutForm.Show();
+        }
+
+        private void ConversionForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            this.Visible = false;
+        }
+
+        private void btnRedis_Click(object sender, EventArgs e)
+        {
+            if (RedisClient.getInstance().check())
+            {
+                disconnectFromRedis();
+            }
+            else
+            {
+                connectToRedis();
+            }
+        }
+
+        private void btnCleanFinished_Click(object sender, EventArgs e)
+        {
+            if (lvFileList.Items.Count != 0)
+            {
+                foreach (ListViewItem item in lvFileList.Items)
+                {
+                    if (item.SubItems[ItemName.PROGRESS].Text.Equals(Status.Finished))
+                    {
+                        item.Remove();
+                        jobIdList.Remove(item.SubItems[0].Text);
+                        ConvertTaskManager.getInstance().jobTable.Remove(item.SubItems[0].Text);
+                    }
+                }
+            }
+        }
+
+        private void btnCleanErrors_Click(object sender, EventArgs e)
+        {
+            // ConvertTaskManager.getInstance().finishedTable.Clear();
+            if (lvFileList.Items.Count != 0)
+            {
+                foreach (ListViewItem item in lvFileList.Items)
+                {
+                    if (item.SubItems[ItemName.PROGRESS].Text.Equals(Status.Error))
+                    {
+                        item.Remove();
+                        jobIdList.Remove(item.SubItems[0].Text);
+                        ConvertTaskManager.getInstance().jobTable.Remove(item.SubItems[0].Text);
+                    }
+                }
+            }
+        }
+
+        private void btnSetting_Click(object sender, EventArgs e)
+        {
+            if (configListForm == null || configListForm.IsDisposed)
+            {
+                configListForm = new ConversionConfigListForm();
+            }
+
+            configListForm.Show();
         }
     }
 }

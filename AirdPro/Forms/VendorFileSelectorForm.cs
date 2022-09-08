@@ -107,12 +107,12 @@ namespace AirdPro.Forms
                     string newOutputPath = Path.Combine(outputPath, fileName);
                     for (var i = 0; i < configList.Count; i++)
                     {
-                        Program.airdForm.addFile(path, newOutputPath, expType, configList[i]);
+                        Program.conversionForm.addFile(path, newOutputPath, expType, configList[i]);
                     }
                 }
                 else
                 {
-                    Program.airdForm.addFile(path, outputPath, expType, (ConversionConfig) config.Clone());
+                    Program.conversionForm.addFile(path, outputPath, expType, (ConversionConfig) config.Clone());
                 }
             }
 

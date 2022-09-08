@@ -17,7 +17,8 @@ namespace AirdPro
 {
     internal static class Program
     {
-        public static AirdForm airdForm { get; private set; }
+        public static MainForm mainForm { get; private set; }
+        public static ConversionForm conversionForm { get; private set; }
         public static GlobalConfigHandler globalConfigHandler { get; private set; }
         public static ConversionConfigHandler conversionConfigHandler { get; private set; }
 
@@ -31,11 +32,11 @@ namespace AirdPro
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
+                conversionForm = new ConversionForm();
                 globalConfigHandler = new GlobalConfigHandler();
                 conversionConfigHandler = new ConversionConfigHandler();
-
-                airdForm = new AirdForm();
-                Application.Run(airdForm);
+                mainForm = new MainForm();
+                Application.Run(mainForm);
             }
             catch (Exception e)
             {
