@@ -60,6 +60,8 @@ namespace AirdSDK.Compressor
                     return new IntegratedBinPackingWrapper();
                 case SortedIntCompType.IVB:
                     return new IntegratedVarByteWrapper();
+                case SortedIntCompType.Delta:
+                    return new DeltaWrapper();
                 default: throw new System.Exception("No Implementation for " + type);
             }
         }
@@ -72,6 +74,8 @@ namespace AirdSDK.Compressor
                     return SortedIntCompType.IBP;
                 case "IVB":
                     return SortedIntCompType.IVB;
+                case "Delta":
+                    return SortedIntCompType.Delta;
                 default: throw new System.Exception("No Implementation for " + type);
             }
         }

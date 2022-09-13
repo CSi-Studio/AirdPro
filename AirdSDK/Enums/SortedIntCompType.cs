@@ -14,5 +14,6 @@ namespace AirdSDK.Compressor
     {
         IBP = 0, //Integrated Binary Packing
         IVB = 1, //Integrated Variable Byte
+        Delta = 2, //Delta Trans
     }
 }

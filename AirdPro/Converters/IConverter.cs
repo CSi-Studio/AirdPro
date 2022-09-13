@@ -578,7 +578,7 @@ namespace AirdPro.Converters
             }
 
             byte[] compressedMobiData =
-                new ZstdWrapper().encode(ByteTrans.intToByte(new IntegratedVarByteWrapper().encode(mobiIntArray)));
+                new ZstdWrapper().encode(ByteTrans.intToByte(new DeltaWrapper().encode(mobiIntArray)));
             mobiInfo.dictStart = startPosition;
             startPosition += compressedMobiData.Length;
             airdStream.Write(compressedMobiData, 0, compressedMobiData.Length);
@@ -938,7 +938,7 @@ namespace AirdPro.Converters
 
         List<SortedIntComp> integratedIntCompList = new()
         {
-            new IntegratedVarByteWrapper(), new IntegratedBinPackingWrapper(),
+            new DeltaWrapper(), new IntegratedBinPackingWrapper(),
         };
 
         List<IntComp> intCompList = new()

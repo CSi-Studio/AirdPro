@@ -223,7 +223,7 @@ public abstract class BaseParser
             var result = new byte[delta];
             fs.Read(result, 0, delta);
             var mobiArray =
-                new IntegratedVarByteWrapper().decode(ByteTrans.byteToInt(new ZstdWrapper().decode(result)));
+                new DeltaWrapper().decode(ByteTrans.byteToInt(new ZstdWrapper().decode(result)));
             var mobiDArray = new double[mobiArray.Length];
             for (var i = 0; i < mobiArray.Length; i++) mobiDArray[i] = mobiArray[i] / mobiPrecision;
 
@@ -242,7 +242,7 @@ public abstract class BaseParser
                     mzIntComp = new IntegratedBinPackingWrapper(); //IBP
                     break;
                 case "IVB":
-                    mzIntComp = new IntegratedVarByteWrapper(); //IVB
+                    mzIntComp = new DeltaWrapper(); //IVB
                     break;
             }
 
