@@ -73,26 +73,6 @@ namespace AirdPro.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap AirdProLogo {
-            get {
-                object obj = ResourceManager.GetObject("AirdProLogo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
-        /// </summary>
-        internal static System.Drawing.Bitmap AirdProLogoBlack {
-            get {
-                object obj = ResourceManager.GetObject("AirdProLogoBlack", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
-        /// </summary>
         internal static System.Drawing.Bitmap CleanErrors {
             get {
                 object obj = ResourceManager.GetObject("CleanErrors", resourceCulture);

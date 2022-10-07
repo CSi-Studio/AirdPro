@@ -279,14 +279,14 @@
     <Content Include="Properties\DisConnect.png" />
     <Content Include="Properties\Connected.png" />
     <Content Include="Properties\Convert.png" />
+    <Content Include="Resources\AirdPro.png" />
+    <Content Include="Resources\AirdPro_ 2.png" />
+    <Content Include="Resources\AirdPro_ 3.png" />
     <Content Include="Resources\ConversionCenter.png" />
     <Content Include="Resources\AirdManager.png" />
     <Content Include="Resources\CleanFinished.png" />
     <Content Include="Resources\CleanErrors.png" />
     <Content Include="Resources\Setting.png" />
-    <None Include="Resources\AirdProLogoBlack.png" />
-    <None Include="Resources\AirdProLogo.png" />
-    <None Include="Resources\AirdProIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
@@ -337,12 +337,6 @@
     <PackageReference Include="ZstdNet">
       <Version>1.4.5</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AirdSDK\AirdSDK.csproj">
-      <Project>{02aa6048-fe7e-402f-a9ec-d91020814634}</Project>
-      <Name>AirdSDK</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Test\" />

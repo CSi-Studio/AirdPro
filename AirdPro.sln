@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirdPro", "AirdPro\AirdPro.csproj", "{E8027102-CAE0-476F-832D-04EC120098A9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AirdSDK", "AirdSDK\AirdSDK.csproj", "{02AA6048-FE7E-402F-A9EC-D91020814634}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AirdSDK", "..\Aird-SDK\CSharpSDK\AirdSDK.csproj", "{B843F483-7235-4E8F-B9CB-B34411E1B6E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +23,14 @@ Global
 		{E8027102-CAE0-476F-832D-04EC120098A9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E8027102-CAE0-476F-832D-04EC120098A9}.Release|x64.ActiveCfg = Release|x64
 		{E8027102-CAE0-476F-832D-04EC120098A9}.Release|x64.Build.0 = Release|x64
-		{02AA6048-FE7E-402F-A9EC-D91020814634}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02AA6048-FE7E-402F-A9EC-D91020814634}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02AA6048-FE7E-402F-A9EC-D91020814634}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{02AA6048-FE7E-402F-A9EC-D91020814634}.Debug|x64.Build.0 = Debug|Any CPU
-		{02AA6048-FE7E-402F-A9EC-D91020814634}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02AA6048-FE7E-402F-A9EC-D91020814634}.Release|Any CPU.Build.0 = Release|Any CPU
-		{02AA6048-FE7E-402F-A9EC-D91020814634}.Release|x64.ActiveCfg = Release|Any CPU
-		{02AA6048-FE7E-402F-A9EC-D91020814634}.Release|x64.Build.0 = Release|Any CPU
+		{B843F483-7235-4E8F-B9CB-B34411E1B6E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B843F483-7235-4E8F-B9CB-B34411E1B6E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B843F483-7235-4E8F-B9CB-B34411E1B6E7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B843F483-7235-4E8F-B9CB-B34411E1B6E7}.Debug|x64.Build.0 = Debug|Any CPU
+		{B843F483-7235-4E8F-B9CB-B34411E1B6E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B843F483-7235-4E8F-B9CB-B34411E1B6E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B843F483-7235-4E8F-B9CB-B34411E1B6E7}.Release|x64.ActiveCfg = Release|Any CPU
+		{B843F483-7235-4E8F-B9CB-B34411E1B6E7}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
