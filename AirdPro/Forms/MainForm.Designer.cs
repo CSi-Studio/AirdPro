@@ -29,52 +29,103 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.lblConversionCenter = new System.Windows.Forms.Label();
-            this.btnImport = new System.Windows.Forms.Button();
+            this.menu = new System.Windows.Forms.MenuStrip();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.filesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startConversionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.globalSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu.SuspendLayout();
             this.SuspendLayout();
             // 
-            // lblConversionCenter
+            // menu
             // 
-            this.lblConversionCenter.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.lblConversionCenter.Location = new System.Drawing.Point(20, 199);
-            this.lblConversionCenter.Name = "lblConversionCenter";
-            this.lblConversionCenter.Size = new System.Drawing.Size(155, 33);
-            this.lblConversionCenter.TabIndex = 15;
-            this.lblConversionCenter.Text = " Conversion Center";
-            this.lblConversionCenter.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.menu.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.filesToolStripMenuItem,
+            this.startConversionToolStripMenuItem,
+            this.settingToolStripMenuItem,
+            this.helpToolStripMenuItem});
+            this.menu.Location = new System.Drawing.Point(0, 0);
+            this.menu.Name = "menu";
+            this.menu.Size = new System.Drawing.Size(1426, 32);
+            this.menu.TabIndex = 16;
+            this.menu.Text = "menuStrip1";
             // 
-            // btnImport
+            // helpToolStripMenuItem
             // 
-            this.btnImport.BackgroundImage = global::AirdPro.Properties.Resources.ConversionCenter;
-            this.btnImport.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnImport.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnImport.FlatAppearance.BorderSize = 0;
-            this.btnImport.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.btnImport.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnImport.Location = new System.Drawing.Point(49, 96);
-            this.btnImport.Name = "btnImport";
-            this.btnImport.Size = new System.Drawing.Size(100, 100);
-            this.btnImport.TabIndex = 14;
-            this.btnImport.UseVisualStyleBackColor = true;
-            this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
+            this.helpToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Help;
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(91, 28);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // filesToolStripMenuItem
+            // 
+            this.filesToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Files;
+            this.filesToolStripMenuItem.Name = "filesToolStripMenuItem";
+            this.filesToolStripMenuItem.Size = new System.Drawing.Size(88, 28);
+            this.filesToolStripMenuItem.Text = "Files";
+            // 
+            // startConversionToolStripMenuItem
+            // 
+            this.startConversionToolStripMenuItem.Image = global::AirdPro.Properties.Resources.ConversionCenter;
+            this.startConversionToolStripMenuItem.Name = "startConversionToolStripMenuItem";
+            this.startConversionToolStripMenuItem.Size = new System.Drawing.Size(191, 28);
+            this.startConversionToolStripMenuItem.Text = "Start Conversion";
+            this.startConversionToolStripMenuItem.Click += new System.EventHandler(this.startConversionToolStripMenuItem_Click);
+            // 
+            // settingToolStripMenuItem
+            // 
+            this.settingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.globalSettingToolStripMenuItem});
+            this.settingToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Setting;
+            this.settingToolStripMenuItem.Name = "settingToolStripMenuItem";
+            this.settingToolStripMenuItem.Size = new System.Drawing.Size(112, 28);
+            this.settingToolStripMenuItem.Text = "Setting";
+            // 
+            // globalSettingToolStripMenuItem
+            // 
+            this.globalSettingToolStripMenuItem.Name = "globalSettingToolStripMenuItem";
+            this.globalSettingToolStripMenuItem.Size = new System.Drawing.Size(233, 34);
+            this.globalSettingToolStripMenuItem.Text = "Global Setting";
+            this.globalSettingToolStripMenuItem.Click += new System.EventHandler(this.globalSettingToolStripMenuItem_Click);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1268, 723);
-            this.Controls.Add(this.lblConversionCenter);
-            this.Controls.Add(this.btnImport);
+            this.ClientSize = new System.Drawing.Size(1426, 868);
+            this.Controls.Add(this.menu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menu;
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "MainForm";
-            this.Text = "MSPro";
+            this.Text = "AirdPro";
+            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.menu.ResumeLayout(false);
+            this.menu.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnImport;
-        private System.Windows.Forms.Label lblConversionCenter;
+        private System.Windows.Forms.MenuStrip menu;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem settingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem globalSettingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem filesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem startConversionToolStripMenuItem;
     }
 }

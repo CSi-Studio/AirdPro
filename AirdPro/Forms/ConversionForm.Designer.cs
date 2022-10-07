@@ -54,13 +54,6 @@ namespace AirdPro.Forms
             this.contentMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.rerun = new System.Windows.Forms.ToolStripMenuItem();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuConfig = new System.Windows.Forms.MenuStrip();
-            this.filesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.selectFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuConfiguration = new System.Windows.Forms.ToolStripMenuItem();
-            this.globalSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.compouterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnSetting = new System.Windows.Forms.Button();
             this.btnCleanErrors = new System.Windows.Forms.Button();
             this.btnCleanFinished = new System.Windows.Forms.Button();
@@ -78,7 +71,6 @@ namespace AirdPro.Forms
             this.container.Panel2.SuspendLayout();
             this.container.SuspendLayout();
             this.contentMenu.SuspendLayout();
-            this.menuConfig.SuspendLayout();
             this.SuspendLayout();
             // 
             // container
@@ -89,7 +81,6 @@ namespace AirdPro.Forms
             // container.Panel1
             // 
             this.container.Panel1.Controls.Add(this.lvFileList);
-            this.container.Panel1.Controls.Add(this.menuConfig);
             // 
             // container.Panel2
             // 
@@ -186,55 +177,6 @@ namespace AirdPro.Forms
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
             resources.ApplyResources(this.removeToolStripMenuItem, "removeToolStripMenuItem");
             this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
-            // 
-            // menuConfig
-            // 
-            resources.ApplyResources(this.menuConfig, "menuConfig");
-            this.menuConfig.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuConfig.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.filesToolStripMenuItem,
-            this.menuConfiguration,
-            this.helpToolStripMenuItem});
-            this.menuConfig.Name = "menuConfig";
-            // 
-            // filesToolStripMenuItem
-            // 
-            this.filesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.selectFilesToolStripMenuItem});
-            this.filesToolStripMenuItem.Name = "filesToolStripMenuItem";
-            resources.ApplyResources(this.filesToolStripMenuItem, "filesToolStripMenuItem");
-            // 
-            // selectFilesToolStripMenuItem
-            // 
-            this.selectFilesToolStripMenuItem.Name = "selectFilesToolStripMenuItem";
-            resources.ApplyResources(this.selectFilesToolStripMenuItem, "selectFilesToolStripMenuItem");
-            this.selectFilesToolStripMenuItem.Click += new System.EventHandler(this.selectFilesToolStripMenuItem_Click);
-            // 
-            // menuConfiguration
-            // 
-            this.menuConfiguration.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.globalSettingsToolStripMenuItem});
-            this.menuConfiguration.Name = "menuConfiguration";
-            resources.ApplyResources(this.menuConfiguration, "menuConfiguration");
-            // 
-            // globalSettingsToolStripMenuItem
-            // 
-            this.globalSettingsToolStripMenuItem.Name = "globalSettingsToolStripMenuItem";
-            resources.ApplyResources(this.globalSettingsToolStripMenuItem, "globalSettingsToolStripMenuItem");
-            this.globalSettingsToolStripMenuItem.Click += new System.EventHandler(this.globalSettingsToolStripMenuItem_Click);
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.compouterToolStripMenuItem});
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
-            // 
-            // compouterToolStripMenuItem
-            // 
-            this.compouterToolStripMenuItem.Name = "compouterToolStripMenuItem";
-            resources.ApplyResources(this.compouterToolStripMenuItem, "compouterToolStripMenuItem");
-            this.compouterToolStripMenuItem.Click += new System.EventHandler(this.compouterToolStripMenuItem_Click);
             // 
             // btnSetting
             // 
@@ -336,19 +278,15 @@ namespace AirdPro.Forms
             resources.ApplyResources(this, "$this");
             this.Controls.Add(this.container);
             this.DoubleBuffered = true;
-            this.MainMenuStrip = this.menuConfig;
             this.Name = "ConversionForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ConversionForm_FormClosing);
             this.Load += new System.EventHandler(this.ProproForm_Load);
             this.container.Panel1.ResumeLayout(false);
-            this.container.Panel1.PerformLayout();
             this.container.Panel2.ResumeLayout(false);
             this.container.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.container)).EndInit();
             this.container.ResumeLayout(false);
             this.contentMenu.ResumeLayout(false);
-            this.menuConfig.ResumeLayout(false);
-            this.menuConfig.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -367,11 +305,6 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ColumnHeader headerCompressor;
         private System.Windows.Forms.ToolTip ttAlgorithm;
         private System.Windows.Forms.ColumnHeader headerPrecision;
-        private System.Windows.Forms.MenuStrip menuConfig;
-        private System.Windows.Forms.ToolStripMenuItem menuConfiguration;
-        private System.Windows.Forms.ToolStripMenuItem globalSettingsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem filesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem selectFilesToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contentMenu;
         private System.Windows.Forms.ToolStripMenuItem rerun;
         private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
@@ -381,8 +314,6 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Timer redisConsumer;
         private System.Windows.Forms.Button btnRedis;
         private System.Windows.Forms.Label lblRedisStatus;
-        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem compouterToolStripMenuItem;
         private System.Windows.Forms.Button btnImport;
         private System.Windows.Forms.Button btnCleanFinished;
         private System.Windows.Forms.Button btnCleanErrors;

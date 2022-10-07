@@ -193,19 +193,19 @@
     <value>403, 18</value>
   </metadata>
   <data name="rerun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 24</value>
+    <value>149, 30</value>
   </data>
   <data name="rerun.Text" xml:space="preserve">
     <value>Rerun</value>
   </data>
   <data name="removeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 24</value>
+    <value>149, 30</value>
   </data>
   <data name="removeToolStripMenuItem.Text" xml:space="preserve">
     <value>Remove</value>
   </data>
   <data name="contentMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 52</value>
+    <value>150, 64</value>
   </data>
   <data name="&gt;&gt;contentMenu.Name" xml:space="preserve">
     <value>contentMenu</value>
@@ -220,10 +220,10 @@
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="lvFileList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 28</value>
+    <value>0, 0</value>
   </data>
   <data name="lvFileList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1185, 673</value>
+    <value>1185, 701</value>
   </data>
   <data name="lvFileList.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -239,72 +239,6 @@
   </data>
   <data name="&gt;&gt;lvFileList.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <metadata name="menuConfig.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>285, 18</value>
-  </metadata>
-  <data name="menuConfig.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 9pt</value>
-  </data>
-  <data name="selectFilesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 26</value>
-  </data>
-  <data name="selectFilesToolStripMenuItem.Text" xml:space="preserve">
-    <value>Import</value>
-  </data>
-  <data name="filesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 24</value>
-  </data>
-  <data name="filesToolStripMenuItem.Text" xml:space="preserve">
-    <value>Files</value>
-  </data>
-  <data name="globalSettingsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>224, 26</value>
-  </data>
-  <data name="globalSettingsToolStripMenuItem.Text" xml:space="preserve">
-    <value>Global Setting</value>
-  </data>
-  <data name="menuConfiguration.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 24</value>
-  </data>
-  <data name="menuConfiguration.Text" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="compouterToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 26</value>
-  </data>
-  <data name="compouterToolStripMenuItem.Text" xml:space="preserve">
-    <value>About</value>
-  </data>
-  <data name="helpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 24</value>
-  </data>
-  <data name="helpToolStripMenuItem.Text" xml:space="preserve">
-    <value>Help</value>
-  </data>
-  <data name="menuConfig.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="menuConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1185, 28</value>
-  </data>
-  <data name="menuConfig.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="menuConfig.Text" xml:space="preserve">
-    <value>Configuration</value>
-  </data>
-  <data name="&gt;&gt;menuConfig.Name" xml:space="preserve">
-    <value>menuConfig</value>
-  </data>
-  <data name="&gt;&gt;menuConfig.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuConfig.Parent" xml:space="preserve">
-    <value>container.Panel1</value>
-  </data>
-  <data name="&gt;&gt;menuConfig.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="&gt;&gt;container.Panel1.Name" xml:space="preserve">
     <value>container.Panel1</value>
@@ -478,7 +412,7 @@
     <value>62, 82</value>
   </data>
   <data name="lblRedisStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 20</value>
+    <value>141, 24</value>
   </data>
   <data name="lblRedisStatus.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -1859,42 +1793,6 @@
     <value>removeToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;removeToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;filesToolStripMenuItem.Name" xml:space="preserve">
-    <value>filesToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;filesToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;selectFilesToolStripMenuItem.Name" xml:space="preserve">
-    <value>selectFilesToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;selectFilesToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuConfiguration.Name" xml:space="preserve">
-    <value>menuConfiguration</value>
-  </data>
-  <data name="&gt;&gt;menuConfiguration.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;globalSettingsToolStripMenuItem.Name" xml:space="preserve">
-    <value>globalSettingsToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;globalSettingsToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;helpToolStripMenuItem.Name" xml:space="preserve">
-    <value>helpToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;helpToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;compouterToolStripMenuItem.Name" xml:space="preserve">
-    <value>compouterToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;compouterToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;logTimer.Name" xml:space="preserve">
