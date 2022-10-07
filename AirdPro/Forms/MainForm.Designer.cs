@@ -30,12 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menu = new System.Windows.Forms.MenuStrip();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.filesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startConversionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.globalSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,39 +49,23 @@
             this.helpToolStripMenuItem});
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
-            this.menu.Size = new System.Drawing.Size(1426, 32);
+            this.menu.Size = new System.Drawing.Size(1426, 36);
             this.menu.TabIndex = 16;
             this.menu.Text = "menuStrip1";
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem});
-            this.helpToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Help;
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(91, 28);
-            this.helpToolStripMenuItem.Text = "Help";
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // filesToolStripMenuItem
             // 
             this.filesToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Files;
             this.filesToolStripMenuItem.Name = "filesToolStripMenuItem";
-            this.filesToolStripMenuItem.Size = new System.Drawing.Size(88, 28);
+            this.filesToolStripMenuItem.Size = new System.Drawing.Size(88, 32);
             this.filesToolStripMenuItem.Text = "Files";
             // 
             // startConversionToolStripMenuItem
             // 
-            this.startConversionToolStripMenuItem.Image = global::AirdPro.Properties.Resources.ConversionCenter;
+            this.startConversionToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Conversion;
             this.startConversionToolStripMenuItem.Name = "startConversionToolStripMenuItem";
-            this.startConversionToolStripMenuItem.Size = new System.Drawing.Size(191, 28);
-            this.startConversionToolStripMenuItem.Text = "Start Conversion";
+            this.startConversionToolStripMenuItem.Size = new System.Drawing.Size(145, 32);
+            this.startConversionToolStripMenuItem.Text = "Conversion";
             this.startConversionToolStripMenuItem.Click += new System.EventHandler(this.startConversionToolStripMenuItem_Click);
             // 
             // settingToolStripMenuItem
@@ -90,7 +74,7 @@
             this.globalSettingToolStripMenuItem});
             this.settingToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Setting;
             this.settingToolStripMenuItem.Name = "settingToolStripMenuItem";
-            this.settingToolStripMenuItem.Size = new System.Drawing.Size(112, 28);
+            this.settingToolStripMenuItem.Size = new System.Drawing.Size(112, 32);
             this.settingToolStripMenuItem.Text = "Setting";
             // 
             // globalSettingToolStripMenuItem
@@ -99,6 +83,22 @@
             this.globalSettingToolStripMenuItem.Size = new System.Drawing.Size(233, 34);
             this.globalSettingToolStripMenuItem.Text = "Global Setting";
             this.globalSettingToolStripMenuItem.Click += new System.EventHandler(this.globalSettingToolStripMenuItem_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
+            this.helpToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Help;
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(91, 32);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(164, 34);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // MainForm
             // 

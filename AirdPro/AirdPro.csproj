@@ -275,15 +275,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
-    <Content Include="Properties\AirdPro_logo.png" />
-    <Content Include="Properties\AirdPro_trans.png" />
+    <Content Include="Properties\AirdProLogo.png" />
+    <Content Include="Properties\AirdProTrans.png" />
     <Content Include="Properties\AirdPro.png" />
+    <Content Include="Properties\Conversion.png" />
     <Content Include="Properties\Files.png" />
     <Content Include="Properties\Help.png" />
     <Content Include="Properties\Import.png" />
     <Content Include="Properties\DisConnect.png" />
     <Content Include="Properties\Connected.png" />
-    <Content Include="Properties\Convert.png" />
+    <Content Include="Properties\Start.png" />
     <Content Include="Properties\Setting.png" />
     <Content Include="Resources\ConversionCenter.png" />
     <Content Include="Resources\AirdManager.png" />

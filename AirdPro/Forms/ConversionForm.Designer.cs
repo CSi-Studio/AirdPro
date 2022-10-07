@@ -241,7 +241,7 @@ namespace AirdPro.Forms
             // 
             // btnConvert
             // 
-            this.btnConvert.BackgroundImage = global::AirdPro.Properties.Resources.Convert;
+            this.btnConvert.BackgroundImage = global::AirdPro.Properties.Resources.Start;
             resources.ApplyResources(this.btnConvert, "btnConvert");
             this.btnConvert.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnConvert.FlatAppearance.BorderSize = 0;

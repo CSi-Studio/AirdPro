@@ -264,7 +264,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::AirdPro.Properties.Resources.AirdPro_logo;
+            this.pictureBox1.Image = global::AirdPro.Properties.Resources.AirdProLogo;
             this.pictureBox1.Location = new System.Drawing.Point(433, 13);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";

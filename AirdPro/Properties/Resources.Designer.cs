@@ -83,9 +83,9 @@ namespace AirdPro.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap AirdPro_logo {
+        internal static System.Drawing.Bitmap AirdProLogo {
             get {
-                object obj = ResourceManager.GetObject("AirdPro_logo", resourceCulture);
+                object obj = ResourceManager.GetObject("AirdProLogo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +93,9 @@ namespace AirdPro.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap AirdPro_trans {
+        internal static System.Drawing.Bitmap AirdProTrans {
             get {
-                object obj = ResourceManager.GetObject("AirdPro_trans", resourceCulture);
+                object obj = ResourceManager.GetObject("AirdProTrans", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,19 +133,9 @@ namespace AirdPro.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap ConversionCenter {
+        internal static System.Drawing.Bitmap Conversion {
             get {
-                object obj = ResourceManager.GetObject("ConversionCenter", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
-        /// </summary>
-        internal static System.Drawing.Bitmap Convert {
-            get {
-                object obj = ResourceManager.GetObject("Convert", resourceCulture);
+                object obj = ResourceManager.GetObject("Conversion", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -196,6 +186,16 @@ namespace AirdPro.Properties {
         internal static System.Drawing.Bitmap Setting {
             get {
                 object obj = ResourceManager.GetObject("Setting", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Start {
+            get {
+                object obj = ResourceManager.GetObject("Start", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
