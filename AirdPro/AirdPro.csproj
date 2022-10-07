@@ -304,9 +304,6 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AirdSDK">
-      <Version>2.0.3.1-beta2</Version>
-    </PackageReference>
     <PackageReference Include="BetterFolderBrowser">
       <Version>1.2.0</Version>
     </PackageReference>
@@ -343,6 +340,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Test\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Aird-SDK\CSharpSDK\AirdSDK.csproj">
+      <Project>{9c1d980f-81de-4661-b1ea-d18060304930}</Project>
+      <Name>AirdSDK</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
