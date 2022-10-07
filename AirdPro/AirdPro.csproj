@@ -279,14 +279,14 @@
     <Content Include="Properties\DisConnect.png" />
     <Content Include="Properties\Connected.png" />
     <Content Include="Properties\Convert.png" />
-    <Content Include="Resources\AirdPro.png" />
-    <Content Include="Resources\AirdPro_ 2.png" />
-    <Content Include="Resources\AirdPro_ 3.png" />
     <Content Include="Resources\ConversionCenter.png" />
     <Content Include="Resources\AirdManager.png" />
     <Content Include="Resources\CleanFinished.png" />
     <Content Include="Resources\CleanErrors.png" />
     <Content Include="Resources\Setting.png" />
+    <None Include="Resources\AirdProLogoBlack.png" />
+    <None Include="Resources\AirdProLogo.png" />
+    <None Include="Resources\AirdProIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
@@ -340,6 +340,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Test\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Aird-SDK\CSharpSDK\AirdSDK.csproj">
+      <Project>{9c1d980f-81de-4661-b1ea-d18060304930}</Project>
+      <Name>AirdSDK</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

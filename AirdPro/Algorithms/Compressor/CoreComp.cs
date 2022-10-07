@@ -162,6 +162,7 @@ namespace AirdPro.Algorithms
             {
                 if (ignoreZero && intData[t] == 0) continue;
                 mzArray[j] = SpectrumUtil.fetchMz(mzData[t], mzPrecision);
+                // intensityArray[j] = Convert.ToInt32(Math.Log(intData[t]) / Math.Log(2) * 100);
                 intensityArray[j] = SpectrumUtil.fetchIntensity(intData[t], intensityPrecision);
                 j++;
             }
