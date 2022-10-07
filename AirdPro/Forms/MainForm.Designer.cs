@@ -36,7 +36,12 @@
             this.globalSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainContainer = new System.Windows.Forms.SplitContainer();
+            this.treeView1 = new System.Windows.Forms.TreeView();
             this.menu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mainContainer)).BeginInit();
+            this.mainContainer.Panel1.SuspendLayout();
+            this.mainContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // menu
@@ -49,7 +54,7 @@
             this.helpToolStripMenuItem});
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
-            this.menu.Size = new System.Drawing.Size(1426, 36);
+            this.menu.Size = new System.Drawing.Size(2208, 32);
             this.menu.TabIndex = 16;
             this.menu.Text = "menuStrip1";
             // 
@@ -57,14 +62,14 @@
             // 
             this.filesToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Files;
             this.filesToolStripMenuItem.Name = "filesToolStripMenuItem";
-            this.filesToolStripMenuItem.Size = new System.Drawing.Size(88, 32);
+            this.filesToolStripMenuItem.Size = new System.Drawing.Size(88, 28);
             this.filesToolStripMenuItem.Text = "Files";
             // 
             // startConversionToolStripMenuItem
             // 
             this.startConversionToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Conversion;
             this.startConversionToolStripMenuItem.Name = "startConversionToolStripMenuItem";
-            this.startConversionToolStripMenuItem.Size = new System.Drawing.Size(145, 32);
+            this.startConversionToolStripMenuItem.Size = new System.Drawing.Size(145, 28);
             this.startConversionToolStripMenuItem.Text = "Conversion";
             this.startConversionToolStripMenuItem.Click += new System.EventHandler(this.startConversionToolStripMenuItem_Click);
             // 
@@ -74,7 +79,7 @@
             this.globalSettingToolStripMenuItem});
             this.settingToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Setting;
             this.settingToolStripMenuItem.Name = "settingToolStripMenuItem";
-            this.settingToolStripMenuItem.Size = new System.Drawing.Size(112, 32);
+            this.settingToolStripMenuItem.Size = new System.Drawing.Size(112, 28);
             this.settingToolStripMenuItem.Text = "Setting";
             // 
             // globalSettingToolStripMenuItem
@@ -90,7 +95,7 @@
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Help;
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(91, 32);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(91, 28);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // aboutToolStripMenuItem
@@ -100,11 +105,35 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // mainContainer
+            // 
+            this.mainContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainContainer.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.mainContainer.Location = new System.Drawing.Point(0, 32);
+            this.mainContainer.Name = "mainContainer";
+            // 
+            // mainContainer.Panel1
+            // 
+            this.mainContainer.Panel1.Controls.Add(this.treeView1);
+            this.mainContainer.Panel1MinSize = 20;
+            this.mainContainer.Size = new System.Drawing.Size(2208, 1299);
+            this.mainContainer.SplitterDistance = 735;
+            this.mainContainer.TabIndex = 17;
+            // 
+            // treeView1
+            // 
+            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView1.Location = new System.Drawing.Point(0, 0);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(735, 1299);
+            this.treeView1.TabIndex = 0;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1426, 868);
+            this.ClientSize = new System.Drawing.Size(2208, 1331);
+            this.Controls.Add(this.mainContainer);
             this.Controls.Add(this.menu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
@@ -114,6 +143,9 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menu.ResumeLayout(false);
             this.menu.PerformLayout();
+            this.mainContainer.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.mainContainer)).EndInit();
+            this.mainContainer.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -127,5 +159,7 @@
         private System.Windows.Forms.ToolStripMenuItem globalSettingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem filesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem startConversionToolStripMenuItem;
+        private System.Windows.Forms.SplitContainer mainContainer;
+        private System.Windows.Forms.TreeView treeView1;
     }
 }
