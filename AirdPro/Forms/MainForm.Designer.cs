@@ -37,7 +37,8 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainContainer = new System.Windows.Forms.SplitContainer();
-            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.fileTree = new System.Windows.Forms.TreeView();
+            this.openRepositoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainContainer)).BeginInit();
             this.mainContainer.Panel1.SuspendLayout();
@@ -54,22 +55,25 @@
             this.helpToolStripMenuItem});
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
-            this.menu.Size = new System.Drawing.Size(2208, 32);
+            this.menu.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
+            this.menu.Size = new System.Drawing.Size(1472, 30);
             this.menu.TabIndex = 16;
             this.menu.Text = "menuStrip1";
             // 
             // filesToolStripMenuItem
             // 
+            this.filesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openRepositoryToolStripMenuItem});
             this.filesToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Files;
             this.filesToolStripMenuItem.Name = "filesToolStripMenuItem";
-            this.filesToolStripMenuItem.Size = new System.Drawing.Size(88, 28);
+            this.filesToolStripMenuItem.Size = new System.Drawing.Size(69, 28);
             this.filesToolStripMenuItem.Text = "Files";
             // 
             // startConversionToolStripMenuItem
             // 
             this.startConversionToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Conversion;
             this.startConversionToolStripMenuItem.Name = "startConversionToolStripMenuItem";
-            this.startConversionToolStripMenuItem.Size = new System.Drawing.Size(145, 28);
+            this.startConversionToolStripMenuItem.Size = new System.Drawing.Size(109, 28);
             this.startConversionToolStripMenuItem.Text = "Conversion";
             this.startConversionToolStripMenuItem.Click += new System.EventHandler(this.startConversionToolStripMenuItem_Click);
             // 
@@ -79,13 +83,13 @@
             this.globalSettingToolStripMenuItem});
             this.settingToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Setting;
             this.settingToolStripMenuItem.Name = "settingToolStripMenuItem";
-            this.settingToolStripMenuItem.Size = new System.Drawing.Size(112, 28);
+            this.settingToolStripMenuItem.Size = new System.Drawing.Size(84, 28);
             this.settingToolStripMenuItem.Text = "Setting";
             // 
             // globalSettingToolStripMenuItem
             // 
             this.globalSettingToolStripMenuItem.Name = "globalSettingToolStripMenuItem";
-            this.globalSettingToolStripMenuItem.Size = new System.Drawing.Size(233, 34);
+            this.globalSettingToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.globalSettingToolStripMenuItem.Text = "Global Setting";
             this.globalSettingToolStripMenuItem.Click += new System.EventHandler(this.globalSettingToolStripMenuItem_Click);
             // 
@@ -95,13 +99,13 @@
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Help;
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(91, 28);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(71, 28);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(164, 34);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -109,35 +113,45 @@
             // 
             this.mainContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainContainer.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.mainContainer.Location = new System.Drawing.Point(0, 32);
+            this.mainContainer.Location = new System.Drawing.Point(0, 30);
+            this.mainContainer.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.mainContainer.Name = "mainContainer";
             // 
             // mainContainer.Panel1
             // 
-            this.mainContainer.Panel1.Controls.Add(this.treeView1);
+            this.mainContainer.Panel1.Controls.Add(this.fileTree);
             this.mainContainer.Panel1MinSize = 20;
-            this.mainContainer.Size = new System.Drawing.Size(2208, 1299);
-            this.mainContainer.SplitterDistance = 735;
+            this.mainContainer.Size = new System.Drawing.Size(1472, 857);
+            this.mainContainer.SplitterDistance = 490;
+            this.mainContainer.SplitterWidth = 3;
             this.mainContainer.TabIndex = 17;
             // 
-            // treeView1
+            // fileTree
             // 
-            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView1.Location = new System.Drawing.Point(0, 0);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(735, 1299);
-            this.treeView1.TabIndex = 0;
+            this.fileTree.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.fileTree.Location = new System.Drawing.Point(0, 0);
+            this.fileTree.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.fileTree.Name = "fileTree";
+            this.fileTree.Size = new System.Drawing.Size(490, 857);
+            this.fileTree.TabIndex = 0;
+            // 
+            // openRepositoryToolStripMenuItem
+            // 
+            this.openRepositoryToolStripMenuItem.Name = "openRepositoryToolStripMenuItem";
+            this.openRepositoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openRepositoryToolStripMenuItem.Text = "Open Repository";
+            this.openRepositoryToolStripMenuItem.Click += new System.EventHandler(this.openRepositoryToolStripMenuItem_Click);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2208, 1331);
+            this.ClientSize = new System.Drawing.Size(1472, 887);
             this.Controls.Add(this.mainContainer);
             this.Controls.Add(this.menu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.Name = "MainForm";
             this.Text = "AirdPro";
             this.Load += new System.EventHandler(this.MainForm_Load);
@@ -160,6 +174,7 @@
         private System.Windows.Forms.ToolStripMenuItem filesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem startConversionToolStripMenuItem;
         private System.Windows.Forms.SplitContainer mainContainer;
-        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.TreeView fileTree;
+        private System.Windows.Forms.ToolStripMenuItem openRepositoryToolStripMenuItem;
     }
 }

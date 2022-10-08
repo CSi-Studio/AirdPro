@@ -66,6 +66,7 @@ namespace AirdPro.Forms
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
             this.redisConsumer = new System.Windows.Forms.Timer(this.components);
+            this.directoryEntry1 = new System.DirectoryServices.DirectoryEntry();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -318,6 +319,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Button btnCleanFinished;
         private System.Windows.Forms.Button btnCleanErrors;
         private System.Windows.Forms.Button btnSetting;
+        private System.DirectoryServices.DirectoryEntry directoryEntry1;
     }
 }
 
