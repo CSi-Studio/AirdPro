@@ -8,6 +8,8 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using System.Collections;
+
 namespace AirdPro.Storage.Config
 {
     public class GlobalConfig
