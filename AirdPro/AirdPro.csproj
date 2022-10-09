@@ -165,6 +165,12 @@
     <Compile Include="Controls\AirdPanel.Designer.cs">
       <DependentUpon>AirdPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ChartPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ChartPanel.Designer.cs">
+      <DependentUpon>ChartPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Converters\DDAPasef .cs" />
     <Compile Include="Converters\DIAPasef.cs" />
     <Compile Include="Domains\HardwareInfo\HardwareInfo.cs" />
@@ -240,6 +246,9 @@
     <Compile Include="Utils\StatUtil.cs" />
     <EmbeddedResource Include="Controls\AirdPanel.resx">
       <DependentUpon>AirdPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ChartPanel.resx">
+      <DependentUpon>ChartPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ConversionForm.resx">
       <DependentUpon>ConversionForm.cs</DependentUpon>

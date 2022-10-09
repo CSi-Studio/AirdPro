@@ -28,30 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title3 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title4 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            this.mainLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.ticAndBasePeakContainer = new System.Windows.Forms.FlowLayoutPanel();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title5 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title6 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title7 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title8 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.ticChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.basePeakChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.spectraContainer = new System.Windows.Forms.FlowLayoutPanel();
-            this.spectrumAndXicContainer = new System.Windows.Forms.FlowLayoutPanel();
-            this.spectrumChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.xicChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.spectraGridView = new System.Windows.Forms.DataGridView();
             this.num = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.level = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -61,136 +55,77 @@
             this.basePeakMz = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.basePeakIntensity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.filterString = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.mainLayoutPanel.SuspendLayout();
-            this.ticAndBasePeakContainer.SuspendLayout();
+            this.spectrumChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.xicChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.mainLayout = new System.Windows.Forms.SplitContainer();
+            this.topLayout = new System.Windows.Forms.SplitContainer();
+            this.ticAndBasePeakLayout = new System.Windows.Forms.SplitContainer();
+            this.bottomLayout = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.ticChart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.basePeakChart)).BeginInit();
-            this.spectraContainer.SuspendLayout();
-            this.spectrumAndXicContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spectraGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spectrumChart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xicChart)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spectraGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mainLayout)).BeginInit();
+            this.mainLayout.Panel1.SuspendLayout();
+            this.mainLayout.Panel2.SuspendLayout();
+            this.mainLayout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.topLayout)).BeginInit();
+            this.topLayout.Panel1.SuspendLayout();
+            this.topLayout.Panel2.SuspendLayout();
+            this.topLayout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ticAndBasePeakLayout)).BeginInit();
+            this.ticAndBasePeakLayout.Panel1.SuspendLayout();
+            this.ticAndBasePeakLayout.Panel2.SuspendLayout();
+            this.ticAndBasePeakLayout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bottomLayout)).BeginInit();
+            this.bottomLayout.Panel1.SuspendLayout();
+            this.bottomLayout.Panel2.SuspendLayout();
+            this.bottomLayout.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // mainLayoutPanel
-            // 
-            this.mainLayoutPanel.Controls.Add(this.ticAndBasePeakContainer);
-            this.mainLayoutPanel.Controls.Add(this.spectraContainer);
-            this.mainLayoutPanel.Controls.Add(this.spectrumAndXicContainer);
-            this.mainLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainLayoutPanel.Location = new System.Drawing.Point(0, 0);
-            this.mainLayoutPanel.Name = "mainLayoutPanel";
-            this.mainLayoutPanel.Size = new System.Drawing.Size(1200, 800);
-            this.mainLayoutPanel.TabIndex = 0;
-            // 
-            // ticAndBasePeakContainer
-            // 
-            this.ticAndBasePeakContainer.Controls.Add(this.ticChart);
-            this.ticAndBasePeakContainer.Controls.Add(this.basePeakChart);
-            this.ticAndBasePeakContainer.Location = new System.Drawing.Point(3, 3);
-            this.ticAndBasePeakContainer.Name = "ticAndBasePeakContainer";
-            this.ticAndBasePeakContainer.Size = new System.Drawing.Size(417, 481);
-            this.ticAndBasePeakContainer.TabIndex = 0;
             // 
             // ticChart
             // 
-            chartArea1.Name = "ChartArea1";
-            this.ticChart.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.ticChart.Legends.Add(legend1);
-            this.ticChart.Location = new System.Drawing.Point(3, 3);
+            chartArea5.Name = "ChartArea1";
+            this.ticChart.ChartAreas.Add(chartArea5);
+            legend5.Name = "Legend1";
+            this.ticChart.Legends.Add(legend5);
+            this.ticChart.Location = new System.Drawing.Point(4, 4);
+            this.ticChart.Margin = new System.Windows.Forms.Padding(4);
             this.ticChart.Name = "ticChart";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.ticChart.Series.Add(series1);
-            this.ticChart.Size = new System.Drawing.Size(414, 245);
+            series5.ChartArea = "ChartArea1";
+            series5.Legend = "Legend1";
+            series5.Name = "Series1";
+            this.ticChart.Series.Add(series5);
+            this.ticChart.Size = new System.Drawing.Size(591, 406);
             this.ticChart.TabIndex = 0;
             this.ticChart.Text = "TIC Chart";
-            title1.Name = "titleTic";
-            title1.Text = "TIC";
-            this.ticChart.Titles.Add(title1);
+            title5.Name = "titleTic";
+            title5.Text = "TIC";
+            this.ticChart.Titles.Add(title5);
             // 
             // basePeakChart
             // 
-            chartArea2.Name = "ChartArea1";
-            this.basePeakChart.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.basePeakChart.Legends.Add(legend2);
-            this.basePeakChart.Location = new System.Drawing.Point(3, 254);
+            chartArea6.Name = "ChartArea1";
+            this.basePeakChart.ChartAreas.Add(chartArea6);
+            legend6.Name = "Legend1";
+            this.basePeakChart.Legends.Add(legend6);
+            this.basePeakChart.Location = new System.Drawing.Point(4, 4);
+            this.basePeakChart.Margin = new System.Windows.Forms.Padding(4);
             this.basePeakChart.Name = "basePeakChart";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.basePeakChart.Series.Add(series2);
-            this.basePeakChart.Size = new System.Drawing.Size(414, 236);
-            this.basePeakChart.TabIndex = 1;
-            this.basePeakChart.Text = "chart2";
-            title2.Name = "titleBasePeak";
-            title2.Text = "Base Peak";
-            this.basePeakChart.Titles.Add(title2);
-            // 
-            // spectraContainer
-            // 
-            this.spectraContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.spectraContainer.Controls.Add(this.spectraGridView);
-            this.spectraContainer.Location = new System.Drawing.Point(426, 3);
-            this.spectraContainer.Name = "spectraContainer";
-            this.spectraContainer.Size = new System.Drawing.Size(771, 481);
-            this.spectraContainer.TabIndex = 1;
-            // 
-            // spectrumAndXicContainer
-            // 
-            this.spectrumAndXicContainer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.spectrumAndXicContainer.Controls.Add(this.spectrumChart);
-            this.spectrumAndXicContainer.Controls.Add(this.xicChart);
-            this.spectrumAndXicContainer.Location = new System.Drawing.Point(3, 490);
-            this.spectrumAndXicContainer.Name = "spectrumAndXicContainer";
-            this.spectrumAndXicContainer.Size = new System.Drawing.Size(1194, 307);
-            this.spectrumAndXicContainer.TabIndex = 0;
-            // 
-            // spectrumChart
-            // 
-            chartArea3.Name = "ChartArea1";
-            this.spectrumChart.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.spectrumChart.Legends.Add(legend3);
-            this.spectrumChart.Location = new System.Drawing.Point(3, 3);
-            this.spectrumChart.Name = "spectrumChart";
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.spectrumChart.Series.Add(series3);
-            this.spectrumChart.Size = new System.Drawing.Size(559, 304);
-            this.spectrumChart.TabIndex = 2;
-            this.spectrumChart.Text = "Spectrum Chart";
-            title3.Name = "titleSpectrum";
-            title3.Text = "Spectrum";
-            this.spectrumChart.Titles.Add(title3);
-            // 
-            // xicChart
-            // 
-            chartArea4.Name = "ChartArea1";
-            this.xicChart.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.xicChart.Legends.Add(legend4);
-            this.xicChart.Location = new System.Drawing.Point(568, 3);
-            this.xicChart.Name = "xicChart";
-            series4.ChartArea = "ChartArea1";
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.xicChart.Series.Add(series4);
-            this.xicChart.Size = new System.Drawing.Size(623, 304);
-            this.xicChart.TabIndex = 3;
-            this.xicChart.Text = "XIC Chart";
-            title4.Name = "titleXic";
-            title4.Text = "XIC";
-            this.xicChart.Titles.Add(title4);
+            series6.ChartArea = "ChartArea1";
+            series6.Legend = "Legend1";
+            series6.Name = "Series1";
+            this.basePeakChart.Series.Add(series6);
+            this.basePeakChart.Size = new System.Drawing.Size(591, 394);
+            this.basePeakChart.TabIndex = 0;
+            this.basePeakChart.Text = "BasePeak Chart";
+            title6.Name = "titleBasePeak";
+            title6.Text = "Base Peak";
+            this.basePeakChart.Titles.Add(title6);
             // 
             // spectraGridView
             // 
-            this.spectraGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.spectraGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.spectraGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.num,
@@ -201,86 +136,225 @@
             this.basePeakMz,
             this.basePeakIntensity,
             this.filterString});
-            this.spectraGridView.Location = new System.Drawing.Point(3, 3);
+            this.spectraGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.spectraGridView.Location = new System.Drawing.Point(0, 0);
+            this.spectraGridView.Margin = new System.Windows.Forms.Padding(4);
             this.spectraGridView.Name = "spectraGridView";
+            this.spectraGridView.RowHeadersWidth = 62;
             this.spectraGridView.RowTemplate.Height = 23;
-            this.spectraGridView.Size = new System.Drawing.Size(765, 478);
+            this.spectraGridView.Size = new System.Drawing.Size(1204, 822);
             this.spectraGridView.TabIndex = 0;
             // 
             // num
             // 
             this.num.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.num.HeaderText = "num";
+            this.num.MinimumWidth = 8;
             this.num.Name = "num";
             // 
             // level
             // 
             this.level.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.level.HeaderText = "level";
+            this.level.MinimumWidth = 8;
             this.level.Name = "level";
             // 
             // rt
             // 
             this.rt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.rt.HeaderText = "rt";
+            this.rt.MinimumWidth = 8;
             this.rt.Name = "rt";
             // 
             // precursor
             // 
             this.precursor.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.precursor.HeaderText = "precursor";
+            this.precursor.MinimumWidth = 8;
             this.precursor.Name = "precursor";
             // 
             // totalIons
             // 
             this.totalIons.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.totalIons.HeaderText = "totalIons";
+            this.totalIons.MinimumWidth = 8;
             this.totalIons.Name = "totalIons";
             // 
             // basePeakMz
             // 
             this.basePeakMz.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.basePeakMz.HeaderText = "Base Peak m/z";
+            this.basePeakMz.MinimumWidth = 8;
             this.basePeakMz.Name = "basePeakMz";
             // 
             // basePeakIntensity
             // 
             this.basePeakIntensity.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.basePeakIntensity.HeaderText = "Base Peak Intensity";
+            this.basePeakIntensity.MinimumWidth = 8;
             this.basePeakIntensity.Name = "basePeakIntensity";
             // 
             // filterString
             // 
             this.filterString.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.filterString.HeaderText = "filterString";
+            this.filterString.MinimumWidth = 8;
             this.filterString.Name = "filterString";
+            // 
+            // spectrumChart
+            // 
+            this.spectrumChart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            chartArea7.Name = "ChartArea1";
+            this.spectrumChart.ChartAreas.Add(chartArea7);
+            legend7.Name = "Legend1";
+            this.spectrumChart.Legends.Add(legend7);
+            this.spectrumChart.Location = new System.Drawing.Point(4, 6);
+            this.spectrumChart.Margin = new System.Windows.Forms.Padding(4);
+            this.spectrumChart.Name = "spectrumChart";
+            series7.ChartArea = "ChartArea1";
+            series7.Legend = "Legend1";
+            series7.Name = "Series1";
+            this.spectrumChart.Series.Add(series7);
+            this.spectrumChart.Size = new System.Drawing.Size(887, 362);
+            this.spectrumChart.TabIndex = 2;
+            this.spectrumChart.Text = "Spectrum Chart";
+            title7.Name = "titleSpectrum";
+            title7.Text = "Spectrum";
+            this.spectrumChart.Titles.Add(title7);
+            // 
+            // xicChart
+            // 
+            this.xicChart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            chartArea8.Name = "ChartArea1";
+            this.xicChart.ChartAreas.Add(chartArea8);
+            legend8.Name = "Legend1";
+            this.xicChart.Legends.Add(legend8);
+            this.xicChart.Location = new System.Drawing.Point(-1, 6);
+            this.xicChart.Margin = new System.Windows.Forms.Padding(4);
+            this.xicChart.Name = "xicChart";
+            series8.ChartArea = "ChartArea1";
+            series8.Legend = "Legend1";
+            series8.Name = "Series1";
+            this.xicChart.Series.Add(series8);
+            this.xicChart.Size = new System.Drawing.Size(890, 362);
+            this.xicChart.TabIndex = 3;
+            this.xicChart.Text = "XIC Chart";
+            title8.Name = "titleXic";
+            title8.Text = "XIC";
+            this.xicChart.Titles.Add(title8);
+            // 
+            // mainLayout
+            // 
+            this.mainLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainLayout.Location = new System.Drawing.Point(0, 0);
+            this.mainLayout.Margin = new System.Windows.Forms.Padding(4);
+            this.mainLayout.Name = "mainLayout";
+            this.mainLayout.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // mainLayout.Panel1
+            // 
+            this.mainLayout.Panel1.Controls.Add(this.topLayout);
+            // 
+            // mainLayout.Panel2
+            // 
+            this.mainLayout.Panel2.Controls.Add(this.bottomLayout);
+            this.mainLayout.Size = new System.Drawing.Size(1800, 1200);
+            this.mainLayout.SplitterDistance = 822;
+            this.mainLayout.SplitterWidth = 6;
+            this.mainLayout.TabIndex = 4;
+            // 
+            // topLayout
+            // 
+            this.topLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.topLayout.Location = new System.Drawing.Point(0, 0);
+            this.topLayout.Margin = new System.Windows.Forms.Padding(4);
+            this.topLayout.Name = "topLayout";
+            // 
+            // topLayout.Panel1
+            // 
+            this.topLayout.Panel1.Controls.Add(this.ticAndBasePeakLayout);
+            // 
+            // topLayout.Panel2
+            // 
+            this.topLayout.Panel2.Controls.Add(this.spectraGridView);
+            this.topLayout.Size = new System.Drawing.Size(1800, 822);
+            this.topLayout.SplitterDistance = 590;
+            this.topLayout.SplitterWidth = 6;
+            this.topLayout.TabIndex = 0;
+            // 
+            // ticAndBasePeakLayout
+            // 
+            this.ticAndBasePeakLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ticAndBasePeakLayout.Location = new System.Drawing.Point(0, 0);
+            this.ticAndBasePeakLayout.Margin = new System.Windows.Forms.Padding(4);
+            this.ticAndBasePeakLayout.Name = "ticAndBasePeakLayout";
+            this.ticAndBasePeakLayout.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // ticAndBasePeakLayout.Panel1
+            // 
+            this.ticAndBasePeakLayout.Panel1.Controls.Add(this.ticChart);
+            // 
+            // ticAndBasePeakLayout.Panel2
+            // 
+            this.ticAndBasePeakLayout.Panel2.Controls.Add(this.basePeakChart);
+            this.ticAndBasePeakLayout.Size = new System.Drawing.Size(590, 822);
+            this.ticAndBasePeakLayout.SplitterDistance = 414;
+            this.ticAndBasePeakLayout.SplitterWidth = 6;
+            this.ticAndBasePeakLayout.TabIndex = 0;
+            // 
+            // bottomLayout
+            // 
+            this.bottomLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bottomLayout.Location = new System.Drawing.Point(0, 0);
+            this.bottomLayout.Margin = new System.Windows.Forms.Padding(4);
+            this.bottomLayout.Name = "bottomLayout";
+            // 
+            // bottomLayout.Panel1
+            // 
+            this.bottomLayout.Panel1.Controls.Add(this.spectrumChart);
+            // 
+            // bottomLayout.Panel2
+            // 
+            this.bottomLayout.Panel2.Controls.Add(this.xicChart);
+            this.bottomLayout.Size = new System.Drawing.Size(1800, 372);
+            this.bottomLayout.SplitterDistance = 895;
+            this.bottomLayout.SplitterWidth = 6;
+            this.bottomLayout.TabIndex = 0;
             // 
             // AirdPanel
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.mainLayoutPanel);
+            this.Controls.Add(this.mainLayout);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "AirdPanel";
-            this.Size = new System.Drawing.Size(1200, 800);
-            this.mainLayoutPanel.ResumeLayout(false);
-            this.ticAndBasePeakContainer.ResumeLayout(false);
+            this.Size = new System.Drawing.Size(1800, 1200);
             ((System.ComponentModel.ISupportInitialize)(this.ticChart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.basePeakChart)).EndInit();
-            this.spectraContainer.ResumeLayout(false);
-            this.spectrumAndXicContainer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.spectraGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spectrumChart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xicChart)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spectraGridView)).EndInit();
+            this.mainLayout.Panel1.ResumeLayout(false);
+            this.mainLayout.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.mainLayout)).EndInit();
+            this.mainLayout.ResumeLayout(false);
+            this.topLayout.Panel1.ResumeLayout(false);
+            this.topLayout.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.topLayout)).EndInit();
+            this.topLayout.ResumeLayout(false);
+            this.ticAndBasePeakLayout.Panel1.ResumeLayout(false);
+            this.ticAndBasePeakLayout.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ticAndBasePeakLayout)).EndInit();
+            this.ticAndBasePeakLayout.ResumeLayout(false);
+            this.bottomLayout.Panel1.ResumeLayout(false);
+            this.bottomLayout.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.bottomLayout)).EndInit();
+            this.bottomLayout.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.FlowLayoutPanel mainLayoutPanel;
-        private System.Windows.Forms.FlowLayoutPanel ticAndBasePeakContainer;
-        private System.Windows.Forms.FlowLayoutPanel spectraContainer;
-        private System.Windows.Forms.FlowLayoutPanel spectrumAndXicContainer;
         private System.Windows.Forms.DataVisualization.Charting.Chart ticChart;
         private System.Windows.Forms.DataVisualization.Charting.Chart basePeakChart;
         private System.Windows.Forms.DataVisualization.Charting.Chart spectrumChart;
@@ -294,5 +368,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn basePeakMz;
         private System.Windows.Forms.DataGridViewTextBoxColumn basePeakIntensity;
         private System.Windows.Forms.DataGridViewTextBoxColumn filterString;
+        private System.Windows.Forms.SplitContainer mainLayout;
+        private System.Windows.Forms.SplitContainer topLayout;
+        private System.Windows.Forms.SplitContainer ticAndBasePeakLayout;
+        private System.Windows.Forms.SplitContainer bottomLayout;
     }
 }
