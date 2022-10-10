@@ -7,8 +7,12 @@ using System.Linq;
 using System.Windows.Forms;
 using AirdPro.Domains.View;
 using AirdSDK.Beans;
+using AirdSDK.Beans.Common;
+using AirdSDK.Enums;
+using AirdSDK.Parser;
 using pwiz.CLI.cv;
 using CV = AirdSDK.Beans.CV;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace AirdPro.Forms
 {
@@ -17,6 +21,9 @@ namespace AirdPro.Forms
         private AboutForm aboutForm = new AboutForm();
         private GlobalSettingForm globalSettingForm;
         private HashSet<string> airdFiles = new HashSet<string>();
+        private FileInfo airdFile;
+        private FileInfo indexFile;
+        private AirdInfo airdInfo;
 
         public MainForm()
         {
@@ -184,18 +191,29 @@ namespace AirdPro.Forms
         {
             if (!airdFiles.Contains(path))
             {
-                FileInfo airdFile = new FileInfo(path);
+                airdFile = new FileInfo(path);
                 if (!airdFile.Exists)
                 {
                     MessageBox.Show("This File is not exist!");
                     return;
                 }
                 string indexFilePath = AirdScanUtil.getIndexPathByAirdPath(path);
-                FileInfo indexFile = new FileInfo(indexFilePath);
-                AirdInfo airdInfo = AirdScanUtil.loadAirdInfo(indexFile);
-                
-                spectraDataGrids.DataSource = parseAsSpectra(airdInfo);
-                
+                indexFile = new FileInfo(indexFilePath);
+                airdInfo = AirdScanUtil.loadAirdInfo(indexFile);
+                List<SpectrumRow> spectra = parseAsSpectra(airdInfo);
+                spectraDataGrids.DataSource = spectra;
+
+                for (var i = 0; i < spectra.Count; i++)
+                {
+                    ticChart.Series[0].Points.AddXY(Math.Round(spectra[i].rt, 2), spectra[i].totalIons);
+                    basePeakChart.Series[0].Points.AddXY(Math.Round(spectra[i].basePeakMz, 5),
+                        Math.Round(spectra[i].basePeakIntensity, 0));
+                }
+
+                ticChart.ChartAreas[0].AxisY.LabelStyle.Format = "{0:0e+0}";
+                basePeakChart.ChartAreas[0].AxisY.LabelStyle.Format = "{0:0e+0}";
+                spectrumChart.ChartAreas[0].AxisY.LabelStyle.Format = "{0:0e+0}";
+                lblAirdInfo.Text = path;
             }
         }
 
@@ -211,6 +229,9 @@ namespace AirdPro.Forms
                     for (var k = 0; k < index.nums.Count; k++)
                     {
                         SpectrumRow row = new SpectrumRow();
+                        row.polarity = airdInfo.polarity;
+                        row.energy = airdInfo.energy;
+                        row.activator = airdInfo.activator;
                         row.num = index.nums[k];
                         row.parentNum = null;
                         row.level = 1;
@@ -227,6 +248,9 @@ namespace AirdPro.Forms
                     for (int k = 0; k < index.nums.Count; k++)
                     {
                         SpectrumRow row = new SpectrumRow();
+                        row.polarity = airdInfo.polarity;
+                        row.energy = airdInfo.energy;
+                        row.activator = airdInfo.activator;
                         row.num = index.nums[k];
                         row.parentNum = index.num;
                         row.level = 2;
@@ -256,6 +280,21 @@ namespace AirdPro.Forms
             }
 
             return null;
+        }
+
+        private void spectraDataGrids_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            SpectrumRow row = spectraDataGrids.SelectedRows[0].DataBoundItem as SpectrumRow;
+            if (airdInfo.type.Equals(AirdType.DDA))
+            {
+                DDAParser parser = new DDAParser(indexFile.FullName, airdInfo);
+                Spectrum spectrum = parser.getSpectrumByNum(row.num);
+                spectrumChart.Series[0].Points.Clear();
+                for (var i = 0; i < spectrum.mzs.Length; i++)
+                {
+                    spectrumChart.Series[0].Points.AddXY(Math.Round(spectrum.mzs[i], 3), Math.Round(spectrum.ints[i], 1));
+                }
+            }
         }
     }
 }
