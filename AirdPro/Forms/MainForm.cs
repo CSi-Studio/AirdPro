@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections;
+﻿using AirdPro.Properties;
+using AirdSDK.Constants;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
-using AirdPro.Controls;
-using AirdPro.Properties;
-using AirdSDK.Compressor;
-using AirdSDK.Constants;
+using AirdPro.Domains.View;
+using AirdSDK.Beans;
+using pwiz.CLI.cv;
+using CV = AirdSDK.Beans.CV;
 
 namespace AirdPro.Forms
 {
@@ -161,12 +156,21 @@ namespace AirdPro.Forms
                         node.Expand();
                     }
                 }
-                else if (node.Tag.ToString().EndsWith(SuffixConst.AIRD))
+            }
+            
+        }
+
+        private void fileTree_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            //鼠标左击
+            if (e.Button == MouseButtons.Left)
+            {
+                TreeNode node = e.Node;
+                if (node.Nodes.Count == 0 && node.Tag.ToString().EndsWith(SuffixConst.AIRD))
                 {
                     renderAird(node.Tag.ToString());
                 }
             }
-            
         }
 
         //刷新列表
@@ -181,22 +185,77 @@ namespace AirdPro.Forms
             if (!airdFiles.Contains(path))
             {
                 FileInfo airdFile = new FileInfo(path);
-                TabPage tabPage = new TabPage(airdFile.Name);
-                tabPage.Tag = path;
-                AirdPanel airdPanel = new AirdPanel();
-                airdPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                                                                              | System.Windows.Forms.AnchorStyles.Left)
-                                                                             | System.Windows.Forms.AnchorStyles.Right)));
-                tabPage.Controls.Add(airdPanel);
-                tabs.Controls.Add(tabPage);
+                if (!airdFile.Exists)
+                {
+                    MessageBox.Show("This File is not exist!");
+                    return;
+                }
+                string indexFilePath = AirdScanUtil.getIndexPathByAirdPath(path);
+                FileInfo indexFile = new FileInfo(indexFilePath);
+                AirdInfo airdInfo = AirdScanUtil.loadAirdInfo(indexFile);
+                
+                spectraDataGrids.DataSource = parseAsSpectra(airdInfo);
+                
             }
         }
 
-        private void menuClose_Click(object sender, EventArgs e)
+        private List<SpectrumRow> parseAsSpectra(AirdInfo airdInfo)
         {
-            TabPage page = tabs.SelectedTab;
-            airdFiles.Remove(page.Tag.ToString());
-            tabs.TabPages.RemoveAt(tabs.SelectedIndex);
+            List<SpectrumRow> rowList = new List<SpectrumRow>();
+            List<BlockIndex> indexList = airdInfo.indexList;
+            for (var i = 0; i < indexList.Count; i++)
+            {
+                BlockIndex index = indexList[i];
+                if (index.level.Equals(1))
+                {
+                    for (var k = 0; k < index.nums.Count; k++)
+                    {
+                        SpectrumRow row = new SpectrumRow();
+                        row.num = index.nums[k];
+                        row.parentNum = null;
+                        row.level = 1;
+                        row.rt = index.rts[k];
+                        row.basePeakIntensity = index.basePeakIntensities[k];
+                        row.basePeakMz = index.basePeakMzs[k];
+                        row.totalIons = index.tics[k];
+                        row.filterString = getFilterString(index.cvList[k]);
+                        rowList.Add(row);
+                    }
+                }
+                else if (index.level.Equals(2))
+                {
+                    for (int k = 0; k < index.nums.Count; k++)
+                    {
+                        SpectrumRow row = new SpectrumRow();
+                        row.num = index.nums[k];
+                        row.parentNum = index.num;
+                        row.level = 2;
+                        row.rt = index.rts[k];
+                        row.precursor = index.getWindowRange().start + "-" + index.getWindowRange().end;
+                        row.basePeakIntensity = index.basePeakIntensities[k];
+                        row.basePeakMz = index.basePeakMzs[k];
+                        row.totalIons = index.tics[k];
+                        row.filterString = getFilterString(index.cvList[k]);
+                        rowList.Add(row);
+                    }
+                }
+            }
+
+            rowList = rowList.OrderBy(o => o.num).ToList();
+            return rowList;
+        }
+
+        private string getFilterString(List<CV> cvList)
+        {
+            for (var i = 0; i < cvList.Count; i++)
+            {
+                if (cvList[i].cvid.Equals("1000512:filter string"))
+                {
+                    return cvList[i].value.ToString();
+                }
+            }
+
+            return null;
         }
     }
 }
