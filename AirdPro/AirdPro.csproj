@@ -55,7 +55,7 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <ApplicationIcon>AIR.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>848A0173A1CC40673E54FEA4FA42778FA27416E4</ManifestCertificateThumbprint>
@@ -255,6 +255,9 @@
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpectrumForm.resx">
+      <DependentUpon>SpectrumForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\VendorFileSelectorForm.resx">
       <DependentUpon>VendorFileSelectorForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -281,10 +284,17 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AIR.ico" />
+    <Content Include="AirdPro.ico" />
+    <Content Include="AIR_01.ico" />
     <Content Include="favicon.ico" />
+    <Content Include="Properties\AIR.ico" />
+    <Content Include="Properties\AIR.png" />
     <Content Include="Properties\AirdProLogo.png" />
     <Content Include="Properties\AirdProTrans.png" />
     <Content Include="Properties\AirdPro.png" />
+    <Content Include="Properties\AIR_01.ico" />
+    <Content Include="Properties\AIR_01.png" />
     <Content Include="Properties\Conversion.png" />
     <Content Include="Properties\DirectoryClose16x16.png" />
     <Content Include="Properties\DirectoryClose32x32.png" />

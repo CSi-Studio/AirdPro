@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConversionConfigListForm));
             this.headerConfigList = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvConfigList = new System.Windows.Forms.ListView();
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -528,6 +529,7 @@
             this.Controls.Add(this.tbNameConfig);
             this.Controls.Add(this.lblNameConfig);
             this.Controls.Add(this.lvConfigList);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ConversionConfigListForm";
             this.ShowIcon = false;
             this.Text = "Conversion Config List";

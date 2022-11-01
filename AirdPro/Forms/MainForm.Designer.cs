@@ -29,18 +29,18 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title3 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title3 = new System.Windows.Forms.DataVisualization.Charting.Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menu = new System.Windows.Forms.MenuStrip();
             this.filesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,21 +54,21 @@
             this.fileTree = new System.Windows.Forms.TreeView();
             this.fileTreeContext = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itemRefresh = new System.Windows.Forms.ToolStripMenuItem();
+            this.spectrumChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.basePeakChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.ticChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.lblAirdInfo = new System.Windows.Forms.Label();
             this.spectraDataGrids = new System.Windows.Forms.DataGridView();
-            this.basePeakChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.spectrumChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.menu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainContainer)).BeginInit();
             this.mainContainer.Panel1.SuspendLayout();
             this.mainContainer.Panel2.SuspendLayout();
             this.mainContainer.SuspendLayout();
             this.fileTreeContext.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spectrumChart)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.basePeakChart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ticChart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spectraDataGrids)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.basePeakChart)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spectrumChart)).BeginInit();
             this.SuspendLayout();
             // 
             // menu
@@ -195,6 +195,66 @@
             this.itemRefresh.Text = "Refresh";
             this.itemRefresh.Click += new System.EventHandler(this.itemRefresh_Click);
             // 
+            // spectrumChart
+            // 
+            this.spectrumChart.BorderlineWidth = 0;
+            chartArea1.AxisX.MajorGrid.Enabled = false;
+            chartArea1.BorderWidth = 0;
+            chartArea1.IsSameFontSizeForAllAxes = true;
+            chartArea1.Name = "ChartAreaSpectrum";
+            this.spectrumChart.ChartAreas.Add(chartArea1);
+            legend1.Alignment = System.Drawing.StringAlignment.Center;
+            legend1.DockedToChartArea = "ChartAreaSpectrum";
+            legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend1.Enabled = false;
+            legend1.Name = "LegendSpectrum";
+            this.spectrumChart.Legends.Add(legend1);
+            this.spectrumChart.Location = new System.Drawing.Point(824, 41);
+            this.spectrumChart.Name = "spectrumChart";
+            series1.BorderWidth = 0;
+            series1.ChartArea = "ChartAreaSpectrum";
+            series1.Legend = "LegendSpectrum";
+            series1.MarkerBorderWidth = 0;
+            series1.Name = "data";
+            this.spectrumChart.Series.Add(series1);
+            this.spectrumChart.Size = new System.Drawing.Size(379, 237);
+            this.spectrumChart.TabIndex = 4;
+            this.spectrumChart.Text = "TIC";
+            title1.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            title1.Name = "titleSpectrum";
+            title1.Text = "Spectrum";
+            this.spectrumChart.Titles.Add(title1);
+            // 
+            // basePeakChart
+            // 
+            this.basePeakChart.BorderlineWidth = 0;
+            chartArea2.AxisX.MajorGrid.Enabled = false;
+            chartArea2.BorderWidth = 0;
+            chartArea2.IsSameFontSizeForAllAxes = true;
+            chartArea2.Name = "ChartAreaBasePeak";
+            this.basePeakChart.ChartAreas.Add(chartArea2);
+            legend2.Alignment = System.Drawing.StringAlignment.Center;
+            legend2.DockedToChartArea = "ChartAreaBasePeak";
+            legend2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend2.Enabled = false;
+            legend2.Name = "LegendBasePeak";
+            this.basePeakChart.Legends.Add(legend2);
+            this.basePeakChart.Location = new System.Drawing.Point(416, 41);
+            this.basePeakChart.Name = "basePeakChart";
+            series2.BorderWidth = 0;
+            series2.ChartArea = "ChartAreaBasePeak";
+            series2.Legend = "LegendBasePeak";
+            series2.MarkerBorderWidth = 0;
+            series2.Name = "data";
+            this.basePeakChart.Series.Add(series2);
+            this.basePeakChart.Size = new System.Drawing.Size(402, 237);
+            this.basePeakChart.TabIndex = 3;
+            this.basePeakChart.Text = "TIC";
+            title2.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            title2.Name = "titleBasePeak";
+            title2.Text = "Base Peak";
+            this.basePeakChart.Titles.Add(title2);
+            // 
             // ticChart
             // 
             this.ticChart.BorderlineWidth = 0;
@@ -250,70 +310,10 @@
             this.spectraDataGrids.ReadOnly = true;
             this.spectraDataGrids.RowTemplate.Height = 23;
             this.spectraDataGrids.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.spectraDataGrids.Size = new System.Drawing.Size(1200, 541);
+            this.spectraDataGrids.Size = new System.Drawing.Size(1202, 541);
             this.spectraDataGrids.TabIndex = 0;
             this.spectraDataGrids.VirtualMode = true;
             this.spectraDataGrids.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.spectraDataGrids_MouseDoubleClick);
-            // 
-            // basePeakChart
-            // 
-            this.basePeakChart.BorderlineWidth = 0;
-            chartArea2.AxisX.MajorGrid.Enabled = false;
-            chartArea2.BorderWidth = 0;
-            chartArea2.IsSameFontSizeForAllAxes = true;
-            chartArea2.Name = "ChartAreaBasePeak";
-            this.basePeakChart.ChartAreas.Add(chartArea2);
-            legend2.Alignment = System.Drawing.StringAlignment.Center;
-            legend2.DockedToChartArea = "ChartAreaBasePeak";
-            legend2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
-            legend2.Enabled = false;
-            legend2.Name = "LegendBasePeak";
-            this.basePeakChart.Legends.Add(legend2);
-            this.basePeakChart.Location = new System.Drawing.Point(416, 41);
-            this.basePeakChart.Name = "basePeakChart";
-            series2.BorderWidth = 0;
-            series2.ChartArea = "ChartAreaBasePeak";
-            series2.Legend = "LegendBasePeak";
-            series2.MarkerBorderWidth = 0;
-            series2.Name = "data";
-            this.basePeakChart.Series.Add(series2);
-            this.basePeakChart.Size = new System.Drawing.Size(402, 237);
-            this.basePeakChart.TabIndex = 3;
-            this.basePeakChart.Text = "TIC";
-            title2.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            title2.Name = "titleBasePeak";
-            title2.Text = "Base Peak";
-            this.basePeakChart.Titles.Add(title2);
-            // 
-            // spectrumChart
-            // 
-            this.spectrumChart.BorderlineWidth = 0;
-            chartArea1.AxisX.MajorGrid.Enabled = false;
-            chartArea1.BorderWidth = 0;
-            chartArea1.IsSameFontSizeForAllAxes = true;
-            chartArea1.Name = "ChartAreaSpectrum";
-            this.spectrumChart.ChartAreas.Add(chartArea1);
-            legend1.Alignment = System.Drawing.StringAlignment.Center;
-            legend1.DockedToChartArea = "ChartAreaSpectrum";
-            legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
-            legend1.Enabled = false;
-            legend1.Name = "LegendSpectrum";
-            this.spectrumChart.Legends.Add(legend1);
-            this.spectrumChart.Location = new System.Drawing.Point(824, 41);
-            this.spectrumChart.Name = "spectrumChart";
-            series1.BorderWidth = 0;
-            series1.ChartArea = "ChartAreaSpectrum";
-            series1.Legend = "LegendSpectrum";
-            series1.MarkerBorderWidth = 0;
-            series1.Name = "data";
-            this.spectrumChart.Series.Add(series1);
-            this.spectrumChart.Size = new System.Drawing.Size(379, 237);
-            this.spectrumChart.TabIndex = 4;
-            this.spectrumChart.Text = "TIC";
-            title1.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            title1.Name = "titleSpectrum";
-            title1.Text = "Spectrum";
-            this.spectrumChart.Titles.Add(title1);
             // 
             // MainForm
             // 
@@ -335,10 +335,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.mainContainer)).EndInit();
             this.mainContainer.ResumeLayout(false);
             this.fileTreeContext.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.spectrumChart)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.basePeakChart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ticChart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spectraDataGrids)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.basePeakChart)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spectrumChart)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
