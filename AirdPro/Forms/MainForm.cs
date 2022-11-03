@@ -205,9 +205,9 @@ namespace AirdPro.Forms
 
                 for (var i = 0; i < spectra.Count; i++)
                 {
-                    ticChart.Series[0].Points.AddXY(Math.Round(spectra[i].rt, 2), spectra[i].totalIons);
-                    basePeakChart.Series[0].Points.AddXY(Math.Round(spectra[i].basePeakMz, 5),
-                        Math.Round(spectra[i].basePeakIntensity, 0));
+                    ticChart.Series[0].Points.AddXY(Math.Round(spectra[i].RT, 2), spectra[i].TotalIons);
+                    basePeakChart.Series[0].Points.AddXY(Math.Round(spectra[i].BasePeakMz, 5),
+                        Math.Round(spectra[i].BasePeakIntensity, 0));
                 }
 
                 ticChart.ChartAreas[0].AxisY.LabelStyle.Format = "{0:0e+0}";
@@ -229,17 +229,18 @@ namespace AirdPro.Forms
                     for (var k = 0; k < index.nums.Count; k++)
                     {
                         SpectrumRow row = new SpectrumRow();
-                        row.polarity = airdInfo.polarity;
-                        row.energy = airdInfo.energy;
-                        row.activator = airdInfo.activator;
-                        row.num = index.nums[k];
-                        row.parentNum = null;
-                        row.level = 1;
-                        row.rt = index.rts[k];
-                        row.basePeakIntensity = index.basePeakIntensities[k];
-                        row.basePeakMz = index.basePeakMzs[k];
-                        row.totalIons = index.tics[k];
-                        row.filterString = getFilterString(index.cvList[k]);
+                        row.Polarity = airdInfo.polarity;
+                        row.Energy = airdInfo.energy;
+                        row.Activator = airdInfo.activator;
+                        row.Scan = index.nums[k] + 1;
+                        row.ScanType = airdInfo.msType;
+                        row.ParentScan = null;
+                        row.MSn = 1;
+                        row.RT = index.rts[k];
+                        row.BasePeakIntensity = index.basePeakIntensities[k];
+                        row.BasePeakMz = index.basePeakMzs[k];
+                        row.TotalIons = index.tics[k];
+                        row.FilterString = getFilterString(index.cvList[k]);
                         rowList.Add(row);
                     }
                 }
@@ -248,24 +249,25 @@ namespace AirdPro.Forms
                     for (int k = 0; k < index.nums.Count; k++)
                     {
                         SpectrumRow row = new SpectrumRow();
-                        row.polarity = airdInfo.polarity;
-                        row.energy = airdInfo.energy;
-                        row.activator = airdInfo.activator;
-                        row.num = index.nums[k];
-                        row.parentNum = index.num;
-                        row.level = 2;
-                        row.rt = index.rts[k];
-                        row.precursor = index.getWindowRange().start + "-" + index.getWindowRange().end;
-                        row.basePeakIntensity = index.basePeakIntensities[k];
-                        row.basePeakMz = index.basePeakMzs[k];
-                        row.totalIons = index.tics[k];
-                        row.filterString = getFilterString(index.cvList[k]);
+                        row.Polarity = airdInfo.polarity;
+                        row.Energy = airdInfo.energy;
+                        row.Activator = airdInfo.activator;
+                        row.Scan = index.nums[k] + 1;
+                        row.ScanType = airdInfo.msType;
+                        row.ParentScan = index.num;
+                        row.MSn = 2;
+                        row.RT = index.rts[k];
+                        row.Precursor = index.getWindowRange().start + "-" + index.getWindowRange().end;
+                        row.BasePeakIntensity = index.basePeakIntensities[k];
+                        row.BasePeakMz = index.basePeakMzs[k];
+                        row.TotalIons = index.tics[k];
+                        row.FilterString = getFilterString(index.cvList[k]);
                         rowList.Add(row);
                     }
                 }
             }
 
-            rowList = rowList.OrderBy(o => o.num).ToList();
+            rowList = rowList.OrderBy(o => o.Scan).ToList();
             return rowList;
         }
 
@@ -288,7 +290,7 @@ namespace AirdPro.Forms
             if (airdInfo.type.Equals(AirdType.DDA))
             {
                 DDAParser parser = new DDAParser(indexFile.FullName, airdInfo);
-                Spectrum spectrum = parser.getSpectrumByNum(row.num);
+                Spectrum spectrum = parser.getSpectrumByNum(row.Scan);
                 spectrumChart.Series[0].Points.Clear();
                 for (var i = 0; i < spectrum.mzs.Length; i++)
                 {
