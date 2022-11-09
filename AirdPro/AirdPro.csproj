@@ -359,6 +359,7 @@
     <Content Include="Resources\Menu\DirectoryOpen.png" />
     <Content Include="Resources\Menu\DirectoryOpen16x16.png" />
     <Content Include="Resources\Menu\DirectoryOpen32x32.png" />
+    <Content Include="Resources\Menu\Help.png" />
     <Content Include="Resources\Menu\Repository.png" />
     <Content Include="Resources\Pay\AliPay.jpg" />
     <Content Include="Resources\Menu\ConversionCenter.png" />
