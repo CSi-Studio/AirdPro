@@ -1,10 +1,16 @@
+AirdPro V4 is now released at 2022.10
+
 # AirdPro
 AirdPro is an GUI client for conversion from vendor file to Aird file. AirdPro is written in C# and is based on pwiz_bindings_cli.dll from ProteoWizard project.
 AirdPro is opensource under the MulanPSL2 license
 
 
 ## Version Description
-### V3.0.0
+### V4.X
+- [New Feature] XIC, Spectrum View for Aird
+- [New Feature] Remote Repository Async Tool for ProteomeXchange and MetaboLights
+
+### V3.X
 - [New Feature] New Compressors Strategy: Combinable Compressors for m/z, intensity and mobility
 - [New Feature] Integer-Purpose Compressors: Variable Byte, Binary Packing
 - [New Feature] General-Purpose Compressors: Brotli, Snappy, Zstd, Zlib
@@ -12,7 +18,6 @@ AirdPro is opensource under the MulanPSL2 license
 - [New Feature] New GUI for Version3.0
 - [New Feature] New Conversion Config Panel
 - [New Feature] New Software Config Panel
-
 
 ### V2.1.0
 - [New Feature] New compression algorithm ZDVB is released, which has 10%-20% compression performance improvement compared with ZDPD kernel.Furthermore, ZDVB provides faster decoding speed than ZDPD.
