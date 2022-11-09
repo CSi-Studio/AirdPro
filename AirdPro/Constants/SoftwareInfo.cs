@@ -8,13 +8,14 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using System.Windows;
+
 namespace AirdPro.Constants
 {
     class SoftwareInfo
     {
-        public static string VERSION = "4.0.1";
-        public static int VERSION_CODE = 402;
 
+        public static string VERSION = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         public static string CLIENT_VERSION_DESCRIPTION = "1. New GUI: Aird Files Preview;\r\n" +
                                                           "2. New GUI: XIC, Spectrum Quick look;"+
                                                           "3. New Func: Remote Repository Async Tool;"
@@ -25,7 +26,7 @@ namespace AirdPro.Constants
 
         public static string getVersion()
         {
-            return "Version " + SoftwareInfo.VERSION;
+            return "Version " + VERSION;
         }
 
         public static string getDescription()

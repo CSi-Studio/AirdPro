@@ -47,8 +47,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lblDesc = new System.Windows.Forms.Label();
             this.tbPaperZDPD = new System.Windows.Forms.TextBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.pbCheckUpdate = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCheckUpdate)).BeginInit();
             this.SuspendLayout();
             // 
             // lblSoftwareVersion
@@ -245,15 +245,16 @@
             this.tbPaperZDPD.Text = "Paper:ZDPD";
             this.tbPaperZDPD.TextChanged += new System.EventHandler(this.tbPaperZDPD_TextChanged);
             // 
-            // pictureBox1
+            // pbCheckUpdate
             // 
-            this.pictureBox1.Image = global::AirdPro.Properties.Resources.AirdProLogo;
-            this.pictureBox1.Location = new System.Drawing.Point(289, 9);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(171, 41);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.pbCheckUpdate.Image = global::AirdPro.Properties.Resources.AirdProLogo;
+            this.pbCheckUpdate.Location = new System.Drawing.Point(289, 9);
+            this.pbCheckUpdate.Name = "pbCheckUpdate";
+            this.pbCheckUpdate.Size = new System.Drawing.Size(171, 41);
+            this.pbCheckUpdate.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbCheckUpdate.TabIndex = 0;
+            this.pbCheckUpdate.TabStop = false;
+            this.pbCheckUpdate.Click += new System.EventHandler(this.pbCheckUpdate_Click);
             // 
             // AboutForm
             // 
@@ -279,13 +280,13 @@
             this.Controls.Add(this.lblPhysicMemory);
             this.Controls.Add(this.lblCPUInfo);
             this.Controls.Add(this.lblSoftwareVersion);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.pbCheckUpdate);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AboutForm";
             this.ShowIcon = false;
             this.Text = "About";
             this.Load += new System.EventHandler(this.HelpAboutForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCheckUpdate)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -293,7 +294,7 @@
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pbCheckUpdate;
         private System.Windows.Forms.Label lblSoftwareVersion;
         private System.Windows.Forms.Label lblCPUInfo;
         private System.Windows.Forms.Label lblPhysicMemory;

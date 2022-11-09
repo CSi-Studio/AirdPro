@@ -1,2 +1,0 @@
-﻿[New Feature] XIC, Spectrum View for Aird
-[New Feature] Remote Repository Async Tool for ProteomeXchange and MetaboLights

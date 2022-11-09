@@ -927,7 +927,6 @@ namespace AirdPro.Converters
             featuresMap.Add(Features.aird_algorithm, jobInfo.getCompressorStr());
             airdInfo.features = FeaturesUtil.toString(featuresMap);
             airdInfo.version = SoftwareInfo.VERSION;
-            airdInfo.versionCode = SoftwareInfo.VERSION_CODE;
             return airdInfo;
         }
 
