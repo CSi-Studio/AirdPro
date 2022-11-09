@@ -8,7 +8,7 @@ AirdPro is opensource under the MulanPSL2 license
 ### V4.X
 - [New Feature] XIC, Spectrum View for Aird
 - [New Feature] Remote Repository Async Tool for ProteomeXchange and MetaboLights
-- 
+
 ### V3.0.0
 - [New Feature] New Compressors Strategy: Combinable Compressors for m/z, intensity and mobility
 - [New Feature] Integer-Purpose Compressors: Variable Byte, Binary Packing
