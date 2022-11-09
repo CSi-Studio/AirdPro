@@ -10,9 +10,10 @@ using AirdSDK.Beans;
 using AirdSDK.Beans.Common;
 using AirdSDK.Enums;
 using AirdSDK.Parser;
-using pwiz.CLI.cv;
 using CV = AirdSDK.Beans.CV;
-using System.Windows.Forms.DataVisualization.Charting;
+using AirdPro.Repository;
+using AirdPro.Constants;
+using AirdPro.Utils;
 
 namespace AirdPro.Forms
 {
@@ -20,6 +21,7 @@ namespace AirdPro.Forms
     {
         private AboutForm aboutForm = new AboutForm();
         private GlobalSettingForm globalSettingForm;
+        private RepositoryGuiderForm repositoryGuiderForm;
         private HashSet<string> airdFiles = new HashSet<string>();
         private FileInfo airdFile;
         private FileInfo indexFile;
@@ -32,6 +34,7 @@ namespace AirdPro.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            this.Text ="AirdPro " + SoftwareInfo.getVersion() + Const.Dash + NetworkUtil.getHostIP();
             updateFileTree();
         }
 
@@ -297,6 +300,16 @@ namespace AirdPro.Forms
                     spectrumChart.Series[0].Points.AddXY(Math.Round(spectrum.mzs[i], 3), Math.Round(spectrum.ints[i], 1));
                 }
             }
+        }
+
+        private void repositoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (repositoryGuiderForm == null || repositoryGuiderForm.IsDisposed)
+            {
+                repositoryGuiderForm = new RepositoryGuiderForm();
+            }
+
+            repositoryGuiderForm.Show();
         }
     }
 }

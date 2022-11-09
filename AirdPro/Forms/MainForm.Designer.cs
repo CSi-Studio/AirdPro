@@ -29,23 +29,24 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title3 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title3 = new System.Windows.Forms.DataVisualization.Charting.Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menu = new System.Windows.Forms.MenuStrip();
             this.filesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openRepositoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startConversionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.repositoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.globalSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,27 +55,27 @@
             this.fileTree = new System.Windows.Forms.TreeView();
             this.fileTreeContext = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itemRefresh = new System.Windows.Forms.ToolStripMenuItem();
-            this.spectrumChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.basePeakChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.ticChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.lblAirdInfo = new System.Windows.Forms.Label();
-            this.spectraDataGrids = new System.Windows.Forms.DataGridView();
             this.tabs = new System.Windows.Forms.TabControl();
             this.tabTIC = new System.Windows.Forms.TabPage();
+            this.ticChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabBasePeak = new System.Windows.Forms.TabPage();
+            this.basePeakChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.spectrumChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.lblAirdInfo = new System.Windows.Forms.Label();
+            this.spectraDataGrids = new System.Windows.Forms.DataGridView();
             this.menu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainContainer)).BeginInit();
             this.mainContainer.Panel1.SuspendLayout();
             this.mainContainer.Panel2.SuspendLayout();
             this.mainContainer.SuspendLayout();
             this.fileTreeContext.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.spectrumChart)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.basePeakChart)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ticChart)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spectraDataGrids)).BeginInit();
             this.tabs.SuspendLayout();
             this.tabTIC.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ticChart)).BeginInit();
             this.tabBasePeak.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.basePeakChart)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spectrumChart)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spectraDataGrids)).BeginInit();
             this.SuspendLayout();
             // 
             // menu
@@ -83,6 +84,7 @@
             this.menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.filesToolStripMenuItem,
             this.startConversionToolStripMenuItem,
+            this.repositoryToolStripMenuItem,
             this.settingToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menu.Location = new System.Drawing.Point(0, 0);
@@ -116,6 +118,14 @@
             this.startConversionToolStripMenuItem.Text = "Conversion";
             this.startConversionToolStripMenuItem.Click += new System.EventHandler(this.startConversionToolStripMenuItem_Click);
             // 
+            // repositoryToolStripMenuItem
+            // 
+            this.repositoryToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Repository;
+            this.repositoryToolStripMenuItem.Name = "repositoryToolStripMenuItem";
+            this.repositoryToolStripMenuItem.Size = new System.Drawing.Size(107, 28);
+            this.repositoryToolStripMenuItem.Text = "Repository";
+            this.repositoryToolStripMenuItem.Click += new System.EventHandler(this.repositoryToolStripMenuItem_Click);
+            // 
             // settingToolStripMenuItem
             // 
             this.settingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -128,7 +138,7 @@
             // globalSettingToolStripMenuItem
             // 
             this.globalSettingToolStripMenuItem.Name = "globalSettingToolStripMenuItem";
-            this.globalSettingToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.globalSettingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.globalSettingToolStripMenuItem.Text = "Global Setting";
             this.globalSettingToolStripMenuItem.Click += new System.EventHandler(this.globalSettingToolStripMenuItem_Click);
             // 
@@ -200,65 +210,26 @@
             this.itemRefresh.Text = "Refresh";
             this.itemRefresh.Click += new System.EventHandler(this.itemRefresh_Click);
             // 
-            // spectrumChart
+            // tabs
             // 
-            this.spectrumChart.BorderlineWidth = 0;
-            chartArea3.AxisX.MajorGrid.Enabled = false;
-            chartArea3.BorderWidth = 0;
-            chartArea3.IsSameFontSizeForAllAxes = true;
-            chartArea3.Name = "ChartAreaSpectrum";
-            this.spectrumChart.ChartAreas.Add(chartArea3);
-            legend3.Alignment = System.Drawing.StringAlignment.Center;
-            legend3.DockedToChartArea = "ChartAreaSpectrum";
-            legend3.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
-            legend3.Enabled = false;
-            legend3.Name = "LegendSpectrum";
-            this.spectrumChart.Legends.Add(legend3);
-            this.spectrumChart.Location = new System.Drawing.Point(629, 41);
-            this.spectrumChart.Name = "spectrumChart";
-            series3.BorderWidth = 0;
-            series3.ChartArea = "ChartAreaSpectrum";
-            series3.Legend = "LegendSpectrum";
-            series3.MarkerBorderWidth = 0;
-            series3.Name = "data";
-            this.spectrumChart.Series.Add(series3);
-            this.spectrumChart.Size = new System.Drawing.Size(574, 392);
-            this.spectrumChart.TabIndex = 4;
-            this.spectrumChart.Text = "TIC";
-            title3.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            title3.Name = "titleSpectrum";
-            title3.Text = "Spectrum";
-            this.spectrumChart.Titles.Add(title3);
+            this.tabs.Controls.Add(this.tabTIC);
+            this.tabs.Controls.Add(this.tabBasePeak);
+            this.tabs.Location = new System.Drawing.Point(7, 34);
+            this.tabs.Name = "tabs";
+            this.tabs.SelectedIndex = 0;
+            this.tabs.Size = new System.Drawing.Size(616, 399);
+            this.tabs.TabIndex = 5;
             // 
-            // basePeakChart
+            // tabTIC
             // 
-            this.basePeakChart.BorderlineWidth = 0;
-            chartArea2.AxisX.MajorGrid.Enabled = false;
-            chartArea2.BorderWidth = 0;
-            chartArea2.IsSameFontSizeForAllAxes = true;
-            chartArea2.Name = "ChartAreaBasePeak";
-            this.basePeakChart.ChartAreas.Add(chartArea2);
-            legend2.Alignment = System.Drawing.StringAlignment.Center;
-            legend2.DockedToChartArea = "ChartAreaBasePeak";
-            legend2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
-            legend2.Enabled = false;
-            legend2.Name = "LegendBasePeak";
-            this.basePeakChart.Legends.Add(legend2);
-            this.basePeakChart.Location = new System.Drawing.Point(0, 0);
-            this.basePeakChart.Name = "basePeakChart";
-            series2.BorderWidth = 0;
-            series2.ChartArea = "ChartAreaBasePeak";
-            series2.Legend = "LegendBasePeak";
-            series2.MarkerBorderWidth = 0;
-            series2.Name = "data";
-            this.basePeakChart.Series.Add(series2);
-            this.basePeakChart.Size = new System.Drawing.Size(608, 369);
-            this.basePeakChart.TabIndex = 3;
-            this.basePeakChart.Text = "TIC";
-            title2.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            title2.Name = "titleBasePeak";
-            title2.Text = "Base Peak";
-            this.basePeakChart.Titles.Add(title2);
+            this.tabTIC.Controls.Add(this.ticChart);
+            this.tabTIC.Location = new System.Drawing.Point(4, 26);
+            this.tabTIC.Name = "tabTIC";
+            this.tabTIC.Padding = new System.Windows.Forms.Padding(3);
+            this.tabTIC.Size = new System.Drawing.Size(608, 369);
+            this.tabTIC.TabIndex = 0;
+            this.tabTIC.Text = "TIC";
+            this.tabTIC.UseVisualStyleBackColor = true;
             // 
             // ticChart
             // 
@@ -292,6 +263,77 @@
             title1.Text = "TIC";
             this.ticChart.Titles.Add(title1);
             // 
+            // tabBasePeak
+            // 
+            this.tabBasePeak.Controls.Add(this.basePeakChart);
+            this.tabBasePeak.Location = new System.Drawing.Point(4, 26);
+            this.tabBasePeak.Name = "tabBasePeak";
+            this.tabBasePeak.Padding = new System.Windows.Forms.Padding(3);
+            this.tabBasePeak.Size = new System.Drawing.Size(608, 369);
+            this.tabBasePeak.TabIndex = 1;
+            this.tabBasePeak.Text = "Base Peak";
+            this.tabBasePeak.UseVisualStyleBackColor = true;
+            // 
+            // basePeakChart
+            // 
+            this.basePeakChart.BorderlineWidth = 0;
+            chartArea2.AxisX.MajorGrid.Enabled = false;
+            chartArea2.BorderWidth = 0;
+            chartArea2.IsSameFontSizeForAllAxes = true;
+            chartArea2.Name = "ChartAreaBasePeak";
+            this.basePeakChart.ChartAreas.Add(chartArea2);
+            legend2.Alignment = System.Drawing.StringAlignment.Center;
+            legend2.DockedToChartArea = "ChartAreaBasePeak";
+            legend2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend2.Enabled = false;
+            legend2.Name = "LegendBasePeak";
+            this.basePeakChart.Legends.Add(legend2);
+            this.basePeakChart.Location = new System.Drawing.Point(0, 0);
+            this.basePeakChart.Name = "basePeakChart";
+            series2.BorderWidth = 0;
+            series2.ChartArea = "ChartAreaBasePeak";
+            series2.Legend = "LegendBasePeak";
+            series2.MarkerBorderWidth = 0;
+            series2.Name = "data";
+            this.basePeakChart.Series.Add(series2);
+            this.basePeakChart.Size = new System.Drawing.Size(608, 369);
+            this.basePeakChart.TabIndex = 3;
+            this.basePeakChart.Text = "TIC";
+            title2.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            title2.Name = "titleBasePeak";
+            title2.Text = "Base Peak";
+            this.basePeakChart.Titles.Add(title2);
+            // 
+            // spectrumChart
+            // 
+            this.spectrumChart.BorderlineWidth = 0;
+            chartArea3.AxisX.MajorGrid.Enabled = false;
+            chartArea3.BorderWidth = 0;
+            chartArea3.IsSameFontSizeForAllAxes = true;
+            chartArea3.Name = "ChartAreaSpectrum";
+            this.spectrumChart.ChartAreas.Add(chartArea3);
+            legend3.Alignment = System.Drawing.StringAlignment.Center;
+            legend3.DockedToChartArea = "ChartAreaSpectrum";
+            legend3.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend3.Enabled = false;
+            legend3.Name = "LegendSpectrum";
+            this.spectrumChart.Legends.Add(legend3);
+            this.spectrumChart.Location = new System.Drawing.Point(629, 41);
+            this.spectrumChart.Name = "spectrumChart";
+            series3.BorderWidth = 0;
+            series3.ChartArea = "ChartAreaSpectrum";
+            series3.Legend = "LegendSpectrum";
+            series3.MarkerBorderWidth = 0;
+            series3.Name = "data";
+            this.spectrumChart.Series.Add(series3);
+            this.spectrumChart.Size = new System.Drawing.Size(574, 392);
+            this.spectrumChart.TabIndex = 4;
+            this.spectrumChart.Text = "TIC";
+            title3.Font = new System.Drawing.Font("微软雅黑", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            title3.Name = "titleSpectrum";
+            title3.Text = "Spectrum";
+            this.spectrumChart.Titles.Add(title3);
+            // 
             // lblAirdInfo
             // 
             this.lblAirdInfo.Font = new System.Drawing.Font("微软雅黑", 10F);
@@ -315,42 +357,10 @@
             this.spectraDataGrids.ReadOnly = true;
             this.spectraDataGrids.RowTemplate.Height = 23;
             this.spectraDataGrids.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.spectraDataGrids.Size = new System.Drawing.Size(1203, 386);
+            this.spectraDataGrids.Size = new System.Drawing.Size(1205, 386);
             this.spectraDataGrids.TabIndex = 0;
             this.spectraDataGrids.VirtualMode = true;
             this.spectraDataGrids.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.spectraDataGrids_MouseDoubleClick);
-            // 
-            // tabs
-            // 
-            this.tabs.Controls.Add(this.tabTIC);
-            this.tabs.Controls.Add(this.tabBasePeak);
-            this.tabs.Location = new System.Drawing.Point(7, 34);
-            this.tabs.Name = "tabs";
-            this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(616, 399);
-            this.tabs.TabIndex = 5;
-            // 
-            // tabTIC
-            // 
-            this.tabTIC.Controls.Add(this.ticChart);
-            this.tabTIC.Location = new System.Drawing.Point(4, 26);
-            this.tabTIC.Name = "tabTIC";
-            this.tabTIC.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTIC.Size = new System.Drawing.Size(608, 369);
-            this.tabTIC.TabIndex = 0;
-            this.tabTIC.Text = "TIC";
-            this.tabTIC.UseVisualStyleBackColor = true;
-            // 
-            // tabBasePeak
-            // 
-            this.tabBasePeak.Controls.Add(this.basePeakChart);
-            this.tabBasePeak.Location = new System.Drawing.Point(4, 26);
-            this.tabBasePeak.Name = "tabBasePeak";
-            this.tabBasePeak.Padding = new System.Windows.Forms.Padding(3);
-            this.tabBasePeak.Size = new System.Drawing.Size(608, 369);
-            this.tabBasePeak.TabIndex = 1;
-            this.tabBasePeak.Text = "Base Peak";
-            this.tabBasePeak.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -372,13 +382,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.mainContainer)).EndInit();
             this.mainContainer.ResumeLayout(false);
             this.fileTreeContext.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.spectrumChart)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.basePeakChart)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ticChart)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spectraDataGrids)).EndInit();
             this.tabs.ResumeLayout(false);
             this.tabTIC.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ticChart)).EndInit();
             this.tabBasePeak.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.basePeakChart)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spectrumChart)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spectraDataGrids)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -405,5 +415,6 @@
         private System.Windows.Forms.TabControl tabs;
         private System.Windows.Forms.TabPage tabTIC;
         private System.Windows.Forms.TabPage tabBasePeak;
+        private System.Windows.Forms.ToolStripMenuItem repositoryToolStripMenuItem;
     }
 }
