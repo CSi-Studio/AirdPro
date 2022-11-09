@@ -342,7 +342,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="PSI-MS.obo" />
-    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Ico\AIR.ico" />
