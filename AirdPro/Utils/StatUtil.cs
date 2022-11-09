@@ -14,150 +14,151 @@ using System.Diagnostics;
 using AirdPro.Domains;
 using AirdSDK.Compressor;
 
-namespace AirdPro.Utils;
-
-public class StatUtil
+namespace AirdPro.Utils
 {
-    public static List<double> minMaxNorm(List<double> numbers)
+    public class StatUtil
     {
-        if (numbers.Count == 0)
+        public static List<double> minMaxNorm(List<double> numbers)
         {
-            return new List<double>();
-        }
-
-        double min = numbers[0];
-        double max = numbers[0];
-        for (int i = 0; i < numbers.Count; i++)
-        {
-            if (numbers[i] > max)
+            if (numbers.Count == 0)
             {
-                max = numbers[i];
+                return new List<double>();
             }
 
-            if (numbers[i] < min)
+            double min = numbers[0];
+            double max = numbers[0];
+            for (int i = 0; i < numbers.Count; i++)
             {
-                min = numbers[i];
+                if (numbers[i] > max)
+                {
+                    max = numbers[i];
+                }
+
+                if (numbers[i] < min)
+                {
+                    min = numbers[i];
+                }
             }
+
+            double delta = max - min;
+            if (delta == 0)
+            {
+                throw new Exception("max - min = 0!");
+            }
+
+            List<double> normList = new List<double>();
+            for (var i = 0; i < numbers.Count; i++)
+            {
+                normList.Add((numbers[i] - min) / delta);
+            }
+
+            return normList;
         }
 
-        double delta = max - min;
-        if (delta == 0)
+        public static void stat4ComboComp(BaseComp<int> intComp, ByteComp byteComp, List<int[]> arrays, string key,
+            Dictionary<string, long> sizeMap, Dictionary<string, long> compressTimeMap,
+            Dictionary<string, long> decompressTimeMap)
         {
-            throw new Exception("max - min = 0!");
+            // string key = buildComboKey(dim, intComp.getName(), byteComp.getName());
+            Stopwatch watch = new Stopwatch();
+            int tempSize = 0;
+            watch.Start();
+            List<byte[]> encodeList = new List<byte[]>();
+            for (int i = 0; i < arrays.Count; i++)
+            {
+                byte[] comp = ComboComp.encode(intComp, byteComp, arrays[i]);
+                tempSize += comp.Length;
+                encodeList.Add(comp);
+            }
+
+            sizeMap[key] = tempSize;
+            compressTimeMap[key] = watch.Elapsed.Ticks;
+            watch.Restart();
+            for (int i = 0; i < encodeList.Count; i++)
+            {
+                int[] mz = ComboComp.decode(intComp, byteComp, encodeList[i]);
+                if (mz.Length != arrays[i].Length)
+                {
+                    Console.WriteLine("Encoding Error");
+                }
+            }
+
+            decompressTimeMap[key] = watch.Elapsed.Ticks;
+            watch.Stop();
         }
 
-        List<double> normList = new List<double>();
-        for (var i = 0; i < numbers.Count; i++)
+        public static void stat4HuffmanCode(BaseComp<int> intComp, ByteComp byteComp, List<int[]> arrays, string dim,
+            Dictionary<string, long> sizeMap, Dictionary<string, long> compressTimeMap,
+            Dictionary<string, long> decompressTimeMap)
         {
-            normList.Add((numbers[i] - min) / delta);
-        }
-
-        return normList;
-    }
-
-    public static void stat4ComboComp(BaseComp<int> intComp, ByteComp byteComp, List<int[]> arrays, string key,
-        Dictionary<string, long> sizeMap, Dictionary<string, long> compressTimeMap,
-        Dictionary<string, long> decompressTimeMap)
-    {
-        // string key = buildComboKey(dim, intComp.getName(), byteComp.getName());
-        Stopwatch watch = new Stopwatch();
-        int tempSize = 0;
-        watch.Start();
-        List<byte[]> encodeList = new List<byte[]>();
-        for (int i = 0; i < arrays.Count; i++)
-        {
-            byte[] comp = ComboComp.encode(intComp, byteComp, arrays[i]);
-            tempSize += comp.Length;
-            encodeList.Add(comp);
-        }
-
-        sizeMap[key] = tempSize;
-        compressTimeMap[key] = watch.Elapsed.Ticks;
-        watch.Restart();
-        for (int i = 0; i < encodeList.Count; i++)
-        {
-            int[] mz = ComboComp.decode(intComp, byteComp, encodeList[i]);
-            if (mz.Length != arrays[i].Length)
+            string key = buildComboKey(dim, intComp.getName(), byteComp.getName());
+            Stopwatch watchMz = new Stopwatch();
+            watchMz.Start();
+            int[] tempMobiHuffArray = HuffmanCoder.toIntArray(arrays);
+            HuffmanTree huffmanTree = HuffmanCoder.buildTree(tempMobiHuffArray);
+            byte[] tempMobiHuffByte = HuffmanCoder.encode(tempMobiHuffArray, huffmanTree);
+            byte[] compressed = new ZstdWrapper().encode(tempMobiHuffByte);
+            sizeMap[key] = compressed.Length;
+            compressTimeMap[key] = watchMz.Elapsed.Ticks;
+            watchMz.Restart();
+            int[] decodedMobiArray = HuffmanCoder.decode(tempMobiHuffByte, huffmanTree);
+            if (decodedMobiArray.Length != tempMobiHuffArray.Length)
             {
                 Console.WriteLine("Encoding Error");
             }
+
+            decompressTimeMap[key] = watchMz.Elapsed.Ticks;
+            watchMz.Stop();
         }
 
-        decompressTimeMap[key] = watch.Elapsed.Ticks;
-        watch.Stop();
-    }
-
-    public static void stat4HuffmanCode(BaseComp<int> intComp, ByteComp byteComp, List<int[]> arrays, string dim,
-        Dictionary<string, long> sizeMap, Dictionary<string, long> compressTimeMap,
-        Dictionary<string, long> decompressTimeMap)
-    {
-        string key = buildComboKey(dim, intComp.getName(), byteComp.getName());
-        Stopwatch watchMz = new Stopwatch();
-        watchMz.Start();
-        int[] tempMobiHuffArray = HuffmanCoder.toIntArray(arrays);
-        HuffmanTree huffmanTree = HuffmanCoder.buildTree(tempMobiHuffArray);
-        byte[] tempMobiHuffByte = HuffmanCoder.encode(tempMobiHuffArray, huffmanTree);
-        byte[] compressed = new ZstdWrapper().encode(tempMobiHuffByte);
-        sizeMap[key] = compressed.Length;
-        compressTimeMap[key] = watchMz.Elapsed.Ticks;
-        watchMz.Restart();
-        int[] decodedMobiArray = HuffmanCoder.decode(tempMobiHuffByte, huffmanTree);
-        if (decodedMobiArray.Length != tempMobiHuffArray.Length)
+        public static int calcBestIndex(List<CompressStat> statList)
         {
-            Console.WriteLine("Encoding Error");
-        }
-
-        decompressTimeMap[key] = watchMz.Elapsed.Ticks;
-        watchMz.Stop();
-    }
-
-    public static int calcBestIndex(List<CompressStat> statList)
-    {
-        statList.Sort((a, b) => a.size.CompareTo(b.size));
-        List<double> sizeList = new List<double>();
-        List<double> ctList = new List<double>();
-        List<double> dtList = new List<double>();
-        statList.ForEach((stat) =>
-        {
-            sizeList.Add(stat.size);
-            ctList.Add(stat.compressTime);
-            dtList.Add(stat.decompressTime);
-        });
-
-        List<double> normSize = minMaxNorm(sizeList);
-        List<double> normCt = minMaxNorm(ctList);
-        List<double> normDt = minMaxNorm(dtList);
-        Stat sizeStat = new Stat(normSize);
-        // Stat ctStat = new Stat(normCt);
-        // Stat dtStat = new Stat(normDt);
-        int endIndex = -1;
-        for (int i = 0; i < sizeStat.size; i++)
-        {
-            if (sizeStat.dataList[i] < sizeStat.mean)
+            statList.Sort((a, b) => a.size.CompareTo(b.size));
+            List<double> sizeList = new List<double>();
+            List<double> ctList = new List<double>();
+            List<double> dtList = new List<double>();
+            statList.ForEach((stat) =>
             {
-                endIndex = i;
-            }
-        }
+                sizeList.Add(stat.size);
+                ctList.Add(stat.compressTime);
+                dtList.Add(stat.decompressTime);
+            });
 
-        double bestValue = 3;
-        int bestIndex = -1;
-        List<double> totalList = new List<double>();
-        for (int i = 0; i <= endIndex; i++)
-        {
-            double total = normSize[i] + normCt[i] + normDt[i];
-            totalList.Add(total);
-            if (total < bestValue)
+            List<double> normSize = minMaxNorm(sizeList);
+            List<double> normCt = minMaxNorm(ctList);
+            List<double> normDt = minMaxNorm(dtList);
+            Stat sizeStat = new Stat(normSize);
+            // Stat ctStat = new Stat(normCt);
+            // Stat dtStat = new Stat(normDt);
+            int endIndex = -1;
+            for (int i = 0; i < sizeStat.size; i++)
             {
-                bestIndex = i;
-                bestValue = total;
+                if (sizeStat.dataList[i] < sizeStat.mean)
+                {
+                    endIndex = i;
+                }
             }
+
+            double bestValue = 3;
+            int bestIndex = -1;
+            List<double> totalList = new List<double>();
+            for (int i = 0; i <= endIndex; i++)
+            {
+                double total = normSize[i] + normCt[i] + normDt[i];
+                totalList.Add(total);
+                if (total < bestValue)
+                {
+                    bestIndex = i;
+                    bestValue = total;
+                }
+            }
+
+            return bestIndex;
         }
 
-        return bestIndex;
-    }
-
-    public static string buildComboKey(string key, string intCompName, string byteCompName)
-    {
-        return key + "-" + intCompName + "-" + byteCompName;
+        public static string buildComboKey(string key, string intCompName, string byteCompName)
+        {
+            return key + "-" + intCompName + "-" + byteCompName;
+        }
     }
 }

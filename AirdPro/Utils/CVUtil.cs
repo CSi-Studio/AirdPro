@@ -1,66 +1,77 @@
-﻿using pwiz.CLI.data;
+﻿/*
+ * Copyright (c) 2020 CSi Studio
+ * AirdSDK and AirdPro are licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2. 
+ * You may obtain a copy of Mulan PSL v2 at:
+ *          http://license.coscl.org.cn/MulanPSL2 
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.  
+ * See the Mulan PSL v2 for more details.
+ */
+
+using pwiz.CLI.data;
 using System.Collections.Generic;
 using pwiz.CLI.cv;
 using CV = AirdSDK.Beans.CV;
 
-namespace AirdPro.Utils;
-
-public class CVUtil
+namespace AirdPro.Utils
 {
-    //由于直接对这些指定的cv字段进行存储,因此不需要再转存一遍
-    private static HashSet<CVID> skipList = new HashSet<CVID>()
+    public class CVUtil
     {
-        CVID.MS_scan_start_time,
-        CVID.MS_ms_level,
-        CVID.MS_MSn_spectrum,
-        CVID.MS_MS1_spectrum,
-        CVID.MS_inverse_reduced_ion_mobility,
-        CVID.MS_TIC,
-        CVID.MS_negative_scan,
-        CVID.MS_positive_scan,
-        CVID.MS_profile_spectrum,
-        CVID.MS_centroid_spectrum,
-        CVID.MS_HCD,
-        CVID.MS_CID,
-        CVID.MS_ECD,
-        CVID.MS_ETD,
-        CVID.MS_collision_energy,
-        CVID.MS_base_peak_intensity,
-        CVID.MS_base_peak_m_z
-    };
-
-    public static List<CV> trans(CVParamList paramList)
-    {
-        if (paramList == null)
+        //由于直接对这些指定的cv字段进行存储,因此不需要再转存一遍
+        private static HashSet<CVID> skipList = new HashSet<CVID>()
         {
-            return null;
-        }
+            CVID.MS_scan_start_time,
+            CVID.MS_ms_level,
+            CVID.MS_MSn_spectrum,
+            CVID.MS_MS1_spectrum,
+            CVID.MS_inverse_reduced_ion_mobility,
+            CVID.MS_TIC,
+            CVID.MS_negative_scan,
+            CVID.MS_positive_scan,
+            CVID.MS_profile_spectrum,
+            CVID.MS_centroid_spectrum,
+            CVID.MS_HCD,
+            CVID.MS_CID,
+            CVID.MS_ECD,
+            CVID.MS_ETD,
+            CVID.MS_collision_energy,
+            CVID.MS_base_peak_intensity,
+            CVID.MS_base_peak_m_z
+        };
 
-        List<CV> cvList = new List<CV>();
-        foreach (var cvParam in paramList)
+        public static List<CV> trans(CVParamList paramList)
         {
-            if (skipList.Contains(cvParam.cvid))
+            if (paramList == null)
             {
-                continue;
+                return null;
             }
 
-            cvList.Add(build(cvParam));
+            List<CV> cvList = new List<CV>();
+            foreach (var cvParam in paramList)
+            {
+                if (skipList.Contains(cvParam.cvid))
+                {
+                    continue;
+                }
+
+                cvList.Add(build(cvParam));
+            }
+
+            return cvList;
         }
 
-        return cvList;
-    }
-
-    public static CV build(CVParam param)
-    {
-        CV cv = new CV();
-        cv.cvid = ((int) param.cvid) + ":" + param.name;
-        cv.value = param.value.ToString();
-        int unitsId = (int) param.units;
-        if (unitsId != -1)
+        public static CV build(CVParam param)
         {
-            cv.units = (int) param.units + ":" + param.unitsName;
-        }
+            CV cv = new CV();
+            cv.cvid = ((int)param.cvid) + ":" + param.name;
+            cv.value = param.value.ToString();
+            int unitsId = (int)param.units;
+            if (unitsId != -1)
+            {
+                cv.units = (int)param.units + ":" + param.unitsName;
+            }
 
-        return cv;
+            return cv;
+        }
     }
 }

@@ -72,7 +72,7 @@
             this.tbRedisHost.Location = new System.Drawing.Point(4, 4);
             this.tbRedisHost.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisHost.Name = "tbRedisHost";
-            this.tbRedisHost.Size = new System.Drawing.Size(140, 23);
+            this.tbRedisHost.Size = new System.Drawing.Size(140, 31);
             this.tbRedisHost.TabIndex = 28;
             this.tbRedisHost.Text = "127.0.0.1";
             // 
@@ -97,7 +97,7 @@
             // 
             this.btnConfigChooseFolder.Font = new System.Drawing.Font("微软雅黑", 8F);
             this.btnConfigChooseFolder.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnConfigChooseFolder.Location = new System.Drawing.Point(4, 35);
+            this.btnConfigChooseFolder.Location = new System.Drawing.Point(4, 43);
             this.btnConfigChooseFolder.Margin = new System.Windows.Forms.Padding(4);
             this.btnConfigChooseFolder.Name = "btnConfigChooseFolder";
             this.btnConfigChooseFolder.Size = new System.Drawing.Size(76, 23);
@@ -112,7 +112,7 @@
             this.tbLastOpenPath.Location = new System.Drawing.Point(4, 4);
             this.tbLastOpenPath.Margin = new System.Windows.Forms.Padding(4);
             this.tbLastOpenPath.Name = "tbLastOpenPath";
-            this.tbLastOpenPath.Size = new System.Drawing.Size(240, 23);
+            this.tbLastOpenPath.Size = new System.Drawing.Size(240, 31);
             this.tbLastOpenPath.TabIndex = 118;
             // 
             // tbRedisPort
@@ -121,7 +121,7 @@
             this.tbRedisPort.Location = new System.Drawing.Point(173, 4);
             this.tbRedisPort.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisPort.Name = "tbRedisPort";
-            this.tbRedisPort.Size = new System.Drawing.Size(66, 23);
+            this.tbRedisPort.Size = new System.Drawing.Size(66, 31);
             this.tbRedisPort.TabIndex = 121;
             this.tbRedisPort.Text = "6379";
             // 
@@ -185,7 +185,7 @@
             0,
             0});
             this.numMaxTasks.Name = "numMaxTasks";
-            this.numMaxTasks.Size = new System.Drawing.Size(111, 23);
+            this.numMaxTasks.Size = new System.Drawing.Size(111, 31);
             this.numMaxTasks.TabIndex = 126;
             this.numMaxTasks.Value = new decimal(new int[] {
             1,
@@ -239,7 +239,7 @@
             // GlobalSettingForm
             // 
             this.AcceptButton = this.btnSave;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(533, 187);
             this.Controls.Add(this.tableLayoutPanel1);
