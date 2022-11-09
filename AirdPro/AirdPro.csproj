@@ -373,6 +373,7 @@
     <Content Include="Resources\Menu\Setting.png" />
     <Content Include="Resources\Menu\Start.png" />
     <Content Include="Resources\Pay\Weixin.png" />
+    <Content Include="ReleaseLog.txt" />
     <Content Include="Version.xml" />
   </ItemGroup>
   <ItemGroup>

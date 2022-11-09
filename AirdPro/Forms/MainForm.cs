@@ -315,7 +315,7 @@ namespace AirdPro.Forms
 
         private void updateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AutoUpdater.Start("https://rbsoft.org/updates/AutoUpdaterTest.xml");
+            AutoUpdater.Start("https://airdpro.oss-cn-hangzhou.aliyuncs.com/Version.xml");
         }
     }
 }
