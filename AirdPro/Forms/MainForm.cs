@@ -14,6 +14,7 @@ using CV = AirdSDK.Beans.CV;
 using AirdPro.Repository;
 using AirdPro.Constants;
 using AirdPro.Utils;
+using AutoUpdaterDotNET;
 
 namespace AirdPro.Forms
 {
@@ -310,6 +311,11 @@ namespace AirdPro.Forms
             }
 
             repositoryGuiderForm.Show();
+        }
+
+        private void updateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AutoUpdater.Start("https://rbsoft.org/updates/AutoUpdaterTest.xml");
         }
     }
 }

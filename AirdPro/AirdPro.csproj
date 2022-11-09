@@ -26,8 +26,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>2</ApplicationRevision>
-    <ApplicationVersion>4.0.1.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>4.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -374,6 +374,7 @@
     <Content Include="Resources\Menu\Setting.png" />
     <Content Include="Resources\Menu\Start.png" />
     <Content Include="Resources\Pay\Weixin.png" />
+    <Content Include="Version.xml" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
@@ -393,6 +394,9 @@
   <ItemGroup>
     <PackageReference Include="AirdSDK">
       <Version>2.0.3.1-beta2</Version>
+    </PackageReference>
+    <PackageReference Include="Autoupdater.NET.Official">
+      <Version>1.7.6</Version>
     </PackageReference>
     <PackageReference Include="BetterFolderBrowser">
       <Version>1.2.0</Version>

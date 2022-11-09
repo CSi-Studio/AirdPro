@@ -63,6 +63,7 @@
             this.spectrumChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.lblAirdInfo = new System.Windows.Forms.Label();
             this.spectraDataGrids = new System.Windows.Forms.DataGridView();
+            this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainContainer)).BeginInit();
             this.mainContainer.Panel1.SuspendLayout();
@@ -138,14 +139,15 @@
             // globalSettingToolStripMenuItem
             // 
             this.globalSettingToolStripMenuItem.Name = "globalSettingToolStripMenuItem";
-            this.globalSettingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.globalSettingToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.globalSettingToolStripMenuItem.Text = "Global Setting";
             this.globalSettingToolStripMenuItem.Click += new System.EventHandler(this.globalSettingToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem});
+            this.aboutToolStripMenuItem,
+            this.updateToolStripMenuItem});
             this.helpToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Help;
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(71, 28);
@@ -154,7 +156,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -357,10 +359,17 @@
             this.spectraDataGrids.ReadOnly = true;
             this.spectraDataGrids.RowTemplate.Height = 23;
             this.spectraDataGrids.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.spectraDataGrids.Size = new System.Drawing.Size(1205, 386);
+            this.spectraDataGrids.Size = new System.Drawing.Size(1206, 386);
             this.spectraDataGrids.TabIndex = 0;
             this.spectraDataGrids.VirtualMode = true;
             this.spectraDataGrids.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.spectraDataGrids_MouseDoubleClick);
+            // 
+            // updateToolStripMenuItem
+            // 
+            this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
+            this.updateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.updateToolStripMenuItem.Text = "Update";
+            this.updateToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -416,5 +425,6 @@
         private System.Windows.Forms.TabPage tabTIC;
         private System.Windows.Forms.TabPage tabBasePeak;
         private System.Windows.Forms.ToolStripMenuItem repositoryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem updateToolStripMenuItem;
     }
 }
