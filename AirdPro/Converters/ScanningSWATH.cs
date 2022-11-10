@@ -21,7 +21,7 @@ using AirdSDK.Beans;
 using AirdSDK.Enums;
 
 /**
- * Code not released. Please do not use this code.
+ * Converter is not Compelted. Please do not use this Converter.
  */
 namespace AirdPro.Converters
 {
