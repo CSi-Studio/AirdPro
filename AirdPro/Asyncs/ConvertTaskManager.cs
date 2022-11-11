@@ -115,7 +115,9 @@ namespace AirdPro.Asyncs
                         try
                         {
                             jobInfo.setStatus(RUNNING);
-                            tryConvert(jobInfo);
+                            Converter converter = new Converter(jobInfo);
+                            converter.doConvert();
+                            jobInfo.setStatus(FINISHED);
                             break;
                         }
                         catch (Exception ex)
@@ -136,61 +138,6 @@ namespace AirdPro.Asyncs
                     finishedJob(jobInfo);
                 }, jobInfo.tokenSource.Token);
             }
-        }
-
-        public void tryConvert(JobInfo jobInfo)
-        {
-            ICompressor comp;
-            IConverter converter = null;
-            if (jobInfo.type.Equals(AirdType.DIA))
-            {
-                converter = new DIA(jobInfo);
-            }
-            else if (jobInfo.type.Equals(AirdType.PRM))
-            {
-                converter = new PRM(jobInfo);
-            }
-            else if (jobInfo.type.Equals(AirdType.SCANNING_SWATH))
-            {
-                converter = new ScanningSWATH(jobInfo);
-            }
-            else if (jobInfo.type.Equals(AirdType.DDA))
-            {
-                converter = new DDA(jobInfo);
-            }
-            else if (jobInfo.type.Equals(AirdType.DDA_PASEF))
-            {
-                jobInfo.ionMobility = true;
-                converter = new DDAPasef(jobInfo);
-            }
-            else if (jobInfo.type.Equals(AirdType.DIA_PASEF))
-            {
-                jobInfo.ionMobility = true;
-                converter = new DIAPasef(jobInfo);
-            }
-
-            comp = jobInfo.config.stack ? new StackComp(converter) : new CoreComp(converter);
-
-            //探索模式和非自动决策模式,会在此处初始化指定的压缩内核
-            if (jobInfo.config.autoExplorer || !jobInfo.config.autoDesicion)
-            {
-                if (jobInfo.ionMobility)
-                {
-                    comp.mobiIntComp = IntComp.build(jobInfo.config.mobiIntComp);
-                    comp.mobiByteComp = ByteComp.build(jobInfo.config.mobiByteComp);
-                }
-
-                comp.mzIntComp = SortedIntComp.build(jobInfo.config.mzIntComp);
-                comp.mzByteComp = ByteComp.build(jobInfo.config.mzByteComp);
-
-                comp.intIntComp = IntComp.build(jobInfo.config.intIntComp);
-                comp.intByteComp = ByteComp.build(jobInfo.config.intByteComp);
-            }
-
-            converter.compressor = comp;
-            converter.doConvert();
-            jobInfo.setStatus(FINISHED);
-            converter = null;
         }
 
         public void clear()

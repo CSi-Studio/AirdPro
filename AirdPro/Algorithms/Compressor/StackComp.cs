@@ -25,11 +25,11 @@ namespace AirdPro.Algorithms
 {
     public class StackComp : ICompressor
     {
-        public StackComp(IConverter converter) : base(converter)
+        public StackComp(Converter converter) : base(converter)
         {
         }
 
-        public override void compressMS1(IConverter converter, BlockIndex index)
+        public override void compressMS1(Converter converter, BlockIndex index)
         {
             int layers = (int) Math.Pow(2, digit); //计算堆叠层数
             int iter = converter.ms1List.Count % layers == 0
@@ -115,7 +115,7 @@ namespace AirdPro.Algorithms
             }
         }
 
-        public override void compressMS2(IConverter converter, List<MsIndex> ms2List, BlockIndex index)
+        public override void compressMS2(Converter converter, List<MsIndex> ms2List, BlockIndex index)
         {
             int layers = (int) Math.Pow(2, digit); //计算堆叠层数
             int iter = ms2List.Count % layers == 0 ? (ms2List.Count / layers) : (ms2List.Count / layers + 1); //计算循环周期

@@ -27,11 +27,11 @@ namespace AirdPro.Algorithms
     {
         private static readonly object locker = new();
 
-        public CoreComp(IConverter converter) : base(converter)
+        public CoreComp(Converter converter) : base(converter)
         {
         }
 
-        public override void compressMS1(IConverter converter, BlockIndex index)
+        public override void compressMS1(Converter converter, BlockIndex index)
         {
             if (multiThread)
             {
@@ -90,7 +90,7 @@ namespace AirdPro.Algorithms
             }
         }
 
-        public override void compressMS2(IConverter converter, List<MsIndex> ms2List, BlockIndex index)
+        public override void compressMS2(Converter converter, List<MsIndex> ms2List, BlockIndex index)
         {
             if (multiThread)
             {

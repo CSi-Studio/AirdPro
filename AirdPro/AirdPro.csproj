@@ -162,8 +162,7 @@
     <Compile Include="Constants\ResultCode.cs" />
     <Compile Include="Constants\SoftwareInfo.cs" />
     <Compile Include="Constants\UrlConst.cs" />
-    <Compile Include="Converters\DDAPasef .cs" />
-    <Compile Include="Converters\DIAPasef.cs" />
+    <Compile Include="Converters\ConverterWorkFlow.cs" />
     <Compile Include="Domains\HardwareInfo\HardwareInfo.cs" />
     <Compile Include="Domains\Logs\AppLogs.cs" />
     <Compile Include="Domains\Logs\Log.cs" />
@@ -271,10 +270,7 @@
     <Compile Include="Forms\ConversionForm.Designer.cs">
       <DependentUpon>ConversionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Converters\DDA.cs" />
-    <Compile Include="Converters\DIA.cs" />
-    <Compile Include="Converters\IConverter.cs" />
-    <Compile Include="Converters\PRM.cs" />
+    <Compile Include="Converters\Converter.cs" />
     <Compile Include="Converters\ScanningSWATH.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

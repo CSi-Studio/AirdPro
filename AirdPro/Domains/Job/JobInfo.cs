@@ -29,7 +29,7 @@ namespace AirdPro.Domains
         //C:/data/plasma.wiff,作为job的ID存在
         private string jobId;
 
-        //任务状态
+        //任务状态,不用于界面展示,界面展示的字段使用的是progress
         public string status;
 
         //文件的输出路径
@@ -38,8 +38,10 @@ namespace AirdPro.Domains
         //用于转换的参数
         public ConversionConfig config;
 
-        //DIA-Swath,PRM,DDA. see AirdType
+        //DIA,PRM,DDA. see AirdType
         public string type;
+
+        public IProgress<string> typeLabel;
 
         //是否是IonMobility文件
         public bool ionMobility = false;
@@ -99,7 +101,7 @@ namespace AirdPro.Domains
             {
                 getJobId(),
                 inputPath,
-                type,
+                "",
                 status,
                 config.getMzPrecisionStr(),
                 getCompressorStr(),
@@ -108,6 +110,10 @@ namespace AirdPro.Domains
                 outputPath
             };
             ListViewItem item = new ListViewItem(itemInfo);
+            typeLabel = new Progress<string>((typeLabel) =>
+            {
+                item.SubItems[ItemName.TYPE].Text = typeLabel;
+            });
             progress = new Progress<string>((progressValue) =>
             {
                 item.SubItems[ItemName.PROGRESS].Text = progressValue;
@@ -116,6 +122,7 @@ namespace AirdPro.Domains
             {
                 item.SubItems[ItemName.COMPRESSOR].Text = compressor;
             });
+
             item.ToolTipText = outputPath;
             item.Tag = this;
             return item;
@@ -134,6 +141,12 @@ namespace AirdPro.Domains
         {
             this.status = status;
             progress.Report(status);
+        }
+
+        public void setType(string type)
+        {
+            this.type = type;
+            typeLabel.Report(type);
         }
 
         public void setCombination(string combination)
