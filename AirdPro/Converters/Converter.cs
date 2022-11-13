@@ -85,26 +85,26 @@ namespace AirdPro.Converters
                 {
                     readVendorFile(); //准备读取Vendor文件
                     predictAcquisitionMethod();
-                    // switch (jobInfo.type)
-                    // {
-                    //     case AirdType.DIA:
-                    //         ConverterWorkFlow.DIA(this);
-                    //         break;
-                    //     case AirdType.DDA:
-                    //         ConverterWorkFlow.DDA(this);
-                    //         break;
-                    //     case AirdType.PRM:
-                    //         ConverterWorkFlow.PRM(this);
-                    //         break;
-                    //     case AirdType.DDA_PASEF:
-                    //         jobInfo.ionMobility = true;
-                    //         ConverterWorkFlow.DDAPasef(this);
-                    //         break;
-                    //     case AirdType.DIA_PASEF:
-                    //         jobInfo.ionMobility = true;
-                    //         ConverterWorkFlow.DIAPasef(this);
-                    //         break;
-                    // }
+                    switch (jobInfo.type)
+                    {
+                        case AirdType.DIA:
+                            ConverterWorkFlow.DIA(this);
+                            break;
+                        case AirdType.DDA:
+                            ConverterWorkFlow.DDA(this);
+                            break;
+                        // case AirdType.PRM:
+                        //     ConverterWorkFlow.PRM(this);
+                        //     break;
+                        case AirdType.DDA_PASEF:
+                            jobInfo.ionMobility = true;
+                            ConverterWorkFlow.DDAPasef(this);
+                            break;
+                        case AirdType.DIA_PASEF:
+                            jobInfo.ionMobility = true;
+                            ConverterWorkFlow.DIAPasef(this);
+                            break;
+                    }
                 }
             }
 
@@ -197,6 +197,7 @@ namespace AirdPro.Converters
             //首先判断是否有Mobility属性
             Spectrum firstSpec = spectrumList.spectrum(0, true);
             List<Spectrum> predictSpecList = new List<Spectrum>();
+            //首先取5个窗口,如果5个窗口全部都是MS1,则
             for (int i = 0; i < 10; i++)
             {
                 predictSpecList.Add(spectrumList.spectrum(i));
@@ -218,6 +219,8 @@ namespace AirdPro.Converters
 
             bool isDDA = true;
             bool isDIA = false;
+            bool isPRM = false;
+
             foreach (Spectrum spectrum in predictSpecList)
             {
                 //如果全部扫描下来都没有MS2, 说明是Full Scan扫描模式,设置为DDA
@@ -226,10 +229,10 @@ namespace AirdPro.Converters
                     double width = CVUtil.parsePrecursorWidth(spectrum, jobInfo);
                     if (width < 4)
                     {
-                        isDDA = true;
                         isDIA = false;
+                        isDDA = true;
+                        //自动模式会将DDA模式与PRM模式混合
                         break;
-                        //MS2前体窗口小于0.1,为DDA扫描模式
                     }
                     else
                     {
