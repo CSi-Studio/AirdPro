@@ -84,26 +84,27 @@ namespace AirdPro.Converters
                 using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                 {
                     readVendorFile(); //准备读取Vendor文件
-                    switch (jobInfo.type)
-                    {
-                        case AirdType.DIA:
-                            ConverterWorkFlow.DIA(this);
-                            break;
-                        case AirdType.DDA:
-                            ConverterWorkFlow.DDA(this);
-                            break;
-                        case AirdType.PRM:
-                            ConverterWorkFlow.PRM(this);
-                            break;
-                        case AirdType.DDA_PASEF:
-                            jobInfo.ionMobility = true;
-                            ConverterWorkFlow.DDAPasef(this);
-                            break;
-                        case AirdType.DIA_PASEF:
-                            jobInfo.ionMobility = true;
-                            ConverterWorkFlow.DIAPasef(this);
-                            break;
-                    }
+                    predictAcquisitionMethod();
+                    // switch (jobInfo.type)
+                    // {
+                    //     case AirdType.DIA:
+                    //         ConverterWorkFlow.DIA(this);
+                    //         break;
+                    //     case AirdType.DDA:
+                    //         ConverterWorkFlow.DDA(this);
+                    //         break;
+                    //     case AirdType.PRM:
+                    //         ConverterWorkFlow.PRM(this);
+                    //         break;
+                    //     case AirdType.DDA_PASEF:
+                    //         jobInfo.ionMobility = true;
+                    //         ConverterWorkFlow.DDAPasef(this);
+                    //         break;
+                    //     case AirdType.DIA_PASEF:
+                    //         jobInfo.ionMobility = true;
+                    //         ConverterWorkFlow.DIAPasef(this);
+                    //         break;
+                    // }
                 }
             }
 
@@ -177,6 +178,93 @@ namespace AirdPro.Converters
             compressor.mobiDict = mobiDict;
         }
 
+        /**
+         * 用于检测当前文件的采集模式
+         * 如果含有Mobility属性,则为PASEF模式
+         * 如果前三帧都是MS1,则必然不是DIA
+         * 如果MS2的precursor范围大于3,则可能是DIA
+         * 如果MS2的precursor范围小于1,则可能是DDA
+         */
+        public void predictAcquisitionMethod()
+        {
+            if (!jobInfo.type.Equals(JobInfo.AutoType))
+            {
+                return;
+            }
+
+            bool mobi = false;
+            jobInfo.log(Tag.Predict_Acquisition_Method, Status.Init);
+            //首先判断是否有Mobility属性
+            Spectrum firstSpec = spectrumList.spectrum(0, true);
+            List<Spectrum> predictSpecList = new List<Spectrum>();
+            for (int i = 0; i < 10; i++)
+            {
+                predictSpecList.Add(spectrumList.spectrum(i));
+            }
+
+            //判断是不是ion mobility模式
+            if (firstSpec.binaryDataArrays.Count == 3)
+            {
+                foreach (BinaryDataArray dataArray in firstSpec.binaryDataArrays)
+                {
+                    if (dataArray.cvParams[0].cvid.Equals(CVID.MS_mean_inverse_reduced_ion_mobility_array))
+                    {
+                        jobInfo.ionMobility = true;
+                        mobi = true;
+                        break;
+                    }
+                }
+            }
+
+            bool isDDA = true;
+            bool isDIA = false;
+            foreach (Spectrum spectrum in predictSpecList)
+            {
+                //如果全部扫描下来都没有MS2, 说明是Full Scan扫描模式,设置为DDA
+                if (CVUtil.parseMsLevel(spectrum).Equals(MsLevel.MS2))
+                {
+                    double width = CVUtil.parsePrecursorWidth(spectrum, jobInfo);
+                    if (width < 4)
+                    {
+                        isDDA = true;
+                        isDIA = false;
+                        break;
+                        //MS2前体窗口小于0.1,为DDA扫描模式
+                    }
+                    else
+                    {
+                        isDDA = false;
+                        isDIA = true;
+                        break;
+                    }
+                }
+            }
+
+            if (isDDA && mobi)
+            {
+                jobInfo.setType(AirdType.DDA_PASEF);
+                return;
+            }
+
+            if (isDDA && !mobi)
+            {
+                jobInfo.setType(AirdType.DDA);
+                return;
+            }
+
+            if (isDIA && mobi)
+            {
+                jobInfo.setType(AirdType.DIA_PASEF);
+                return;
+            }
+
+            if (isDIA && !mobi)
+            {
+                jobInfo.setType(AirdType.DIA);
+                return;
+            }
+        }
+
         public void predictForBestCombination()
         {
             if (!jobInfo.config.autoDesicion)
@@ -223,6 +311,7 @@ namespace AirdPro.Converters
                 }
             }
 
+            intensityPrecision = findIt ? 10 : 1;
             if (findIt)
             {
                 intensityPrecision = 10;

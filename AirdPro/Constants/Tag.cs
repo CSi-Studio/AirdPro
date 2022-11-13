@@ -52,6 +52,7 @@ public class Tag
     public static string Not_Start_Converting = "Not start converting!";
     public static string Only_Finished_Job_Can_Rerun = "Only finished job can rerun";
     public static string Redis_Host_Cannot_Be_Empty = "Redis Host Cannot Be Empty";
+    public static string Predict_Acquisition_Method = "Predict Acquisition Method";
 
     public static string Connect_Failed_Please_Check_The_Redis_Host_And_Port =
         "Connect failed, please check the redis host and port.";

@@ -278,6 +278,51 @@ namespace AirdPro.Utils
             return result;
         }
 
+        public static double parsePrecursorWidth(Spectrum spectrum, JobInfo jobInfo)
+        {
+            var retryTimes = 3;
+            double lower = -1;
+            double upper = -1;
+            while ((upper + lower) < 0 && retryTimes > 0)
+            {
+                try
+                {
+                    Precursor precursor = spectrum.precursors[0];
+                    if (precursor.isolationWindow.hasCVParamChild(CVID.MS_isolation_window_lower_offset))
+                    {
+                        lower = Double.Parse(precursor.isolationWindow.cvParamChild(CVID.MS_isolation_window_lower_offset).value.ToString());
+                    }
+                    else
+                    {
+                        lower = 0;
+                    }
+
+                    if (precursor.isolationWindow.hasCVParamChild(CVID.MS_isolation_window_upper_offset))
+                    {
+                        upper = Double.Parse(precursor.isolationWindow.cvParamChild(CVID.MS_isolation_window_upper_offset).value.ToString());
+                    }
+                    else
+                    {
+                        upper = 0;
+                    }
+                }
+                catch (FormatException e)
+                {
+                    jobInfo.log("Get Precursor Width-Retry Times-" + retryTimes + "-Result:" + upper+"-"+lower+"="+(upper + lower));
+                    jobInfo.log(e.StackTrace);
+                }
+
+                retryTimes--;
+            }
+
+            if (upper + lower < 0)
+            {
+                throw new Exception(ResultCode.Parse_Double_Error + (upper + lower));
+            }
+
+            return (upper + lower);
+        }
+
         public static int parsePrecursorCharge(Spectrum spectrum, JobInfo jobInfo)
         {
             int result = 0;

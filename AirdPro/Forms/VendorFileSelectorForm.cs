@@ -15,6 +15,7 @@ using ThermoFisher.CommonCore.Data;
 using AirdPro.Storage;
 using System.Collections.Generic;
 using System.IO;
+using AirdPro.Domains;
 using AirdPro.Storage.Config;
 using AirdPro.Utils;
 using AirdSDK.Enums;
@@ -27,14 +28,15 @@ namespace AirdPro.Forms
         {
             InitializeComponent();
             Program.conversionConfigHandler.attach(this);
-            betterFolderBrowser.Multiselect = true;
-            tbOutputPath.Text = Program.globalConfigHandler.config.defaultOpenPath;
-            cbConfig.SelectedIndex = 0;
         }
 
         private void CustomPathForm_Load(object sender, EventArgs e)
         {
             tbPaths.Text = string.Empty;
+            rbAuto.Checked = true;
+            betterFolderBrowser.Multiselect = true;
+            tbOutputPath.Text = Program.globalConfigHandler.config.defaultOpenPath;
+            cbConfig.SelectedIndex = 0;
         }
 
         public void clearInfos()
@@ -52,17 +54,17 @@ namespace AirdPro.Forms
 
         private bool addToList()
         {
-            string expType = null;
+            string airdType = null;
             for (int i = 0; i < gBoxMode.Controls.Count; i++)
             {
                 var cb = gBoxMode.Controls[i] as RadioButton;
                 if (cb.Checked)
                 {
-                    expType = cb.Text;
+                    airdType = cb.Text;
                 }
             }
 
-            if (expType == null)
+            if (airdType == null)
             {
                 MessageBox.Show(MessageInfo.Choose_One_Acquisition_Mode_First);
                 return false;
@@ -99,20 +101,20 @@ namespace AirdPro.Forms
                 if (config.autoExplorer)
                 {
                     List<ConversionConfig> configList = config.buildExplorerConfigs(
-                        expType.Equals(AirdType.DDA_PASEF)
-                        || expType.Equals(AirdType.DIA_PASEF)
-                        || expType.Equals(AirdType.PRM_PASEF));
+                        airdType.Equals(AirdType.DDA_PASEF)
+                        || airdType.Equals(AirdType.DIA_PASEF)
+                        || airdType.Equals(AirdType.PRM_PASEF) || airdType.Equals(JobInfo.AutoType));
                     //如果是探索模式,则会额外增加一个以文件名称命名的文件夹的名称用于存储该文件的所有内核压缩模式
                     string fileName = FileNameUtil.parseFileName(path).Replace("-", "_");
                     string newOutputPath = Path.Combine(outputPath, fileName);
                     for (var i = 0; i < configList.Count; i++)
                     {
-                        Program.conversionForm.addFile(path, newOutputPath, expType, configList[i]);
+                        Program.conversionForm.addFile(path, newOutputPath, airdType, configList[i]);
                     }
                 }
                 else
                 {
-                    Program.conversionForm.addFile(path, outputPath, expType, (ConversionConfig) config.Clone());
+                    Program.conversionForm.addFile(path, outputPath, airdType, (ConversionConfig) config.Clone());
                 }
             }
 

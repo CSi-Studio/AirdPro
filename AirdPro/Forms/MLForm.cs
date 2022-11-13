@@ -249,9 +249,18 @@ namespace AirdPro.Repository
             {
                 searchProjectsTable.Clear();
                 for (var i = 0; i < projectsTable.Rows.Count; i++)
+                {
                     foreach (var obj in projectsTable.Rows[i].ItemArray)
+                    {
                         if (obj.ToString().ToLower().Contains(tbSearch.Text.ToLower()))
+                        {
                             searchProjectsTable.ImportRow(projectsTable.Rows[i]);
+                            break;
+                        }
+                    }
+                        
+                }
+                   
 
                 setDataSource(searchProjectsTable);
             }

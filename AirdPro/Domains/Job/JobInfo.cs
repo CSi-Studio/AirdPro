@@ -14,16 +14,19 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
-using System.Windows.Forms;
+using System.Web.UI.WebControls;
 using AirdPro.Constants;
 using AirdPro.Storage.Config;
 using AirdSDK.Enums;
 using ThermoFisher.CommonCore.Data;
+using ListViewItem = System.Windows.Forms.ListViewItem;
 
 namespace AirdPro.Domains
 {
     public class JobInfo
     {
+        public static string AutoType = "Auto";
+
         //以C:/data/plasma.wiff为例
 
         //C:/data/plasma.wiff,作为job的ID存在
