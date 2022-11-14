@@ -356,5 +356,16 @@ namespace AirdPro.Utils
 
             return result;
         }
+
+        public static float parseInjectionTime(Scan scan)
+        {
+            CVParam cv = scan.cvParamChild(CVID.MS_ion_injection_time);
+            if (cv != null)
+            {
+                return (float)cv.value;
+            }
+
+            return -1;
+        }
     }
 }

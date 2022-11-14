@@ -30,6 +30,7 @@ using Combination = AirdPro.Domains.Combination;
 using Software = pwiz.CLI.msdata.Software;
 using AirdSDK.Enums;
 using System.Threading.Tasks;
+using System.Windows.Interop;
 
 namespace AirdPro.Converters
 {
@@ -92,6 +93,9 @@ namespace AirdPro.Converters
                             break;
                         case AirdType.DDA:
                             ConverterWorkFlow.DDA(this);
+                            break;
+                        case AirdType.PRM:
+                            ConverterWorkFlow.PRM(this);
                             break;
                         case AirdType.DDA_PASEF:
                             jobInfo.ionMobility = true;
@@ -186,6 +190,7 @@ namespace AirdPro.Converters
         {
             if (!jobInfo.type.Equals(JobInfo.AutoType))
             {
+                jobInfo.setType(jobInfo.type);
                 return;
             }
 
@@ -216,7 +221,6 @@ namespace AirdPro.Converters
 
             bool isDDA = true;
             bool isDIA = false;
-            bool isPRM = false;
 
             foreach (Spectrum spectrum in predictSpecList)
             {
@@ -502,6 +506,7 @@ namespace AirdPro.Converters
             ms1.tic = CVUtil.parseTIC(spectrum);
             ms1.basePeakIntensity = CVUtil.parseBasePeakIntensity(spectrum);
             ms1.basePeakMz = CVUtil.parseBasePeakMz(spectrum);
+            ms1.injectionTime = CVUtil.parseInjectionTime(scan);
             if (mobiInfo.unit != null && mobiInfo.type != null)
             {
                 CVUtil.parseMobility(scan, mobiInfo);
@@ -578,7 +583,7 @@ namespace AirdPro.Converters
             ms2.tic = CVUtil.parseTIC(spectrum);
             ms2.basePeakIntensity = CVUtil.parseBasePeakIntensity(spectrum);
             ms2.basePeakMz = CVUtil.parseBasePeakMz(spectrum);
-            
+            ms2.injectionTime = CVUtil.parseInjectionTime(scan);
             return ms2;
         }
 

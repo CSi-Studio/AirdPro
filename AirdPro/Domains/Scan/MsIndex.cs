@@ -30,6 +30,9 @@ namespace AirdPro.Domains
         //base peak mz
         public double basePeakMz;
 
+        //injection time
+        public float injectionTime;
+
         //对应的ms1的序号
         public int pNum;
 
