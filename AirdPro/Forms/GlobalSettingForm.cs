@@ -10,6 +10,7 @@
 
 using System;
 using System.Windows.Forms;
+using AirdPro.Properties;
 using AirdPro.Storage.Config;
 
 namespace AirdPro.Forms
@@ -19,39 +20,26 @@ namespace AirdPro.Forms
         public GlobalSettingForm()
         {
             InitializeComponent();
-            updateWithConfig(Program.globalConfigHandler.config);
-        }
-
-        private void updateWithConfig(GlobalConfig config)
-        {
-            this.tbLastOpenPath.Text = config.defaultOpenPath;
-            this.tbRedisHost.Text = config.redisHost;
-            this.tbRedisPort.Text = config.redisPort;
-            this.numMaxTasks.Value = config.maxTasks;
-        }
-
-        private void btnConfigChooseFolder_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            if (fbd.ShowDialog(this) == DialogResult.OK)
-            {
-                tbLastOpenPath.Text = fbd.SelectedPath;
-            }
-        }
-
-        private void GlobalSettingForm_Load(object sender, EventArgs e)
-        {
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            Program.globalConfigHandler.saveConfig(
-                new GlobalConfig(
-                    tbLastOpenPath.Text,
-                    tbRedisHost.Text,
-                    tbRedisPort.Text,
-                    (int) numMaxTasks.Value));
+            Settings.Default.MaxTasks = (int)numMaxTasks.Value;
+            Settings.Default.RedisHost = tbRedisHost.Text;
+            Settings.Default.RedisPort = tbRedisPort.Text;
+            Settings.Default.RedisUsername = tbRedisUsername.Text;
+            Settings.Default.RedisPassword = tbRedisPassword.Text;
+            Settings.Default.Save();
             this.Hide();
+        }
+
+        private void GlobalSettingForm_Load(object sender, EventArgs e)
+        {
+            numMaxTasks.Text = Settings.Default.MaxTasks.ToString();
+            tbRedisHost.Text = Settings.Default.RedisHost;
+            tbRedisPort.Text = Settings.Default.RedisPort;
+            tbRedisUsername.Text = Settings.Default.RedisUsername;
+            tbRedisPassword.Text = Settings.Default.RedisPassword;
         }
     }
 }

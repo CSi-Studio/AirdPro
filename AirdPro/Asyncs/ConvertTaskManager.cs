@@ -17,6 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AirdPro.Algorithms;
 using AirdPro.Domains;
+using AirdPro.Properties;
 using AirdSDK.Compressor;
 using AirdSDK.Enums;
 using static AirdPro.Constants.ProcessingStatus;
@@ -39,7 +40,7 @@ namespace AirdPro.Asyncs
 
         public ConvertTaskManager()
         {
-            fac = new(new LimitedConcurrencyLevelTaskScheduler(Program.globalConfigHandler.config.maxTasks));
+            fac = new(new LimitedConcurrencyLevelTaskScheduler(Settings.Default.MaxTasks));
         }
 
         public static ConvertTaskManager getInstance()

@@ -142,11 +142,11 @@ namespace AirdPro.Forms
             // 
             this.btnFileSelector.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnFileSelector.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnFileSelector.Location = new System.Drawing.Point(683, 206);
+            this.btnFileSelector.Location = new System.Drawing.Point(555, 255);
             this.btnFileSelector.Name = "btnFileSelector";
-            this.btnFileSelector.Size = new System.Drawing.Size(173, 39);
+            this.btnFileSelector.Size = new System.Drawing.Size(250, 39);
             this.btnFileSelector.TabIndex = 4;
-            this.btnFileSelector.Text = "Select Files(.wiff, .raw)";
+            this.btnFileSelector.Text = "Select Files(.wiff, .raw, mzML, mzXML)";
             this.btnFileSelector.UseVisualStyleBackColor = true;
             this.btnFileSelector.Click += new System.EventHandler(this.btnFileSelector_Click);
             // 
@@ -172,9 +172,9 @@ namespace AirdPro.Forms
             // 
             this.btnFolderSelector.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnFolderSelector.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnFolderSelector.Location = new System.Drawing.Point(505, 206);
+            this.btnFolderSelector.Location = new System.Drawing.Point(555, 210);
             this.btnFolderSelector.Name = "btnFolderSelector";
-            this.btnFolderSelector.Size = new System.Drawing.Size(172, 39);
+            this.btnFolderSelector.Size = new System.Drawing.Size(250, 39);
             this.btnFolderSelector.TabIndex = 5;
             this.btnFolderSelector.Text = "Select Folders(.d)";
             this.btnFolderSelector.UseVisualStyleBackColor = true;

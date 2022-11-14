@@ -17,6 +17,7 @@ using System.Collections;
 using System.Drawing;
 using System.Windows.Forms;
 using AirdPro.Domains;
+using AirdPro.Properties;
 using AirdPro.Storage.Config;
 using ThermoFisher.CommonCore.Data;
 
@@ -221,6 +222,8 @@ namespace AirdPro.Forms
                 {
                     MessageBox.Show(Constants.Tag.Only_Finished_Job_Can_Rerun);
                 }
+
+                ConvertTaskManager.getInstance().run();
             }
         }
 
@@ -243,7 +246,7 @@ namespace AirdPro.Forms
 
         public void connectToRedis()
         {
-            string connectLink = Program.globalConfigHandler.getRedisConnectStr();
+            string connectLink = Settings.Default.RedisHost + ":" + Settings.Default.RedisPort;
             if (connectLink.IsNullOrEmpty())
             {
                 redisConsumer.Enabled = false;

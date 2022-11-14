@@ -70,7 +70,7 @@ namespace AirdPro.Forms
 
             if (fbd.ShowDialog(this) == DialogResult.OK)
             {
-                Settings.Default.repository = fbd.SelectedPath;
+                Settings.Default.Repository = fbd.SelectedPath;
                 Settings.Default.Save();
                 fileTree.Nodes.Clear();
                 addDirectory(null, fbd.SelectedPath, 5);
@@ -140,11 +140,11 @@ namespace AirdPro.Forms
         //完整更新整个FileTree
         private void updateFileTree() 
         {
-            if (!String.IsNullOrEmpty(Settings.Default.repository))
+            if (!String.IsNullOrEmpty(Settings.Default.Repository))
             {
-                addDirectory(null, Settings.Default.repository, 5);
+                addDirectory(null, Settings.Default.Repository, 5);
             }
-            if(fileTree.Nodes.Count > 0)
+            if (fileTree.Nodes.Count > 0)
             {
                 fileTree.TopNode.Expand();
             }
@@ -168,7 +168,6 @@ namespace AirdPro.Forms
                     }
                 }
             }
-            
         }
 
         private void fileTree_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)

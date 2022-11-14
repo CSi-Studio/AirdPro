@@ -16,6 +16,7 @@ using AirdPro.Storage;
 using System.Collections.Generic;
 using System.IO;
 using AirdPro.Domains;
+using AirdPro.Properties;
 using AirdPro.Storage.Config;
 using AirdPro.Utils;
 using AirdSDK.Enums;
@@ -35,7 +36,7 @@ namespace AirdPro.Forms
             tbPaths.Text = string.Empty;
             rbAuto.Checked = true;
             betterFolderBrowser.Multiselect = true;
-            tbOutputPath.Text = Program.globalConfigHandler.config.defaultOpenPath;
+            tbOutputPath.Text = Settings.Default.LastOutputPath;
             cbConfig.SelectedIndex = 0;
         }
 
@@ -154,7 +155,7 @@ namespace AirdPro.Forms
 
         private void btnFolderSelector_Click(object sender, EventArgs e)
         {
-            betterFolderBrowser.RootFolder = Program.globalConfigHandler.config.defaultOpenPath;
+            betterFolderBrowser.RootFolder = Settings.Default.LastOpenPath;
             if (betterFolderBrowser.ShowDialog(this) == DialogResult.OK)
             {
                 foreach (var filePath in betterFolderBrowser.SelectedPaths)
@@ -186,6 +187,8 @@ namespace AirdPro.Forms
             fbd.SelectedPath = tbOutputPath.Text;
             if (fbd.ShowDialog(this) == DialogResult.OK)
             {
+                Settings.Default.LastOutputPath = fbd.SelectedPath;
+                Settings.Default.Save();
                 tbOutputPath.Text = fbd.SelectedPath;
             }
         }

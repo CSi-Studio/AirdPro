@@ -19,7 +19,6 @@ namespace AirdPro
     {
         public static MainForm mainForm { get; private set; }
         public static ConversionForm conversionForm { get; private set; }
-        public static GlobalConfigHandler globalConfigHandler { get; private set; }
         public static ConversionConfigHandler conversionConfigHandler { get; private set; }
 
         /// <summary>
@@ -33,7 +32,6 @@ namespace AirdPro
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 conversionForm = new ConversionForm();
-                globalConfigHandler = new GlobalConfigHandler();
                 conversionConfigHandler = new ConversionConfigHandler();
                 mainForm = new MainForm();
                 Application.Run(mainForm);

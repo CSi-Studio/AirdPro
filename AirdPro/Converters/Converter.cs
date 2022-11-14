@@ -487,18 +487,35 @@ namespace AirdPro.Converters
             MsIndex ms1 = new MsIndex();
             ms1.level = 1;
             ms1.num = index;
-            if (spectrum.scanList.scans.Count != 1) return ms1;
+            if (spectrum.scanList.scans.Count != 1)
+            {
+                return ms1;
+            }
             Scan scan = spectrum.scanList.scans[0];
             ms1.cvList = CVUtil.trans(spectrum.cvParams);
-            if (scan.cvParams != null) ms1.cvList.AddRange(CVUtil.trans(scan.cvParams));
+            if (scan.cvParams != null)
+            {
+                ms1.cvList.AddRange(CVUtil.trans(scan.cvParams));
+            }
 
             ms1.rt = CVUtil.parseRT(scan, jobInfo);
             ms1.tic = CVUtil.parseTIC(spectrum);
             ms1.basePeakIntensity = CVUtil.parseBasePeakIntensity(spectrum);
             ms1.basePeakMz = CVUtil.parseBasePeakMz(spectrum);
-            if (mobiInfo.unit != null && mobiInfo.type != null) CVUtil.parseMobility(scan, mobiInfo);
-            if (msType == null) CVUtil.parseMsType(spectrum);
-            if (polarity == null) CVUtil.parsePolarity(spectrum);
+            if (mobiInfo.unit != null && mobiInfo.type != null)
+            {
+                CVUtil.parseMobility(scan, mobiInfo);
+            }
+
+            if (msType == null)
+            {
+                msType = CVUtil.parseMsType(spectrum);
+            }
+
+            if (polarity == null)
+            {
+                polarity = CVUtil.parsePolarity(spectrum);
+            }
 
             return ms1;
         }
@@ -537,11 +554,20 @@ namespace AirdPro.Converters
 
             if (spectrum.scanList.scans.Count != 1) return ms2;
 
-            if (activator != null)
+            if (activator == null)
             {
                 var result = CVUtil.parseActivator(spectrum.precursors[0].activation);
                 activator = result.activator;
                 energy = result.energy;
+            }
+            if (msType == null)
+            {
+                msType = CVUtil.parseMsType(spectrum);
+            }
+
+            if (polarity == null)
+            {
+                polarity = CVUtil.parsePolarity(spectrum);
             }
 
             Scan scan = spectrum.scanList.scans[0];
@@ -552,6 +578,7 @@ namespace AirdPro.Converters
             ms2.tic = CVUtil.parseTIC(spectrum);
             ms2.basePeakIntensity = CVUtil.parseBasePeakIntensity(spectrum);
             ms2.basePeakMz = CVUtil.parseBasePeakMz(spectrum);
+            
             return ms2;
         }
 

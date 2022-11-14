@@ -26,12 +26,12 @@ namespace AirdPro.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string repository {
+        public string Repository {
             get {
-                return ((string)(this["repository"]));
+                return ((string)(this["Repository"]));
             }
             set {
-                this["repository"] = value;
+                this["Repository"] = value;
             }
         }
         
@@ -68,6 +68,90 @@ namespace AirdPro.Properties {
             }
             set {
                 this["PXReposFolder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastOutputPath {
+            get {
+                return ((string)(this["LastOutputPath"]));
+            }
+            set {
+                this["LastOutputPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastOpenPath {
+            get {
+                return ((string)(this["LastOpenPath"]));
+            }
+            set {
+                this["LastOpenPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
+        public string RedisHost {
+            get {
+                return ((string)(this["RedisHost"]));
+            }
+            set {
+                this["RedisHost"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6379")]
+        public string RedisPort {
+            get {
+                return ((string)(this["RedisPort"]));
+            }
+            set {
+                this["RedisPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string RedisUsername {
+            get {
+                return ((string)(this["RedisUsername"]));
+            }
+            set {
+                this["RedisUsername"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string RedisPassword {
+            get {
+                return ((string)(this["RedisPassword"]));
+            }
+            set {
+                this["RedisPassword"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int MaxTasks {
+            get {
+                return ((int)(this["MaxTasks"]));
+            }
+            set {
+                this["MaxTasks"] = value;
             }
         }
     }

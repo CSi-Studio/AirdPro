@@ -240,7 +240,6 @@
     <Compile Include="Domains\Repository\ProteomeXchange\Node.cs" />
     <Compile Include="Domains\Repository\ProteomeXchange\RootProject.cs" />
     <Compile Include="Domains\Repository\ProteomeXchange\TermNode.cs" />
-    <Compile Include="Storage\Config\GlobalConfig.cs" />
     <Compile Include="Domains\Job\JobInfo.cs" />
     <Compile Include="Storage\Config\ConversionConfig.cs" />
     <Compile Include="Domains\Job\RemoteConvertJob.cs" />
@@ -275,7 +274,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\Handler\ConversionConfigHandler.cs" />
-    <Compile Include="Storage\Handler\GlobalConfigHandler.cs" />
     <Compile Include="Storage\Observer.cs" />
     <Compile Include="Storage\Subject.cs" />
     <Compile Include="Utils\CVUtil.cs" />
