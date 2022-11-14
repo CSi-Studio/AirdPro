@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <item>
 	<!-- 格式为X.X.X.X的版本标记 -->
-	<version>4.0.1.0</version>
+	<version>4.0.1.2</version>
 	<!-- 必填, 最新版本安装程序文件的url -->
-	<url>https://github.com/CSi-Studio/AirdPro/releases/download/4.0/AirdPro4.0.1.0.zip</url>
+	<url>https://github.com/CSi-Studio/AirdPro/releases/download/4.0.X/AirdPro4.0.1.2.zip</url>
 	<!-- 可选,程序更改日志的url -->
 	<changelog>https://airdpro.oss-cn-hangzhou.aliyuncs.com/ReleaseLog.txt</changelog>
 	<!-- 可选,强制更新，将跳过信息和稍后更新按钮隐藏 -->
