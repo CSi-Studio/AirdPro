@@ -898,12 +898,16 @@ namespace AirdPro.Converters
                 int index = rn.Next(0, totalSize);
                 logIndexes.Add(index);
                 List<int[]> dataList = fetchSpectrum(index, ionMobi);
-                mzArrays.Add(dataList[0]);
-                intensityArrays.Add(dataList[1]);
-                if (ionMobi)
+                if (dataList[0].Length > 0)
                 {
-                    mobiNoArrays.Add(dataList[2]);
+                    mzArrays.Add(dataList[0]);
+                    intensityArrays.Add(dataList[1]);
+                    if (ionMobi)
+                    {
+                        mobiNoArrays.Add(dataList[2]);
+                    }
                 }
+                
             }
 
             return compressForTargetArrays(mzArrays, intensityArrays, mobiNoArrays, ionMobi);

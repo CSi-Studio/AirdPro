@@ -17,10 +17,10 @@ namespace AirdPro.Constants
 
         public static string VERSION = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         public static string CLIENT_VERSION_DESCRIPTION = "1. New GUI: Aird Files Preview;\r\n" +
-                                                          "2. New GUI: XIC, Spectrum Quick look;"+
-                                                          "3. New Func: Remote Repository Async Tool;"
-                                                          
-                                                          ;
+                                                          "2. New GUI: XIC, Spectrum Quick look;\r\n" +
+                                                          "3. New Func: Remote Repository Async Tool;\r\n" +
+                                                          "4. New Func: Support Conversion for mzML and mzXML;\r\n"
+            ;
 
         public static string NAME = "AirdPro";
 

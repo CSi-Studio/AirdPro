@@ -23,11 +23,13 @@ namespace AirdPro.Repository
         private void btnPX_Click(object sender, EventArgs e)
         {
             new PXForm().Show();
+            this.Close();
         }
 
         private void btnML_Click(object sender, EventArgs e)
         {
             new MLForm().Show();
+            this.Close();
         }
     }
 }
