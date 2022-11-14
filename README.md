@@ -5,9 +5,12 @@ AirdPro is an GUI client for conversion from vendor file to Aird file. AirdPro i
 AirdPro is opensource under the MulanPSL2 license
 
 ## Version Description
-### V4.X
+### V4.0.X
 - [New Feature] XIC, Spectrum View for Aird
 - [New Feature] Remote Repository Async Tool for ProteomeXchange and MetaboLights
+- [New Feature] Support for mzML and mzXML conversion
+- [New Feature] Auto Acquisition Method Detect
+- [New Feature] Auto Client Update Checking for AirdPro
 
 ### V3.0.0
 - [New Feature] New Compressors Strategy: Combinable Compressors for m/z, intensity and mobility
