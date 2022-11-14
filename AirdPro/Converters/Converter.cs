@@ -67,7 +67,7 @@ namespace AirdPro.Converters
         protected int mobiPrecision = 10000000; //mobility默认精确到小数点后7位
 
         protected int spectraNumForIntensityPrecisionPredict = 5;
-        protected int spectraNumForComboCompPredict = 300;
+        protected int spectraNumForComboCompPredict = 100;
 
         public Converter(JobInfo jobInfo)
         {
@@ -93,9 +93,6 @@ namespace AirdPro.Converters
                         case AirdType.DDA:
                             ConverterWorkFlow.DDA(this);
                             break;
-                        // case AirdType.PRM:
-                        //     ConverterWorkFlow.PRM(this);
-                        //     break;
                         case AirdType.DDA_PASEF:
                             jobInfo.ionMobility = true;
                             ConverterWorkFlow.DDAPasef(this);
@@ -432,6 +429,14 @@ namespace AirdPro.Converters
                 case FileFormat.RAW:
                     FileInfo raw = new FileInfo(jobInfo.inputPath);
                     if (raw.Exists) fileSize += raw.Length;
+                    break;
+                case FileFormat.mzML:
+                    FileInfo mzML = new FileInfo(jobInfo.inputPath);
+                    if (mzML.Exists) fileSize += mzML.Length;
+                    break;
+                case FileFormat.mzXML:
+                    FileInfo mzXML = new FileInfo(jobInfo.inputPath);
+                    if (mzXML.Exists) fileSize += mzXML.Length;
                     break;
                 default:
                     FileInfo file = new FileInfo(jobInfo.inputPath);
