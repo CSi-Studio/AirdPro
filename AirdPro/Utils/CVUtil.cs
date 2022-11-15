@@ -41,7 +41,8 @@ namespace AirdPro.Utils
             CVID.MS_ETD,
             CVID.MS_collision_energy,
             CVID.MS_base_peak_intensity,
-            CVID.MS_base_peak_m_z
+            CVID.MS_base_peak_m_z,
+            CVID.MS_ion_injection_time
         };
 
         public static List<CV> trans(CVParamList paramList)
@@ -109,14 +110,12 @@ namespace AirdPro.Utils
             if (scan.hasCVParamChild(CVID.MS_inverse_reduced_ion_mobility))
             {
                 CVParam cv = scan.cvParamChild(CVID.MS_inverse_reduced_ion_mobility);
-                // mobility = float.Parse(cv.value.ToString());
                 mobiInfo.unit = cv.unitsName;
                 mobiInfo.type = MobilityType.TIMS;
             }
             else if (scan.hasCVParamChild(CVID.MS_ion_mobility_drift_time))
             {
                 CVParam cv = scan.cvParamChild(CVID.MS_ion_mobility_drift_time);
-                // mobility = float.Parse(cv.value.ToString());
                 mobiInfo.unit = cv.unitsName;
                 mobiInfo.type = MobilityType.DTIMS;
             }
