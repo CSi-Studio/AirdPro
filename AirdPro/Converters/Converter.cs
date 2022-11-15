@@ -30,6 +30,8 @@ using Combination = AirdPro.Domains.Combination;
 using Software = pwiz.CLI.msdata.Software;
 using AirdSDK.Enums;
 using System.Threading.Tasks;
+using CSharpFastPFOR;
+using CSharpFastPFOR.Differential;
 
 namespace AirdPro.Converters
 {
@@ -506,7 +508,7 @@ namespace AirdPro.Converters
             ms1.basePeakIntensity = CVUtil.parseBasePeakIntensity(spectrum);
             ms1.basePeakMz = CVUtil.parseBasePeakMz(spectrum);
             ms1.injectionTime = CVUtil.parseInjectionTime(scan);
-            if (mobiInfo.unit != null && mobiInfo.type != null)
+            if (mobiInfo.unit == null || mobiInfo.type == null)
             {
                 CVUtil.parseMobility(scan, mobiInfo);
             }
@@ -575,7 +577,10 @@ namespace AirdPro.Converters
             }
 
             Scan scan = spectrum.scanList.scans[0];
-
+            if (mobiInfo.unit == null || mobiInfo.type == null)
+            {
+                CVUtil.parseMobility(scan, mobiInfo);
+            }
             ms2.cvList = CVUtil.trans(spectrum.cvParams);
             if (scan.cvParams != null) ms2.cvList.AddRange(CVUtil.trans(scan.cvParams));
             ms2.rt = CVUtil.parseRT(scan, jobInfo);
@@ -619,7 +624,7 @@ namespace AirdPro.Converters
             }
 
             byte[] compressedMobiData =
-                new ZstdWrapper().encode(ByteTrans.intToByte(new DeltaWrapper().encode(mobiIntArray)));
+                new ZstdWrapper().encode(ByteTrans.intToByte(new IntegratedVarByteWrapper().encode(mobiIntArray)));
             mobiInfo.dictStart = startPosition;
             startPosition += compressedMobiData.Length;
             airdStream.Write(compressedMobiData, 0, compressedMobiData.Length);

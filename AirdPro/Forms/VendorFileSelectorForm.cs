@@ -148,7 +148,9 @@ namespace AirdPro.Forms
                 foreach (var filePath in openFileDialog.FileNames)
                 {
                     tbPaths.Text = tbPaths.Text + filePath + Const.Change_Line;
+                    Settings.Default.LastOpenPath = filePath;
                 }
+                Settings.Default.Save();
             }
         }
 
@@ -161,7 +163,9 @@ namespace AirdPro.Forms
                 foreach (var filePath in betterFolderBrowser.SelectedPaths)
                 {
                     tbPaths.Text = tbPaths.Text + filePath + Const.Change_Line;
+                    Settings.Default.LastOpenPath = filePath;
                 }
+                Settings.Default.Save();
             }
         }
 
