@@ -290,15 +290,31 @@ namespace AirdPro.Forms
         private void spectraDataGrids_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             SpectrumRow row = spectraDataGrids.SelectedRows[0].DataBoundItem as SpectrumRow;
-            if (airdInfo.type.Equals(AirdType.DDA))
+            BaseParser parser = null;
+            switch (airdInfo.type)
             {
-                DDAParser parser = new DDAParser(indexFile.FullName, airdInfo);
-                Spectrum spectrum = parser.getSpectrumByNum(row.Scan);
-                spectrumChart.Series[0].Points.Clear();
-                for (var i = 0; i < spectrum.mzs.Length; i++)
-                {
-                    spectrumChart.Series[0].Points.AddXY(Math.Round(spectrum.mzs[i], 3), Math.Round(spectrum.ints[i], 1));
-                }
+                case AirdType.DDA: 
+                    parser = new DDAParser(indexFile.FullName, airdInfo);
+                    break;
+                case AirdType.DIA:
+                    parser = new DIAParser(indexFile.FullName, airdInfo);
+                    break;
+                case AirdType.PRM:
+                    parser = new PRMParser(indexFile.FullName, airdInfo);
+                    break;
+                case AirdType.DDA_PASEF:
+                    parser = new DDAParser(indexFile.FullName, airdInfo);
+                    break;
+                case AirdType.DIA_PASEF:
+                    parser = new DIAParser(indexFile.FullName, airdInfo);
+                    break;
+            }
+
+            Spectrum spectrum = parser.getSpectrumByNum(row.Scan);
+            spectrumChart.Series[0].Points.Clear();
+            for (var i = 0; i < spectrum.mzs.Length; i++)
+            {
+                spectrumChart.Series[0].Points.AddXY(Math.Round(spectrum.mzs[i], 3), Math.Round(spectrum.ints[i], 1));
             }
         }
 

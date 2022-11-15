@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows.Forms;
 using AirdPro.Domains;
 using AirdSDK.Compressor;
 
@@ -77,9 +78,11 @@ namespace AirdPro.Utils
             for (int i = 0; i < encodeList.Count; i++)
             {
                 int[] mz = ComboComp.decode(intComp, byteComp, encodeList[i]);
-                if (mz.Length != arrays[i].Length)
+
+                //测试总长度和首位数据是否一致
+                if (mz.Length != arrays[i].Length || mz[0] != arrays[i][0] || mz[mz.Length-1] != arrays[i][mz.Length - 1])
                 {
-                    Console.WriteLine("Encoding Error");
+                    MessageBox.Show("数据不一致: Encoding Error");
                 }
             }
 

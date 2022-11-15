@@ -30,7 +30,6 @@ using Combination = AirdPro.Domains.Combination;
 using Software = pwiz.CLI.msdata.Software;
 using AirdSDK.Enums;
 using System.Threading.Tasks;
-using System.Windows.Interop;
 
 namespace AirdPro.Converters
 {
@@ -1277,7 +1276,7 @@ namespace AirdPro.Converters
         {
             int parentNum = 0;
             jobInfo.log(Status.tag_preprocessing + totalSize, Status.Preprocessing);
-            Parallel.For(0, totalSize, (i, ParallelLoopState) =>
+            for (int i = 0; i < totalSize; i++)
             {
                 jobInfo.log(null, Tag.progress(Tag.Empty, (i + 1), totalSize));
                 Spectrum spectrum = spectrumList.spectrum(i);
@@ -1288,8 +1287,7 @@ namespace AirdPro.Converters
                     //如果是MS1谱图,那么直接跳过
                     if (msLevel.Equals(MsLevel.MS1))
                     {
-                        ParallelLoopState.Break();
-                        return;
+                        continue;
                     }
 
                     //如果是MS2谱图,加入到谱图组
@@ -1297,8 +1295,7 @@ namespace AirdPro.Converters
                     {
                         MsIndex ms2Index = parseMS2(spectrumList.spectrum(i), i, parentNum);
                         addToMS2Map(ms2Index.precursorMz, ms2Index);
-                        ParallelLoopState.Break();
-                        return;
+                        continue;
                     }
                 }
 
@@ -1310,8 +1307,7 @@ namespace AirdPro.Converters
                     //如果下一个谱图仍然是MS1, 那么直接忽略这个谱图
                     if (msLevelNext.Equals(MsLevel.MS1))
                     {
-                        ParallelLoopState.Break();
-                        return;
+                        continue;
                     }
 
                     if (msLevelNext.Equals(MsLevel.MS2))
@@ -1326,7 +1322,7 @@ namespace AirdPro.Converters
                     MsIndex ms2Index = parseMS2(spectrumList.spectrum(i), i, parentNum);
                     addToMS2Map(ms2Index.precursorMz, ms2Index); //如果这个谱图是MS2
                 }
-            });
+            }
 
             jobInfo.log("Effective MS1 List Size:" + ms1List.Count);
             jobInfo.log("MS2 Group List Size:" + ms2Table.Count);
