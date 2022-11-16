@@ -387,9 +387,6 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AirdSDK">
-      <Version>2.1.2</Version>
-    </PackageReference>
     <PackageReference Include="Autoupdater.NET.Official">
       <Version>1.7.6</Version>
     </PackageReference>
@@ -435,6 +432,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Test\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Aird-SDK\CSharpSDK\AirdSDK.csproj">
+      <Project>{baff498c-afd0-48aa-b859-c421824d0311}</Project>
+      <Name>AirdSDK</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

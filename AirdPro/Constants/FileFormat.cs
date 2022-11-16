@@ -14,7 +14,7 @@ namespace AirdPro.Constants
     {
         public const string WIFF = "WIFF";
         public const string RAW = "RAW";
-        public const string D = ".D";
+        public const string D = "D";
         public const string mzML = "mzML";
         public const string mzXML = "mzXML";
     }

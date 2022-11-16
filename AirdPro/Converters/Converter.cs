@@ -29,9 +29,6 @@ using ByteOrder = AirdPro.Constants.ByteOrder;
 using Combination = AirdPro.Domains.Combination;
 using Software = pwiz.CLI.msdata.Software;
 using AirdSDK.Enums;
-using System.Threading.Tasks;
-using CSharpFastPFOR;
-using CSharpFastPFOR.Differential;
 
 namespace AirdPro.Converters
 {
@@ -69,7 +66,7 @@ namespace AirdPro.Converters
         protected int mobiPrecision = 10000000; //mobility默认精确到小数点后7位
 
         protected int spectraNumForIntensityPrecisionPredict = 5;
-        protected int spectraNumForComboCompPredict = 100;
+        protected int spectraNumForComboCompPredict = 50;
 
         public Converter(JobInfo jobInfo)
         {
@@ -442,6 +439,10 @@ namespace AirdPro.Converters
                 case FileFormat.mzXML:
                     FileInfo mzXML = new FileInfo(jobInfo.inputPath);
                     if (mzXML.Exists) fileSize += mzXML.Length;
+                    break;
+                case FileFormat.D:
+                    long totalSize = FileUtil.getDirectorySize(jobInfo.inputPath);
+                    fileSize += totalSize;
                     break;
                 default:
                     FileInfo file = new FileInfo(jobInfo.inputPath);

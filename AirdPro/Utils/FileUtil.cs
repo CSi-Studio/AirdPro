@@ -8,6 +8,7 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using System;
 using System.IO;
 using System.Text;
 using Newtonsoft.Json;
@@ -63,6 +64,26 @@ namespace AirdPro.Utils
             var stream = new FileStream(outputFilePath, FileMode.Create);
             stream.Write(projectBytes, 0, projectBytes.Length);
             stream.Close();
+        }
+
+        public static long getDirectorySize(string directory)
+        {
+            long directorySize = 0;
+            DirectoryInfo di = new DirectoryInfo(directory);
+            if (!di.Exists)
+            {
+                return 0;
+            }
+            foreach (FileInfo fi in di.GetFiles())
+            {
+                directorySize += fi.Length;
+            }
+            DirectoryInfo[] dirs = di.GetDirectories();
+            foreach (DirectoryInfo sondir in dirs)
+            {
+                directorySize += getDirectorySize(sondir.FullName);
+            }
+            return directorySize;
         }
     }
 }
