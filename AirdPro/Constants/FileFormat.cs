@@ -17,5 +17,11 @@ namespace AirdPro.Constants
         public const string D = "D";
         public const string mzML = "mzML";
         public const string mzXML = "mzXML";
+
+        public const string DotD = ".D";
+        public const string DotWIFF = ".WIFF";
+        public const string DotRAW = ".RAW";
+        public const string DotmzML = ".mzML";
+        public const string DotmzXML = ".mzXML";
     }
 }

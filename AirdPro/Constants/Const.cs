@@ -17,5 +17,6 @@ namespace AirdPro.Constants
         public static string Dash = "_";
         public static string COMMA = ",";
         public static char Char_Dash = '_';
+        public static char DOT = '.';
     }
 }

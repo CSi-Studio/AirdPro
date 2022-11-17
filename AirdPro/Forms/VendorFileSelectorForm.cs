@@ -18,7 +18,6 @@ using System.IO;
 using AirdPro.Domains;
 using AirdPro.Properties;
 using AirdPro.Storage.Config;
-using AirdPro.Utils;
 using AirdSDK.Enums;
 using AirdSDK.Utils;
 
@@ -29,16 +28,30 @@ namespace AirdPro.Forms
         public VendorFileSelectorForm()
         {
             InitializeComponent();
-            Program.conversionConfigHandler.attach(this);
         }
 
-        private void CustomPathForm_Load(object sender, EventArgs e)
+        private void VendorFileSelectorForm_Load(object sender, EventArgs e)
         {
+            Program.conversionConfigHandler.attach(this);
             tbPaths.Text = string.Empty;
             rbAuto.Checked = true;
             betterFolderBrowser.Multiselect = true;
             tbOutputPath.Text = Settings.Default.LastOutputPath;
             cbConfig.SelectedIndex = 0;
+            renderFileListView();
+        }
+
+        public void renderFileListView()
+        {
+            string[] drives = Environment.GetLogicalDrives();
+            foreach (string drive in drives)
+            {
+                TreeNode node = new TreeNode();
+                node.Text = drive;
+                node.ImageIndex = 0;
+                node.Tag = drive;
+                tvFiles.Nodes.Add(node);
+            }
         }
 
         public void clearInfos()
@@ -202,5 +215,70 @@ namespace AirdPro.Forms
         {
             Program.conversionConfigHandler.detach(this);
         }
+
+        private void tvFiles_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            try
+            {
+                TreeNode selectedNode = e.Node;
+                if (selectedNode != null)
+                {
+                    string path = selectedNode.Tag.ToString();
+                    if (Directory.Exists(path) && !path.ToLower().EndsWith(FileFormat.DotD.ToLower()))
+                    {
+                        if (selectedNode.IsExpanded)
+                        {
+                            selectedNode.Collapse();
+                            return;
+                        }
+                        string[] subPaths = Directory.GetFiles(path);
+                        foreach (string subPath in subPaths)
+                        {
+                            string extension = Path.GetExtension(subPath);
+                            if (FileFormat.DotWIFF.ToLower().Equals(extension.ToLower())
+                                || FileFormat.DotRAW.ToLower().Equals(extension.ToLower())
+                                || FileFormat.DotmzML.ToLower().Equals(extension.ToLower())
+                                || FileFormat.DotmzXML.ToLower().Equals(extension.ToLower()))
+                            {
+                                TreeNode node = new TreeNode();
+                                node.Text = Path.GetFileName(subPath);
+                                node.Tag = subPath;
+                                node.SelectedImageIndex = 2;
+                                node.ImageIndex = 2;
+                                selectedNode.Nodes.Add(node);
+                            }
+                        }
+
+                        string[] subFolderPaths = Directory.GetDirectories(path);
+                        foreach (string subPath in subFolderPaths)
+                        {
+                            if (subPath.ToLower().EndsWith(FileFormat.DotD.ToLower()))
+                            {
+                                TreeNode node = new TreeNode();
+                                node.Text = Path.GetFileName(subPath);
+                                node.Tag = subPath;
+                                node.SelectedImageIndex = 2;
+                                node.ImageIndex = 2;
+                                selectedNode.Nodes.Add(node);
+                            }
+                            else
+                            {
+                                TreeNode node = new TreeNode();
+                                node.Text = Path.GetFileName(subPath);
+                                node.Tag = subPath;
+                                node.ImageIndex = 0;
+                                selectedNode.Nodes.Add(node);
+                            }
+                        }
+
+                        selectedNode.Expand();
+                    }
+                }
+            }
+            catch { }
+            
+        }
+
+       
     }
 }

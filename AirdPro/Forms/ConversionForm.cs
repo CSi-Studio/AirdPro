@@ -27,7 +27,7 @@ namespace AirdPro.Forms
     public partial class ConversionForm : Form
     {
         ArrayList jobIdList = new();
-        VendorFileSelectorForm fileSelector;
+        VendorFileSelectorForm fileSelector = new VendorFileSelectorForm();
         ConversionConfigListForm configListForm;
         GlobalSettingForm globalSettingForm;
 
@@ -297,7 +297,7 @@ namespace AirdPro.Forms
             {
                 fileSelector = new VendorFileSelectorForm();
             }
-
+            
             fileSelector.clearInfos();
             fileSelector.Show();
         }

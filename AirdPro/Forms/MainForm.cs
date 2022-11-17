@@ -372,7 +372,6 @@ namespace AirdPro.Forms
             {
                 e.Cancel = true;
                 this.ShowInTaskbar = false;
-                this.notifyIcon.Icon = this.Icon;
                 this.Hide();
             }
         }
