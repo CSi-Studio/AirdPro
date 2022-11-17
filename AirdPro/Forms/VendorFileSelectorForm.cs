@@ -50,8 +50,9 @@ namespace AirdPro.Forms
                 node.Text = drive;
                 node.ImageIndex = 0;
                 node.Tag = drive;
-                tvFiles.Nodes.Add(node);
             }
+
+
         }
 
         public void clearInfos()

@@ -54,6 +54,7 @@ namespace AirdPro.Forms
             this.label1 = new System.Windows.Forms.Label();
             this.imgList = new System.Windows.Forms.ImageList(this.components);
             this.tvFiles = new System.Windows.Forms.TreeView();
+            this.tvaFiles = new Aga.Controls.Tree.TreeViewAdv();
             this.gBoxMode.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -181,12 +182,12 @@ namespace AirdPro.Forms
             this.tbPaths.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbPaths.Location = new System.Drawing.Point(2, 482);
+            this.tbPaths.Location = new System.Drawing.Point(2, 351);
             this.tbPaths.Margin = new System.Windows.Forms.Padding(4);
             this.tbPaths.Multiline = true;
             this.tbPaths.Name = "tbPaths";
             this.tbPaths.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbPaths.Size = new System.Drawing.Size(705, 187);
+            this.tbPaths.Size = new System.Drawing.Size(680, 318);
             this.tbPaths.TabIndex = 0;
             // 
             // betterFolderBrowser
@@ -327,15 +328,31 @@ namespace AirdPro.Forms
             this.tvFiles.Location = new System.Drawing.Point(2, 8);
             this.tvFiles.Name = "tvFiles";
             this.tvFiles.SelectedImageIndex = 0;
-            this.tvFiles.Size = new System.Drawing.Size(695, 467);
+            this.tvFiles.Size = new System.Drawing.Size(680, 227);
             this.tvFiles.TabIndex = 124;
             this.tvFiles.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvFiles_NodeMouseClick);
+            // 
+            // tvaFiles
+            // 
+            this.tvaFiles.BackColor = System.Drawing.SystemColors.Window;
+            this.tvaFiles.DefaultToolTipProvider = null;
+            this.tvaFiles.DragDropMarkColor = System.Drawing.Color.Black;
+            this.tvaFiles.LineColor = System.Drawing.SystemColors.ControlDark;
+            this.tvaFiles.Location = new System.Drawing.Point(2, 242);
+            this.tvaFiles.Model = null;
+            this.tvaFiles.Name = "tvaFiles";
+            this.tvaFiles.SelectedNode = null;
+            this.tvaFiles.SelectionMode = Aga.Controls.Tree.TreeSelectionMode.Multi;
+            this.tvaFiles.Size = new System.Drawing.Size(667, 102);
+            this.tvaFiles.TabIndex = 125;
+            this.tvaFiles.Text = "treeViewAdv1";
             // 
             // VendorFileSelectorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1299, 675);
+            this.Controls.Add(this.tvaFiles);
             this.Controls.Add(this.tvFiles);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblConvertConfig);
@@ -388,5 +405,6 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ImageList imgList;
         private System.Windows.Forms.TreeView tvFiles;
+        private Aga.Controls.Tree.TreeViewAdv tvaFiles;
     }
 }
