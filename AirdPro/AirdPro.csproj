@@ -180,6 +180,12 @@
     <Compile Include="Forms\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FileSelectorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FileSelectorForm.Designer.cs">
+      <DependentUpon>FileSelectorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -288,6 +294,9 @@
     <EmbeddedResource Include="Forms\ConversionConfigListForm.resx">
       <DependentUpon>ConversionConfigListForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileSelectorForm.resx">
+      <DependentUpon>FileSelectorForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\GlobalSettingForm.resx">
       <DependentUpon>GlobalSettingForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -355,6 +364,8 @@
     <Content Include="Resources\Menu\DirectoryOpen32x32.png" />
     <Content Include="Resources\Menu\Help.png" />
     <Content Include="Resources\Menu\Repository.png" />
+    <Content Include="Resources\Menu\Spectrum.png" />
+    <Content Include="Resources\Menu\Spectrum16x16.png" />
     <Content Include="Resources\Pay\AliPay.jpg" />
     <Content Include="Resources\Menu\ConversionCenter.png" />
     <Content Include="Resources\Menu\AirdManager.png" />

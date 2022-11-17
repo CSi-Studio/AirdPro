@@ -29,6 +29,8 @@ using ByteOrder = AirdPro.Constants.ByteOrder;
 using Combination = AirdPro.Domains.Combination;
 using Software = pwiz.CLI.msdata.Software;
 using AirdSDK.Enums;
+using AirdSDK.Utils;
+using FileUtil = AirdPro.Utils.FileUtil;
 
 namespace AirdPro.Converters
 {

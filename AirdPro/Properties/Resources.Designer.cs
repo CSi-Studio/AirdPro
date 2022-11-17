@@ -323,6 +323,26 @@ namespace AirdPro.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap Spectrum {
+            get {
+                object obj = ResourceManager.GetObject("Spectrum", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Spectrum16x16 {
+            get {
+                object obj = ResourceManager.GetObject("Spectrum16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap Start {
             get {
                 object obj = ResourceManager.GetObject("Start", resourceCulture);

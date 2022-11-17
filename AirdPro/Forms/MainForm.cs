@@ -14,6 +14,7 @@ using CV = AirdSDK.Beans.CV;
 using AirdPro.Repository;
 using AirdPro.Constants;
 using AirdPro.Utils;
+using AirdSDK.Utils;
 using AutoUpdaterDotNET;
 
 namespace AirdPro.Forms
@@ -66,6 +67,8 @@ namespace AirdPro.Forms
 
         private void openRepositoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // FileSelectorForm form = new FileSelectorForm("", false);
+            // form.ShowDialog();
             FolderBrowserDialog fbd = new FolderBrowserDialog();
 
             if (fbd.ShowDialog(this) == DialogResult.OK)

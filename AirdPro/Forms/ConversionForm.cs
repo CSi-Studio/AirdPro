@@ -19,6 +19,7 @@ using System.Windows.Forms;
 using AirdPro.Domains;
 using AirdPro.Properties;
 using AirdPro.Storage.Config;
+using AirdSDK.Utils;
 using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Forms
