@@ -23,7 +23,7 @@ namespace AirdPro.Forms
     {
         private AboutForm aboutForm = new AboutForm();
         private GlobalSettingForm globalSettingForm;
-        private RepositoryGuiderForm repositoryGuiderForm;
+        private ReposWizardForm reposWizardForm;
         private HashSet<string> airdFiles = new HashSet<string>();
         private FileInfo airdFile;
         private FileInfo indexFile;
@@ -67,8 +67,6 @@ namespace AirdPro.Forms
 
         private void openRepositoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // FileSelectorForm form = new FileSelectorForm("", false);
-            // form.ShowDialog();
             FolderBrowserDialog fbd = new FolderBrowserDialog();
 
             if (fbd.ShowDialog(this) == DialogResult.OK)
@@ -355,17 +353,47 @@ namespace AirdPro.Forms
 
         private void repositoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (repositoryGuiderForm == null || repositoryGuiderForm.IsDisposed)
+            if (reposWizardForm == null || reposWizardForm.IsDisposed)
             {
-                repositoryGuiderForm = new RepositoryGuiderForm();
+                reposWizardForm = new ReposWizardForm();
             }
 
-            repositoryGuiderForm.Show();
+            reposWizardForm.Show();
         }
 
         private void updateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AutoUpdater.Start("https://airdpro.oss-cn-hangzhou.aliyuncs.com/Version.xml");
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                this.ShowInTaskbar = false;
+                this.notifyIcon.Icon = this.Icon;
+                this.Hide();
+            }
+        }
+
+        private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                notifyMenu.Show();
+            }
+
+            if (e.Button == MouseButtons.Left)
+            {
+                this.Visible = true;
+                this.WindowState = FormWindowState.Normal;
+            }
         }
     }
 }

@@ -180,12 +180,6 @@
     <Compile Include="Forms\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FileSelectorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FileSelectorForm.Designer.cs">
-      <DependentUpon>FileSelectorForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -211,11 +205,11 @@
     <Compile Include="Forms\DownloadDetailForm.designer.cs">
       <DependentUpon>DownloadDetailForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RepositoryGuiderForm.cs">
+    <Compile Include="Forms\ReposWizardForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\RepositoryGuiderForm.Designer.cs">
-      <DependentUpon>RepositoryGuiderForm.cs</DependentUpon>
+    <Compile Include="Forms\ReposWizardForm.Designer.cs">
+      <DependentUpon>ReposWizardForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\MLForm.cs">
       <SubType>Form</SubType>
@@ -294,9 +288,6 @@
     <EmbeddedResource Include="Forms\ConversionConfigListForm.resx">
       <DependentUpon>ConversionConfigListForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FileSelectorForm.resx">
-      <DependentUpon>FileSelectorForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\GlobalSettingForm.resx">
       <DependentUpon>GlobalSettingForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -321,8 +312,8 @@
     <EmbeddedResource Include="Forms\DownloadDetailForm.resx">
       <DependentUpon>DownloadDetailForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RepositoryGuiderForm.resx">
-      <DependentUpon>RepositoryGuiderForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ReposWizardForm.resx">
+      <DependentUpon>ReposWizardForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MLForm.resx">
       <DependentUpon>MLForm.cs</DependentUpon>

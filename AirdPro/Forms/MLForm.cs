@@ -176,7 +176,7 @@ namespace AirdPro.Repository
             lblResult.Text = table.Rows.Count + " Record(s)";
         }
 
-        private async void btnDetail_Click(object sender, EventArgs e)
+        private void btnDetail_Click(object sender, EventArgs e)
         {
             var repos = Settings.Default.MLReposFolder;
             if (repos.Equals(string.Empty) || !Directory.Exists(repos))
@@ -185,7 +185,6 @@ namespace AirdPro.Repository
                 return;
             }
 
-           
             if (projectListView.SelectedCells.Count > 0)
             {
                 var index = projectListView.SelectedCells[0].RowIndex;

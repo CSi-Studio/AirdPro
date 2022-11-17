@@ -13,9 +13,9 @@ using System.Windows.Forms;
 
 namespace AirdPro.Repository
 {
-    public partial class RepositoryGuiderForm : Form
+    public partial class ReposWizardForm : Form
     {
-        public RepositoryGuiderForm()
+        public ReposWizardForm()
         {
             InitializeComponent();
         }
