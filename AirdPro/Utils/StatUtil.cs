@@ -77,10 +77,10 @@ namespace AirdPro.Utils
             watch.Restart();
             for (int i = 0; i < encodeList.Count; i++)
             {
-                int[] mz = ComboComp.decode(intComp, byteComp, encodeList[i]);
+                int[] decodeList = ComboComp.decode(intComp, byteComp, encodeList[i]);
 
                 //测试总长度和首位数据是否一致
-                if (mz.Length != arrays[i].Length || mz[0] != arrays[i][0] || mz[mz.Length-1] != arrays[i][mz.Length - 1])
+                if (decodeList.Length != arrays[i].Length || decodeList[0] != arrays[i][0] || decodeList[decodeList.Length-1] != arrays[i][decodeList.Length - 1])
                 {
                     MessageBox.Show("数据不一致: Encoding Error");
                 }

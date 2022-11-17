@@ -35,7 +35,7 @@ namespace AirdPro.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            this.Text ="AirdPro " + SoftwareInfo.getVersion() + Const.Dash + NetworkUtil.getHostIP();
+            this.Text = "AirdPro " + SoftwareInfo.getVersion() + Const.Dash + NetworkUtil.getHostIP();
             updateFileTree();
         }
 
@@ -83,7 +83,6 @@ namespace AirdPro.Forms
         {
             if (Directory.Exists(directoryPath))
             {
-                
                 TreeNode node = new TreeNode();
                 DirectoryInfo directory = new DirectoryInfo(directoryPath);
 
@@ -99,7 +98,7 @@ namespace AirdPro.Forms
                 {
                     parent.Nodes.Add(node);
                 }
-                
+
                 addFiles(node, directory.GetFiles());
 
                 maxDeep--;
@@ -107,6 +106,7 @@ namespace AirdPro.Forms
                 {
                     return;
                 }
+
                 DirectoryInfo[] directories = directory.GetDirectories();
                 if (directories.Length > 0)
                 {
@@ -131,19 +131,19 @@ namespace AirdPro.Forms
                     node.Tag = file.FullName;
                     nodeList.Add(node);
                 }
-                
             }
 
             parent.Nodes.AddRange(nodeList.ToArray());
         }
 
         //完整更新整个FileTree
-        private void updateFileTree() 
+        private void updateFileTree()
         {
             if (!String.IsNullOrEmpty(Settings.Default.Repository))
             {
                 addDirectory(null, Settings.Default.Repository, 5);
             }
+
             if (fileTree.Nodes.Count > 0)
             {
                 fileTree.TopNode.Expand();
@@ -200,9 +200,16 @@ namespace AirdPro.Forms
                     MessageBox.Show("This File is not exist!");
                     return;
                 }
+
                 string indexFilePath = AirdScanUtil.getIndexPathByAirdPath(path);
                 indexFile = new FileInfo(indexFilePath);
                 airdInfo = AirdScanUtil.loadAirdInfo(indexFile);
+                if (airdInfo == null)
+                {
+                    MessageBox.Show("AirdInfo解码错误,请检查Aird文件是否异常");
+                    return;
+                }
+
                 List<SpectrumRow> spectra = parseAsSpectra(airdInfo);
                 spectraDataGrids.DataSource = spectra;
 
@@ -293,7 +300,7 @@ namespace AirdPro.Forms
             BaseParser parser = null;
             switch (airdInfo.type)
             {
-                case AirdType.DDA: 
+                case AirdType.DDA:
                     parser = new DDAParser(indexFile.FullName, airdInfo);
                     break;
                 case AirdType.DIA:
@@ -309,12 +316,37 @@ namespace AirdPro.Forms
                     parser = new DIAParser(indexFile.FullName, airdInfo);
                     break;
             }
+            Spectrum spectrum = parser.getSpectrumByNum(row.Scan - 1);
+            
+            IList<double> mzArray = spectrum.mzs;
+            IList<double> intensityArray = spectrum.ints;
 
-            Spectrum spectrum = parser.getSpectrumByNum(row.Scan);
-            spectrumChart.Series[0].Points.Clear();
-            for (var i = 0; i < spectrum.mzs.Length; i++)
+            //PASEF格式在展示上做一个合并,将相同mz的项合并为同一项
+            if (airdInfo.mobiInfo != null && airdInfo.mobiInfo.type != null)
             {
-                spectrumChart.Series[0].Points.AddXY(Math.Round(spectrum.mzs[i], 3), Math.Round(spectrum.ints[i], 1));
+                var uniqueMz = new List<double>(mzArray.Count);
+                var summedIntensity = new List<double>(mzArray.Count);
+                uniqueMz.Add(mzArray[0]);
+                summedIntensity.Add(intensityArray[0]);
+                for (int i = 1; i < mzArray.Count; ++i)
+                {
+                    if (mzArray[i] == uniqueMz[uniqueMz.Count - 1])
+                        summedIntensity[uniqueMz.Count - 1] += intensityArray[i];
+                    else
+                    {
+                        uniqueMz.Add(mzArray[i]);
+                        summedIntensity.Add(intensityArray[i]);
+                    }
+                }
+
+                mzArray = uniqueMz;
+                intensityArray = summedIntensity;
+            }
+            
+            spectrumChart.Series[0].Points.Clear();
+            for (var i = 0; i < mzArray.Count; i++)
+            {
+                spectrumChart.Series[0].Points.AddXY(Math.Round(mzArray[i], 3), Math.Round(intensityArray[i], 1));
             }
         }
 

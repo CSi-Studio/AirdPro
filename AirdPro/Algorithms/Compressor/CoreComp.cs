@@ -214,7 +214,6 @@ namespace AirdPro.Algorithms
             byte[] compressedMzArray = ComboComp.encode(mzIntComp, mzByteComp, mzArray);
             byte[] compressedIntArray = ComboComp.encode(intIntComp, intByteComp, intensityArray);
             byte[] compressedMobilityArray = ComboComp.encode(mobiIntComp, mobiByteComp, mobilityNoArray);
-
             ts.mzArrayBytes = compressedMzArray;
             ts.intArrayBytes = compressedIntArray;
             ts.mobilityArrayBytes = compressedMobilityArray;

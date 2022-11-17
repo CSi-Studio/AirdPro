@@ -198,11 +198,18 @@ namespace AirdPro.Converters
             Spectrum firstSpec = spectrumList.spectrum(0, true);
             List<Spectrum> predictSpecList = new List<Spectrum>();
             //首先取5个窗口,如果5个窗口全部都是MS1,则
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 918; i++)
             {
-                predictSpecList.Add(spectrumList.spectrum(i));
+                predictSpecList.Add(spectrumList.spectrum(i, true));
             }
 
+            int count = 0;
+            for (var i = 0; i < predictSpecList.Count; i++)
+            {
+                double[] mzList = predictSpecList[i].binaryDataArrays[0].data.Storage();
+                count += mzList.Length;
+            }
+            
             //判断是不是ion mobility模式
             if (firstSpec.binaryDataArrays.Count == 3)
             {
@@ -389,7 +396,8 @@ namespace AirdPro.Converters
             ReaderList readerList = ReaderList.FullReaderList;
             var readerConfig = new ReaderConfig
             {
-                combineIonMobilitySpectra = true,
+                allowMsMsWithoutPrecursor = false,
+                combineIonMobilitySpectra = false,
                 ignoreZeroIntensityPoints = jobInfo.config.ignoreZeroIntensity
             };
 
