@@ -174,6 +174,15 @@
     <Compile Include="Domains\Sort\CompressStat.cs" />
     <Compile Include="Domains\Statistic\Stat.cs" />
     <Compile Include="Domains\View\SpectrumRow.cs" />
+    <Compile Include="MSFileBrowser\FolderFileBrowser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MSFileBrowser\FolderFileBrowser.designer.cs">
+      <DependentUpon>FolderFileBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MSFileBrowser\FolderFileBrowserModel.cs" />
+    <Compile Include="MSFileBrowser\MSFileItems.cs" />
+    <Compile Include="MSFileBrowser\FolderFileItemSorter.cs" />
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -281,6 +290,9 @@
     <Compile Include="Utils\HttpUtil.cs" />
     <Compile Include="Utils\SpectrumUtil.cs" />
     <Compile Include="Utils\StatUtil.cs" />
+    <EmbeddedResource Include="MSFileBrowser\FolderFileBrowser.resx">
+      <DependentUpon>FolderFileBrowser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ConversionForm.resx">
       <DependentUpon>ConversionForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -414,7 +426,7 @@
       <Version>2.0.15</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.2-beta2</Version>
+      <Version>13.0.2-beta3</Version>
     </PackageReference>
     <PackageReference Include="OptimizedPriorityQueue">
       <Version>5.1.0</Version>

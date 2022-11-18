@@ -145,7 +145,7 @@ namespace AirdPro.Redis
                             }
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         //出现异常的情况下需要将消息会退给Redis,方便下一次重试
                         if (valueStr != null)

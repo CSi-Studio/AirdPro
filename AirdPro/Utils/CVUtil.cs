@@ -127,7 +127,7 @@ namespace AirdPro.Utils
             {
                 return Convert.ToInt64(Convert.ToDouble(spectrum.cvParamChild(CVID.MS_TIC).value.ToString()));
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return 0;
             }
@@ -139,7 +139,7 @@ namespace AirdPro.Utils
             {
                 return double.Parse(spectrum.cvParamChild(CVID.MS_base_peak_intensity).value.ToString());
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return 0;
             }
@@ -151,7 +151,7 @@ namespace AirdPro.Utils
             {
                 return double.Parse(spectrum.cvParamChild(CVID.MS_base_peak_m_z).value.ToString());
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return 0;
             }

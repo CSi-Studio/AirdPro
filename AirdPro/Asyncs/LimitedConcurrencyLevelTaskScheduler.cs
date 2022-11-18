@@ -64,8 +64,8 @@ namespace AirdPro.Asyncs
             }
         }
 
-        int executingCount = 0;
-        private static object executeLock = new object();
+        // int executingCount = 0;
+        // private static object executeLock = new object();
 
         /// <summary> 
         /// Informs the ThreadPool that there's work to be executed for this scheduler. 
