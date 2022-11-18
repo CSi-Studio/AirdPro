@@ -49,6 +49,14 @@ namespace AirdPro.Repository
             this.tbRepos = new System.Windows.Forms.TextBox();
             this.btnChangeRepos = new System.Windows.Forms.Button();
             this.projectListView = new System.Windows.Forms.DataGridView();
+            this.tbSearch = new System.Windows.Forms.TextBox();
+            this.btnSearch = new System.Windows.Forms.Button();
+            this.btnReset = new System.Windows.Forms.Button();
+            this.lblResult = new System.Windows.Forms.Label();
+            this.btnDetail = new System.Windows.Forms.Button();
+            this.btnUrl = new System.Windows.Forms.Button();
+            this.lblLoading = new System.Windows.Forms.Label();
+            this.btnFastLoad = new System.Windows.Forms.Button();
             this.Identifier = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Repos = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -58,25 +66,15 @@ namespace AirdPro.Repository
             this.LabHead = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Announce = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Keywords = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tbSearch = new System.Windows.Forms.TextBox();
-            this.btnSearch = new System.Windows.Forms.Button();
-            this.btnReset = new System.Windows.Forms.Button();
-            this.lblResult = new System.Windows.Forms.Label();
-            this.btnDetail = new System.Windows.Forms.Button();
-            this.btnUrl = new System.Windows.Forms.Button();
-            this.lblLoading = new System.Windows.Forms.Label();
-            this.btnFastLoad = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.projectListView)).BeginInit();
             this.SuspendLayout();
             // 
             // btnLoad
             // 
-            this.btnLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLoad.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnLoad.Location = new System.Drawing.Point(2040, 12);
-            this.btnLoad.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnLoad.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.btnLoad.Location = new System.Drawing.Point(970, 9);
             this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(224, 44);
+            this.btnLoad.Size = new System.Drawing.Size(149, 22);
             this.btnLoad.TabIndex = 0;
             this.btnLoad.Text = "Load From Web";
             this.btnLoad.UseVisualStyleBackColor = true;
@@ -85,30 +83,27 @@ namespace AirdPro.Repository
             // lblConfigFolder
             // 
             this.lblConfigFolder.AutoSize = true;
-            this.lblConfigFolder.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblConfigFolder.Location = new System.Drawing.Point(20, 18);
-            this.lblConfigFolder.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblConfigFolder.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.lblConfigFolder.Location = new System.Drawing.Point(13, 12);
             this.lblConfigFolder.Name = "lblConfigFolder";
-            this.lblConfigFolder.Size = new System.Drawing.Size(135, 31);
+            this.lblConfigFolder.Size = new System.Drawing.Size(63, 16);
             this.lblConfigFolder.TabIndex = 1;
             this.lblConfigFolder.Text = "Config File";
             // 
             // tbConfigFolder
             // 
-            this.tbConfigFolder.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbConfigFolder.Location = new System.Drawing.Point(188, 12);
-            this.tbConfigFolder.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbConfigFolder.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.tbConfigFolder.Location = new System.Drawing.Point(82, 8);
             this.tbConfigFolder.Name = "tbConfigFolder";
-            this.tbConfigFolder.Size = new System.Drawing.Size(685, 39);
+            this.tbConfigFolder.Size = new System.Drawing.Size(274, 22);
             this.tbConfigFolder.TabIndex = 2;
             // 
             // btnChangeConfigFolder
             // 
-            this.btnChangeConfigFolder.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnChangeConfigFolder.Location = new System.Drawing.Point(879, 10);
-            this.btnChangeConfigFolder.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnChangeConfigFolder.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.btnChangeConfigFolder.Location = new System.Drawing.Point(362, 8);
             this.btnChangeConfigFolder.Name = "btnChangeConfigFolder";
-            this.btnChangeConfigFolder.Size = new System.Drawing.Size(112, 46);
+            this.btnChangeConfigFolder.Size = new System.Drawing.Size(75, 23);
             this.btnChangeConfigFolder.TabIndex = 3;
             this.btnChangeConfigFolder.Text = "Modify";
             this.btnChangeConfigFolder.UseVisualStyleBackColor = true;
@@ -117,30 +112,27 @@ namespace AirdPro.Repository
             // lblRepos
             // 
             this.lblRepos.AutoSize = true;
-            this.lblRepos.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblRepos.Location = new System.Drawing.Point(1040, 16);
-            this.lblRepos.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblRepos.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.lblRepos.Location = new System.Drawing.Point(465, 11);
             this.lblRepos.Name = "lblRepos";
-            this.lblRepos.Size = new System.Drawing.Size(139, 31);
+            this.lblRepos.Size = new System.Drawing.Size(65, 16);
             this.lblRepos.TabIndex = 4;
             this.lblRepos.Text = "Local Repo";
             // 
             // tbRepos
             // 
-            this.tbRepos.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbRepos.Location = new System.Drawing.Point(1202, 12);
-            this.tbRepos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbRepos.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.tbRepos.Location = new System.Drawing.Point(536, 7);
             this.tbRepos.Name = "tbRepos";
-            this.tbRepos.Size = new System.Drawing.Size(685, 39);
+            this.tbRepos.Size = new System.Drawing.Size(350, 22);
             this.tbRepos.TabIndex = 5;
             // 
             // btnChangeRepos
             // 
-            this.btnChangeRepos.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnChangeRepos.Location = new System.Drawing.Point(1894, 10);
-            this.btnChangeRepos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnChangeRepos.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.btnChangeRepos.Location = new System.Drawing.Point(892, 7);
             this.btnChangeRepos.Name = "btnChangeRepos";
-            this.btnChangeRepos.Size = new System.Drawing.Size(112, 46);
+            this.btnChangeRepos.Size = new System.Drawing.Size(75, 24);
             this.btnChangeRepos.TabIndex = 6;
             this.btnChangeRepos.Text = "Modify";
             this.btnChangeRepos.UseVisualStyleBackColor = true;
@@ -152,13 +144,10 @@ namespace AirdPro.Repository
             this.projectListView.AllowUserToDeleteRows = false;
             this.projectListView.AllowUserToOrderColumns = true;
             this.projectListView.AllowUserToResizeRows = false;
-            this.projectListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.projectListView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 8F);
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -175,19 +164,102 @@ namespace AirdPro.Repository
             this.LabHead,
             this.Announce,
             this.Keywords});
-            this.projectListView.Location = new System.Drawing.Point(14, 124);
-            this.projectListView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.projectListView.Location = new System.Drawing.Point(7, 66);
             this.projectListView.Name = "projectListView";
             this.projectListView.RowHeadersWidth = 62;
             this.projectListView.RowTemplate.Height = 23;
-            this.projectListView.Size = new System.Drawing.Size(2409, 1026);
+            this.projectListView.Size = new System.Drawing.Size(1249, 503);
             this.projectListView.TabIndex = 7;
             this.projectListView.VirtualMode = true;
+            // 
+            // tbSearch
+            // 
+            this.tbSearch.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.tbSearch.Location = new System.Drawing.Point(12, 36);
+            this.tbSearch.Name = "tbSearch";
+            this.tbSearch.Size = new System.Drawing.Size(502, 22);
+            this.tbSearch.TabIndex = 8;
+            this.tbSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyUp);
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.btnSearch.Location = new System.Drawing.Point(536, 34);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(107, 26);
+            this.btnSearch.TabIndex = 9;
+            this.btnSearch.Text = "Search";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // btnReset
+            // 
+            this.btnReset.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.btnReset.Location = new System.Drawing.Point(649, 36);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(77, 24);
+            this.btnReset.TabIndex = 10;
+            this.btnReset.Text = "Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
+            // lblResult
+            // 
+            this.lblResult.AutoSize = true;
+            this.lblResult.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.lblResult.Location = new System.Drawing.Point(1052, 40);
+            this.lblResult.Name = "lblResult";
+            this.lblResult.Size = new System.Drawing.Size(49, 16);
+            this.lblResult.TabIndex = 11;
+            this.lblResult.Text = "Records";
+            // 
+            // btnDetail
+            // 
+            this.btnDetail.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.btnDetail.Location = new System.Drawing.Point(732, 36);
+            this.btnDetail.Name = "btnDetail";
+            this.btnDetail.Size = new System.Drawing.Size(74, 24);
+            this.btnDetail.TabIndex = 12;
+            this.btnDetail.Text = "Detail";
+            this.btnDetail.UseVisualStyleBackColor = true;
+            this.btnDetail.Click += new System.EventHandler(this.btnDetail_Click);
+            // 
+            // btnUrl
+            // 
+            this.btnUrl.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.btnUrl.Location = new System.Drawing.Point(812, 36);
+            this.btnUrl.Name = "btnUrl";
+            this.btnUrl.Size = new System.Drawing.Size(74, 24);
+            this.btnUrl.TabIndex = 13;
+            this.btnUrl.Text = "Web";
+            this.btnUrl.UseVisualStyleBackColor = true;
+            this.btnUrl.Click += new System.EventHandler(this.btnUrl_Click);
+            // 
+            // lblLoading
+            // 
+            this.lblLoading.AutoSize = true;
+            this.lblLoading.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.lblLoading.Location = new System.Drawing.Point(901, 40);
+            this.lblLoading.Name = "lblLoading";
+            this.lblLoading.Size = new System.Drawing.Size(46, 16);
+            this.lblLoading.TabIndex = 15;
+            this.lblLoading.Text = "Loaded";
+            // 
+            // btnFastLoad
+            // 
+            this.btnFastLoad.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.btnFastLoad.Location = new System.Drawing.Point(1158, 10);
+            this.btnFastLoad.Name = "btnFastLoad";
+            this.btnFastLoad.Size = new System.Drawing.Size(100, 21);
+            this.btnFastLoad.TabIndex = 16;
+            this.btnFastLoad.Text = "Fast Load";
+            this.btnFastLoad.UseVisualStyleBackColor = true;
+            this.btnFastLoad.Click += new System.EventHandler(this.btnFastLoad_Click);
             // 
             // Identifier
             // 
             this.Identifier.DataPropertyName = "Identifier";
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 7F);
             this.Identifier.DefaultCellStyle = dataGridViewCellStyle2;
             this.Identifier.FillWeight = 67.53138F;
             this.Identifier.HeaderText = "Identifier";
@@ -197,7 +269,7 @@ namespace AirdPro.Repository
             // Title
             // 
             this.Title.DataPropertyName = "Title";
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 9F);
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 7F);
             this.Title.DefaultCellStyle = dataGridViewCellStyle3;
             this.Title.FillWeight = 228.4264F;
             this.Title.HeaderText = "Title";
@@ -207,7 +279,7 @@ namespace AirdPro.Repository
             // Repos
             // 
             this.Repos.DataPropertyName = "Repos";
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("微软雅黑", 9F);
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("微软雅黑", 7F);
             this.Repos.DefaultCellStyle = dataGridViewCellStyle4;
             this.Repos.FillWeight = 62.21808F;
             this.Repos.HeaderText = "Repo";
@@ -217,7 +289,7 @@ namespace AirdPro.Repository
             // Species
             // 
             this.Species.DataPropertyName = "Species";
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("微软雅黑", 9F);
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("微软雅黑", 7F);
             this.Species.DefaultCellStyle = dataGridViewCellStyle5;
             this.Species.FillWeight = 100.1048F;
             this.Species.HeaderText = "Species";
@@ -227,7 +299,7 @@ namespace AirdPro.Repository
             // Instrument
             // 
             this.Instrument.DataPropertyName = "Instrument";
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("微软雅黑", 9F);
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("微软雅黑", 7F);
             this.Instrument.DefaultCellStyle = dataGridViewCellStyle6;
             this.Instrument.FillWeight = 104.9039F;
             this.Instrument.HeaderText = "Instrument";
@@ -237,7 +309,7 @@ namespace AirdPro.Repository
             // Publication
             // 
             this.Publication.DataPropertyName = "Publication";
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("微软雅黑", 9F);
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("微软雅黑", 7F);
             this.Publication.DefaultCellStyle = dataGridViewCellStyle7;
             this.Publication.FillWeight = 64.53849F;
             this.Publication.HeaderText = "Publication";
@@ -247,7 +319,7 @@ namespace AirdPro.Repository
             // LabHead
             // 
             this.LabHead.DataPropertyName = "LabHead";
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("微软雅黑", 9F);
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("微软雅黑", 7F);
             this.LabHead.DefaultCellStyle = dataGridViewCellStyle8;
             this.LabHead.FillWeight = 69.94061F;
             this.LabHead.HeaderText = "Lab Head";
@@ -257,7 +329,7 @@ namespace AirdPro.Repository
             // Announce
             // 
             this.Announce.DataPropertyName = "Announce";
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("微软雅黑", 9F);
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("微软雅黑", 7F);
             this.Announce.DefaultCellStyle = dataGridViewCellStyle9;
             this.Announce.FillWeight = 66.85007F;
             this.Announce.HeaderText = "Date";
@@ -267,113 +339,18 @@ namespace AirdPro.Repository
             // Keywords
             // 
             this.Keywords.DataPropertyName = "Keywords";
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("微软雅黑", 9F);
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("微软雅黑", 7F);
             this.Keywords.DefaultCellStyle = dataGridViewCellStyle10;
             this.Keywords.FillWeight = 135.4862F;
             this.Keywords.HeaderText = "Keyword";
             this.Keywords.MinimumWidth = 8;
             this.Keywords.Name = "Keywords";
             // 
-            // tbSearch
-            // 
-            this.tbSearch.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbSearch.Location = new System.Drawing.Point(18, 66);
-            this.tbSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tbSearch.Name = "tbSearch";
-            this.tbSearch.Size = new System.Drawing.Size(1207, 44);
-            this.tbSearch.TabIndex = 8;
-            this.tbSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyUp);
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.Font = new System.Drawing.Font("微软雅黑", 14.25F);
-            this.btnSearch.Location = new System.Drawing.Point(1232, 66);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(160, 50);
-            this.btnSearch.TabIndex = 9;
-            this.btnSearch.Text = "Search";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
-            // btnReset
-            // 
-            this.btnReset.Font = new System.Drawing.Font("微软雅黑", 14.25F);
-            this.btnReset.Location = new System.Drawing.Point(1400, 66);
-            this.btnReset.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(116, 50);
-            this.btnReset.TabIndex = 10;
-            this.btnReset.Text = "Reset";
-            this.btnReset.UseVisualStyleBackColor = true;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
-            // 
-            // lblResult
-            // 
-            this.lblResult.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblResult.AutoSize = true;
-            this.lblResult.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblResult.Location = new System.Drawing.Point(2176, 75);
-            this.lblResult.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblResult.Name = "lblResult";
-            this.lblResult.Size = new System.Drawing.Size(106, 31);
-            this.lblResult.TabIndex = 11;
-            this.lblResult.Text = "Records";
-            // 
-            // btnDetail
-            // 
-            this.btnDetail.Font = new System.Drawing.Font("微软雅黑", 14.25F);
-            this.btnDetail.Location = new System.Drawing.Point(1524, 66);
-            this.btnDetail.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.btnDetail.Name = "btnDetail";
-            this.btnDetail.Size = new System.Drawing.Size(111, 50);
-            this.btnDetail.TabIndex = 12;
-            this.btnDetail.Text = "Detail";
-            this.btnDetail.UseVisualStyleBackColor = true;
-            this.btnDetail.Click += new System.EventHandler(this.btnDetail_Click);
-            // 
-            // btnUrl
-            // 
-            this.btnUrl.Font = new System.Drawing.Font("微软雅黑", 14.25F);
-            this.btnUrl.Location = new System.Drawing.Point(1644, 66);
-            this.btnUrl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.btnUrl.Name = "btnUrl";
-            this.btnUrl.Size = new System.Drawing.Size(111, 50);
-            this.btnUrl.TabIndex = 13;
-            this.btnUrl.Text = "Web";
-            this.btnUrl.UseVisualStyleBackColor = true;
-            this.btnUrl.Click += new System.EventHandler(this.btnUrl_Click);
-            // 
-            // lblLoading
-            // 
-            this.lblLoading.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblLoading.AutoSize = true;
-            this.lblLoading.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblLoading.Location = new System.Drawing.Point(1786, 78);
-            this.lblLoading.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblLoading.Name = "lblLoading";
-            this.lblLoading.Size = new System.Drawing.Size(98, 31);
-            this.lblLoading.TabIndex = 15;
-            this.lblLoading.Text = "Loaded";
-            // 
-            // btnFastLoad
-            // 
-            this.btnFastLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnFastLoad.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnFastLoad.Location = new System.Drawing.Point(2272, 14);
-            this.btnFastLoad.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.btnFastLoad.Name = "btnFastLoad";
-            this.btnFastLoad.Size = new System.Drawing.Size(150, 44);
-            this.btnFastLoad.TabIndex = 16;
-            this.btnFastLoad.Text = "Fast Load";
-            this.btnFastLoad.UseVisualStyleBackColor = true;
-            this.btnFastLoad.Click += new System.EventHandler(this.btnFastLoad_Click);
-            // 
             // MLForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2440, 1162);
+            this.ClientSize = new System.Drawing.Size(1265, 581);
             this.Controls.Add(this.btnFastLoad);
             this.Controls.Add(this.lblLoading);
             this.Controls.Add(this.btnUrl);
@@ -391,7 +368,6 @@ namespace AirdPro.Repository
             this.Controls.Add(this.lblConfigFolder);
             this.Controls.Add(this.btnLoad);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MLForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MetaboLights";
