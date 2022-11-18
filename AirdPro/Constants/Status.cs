@@ -16,7 +16,7 @@ public class Status
     public static string Writing_Index_File = "Writing Index File";
 
     public static string Redis_Connected = "Connected";
-    public static string Redis_Not_Connected = "Not Connected";
+    public static string Redis_Not_Connected = "Unconnect";
 
     public static string empty = "";
     public static string tag_ms1 = "MS1:";

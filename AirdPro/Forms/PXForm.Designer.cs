@@ -166,7 +166,7 @@ namespace AirdPro.Repository
             this.LabHead,
             this.Announce,
             this.Keywords});
-            this.projectListView.Location = new System.Drawing.Point(5, 72);
+            this.projectListView.Location = new System.Drawing.Point(5, 65);
             this.projectListView.Name = "projectListView";
             this.projectListView.RowHeadersWidth = 62;
             this.projectListView.RowTemplate.Height = 23;
@@ -177,7 +177,7 @@ namespace AirdPro.Repository
             // tbSearch
             // 
             this.tbSearch.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.tbSearch.Location = new System.Drawing.Point(12, 44);
+            this.tbSearch.Location = new System.Drawing.Point(12, 36);
             this.tbSearch.Name = "tbSearch";
             this.tbSearch.Size = new System.Drawing.Size(505, 22);
             this.tbSearch.TabIndex = 8;
@@ -186,7 +186,7 @@ namespace AirdPro.Repository
             // btnSearch
             // 
             this.btnSearch.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnSearch.Location = new System.Drawing.Point(523, 43);
+            this.btnSearch.Location = new System.Drawing.Point(523, 35);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(110, 25);
             this.btnSearch.TabIndex = 9;
@@ -197,7 +197,7 @@ namespace AirdPro.Repository
             // btnReset
             // 
             this.btnReset.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnReset.Location = new System.Drawing.Point(639, 43);
+            this.btnReset.Location = new System.Drawing.Point(639, 35);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(77, 26);
             this.btnReset.TabIndex = 10;
@@ -209,7 +209,7 @@ namespace AirdPro.Repository
             // 
             this.lblResult.AutoSize = true;
             this.lblResult.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.lblResult.Location = new System.Drawing.Point(1248, 47);
+            this.lblResult.Location = new System.Drawing.Point(1248, 39);
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(49, 16);
             this.lblResult.TabIndex = 11;
@@ -218,7 +218,7 @@ namespace AirdPro.Repository
             // btnDetail
             // 
             this.btnDetail.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnDetail.Location = new System.Drawing.Point(802, 44);
+            this.btnDetail.Location = new System.Drawing.Point(802, 36);
             this.btnDetail.Name = "btnDetail";
             this.btnDetail.Size = new System.Drawing.Size(74, 25);
             this.btnDetail.TabIndex = 12;
@@ -229,7 +229,7 @@ namespace AirdPro.Repository
             // btnUrl
             // 
             this.btnUrl.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnUrl.Location = new System.Drawing.Point(722, 44);
+            this.btnUrl.Location = new System.Drawing.Point(722, 36);
             this.btnUrl.Name = "btnUrl";
             this.btnUrl.Size = new System.Drawing.Size(74, 25);
             this.btnUrl.TabIndex = 13;
@@ -250,7 +250,7 @@ namespace AirdPro.Repository
             // tbPXD
             // 
             this.tbPXD.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.tbPXD.Location = new System.Drawing.Point(958, 45);
+            this.tbPXD.Location = new System.Drawing.Point(958, 37);
             this.tbPXD.Name = "tbPXD";
             this.tbPXD.Size = new System.Drawing.Size(190, 22);
             this.tbPXD.TabIndex = 15;
@@ -258,7 +258,7 @@ namespace AirdPro.Repository
             // btnDirectOpen
             // 
             this.btnDirectOpen.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnDirectOpen.Location = new System.Drawing.Point(1157, 43);
+            this.btnDirectOpen.Location = new System.Drawing.Point(1157, 35);
             this.btnDirectOpen.Name = "btnDirectOpen";
             this.btnDirectOpen.Size = new System.Drawing.Size(74, 26);
             this.btnDirectOpen.TabIndex = 16;
@@ -270,7 +270,7 @@ namespace AirdPro.Repository
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.label1.Location = new System.Drawing.Point(906, 47);
+            this.label1.Location = new System.Drawing.Point(906, 39);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(46, 16);
             this.label1.TabIndex = 17;
@@ -370,7 +370,7 @@ namespace AirdPro.Repository
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1407, 733);
+            this.ClientSize = new System.Drawing.Size(1407, 729);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnDirectOpen);
             this.Controls.Add(this.tbPXD);

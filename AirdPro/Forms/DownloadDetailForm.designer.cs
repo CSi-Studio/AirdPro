@@ -53,13 +53,14 @@
             this.headerLocalPath,
             this.headerStatus,
             this.headerSize});
-            this.lvFileList.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lvFileList.Font = new System.Drawing.Font("微软雅黑", 8F);
             this.lvFileList.GridLines = true;
             this.lvFileList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvFileList.HideSelection = false;
-            this.lvFileList.Location = new System.Drawing.Point(0, 117);
+            this.lvFileList.Location = new System.Drawing.Point(0, 61);
+            this.lvFileList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.lvFileList.Name = "lvFileList";
-            this.lvFileList.Size = new System.Drawing.Size(1448, 944);
+            this.lvFileList.Size = new System.Drawing.Size(967, 648);
             this.lvFileList.TabIndex = 0;
             this.lvFileList.UseCompatibleStateImageBehavior = false;
             this.lvFileList.View = System.Windows.Forms.View.Details;
@@ -91,11 +92,10 @@
             // 
             // btnAsync
             // 
-            this.btnAsync.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnAsync.Location = new System.Drawing.Point(1252, 3);
-            this.btnAsync.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAsync.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.btnAsync.Location = new System.Drawing.Point(835, 3);
             this.btnAsync.Name = "btnAsync";
-            this.btnAsync.Size = new System.Drawing.Size(190, 50);
+            this.btnAsync.Size = new System.Drawing.Size(127, 26);
             this.btnAsync.TabIndex = 2;
             this.btnAsync.Text = "Start Async";
             this.btnAsync.UseVisualStyleBackColor = true;
@@ -103,51 +103,47 @@
             // 
             // tbRemote
             // 
-            this.tbRemote.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbRemote.Location = new System.Drawing.Point(146, 9);
-            this.tbRemote.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbRemote.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.tbRemote.Location = new System.Drawing.Point(97, 6);
             this.tbRemote.Name = "tbRemote";
             this.tbRemote.ReadOnly = true;
-            this.tbRemote.Size = new System.Drawing.Size(1087, 39);
+            this.tbRemote.Size = new System.Drawing.Size(726, 22);
             this.tbRemote.TabIndex = 3;
             // 
             // tbHome
             // 
-            this.tbHome.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbHome.Location = new System.Drawing.Point(146, 66);
-            this.tbHome.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbHome.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.tbHome.Location = new System.Drawing.Point(97, 34);
             this.tbHome.Name = "tbHome";
             this.tbHome.ReadOnly = true;
-            this.tbHome.Size = new System.Drawing.Size(1087, 39);
+            this.tbHome.Size = new System.Drawing.Size(726, 22);
             this.tbHome.TabIndex = 4;
             // 
             // lblDowload
             // 
             this.lblDowload.AutoSize = true;
-            this.lblDowload.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblDowload.Location = new System.Drawing.Point(8, 16);
-            this.lblDowload.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDowload.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.lblDowload.Location = new System.Drawing.Point(5, 11);
             this.lblDowload.Name = "lblDowload";
-            this.lblDowload.Size = new System.Drawing.Size(130, 31);
+            this.lblDowload.Size = new System.Drawing.Size(61, 16);
             this.lblDowload.TabIndex = 5;
             this.lblDowload.Text = "Download";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(6, 72);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.label1.Location = new System.Drawing.Point(5, 38);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(141, 31);
+            this.label1.Size = new System.Drawing.Size(65, 16);
             this.label1.TabIndex = 6;
             this.label1.Text = "HomePage";
             // 
             // DownloadDetailForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1448, 1060);
+            this.ClientSize = new System.Drawing.Size(965, 707);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblDowload);
             this.Controls.Add(this.tbHome);
@@ -155,6 +151,7 @@
             this.Controls.Add(this.btnAsync);
             this.Controls.Add(this.lvFileList);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "DownloadDetailForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Async File List";

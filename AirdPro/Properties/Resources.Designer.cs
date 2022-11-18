@@ -133,6 +133,16 @@ namespace AirdPro.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap Arrows {
+            get {
+                object obj = ResourceManager.GetObject("Arrows", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap CleanErrors {
             get {
                 object obj = ResourceManager.GetObject("CleanErrors", resourceCulture);
@@ -293,6 +303,16 @@ namespace AirdPro.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap MirrorTrans {
+            get {
+                object obj = ResourceManager.GetObject("MirrorTrans", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap Proteomexchange {
             get {
                 object obj = ResourceManager.GetObject("Proteomexchange", resourceCulture);
@@ -306,6 +326,16 @@ namespace AirdPro.Properties {
         internal static System.Drawing.Bitmap Repository {
             get {
                 object obj = ResourceManager.GetObject("Repository", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap SelectFiles {
+            get {
+                object obj = ResourceManager.GetObject("SelectFiles", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

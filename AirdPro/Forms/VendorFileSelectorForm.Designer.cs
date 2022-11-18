@@ -38,7 +38,6 @@ namespace AirdPro.Forms
             this.radioButton6 = new System.Windows.Forms.RadioButton();
             this.radioButton5 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.betterFolderBrowser = new WK.Libraries.BetterFolderBrowserNS.BetterFolderBrowser(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.btnEditConfigs = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
@@ -138,12 +137,6 @@ namespace AirdPro.Forms
             this.radioButton2.TabIndex = 2;
             this.radioButton2.Text = "DIA";
             this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // betterFolderBrowser
-            // 
-            this.betterFolderBrowser.Multiselect = false;
-            this.betterFolderBrowser.RootFolder = "C:";
-            this.betterFolderBrowser.Title = "Please select a folder...";
             // 
             // openFileDialog
             // 
@@ -293,7 +286,6 @@ namespace AirdPro.Forms
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.GroupBox gBoxMode;
         private System.Windows.Forms.RadioButton radioButton2;
-        private WK.Libraries.BetterFolderBrowserNS.BetterFolderBrowser betterFolderBrowser;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.RadioButton radioButton6;
         private System.Windows.Forms.RadioButton radioButton5;

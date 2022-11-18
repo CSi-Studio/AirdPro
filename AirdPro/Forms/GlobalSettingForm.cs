@@ -24,7 +24,7 @@ namespace AirdPro.Forms
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            Settings.Default.MaxTasks = (int)numMaxTasks.Value;
+            Settings.Default.MaxConversionTasks = (int)numMaxTasks.Value;
             Settings.Default.RedisHost = tbRedisHost.Text;
             Settings.Default.RedisPort = tbRedisPort.Text;
             Settings.Default.RedisUsername = tbRedisUsername.Text;
@@ -35,7 +35,7 @@ namespace AirdPro.Forms
 
         private void GlobalSettingForm_Load(object sender, EventArgs e)
         {
-            numMaxTasks.Text = Settings.Default.MaxTasks.ToString();
+            numMaxTasks.Text = Settings.Default.MaxConversionTasks.ToString();
             tbRedisHost.Text = Settings.Default.RedisHost;
             tbRedisPort.Text = Settings.Default.RedisPort;
             tbRedisUsername.Text = Settings.Default.RedisUsername;

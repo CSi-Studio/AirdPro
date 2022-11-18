@@ -16,6 +16,8 @@ namespace AirdPro.Constants
         public static string Left_Slash = "/";
         public static string Dash = "_";
         public static string COMMA = ",";
+        public static string COLON = ":";
+        public static string DIV = "|";
         public static char Char_Dash = '_';
         public static char DOT = '.';
     }

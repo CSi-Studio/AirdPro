@@ -54,8 +54,13 @@ namespace AirdPro.Forms
             this.contentMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.rerun = new System.Windows.Forms.ToolStripMenuItem();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnMirrorTrans = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.btnSetting = new System.Windows.Forms.Button();
-            this.btnCleanErrors = new System.Windows.Forms.Button();
             this.btnCleanFinished = new System.Windows.Forms.Button();
             this.btnImport = new System.Windows.Forms.Button();
             this.lblRedisStatus = new System.Windows.Forms.Label();
@@ -66,7 +71,6 @@ namespace AirdPro.Forms
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
             this.redisConsumer = new System.Windows.Forms.Timer(this.components);
-            this.directoryEntry1 = new System.DirectoryServices.DirectoryEntry();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -85,8 +89,13 @@ namespace AirdPro.Forms
             // 
             // container.Panel2
             // 
+            this.container.Panel2.Controls.Add(this.label4);
+            this.container.Panel2.Controls.Add(this.btnMirrorTrans);
+            this.container.Panel2.Controls.Add(this.label5);
+            this.container.Panel2.Controls.Add(this.label3);
+            this.container.Panel2.Controls.Add(this.label2);
+            this.container.Panel2.Controls.Add(this.label1);
             this.container.Panel2.Controls.Add(this.btnSetting);
-            this.container.Panel2.Controls.Add(this.btnCleanErrors);
             this.container.Panel2.Controls.Add(this.btnCleanFinished);
             this.container.Panel2.Controls.Add(this.btnImport);
             this.container.Panel2.Controls.Add(this.lblRedisStatus);
@@ -179,6 +188,46 @@ namespace AirdPro.Forms
             resources.ApplyResources(this.removeToolStripMenuItem, "removeToolStripMenuItem");
             this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
             // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label4.Name = "label4";
+            // 
+            // btnMirrorTrans
+            // 
+            resources.ApplyResources(this.btnMirrorTrans, "btnMirrorTrans");
+            this.btnMirrorTrans.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnMirrorTrans.FlatAppearance.BorderSize = 0;
+            this.btnMirrorTrans.Name = "btnMirrorTrans";
+            this.ttAlgorithm.SetToolTip(this.btnMirrorTrans, resources.GetString("btnMirrorTrans.ToolTip"));
+            this.btnMirrorTrans.UseVisualStyleBackColor = true;
+            this.btnMirrorTrans.Click += new System.EventHandler(this.btnMirrorTrans_Click);
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label5.Name = "label5";
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label3.Name = "label3";
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label2.Name = "label2";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label1.Name = "label1";
+            // 
             // btnSetting
             // 
             this.btnSetting.BackgroundImage = global::AirdPro.Properties.Resources.Setting;
@@ -189,17 +238,6 @@ namespace AirdPro.Forms
             this.ttAlgorithm.SetToolTip(this.btnSetting, resources.GetString("btnSetting.ToolTip"));
             this.btnSetting.UseVisualStyleBackColor = true;
             this.btnSetting.Click += new System.EventHandler(this.btnSetting_Click);
-            // 
-            // btnCleanErrors
-            // 
-            this.btnCleanErrors.BackgroundImage = global::AirdPro.Properties.Resources.CleanErrors;
-            resources.ApplyResources(this.btnCleanErrors, "btnCleanErrors");
-            this.btnCleanErrors.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCleanErrors.FlatAppearance.BorderSize = 0;
-            this.btnCleanErrors.Name = "btnCleanErrors";
-            this.ttAlgorithm.SetToolTip(this.btnCleanErrors, resources.GetString("btnCleanErrors.ToolTip"));
-            this.btnCleanErrors.UseVisualStyleBackColor = true;
-            this.btnCleanErrors.Click += new System.EventHandler(this.btnCleanErrors_Click);
             // 
             // btnCleanFinished
             // 
@@ -214,7 +252,7 @@ namespace AirdPro.Forms
             // 
             // btnImport
             // 
-            this.btnImport.BackgroundImage = global::AirdPro.Properties.Resources.Import;
+            this.btnImport.BackgroundImage = global::AirdPro.Properties.Resources.SelectFiles;
             resources.ApplyResources(this.btnImport, "btnImport");
             this.btnImport.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnImport.FlatAppearance.BorderSize = 0;
@@ -317,9 +355,13 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Label lblRedisStatus;
         private System.Windows.Forms.Button btnImport;
         private System.Windows.Forms.Button btnCleanFinished;
-        private System.Windows.Forms.Button btnCleanErrors;
         private System.Windows.Forms.Button btnSetting;
-        private System.DirectoryServices.DirectoryEntry directoryEntry1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button btnMirrorTrans;
+        private System.Windows.Forms.Label label4;
     }
 }
 

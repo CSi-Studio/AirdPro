@@ -146,12 +146,24 @@ namespace AirdPro.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public int MaxTasks {
+        public int MaxConversionTasks {
             get {
-                return ((int)(this["MaxTasks"]));
+                return ((int)(this["MaxConversionTasks"]));
             }
             set {
-                this["MaxTasks"] = value;
+                this["MaxConversionTasks"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string MirrorPairs {
+            get {
+                return ((string)(this["MirrorPairs"]));
+            }
+            set {
+                this["MirrorPairs"] = value;
             }
         }
     }

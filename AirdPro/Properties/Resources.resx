@@ -208,4 +208,13 @@
   <data name="Spectrum16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\menu\spectrum16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Arrows" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\imgs\arrows.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MirrorTrans" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\menu\mirrortrans.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SelectFiles" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\menu\selectfiles.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

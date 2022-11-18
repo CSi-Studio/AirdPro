@@ -28,6 +28,7 @@ namespace AirdPro.Forms
     {
         ArrayList jobIdList = new();
         VendorFileSelectorForm fileSelector = new VendorFileSelectorForm();
+        MirrorTransForm mirrorTransForm;
         ConversionConfigListForm configListForm;
         GlobalSettingForm globalSettingForm;
 
@@ -326,24 +327,7 @@ namespace AirdPro.Forms
             {
                 foreach (ListViewItem item in lvFileList.Items)
                 {
-                    if (item.SubItems[ItemName.PROGRESS].Text.Equals(Status.Finished))
-                    {
-                        item.Remove();
-                        jobIdList.Remove(item.SubItems[0].Text);
-                        ConvertTaskManager.getInstance().jobTable.Remove(item.SubItems[0].Text);
-                    }
-                }
-            }
-        }
-
-        private void btnCleanErrors_Click(object sender, EventArgs e)
-        {
-            // ConvertTaskManager.getInstance().finishedTable.Clear();
-            if (lvFileList.Items.Count != 0)
-            {
-                foreach (ListViewItem item in lvFileList.Items)
-                {
-                    if (item.SubItems[ItemName.PROGRESS].Text.Equals(Status.Error))
+                    if (item.SubItems[ItemName.PROGRESS].Text.Equals(Status.Finished) || item.SubItems[ItemName.PROGRESS].Text.Equals(Status.Error))
                     {
                         item.Remove();
                         jobIdList.Remove(item.SubItems[0].Text);
@@ -361,6 +345,11 @@ namespace AirdPro.Forms
             }
 
             configListForm.Show();
+        }
+
+        private void btnMirrorTrans_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

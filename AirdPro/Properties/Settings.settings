@@ -32,8 +32,11 @@
     <Setting Name="RedisPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="MaxTasks" Type="System.Int32" Scope="User">
+    <Setting Name="MaxConversionTasks" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="MirrorPairs" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

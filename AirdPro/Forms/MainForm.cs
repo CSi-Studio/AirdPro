@@ -21,7 +21,7 @@ namespace AirdPro.Forms
 {
     public partial class MainForm : Form
     {
-        private AboutForm aboutForm = new AboutForm();
+        private AboutForm aboutForm;
         private GlobalSettingForm globalSettingForm;
         private ReposWizardForm reposWizardForm;
         private HashSet<string> airdFiles = new HashSet<string>();
@@ -58,11 +58,6 @@ namespace AirdPro.Forms
             }
 
             globalSettingForm.Show();
-        }
-
-        private void startConversionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Program.conversionForm.Visible = true;
         }
 
         private void openRepositoryToolStripMenuItem_Click(object sender, EventArgs e)
@@ -393,6 +388,11 @@ namespace AirdPro.Forms
                 this.Visible = true;
                 this.WindowState = FormWindowState.Normal;
             }
+        }
+
+        private void startConversionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.conversionForm.Visible = true;
         }
     }
 }

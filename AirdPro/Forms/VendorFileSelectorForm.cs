@@ -36,7 +36,6 @@ namespace AirdPro.Forms
             Program.conversionConfigHandler.attach(this);
          
             rbAuto.Checked = true;
-            betterFolderBrowser.Multiselect = true;
             tbOutputPath.Text = Settings.Default.LastOutputPath;
             cbConfig.SelectedIndex = 0;
            

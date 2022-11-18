@@ -40,7 +40,7 @@ namespace AirdPro.Asyncs
 
         public ConvertTaskManager()
         {
-            fac = new(new LimitedConcurrencyLevelTaskScheduler(Settings.Default.MaxTasks));
+            fac = new(new LimitedConcurrencyLevelTaskScheduler(Settings.Default.MaxConversionTasks));
         }
 
         public static ConvertTaskManager getInstance()
