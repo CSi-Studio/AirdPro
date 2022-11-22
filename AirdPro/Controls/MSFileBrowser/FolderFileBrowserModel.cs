@@ -114,7 +114,7 @@ namespace AirdPro
                             foreach (string str in Directory.GetDirectories(parent.ItemPath))
                             {
                                 FolderItem item = new FolderItem(str, parent, this);
-                                if (str.EndsWith(FileFormat.DotD.ToLower()))
+                                if (str.ToLower().EndsWith(FileFormat.DotD.ToLower()) || str.ToLower().EndsWith(FileFormat.DotRAW.ToLower()))
                                 {
                                     item.MSFile = true;
                                 }
