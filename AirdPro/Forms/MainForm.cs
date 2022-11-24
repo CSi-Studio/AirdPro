@@ -16,6 +16,7 @@ using AirdPro.Constants;
 using AirdPro.Utils;
 using AirdSDK.Utils;
 using AutoUpdaterDotNET;
+using Microsoft.Win32;
 
 namespace AirdPro.Forms
 {
@@ -36,6 +37,8 @@ namespace AirdPro.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // RegistryKey key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            // key.SetValue("AirdPro", Application.ExecutablePath);
             this.Text = "AirdPro " + SoftwareInfo.getVersion() + Const.Dash + NetworkUtil.getHostIP();
             updateFileTree();
         }
