@@ -252,6 +252,10 @@ namespace AirdPro.Repository
                             if (link.accession.Equals("MS:1002852")) // Dataset FTP location
                             {
                                 List<string> filePathList = HttpUtil.fetchFtpFilePaths(link.value);
+                                if (filePathList == null)
+                                {
+                                    continue;
+                                }
                                 foreach (string filePath in filePathList)
                                 {
                                     string fileName = Path.GetFileName(filePath);

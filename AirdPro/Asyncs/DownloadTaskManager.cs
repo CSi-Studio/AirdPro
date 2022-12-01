@@ -130,7 +130,7 @@ namespace AirdPro.Async
             {
                 Directory.CreateDirectory(currentRow.localPath);
                 List<string> filePaths = HttpUtil.fetchFtpFilePaths(currentRow.remotePath);
-                if (filePaths.Count > 0)
+                if (filePaths != null && filePaths.Count > 0)
                 {
                     foreach (string filePath in filePaths)
                     {
