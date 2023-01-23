@@ -33,7 +33,7 @@ namespace AirdPro
 				BaseItem item = itemsToRead[0];
 				itemsToRead.RemoveAt(0);
 
-				Thread.Sleep(50); //emulate time consuming operation
+				// Thread.Sleep(50); //emulate time consuming operation
 				if (item is FolderItem)
 				{
 					DirectoryInfo info = new DirectoryInfo(item.ItemPath);

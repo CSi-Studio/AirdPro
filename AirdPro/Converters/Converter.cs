@@ -38,6 +38,7 @@ namespace AirdPro.Converters
     {
         protected MSData msd;
         public SpectrumList spectrumList;
+        public ChromatogramList chromatogramList;
         public JobInfo jobInfo;
         protected Stopwatch stopwatch = new();
         protected FileStream airdStream;
@@ -59,6 +60,7 @@ namespace AirdPro.Converters
         protected long fileSize; //厂商文件大小
         protected long startPosition = 0; //文件指针
         protected int totalSize; //总计的谱图数目
+        protected int totalChromatograms; //总计的色谱图数目
 
         protected string activator; //HCD,CID....
         protected float energy; //轰击能
@@ -196,84 +198,100 @@ namespace AirdPro.Converters
 
             bool mobi = false;
             jobInfo.log(Tag.Predict_Acquisition_Method, Status.Init);
-            //首先判断是否有Mobility属性
-            Spectrum firstSpec = spectrumList.spectrum(0, true);
-            List<Spectrum> predictSpecList = new List<Spectrum>();
-            //首先取5个窗口,如果5个窗口全部都是MS1,则
-            for (int i = 0; i < 918; i++)
-            {
-                predictSpecList.Add(spectrumList.spectrum(i, true));
-            }
 
-            int count = 0;
-            for (var i = 0; i < predictSpecList.Count; i++)
+            //如果没有光谱图,则说明可能是MRM模式,否则再判定其他模式
+            if (spectrumList == null || spectrumList.size() == 0)
             {
-                double[] mzList = predictSpecList[i].binaryDataArrays[0].data.Storage();
-                count += mzList.Length;
+                //如果色谱数据也是空,则说明文件异常或者是暂时不支持的模式
+                if (chromatogramList == null || chromatogramList.size() == 0)
+                {
+                    jobInfo.logError(ResultCode.No_Spectra_Found);
+                    jobInfo.logError(ResultCode.No_Chromatograms_Found);
+                    return;
+                }
+                Chromatogram firstChroma = chromatogramList.chromatogram(0, true);
+                List<Chromatogram> predictChromatoList = new List<Chromatogram>();
+                //首先取10个窗口
+                for (int i = 0; i < 10; i++)
+                {
+                    predictChromatoList.Add(chromatogramList.chromatogram(i, true));
+                }
+            }
+            else
+            {
+                Spectrum firstSpec = spectrumList.spectrum(0, true);
+                List<Spectrum> predictSpecList = new List<Spectrum>();
+                //首先取10个窗口
+                for (int i = 0; i < 10; i++)
+                {
+                    predictSpecList.Add(spectrumList.spectrum(i, true));
+                }
+
+                //首先判断是不是带有离子淌度的ion mobility模式
+                if (firstSpec.binaryDataArrays.Count == 3)
+                {
+                    foreach (BinaryDataArray dataArray in firstSpec.binaryDataArrays)
+                    {
+                        if (dataArray.cvParams[0].cvid.Equals(CVID.MS_mean_inverse_reduced_ion_mobility_array))
+                        {
+                            jobInfo.ionMobility = true;
+                            mobi = true;
+                            break;
+                        }
+                    }
+                }
+
+                bool isDDA = true;
+                bool isDIA = false;
+
+                foreach (Spectrum spectrum in predictSpecList)
+                {
+                    //如果全部扫描下来都没有MS2, 说明是Full Scan扫描模式,设置为DDA
+                    if (CVUtil.parseMsLevel(spectrum).Equals(MsLevel.MS2))
+                    {
+                        double width = CVUtil.parsePrecursorWidth(spectrum, jobInfo);
+                        //然后判断前体的宽度范围,如果范围小于4,则被预测为DDA模式,否则会被认定为DIA模式
+                        if (width < 4)
+                        {
+                            isDDA = true;
+                            isDIA = false;
+                            //自动模式会将DDA模式与PRM模式混合
+                            break;
+                        }
+                        else
+                        {
+                            isDDA = false;
+                            isDIA = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (isDDA && mobi)
+                {
+                    jobInfo.setType(AirdType.DDA_PASEF);
+                    return;
+                }
+
+                if (isDDA && !mobi)
+                {
+                    jobInfo.setType(AirdType.DDA);
+                    return;
+                }
+
+                if (isDIA && mobi)
+                {
+                    jobInfo.setType(AirdType.DIA_PASEF);
+                    return;
+                }
+
+                if (isDIA && !mobi)
+                {
+                    jobInfo.setType(AirdType.DIA);
+                    return;
+                }
             }
             
-            //判断是不是ion mobility模式
-            if (firstSpec.binaryDataArrays.Count == 3)
-            {
-                foreach (BinaryDataArray dataArray in firstSpec.binaryDataArrays)
-                {
-                    if (dataArray.cvParams[0].cvid.Equals(CVID.MS_mean_inverse_reduced_ion_mobility_array))
-                    {
-                        jobInfo.ionMobility = true;
-                        mobi = true;
-                        break;
-                    }
-                }
-            }
-
-            bool isDDA = true;
-            bool isDIA = false;
-
-            foreach (Spectrum spectrum in predictSpecList)
-            {
-                //如果全部扫描下来都没有MS2, 说明是Full Scan扫描模式,设置为DDA
-                if (CVUtil.parseMsLevel(spectrum).Equals(MsLevel.MS2))
-                {
-                    double width = CVUtil.parsePrecursorWidth(spectrum, jobInfo);
-                    if (width < 4)
-                    {
-                        isDIA = false;
-                        isDDA = true;
-                        //自动模式会将DDA模式与PRM模式混合
-                        break;
-                    }
-                    else
-                    {
-                        isDDA = false;
-                        isDIA = true;
-                        break;
-                    }
-                }
-            }
-
-            if (isDDA && mobi)
-            {
-                jobInfo.setType(AirdType.DDA_PASEF);
-                return;
-            }
-
-            if (isDDA && !mobi)
-            {
-                jobInfo.setType(AirdType.DDA);
-                return;
-            }
-
-            if (isDIA && mobi)
-            {
-                jobInfo.setType(AirdType.DIA_PASEF);
-                return;
-            }
-
-            if (isDIA && !mobi)
-            {
-                jobInfo.setType(AirdType.DIA);
-                return;
-            }
         }
 
         public void predictForBestCombination()
@@ -420,12 +438,23 @@ namespace AirdPro.Converters
             spectrumList = msd.run.spectrumList;
             if (spectrumList == null || spectrumList.empty())
             {
-                jobInfo.logError(ResultCode.No_Spectra_Found);
+                jobInfo.log(ResultCode.No_Spectra_Found);
             }
             else
             {
                 totalSize = spectrumList.size();
                 jobInfo.log(Tag.Adapting_Finished + Const.COMMA + Tag.Total_Spectra + totalSize);
+            }
+
+            chromatogramList = msd.run.chromatogramList;
+            if (chromatogramList == null || chromatogramList.empty())
+            {
+                jobInfo.log(ResultCode.No_Chromatograms_Found);
+            }
+            else
+            {
+                totalChromatograms = chromatogramList.size();
+                jobInfo.log(Tag.Adapting_Finished + Const.COMMA + Tag.Total_Chromatograms + totalChromatograms);
             }
 
             switch (jobInfo.format)

@@ -55,4 +55,9 @@ public class ConverterWorkFlow
         converter.parseMS2Block(); //处理MS2,并将索引写入文件流中
         converter.writeToAirdInfoFile(); //将Info数据写入文件
     }
+
+    public static void MRM(Converter converter)
+    {
+        
+    }
 }

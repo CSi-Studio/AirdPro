@@ -35,6 +35,7 @@ public class Tag
     public static string Adapting_Vendor_File_API = "Adapting Vendor File API";
     public static string Adapting_Finished = "Adapting Finished";
     public static string Total_Spectra = "Total Spectra:";
+    public static string Total_Chromatograms = "Total Chromatograms";
     public static string Retrying_Left_Retry_Times = "Retrying...left retry times:";
     public static string No_File_Is_Selected = "No file is selected!";
     public static string Input_Path = "InputPath:";
