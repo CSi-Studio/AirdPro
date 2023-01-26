@@ -40,22 +40,22 @@ namespace AirdPro.Converters
         public SpectrumList spectrumList;
         public ChromatogramList chromatogramList;
         public JobInfo jobInfo;
-        protected Stopwatch stopwatch = new();
+        protected Stopwatch stopwatch = new Stopwatch();
         protected FileStream airdStream;
         protected FileStream airdJsonStream;
-        protected List<WindowRange> ranges = new(); //SWATH/DIA Window的窗口
-        protected Hashtable rangeTable = new(); //用于存放SWATH/DIA窗口的信息,key为mz
-        protected List<BlockIndex> indexList = new(); //用于存储的全局的SWATH List
+        protected List<WindowRange> ranges = new List<WindowRange>(); //SWATH/DIA Window的窗口
+        protected Hashtable rangeTable = new Hashtable(); //用于存放SWATH/DIA窗口的信息,key为mz
+        protected List<BlockIndex> indexList = new List<BlockIndex>(); //用于存储的全局的SWATH List
 
         protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
 
-        public List<MsIndex> ms1List = new(); //用于存放MS1索引及基础信息,泛型为MsIndex
-        protected Hashtable featuresMap = new();
+        public List<MsIndex> ms1List = new List<MsIndex>(); //用于存放MS1索引及基础信息,泛型为MsIndex
+        protected Hashtable featuresMap = new Hashtable();
         public ICompressor compressor;
 
         public double[] mobiArray;
         public Dictionary<double, int> mobiDict;
-        public MobiInfo mobiInfo = new();
+        public MobiInfo mobiInfo = new MobiInfo();
 
         protected long fileSize; //厂商文件大小
         protected long startPosition = 0; //文件指针
@@ -82,10 +82,12 @@ namespace AirdPro.Converters
         {
             start();
             initDirectory(); //创建文件夹
+          
             using (airdStream = new FileStream(jobInfo.airdFilePath, FileMode.Create))
             {
                 using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                 {
+
                     readVendorFile(); //准备读取Vendor文件
                     predictAcquisitionMethod();
                     switch (jobInfo.type)
@@ -128,6 +130,7 @@ namespace AirdPro.Converters
             jobInfo.log(Tag.Total_Time_Cost + stopwatch.Elapsed.TotalSeconds, Status.Finished);
             clearCache();
             jobInfo.setStatus(ProcessingStatus.FINISHED);
+            msd.Dispose();
         }
 
         public void initCompressor()
@@ -199,25 +202,8 @@ namespace AirdPro.Converters
             bool mobi = false;
             jobInfo.log(Tag.Predict_Acquisition_Method, Status.Init);
 
-            //如果没有光谱图,则说明可能是MRM模式,否则再判定其他模式
-            if (spectrumList == null || spectrumList.size() == 0)
-            {
-                //如果色谱数据也是空,则说明文件异常或者是暂时不支持的模式
-                if (chromatogramList == null || chromatogramList.size() == 0)
-                {
-                    jobInfo.logError(ResultCode.No_Spectra_Found);
-                    jobInfo.logError(ResultCode.No_Chromatograms_Found);
-                    return;
-                }
-                Chromatogram firstChroma = chromatogramList.chromatogram(0, true);
-                List<Chromatogram> predictChromatoList = new List<Chromatogram>();
-                //首先取10个窗口
-                for (int i = 0; i < 10; i++)
-                {
-                    predictChromatoList.Add(chromatogramList.chromatogram(i, true));
-                }
-            }
-            else
+            //如果有光谱图
+            if (spectrumList != null && spectrumList.size() > 0)
             {
                 Spectrum firstSpec = spectrumList.spectrum(0, true);
                 List<Spectrum> predictSpecList = new List<Spectrum>();
@@ -270,28 +256,48 @@ namespace AirdPro.Converters
                 if (isDDA && mobi)
                 {
                     jobInfo.setType(AirdType.DDA_PASEF);
-                    return;
                 }
 
                 if (isDDA && !mobi)
                 {
                     jobInfo.setType(AirdType.DDA);
-                    return;
                 }
 
                 if (isDIA && mobi)
                 {
                     jobInfo.setType(AirdType.DIA_PASEF);
-                    return;
                 }
 
                 if (isDIA && !mobi)
                 {
                     jobInfo.setType(AirdType.DIA);
-                    return;
                 }
             }
-            
+
+            try
+            {
+                //如果有色谱图,且谱图数目大于2(排除TIC和BPC图),则预测为SRM模式
+                if (chromatogramList != null && chromatogramList.size() > 2)
+                {
+                    Chromatogram tic1 = chromatogramList.chromatogram(128, DetailLevel.FastMetadata);
+                    Chromatogram tic2 = chromatogramList.chromatogram(128);
+                    List<Chromatogram> predictChromatoList = new List<Chromatogram>();
+                    //首先取10个窗口
+                    for (int i = 0; i < 10; i++)
+                    {
+                        using (Chromatogram chroma = chromatogramList.chromatogram(i, DetailLevel.FullData))
+                        {
+                            predictChromatoList.Add(chroma);
+                        }
+                    }
+
+                    jobInfo.setType(AirdType.SRM);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Hello");
+            }
         }
 
         public void predictForBestCombination()
@@ -419,8 +425,10 @@ namespace AirdPro.Converters
                 allowMsMsWithoutPrecursor = false,
                 combineIonMobilitySpectra = false,
                 ignoreZeroIntensityPoints = jobInfo.config.ignoreZeroIntensity
+                
             };
 
+            
             MSDataList msInfo = new MSDataList();
             readerList.read(jobInfo.inputPath, msInfo, readerConfig);
             if (msInfo == null || msInfo.Count == 0)
@@ -456,7 +464,7 @@ namespace AirdPro.Converters
                 totalChromatograms = chromatogramList.size();
                 jobInfo.log(Tag.Adapting_Finished + Const.COMMA + Tag.Total_Chromatograms + totalChromatograms);
             }
-
+            
             switch (jobInfo.format)
             {
                 case FileFormat.WIFF:

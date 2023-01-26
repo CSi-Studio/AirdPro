@@ -25,7 +25,7 @@ namespace AirdPro.Algorithms
 {
     public class CoreComp : ICompressor
     {
-        private static readonly object locker = new();
+        private static readonly object locker = new object();
 
         public CoreComp(Converter converter) : base(converter)
         {

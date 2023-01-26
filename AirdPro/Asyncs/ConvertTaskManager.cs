@@ -13,14 +13,15 @@ using AirdPro.Converters;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
-using AirdPro.Algorithms;
 using AirdPro.Domains;
 using AirdPro.Properties;
-using AirdSDK.Compressor;
-using AirdSDK.Enums;
 using static AirdPro.Constants.ProcessingStatus;
+using System.ComponentModel;
+using System.Threading;
+using System.Windows.Forms;
+using AirdSDK.Beans;
+using pwiz.CLI.msdata;
 
 namespace AirdPro.Asyncs
 {
@@ -30,17 +31,17 @@ namespace AirdPro.Asyncs
 
         public TaskFactory fac = null;
 
-        public Queue<JobInfo> jobQueue = new();
+        public Queue<JobInfo> jobQueue = new Queue<JobInfo>();
 
         //存放全部的Job信息,用于根据JobId判定当前的Job是否已经存在
-        public Hashtable jobTable = new();
+        public Hashtable jobTable = new Hashtable();
 
         //存放已经完成转换的JobInfo,不管是否转换成功
-        public Hashtable finishedTable = new();
+        public Hashtable finishedTable = new Hashtable();
 
         public ConvertTaskManager()
         {
-            fac = new(new LimitedConcurrencyLevelTaskScheduler(Settings.Default.MaxConversionTasks));
+            fac = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(Settings.Default.MaxConversionTasks));
         }
 
         public static ConvertTaskManager getInstance()
@@ -93,7 +94,7 @@ namespace AirdPro.Asyncs
                 {
                     return;
                 }
-
+            
                 JobInfo jobInfo = null;
                 try
                 {
@@ -102,42 +103,15 @@ namespace AirdPro.Asyncs
                 catch
                 {
                 }
-
+            
                 if (jobInfo == null)
                 {
                     return;
                 }
-
-                fac.StartNew(() =>
-                {
-                    jobInfo.threadId = Thread.CurrentThread.ManagedThreadId;
-                    while (jobInfo.retryTimes > 0)
-                    {
-                        try
-                        {
-                            jobInfo.setStatus(RUNNING);
-                            Converter converter = new Converter(jobInfo);
-                            converter.doConvert();
-                            jobInfo.setStatus(FINISHED);
-                            break;
-                        }
-                        catch (Exception ex)
-                        {
-                            jobInfo.log(ex.ToString(), Status.Error);
-                            jobInfo.retryTimes--;
-                            if (jobInfo.retryTimes > 0)
-                            {
-                                jobInfo.log(Tag.Retrying_Left_Retry_Times + jobInfo.retryTimes);
-                            }
-                            else
-                            {
-                                jobInfo.setStatus(ERROR);
-                            }
-                        }
-                    }
-
-                    finishedJob(jobInfo);
-                }, jobInfo.tokenSource.Token);
+                
+                runJob(jobInfo);
+                Application.DoEvents();
+                // fac.StartNew(() => runJob(jobInfo), jobInfo.tokenSource.Token);
             }
         }
 
@@ -145,6 +119,37 @@ namespace AirdPro.Asyncs
         {
             jobQueue.Clear();
             jobTable.Clear();
+        }
+
+        public void runJob(JobInfo jobInfo)
+        {
+            jobInfo.threadId = Thread.CurrentThread.ManagedThreadId;
+            while (jobInfo.retryTimes > 0)
+            {
+                try
+                {
+                    jobInfo.setStatus(RUNNING);
+                    Converter converter = new Converter(jobInfo);
+                    converter.doConvert();
+                    jobInfo.setStatus(FINISHED);
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    jobInfo.log(ex.ToString(), Status.Error);
+                    jobInfo.retryTimes--;
+                    if (jobInfo.retryTimes > 0)
+                    {
+                        jobInfo.log(Tag.Retrying_Left_Retry_Times + jobInfo.retryTimes);
+                    }
+                    else
+                    {
+                        jobInfo.setStatus(ERROR);
+                    }
+                }
+
+                finishedJob(jobInfo);
+            }
         }
     }
 }

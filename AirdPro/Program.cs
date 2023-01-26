@@ -9,13 +9,16 @@
  */
 
 using System;
+using System.Security.Permissions;
+using System.Threading;
 using System.Windows.Forms;
 using AirdPro.Forms;
 using AirdPro.Storage.Handler;
+using pwiz.CLI.msdata;
 
 namespace AirdPro
 {
-    internal static class Program
+    static class Program
     {
         public static MainForm mainForm { get; private set; }
         public static ConversionForm conversionForm { get; private set; }
@@ -25,29 +28,42 @@ namespace AirdPro
         ///     The main entry point for the application.
         /// </summary>
         [STAThread]
+        [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.ControlAppDomain)]
         public static void Main(string[] args)
         {
-            try
-            {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                conversionForm = new ConversionForm();
-                conversionConfigHandler = new ConversionConfigHandler();
-                mainForm = new MainForm();
-                Application.Run(mainForm);
-            }
-            catch (Exception e)
-            {
-                HandleException(e);
-            }
+            Application.ThreadException += UIThread_UnhandledException;
+
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+            conversionForm = new ConversionForm();
+            conversionConfigHandler = new ConversionConfigHandler();
+            mainForm = new MainForm();
+            Application.Run(mainForm);
         }
 
         #region Exception handling
 
-        public static void HandleException(Exception e)
+        public static void HandleException(string title, Exception e)
         {
-            MessageBox.Show(e.ToString(), "Error");
-            return;
+            string message = e?.ToString() ?? "Unknown exception.";
+            if (e?.InnerException != null) message += "\n\nAdditional information: " + e.InnerException;
+            MessageBox.Show(message,
+                title,
+                MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1,
+                0, false);
+        }
+
+        private static void UIThread_UnhandledException(object sender, ThreadExceptionEventArgs e)
+        {
+            HandleException("Unhandled Exception", e.Exception);
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            HandleException("Unhandled Exception", e.ExceptionObject as Exception);
         }
 
         #endregion

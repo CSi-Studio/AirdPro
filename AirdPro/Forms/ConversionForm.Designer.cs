@@ -71,6 +71,8 @@ namespace AirdPro.Forms
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
             this.redisConsumer = new System.Windows.Forms.Timer(this.components);
+            this.timerTaskScan = new System.Windows.Forms.Timer(this.components);
+            this.cbAutoExe = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -89,6 +91,7 @@ namespace AirdPro.Forms
             // 
             // container.Panel2
             // 
+            this.container.Panel2.Controls.Add(this.cbAutoExe);
             this.container.Panel2.Controls.Add(this.label4);
             this.container.Panel2.Controls.Add(this.btnMirrorTrans);
             this.container.Panel2.Controls.Add(this.label5);
@@ -311,6 +314,18 @@ namespace AirdPro.Forms
             this.redisConsumer.Interval = 3000;
             this.redisConsumer.Tick += new System.EventHandler(this.redisConsumer_Tick);
             // 
+            // timerTaskScan
+            // 
+            this.timerTaskScan.Interval = 2000;
+            this.timerTaskScan.Tick += new System.EventHandler(this.timerTaskScan_Tick);
+            // 
+            // cbAutoExe
+            // 
+            resources.ApplyResources(this.cbAutoExe, "cbAutoExe");
+            this.cbAutoExe.Name = "cbAutoExe";
+            this.cbAutoExe.UseVisualStyleBackColor = true;
+            this.cbAutoExe.CheckedChanged += new System.EventHandler(this.cbAutoExe_CheckedChanged);
+            // 
             // ConversionForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -362,6 +377,8 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnMirrorTrans;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Timer timerTaskScan;
+        private System.Windows.Forms.CheckBox cbAutoExe;
     }
 }
 

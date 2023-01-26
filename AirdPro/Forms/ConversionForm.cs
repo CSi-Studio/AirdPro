@@ -11,7 +11,6 @@
 using AirdPro.Asyncs;
 using AirdPro.Constants;
 using AirdPro.Redis;
-using AirdPro.Utils;
 using System;
 using System.Collections;
 using System.Drawing;
@@ -21,6 +20,7 @@ using AirdPro.Properties;
 using AirdPro.Storage.Config;
 using AirdSDK.Utils;
 using ThermoFisher.CommonCore.Data;
+using System.ComponentModel;
 
 namespace AirdPro.Forms
 {
@@ -31,6 +31,7 @@ namespace AirdPro.Forms
         MirrorTransForm mirrorTransForm;
         ConversionConfigListForm configListForm;
         GlobalSettingForm globalSettingForm;
+        BackgroundWorker bw;
 
         public ConversionForm()
         {
@@ -41,7 +42,8 @@ namespace AirdPro.Forms
         {
             this.Text = SoftwareInfo.getVersion() + Const.Dash + NetworkUtil.getHostIP();
             RedisClient.getInstance();
-            ConvertTaskManager.getInstance().run();
+            bw = new BackgroundWorker();
+            bw.DoWork += (sender, e) => ConvertTaskManager.getInstance().run();
         }
 
         private void btnConvert_Click(object sender, EventArgs e)
@@ -51,10 +53,18 @@ namespace AirdPro.Forms
                 MessageBox.Show(Constants.Tag.No_File_Is_Selected);
                 return;
             }
+            doConvert();
+        }
 
+        public void doConvert()
+        {
+            if (lvFileList.Items.Count == 0)
+            {
+                return;
+            }
             foreach (ListViewItem item in lvFileList.Items)
             {
-                JobInfo jobInfo = (JobInfo) item.Tag;
+                JobInfo jobInfo = (JobInfo)item.Tag;
                 if (!ConvertTaskManager.getInstance().finishedTable.ContainsKey(jobInfo.getJobId()))
                 {
                     item.Tag = jobInfo;
@@ -64,7 +74,12 @@ namespace AirdPro.Forms
 
             try
             {
-                ConvertTaskManager.getInstance().run();
+                if (!bw.IsBusy)
+                {
+                    bw.RunWorkerAsync();
+                }
+
+                Application.DoEvents();
             }
             catch (Exception exception)
             {
@@ -225,7 +240,10 @@ namespace AirdPro.Forms
                     MessageBox.Show(Constants.Tag.Only_Finished_Job_Can_Rerun);
                 }
 
-                ConvertTaskManager.getInstance().run();
+                if (!bw.IsBusy)
+                {
+                    bw.RunWorkerAsync();
+                }
             }
         }
 
@@ -350,6 +368,16 @@ namespace AirdPro.Forms
         private void btnMirrorTrans_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void timerTaskScan_Tick(object sender, EventArgs e)
+        {
+            doConvert();
+        }
+
+        private void cbAutoExe_CheckedChanged(object sender, EventArgs e)
+        {
+            timerTaskScan.Enabled = cbAutoExe.Checked;
         }
     }
 }
