@@ -69,7 +69,7 @@ namespace AirdPro.Converters
         protected int spectraNumForIntensityPrecisionPredict = 5; //用于ComboComp预测Intensity精度时的采样光谱数
         protected int spectraNumForComboCompPredict = 50;//用于ComboComp预测mz压缩组合时的采样光谱数
 
-        public ChromatogramIndex chromatogramIndex = new ChromatogramIndex();
+        public ChromatogramIndex chromatogramIndex;
 
         public Converter(JobInfo jobInfo)
         {
@@ -775,66 +775,16 @@ namespace AirdPro.Converters
             {
                 return;
             }
+
+            chromatogramIndex = new ChromatogramIndex();
             compressor.initForChromatogram();
 
             int totalSize = chromatogramList.size();
             int progress = 0;
             jobInfo.log(null, Tag.progress(Tag.Chroma, progress, totalSize));
-            // int ticIndex = chromatogramList.find("TIC");
-            // List<double> rtList = new List<double>();
-            // List<double> ticList = new List<double>();
-            // if (ticIndex >= 0 && ticIndex < chromatogramList.size())
-            // {
-            //     Chromatogram chromatogram = chromatogramList.chromatogram(ticIndex, true);
-            //     BinaryDataDouble times = chromatogram.getTimeArray().data;
-            //     BinaryDataDouble intensities = chromatogram.getTimeArray().data;
-            //     for (int i = 0; i < times.Count; i++)
-            //     {
-            //         rtList.Add(times[i]);
-            //         ticList.Add(intensities[i]);
-            //     }
-            //
-            //     progress++;
-            //     jobInfo.log(null, Tag.progress(Tag.Chroma, progress, totalSize));
-            // }
-            //
-            // int bpcIndex = chromatogramList.find("BPC");
-            // List<double> basePeakList = new List<double>();
-            // if (bpcIndex >= 0 && bpcIndex < chromatogramList.size())
-            // {
-            //     Chromatogram chromatogram = chromatogramList.chromatogram(bpcIndex, true);
-            //     BinaryDataDouble times = chromatogram.getTimeArray().data;
-            //     BinaryDataDouble intensities = chromatogram.getTimeArray().data;
-            //     if (rtList.Count == 0)
-            //     {
-            //         for (int i = 0; i < times.Count; i++)
-            //         {
-            //             rtList.Add(times[i]);
-            //             basePeakList.Add(intensities[i]);
-            //         }
-            //     }
-            //     else
-            //     {
-            //         for (int i = 0; i < times.Count; i++)
-            //         {
-            //             basePeakList.Add(intensities[i]);
-            //         }
-            //     }
-            //     progress++;
-            //     jobInfo.log(null, Tag.progress(Tag.Chroma, progress, totalSize));
-            // }
-
-            // chromatogramIndex.ticList = ticList;
-            // chromatogramIndex.rtList = rtList;
-            // chromatogramIndex.basePeakList = basePeakList;
             chromatogramIndex.startPtr = startPosition;
             for (int i = 0; i < chromatogramList.size(); i++)
             {
-                // if (i == ticIndex || i == bpcIndex)
-                // {
-                //     continue;
-                // }
-
                 Chromatogram chromatogram = chromatogramList.chromatogram(i, true);
                 TempScanChroma tempScan = new TempScanChroma();
                 chromatogramIndex.nums.Add(i);

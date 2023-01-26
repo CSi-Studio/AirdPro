@@ -157,7 +157,7 @@ namespace AirdPro.Algorithms
             for (int t = 0; t < size; t++)
             {
                 rtArray[t] = DataUtil.fetchRt(rtArray[t]);
-                intensityArray[t] = DataUtil.fetchIntensity(intData[t], intensityPrecision);
+                intensityArray[t] = DataUtil.fetchIntensity(intData[t], 1);
             }
 
             byte[] compressedRtArray = rtByteComp4Chroma.encode(ByteTrans.intToByte(rtIntComp4Chroma.encode(rtArray)));
