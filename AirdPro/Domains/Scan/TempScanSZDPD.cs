@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using AirdPro.Constants;
 using AirdSDK.Beans;
 
 namespace AirdPro.Domains
@@ -22,20 +23,32 @@ namespace AirdPro.Domains
         public List<float> injectionTimes;
         public List<double> basePeakIntensities;
         public List<double> basePeakMzs;
+        public List<string> activators;
+        public List<float> energies;
+        public List<string> polarities;
+        public List<string> msTypes;
+        public List<string> filterStrings;
         public List<List<CV>> cvs;
         public byte[] mzArrayBytes;
         public byte[] intArrayBytes;
         public byte[] tagArrayBytes;
 
         public TempScanSZDPD(List<int> nums, List<double> rts, List<long> tics, List<double> basePeakIntensities,
-            List<double> basePeakMzs,List<float> inectionTimes, List<List<CV>> cvs)
+            List<double> basePeakMzs,List<float> injectionTimes,
+            List<string> filterStrings, List<string> polarities, List<float> energies, List<string> activators, List<string> msTypes,
+            List<List<CV>> cvs)
         {
             this.nums = nums;
             this.rts = rts;
             this.tics = tics;
             this.basePeakIntensities = basePeakIntensities;
             this.basePeakMzs = basePeakMzs;
-            this.injectionTimes = inectionTimes;
+            this.injectionTimes = injectionTimes;
+            this.filterStrings = filterStrings;
+            this.polarities = polarities;
+            this.activators = activators;
+            this.energies = energies;
+            this.msTypes = msTypes;
             this.cvs = cvs;
         }
 

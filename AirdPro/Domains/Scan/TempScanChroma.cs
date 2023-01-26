@@ -19,6 +19,10 @@ namespace AirdPro.Domains
     {
         public int num;
         public string id;
+        public string activator;
+        public float energy;
+        public string polarity;
+        public string msType;
         public WindowRange precursor;
         public WindowRange product;
         public List<CV> cvs;
@@ -30,11 +34,15 @@ namespace AirdPro.Domains
         {
         }
 
-        public TempScanChroma(int num, WindowRange precursor, WindowRange product, List<CV> cvs)
+        public TempScanChroma(int num, WindowRange precursor, WindowRange product, string activator, float energy, string polarity, string msType, List<CV> cvs)
         {
             this.num = num;
             this.precursor = precursor;
             this.product = product;
+            this.activator = activator;
+            this.energy = energy;
+            this.polarity = polarity;
+            this.msType = msType;
             this.cvs = cvs;
         }
     }

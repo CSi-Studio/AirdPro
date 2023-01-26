@@ -36,6 +36,14 @@ namespace AirdPro.Domains
         //injection time
         public float injectionTime;
 
+        public string activator;
+
+        public float energy;
+
+        public string polarity;
+
+        public string msType;
+
         //对应的ms1的序号
         public int pNum;
 
@@ -45,6 +53,6 @@ namespace AirdPro.Domains
         public WindowRange precursor;
 
         //PSI CV PSI可控词汇表
-        public List<CV> cvList;
+        public List<CV> cvs;
     }
 }

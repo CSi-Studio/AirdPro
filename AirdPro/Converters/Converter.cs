@@ -32,7 +32,6 @@ using AirdSDK.Enums;
 using AirdSDK.Utils;
 using FileUtil = AirdPro.Utils.FileUtil;
 using pwiz.CLI.util;
-using System.Windows.Interop;
 
 namespace AirdPro.Converters
 {
@@ -64,10 +63,6 @@ namespace AirdPro.Converters
         protected long startPosition = 0; //文件指针
         protected int totalSize = 0; //总计的谱图数目
         
-        protected string activator; //HCD,CID....
-        protected float energy; //轰击能
-        protected string msType; //Profile, Centroided
-        protected string polarity; //Negative, Positive
         protected int intensityPrecision = 1; //Intensity默认精确到个位数
         protected int mobiPrecision = 10000000; //mobility默认精确到小数点后7位
 
@@ -388,6 +383,13 @@ namespace AirdPro.Converters
                 index.basePeakIntensities.AddRange(ts.basePeakIntensities);
                 index.basePeakMzs.AddRange(ts.basePeakMzs);
                 index.injectionTimes.AddRange(ts.injectionTimes);
+
+                index.polarities.AddRange(ts.polarities);
+                index.energies.AddRange(ts.energies);
+                index.activators.AddRange(ts.activators);
+                index.filterStrings.AddRange(ts.filterStrings);
+                index.msTypes.AddRange(ts.msTypes);
+
                 index.cvList.AddRange(ts.cvs);
                 index.mzs.Add(ts.mzArrayBytes.Length);
                 index.ints.Add(ts.intArrayBytes.Length);
@@ -408,6 +410,13 @@ namespace AirdPro.Converters
                 index.basePeakIntensities.Add(ts.basePeakIntensity);
                 index.injectionTimes.Add(ts.injectionTime);
                 index.basePeakMzs.Add(ts.basePeakMz);
+
+                index.polarities.Add(ts.polarity);
+                index.energies.Add(ts.energy);
+                index.activators.Add(ts.activator);
+                index.filterStrings.Add(ts.filterString);
+                index.msTypes.Add(ts.msType);
+
                 index.cvList.Add(ts.cvs);
                 index.mzs.Add(ts.mzArrayBytes.Length);
                 index.ints.Add(ts.intArrayBytes.Length);
@@ -550,11 +559,11 @@ namespace AirdPro.Converters
                 return ms1;
             }
             Scan scan = spectrum.scanList.scans[0];
-            ms1.cvList = CVUtil.trans(spectrum.cvParams);
+            ms1.cvs = CVUtil.trans(spectrum.cvParams);
             //将对应scan的cvParams也冗余到ms1上来
             if (scan.cvParams != null)
             {
-                ms1.cvList.AddRange(CVUtil.trans(scan.cvParams));
+                ms1.cvs.AddRange(CVUtil.trans(scan.cvParams));
             }
 
             ms1.filterString = CVUtil.parseFilterString(scan, jobInfo);
@@ -568,15 +577,8 @@ namespace AirdPro.Converters
                 CVUtil.parseMobility(scan, mobiInfo);
             }
 
-            if (msType == null)
-            {
-                msType = CVUtil.parseMsType(spectrum);
-            }
-
-            if (polarity == null)
-            {
-                polarity = CVUtil.parsePolarity(spectrum);
-            }
+            ms1.msType = CVUtil.parseMsType(spectrum);
+            ms1.polarity = CVUtil.parsePolarity(spectrum);
             return ms1;
         }
 
@@ -606,30 +608,20 @@ namespace AirdPro.Converters
 
             if (spectrum.scanList.scans.Count != 1) return ms2;
 
-            if (activator == null)
-            {
-                var result = CVUtil.parseActivator(spectrum.precursors[0].activation);
-                activator = result.activator;
-                energy = result.energy;
-            }
-            if (msType == null)
-            {
-                msType = CVUtil.parseMsType(spectrum);
-            }
-
-            if (polarity == null)
-            {
-                polarity = CVUtil.parsePolarity(spectrum);
-            }
-
+          
+            var result = CVUtil.parseActivator(spectrum.precursors[0].activation);
+            ms2.activator = result.activator;
+            ms2.energy = result.energy;
+            ms2.msType = CVUtil.parseMsType(spectrum);
+            ms2.polarity = CVUtil.parsePolarity(spectrum);
             Scan scan = spectrum.scanList.scans[0];
             if (mobiInfo.unit == null || mobiInfo.type == null)
             {
                 CVUtil.parseMobility(scan, mobiInfo);
             }
             ms2.filterString = CVUtil.parseFilterString(scan, jobInfo);
-            ms2.cvList = CVUtil.trans(spectrum.cvParams);
-            if (scan.cvParams != null) ms2.cvList.AddRange(CVUtil.trans(scan.cvParams));
+            ms2.cvs = CVUtil.trans(spectrum.cvParams);
+            if (scan.cvParams != null) ms2.cvs.AddRange(CVUtil.trans(scan.cvParams));
             ms2.rt = CVUtil.parseRT(scan, jobInfo);
             ms2.tic = CVUtil.parseTIC(spectrum);
             ms2.basePeakIntensity = CVUtil.parseBasePeakIntensity(spectrum);
@@ -736,7 +728,7 @@ namespace AirdPro.Converters
                     // WindowRange range = new WindowRange(index.mzStart, index.mzEnd, index.precursorMz);
                     WindowRange range = index.precursor;
                     ms2Ranges.Add(range);
-                    TempScan ts = new TempScan(index.num, index.rt, index.tic, index.basePeakIntensity, index.basePeakMz, index.injectionTime, index.cvList);
+                    TempScan ts = new TempScan(index);
                     if (jobInfo.ionMobility)
                     {
                         compressor.compressMobility(spectrumList.spectrum(index.num, true), ts);
@@ -749,6 +741,12 @@ namespace AirdPro.Converters
                     blockIndex.nums.Add(ts.num);
                     blockIndex.rts.Add(ts.rt);
                     blockIndex.tics.Add(ts.tic);
+
+                    blockIndex.polarities.Add(ts.polarity);
+                    blockIndex.energies.Add(ts.energy);
+                    blockIndex.activators.Add(ts.activator);
+                    blockIndex.tics.Add(ts.tic);
+
                     blockIndex.basePeakIntensities.Add(ts.basePeakIntensity);
                     blockIndex.basePeakMzs.Add(ts.basePeakMz);
                     blockIndex.cvList.Add(ts.cvs);
@@ -810,7 +808,6 @@ namespace AirdPro.Converters
                         basePeakList.Add(intensities[i]);
                     }
                 }
-               
             }
 
             List<TempScanChroma> tempScanList = new List<TempScanChroma>();
@@ -830,6 +827,7 @@ namespace AirdPro.Converters
                 try
                 {
                     tempScan.precursor = CVUtil.parseIsolationWindow(chromatogram.precursor, jobInfo);
+                    // tempScan.product = CVUtil.parseIsolationWindow(chromatogram.product, jobInfo);
                 }
                 catch (Exception e)
                 {
@@ -844,17 +842,13 @@ namespace AirdPro.Converters
                     throw e;
                 }
 
-                if (activator == null)
-                {
-                    var result = CVUtil.parseActivator(chromatogram.precursor.activation);
-                    activator = result.activator;
-                    energy = result.energy;
-                }
+                var result = CVUtil.parseActivator(chromatogram.precursor.activation);
+                tempScan.activator = result.activator;
+                tempScan.energy = result.energy;
+                tempScan.polarity = CVUtil.parsePolarity(chromatogram);
+                tempScan.msType = CVUtil.parseMsType(chromatogram);
+                
                 tempScanList.Add(tempScan);
-                if (polarity == null)
-                {
-                    polarity = CVUtil.parsePolarity(chromatogram);
-                }
             }
         }
 
@@ -871,13 +865,67 @@ namespace AirdPro.Converters
             airdInfo.type = jobInfo.type;
             airdInfo.totalCount = msd.run.spectrumList.size();
             airdInfo.creator = jobInfo.config.creator;
-            airdInfo.activator = activator;
-            airdInfo.energy = energy;
-            // airdInfo.rtUnit = rtUnit;
 
+            HashSet<string> activators = new HashSet<string>();
+            HashSet<float> energies = new HashSet<float>();
+            HashSet<string> polarities = new HashSet<string>();
+            HashSet<string> msTypes = new HashSet<string>();
+            HashSet<string> filterStrings = new HashSet<string>();
+            for (var i = 0; i < indexList.Count; i++)
+            {
+                activators.UnionWith(indexList[i].activators);
+                energies.UnionWith(indexList[i].energies);
+                polarities.UnionWith(indexList[i].polarities);
+                msTypes.UnionWith(indexList[i].msTypes);
+                filterStrings.UnionWith(indexList[i].filterStrings);
+            }
+            if (activators.Count == 1)
+            {
+                airdInfo.activator = activators.GetEnumerator().Current;
+                for (var i = 0; i < indexList.Count; i++)
+                {
+                    indexList[i].activators = null;
+                }
+            }
+
+            if (energies.Count == 1)
+            {
+                airdInfo.energy = energies.GetEnumerator().Current;
+                for (var i = 0; i < indexList.Count; i++)
+                {
+                    indexList[i].energies = null;
+                }
+            }
+
+            if (polarities.Count == 1)
+            {
+                airdInfo.polarity = polarities.GetEnumerator().Current;
+                for (var i = 0; i < indexList.Count; i++)
+                {
+                    indexList[i].polarities = null;
+                }
+            }
+
+            if (msTypes.Count == 1)
+            {
+                airdInfo.msType = msTypes.GetEnumerator().Current;
+                for (var i = 0; i < indexList.Count; i++)
+                {
+                    indexList[i].msTypes = null;
+                }
+            } 
+            
+            if (filterStrings.Count == 1)
+            {
+                airdInfo.filterString = filterStrings.GetEnumerator().Current;
+                for (var i = 0; i < indexList.Count; i++)
+                {
+                    indexList[i].filterStrings = null;
+                }
+            }
+
+            // airdInfo.rtUnit = rtUnit;
             airdInfo.mobiInfo = mobiInfo;
-            airdInfo.msType = msType;
-            airdInfo.polarity = polarity;
             //Scan index and window range info
             airdInfo.rangeList = ranges;
 

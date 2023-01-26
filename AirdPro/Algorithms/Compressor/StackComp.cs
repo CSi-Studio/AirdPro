@@ -50,6 +50,13 @@ namespace AirdPro.Algorithms
                     List<long> tics = new List<long>();
                     List<double> basePeakIntensities = new List<double>();
                     List<double> basePeakMzs = new List<double>();
+
+                    List<string> filterStrings = new List<string>();
+                    List<string> polarities = new List<string>();
+                    List<string> activators = new List<string>();
+                    List<string> msTypes = new List<string>();
+                    List<float> energies = new List<float>();
+
                     List<float> injectionTimes = new List<float>();
                     List<List<CV>> cvs = new List<List<CV>>();
                     List<Spectrum> spectrumGroup = new List<Spectrum>();
@@ -68,11 +75,18 @@ namespace AirdPro.Algorithms
                         basePeakIntensities.Add(scanIndex.basePeakIntensity);
                         injectionTimes.Add(scanIndex.injectionTime);
                         basePeakMzs.Add(scanIndex.basePeakMz);
-                        cvs.Add(scanIndex.cvList);
+
+                        filterStrings.Add(scanIndex.filterString);
+                        polarities.Add(scanIndex.polarity);
+                        energies.Add(scanIndex.energy);
+                        activators.Add(scanIndex.activator);
+                        msTypes.Add(scanIndex.msType);
+
+                        cvs.Add(scanIndex.cvs);
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
 
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs, injectionTimes, cvs);
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs, injectionTimes, filterStrings, polarities, energies, activators, msTypes, cvs);
 
                     compress(spectrumGroup, ts);
                     table.Add(i, ts);
@@ -92,6 +106,12 @@ namespace AirdPro.Algorithms
                     List<double> basePeakMzs = new List<double>();
                     List<float> injectionTimes = new List<float>();
 
+                    List<string> filterStrings = new List<string>();
+                    List<string> polarities = new List<string>();
+                    List<string> activators = new List<string>();
+                    List<string> msTypes = new List<string>();
+                    List<float> energies = new List<float>();
+
                     List<List<CV>> cvs = new List<List<CV>>();
                     List<Spectrum> spectrumGroup = new List<Spectrum>();
                     for (int k = 0; k < layers; k++)
@@ -109,11 +129,18 @@ namespace AirdPro.Algorithms
                         basePeakIntensities.Add(scanIndex.basePeakIntensity);
                         injectionTimes.Add(scanIndex.injectionTime);
                         basePeakMzs.Add(scanIndex.basePeakMz);
-                        cvs.Add(scanIndex.cvList);
+
+                        filterStrings.Add(scanIndex.filterString);
+                        polarities.Add(scanIndex.polarity);
+                        energies.Add(scanIndex.energy);
+                        activators.Add(scanIndex.activator);
+                        msTypes.Add(scanIndex.msType);
+
+                        cvs.Add(scanIndex.cvs);
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
 
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs, injectionTimes, cvs);
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs, injectionTimes, filterStrings, polarities, energies, activators, msTypes, cvs);
                     compress(spectrumGroup, ts);
                     converter.addToIndex(index, ts);
                 }
@@ -136,44 +163,14 @@ namespace AirdPro.Algorithms
                     List<long> tics = new List<long>();
                     List<double> basePeakIntensities = new List<double>();
                     List<double> basePeakMzs = new List<double>();
-                    List<float> inectionTimes = new List<float>();
-                    List<List<CV>> cvs = new List<List<CV>>();
-                    List<Spectrum> spectrumGroup = new List<Spectrum>();
-                    for (int k = 0; k < layers; k++)
-                    {
-                        int realNum = i * layers + k;
-                        if (realNum >= ms2List.Count)
-                        {
-                            break;
-                        }
-
-                        MsIndex scanIndex = ms2List[realNum];
-                        rts.Add(scanIndex.rt);
-                        nums.Add(scanIndex.num);
-                        tics.Add(scanIndex.tic);
-                        basePeakIntensities.Add(scanIndex.basePeakIntensity);
-                        basePeakMzs.Add(scanIndex.basePeakMz);
-                        inectionTimes.Add(scanIndex.injectionTime);
-                        cvs.Add(scanIndex.cvList);
-                        spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
-                    }
-
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs, inectionTimes, cvs);
-                    compress(spectrumGroup, ts);
-                    table.Add(i, ts);
-                });
-                converter.writeToFile(table, index);
-            }
-            else
-            {
-                for (int i = 0; i < iter; i++)
-                {
-                    List<double> rts = new List<double>();
-                    List<int> nums = new List<int>();
-                    List<long> tics = new List<long>();
-                    List<double> basePeakIntensities = new List<double>();
-                    List<double> basePeakMzs = new List<double>();
                     List<float> injectionTimes = new List<float>();
+
+                    List<string> filterStrings = new List<string>();
+                    List<string> polarities = new List<string>();
+                    List<string> activators = new List<string>();
+                    List<string> msTypes = new List<string>();
+                    List<float> energies = new List<float>();
+
                     List<List<CV>> cvs = new List<List<CV>>();
                     List<Spectrum> spectrumGroup = new List<Spectrum>();
                     for (int k = 0; k < layers; k++)
@@ -191,11 +188,70 @@ namespace AirdPro.Algorithms
                         basePeakIntensities.Add(scanIndex.basePeakIntensity);
                         basePeakMzs.Add(scanIndex.basePeakMz);
                         injectionTimes.Add(scanIndex.injectionTime);
-                        cvs.Add(scanIndex.cvList);
+
+                        filterStrings.Add(scanIndex.filterString);
+                        polarities.Add(scanIndex.polarity);
+                        energies.Add(scanIndex.energy);
+                        activators.Add(scanIndex.activator);
+                        msTypes.Add(scanIndex.msType);
+
+                        cvs.Add(scanIndex.cvs);
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
 
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs, injectionTimes, cvs);
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs, injectionTimes, filterStrings, polarities, energies, activators, msTypes, cvs);
+
+                    compress(spectrumGroup, ts);
+                    table.Add(i, ts);
+                });
+                converter.writeToFile(table, index);
+            }
+            else
+            {
+                for (int i = 0; i < iter; i++)
+                {
+                    List<double> rts = new List<double>();
+                    List<int> nums = new List<int>();
+                    List<long> tics = new List<long>();
+                    List<double> basePeakIntensities = new List<double>();
+                    List<double> basePeakMzs = new List<double>();
+                    List<float> injectionTimes = new List<float>();
+
+                    List<string> filterStrings = new List<string>();
+                    List<string> polarities = new List<string>();
+                    List<string> activators = new List<string>();
+                    List<string> msTypes = new List<string>();
+                    List<float> energies = new List<float>();
+
+                    List<List<CV>> cvs = new List<List<CV>>();
+                    List<Spectrum> spectrumGroup = new List<Spectrum>();
+                    for (int k = 0; k < layers; k++)
+                    {
+                        int realNum = i * layers + k;
+                        if (realNum >= ms2List.Count)
+                        {
+                            break;
+                        }
+
+                        MsIndex scanIndex = ms2List[realNum];
+                        rts.Add(scanIndex.rt);
+                        nums.Add(scanIndex.num);
+                        tics.Add(scanIndex.tic);
+                        basePeakIntensities.Add(scanIndex.basePeakIntensity);
+                        basePeakMzs.Add(scanIndex.basePeakMz);
+                        injectionTimes.Add(scanIndex.injectionTime);
+
+                        filterStrings.Add(scanIndex.filterString);
+                        polarities.Add(scanIndex.polarity);
+                        energies.Add(scanIndex.energy);
+                        activators.Add(scanIndex.activator);
+                        msTypes.Add(scanIndex.msType);
+
+                        cvs.Add(scanIndex.cvs);
+                        spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
+                    }
+
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs, injectionTimes, filterStrings, polarities, energies, activators, msTypes, cvs);
                     compress(spectrumGroup, ts);
                     converter.addToIndex(index, ts);
                 }

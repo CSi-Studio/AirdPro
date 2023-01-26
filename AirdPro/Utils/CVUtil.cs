@@ -194,6 +194,15 @@ public class CVUtil
         return MSType.UNKNOWN;
     }
 
+    public static string parseMsType(Chromatogram chromatogram)
+    {
+        if (!chromatogram.cvParamChild(CVID.MS_profile_spectrum).cvid.Equals(CVID.CVID_Unknown))
+            return MSType.PROFILE;
+        if (!chromatogram.cvParamChild(CVID.MS_centroid_spectrum).cvid.Equals(CVID.CVID_Unknown))
+            return MSType.CENTROIDED;
+        return MSType.UNKNOWN;
+    }
+
     /**
          * 解析activation以及对应的energy
          * 需要从ms2的谱图上获取
@@ -332,7 +341,10 @@ public class CVUtil
     public static float parseInjectionTime(Scan scan)
     {
         var cv = scan.cvParamChild(CVID.MS_ion_injection_time);
-        if (cv != null) return (float) cv.value;
+        if (cv != null && cv.value != null)
+        {
+            return (float)Math.Round(cv.value * 10000) / 10000;
+        }
 
         return -1;
     }

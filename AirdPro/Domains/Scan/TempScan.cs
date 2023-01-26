@@ -24,6 +24,11 @@ namespace AirdPro.Domains
         public double basePeakIntensity;
         public double basePeakMz;
         public List<CV> cvs;
+        public string activator;
+        public float energy;
+        public string polarity;
+        public string msType;
+        public string filterString;
 
         public byte[] mzArrayBytes;
         public byte[] intArrayBytes;
@@ -38,6 +43,22 @@ namespace AirdPro.Domains
             this.basePeakIntensity = basePeakIntensity;
             this.basePeakMz = basePeakMz;
             this.cvs = cvs;
+        }
+
+        public TempScan(MsIndex msIndex)
+        {
+            this.num = msIndex.num;
+            this.rt = msIndex.rt;
+            this.tic = msIndex.tic;
+            this.injectionTime = msIndex.injectionTime;
+            this.basePeakIntensity = msIndex.basePeakIntensity;
+            this.basePeakMz = msIndex.basePeakMz;
+            this.activator = msIndex.activator;
+            this.energy = msIndex.energy;
+            this.polarity = msIndex.polarity;
+            this.msType = msIndex.msType;
+            this.filterString = msIndex.filterString;
+            this.cvs = msIndex.cvs;
         }
 
         public int CompareTo(object obj)
