@@ -5,6 +5,7 @@
         public static string Empty = "";
         public static string MS1 = "MS1:";
         public static string MS2 = "MS2:";
+        public static string Chroma = "Chroma:";
         public static string Preprocessing = "Preprocessing:";
         public static string Pretreatment = "Pretreatment:";
         public static string Pre = "Pre:";

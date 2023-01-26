@@ -20,6 +20,7 @@ using AirdPro.Utils;
 using AirdSDK.Beans;
 using AirdSDK.Compressor;
 using pwiz.CLI.msdata;
+using pwiz.CLI.tradata;
 
 namespace AirdPro.Algorithms
 {
@@ -155,12 +156,12 @@ namespace AirdPro.Algorithms
             int[] intensityArray = new int[size];
             for (int t = 0; t < size; t++)
             {
-                rtArray[t] = DataUtil.fetchMz(rtArray[t], mzPrecision);
+                rtArray[t] = DataUtil.fetchRt(rtArray[t]);
                 intensityArray[t] = DataUtil.fetchIntensity(intData[t], intensityPrecision);
             }
 
-            byte[] compressedRtArray = ComboComp.encode(mzIntComp, mzByteComp, rtArray);
-            byte[] compressedIntArray = ComboComp.encode(intIntComp, intByteComp, intensityArray);
+            byte[] compressedRtArray = rtByteComp4Chroma.encode(ByteTrans.intToByte(rtIntComp4Chroma.encode(rtArray)));
+            byte[] compressedIntArray = intByteComp4Chroma.encode(ByteTrans.intToByte(intIntComp4Chroma.encode(intensityArray)));
 
             ts.rtArrayBytes = compressedRtArray;
             ts.intArrayBytes = compressedIntArray;
@@ -242,4 +243,6 @@ namespace AirdPro.Algorithms
             ts.mobilityArrayBytes = compressedMobilityArray;
         }
     }
+
+
 }

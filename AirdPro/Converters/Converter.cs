@@ -43,8 +43,8 @@ namespace AirdPro.Converters
 
         public JobInfo jobInfo;
         protected Stopwatch stopwatch = new Stopwatch();
-        protected FileStream airdStream;
-        protected FileStream airdJsonStream;
+        public FileStream airdStream;
+        public FileStream airdJsonStream;
         protected List<WindowRange> ranges = new List<WindowRange>(); //SWATH/DIA Window的窗口
         protected Hashtable rangeTable = new Hashtable(); //用于存放SWATH/DIA窗口的信息,key为mz
         protected List<BlockIndex> indexList = new List<BlockIndex>(); //用于存储的全局的SWATH List
@@ -60,7 +60,7 @@ namespace AirdPro.Converters
         public MobiInfo mobiInfo = new MobiInfo();
 
         protected long fileSize; //厂商文件大小
-        protected long startPosition = 0; //文件指针
+        public long startPosition = 0; //文件指针
         protected int totalSize = 0; //总计的谱图数目
         
         protected int intensityPrecision = 1; //Intensity默认精确到个位数
@@ -69,7 +69,7 @@ namespace AirdPro.Converters
         protected int spectraNumForIntensityPrecisionPredict = 5; //用于ComboComp预测Intensity精度时的采样光谱数
         protected int spectraNumForComboCompPredict = 50;//用于ComboComp预测mz压缩组合时的采样光谱数
 
-        protected ChromatogramIndex chromatogramIndex = new ChromatogramIndex();
+        public ChromatogramIndex chromatogramIndex = new ChromatogramIndex();
 
         public Converter(JobInfo jobInfo)
         {
@@ -237,7 +237,7 @@ namespace AirdPro.Converters
                     //如果全部扫描下来都没有MS2, 说明是Full Scan扫描模式,设置为DDA
                     if (CVUtil.parseMsLevel(spectrum).Equals(MsLevel.MS2))
                     {
-                        double width = CVUtil.parsePrecursorWidth(spectrum.precursors[0], jobInfo);
+                        double width = CVUtil.parsePrecursorWidth(spectrum.precursors[0].isolationWindow, jobInfo);
                         //然后判断前体的宽度范围,如果范围小于4,则被预测为DDA模式,否则会被认定为DIA模式
                         if (width < 4)
                         {
@@ -771,63 +771,85 @@ namespace AirdPro.Converters
 
         public void compressChromatograms()
         {
-            int ticIndex = chromatogramList.find("TIC");
-            List<double> rtList = new List<double>();
-            List<double> ticList = new List<double>();
-            if (ticIndex >= 0 && ticIndex < chromatogramList.size())
+            if (chromatogramList == null || chromatogramList.size() == 0)
             {
-                Chromatogram chromatogram = chromatogramList.chromatogram(ticIndex, true);
-                BinaryDataDouble times = chromatogram.getTimeArray().data;
-                BinaryDataDouble intensities = chromatogram.getTimeArray().data;
-                for (int i = 0; i < times.Count; i++)
-                {
-                    rtList.Add(times[i]);
-                    ticList.Add(intensities[i]);
-                }
+                return;
             }
+            compressor.initForChromatogram();
 
-            int bpcIndex = chromatogramList.find("BPC");
-            List<double> basePeakList = new List<double>();
-            if (bpcIndex >= 0 && bpcIndex < chromatogramList.size())
-            {
-                Chromatogram chromatogram = chromatogramList.chromatogram(bpcIndex, true);
-                BinaryDataDouble times = chromatogram.getTimeArray().data;
-                BinaryDataDouble intensities = chromatogram.getTimeArray().data;
-                if (rtList.Count == 0)
-                {
-                    for (int i = 0; i < times.Count; i++)
-                    {
-                        rtList.Add(times[i]);
-                        basePeakList.Add(intensities[i]);
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < times.Count; i++)
-                    {
-                        basePeakList.Add(intensities[i]);
-                    }
-                }
-            }
+            int totalSize = chromatogramList.size();
+            int progress = 0;
+            jobInfo.log(null, Tag.progress(Tag.Chroma, progress, totalSize));
+            // int ticIndex = chromatogramList.find("TIC");
+            // List<double> rtList = new List<double>();
+            // List<double> ticList = new List<double>();
+            // if (ticIndex >= 0 && ticIndex < chromatogramList.size())
+            // {
+            //     Chromatogram chromatogram = chromatogramList.chromatogram(ticIndex, true);
+            //     BinaryDataDouble times = chromatogram.getTimeArray().data;
+            //     BinaryDataDouble intensities = chromatogram.getTimeArray().data;
+            //     for (int i = 0; i < times.Count; i++)
+            //     {
+            //         rtList.Add(times[i]);
+            //         ticList.Add(intensities[i]);
+            //     }
+            //
+            //     progress++;
+            //     jobInfo.log(null, Tag.progress(Tag.Chroma, progress, totalSize));
+            // }
+            //
+            // int bpcIndex = chromatogramList.find("BPC");
+            // List<double> basePeakList = new List<double>();
+            // if (bpcIndex >= 0 && bpcIndex < chromatogramList.size())
+            // {
+            //     Chromatogram chromatogram = chromatogramList.chromatogram(bpcIndex, true);
+            //     BinaryDataDouble times = chromatogram.getTimeArray().data;
+            //     BinaryDataDouble intensities = chromatogram.getTimeArray().data;
+            //     if (rtList.Count == 0)
+            //     {
+            //         for (int i = 0; i < times.Count; i++)
+            //         {
+            //             rtList.Add(times[i]);
+            //             basePeakList.Add(intensities[i]);
+            //         }
+            //     }
+            //     else
+            //     {
+            //         for (int i = 0; i < times.Count; i++)
+            //         {
+            //             basePeakList.Add(intensities[i]);
+            //         }
+            //     }
+            //     progress++;
+            //     jobInfo.log(null, Tag.progress(Tag.Chroma, progress, totalSize));
+            // }
 
-            List<TempScanChroma> tempScanList = new List<TempScanChroma>();
+            // chromatogramIndex.ticList = ticList;
+            // chromatogramIndex.rtList = rtList;
+            // chromatogramIndex.basePeakList = basePeakList;
+            chromatogramIndex.startPtr = startPosition;
             for (int i = 0; i < chromatogramList.size(); i++)
             {
-                if (i == ticIndex || i == bpcIndex)
-                {
-                    continue;
-                }
+                // if (i == ticIndex || i == bpcIndex)
+                // {
+                //     continue;
+                // }
 
-                Chromatogram chromatogram = chromatogramList.chromatogram(i, false);
+                Chromatogram chromatogram = chromatogramList.chromatogram(i, true);
                 TempScanChroma tempScan = new TempScanChroma();
-                tempScan.num = i;
-                tempScan.id = chromatogram.id;
-                tempScan.cvs = CVUtil.trans(chromatogram.cvParams);
+                chromatogramIndex.nums.Add(i);
+                chromatogramIndex.ids.Add(chromatogram.id);
+                chromatogramIndex.cvs.Add(CVUtil.trans(chromatogram.cvParams));
 
+                var result = CVUtil.parseActivator(chromatogram.precursor.activation);
+                chromatogramIndex.activators.Add(result.activator);
+                chromatogramIndex.energies.Add(result.energy);
+                chromatogramIndex.polarities.Add(CVUtil.parsePolarity(chromatogram));
+                
                 try
                 {
-                    tempScan.precursor = CVUtil.parseIsolationWindow(chromatogram.precursor, jobInfo);
-                    // tempScan.product = CVUtil.parseIsolationWindow(chromatogram.product, jobInfo);
+                    chromatogramIndex.precursors.Add(CVUtil.parseIsolationWindow(chromatogram.precursor, jobInfo));
+                    chromatogramIndex.products.Add(CVUtil.parseIsolationWindow(chromatogram.product.isolationWindow, jobInfo));
                 }
                 catch (Exception e)
                 {
@@ -841,15 +863,20 @@ namespace AirdPro.Converters
                             .cvParamChild(CVID.MS_isolation_window_upper_offset).value);
                     throw e;
                 }
-
-                var result = CVUtil.parseActivator(chromatogram.precursor.activation);
-                tempScan.activator = result.activator;
-                tempScan.energy = result.energy;
-                tempScan.polarity = CVUtil.parsePolarity(chromatogram);
-                tempScan.msType = CVUtil.parseMsType(chromatogram);
                 
-                tempScanList.Add(tempScan);
+                compressor.compress(chromatogram, tempScan);
+                chromatogramIndex.rts.Add(tempScan.rtArrayBytes.Length);
+                chromatogramIndex.ints.Add(tempScan.intArrayBytes.Length);
+                startPosition = startPosition + tempScan.rtArrayBytes.Length + tempScan.intArrayBytes.Length;
+                airdStream.Write(tempScan.rtArrayBytes, 0, tempScan.rtArrayBytes.Length);
+                airdStream.Write(tempScan.intArrayBytes, 0, tempScan.intArrayBytes.Length);
+
+                progress++;
+                jobInfo.log(null, Tag.progress(Tag.Chroma, progress, totalSize));
             }
+
+            chromatogramIndex.totalCount = chromatogramIndex.ids.Count;
+            chromatogramIndex.endPtr = startPosition;
         }
 
         protected AirdInfo buildBasicInfo()
@@ -871,6 +898,7 @@ namespace AirdPro.Converters
             HashSet<string> polarities = new HashSet<string>();
             HashSet<string> msTypes = new HashSet<string>();
             HashSet<string> filterStrings = new HashSet<string>();
+
             for (var i = 0; i < indexList.Count; i++)
             {
                 activators.UnionWith(indexList[i].activators);
@@ -931,6 +959,8 @@ namespace AirdPro.Converters
 
             //Block index
             airdInfo.indexList = indexList;
+
+            airdInfo.chromatogramIndex = chromatogramIndex;
 
             //Instrument Info
             List<Instrument> instruments = new List<Instrument>();

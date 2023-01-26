@@ -48,6 +48,7 @@ public class CVUtil
         CVID.MS_lowest_observed_m_z,
         CVID.MS_filter_string,
         CVID.MS_preset_scan_configuration,
+        CVID.MS_SRM_chromatogram,
     };
 
     public static List<CV> trans(CVParamList paramList)
@@ -233,7 +234,7 @@ public class CVUtil
         return (act, ene);
     }
 
-    public static double parsePrecursorParams(Precursor precursor, CVID cvid, JobInfo jobInfo)
+    public static double parsePrecursorParams(IsolationWindow isolationWindow, CVID cvid, JobInfo jobInfo)
     {
         double result = -1;
         var retryTimes = 3;
@@ -241,8 +242,8 @@ public class CVUtil
         {
             try
             {
-                if (precursor.isolationWindow.hasCVParamChild(cvid))
-                    result = double.Parse(precursor.isolationWindow.cvParamChild(cvid).value.ToString());
+                if (isolationWindow.hasCVParamChild(cvid))
+                    result = double.Parse(isolationWindow.cvParamChild(cvid).value.ToString());
                 else
                     result = 0;
             }
@@ -260,7 +261,7 @@ public class CVUtil
         return result;
     }
 
-    public static double parsePrecursorWidth(Precursor precursor, JobInfo jobInfo)
+    public static double parsePrecursorWidth(IsolationWindow isolationWindow, JobInfo jobInfo)
     {
         var retryTimes = 3;
         double lower = -1;
@@ -269,14 +270,14 @@ public class CVUtil
         {
             try
             {
-                if (precursor.isolationWindow.hasCVParamChild(CVID.MS_isolation_window_lower_offset))
-                    lower = double.Parse(precursor.isolationWindow.cvParamChild(CVID.MS_isolation_window_lower_offset)
+                if (isolationWindow.hasCVParamChild(CVID.MS_isolation_window_lower_offset))
+                    lower = double.Parse(isolationWindow.cvParamChild(CVID.MS_isolation_window_lower_offset)
                         .value.ToString());
                 else
                     lower = 0;
 
-                if (precursor.isolationWindow.hasCVParamChild(CVID.MS_isolation_window_upper_offset))
-                    upper = double.Parse(precursor.isolationWindow.cvParamChild(CVID.MS_isolation_window_upper_offset)
+                if (isolationWindow.hasCVParamChild(CVID.MS_isolation_window_upper_offset))
+                    upper = double.Parse(isolationWindow.cvParamChild(CVID.MS_isolation_window_upper_offset)
                         .value.ToString());
                 else
                     upper = 0;
@@ -296,7 +297,7 @@ public class CVUtil
         return upper + lower;
     }
 
-    public static int parsePrecursorCharge(Precursor precursor, JobInfo jobInfo)
+    public static int? parsePrecursorCharge(Precursor precursor, JobInfo jobInfo)
     {
         var result = 0;
         var retryTimes = 3;
@@ -306,7 +307,7 @@ public class CVUtil
             {
                 if (precursor.selectedIons == null || precursor.selectedIons[0].cvParamChild(CVID.MS_charge_state)
                         .cvid.Equals(CVID.CVID_Unknown))
-                    return 0;
+                    return null;
 
                 result = int.Parse(precursor.selectedIons[0].cvParamChild(CVID.MS_charge_state).value.ToString());
             }
@@ -327,11 +328,24 @@ public class CVUtil
     public static WindowRange parseIsolationWindow(Precursor precursor, JobInfo jobInfo)
     {
         var windowRange = new WindowRange();
-        var precursorMz = parsePrecursorParams(precursor, CVID.MS_isolation_window_target_m_z, jobInfo);
-        var lowerOffset = parsePrecursorParams(precursor, CVID.MS_isolation_window_lower_offset, jobInfo);
-        var upperOffset = parsePrecursorParams(precursor, CVID.MS_isolation_window_upper_offset, jobInfo);
+        var precursorMz = parsePrecursorParams(precursor.isolationWindow, CVID.MS_isolation_window_target_m_z, jobInfo);
+        var lowerOffset = parsePrecursorParams(precursor.isolationWindow, CVID.MS_isolation_window_lower_offset, jobInfo);
+        var upperOffset = parsePrecursorParams(precursor.isolationWindow, CVID.MS_isolation_window_upper_offset, jobInfo);
         var charge = parsePrecursorCharge(precursor, jobInfo);
         windowRange.charge = charge;
+        windowRange.mz = precursorMz;
+        windowRange.start = precursorMz - lowerOffset;
+        windowRange.end = precursorMz + upperOffset;
+        return windowRange;
+    }
+
+    public static WindowRange parseIsolationWindow(IsolationWindow isolationWindow, JobInfo jobInfo)
+    {
+        var windowRange = new WindowRange();
+        var precursorMz = parsePrecursorParams(isolationWindow, CVID.MS_isolation_window_target_m_z, jobInfo);
+        var lowerOffset = parsePrecursorParams(isolationWindow, CVID.MS_isolation_window_lower_offset, jobInfo);
+        var upperOffset = parsePrecursorParams(isolationWindow, CVID.MS_isolation_window_upper_offset, jobInfo);
+       
         windowRange.mz = precursorMz;
         windowRange.start = precursorMz - lowerOffset;
         windowRange.end = precursorMz + upperOffset;

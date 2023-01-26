@@ -31,6 +31,12 @@ namespace AirdPro.Algorithms
         public ByteComp intByteComp;
         public IntComp mobiIntComp;
         public ByteComp mobiByteComp;
+
+        public SortedIntComp rtIntComp4Chroma;
+        public ByteComp rtByteComp4Chroma;
+        public IntComp intIntComp4Chroma;
+        public ByteComp intByteComp4Chroma;
+
         public Dictionary<double, int> mobiDict;
         public int intensityPrecision;
 
@@ -43,14 +49,25 @@ namespace AirdPro.Algorithms
             this.digit = converter.jobInfo.config.digit;
         }
 
+        /**
+         * 由于色谱图数据量小, 使用固定IBP+Zstd的固定组合压缩器进行压缩
+         */
+        public void initForChromatogram()
+        {
+          rtIntComp4Chroma = new IntegratedVarByteWrapper();
+          rtByteComp4Chroma = new ZstdWrapper();
+          intIntComp4Chroma = new VarByteWrapper();
+          intByteComp4Chroma = new ZstdWrapper();
+        }
+
         public abstract void compressMS1(Converter converter, BlockIndex index);
 
         public abstract void compressMS2(Converter converter, List<MsIndex> ms2List, BlockIndex index);
 
-        public abstract void compress(Chromatogram chromatogram, TempScanChroma ts);
-
         public abstract void compress(Spectrum spectrum, TempScan ts);
 
         public abstract void compressMobility(Spectrum spectrum, TempScan ts);
+
+        public abstract void compress(Chromatogram chromatogram, TempScanChroma ts);
     }
 }
