@@ -56,8 +56,15 @@ public class ConverterWorkFlow
         converter.writeToAirdInfoFile(); //将Info数据写入文件
     }
 
-    public static void MRM(Converter converter)
+    public static void SRM(Converter converter)
     {
-        
+        converter.predictForIntensityPrecision(); //预测intensity需要保留的精度
+        converter.predictForBestCombination(); //预测最佳压缩组合
+        converter.pretreatmentDIA(); //预处理谱图,将MS1和MS2谱图分开存储
+        converter.compressMS1Block();
+        converter.compressMS2BlockForDIA();
+        converter.compressChromatograms();
+
+        converter.writeToAirdInfoFile(); //将Info数据写入文件
     }
 }

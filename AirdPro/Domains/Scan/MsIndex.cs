@@ -18,6 +18,9 @@ namespace AirdPro.Domains
         //ms level
         public int level;
 
+        //filter string
+        public string filterString;
+
         //retention time
         public double rt;
 
@@ -39,20 +42,7 @@ namespace AirdPro.Domains
         //序号
         public int num;
 
-        //前体的荷质比,precursor MZ
-        public double precursorMz;
-
-        //前体的带电量,未知时为0
-        public int precursorCharge;
-
-        //前体的荷质比窗口开始位置
-        public double mzStart;
-
-        //前体的荷质比窗口结束位置
-        public double mzEnd;
-
-        //前体的荷质比窗口
-        public double wid;
+        public WindowRange precursor;
 
         //PSI CV PSI可控词汇表
         public List<CV> cvList;

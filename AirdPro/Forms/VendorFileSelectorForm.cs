@@ -104,9 +104,9 @@ namespace AirdPro.Forms
                 if (config.autoExplorer)
                 {
                     List<ConversionConfig> configList = config.buildExplorerConfigs(
-                        airdType.Equals(AirdType.DDA_PASEF)
-                        || airdType.Equals(AirdType.DIA_PASEF)
-                        || airdType.Equals(AirdType.PRM_PASEF) || airdType.Equals(JobInfo.AutoType));
+                        airdType.Equals(AcquisitionMethod.DDA_PASEF)
+                        || airdType.Equals(AcquisitionMethod.DIA_PASEF)
+                        || airdType.Equals(AcquisitionMethod.PRM_PASEF) || airdType.Equals(JobInfo.AutoType));
                     //如果是探索模式,则会额外增加一个以文件名称命名的文件夹的名称用于存储该文件的所有内核压缩模式
                     string fileName = FileNameUtil.parseFileName(path).Replace("-", "_");
                     string newOutputPath = Path.Combine(outputPath, fileName);

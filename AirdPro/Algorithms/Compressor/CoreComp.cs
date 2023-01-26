@@ -45,7 +45,7 @@ namespace AirdPro.Algorithms
                     converter.jobInfo.log(null, Tag.progress(Tag.MS1, process, converter.ms1List.Count));
                     MsIndex ms1Index = converter.ms1List[i];
                     TempScan ts = new TempScan(ms1Index.num, ms1Index.rt, ms1Index.tic, ms1Index.basePeakIntensity,
-                        ms1Index.basePeakMz, ms1Index.cvList);
+                        ms1Index.basePeakMz, ms1Index.injectionTime, ms1Index.cvList);
                     Spectrum spectrum;
                     lock (locker)
                     {
@@ -72,7 +72,7 @@ namespace AirdPro.Algorithms
                     converter.jobInfo.log(null, Tag.progress(Tag.MS1, i, converter.ms1List.Count));
                     MsIndex ms1Index = converter.ms1List[i];
                     TempScan ts = new TempScan(ms1Index.num, ms1Index.rt, ms1Index.tic, ms1Index.basePeakIntensity,
-                        ms1Index.basePeakMz, ms1Index.cvList);
+                        ms1Index.basePeakMz, ms1Index.injectionTime, ms1Index.cvList);
                     using (var spectrum = converter.spectrumList.spectrum(ts.num, true))
                     {
                         if (converter.jobInfo.ionMobility)
@@ -100,7 +100,7 @@ namespace AirdPro.Algorithms
                 {
                     MsIndex ms2Index = ms2List[i];
                     TempScan ts = new TempScan(ms2Index.num, ms2Index.rt, ms2Index.tic, ms2Index.basePeakIntensity,
-                        ms2Index.basePeakMz, ms2Index.cvList);
+                        ms2Index.basePeakMz, ms2Index.injectionTime, ms2Index.cvList);
                     Spectrum spectrum;
                     lock (locker)
                     {
@@ -125,7 +125,7 @@ namespace AirdPro.Algorithms
                 foreach (MsIndex ms2Index in ms2List)
                 {
                     TempScan ts = new TempScan(ms2Index.num, ms2Index.rt, ms2Index.tic, ms2Index.basePeakIntensity,
-                        ms2Index.basePeakMz, ms2Index.cvList);
+                        ms2Index.basePeakMz, ms2Index.injectionTime, ms2Index.cvList);
                     using (var spectrum = converter.spectrumList.spectrum(ts.num, true))
                     {
                         if (converter.jobInfo.ionMobility)
@@ -141,6 +141,33 @@ namespace AirdPro.Algorithms
                     converter.addToIndex(index, ts);
                 }
             }
+        }
+
+        public override void compress(Chromatogram chromatogram, TempScanChroma ts)
+        {
+            double[] rtData = chromatogram.getTimeArray().data.Storage();
+            double[] intData = chromatogram.getIntensityArray().data.Storage();
+            var size = rtData.Length;
+            if (size == 0)
+            {
+                ts.rtArrayBytes = new byte[0];
+                ts.intArrayBytes = new byte[0];
+                return;
+            }
+
+            int[] rtArray = new int[size];
+            int[] intensityArray = new int[size];
+            for (int t = 0; t < size; t++)
+            {
+                rtArray[t] = DataUtil.fetchMz(rtArray[t], mzPrecision);
+                intensityArray[t] = DataUtil.fetchIntensity(intData[t], intensityPrecision);
+            }
+
+            byte[] compressedRtArray = ComboComp.encode(mzIntComp, mzByteComp, rtArray);
+            byte[] compressedIntArray = ComboComp.encode(intIntComp, intByteComp, intensityArray);
+
+            ts.rtArrayBytes = compressedRtArray;
+            ts.intArrayBytes = compressedIntArray;
         }
 
         public override void compress(Spectrum spectrum, TempScan ts)
@@ -161,9 +188,9 @@ namespace AirdPro.Algorithms
             for (int t = 0; t < size; t++)
             {
                 if (ignoreZero && intData[t] == 0) continue;
-                mzArray[j] = SpectrumUtil.fetchMz(mzData[t], mzPrecision);
+                mzArray[j] = DataUtil.fetchMz(mzData[t], mzPrecision);
                 // intensityArray[j] = Convert.ToInt32(Math.Log(intData[t]) / Math.Log(2) * 100);
-                intensityArray[j] = SpectrumUtil.fetchIntensity(intData[t], intensityPrecision);
+                intensityArray[j] = DataUtil.fetchIntensity(intData[t], intensityPrecision);
                 j++;
             }
 
@@ -183,7 +210,7 @@ namespace AirdPro.Algorithms
         {
             double[] mzData = spectrum.getMZArray().data.Storage();
             double[] intData = spectrum.getIntensityArray().data.Storage();
-            double[] mobiData = SpectrumUtil.getMobilityData(spectrum);
+            double[] mobiData = DataUtil.getMobilityData(spectrum);
 
             var size = mzData.Length;
             if (size == 0)
@@ -206,8 +233,8 @@ namespace AirdPro.Algorithms
             int[] mobilityNoArray = new int[size];
             for (int i = 0; i < size; i++)
             {
-                mzArray[i] = SpectrumUtil.fetchMz(dataArray[i].mz, mzPrecision);
-                intensityArray[i] = SpectrumUtil.fetchIntensity(dataArray[i].intensity, intensityPrecision);
+                mzArray[i] = DataUtil.fetchMz(dataArray[i].mz, mzPrecision);
+                intensityArray[i] = DataUtil.fetchIntensity(dataArray[i].intensity, intensityPrecision);
                 mobilityNoArray[i] = dataArray[i].mobilityNo;
             }
 

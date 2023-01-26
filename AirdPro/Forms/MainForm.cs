@@ -299,19 +299,19 @@ namespace AirdPro.Forms
             BaseParser parser = null;
             switch (airdInfo.type)
             {
-                case AirdType.DDA:
+                case AcquisitionMethod.DDA:
                     parser = new DDAParser(indexFile.FullName, airdInfo);
                     break;
-                case AirdType.DIA:
+                case AcquisitionMethod.DIA:
                     parser = new DIAParser(indexFile.FullName, airdInfo);
                     break;
-                case AirdType.PRM:
+                case AcquisitionMethod.PRM:
                     parser = new PRMParser(indexFile.FullName, airdInfo);
                     break;
-                case AirdType.DDA_PASEF:
+                case AcquisitionMethod.DDA_PASEF:
                     parser = new DDAParser(indexFile.FullName, airdInfo);
                     break;
-                case AirdType.DIA_PASEF:
+                case AcquisitionMethod.DIA_PASEF:
                     parser = new DIAParser(indexFile.FullName, airdInfo);
                     break;
             }

@@ -31,6 +31,8 @@ using Software = pwiz.CLI.msdata.Software;
 using AirdSDK.Enums;
 using AirdSDK.Utils;
 using FileUtil = AirdPro.Utils.FileUtil;
+using pwiz.CLI.util;
+using System.Windows.Interop;
 
 namespace AirdPro.Converters
 {
@@ -39,6 +41,7 @@ namespace AirdPro.Converters
         protected MSData msd;
         public SpectrumList spectrumList;
         public ChromatogramList chromatogramList;
+
         public JobInfo jobInfo;
         protected Stopwatch stopwatch = new Stopwatch();
         protected FileStream airdStream;
@@ -59,9 +62,8 @@ namespace AirdPro.Converters
 
         protected long fileSize; //厂商文件大小
         protected long startPosition = 0; //文件指针
-        protected int totalSize; //总计的谱图数目
-        protected int totalChromatograms; //总计的色谱图数目
-
+        protected int totalSize = 0; //总计的谱图数目
+        
         protected string activator; //HCD,CID....
         protected float energy; //轰击能
         protected string msType; //Profile, Centroided
@@ -69,8 +71,10 @@ namespace AirdPro.Converters
         protected int intensityPrecision = 1; //Intensity默认精确到个位数
         protected int mobiPrecision = 10000000; //mobility默认精确到小数点后7位
 
-        protected int spectraNumForIntensityPrecisionPredict = 5;
-        protected int spectraNumForComboCompPredict = 50;
+        protected int spectraNumForIntensityPrecisionPredict = 5; //用于ComboComp预测Intensity精度时的采样光谱数
+        protected int spectraNumForComboCompPredict = 50;//用于ComboComp预测mz压缩组合时的采样光谱数
+
+        protected ChromatogramIndex chromatogramIndex = new ChromatogramIndex();
 
         public Converter(JobInfo jobInfo)
         {
@@ -92,20 +96,23 @@ namespace AirdPro.Converters
                     predictAcquisitionMethod();
                     switch (jobInfo.type)
                     {
-                        case AirdType.DIA:
+                        case AcquisitionMethod.DIA:
                             ConverterWorkFlow.DIA(this);
                             break;
-                        case AirdType.DDA:
+                        case AcquisitionMethod.DDA:
                             ConverterWorkFlow.DDA(this);
                             break;
-                        case AirdType.PRM:
+                        case AcquisitionMethod.PRM:
                             ConverterWorkFlow.PRM(this);
                             break;
-                        case AirdType.DDA_PASEF:
+                        case AcquisitionMethod.SRM:
+                            ConverterWorkFlow.SRM(this);
+                            break;
+                        case AcquisitionMethod.DDA_PASEF:
                             jobInfo.ionMobility = true;
                             ConverterWorkFlow.DDAPasef(this);
                             break;
-                        case AirdType.DIA_PASEF:
+                        case AcquisitionMethod.DIA_PASEF:
                             jobInfo.ionMobility = true;
                             ConverterWorkFlow.DIAPasef(this);
                             break;
@@ -235,7 +242,7 @@ namespace AirdPro.Converters
                     //如果全部扫描下来都没有MS2, 说明是Full Scan扫描模式,设置为DDA
                     if (CVUtil.parseMsLevel(spectrum).Equals(MsLevel.MS2))
                     {
-                        double width = CVUtil.parsePrecursorWidth(spectrum, jobInfo);
+                        double width = CVUtil.parsePrecursorWidth(spectrum.precursors[0], jobInfo);
                         //然后判断前体的宽度范围,如果范围小于4,则被预测为DDA模式,否则会被认定为DIA模式
                         if (width < 4)
                         {
@@ -255,22 +262,22 @@ namespace AirdPro.Converters
 
                 if (isDDA && mobi)
                 {
-                    jobInfo.setType(AirdType.DDA_PASEF);
+                    jobInfo.setType(AcquisitionMethod.DDA_PASEF);
                 }
 
                 if (isDDA && !mobi)
                 {
-                    jobInfo.setType(AirdType.DDA);
+                    jobInfo.setType(AcquisitionMethod.DDA);
                 }
 
                 if (isDIA && mobi)
                 {
-                    jobInfo.setType(AirdType.DIA_PASEF);
+                    jobInfo.setType(AcquisitionMethod.DIA_PASEF);
                 }
 
                 if (isDIA && !mobi)
                 {
-                    jobInfo.setType(AirdType.DIA);
+                    jobInfo.setType(AcquisitionMethod.DIA);
                 }
             }
 
@@ -279,19 +286,17 @@ namespace AirdPro.Converters
                 //如果有色谱图,且谱图数目大于2(排除TIC和BPC图),则预测为SRM模式
                 if (chromatogramList != null && chromatogramList.size() > 2)
                 {
-                    Chromatogram tic1 = chromatogramList.chromatogram(128, DetailLevel.FastMetadata);
-                    Chromatogram tic2 = chromatogramList.chromatogram(128);
                     List<Chromatogram> predictChromatoList = new List<Chromatogram>();
                     //首先取10个窗口
                     for (int i = 0; i < 10; i++)
                     {
-                        using (Chromatogram chroma = chromatogramList.chromatogram(i, DetailLevel.FullData))
+                        using (Chromatogram chroma = chromatogramList.chromatogram(i, false))
                         {
                             predictChromatoList.Add(chroma);
                         }
                     }
 
-                    jobInfo.setType(AirdType.SRM);
+                    jobInfo.setType(AcquisitionMethod.SRM);
                 }
             }
             catch (Exception e)
@@ -382,6 +387,7 @@ namespace AirdPro.Converters
                 index.tics.AddRange(ts.tics);
                 index.basePeakIntensities.AddRange(ts.basePeakIntensities);
                 index.basePeakMzs.AddRange(ts.basePeakMzs);
+                index.injectionTimes.AddRange(ts.injectionTimes);
                 index.cvList.AddRange(ts.cvs);
                 index.mzs.Add(ts.mzArrayBytes.Length);
                 index.ints.Add(ts.intArrayBytes.Length);
@@ -400,6 +406,7 @@ namespace AirdPro.Converters
                 index.rts.Add(ts.rt);
                 index.tics.Add(ts.tic);
                 index.basePeakIntensities.Add(ts.basePeakIntensity);
+                index.injectionTimes.Add(ts.injectionTime);
                 index.basePeakMzs.Add(ts.basePeakMz);
                 index.cvList.Add(ts.cvs);
                 index.mzs.Add(ts.mzArrayBytes.Length);
@@ -425,10 +432,8 @@ namespace AirdPro.Converters
                 allowMsMsWithoutPrecursor = false,
                 combineIonMobilitySpectra = false,
                 ignoreZeroIntensityPoints = jobInfo.config.ignoreZeroIntensity
-                
             };
 
-            
             MSDataList msInfo = new MSDataList();
             readerList.read(jobInfo.inputPath, msInfo, readerConfig);
             if (msInfo == null || msInfo.Count == 0)
@@ -451,7 +456,6 @@ namespace AirdPro.Converters
             else
             {
                 totalSize = spectrumList.size();
-                jobInfo.log(Tag.Adapting_Finished + Const.COMMA + Tag.Total_Spectra + totalSize);
             }
 
             chromatogramList = msd.run.chromatogramList;
@@ -461,10 +465,10 @@ namespace AirdPro.Converters
             }
             else
             {
-                totalChromatograms = chromatogramList.size();
-                jobInfo.log(Tag.Adapting_Finished + Const.COMMA + Tag.Total_Chromatograms + totalChromatograms);
+                chromatogramIndex.totalCount = chromatogramList.size();
             }
-            
+            jobInfo.log(Tag.Adapting_Finished + Const.COMMA + totalSize + Const.SPACE + Tag.Total_Spectra + Const.COMMA + chromatogramIndex.totalCount + Const.SPACE + Tag.Total_Chromatograms );
+
             switch (jobInfo.format)
             {
                 case FileFormat.WIFF:
@@ -518,6 +522,7 @@ namespace AirdPro.Converters
             featuresMap = new();
             mobiDict = new();
             mobiInfo = new();
+            chromatogramIndex = new();
         }
 
         //DDA模式下,key为ms2Index.pNum, DIA模式下,key为ms2Index.precursorMz
@@ -546,11 +551,13 @@ namespace AirdPro.Converters
             }
             Scan scan = spectrum.scanList.scans[0];
             ms1.cvList = CVUtil.trans(spectrum.cvParams);
+            //将对应scan的cvParams也冗余到ms1上来
             if (scan.cvParams != null)
             {
                 ms1.cvList.AddRange(CVUtil.trans(scan.cvParams));
             }
 
+            ms1.filterString = CVUtil.parseFilterString(scan, jobInfo);
             ms1.rt = CVUtil.parseRT(scan, jobInfo);
             ms1.tic = CVUtil.parseTIC(spectrum);
             ms1.basePeakIntensity = CVUtil.parseBasePeakIntensity(spectrum);
@@ -570,7 +577,6 @@ namespace AirdPro.Converters
             {
                 polarity = CVUtil.parsePolarity(spectrum);
             }
-
             return ms1;
         }
 
@@ -583,15 +589,7 @@ namespace AirdPro.Converters
 
             try
             {
-                double precursorMz = CVUtil.parsePrecursorParams(spectrum, CVID.MS_isolation_window_target_m_z, jobInfo);
-                double lowerOffset = CVUtil.parsePrecursorParams(spectrum, CVID.MS_isolation_window_lower_offset, jobInfo);
-                double upperOffset = CVUtil.parsePrecursorParams(spectrum, CVID.MS_isolation_window_upper_offset, jobInfo);
-                int charge = CVUtil.parsePrecursorCharge(spectrum, jobInfo);
-                ms2.precursorCharge = charge;
-                ms2.precursorMz = precursorMz;
-                ms2.mzStart = precursorMz - lowerOffset;
-                ms2.mzEnd = precursorMz + upperOffset;
-                ms2.wid = lowerOffset + upperOffset;
+                ms2.precursor = CVUtil.parseIsolationWindow(spectrum.precursors[0], jobInfo);
             }
             catch (Exception e)
             {
@@ -629,6 +627,7 @@ namespace AirdPro.Converters
             {
                 CVUtil.parseMobility(scan, mobiInfo);
             }
+            ms2.filterString = CVUtil.parseFilterString(scan, jobInfo);
             ms2.cvList = CVUtil.trans(spectrum.cvParams);
             if (scan.cvParams != null) ms2.cvList.AddRange(CVUtil.trans(scan.cvParams));
             ms2.rt = CVUtil.parseRT(scan, jobInfo);
@@ -646,7 +645,7 @@ namespace AirdPro.Converters
             foreach (double key in ms2Table.Keys)
             {
                 List<MsIndex> ms2List = ms2Table[key] as List<MsIndex>;
-                WindowRange range = new WindowRange(ms2List[0].mzStart, ms2List[0].mzEnd, key);
+                WindowRange range = new WindowRange(ms2List[0].precursor.start, ms2List[0].precursor.end, key);
 
                 BlockIndex index = new BlockIndex(); //为每一个key组创建一个SwathBlock
                 index.level = 2;
@@ -734,15 +733,10 @@ namespace AirdPro.Converters
 
                 foreach (MsIndex index in tempIndexList)
                 {
-                    WindowRange range = new WindowRange(index.mzStart, index.mzEnd, index.precursorMz);
-                    if (index.precursorCharge != 0)
-                    {
-                        range.charge = index.precursorCharge;
-                    }
-
+                    // WindowRange range = new WindowRange(index.mzStart, index.mzEnd, index.precursorMz);
+                    WindowRange range = index.precursor;
                     ms2Ranges.Add(range);
-                    TempScan ts = new TempScan(index.num, index.rt, index.tic, index.basePeakIntensity,
-                        index.basePeakMz, index.cvList);
+                    TempScan ts = new TempScan(index.num, index.rt, index.tic, index.basePeakIntensity, index.basePeakMz, index.injectionTime, index.cvList);
                     if (jobInfo.ionMobility)
                     {
                         compressor.compressMobility(spectrumList.spectrum(index.num, true), ts);
@@ -774,6 +768,93 @@ namespace AirdPro.Converters
                 blockIndex.rangeList = ms2Ranges;
                 blockIndex.endPtr = startPosition;
                 indexList.Add(blockIndex);
+            }
+        }
+
+        public void compressChromatograms()
+        {
+            int ticIndex = chromatogramList.find("TIC");
+            List<double> rtList = new List<double>();
+            List<double> ticList = new List<double>();
+            if (ticIndex >= 0 && ticIndex < chromatogramList.size())
+            {
+                Chromatogram chromatogram = chromatogramList.chromatogram(ticIndex, true);
+                BinaryDataDouble times = chromatogram.getTimeArray().data;
+                BinaryDataDouble intensities = chromatogram.getTimeArray().data;
+                for (int i = 0; i < times.Count; i++)
+                {
+                    rtList.Add(times[i]);
+                    ticList.Add(intensities[i]);
+                }
+            }
+
+            int bpcIndex = chromatogramList.find("BPC");
+            List<double> basePeakList = new List<double>();
+            if (bpcIndex >= 0 && bpcIndex < chromatogramList.size())
+            {
+                Chromatogram chromatogram = chromatogramList.chromatogram(bpcIndex, true);
+                BinaryDataDouble times = chromatogram.getTimeArray().data;
+                BinaryDataDouble intensities = chromatogram.getTimeArray().data;
+                if (rtList.Count == 0)
+                {
+                    for (int i = 0; i < times.Count; i++)
+                    {
+                        rtList.Add(times[i]);
+                        basePeakList.Add(intensities[i]);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < times.Count; i++)
+                    {
+                        basePeakList.Add(intensities[i]);
+                    }
+                }
+               
+            }
+
+            List<TempScanChroma> tempScanList = new List<TempScanChroma>();
+            for (int i = 0; i < chromatogramList.size(); i++)
+            {
+                if (i == ticIndex || i == bpcIndex)
+                {
+                    continue;
+                }
+
+                Chromatogram chromatogram = chromatogramList.chromatogram(i, false);
+                TempScanChroma tempScan = new TempScanChroma();
+                tempScan.num = i;
+                tempScan.id = chromatogram.id;
+                tempScan.cvs = CVUtil.trans(chromatogram.cvParams);
+
+                try
+                {
+                    tempScan.precursor = CVUtil.parseIsolationWindow(chromatogram.precursor, jobInfo);
+                }
+                catch (Exception e)
+                {
+                    jobInfo.log(ResultCode.Error).log(Tag.SpectrumIndex + i)
+                        .log(Tag.SpectrumId + chromatogram.id)
+                        .log(Tag.Key_MZ + chromatogram.precursor.isolationWindow
+                            .cvParamChild(CVID.MS_isolation_window_target_m_z).value)
+                        .log(Tag.LowerOffset + chromatogram.precursor.isolationWindow
+                            .cvParamChild(CVID.MS_isolation_window_lower_offset).value)
+                        .log(Tag.UpperOffset + chromatogram.precursor.isolationWindow
+                            .cvParamChild(CVID.MS_isolation_window_upper_offset).value);
+                    throw e;
+                }
+
+                if (activator == null)
+                {
+                    var result = CVUtil.parseActivator(chromatogram.precursor.activation);
+                    activator = result.activator;
+                    energy = result.energy;
+                }
+                tempScanList.Add(tempScan);
+                if (polarity == null)
+                {
+                    polarity = CVUtil.parsePolarity(chromatogram);
+                }
             }
         }
 
@@ -1011,7 +1092,7 @@ namespace AirdPro.Converters
 
             if (mobi)
             {
-                double[] mobiData = SpectrumUtil.getMobilityData(spectrum);
+                double[] mobiData = DataUtil.getMobilityData(spectrum);
                 TimsData[] dataArray = new TimsData[size];
                 for (int t = 0; t < size; t++)
                 {
@@ -1022,7 +1103,7 @@ namespace AirdPro.Converters
                 for (int i = 0; i < size; i++)
                 {
                     mzArray[i] = Convert.ToInt32(dataArray[i].mz * jobInfo.config.mzPrecision);
-                    intensityArray[i] = SpectrumUtil.fetchIntensity(dataArray[i].intensity, intensityPrecision);
+                    intensityArray[i] = DataUtil.fetchIntensity(dataArray[i].intensity, intensityPrecision);
                     mobilityNoArray[i] = dataArray[i].mobilityNo;
                 }
             }
@@ -1031,7 +1112,7 @@ namespace AirdPro.Converters
                 for (int i = 0; i < size; i++)
                 {
                     mzArray[i] = Convert.ToInt32(mzData[i] * jobInfo.config.mzPrecision);
-                    intensityArray[i] = SpectrumUtil.fetchIntensity(intData[i], intensityPrecision);
+                    intensityArray[i] = DataUtil.fetchIntensity(intData[i], intensityPrecision);
                 }
             }
 
@@ -1215,15 +1296,15 @@ namespace AirdPro.Converters
                 {
                     MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
                     //边扫描边建立SWATH WindowRange
-                    if (!rangeTable.Contains(ms2Index.precursorMz))
+                    if (!rangeTable.Contains(ms2Index.precursor.mz))
                     {
-                        WindowRange range = new WindowRange(ms2Index.mzStart, ms2Index.mzEnd, ms2Index.precursorMz);
+                        WindowRange range = ms2Index.precursor;
                         ranges.Add(range);
-                        rangeTable.Add(ms2Index.precursorMz, range);
+                        rangeTable.Add(range.mz, range);
                     }
 
                     //DIA的MS2Map以precursorMz为key
-                    addToMS2Map(ms2Index.precursorMz, ms2Index);
+                    addToMS2Map(ms2Index.precursor.mz, ms2Index);
                 }
             }
 
@@ -1307,15 +1388,15 @@ namespace AirdPro.Converters
                 {
                     MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
                     //边扫描边建立SWATH WindowRange
-                    if (!rangeTable.Contains(ms2Index.precursorMz))
+                    if (!rangeTable.Contains(ms2Index.precursor.mz))
                     {
-                        WindowRange range = new WindowRange(ms2Index.mzStart, ms2Index.mzEnd, ms2Index.precursorMz);
+                        WindowRange range = ms2Index.precursor;
                         ranges.Add(range);
-                        rangeTable.Add(ms2Index.precursorMz, range);
+                        rangeTable.Add(range.mz, range);
                     }
 
                     //DIA的MS2Map以precursorMz为key
-                    addToMS2Map(ms2Index.precursorMz, ms2Index);
+                    addToMS2Map(ms2Index.precursor.mz, ms2Index);
                 }
             }
 
@@ -1347,7 +1428,7 @@ namespace AirdPro.Converters
                     if (msLevel.Equals(MsLevel.MS2))
                     {
                         MsIndex ms2Index = parseMS2(spectrumList.spectrum(i), i, parentNum);
-                        addToMS2Map(ms2Index.precursorMz, ms2Index);
+                        addToMS2Map(ms2Index.precursor.mz, ms2Index);
                         continue;
                     }
                 }
@@ -1373,7 +1454,7 @@ namespace AirdPro.Converters
                 if (msLevel.Equals(MsLevel.MS2))
                 {
                     MsIndex ms2Index = parseMS2(spectrumList.spectrum(i), i, parentNum);
-                    addToMS2Map(ms2Index.precursorMz, ms2Index); //如果这个谱图是MS2
+                    addToMS2Map(ms2Index.precursor.mz, ms2Index); //如果这个谱图是MS2
                 }
             }
 

@@ -19,6 +19,7 @@ namespace AirdPro.Domains
         public List<int> nums;
         public List<double> rts;
         public List<long> tics;
+        public List<float> injectionTimes;
         public List<double> basePeakIntensities;
         public List<double> basePeakMzs;
         public List<List<CV>> cvs;
@@ -27,13 +28,14 @@ namespace AirdPro.Domains
         public byte[] tagArrayBytes;
 
         public TempScanSZDPD(List<int> nums, List<double> rts, List<long> tics, List<double> basePeakIntensities,
-            List<double> basePeakMzs, List<List<CV>> cvs)
+            List<double> basePeakMzs,List<float> inectionTimes, List<List<CV>> cvs)
         {
             this.nums = nums;
             this.rts = rts;
             this.tics = tics;
             this.basePeakIntensities = basePeakIntensities;
             this.basePeakMzs = basePeakMzs;
+            this.injectionTimes = inectionTimes;
             this.cvs = cvs;
         }
 

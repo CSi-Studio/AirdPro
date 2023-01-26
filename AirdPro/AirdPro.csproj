@@ -184,6 +184,7 @@
     <Compile Include="Domains\Scan\Combination.cs" />
     <Compile Include="Domains\Scan\MsIndex.cs" />
     <Compile Include="Domains\Scan\TempScan.cs" />
+    <Compile Include="Domains\Scan\TempScanChroma.cs" />
     <Compile Include="Domains\Scan\TempScanSZDPD.cs" />
     <Compile Include="Domains\Scan\TimsData.cs" />
     <Compile Include="Domains\Sort\CompressStat.cs" />
@@ -310,7 +311,7 @@
     <Compile Include="Utils\FeatureUtil.cs" />
     <Compile Include="Utils\FileUtil.cs" />
     <Compile Include="Utils\HttpUtil.cs" />
-    <Compile Include="Utils\SpectrumUtil.cs" />
+    <Compile Include="Utils\DataUtil.cs" />
     <Compile Include="Utils\StatUtil.cs" />
     <EmbeddedResource Include="Controls\MirrorBox\MirrorBox.resx">
       <DependentUpon>MirrorBox.cs</DependentUpon>

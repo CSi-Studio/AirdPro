@@ -15,7 +15,7 @@ using pwiz.CLI.msdata;
 
 namespace AirdPro.Utils
 {
-    public class SpectrumUtil
+    public class DataUtil
     {
         public static int fetchIntensity(double target, int intensityPrecision)
         {
@@ -39,6 +39,22 @@ namespace AirdPro.Utils
             try
             {
                 result = Convert.ToInt32(target * mzPrecision);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.StackTrace);
+            }
+
+            return result;
+        }
+
+        //yongy
+        public static int fetchRt(double target)
+        {
+            int result = -1;
+            try
+            {
+                result = Convert.ToInt32(target * 10000);
             }
             catch (Exception e)
             {

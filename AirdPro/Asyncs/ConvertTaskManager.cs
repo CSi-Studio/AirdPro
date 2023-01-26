@@ -147,9 +147,8 @@ namespace AirdPro.Asyncs
                         jobInfo.setStatus(ERROR);
                     }
                 }
-
-                finishedJob(jobInfo);
             }
+            finishedJob(jobInfo);
         }
     }
 }

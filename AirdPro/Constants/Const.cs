@@ -20,5 +20,6 @@ namespace AirdPro.Constants
         public static string DIV = "|";
         public static char Char_Dash = '_';
         public static char DOT = '.';
+        public static char SPACE = ' ';
     }
 }

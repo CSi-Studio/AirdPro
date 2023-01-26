@@ -15,35 +15,27 @@ using AirdSDK.Beans;
 namespace AirdPro.Domains
 {
     //包含mz,intensity数组
-    public class TempScan : IComparable
+    public class TempScanChroma
     {
         public int num;
-        public double rt;
-        public long tic;
-        public float injectionTime;
-        public double basePeakIntensity;
-        public double basePeakMz;
+        public string id;
+        public WindowRange precursor;
+        public WindowRange product;
         public List<CV> cvs;
 
-        public byte[] mzArrayBytes;
+        public byte[] rtArrayBytes;
         public byte[] intArrayBytes;
-        public byte[] mobilityArrayBytes;
 
-        public TempScan(int num, double rt, long tic, double basePeakIntensity, double basePeakMz, float injectionTime, List<CV> cvs)
+        public TempScanChroma()
         {
-            this.num = num;
-            this.rt = rt;
-            this.tic = tic;
-            this.injectionTime = injectionTime;
-            this.basePeakIntensity = basePeakIntensity;
-            this.basePeakMz = basePeakMz;
-            this.cvs = cvs;
         }
 
-        public int CompareTo(object obj)
+        public TempScanChroma(int num, WindowRange precursor, WindowRange product, List<CV> cvs)
         {
-            TempScan ts = (TempScan) obj;
-            return ts.rt.CompareTo(this.rt);
+            this.num = num;
+            this.precursor = precursor;
+            this.product = product;
+            this.cvs = cvs;
         }
     }
 }

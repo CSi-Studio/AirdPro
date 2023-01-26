@@ -39,7 +39,7 @@ namespace AirdPro.Domains
         //用于转换的参数
         public ConversionConfig config;
 
-        //DIA,PRM,DDA. see AirdType
+        //DIA,PRM,DDA. see AcquisitionMethod
         public string type;
 
         public IProgress<string> typeLabel;
