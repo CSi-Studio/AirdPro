@@ -209,6 +209,8 @@ namespace AirdPro.Forms
                     return;
                 }
 
+                SRMParser srmParser = new SRMParser(indexFilePath);
+                List<SrmPair> srms = srmParser.getAllSrmPairs();
                 List<SpectrumRow> spectra = parseAsSpectra(airdInfo);
                 spectraDataGrids.DataSource = spectra;
 

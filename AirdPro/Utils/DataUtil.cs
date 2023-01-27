@@ -54,7 +54,7 @@ namespace AirdPro.Utils
             int result = -1;
             try
             {
-                result = Convert.ToInt32(target * 10000);
+                result = Convert.ToInt32(target * 100000);
             }
             catch (Exception e)
             {

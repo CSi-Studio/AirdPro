@@ -14,14 +14,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdPro.Utils;
 using AirdSDK.Beans;
 using AirdSDK.Compressor;
 using pwiz.CLI.msdata;
-using pwiz.CLI.tradata;
 
 namespace AirdPro.Algorithms
 {
@@ -157,7 +155,7 @@ namespace AirdPro.Algorithms
             int[] intensityArray = new int[size];
             for (int t = 0; t < size; t++)
             {
-                rtArray[t] = DataUtil.fetchRt(rtArray[t]);
+                rtArray[t] = DataUtil.fetchRt(rtData[t]);
                 intensityArray[t] = DataUtil.fetchIntensity(intData[t], 1);
             }
 
