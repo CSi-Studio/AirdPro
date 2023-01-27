@@ -472,11 +472,8 @@ namespace AirdPro.Converters
             {
                 jobInfo.log(ResultCode.No_Chromatograms_Found);
             }
-            else
-            {
-                chromatogramIndex.totalCount = chromatogramList.size();
-            }
-            jobInfo.log(Tag.Adapting_Finished + Const.COMMA + totalSize + Const.SPACE + Tag.Total_Spectra + Const.COMMA + chromatogramIndex.totalCount + Const.SPACE + Tag.Total_Chromatograms );
+          
+            jobInfo.log(Tag.Adapting_Finished + Const.COMMA + totalSize + Const.SPACE + Tag.Total_Spectra);
 
             switch (jobInfo.format)
             {
@@ -859,7 +856,7 @@ namespace AirdPro.Converters
             }
             if (activators.Count == 1)
             {
-                airdInfo.activator = activators.GetEnumerator().Current;
+                airdInfo.activator = indexList[0].activators[0];
                 for (var i = 0; i < indexList.Count; i++)
                 {
                     indexList[i].activators = null;
@@ -868,7 +865,7 @@ namespace AirdPro.Converters
 
             if (energies.Count == 1)
             {
-                airdInfo.energy = energies.GetEnumerator().Current;
+                airdInfo.energy = indexList[0].energies[0];
                 for (var i = 0; i < indexList.Count; i++)
                 {
                     indexList[i].energies = null;
@@ -877,7 +874,7 @@ namespace AirdPro.Converters
 
             if (polarities.Count == 1)
             {
-                airdInfo.polarity = polarities.GetEnumerator().Current;
+                airdInfo.polarity = indexList[0].polarities[0];
                 for (var i = 0; i < indexList.Count; i++)
                 {
                     indexList[i].polarities = null;
@@ -886,7 +883,7 @@ namespace AirdPro.Converters
 
             if (msTypes.Count == 1)
             {
-                airdInfo.msType = msTypes.GetEnumerator().Current;
+                airdInfo.msType = indexList[0].msTypes[0];
                 for (var i = 0; i < indexList.Count; i++)
                 {
                     indexList[i].msTypes = null;
@@ -895,7 +892,7 @@ namespace AirdPro.Converters
             
             if (filterStrings.Count == 1)
             {
-                airdInfo.filterString = filterStrings.GetEnumerator().Current;
+                airdInfo.filterString = indexList[0].filterStrings[0];
                 for (var i = 0; i < indexList.Count; i++)
                 {
                     indexList[i].filterStrings = null;

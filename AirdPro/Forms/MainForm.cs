@@ -237,19 +237,9 @@ namespace AirdPro.Forms
                 {
                     for (var k = 0; k < index.nums.Count; k++)
                     {
-                        SpectrumRow row = new SpectrumRow();
-                        row.Polarity = airdInfo.polarity;
-                        row.Energy = airdInfo.energy;
-                        row.Activator = airdInfo.activator;
-                        row.Scan = index.nums[k] + 1;
-                        row.ScanType = airdInfo.msType;
+                        SpectrumRow row = parseFromIndexAndAirdInfo(airdInfo, index, k);
                         row.ParentScan = null;
                         row.MSn = 1;
-                        row.RT = index.rts[k];
-                        row.BasePeakIntensity = index.basePeakIntensities[k];
-                        row.BasePeakMz = index.basePeakMzs[k];
-                        row.TotalIons = index.tics[k];
-                        row.FilterString = getFilterString(index.cvList[k]);
                         rowList.Add(row);
                     }
                 }
@@ -257,20 +247,10 @@ namespace AirdPro.Forms
                 {
                     for (int k = 0; k < index.nums.Count; k++)
                     {
-                        SpectrumRow row = new SpectrumRow();
-                        row.Polarity = airdInfo.polarity;
-                        row.Energy = airdInfo.energy;
-                        row.Activator = airdInfo.activator;
-                        row.Scan = index.nums[k] + 1;
-                        row.ScanType = airdInfo.msType;
+                        SpectrumRow row = parseFromIndexAndAirdInfo(airdInfo, index, k);
                         row.ParentScan = index.num;
                         row.MSn = 2;
-                        row.RT = index.rts[k];
                         row.Precursor = index.getWindowRange().start + "-" + index.getWindowRange().end;
-                        row.BasePeakIntensity = index.basePeakIntensities[k];
-                        row.BasePeakMz = index.basePeakMzs[k];
-                        row.TotalIons = index.tics[k];
-                        row.FilterString = getFilterString(index.cvList[k]);
                         rowList.Add(row);
                     }
                 }
@@ -280,17 +260,20 @@ namespace AirdPro.Forms
             return rowList;
         }
 
-        private string getFilterString(List<CV> cvList)
+        private SpectrumRow parseFromIndexAndAirdInfo(AirdInfo airdInfo, BlockIndex index, int k)
         {
-            for (var i = 0; i < cvList.Count; i++)
-            {
-                if (cvList[i].cvid.Equals("1000512:filter string"))
-                {
-                    return cvList[i].value.ToString();
-                }
-            }
-
-            return null;
+            SpectrumRow row = new SpectrumRow();
+            row.Polarity = (index.polarities == null || index.polarities.Count == 0) ? airdInfo.polarity : index.polarities[k];
+            row.Energy = (index.energies == null || index.energies.Count == 0) ? airdInfo.energy : index.energies[k];
+            row.Activator = (index.activators == null || index.activators.Count == 0) ? airdInfo.activator : index.activators[k];
+            row.Scan = index.nums[k] + 1;
+            row.ScanType = (index.msTypes == null || index.msTypes.Count == 0) ? airdInfo.msType : index.msTypes[k];
+            row.RT = index.rts[k];
+            row.BasePeakIntensity = index.basePeakIntensities[k];
+            row.BasePeakMz = index.basePeakMzs[k];
+            row.TotalIons = index.tics[k];
+            row.FilterString = (index.filterStrings == null || index.filterStrings.Count == 0) ? airdInfo.filterString : index.filterStrings[k];
+            return row;
         }
 
         private void spectraDataGrids_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -313,6 +296,9 @@ namespace AirdPro.Forms
                     break;
                 case AcquisitionMethod.DIA_PASEF:
                     parser = new DIAParser(indexFile.FullName, airdInfo);
+                    break;
+                case AcquisitionMethod.SRM:
+                    parser = new SRMParser(indexFile.FullName, airdInfo);
                     break;
             }
             Spectrum spectrum = parser.getSpectrumByNum(row.Scan - 1);

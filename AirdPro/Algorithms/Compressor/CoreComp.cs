@@ -14,6 +14,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdPro.Utils;
@@ -162,6 +163,9 @@ namespace AirdPro.Algorithms
 
             byte[] compressedRtArray = rtByteComp4Chroma.encode(ByteTrans.intToByte(rtIntComp4Chroma.encode(rtArray)));
             byte[] compressedIntArray = intByteComp4Chroma.encode(ByteTrans.intToByte(intIntComp4Chroma.encode(intensityArray)));
+
+            // int[] rtList = rtIntComp4Chroma.decode(ByteTrans.byteToInt(rtByteComp4Chroma.decode(compressedRtArray)));
+            // int[] intList = intIntComp4Chroma.decode(ByteTrans.byteToInt(intByteComp4Chroma.decode(compressedIntArray)));
 
             ts.rtArrayBytes = compressedRtArray;
             ts.intArrayBytes = compressedIntArray;
