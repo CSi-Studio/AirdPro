@@ -364,7 +364,7 @@ namespace AirdPro.Forms
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            Environment.Exit(0);
         }
 
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)

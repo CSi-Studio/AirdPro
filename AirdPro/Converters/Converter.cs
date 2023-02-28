@@ -279,18 +279,18 @@ namespace AirdPro.Converters
             try
             {
                 //如果有色谱图,且谱图数目大于2(排除TIC和BPC图),则预测为SRM模式
-                if (chromatogramList != null && chromatogramList.size() > 2)
+                if (chromatogramList != null && chromatogramList.size() > 10)
                 {
                     List<Chromatogram> predictChromatoList = new List<Chromatogram>();
-                    //首先取10个窗口
-                    for (int i = 0; i < 10; i++)
-                    {
-                        using (Chromatogram chroma = chromatogramList.chromatogram(i, false))
-                        {
-                            predictChromatoList.Add(chroma);
-                        }
-                    }
-
+                    // 首先取10个窗口
+                     for (int i = 0; i < 10; i++)
+                     {
+                         using (Chromatogram chroma = chromatogramList.chromatogram(i, false))
+                         {
+                             predictChromatoList.Add(chroma);
+                         }
+                     }
+                     
                     jobInfo.setType(AcquisitionMethod.SRM);
                 }
             }
