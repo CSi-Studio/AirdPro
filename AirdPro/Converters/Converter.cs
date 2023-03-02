@@ -67,7 +67,6 @@ namespace AirdPro.Converters
         protected int mobiPrecision = 10000000; //mobility默认精确到小数点后7位
 
         protected int spectraNumForIntensityPrecisionPredict = 5; //用于ComboComp预测Intensity精度时的采样光谱数
-        protected int spectraNumForComboCompPredict = 50;//用于ComboComp预测mz压缩组合时的采样光谱数
 
         public ChromatogramIndex chromatogramIndex;
 
@@ -308,7 +307,7 @@ namespace AirdPro.Converters
             }
 
             jobInfo.log(Tag.Predict_For_Best_Combination + jobInfo.airdFileName, Status.Predicting);
-            Combination combination = randomSampling(spectraNumForComboCompPredict, jobInfo.ionMobility);
+            Combination combination = randomSampling(jobInfo.config.spectraToPredict, jobInfo.ionMobility);
             combination.enable(jobInfo.config, compressor);
             jobInfo.log(jobInfo.getCompressorStr());
             jobInfo.config.autoDesicion = false;
@@ -1219,12 +1218,15 @@ namespace AirdPro.Converters
                 }
             }
 
-            int bestIndex4Mz = StatUtil.calcBestIndex(mzStatList);
-            int bestIndex4Intensity = StatUtil.calcBestIndex(intensityStatList);
+            double csWeight = jobInfo.config.compressionSizeWeight;
+            double ctWeight = jobInfo.config.compressionTimeWeight;
+            double dtWeight = jobInfo.config.decompressionTimeWeight;
+            int bestIndex4Mz = StatUtil.calcBestIndex(mzStatList, csWeight, ctWeight, dtWeight);
+            int bestIndex4Intensity = StatUtil.calcBestIndex(intensityStatList, csWeight, ctWeight, dtWeight);
             Combination bestCombination = null;
             if (ionMobi)
             {
-                int bestIndex4Mobi = StatUtil.calcBestIndex(mobiStatList);
+                int bestIndex4Mobi = StatUtil.calcBestIndex(mobiStatList, csWeight, ctWeight, dtWeight);
                 jobInfo.log(Tag.Best_Combo_Comp + mzStatList[bestIndex4Mz].key + Const.Left_Slash +
                             intensityStatList[bestIndex4Intensity].key + Const.Left_Slash +
                             mobiStatList[bestIndex4Mobi].key);

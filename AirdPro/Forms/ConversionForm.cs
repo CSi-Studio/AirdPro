@@ -29,8 +29,6 @@ namespace AirdPro.Forms
         ArrayList jobIdList = new();
         VendorFileSelectorForm fileSelector = new VendorFileSelectorForm();
         MirrorTransForm mirrorTransForm;
-        ConversionConfigListForm configListForm;
-        GlobalSettingForm globalSettingForm;
         BackgroundWorker bw;
 
         public ConversionForm()
@@ -193,14 +191,14 @@ namespace AirdPro.Forms
             JobInfo jobInfo = (JobInfo) (item.Tag);
             ConversionConfig config = jobInfo.config;
 
-            if (configListForm == null || configListForm.IsDisposed)
+            if (Program.configListForm == null || Program.configListForm.IsDisposed)
             {
-                configListForm = new ConversionConfigListForm(item);
+                Program.configListForm = new ConversionConfigListForm(item);
             }
 
             //以下代码的顺序不能换,必须先Show,再执行showConfig操作
-            configListForm.Show();
-            configListForm.showConfig(Constants.Tag.Empty, config);
+            Program.configListForm.Show();
+            Program.configListForm.showConfig(Constants.Tag.Empty, config);
         }
 
         private void selectFilesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -216,12 +214,12 @@ namespace AirdPro.Forms
 
         private void globalSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (globalSettingForm == null || globalSettingForm.IsDisposed)
+            if (Program.globalSettingForm == null || Program.globalSettingForm.IsDisposed)
             {
-                globalSettingForm = new GlobalSettingForm();
+                Program.globalSettingForm = new GlobalSettingForm();
             }
 
-            globalSettingForm.Show();
+            Program.globalSettingForm.Show();
         }
 
         private void rerun_Click(object sender, EventArgs e)
@@ -357,12 +355,12 @@ namespace AirdPro.Forms
 
         private void btnSetting_Click(object sender, EventArgs e)
         {
-            if (configListForm == null || configListForm.IsDisposed)
+            if (Program.configListForm == null || Program.configListForm.IsDisposed)
             {
-                configListForm = new ConversionConfigListForm();
+                Program.configListForm = new ConversionConfigListForm();
             }
 
-            configListForm.Show();
+            Program.configListForm.Show();
         }
 
         private void btnMirrorTrans_Click(object sender, EventArgs e)

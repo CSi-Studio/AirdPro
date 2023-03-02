@@ -101,6 +101,14 @@ namespace AirdPro.Storage.Config
          */
         public bool autoExplorer = false;
 
+        /**
+         * 决策器的权重，默认为1:1:1
+         */
+        public double compressionSizeWeight = 1;
+        public double compressionTimeWeight = 1;
+        public double decompressionTimeWeight = 1;
+        public int spectraToPredict = 50;
+
         public ConversionConfig()
         {
         }

@@ -49,6 +49,7 @@
             this.repositoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.globalSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.conversionSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -95,7 +96,6 @@
             this.helpToolStripMenuItem});
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
-            this.menu.Padding = new System.Windows.Forms.Padding(6, 2, 0, 2);
             this.menu.Size = new System.Drawing.Size(2264, 32);
             this.menu.TabIndex = 16;
             this.menu.Text = "menuStrip1";
@@ -135,7 +135,8 @@
             // settingToolStripMenuItem
             // 
             this.settingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.globalSettingToolStripMenuItem});
+            this.globalSettingToolStripMenuItem,
+            this.conversionSettingToolStripMenuItem});
             this.settingToolStripMenuItem.Image = global::AirdPro.Properties.Resources.Setting;
             this.settingToolStripMenuItem.Name = "settingToolStripMenuItem";
             this.settingToolStripMenuItem.Size = new System.Drawing.Size(112, 28);
@@ -144,9 +145,16 @@
             // globalSettingToolStripMenuItem
             // 
             this.globalSettingToolStripMenuItem.Name = "globalSettingToolStripMenuItem";
-            this.globalSettingToolStripMenuItem.Size = new System.Drawing.Size(233, 34);
+            this.globalSettingToolStripMenuItem.Size = new System.Drawing.Size(272, 34);
             this.globalSettingToolStripMenuItem.Text = "Global Setting";
             this.globalSettingToolStripMenuItem.Click += new System.EventHandler(this.globalSettingToolStripMenuItem_Click);
+            // 
+            // conversionSettingToolStripMenuItem
+            // 
+            this.conversionSettingToolStripMenuItem.Name = "conversionSettingToolStripMenuItem";
+            this.conversionSettingToolStripMenuItem.Size = new System.Drawing.Size(272, 34);
+            this.conversionSettingToolStripMenuItem.Text = "Conversion Setting";
+            this.conversionSettingToolStripMenuItem.Click += new System.EventHandler(this.conversionSettingToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -226,7 +234,7 @@
             this.tabs.Controls.Add(this.tabTIC);
             this.tabs.Controls.Add(this.tabBasePeak);
             this.tabs.Location = new System.Drawing.Point(10, 51);
-            this.tabs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabs.Margin = new System.Windows.Forms.Padding(4);
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
             this.tabs.Size = new System.Drawing.Size(924, 598);
@@ -236,9 +244,9 @@
             // 
             this.tabTIC.Controls.Add(this.ticChart);
             this.tabTIC.Location = new System.Drawing.Point(4, 33);
-            this.tabTIC.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabTIC.Margin = new System.Windows.Forms.Padding(4);
             this.tabTIC.Name = "tabTIC";
-            this.tabTIC.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabTIC.Padding = new System.Windows.Forms.Padding(4);
             this.tabTIC.Size = new System.Drawing.Size(916, 561);
             this.tabTIC.TabIndex = 0;
             this.tabTIC.Text = "TIC";
@@ -261,7 +269,7 @@
             legend1.Name = "LegendTIC";
             this.ticChart.Legends.Add(legend1);
             this.ticChart.Location = new System.Drawing.Point(0, 4);
-            this.ticChart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ticChart.Margin = new System.Windows.Forms.Padding(4);
             this.ticChart.Name = "ticChart";
             series1.BorderWidth = 0;
             series1.ChartArea = "ChartAreaTIC";
@@ -281,9 +289,9 @@
             // 
             this.tabBasePeak.Controls.Add(this.basePeakChart);
             this.tabBasePeak.Location = new System.Drawing.Point(4, 33);
-            this.tabBasePeak.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabBasePeak.Margin = new System.Windows.Forms.Padding(4);
             this.tabBasePeak.Name = "tabBasePeak";
-            this.tabBasePeak.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabBasePeak.Padding = new System.Windows.Forms.Padding(4);
             this.tabBasePeak.Size = new System.Drawing.Size(916, 561);
             this.tabBasePeak.TabIndex = 1;
             this.tabBasePeak.Text = "Base Peak";
@@ -304,7 +312,7 @@
             legend2.Name = "LegendBasePeak";
             this.basePeakChart.Legends.Add(legend2);
             this.basePeakChart.Location = new System.Drawing.Point(0, 0);
-            this.basePeakChart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.basePeakChart.Margin = new System.Windows.Forms.Padding(4);
             this.basePeakChart.Name = "basePeakChart";
             series2.BorderWidth = 0;
             series2.ChartArea = "ChartAreaBasePeak";
@@ -335,7 +343,7 @@
             legend3.Name = "LegendSpectrum";
             this.spectrumChart.Legends.Add(legend3);
             this.spectrumChart.Location = new System.Drawing.Point(944, 62);
-            this.spectrumChart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spectrumChart.Margin = new System.Windows.Forms.Padding(4);
             this.spectrumChart.Name = "spectrumChart";
             series3.BorderWidth = 0;
             series3.ChartArea = "ChartAreaSpectrum";
@@ -371,7 +379,7 @@
             this.spectraDataGrids.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.spectraDataGrids.ColumnHeadersHeight = 34;
             this.spectraDataGrids.Location = new System.Drawing.Point(4, 658);
-            this.spectraDataGrids.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spectraDataGrids.Margin = new System.Windows.Forms.Padding(4);
             this.spectraDataGrids.MultiSelect = false;
             this.spectraDataGrids.Name = "spectraDataGrids";
             this.spectraDataGrids.ReadOnly = true;
@@ -468,5 +476,6 @@
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.ContextMenuStrip notifyMenu;
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem conversionSettingToolStripMenuItem;
     }
 }

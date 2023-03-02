@@ -198,6 +198,11 @@ namespace AirdPro.Domains
             jobInfo += Tag.Thread_Accelerate + config.threadAccelerate + Const.Change_Line;
             jobInfo += Tag.Mz_Precision + config.getMzPrecisionStr() + Const.Change_Line;
             jobInfo += Tag.Compressor + getCompressorStr() + Const.Change_Line;
+            if(config.autoDesicion)
+            {
+                jobInfo += config.spectraToPredict + " spectra for prediction" + Const.Change_Line;
+                jobInfo += "size:ct:dt=" + config.compressionSizeWeight + ":" + config.compressionTimeWeight + ":" + config.decompressionTimeWeight + Const.Change_Line;
+            }
             return jobInfo;
         }
 

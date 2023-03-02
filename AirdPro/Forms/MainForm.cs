@@ -10,20 +10,17 @@ using AirdSDK.Beans;
 using AirdSDK.Beans.Common;
 using AirdSDK.Enums;
 using AirdSDK.Parser;
-using CV = AirdSDK.Beans.CV;
 using AirdPro.Repository;
 using AirdPro.Constants;
-using AirdPro.Utils;
 using AirdSDK.Utils;
 using AutoUpdaterDotNET;
-using Microsoft.Win32;
 
 namespace AirdPro.Forms
 {
     public partial class MainForm : Form
     {
         private AboutForm aboutForm;
-        private GlobalSettingForm globalSettingForm;
+      
         private ReposWizardForm reposWizardForm;
         private HashSet<string> airdFiles = new HashSet<string>();
         private FileInfo airdFile;
@@ -55,12 +52,12 @@ namespace AirdPro.Forms
 
         private void globalSettingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (globalSettingForm == null || globalSettingForm.IsDisposed)
+            if (Program.globalSettingForm == null || Program.globalSettingForm.IsDisposed)
             {
-                globalSettingForm = new GlobalSettingForm();
+                Program.globalSettingForm = new GlobalSettingForm();
             }
 
-            globalSettingForm.Show();
+            Program.globalSettingForm.Show();
         }
 
         private void openRepositoryToolStripMenuItem_Click(object sender, EventArgs e)
@@ -384,6 +381,16 @@ namespace AirdPro.Forms
         private void startConversionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Program.conversionForm.Visible = true;
+        }
+
+        private void conversionSettingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Program.configListForm == null || Program.configListForm.IsDisposed)
+            {
+                Program.configListForm = new ConversionConfigListForm();
+            }
+
+            Program.configListForm.Show();
         }
     }
 }

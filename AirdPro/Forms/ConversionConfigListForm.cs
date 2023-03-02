@@ -18,6 +18,7 @@ using AirdPro.Storage.Config;
 using AirdSDK.Compressor;
 using ThermoFisher.CommonCore.Data;
 using AirdSDK.Enums;
+using CSharpFastPFOR.Port;
 
 namespace AirdPro.Forms
 {
@@ -100,7 +101,7 @@ namespace AirdPro.Forms
             config.mzPrecision = (int) Math.Pow(10, int.Parse(cbConfigMzPrecision.Text));
             config.ignoreZeroIntensity = cbConfigIsZeroIntensityIgnore.Checked;
             config.threadAccelerate = cbConfigThreadAccelerate.Checked;
-
+            
             //如果不是自动决策的,则会使用配置的组合压缩器
             if (!cbAutoDecision.Checked)
             {
@@ -131,6 +132,19 @@ namespace AirdPro.Forms
             config.creator = tbConfigOperator.Text;
             config.autoDesicion = cbAutoDecision.Checked;
             config.autoExplorer = cbAutoExplore.Checked;
+            try
+            {
+                config.spectraToPredict = int.Parse(tbSpectraToPredict.Text);
+            }
+            catch (Exception e)
+            {
+                config.spectraToPredict = 50;
+                tbSpectraToPredict.Text = "50";
+            }
+
+            config.compressionSizeWeight = int.Parse(cbCSWeight.Text);
+            config.compressionTimeWeight = int.Parse(cbCTWeight.Text);
+            config.decompressionTimeWeight = int.Parse(cbDTWeight.Text);
             return config;
         }
 
@@ -202,6 +216,10 @@ namespace AirdPro.Forms
             tableAutoDecision.Enabled = !config.autoDesicion;
             cbAutoDecision.Checked = config.autoDesicion;
             cbAutoExplore.Checked = config.autoExplorer;
+            tbSpectraToPredict.Text = config.spectraToPredict+"";
+            cbCSWeight.Text = config.compressionSizeWeight+"";
+            cbCTWeight.Text = config.compressionTimeWeight+"";
+            cbDTWeight.Text = config.decompressionTimeWeight+"";
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -233,6 +251,8 @@ namespace AirdPro.Forms
         private void cbAutoDecision_CheckedChanged(object sender, EventArgs e)
         {
             tableAutoDecision.Enabled = !cbAutoDecision.Checked;
+            tableDeciderWeight.Enabled = cbAutoDecision.Checked;
+            tbSpectraToPredict.Enabled = cbAutoDecision.Checked;
         }
     }
 }

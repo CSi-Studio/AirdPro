@@ -114,7 +114,7 @@ namespace AirdPro.Utils
             watchMz.Stop();
         }
 
-        public static int calcBestIndex(List<CompressStat> statList)
+        public static int calcBestIndex(List<CompressStat> statList,double csWeight, double ctWeight, double dtWeight)
         {
             statList.Sort((a, b) => a.size.CompareTo(b.size));
             List<double> sizeList = new List<double>();
@@ -147,7 +147,7 @@ namespace AirdPro.Utils
             List<double> totalList = new List<double>();
             for (int i = 0; i <= endIndex; i++)
             {
-                double total = normSize[i] + normCt[i] + normDt[i];
+                double total = csWeight*normSize[i] + ctWeight*normCt[i] + dtWeight*normDt[i];
                 totalList.Add(total);
                 if (total < bestValue)
                 {
