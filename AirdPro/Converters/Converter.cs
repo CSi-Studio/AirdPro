@@ -438,7 +438,7 @@ namespace AirdPro.Converters
             var readerConfig = new ReaderConfig
             {
                 allowMsMsWithoutPrecursor = false,
-                combineIonMobilitySpectra = false,
+                combineIonMobilitySpectra = true,
                 ignoreZeroIntensityPoints = jobInfo.config.ignoreZeroIntensity
             };
 
