@@ -62,6 +62,7 @@ namespace AirdPro.Converters
         protected long fileSize; //厂商文件大小
         public long startPosition = 0; //文件指针
         protected int totalSize = 0; //总计的谱图数目
+        protected int totalChroma = 0; //总计的色谱数目
         
         protected int intensityPrecision = 1; //Intensity默认精确到个位数
         protected int mobiPrecision = 10000000; //mobility默认精确到小数点后7位
@@ -471,8 +472,14 @@ namespace AirdPro.Converters
             {
                 jobInfo.log(ResultCode.No_Chromatograms_Found);
             }
+            else
+            {
+                totalChroma = chromatogramList.size();
+            }
           
-            jobInfo.log(Tag.Adapting_Finished + Const.COMMA + totalSize + Const.SPACE + Tag.Total_Spectra);
+            jobInfo.log(Tag.Adapting_Finished);
+            jobInfo.log(totalSize + Const.SPACE + Tag.Total_Spectra);
+            jobInfo.log(totalChroma + Const.SPACE + Tag.Total_Chromatograms);
 
             switch (jobInfo.format)
             {
@@ -985,7 +992,7 @@ namespace AirdPro.Converters
             }
 
             airdInfo.instruments = instruments;
-
+            airdInfo.startTimeStamp = msd.run.startTimeStamp;
             //Software Info
             foreach (Software soft in msd.softwareList)
             {
