@@ -37,16 +37,43 @@ namespace AirdPro.Repository
         public MLForm()
         {
             InitializeComponent();
-            load(true);
+            load(false);
         }
 
         private void load(bool fastLoad)
         {
             var configFolder = Settings.Default.ConfigFolder;
-            if (configFolder.Equals(string.Empty) || !Directory.Exists(configFolder)) return;
+            if (configFolder.Equals(string.Empty) || !Directory.Exists(configFolder))
+            {
+                configFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                tbConfigFolder.Text = configFolder;
+            }
 
             var configFilePath = fastLoad? Path.Combine(configFolder, fastConfigFileName): Path.Combine(configFolder, configFileName);
-            if (!File.Exists(configFilePath)) return;
+            if (!File.Exists(configFilePath))
+            {
+                try
+                {
+
+                    using (FileStream fsFastConfig = new FileStream(Path.Combine(configFolder, fastConfigFileName),
+                               FileMode.OpenOrCreate, FileAccess.Write))
+                    {
+                        byte[] configFileByte = Resources.MLFastConfigFile;
+                        fsFastConfig.Write(configFileByte, 0, configFileByte.Length);
+                    }
+
+                    using (FileStream fsConfig = new FileStream(Path.Combine(configFolder, configFileName),
+                               FileMode.OpenOrCreate, FileAccess.Write))
+                    {
+                        byte[] configFileByte = Resources.MLConfigFile;
+                        fsConfig.Write(configFileByte, 0, configFileByte.Length);
+                    }
+                }
+                catch
+                {
+
+                }
+            }
             
             using (var fsRead = new FileStream(configFilePath, FileMode.Open))
             {
@@ -74,6 +101,14 @@ namespace AirdPro.Repository
                 return;
             }
 
+            string localConfigFile = Path.Combine(configFolder, configFileName);
+            List<Project> projects = FileUtil.readFromFileAsJSON<List<Project>>(localConfigFile);
+            HashSet<string> projectIdSet = new HashSet<string>();
+            projects.ForEach(project =>
+            {
+                projectIdSet.Add(project.Identifier);
+            });
+
             string response = null;
             try
             {
@@ -83,9 +118,13 @@ namespace AirdPro.Repository
                 
                 long total = studies.studies;
                 lblLoading.Text = "0/"+total+ " Loaded";
-                List<Project> projects = new List<Project>();
                 for (int i = 0; i < studies.content.Count; i++)
                 {
+                    if (projectIdSet.Contains(studies.content[i]))
+                    {
+                        lblLoading.Text = (i + 1) + "/" + total + " Loaded";
+                        continue;
+                    }
                     response = await client.GetStringAsync(UrlConst.mlListUrl +"/" + studies.content[i]);
                     MetaboLights.Repository repository = JsonConvert.DeserializeObject<MetaboLights.Repository>(response);
                     Study study = repository.isaInvestigation.studies[0];
@@ -100,7 +139,7 @@ namespace AirdPro.Repository
 
                     project.Repos = "MetaboLights";
                     projects.Add(project);
-                    lblLoading.Text = (i + 1)+"/" + total + " Loaded";
+                    
                 }
 
                 FileUtil.writeToFile(projects, Path.Combine(configFolder, configFileName));
@@ -129,6 +168,27 @@ namespace AirdPro.Repository
                     Directory.CreateDirectory(temp);
                     Settings.Default.ConfigFolder = temp;
                     Settings.Default.Save();
+                }
+                try
+                {
+
+                    using (FileStream fsFastConfig = new FileStream(Path.Combine(temp, fastConfigFileName),
+                               FileMode.OpenOrCreate, FileAccess.Write))
+                    {
+                        byte[] configFileByte = Resources.MLFastConfigFile;
+                        fsFastConfig.Write(configFileByte, 0, configFileByte.Length);
+                    }
+
+                    using (FileStream fsConfig = new FileStream(Path.Combine(temp, configFileName),
+                               FileMode.OpenOrCreate, FileAccess.Write))
+                    {
+                        byte[] configFileByte = Resources.MLConfigFile;
+                        fsConfig.Write(configFileByte, 0, configFileByte.Length);
+                    }
+                }
+                catch
+                {
+
                 }
             }
 

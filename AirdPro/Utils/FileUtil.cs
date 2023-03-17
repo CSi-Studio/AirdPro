@@ -57,6 +57,22 @@ namespace AirdPro.Utils
             }
         }
 
+        public static T readFromFileAsJSON<T>(string filePath)
+        {
+            if (!File.Exists(filePath)) return default(T);
+
+            using (var fsRead = new FileStream(filePath, FileMode.Open))
+            {
+                var fsLen = (int)fsRead.Length;
+                var heByte = new byte[fsLen];
+                var r = fsRead.Read(heByte, 0, heByte.Length);
+                var projectJson = Encoding.UTF8.GetString(heByte);
+                fsRead.Close();
+
+                return JsonConvert.DeserializeObject<T>(projectJson);
+            }
+        }
+
         public static void writeToFile(object obj, string outputFilePath)
         {
             var content = JsonConvert.SerializeObject(obj);

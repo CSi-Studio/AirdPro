@@ -377,6 +377,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="PSI-MS.obo" />
+    <None Include="Resources\Config\MLConfigFile.json" />
+    <None Include="Resources\Config\MLFastConfigFile.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Ico\AIR.ico" />

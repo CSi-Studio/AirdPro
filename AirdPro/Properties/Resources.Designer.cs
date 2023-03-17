@@ -311,6 +311,26 @@ namespace AirdPro.Properties {
         }
         
         /// <summary>
+        ///   查找 System.Byte[] 类型的本地化资源。
+        /// </summary>
+        internal static byte[] MLConfigFile {
+            get {
+                object obj = ResourceManager.GetObject("MLConfigFile", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Byte[] 类型的本地化资源。
+        /// </summary>
+        internal static byte[] MLFastConfigFile {
+            get {
+                object obj = ResourceManager.GetObject("MLFastConfigFile", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
         internal static System.Drawing.Bitmap Proteomexchange {
