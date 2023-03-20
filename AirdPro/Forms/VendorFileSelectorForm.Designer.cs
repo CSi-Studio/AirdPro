@@ -50,6 +50,7 @@ namespace AirdPro.Forms
             this.imgList = new System.Windows.Forms.ImageList(this.components);
             this.btnAdd = new System.Windows.Forms.Button();
             this.msFileViews = new AirdPro.FolderFileBrowser();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.gBoxMode.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,6 +68,7 @@ namespace AirdPro.Forms
             // gBoxMode
             // 
             this.gBoxMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.gBoxMode.Controls.Add(this.radioButton4);
             this.gBoxMode.Controls.Add(this.radioButton3);
             this.gBoxMode.Controls.Add(this.rbAuto);
             this.gBoxMode.Controls.Add(this.radioButton6);
@@ -76,7 +78,7 @@ namespace AirdPro.Forms
             this.gBoxMode.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.gBoxMode.Location = new System.Drawing.Point(646, 86);
             this.gBoxMode.Name = "gBoxMode";
-            this.gBoxMode.Size = new System.Drawing.Size(208, 181);
+            this.gBoxMode.Size = new System.Drawing.Size(208, 205);
             this.gBoxMode.TabIndex = 2;
             this.gBoxMode.TabStop = false;
             this.gBoxMode.Text = "Acquisition Mode";
@@ -253,6 +255,17 @@ namespace AirdPro.Forms
             this.msFileViews.Size = new System.Drawing.Size(625, 351);
             this.msFileViews.TabIndex = 125;
             // 
+            // radioButton4
+            // 
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.radioButton4.Location = new System.Drawing.Point(8, 177);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(58, 21);
+            this.radioButton4.TabIndex = 9;
+            this.radioButton4.Text = "MRM";
+            this.radioButton4.UseVisualStyleBackColor = true;
+            // 
             // VendorFileSelectorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -302,5 +315,6 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ImageList imgList;
         private FolderFileBrowser msFileViews;
         private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.RadioButton radioButton4;
     }
 }

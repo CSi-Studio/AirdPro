@@ -206,8 +206,8 @@ namespace AirdPro.Forms
                     return;
                 }
 
-                SRMParser srmParser = new SRMParser(indexFilePath);
-                List<SrmPair> srms = srmParser.getAllSrmPairs();
+                MRMParser mrmParser = new MRMParser(indexFilePath);
+                List<SrmPair> srms = mrmParser.getAllSrmPairs();
                 List<SpectrumRow> spectra = parseAsSpectra(airdInfo);
                 spectraDataGrids.DataSource = spectra;
 
@@ -296,8 +296,8 @@ namespace AirdPro.Forms
                 case AcquisitionMethod.DIA_PASEF:
                     parser = new DIAParser(indexFile.FullName, airdInfo);
                     break;
-                case AcquisitionMethod.SRM:
-                    parser = new SRMParser(indexFile.FullName, airdInfo);
+                case AcquisitionMethod.MRM:
+                    parser = new MRMParser(indexFile.FullName, airdInfo);
                     break;
             }
             Spectrum spectrum = parser.getSpectrumByNum(row.Scan - 1);

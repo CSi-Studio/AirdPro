@@ -100,8 +100,8 @@ namespace AirdPro.Converters
                         case AcquisitionMethod.PRM:
                             ConverterWorkFlow.PRM(this);
                             break;
-                        case AcquisitionMethod.SRM:
-                            ConverterWorkFlow.SRM(this);
+                        case AcquisitionMethod.MRM:
+                            ConverterWorkFlow.MRM(this);
                             break;
                         case AcquisitionMethod.DDA_PASEF:
                             jobInfo.ionMobility = true;
@@ -291,7 +291,7 @@ namespace AirdPro.Converters
                          }
                      }
                      
-                    jobInfo.setType(AcquisitionMethod.SRM);
+                    jobInfo.setType(AcquisitionMethod.MRM);
                 }
             }
             catch (Exception e)

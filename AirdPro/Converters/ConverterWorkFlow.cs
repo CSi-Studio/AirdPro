@@ -56,7 +56,7 @@ public class ConverterWorkFlow
         converter.writeToAirdInfoFile(); //将Info数据写入文件
     }
 
-    public static void SRM(Converter converter)
+    public static void MRM(Converter converter)
     {
         if (converter.spectrumList.size() > 0)
         {
