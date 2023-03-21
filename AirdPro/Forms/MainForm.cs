@@ -207,7 +207,7 @@ namespace AirdPro.Forms
                 }
 
                 MRMParser mrmParser = new MRMParser(indexFilePath);
-                List<SrmPair> srms = mrmParser.getAllSrmPairs();
+                List<MrmPair> srms = mrmParser.getAllSrmPairs();
                 List<SpectrumRow> spectra = parseAsSpectra(airdInfo);
                 spectraDataGrids.DataSource = spectra;
 
