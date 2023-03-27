@@ -163,6 +163,16 @@ namespace AirdPro.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap Computation {
+            get {
+                object obj = ResourceManager.GetObject("Computation", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap Connected {
             get {
                 object obj = ResourceManager.GetObject("Connected", resourceCulture);
@@ -346,6 +356,16 @@ namespace AirdPro.Properties {
         internal static System.Drawing.Bitmap Repository {
             get {
                 object obj = ResourceManager.GetObject("Repository", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap SearchEngine {
+            get {
+                object obj = ResourceManager.GetObject("SearchEngine", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

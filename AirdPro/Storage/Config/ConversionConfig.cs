@@ -54,6 +54,12 @@ namespace AirdPro.Storage.Config
         public bool autoDesicion = true;
 
         /**
+         * 面向的场景,默认为Aird-ComboComp面相计算的场景，主要使用行存储的方式进行排列与压缩
+         * Aird-SearchEngine为面相搜索的场景，主要使用列存储的方式进行存储与压缩
+         */
+        public string scene = Scene.Computation;
+
+        /**
          * 用于mz压缩的int数组压缩方法
          */
         public SortedIntCompType mzIntComp = SortedIntCompType.IVB;
@@ -82,6 +88,16 @@ namespace AirdPro.Storage.Config
          * 用于mobility压缩的byte数组压缩方法
          */
         public ByteCompType mobiByteComp = ByteCompType.Zstd;
+
+        /**
+       * 用于rt压缩的int数组压缩方法
+       */
+        public SortedIntCompType rtIntComp = SortedIntCompType.IVB;
+
+        /**
+         * 用于rt压缩的byte数组压缩方法
+         */
+        public ByteCompType rtByteComp = ByteCompType.Zstd;
 
         /**
          * 是否使用stack layer压缩
@@ -118,6 +134,9 @@ namespace AirdPro.Storage.Config
             return ((int) Math.Log10(mzPrecision)) + "dp";
         }
 
+        /**
+         * 自由探索模式下自动组装所有压缩组合，面向计算场景下的函数
+         */
         public List<ConversionConfig> buildExplorerConfigs(bool mobility)
         {
             List<ConversionConfig> configList = new List<ConversionConfig>();

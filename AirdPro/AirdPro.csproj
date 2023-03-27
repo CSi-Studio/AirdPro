@@ -383,6 +383,8 @@
   <ItemGroup>
     <Content Include="Resources\Ico\AIR.ico" />
     <Content Include="Resources\Imgs\Arrows.png" />
+    <Content Include="Resources\Imgs\Computation.png" />
+    <Content Include="Resources\Imgs\SearchEngine.png" />
     <Content Include="Resources\Logo\AIR.png" />
     <Content Include="Resources\Logo\AirdPro.png" />
     <Content Include="Resources\Logo\AirdProLogo.png" />
