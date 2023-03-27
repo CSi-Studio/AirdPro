@@ -43,6 +43,11 @@ namespace AirdPro.Storage.Config
         public string suffix;
 
         /**
+         * 是否压缩索引，是则会将IndexList的信息转化为JSON格式后使用Zstd进行压缩并存储与Aird文件中
+         */
+        public bool compressedIndex = true;
+
+        /**
          * The operator's name
          * 操作员姓名
          */

@@ -87,6 +87,7 @@
             this.pageSearchEngine = new System.Windows.Forms.TabPage();
             this.pageStorage = new System.Windows.Forms.TabPage();
             this.lblSceneConfig = new System.Windows.Forms.Label();
+            this.cbCompressedIndex = new System.Windows.Forms.CheckBox();
             this.contextMenu.SuspendLayout();
             this.tableAutoDecision.SuspendLayout();
             this.tableDeciderWeight.SuspendLayout();
@@ -162,7 +163,7 @@
             // 
             this.btnSaveToLocal.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnSaveToLocal.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnSaveToLocal.Location = new System.Drawing.Point(712, 599);
+            this.btnSaveToLocal.Location = new System.Drawing.Point(982, 599);
             this.btnSaveToLocal.Name = "btnSaveToLocal";
             this.btnSaveToLocal.Size = new System.Drawing.Size(116, 38);
             this.btnSaveToLocal.TabIndex = 138;
@@ -285,7 +286,7 @@
             this.lblConfigOperator.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.lblConfigOperator.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblConfigOperator.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblConfigOperator.Location = new System.Drawing.Point(595, 70);
+            this.lblConfigOperator.Location = new System.Drawing.Point(580, 70);
             this.lblConfigOperator.Name = "lblConfigOperator";
             this.lblConfigOperator.Size = new System.Drawing.Size(62, 17);
             this.lblConfigOperator.TabIndex = 126;
@@ -294,7 +295,7 @@
             // tbConfigOperator
             // 
             this.tbConfigOperator.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.tbConfigOperator.Location = new System.Drawing.Point(663, 67);
+            this.tbConfigOperator.Location = new System.Drawing.Point(648, 67);
             this.tbConfigOperator.Name = "tbConfigOperator";
             this.tbConfigOperator.Size = new System.Drawing.Size(155, 23);
             this.tbConfigOperator.TabIndex = 125;
@@ -378,7 +379,7 @@
             // 
             this.btnApply.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnApply.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnApply.Location = new System.Drawing.Point(591, 599);
+            this.btnApply.Location = new System.Drawing.Point(861, 599);
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(116, 38);
             this.btnApply.TabIndex = 139;
@@ -578,7 +579,7 @@
             this.tableDeciderWeight.Controls.Add(this.lblCompSize, 0, 1);
             this.tableDeciderWeight.Controls.Add(this.lblCompTime, 0, 2);
             this.tableDeciderWeight.Controls.Add(this.lblDecompTime, 0, 3);
-            this.tableDeciderWeight.Location = new System.Drawing.Point(12, 265);
+            this.tableDeciderWeight.Location = new System.Drawing.Point(378, 67);
             this.tableDeciderWeight.Name = "tableDeciderWeight";
             this.tableDeciderWeight.RowCount = 4;
             this.tableDeciderWeight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
@@ -753,15 +754,16 @@
             this.tabs.HeadSelectedBackColor = System.Drawing.Color.Blue;
             this.tabs.IsShowCloseBtn = false;
             this.tabs.ItemSize = new System.Drawing.Size(0, 50);
-            this.tabs.Location = new System.Drawing.Point(345, 134);
+            this.tabs.Location = new System.Drawing.Point(345, 189);
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(483, 459);
+            this.tabs.Size = new System.Drawing.Size(756, 404);
             this.tabs.TabIndex = 156;
             this.tabs.UncloseTabIndexs = null;
             // 
             // pageComputation
             // 
+            this.pageComputation.Controls.Add(this.cbCompressedIndex);
             this.pageComputation.Controls.Add(this.cbAutoDecision);
             this.pageComputation.Controls.Add(this.tableAutoDecision);
             this.pageComputation.Controls.Add(this.cbAutoExplore);
@@ -772,7 +774,7 @@
             this.pageComputation.Location = new System.Drawing.Point(4, 54);
             this.pageComputation.Name = "pageComputation";
             this.pageComputation.Padding = new System.Windows.Forms.Padding(3);
-            this.pageComputation.Size = new System.Drawing.Size(475, 401);
+            this.pageComputation.Size = new System.Drawing.Size(748, 346);
             this.pageComputation.TabIndex = 0;
             this.pageComputation.Text = "Computation";
             this.pageComputation.UseVisualStyleBackColor = true;
@@ -793,7 +795,7 @@
             this.pageStorage.Controls.Add(this.cbConfigStack);
             this.pageStorage.Location = new System.Drawing.Point(4, 54);
             this.pageStorage.Name = "pageStorage";
-            this.pageStorage.Size = new System.Drawing.Size(475, 402);
+            this.pageStorage.Size = new System.Drawing.Size(475, 401);
             this.pageStorage.TabIndex = 2;
             this.pageStorage.Text = "Storage";
             this.pageStorage.UseVisualStyleBackColor = true;
@@ -804,17 +806,33 @@
             this.lblSceneConfig.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.lblSceneConfig.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblSceneConfig.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblSceneConfig.Location = new System.Drawing.Point(346, 114);
+            this.lblSceneConfig.Location = new System.Drawing.Point(345, 169);
             this.lblSceneConfig.Name = "lblSceneConfig";
             this.lblSceneConfig.Size = new System.Drawing.Size(206, 17);
             this.lblSceneConfig.TabIndex = 157;
             this.lblSceneConfig.Text = "Configuration for Different Scenes";
             // 
+            // cbCompressedIndex
+            // 
+            this.cbCompressedIndex.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbCompressedIndex.AutoSize = true;
+            this.cbCompressedIndex.Checked = true;
+            this.cbCompressedIndex.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbCompressedIndex.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbCompressedIndex.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.cbCompressedIndex.Location = new System.Drawing.Point(12, 265);
+            this.cbCompressedIndex.Name = "cbCompressedIndex";
+            this.cbCompressedIndex.Size = new System.Drawing.Size(137, 21);
+            this.cbCompressedIndex.TabIndex = 154;
+            this.cbCompressedIndex.Text = "Compressed Index";
+            this.cbCompressedIndex.UseVisualStyleBackColor = true;
+            // 
             // ConversionConfigListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(834, 649);
+            this.ClientSize = new System.Drawing.Size(1113, 649);
             this.Controls.Add(this.lblSceneConfig);
             this.Controls.Add(this.tabs);
             this.Controls.Add(this.lblScene);
@@ -913,5 +931,6 @@
         private System.Windows.Forms.ColumnHeader mzPrecision;
         private System.Windows.Forms.ColumnHeader headerAuto;
         private System.Windows.Forms.Label lblSceneConfig;
+        public System.Windows.Forms.CheckBox cbCompressedIndex;
     }
 }

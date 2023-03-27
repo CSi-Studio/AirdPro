@@ -519,6 +519,18 @@ namespace AirdPro.Converters
         {
             jobInfo.log(Tag.Write_Index_File, Status.Writing_Index_File);
             AirdInfo airdInfo = buildBasicInfo();
+            if (jobInfo.config.compressedIndex)
+            {
+                List<BlockIndex> indexList = airdInfo.indexList;
+                string indexListStr = JsonConvert.SerializeObject(indexList,
+                    new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                byte[] indexListByte = new ZstdWrapper().encode(Encoding.Default.GetBytes(indexListStr));
+                airdInfo.indexStartPtr = startPosition;
+                startPosition += indexListByte.Length;
+                airdInfo.indexEndPtr = startPosition;
+                airdInfo.indexList = null;
+                airdStream.Write(indexListByte, 0, indexListByte.Length);
+            }
             string airdInfoStr = JsonConvert.SerializeObject(airdInfo, new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
             byte[] airdBytes = Encoding.Default.GetBytes(airdInfoStr);
             airdJsonStream.Write(airdBytes, 0, airdBytes.Length);
