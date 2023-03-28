@@ -139,6 +139,16 @@ namespace AirdPro.Storage.Config
             return ((int) Math.Log10(mzPrecision)) + "dp";
         }
 
+        public bool isComputation()
+        {
+            return scene == Scene.Computation;
+        }
+
+        public bool isSearchEngine()
+        {
+            return scene == Scene.SearchEngine;
+        }
+
         /**
          * 自由探索模式下自动组装所有压缩组合，面向计算场景下的函数
          */

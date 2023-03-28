@@ -389,16 +389,19 @@ namespace AirdPro.Converters
                 index.activators.AddRange(ts.activators);
                 index.filterStrings.AddRange(ts.filterStrings);
                 index.msTypes.AddRange(ts.msTypes);
-
                 index.cvList.AddRange(ts.cvs);
-                index.mzs.Add(ts.mzArrayBytes.Length);
-                index.ints.Add(ts.intArrayBytes.Length);
-                index.tags.Add(ts.tagArrayBytes.Length);
-                startPosition = startPosition + ts.mzArrayBytes.Length + ts.tagArrayBytes.Length +
-                                ts.intArrayBytes.Length;
-                airdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
-                airdStream.Write(ts.tagArrayBytes, 0, ts.tagArrayBytes.Length);
-                airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
+
+                if (ts.mzArrayBytes.Length != 0 && ts.intArrayBytes.Length != 0 && ts.tagArrayBytes.Length != 0)
+                {
+                    index.mzs.Add(ts.mzArrayBytes.Length);
+                    index.ints.Add(ts.intArrayBytes.Length);
+                    index.tags.Add(ts.tagArrayBytes.Length);
+                    startPosition = startPosition + ts.mzArrayBytes.Length + ts.tagArrayBytes.Length +
+                                    ts.intArrayBytes.Length;
+                    airdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
+                    airdStream.Write(ts.tagArrayBytes, 0, ts.tagArrayBytes.Length);
+                    airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
+                }
             }
             else
             {
@@ -416,19 +419,24 @@ namespace AirdPro.Converters
                 index.activators.Add(ts.activator);
                 index.filterStrings.Add(ts.filterString);
                 index.msTypes.Add(ts.msType);
-
                 index.cvList.Add(ts.cvs);
-                index.mzs.Add(ts.mzArrayBytes.Length);
-                index.ints.Add(ts.intArrayBytes.Length);
-                startPosition = startPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;
-                airdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
-                airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
-                if (ts.mobilityArrayBytes != null)
+
+                if (ts.mzArrayBytes.Length != 0 && ts.intArrayBytes.Length != 0)
                 {
+                    index.mzs.Add(ts.mzArrayBytes.Length);
+                    index.ints.Add(ts.intArrayBytes.Length);
+                    startPosition = startPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;
+                    airdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
+                    airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
+                }
+               
+                if (ts.mobilityArrayBytes != null)
+                { 
                     index.mobilities.Add(ts.mobilityArrayBytes.Length);
                     startPosition += ts.mobilityArrayBytes.Length;
                     airdStream.Write(ts.mobilityArrayBytes, 0, ts.mobilityArrayBytes.Length);
                 }
+                
             }
         }
 

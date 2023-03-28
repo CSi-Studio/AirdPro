@@ -18,8 +18,10 @@ using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdPro.Utils;
 using AirdSDK.Beans;
+using AirdSDK.Beans.Common;
 using AirdSDK.Compressor;
 using pwiz.CLI.msdata;
+using Spectrum = pwiz.CLI.msdata.Spectrum;
 
 namespace AirdPro.Algorithms
 {
@@ -33,11 +35,12 @@ namespace AirdPro.Algorithms
 
         public override void compressMS1(Converter converter, BlockIndex index)
         {
+            Hashtable msRowTable = Hashtable.Synchronized(new Hashtable());
             if (multiThread)
             {
                 Hashtable ms1Table = Hashtable.Synchronized(new Hashtable());
                 int process = 0;
-
+               
                 //使用多线程处理数据提取与压缩
                 Parallel.For(0, converter.ms1List.Count, (i, ParallelLoopState) =>
                 {
@@ -57,7 +60,14 @@ namespace AirdPro.Algorithms
                     }
                     else
                     {
-                        compress(spectrum, ts);
+                        if (converter.jobInfo.config.isComputation())
+                        {
+                            compress(spectrum, ts);
+                        }
+                        else
+                        {
+                            msRowTable.Add(i, readSpectrum(spectrum));
+                        }
                     }
 
                     ms1Table.Add(i, ts);
@@ -79,13 +89,28 @@ namespace AirdPro.Algorithms
                         }
                         else
                         {
-                            compress(spectrum, ts);
+                            if (converter.jobInfo.config.isComputation())
+                            {
+                                compress(spectrum, ts);
+                            }
+                            else
+                            {
+                                msRowTable.Add(i, readSpectrum(spectrum));
+                            }
                         }
                     }
 
                     converter.addToIndex(index, ts);
                 }
             }
+
+            //如果是面向搜索引擎的格式转换，则msRowTable不为空，准备启动行矩阵向列矩阵转换的过程
+            if (converter.jobInfo.config.isSearchEngine())
+            {
+                
+            }
+
+
         }
 
         public override void compressMS2(Converter converter, List<MsIndex> ms2List, BlockIndex index)
@@ -205,6 +230,35 @@ namespace AirdPro.Algorithms
             ts.intArrayBytes = compressedIntArray;
         }
 
+        public IntPairs readSpectrum(Spectrum spectrum)
+        {
+            double[] mzData = spectrum.getMZArray().data.Storage();
+            double[] intData = spectrum.getIntensityArray().data.Storage();
+            var size = mzData.Length;
+            if (size == 0)
+            {
+                return null;
+            }
+
+            int[] mzArray = new int[size];
+            int[] intensityArray = new int[size];
+            int j = 0;
+            for (int t = 0; t < size; t++)
+            {
+                if (ignoreZero && intData[t] == 0) continue;
+                mzArray[j] = DataUtil.fetchMz(mzData[t], mzPrecision);
+                intensityArray[j] = DataUtil.fetchIntensity(intData[t], intensityPrecision);
+                j++;
+            }
+
+            int[] mzSubArray = new int[j];
+            Array.Copy(mzArray, mzSubArray, j);
+            int[] intensitySubArray = new int[j];
+            Array.Copy(intensityArray, intensitySubArray, j);
+            return new IntPairs(mzSubArray, intensitySubArray);
+
+        }
+        
         public override void compressMobility(Spectrum spectrum, TempScan ts)
         {
             double[] mzData = spectrum.getMZArray().data.Storage();
