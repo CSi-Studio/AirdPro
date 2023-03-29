@@ -81,25 +81,25 @@
             this.cbScene = new System.Windows.Forms.ComboBox();
             this.tabs = new HZH_Controls.Controls.TabControlExt();
             this.pageComputation = new System.Windows.Forms.TabPage();
+            this.cbCompressedIndex = new System.Windows.Forms.CheckBox();
             this.pageSearchEngine = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cbRtByteComp = new System.Windows.Forms.ComboBox();
+            this.cbRtIntComp = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblConfigRt = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.pageStorage = new System.Windows.Forms.TabPage();
             this.lblSceneConfig = new System.Windows.Forms.Label();
-            this.cbCompressedIndex = new System.Windows.Forms.CheckBox();
-            this.cbRtIntComp = new System.Windows.Forms.ComboBox();
-            this.lblConfigRt = new System.Windows.Forms.Label();
-            this.cbRtByteComp = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.contextMenu.SuspendLayout();
             this.tableAutoDecision.SuspendLayout();
             this.tableDeciderWeight.SuspendLayout();
             this.tabs.SuspendLayout();
             this.pageComputation.SuspendLayout();
             this.pageSearchEngine.SuspendLayout();
-            this.pageStorage.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.pageStorage.SuspendLayout();
             this.SuspendLayout();
             // 
             // headerName
@@ -747,6 +747,22 @@
             this.pageComputation.Text = "Computation";
             this.pageComputation.UseVisualStyleBackColor = true;
             // 
+            // cbCompressedIndex
+            // 
+            this.cbCompressedIndex.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbCompressedIndex.AutoSize = true;
+            this.cbCompressedIndex.Checked = true;
+            this.cbCompressedIndex.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbCompressedIndex.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbCompressedIndex.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.cbCompressedIndex.Location = new System.Drawing.Point(12, 44);
+            this.cbCompressedIndex.Name = "cbCompressedIndex";
+            this.cbCompressedIndex.Size = new System.Drawing.Size(137, 21);
+            this.cbCompressedIndex.TabIndex = 154;
+            this.cbCompressedIndex.Text = "Compressed Index";
+            this.cbCompressedIndex.UseVisualStyleBackColor = true;
+            // 
             // pageSearchEngine
             // 
             this.pageSearchEngine.Controls.Add(this.tableLayoutPanel1);
@@ -757,115 +773,6 @@
             this.pageSearchEngine.TabIndex = 1;
             this.pageSearchEngine.Text = "SearchEngine";
             this.pageSearchEngine.UseVisualStyleBackColor = true;
-            // 
-            // pageStorage
-            // 
-            this.pageStorage.Controls.Add(this.cbConfigStackLayers);
-            this.pageStorage.Controls.Add(this.cbConfigStack);
-            this.pageStorage.Location = new System.Drawing.Point(4, 54);
-            this.pageStorage.Name = "pageStorage";
-            this.pageStorage.Size = new System.Drawing.Size(475, 401);
-            this.pageStorage.TabIndex = 2;
-            this.pageStorage.Text = "Storage";
-            this.pageStorage.UseVisualStyleBackColor = true;
-            // 
-            // lblSceneConfig
-            // 
-            this.lblSceneConfig.AutoSize = true;
-            this.lblSceneConfig.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.lblSceneConfig.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lblSceneConfig.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblSceneConfig.Location = new System.Drawing.Point(339, 123);
-            this.lblSceneConfig.Name = "lblSceneConfig";
-            this.lblSceneConfig.Size = new System.Drawing.Size(206, 17);
-            this.lblSceneConfig.TabIndex = 157;
-            this.lblSceneConfig.Text = "Configuration for Different Scenes";
-            // 
-            // cbCompressedIndex
-            // 
-            this.cbCompressedIndex.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbCompressedIndex.AutoSize = true;
-            this.cbCompressedIndex.Checked = true;
-            this.cbCompressedIndex.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbCompressedIndex.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cbCompressedIndex.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cbCompressedIndex.Location = new System.Drawing.Point(12, 37);
-            this.cbCompressedIndex.Name = "cbCompressedIndex";
-            this.cbCompressedIndex.Size = new System.Drawing.Size(137, 21);
-            this.cbCompressedIndex.TabIndex = 154;
-            this.cbCompressedIndex.Text = "Compressed Index";
-            this.cbCompressedIndex.UseVisualStyleBackColor = true;
-            // 
-            // cbRtIntComp
-            // 
-            this.cbRtIntComp.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.cbRtIntComp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbRtIntComp.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cbRtIntComp.FormattingEnabled = true;
-            this.cbRtIntComp.Location = new System.Drawing.Point(99, 37);
-            this.cbRtIntComp.Name = "cbRtIntComp";
-            this.cbRtIntComp.Size = new System.Drawing.Size(82, 25);
-            this.cbRtIntComp.TabIndex = 156;
-            // 
-            // lblConfigRt
-            // 
-            this.lblConfigRt.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblConfigRt.AutoSize = true;
-            this.lblConfigRt.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblConfigRt.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblConfigRt.Location = new System.Drawing.Point(31, 41);
-            this.lblConfigRt.Name = "lblConfigRt";
-            this.lblConfigRt.Size = new System.Drawing.Size(23, 17);
-            this.lblConfigRt.TabIndex = 154;
-            this.lblConfigRt.Text = "RT";
-            // 
-            // cbRtByteComp
-            // 
-            this.cbRtByteComp.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.cbRtByteComp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbRtByteComp.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cbRtByteComp.FormattingEnabled = true;
-            this.cbRtByteComp.Location = new System.Drawing.Point(229, 37);
-            this.cbRtByteComp.Name = "cbRtByteComp";
-            this.cbRtByteComp.Size = new System.Drawing.Size(82, 25);
-            this.cbRtByteComp.TabIndex = 155;
-            // 
-            // label3
-            // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label3.Location = new System.Drawing.Point(217, 6);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(106, 17);
-            this.label3.TabIndex = 148;
-            this.label3.Text = "General-Purpose";
-            // 
-            // label2
-            // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label2.Location = new System.Drawing.Point(89, 6);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(103, 17);
-            this.label2.TabIndex = 147;
-            this.label2.Text = "Integer-Purpose";
-            // 
-            // label1
-            // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label1.Location = new System.Drawing.Point(3, 6);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(80, 17);
-            this.label1.TabIndex = 149;
-            this.label1.Text = "Compressor";
             // 
             // tableLayoutPanel1
             // 
@@ -887,6 +794,99 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 13F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(345, 69);
             this.tableLayoutPanel1.TabIndex = 157;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label1.Location = new System.Drawing.Point(3, 6);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(80, 17);
+            this.label1.TabIndex = 149;
+            this.label1.Text = "Compressor";
+            // 
+            // cbRtByteComp
+            // 
+            this.cbRtByteComp.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.cbRtByteComp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbRtByteComp.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbRtByteComp.FormattingEnabled = true;
+            this.cbRtByteComp.Location = new System.Drawing.Point(229, 37);
+            this.cbRtByteComp.Name = "cbRtByteComp";
+            this.cbRtByteComp.Size = new System.Drawing.Size(82, 25);
+            this.cbRtByteComp.TabIndex = 155;
+            // 
+            // cbRtIntComp
+            // 
+            this.cbRtIntComp.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.cbRtIntComp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbRtIntComp.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbRtIntComp.FormattingEnabled = true;
+            this.cbRtIntComp.Location = new System.Drawing.Point(99, 37);
+            this.cbRtIntComp.Name = "cbRtIntComp";
+            this.cbRtIntComp.Size = new System.Drawing.Size(82, 25);
+            this.cbRtIntComp.TabIndex = 156;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label2.Location = new System.Drawing.Point(89, 6);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(103, 17);
+            this.label2.TabIndex = 147;
+            this.label2.Text = "Integer-Purpose";
+            // 
+            // lblConfigRt
+            // 
+            this.lblConfigRt.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblConfigRt.AutoSize = true;
+            this.lblConfigRt.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblConfigRt.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.lblConfigRt.Location = new System.Drawing.Point(31, 41);
+            this.lblConfigRt.Name = "lblConfigRt";
+            this.lblConfigRt.Size = new System.Drawing.Size(23, 17);
+            this.lblConfigRt.TabIndex = 154;
+            this.lblConfigRt.Text = "RT";
+            // 
+            // label3
+            // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label3.Location = new System.Drawing.Point(217, 6);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(106, 17);
+            this.label3.TabIndex = 148;
+            this.label3.Text = "General-Purpose";
+            // 
+            // pageStorage
+            // 
+            this.pageStorage.Controls.Add(this.cbConfigStackLayers);
+            this.pageStorage.Controls.Add(this.cbConfigStack);
+            this.pageStorage.Location = new System.Drawing.Point(4, 54);
+            this.pageStorage.Name = "pageStorage";
+            this.pageStorage.Size = new System.Drawing.Size(603, 346);
+            this.pageStorage.TabIndex = 2;
+            this.pageStorage.Text = "Storage";
+            this.pageStorage.UseVisualStyleBackColor = true;
+            // 
+            // lblSceneConfig
+            // 
+            this.lblSceneConfig.AutoSize = true;
+            this.lblSceneConfig.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.lblSceneConfig.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.lblSceneConfig.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.lblSceneConfig.Location = new System.Drawing.Point(339, 123);
+            this.lblSceneConfig.Name = "lblSceneConfig";
+            this.lblSceneConfig.Size = new System.Drawing.Size(206, 17);
+            this.lblSceneConfig.TabIndex = 157;
+            this.lblSceneConfig.Text = "Configuration for Different Scenes";
             // 
             // ConversionConfigListForm
             // 
@@ -926,10 +926,10 @@
             this.pageComputation.ResumeLayout(false);
             this.pageComputation.PerformLayout();
             this.pageSearchEngine.ResumeLayout(false);
-            this.pageStorage.ResumeLayout(false);
-            this.pageStorage.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.pageStorage.ResumeLayout(false);
+            this.pageStorage.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

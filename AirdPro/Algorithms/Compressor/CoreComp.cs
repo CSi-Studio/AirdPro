@@ -20,6 +20,7 @@ using AirdPro.Utils;
 using AirdSDK.Beans;
 using AirdSDK.Beans.Common;
 using AirdSDK.Compressor;
+using AirdSDK.Enums;
 using pwiz.CLI.msdata;
 using Spectrum = pwiz.CLI.msdata.Spectrum;
 
@@ -94,7 +95,7 @@ namespace AirdPro.Algorithms
                                 compress(spectrum, ts);
                             }
                             else
-                            {
+                            { 
                                 msRowTable.Add(i, readSpectrum(spectrum));
                             }
                         }
@@ -107,10 +108,8 @@ namespace AirdPro.Algorithms
             //如果是面向搜索引擎的格式转换，则msRowTable不为空，准备启动行矩阵向列矩阵转换的过程
             if (converter.jobInfo.config.isSearchEngine())
             {
-                
+                compressForColumnStorage(msRowTable);
             }
-
-
         }
 
         public override void compressMS2(Converter converter, List<MsIndex> ms2List, BlockIndex index)
@@ -256,7 +255,6 @@ namespace AirdPro.Algorithms
             int[] intensitySubArray = new int[j];
             Array.Copy(intensityArray, intensitySubArray, j);
             return new IntPairs(mzSubArray, intensitySubArray);
-
         }
         
         public override void compressMobility(Spectrum spectrum, TempScan ts)
@@ -298,7 +296,25 @@ namespace AirdPro.Algorithms
             ts.intArrayBytes = compressedIntArray;
             ts.mobilityArrayBytes = compressedMobilityArray;
         }
+
+        public void compressForColumnStorage(Hashtable rowTable)
+        {
+            HashSet<int> mzsSet = new HashSet<int>();
+            foreach (DictionaryEntry entry in rowTable)
+            {
+                if (entry.Value == null)
+                {
+                    continue;
+                }
+                IntPairs pairs = (IntPairs)(entry.Value); //left为mz,right为intensity
+                for (var i = 0; i < pairs.left.Length; i++)
+                {
+                    mzsSet.Add(pairs.left[i]);
+                }
+            }
+            Console.WriteLine("不同的质荷比：" + mzsSet.Count+"个");
+        }
     }
 
-
+    
 }
