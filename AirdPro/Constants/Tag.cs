@@ -10,6 +10,7 @@
         public static string Pretreatment = "Pretreatment:";
         public static string Pre = "Pre:";
         public static string Auto_Decision = "Auto Decision";
+        public static string Column_Compress = "ColumnCompress:";
 
         public static string SpectrumIndex = "SpectrumIndex";
         public static string SpectrumId = "SpectrumId";

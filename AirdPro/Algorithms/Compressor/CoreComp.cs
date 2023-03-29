@@ -23,6 +23,10 @@ using AirdSDK.Compressor;
 using AirdSDK.Enums;
 using pwiz.CLI.msdata;
 using Spectrum = pwiz.CLI.msdata.Spectrum;
+using System.Web.UI;
+using System.Diagnostics;
+using System.Linq;
+using System.Collections.Concurrent;
 
 namespace AirdPro.Algorithms
 {
@@ -36,7 +40,7 @@ namespace AirdPro.Algorithms
 
         public override void compressMS1(Converter converter, BlockIndex index)
         {
-            Hashtable msRowTable = Hashtable.Synchronized(new Hashtable());
+            ConcurrentDictionary<double, IntSpectrum> msDictionary = new ConcurrentDictionary<double, IntSpectrum>();
             if (multiThread)
             {
                 Hashtable ms1Table = Hashtable.Synchronized(new Hashtable());
@@ -67,7 +71,11 @@ namespace AirdPro.Algorithms
                         }
                         else
                         {
-                            msRowTable.Add(i, readSpectrum(spectrum));
+                            IntSpectrum intSpetrum = readSpectrum(spectrum);
+                            if (intSpetrum != null)
+                            {
+                                msDictionary[ts.rt] = readSpectrum(spectrum);
+                            }
                         }
                     }
 
@@ -95,8 +103,8 @@ namespace AirdPro.Algorithms
                                 compress(spectrum, ts);
                             }
                             else
-                            { 
-                                msRowTable.Add(i, readSpectrum(spectrum));
+                            {
+                                msDictionary[ts.rt] = readSpectrum(spectrum);
                             }
                         }
                     }
@@ -108,7 +116,7 @@ namespace AirdPro.Algorithms
             //如果是面向搜索引擎的格式转换，则msRowTable不为空，准备启动行矩阵向列矩阵转换的过程
             if (converter.jobInfo.config.isSearchEngine())
             {
-                compressForColumnStorage(msRowTable);
+                compressForColumnStorage(converter, msDictionary);
             }
         }
 
@@ -229,7 +237,7 @@ namespace AirdPro.Algorithms
             ts.intArrayBytes = compressedIntArray;
         }
 
-        public IntPairs readSpectrum(Spectrum spectrum)
+        public IntSpectrum readSpectrum(Spectrum spectrum)
         {
             double[] mzData = spectrum.getMZArray().data.Storage();
             double[] intData = spectrum.getIntensityArray().data.Storage();
@@ -240,21 +248,21 @@ namespace AirdPro.Algorithms
             }
 
             int[] mzArray = new int[size];
-            int[] intensityArray = new int[size];
+            double[] intensityArray = new double[size];
             int j = 0;
             for (int t = 0; t < size; t++)
             {
                 if (ignoreZero && intData[t] == 0) continue;
                 mzArray[j] = DataUtil.fetchMz(mzData[t], mzPrecision);
-                intensityArray[j] = DataUtil.fetchIntensity(intData[t], intensityPrecision);
+                intensityArray[j] = intData[t];
                 j++;
             }
 
             int[] mzSubArray = new int[j];
             Array.Copy(mzArray, mzSubArray, j);
-            int[] intensitySubArray = new int[j];
+            double[] intensitySubArray = new double[j];
             Array.Copy(intensityArray, intensitySubArray, j);
-            return new IntPairs(mzSubArray, intensitySubArray);
+            return new IntSpectrum(mzSubArray, intensitySubArray);
         }
         
         public override void compressMobility(Spectrum spectrum, TempScan ts)
@@ -297,22 +305,75 @@ namespace AirdPro.Algorithms
             ts.mobilityArrayBytes = compressedMobilityArray;
         }
 
-        public void compressForColumnStorage(Hashtable rowTable)
+        /**
+         * 将按光谱(即按行)存储的模式改为按列存储
+         */
+        public void compressForColumnStorage(Converter converter, ConcurrentDictionary<double, IntSpectrum> rowTable)
         {
+            //矩阵横坐标
             HashSet<int> mzsSet = new HashSet<int>();
-            foreach (DictionaryEntry entry in rowTable)
+            List<double> rts = rowTable.Keys.ToList();
+            List<IntSpectrum> spectra = rowTable.Values.ToList();
+            int totalIntensityNum = 0;
+            foreach (IntSpectrum spectrum in spectra)
             {
-                if (entry.Value == null)
+                for (var i = 0; i < spectrum.mzs.Length; i++)
                 {
-                    continue;
+                    mzsSet.Add(spectrum.mzs[i]);
                 }
-                IntPairs pairs = (IntPairs)(entry.Value); //left为mz,right为intensity
-                for (var i = 0; i < pairs.left.Length; i++)
+                totalIntensityNum += spectrum.intensities.Length;
+            }
+            List<int> sortedMzs = new List<int>(mzsSet);
+            sortedMzs.Sort();
+            converter.jobInfo.log("合计光谱图" + rowTable.Count + "张,不同质荷比共：" + sortedMzs.Count + "个");
+            converter.jobInfo.log("质荷比范围:" + sortedMzs[0] + "-" + sortedMzs[sortedMzs.Count-1]);
+            Hashtable ptrMap = new Hashtable();
+            foreach (double rt in rts)
+            {
+                ptrMap.Add(rt, 0);
+            }
+
+            converter.jobInfo.log("总计包含有效点数:" + totalIntensityNum);
+            long totalSize = 0;
+            int step = 1;
+            Hashtable treeColumn = new Hashtable();
+            foreach (int mz in sortedMzs)
+            {
+                List<int> indexIdList = new List<int>();
+                List<int> intensityList = new List<int>();
+                step++;
+                if (step % 100000 == 0)
                 {
-                    mzsSet.Add(pairs.left[i]);
+                   converter.jobInfo.log(null, Tag.progress(Tag.Column_Compress, step, sortedMzs.Count));
+                }
+                for (var index = 0; index < rts.Count; index++)
+                {
+                    double rt = rts[index];
+                    IntSpectrum spectrum = rowTable[rt];
+                    int[] currentMzs = spectrum.mzs;
+                    double[] currentInts = spectrum.intensities;
+                    int iter = (int)ptrMap[rt];
+                    bool effect = false;
+                    double intensity = 0;
+                    while (iter < currentMzs.Length && currentMzs[iter] == mz)
+                    {
+                        effect = true;
+                        intensity += currentInts[iter];
+                        iter++;
+                    }
+
+                    if (effect)
+                    {
+                        indexIdList.Add(index);
+                        intensityList.Add(DataUtil.fetchIntensity(intensity, converter.compressor.intensityPrecision));
+                        ptrMap[index] = iter;
+                    }
+                }
+                foreach (double rt in rts)
+                {
+                    
                 }
             }
-            Console.WriteLine("不同的质荷比：" + mzsSet.Count+"个");
         }
     }
 
