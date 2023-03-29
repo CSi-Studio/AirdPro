@@ -753,7 +753,7 @@
             this.pageSearchEngine.Location = new System.Drawing.Point(4, 54);
             this.pageSearchEngine.Name = "pageSearchEngine";
             this.pageSearchEngine.Padding = new System.Windows.Forms.Padding(3);
-            this.pageSearchEngine.Size = new System.Drawing.Size(748, 346);
+            this.pageSearchEngine.Size = new System.Drawing.Size(603, 346);
             this.pageSearchEngine.TabIndex = 1;
             this.pageSearchEngine.Text = "SearchEngine";
             this.pageSearchEngine.UseVisualStyleBackColor = true;

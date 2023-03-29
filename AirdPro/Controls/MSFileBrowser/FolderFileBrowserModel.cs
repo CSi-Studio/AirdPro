@@ -92,10 +92,18 @@ namespace AirdPro
 					cache.Add("ROOT", items);
                     foreach (string str in Environment.GetLogicalDrives())
                     {
-						DirectoryInfo dir = new DirectoryInfo(str);
-                        RootItem root = new RootItem(str, this);
-                        root.Date = dir.CreationTime;
-                        items.Add(root);
+                        try
+                        {
+                            DirectoryInfo dir = new DirectoryInfo(str);
+                            RootItem root = new RootItem(str, this);
+                            root.Date = dir.CreationTime;
+                            items.Add(root);
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+						
                     }
                 }
 			}
