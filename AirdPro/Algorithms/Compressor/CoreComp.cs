@@ -27,6 +27,7 @@ using System.Web.UI;
 using System.Diagnostics;
 using System.Linq;
 using System.Collections.Concurrent;
+using AirdSDK.Utils;
 
 namespace AirdPro.Algorithms
 {
@@ -307,9 +308,11 @@ namespace AirdPro.Algorithms
 
         /**
          * 将按光谱(即按行)存储的模式改为按列存储
+         * 野鸡算法，转换速度慢
          */
         public void compressForColumnStorage(Converter converter, ConcurrentDictionary<double, IntSpectrum> rowTable)
         {
+            converter.jobInfo.log(null, "Column Compressing");
             //矩阵横坐标
             HashSet<int> mzsSet = new HashSet<int>();
             List<double> rts = rowTable.Keys.ToList();
@@ -327,15 +330,17 @@ namespace AirdPro.Algorithms
             sortedMzs.Sort();
             converter.jobInfo.log("合计光谱图" + rowTable.Count + "张,不同质荷比共：" + sortedMzs.Count + "个");
             converter.jobInfo.log("质荷比范围:" + sortedMzs[0] + "-" + sortedMzs[sortedMzs.Count-1]);
-            Hashtable ptrMap = new Hashtable();
+            Dictionary<double, int> ptrDict = new Dictionary<double, int>();
             foreach (double rt in rts)
             {
-                ptrMap.Add(rt, 0);
+                ptrDict[rt] = 0;
             }
 
             converter.jobInfo.log("总计包含有效点数:" + totalIntensityNum);
             long totalSize = 0;
             int step = 1;
+            long totalPoint = 0;
+            Stopwatch sw = Stopwatch.StartNew();
             Hashtable treeColumn = new Hashtable();
             foreach (int mz in sortedMzs)
             {
@@ -344,7 +349,7 @@ namespace AirdPro.Algorithms
                 step++;
                 if (step % 100000 == 0)
                 {
-                   converter.jobInfo.log(null, Tag.progress(Tag.Column_Compress, step, sortedMzs.Count));
+                   converter.jobInfo.log(null, Tag.progress(Tag.Column, step, sortedMzs.Count));
                 }
                 for (var index = 0; index < rts.Count; index++)
                 {
@@ -352,7 +357,7 @@ namespace AirdPro.Algorithms
                     IntSpectrum spectrum = rowTable[rt];
                     int[] currentMzs = spectrum.mzs;
                     double[] currentInts = spectrum.intensities;
-                    int iter = (int)ptrMap[rt];
+                    int iter = ptrDict[rt];
                     bool effect = false;
                     double intensity = 0;
                     while (iter < currentMzs.Length && currentMzs[iter] == mz)
@@ -366,14 +371,25 @@ namespace AirdPro.Algorithms
                     {
                         indexIdList.Add(index);
                         intensityList.Add(DataUtil.fetchIntensity(intensity, converter.compressor.intensityPrecision));
-                        ptrMap[index] = iter;
+                        ptrDict[rt] = iter;
                     }
                 }
-                foreach (double rt in rts)
-                {
-                    
-                }
+
+                totalPoint += intensityList.Count;
+                byte[] compressedIndexIds = new ZstdWrapper().encode(
+                    ByteTrans.intToByte(
+                        new IntegratedVarByteWrapper().encode(
+                            ArrayUtil.toIntArray(indexIdList))));
+                byte[] compressedInts = new ZstdWrapper().encode(
+                    ByteTrans.intToByte(
+                        new VarByteWrapper().encode(
+                            ArrayUtil.toIntArray(intensityList))));
+                treeColumn[mz] = new ByteColumn(compressedIndexIds, compressedInts);
+                totalSize += (compressedIndexIds.Length + compressedInts.Length);
             }
+            converter.jobInfo.log("有效点数:" + totalPoint + "个");
+            converter.jobInfo.log("总体积为:" + totalSize / 1024 / 1024 + "MB");
+            converter.jobInfo.log("纵列压缩耗时：" + sw.ElapsedTicks/1000/1000 + "毫秒");
         }
     }
 

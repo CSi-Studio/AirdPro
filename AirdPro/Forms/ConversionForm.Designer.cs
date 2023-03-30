@@ -54,6 +54,7 @@ namespace AirdPro.Forms
             this.contentMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.rerun = new System.Windows.Forms.ToolStripMenuItem();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cbAutoExe = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.btnMirrorTrans = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -72,7 +73,6 @@ namespace AirdPro.Forms
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
             this.redisConsumer = new System.Windows.Forms.Timer(this.components);
             this.timerTaskScan = new System.Windows.Forms.Timer(this.components);
-            this.cbAutoExe = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -191,6 +191,13 @@ namespace AirdPro.Forms
             resources.ApplyResources(this.removeToolStripMenuItem, "removeToolStripMenuItem");
             this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
             // 
+            // cbAutoExe
+            // 
+            resources.ApplyResources(this.cbAutoExe, "cbAutoExe");
+            this.cbAutoExe.Name = "cbAutoExe";
+            this.cbAutoExe.UseVisualStyleBackColor = true;
+            this.cbAutoExe.CheckedChanged += new System.EventHandler(this.cbAutoExe_CheckedChanged);
+            // 
             // label4
             // 
             resources.ApplyResources(this.label4, "label4");
@@ -233,7 +240,6 @@ namespace AirdPro.Forms
             // 
             // btnSetting
             // 
-            this.btnSetting.BackgroundImage = global::AirdPro.Properties.Resources.Setting;
             resources.ApplyResources(this.btnSetting, "btnSetting");
             this.btnSetting.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnSetting.FlatAppearance.BorderSize = 0;
@@ -244,7 +250,6 @@ namespace AirdPro.Forms
             // 
             // btnCleanFinished
             // 
-            this.btnCleanFinished.BackgroundImage = global::AirdPro.Properties.Resources.CleanFinished;
             resources.ApplyResources(this.btnCleanFinished, "btnCleanFinished");
             this.btnCleanFinished.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCleanFinished.FlatAppearance.BorderSize = 0;
@@ -255,7 +260,6 @@ namespace AirdPro.Forms
             // 
             // btnImport
             // 
-            this.btnImport.BackgroundImage = global::AirdPro.Properties.Resources.SelectFiles;
             resources.ApplyResources(this.btnImport, "btnImport");
             this.btnImport.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnImport.FlatAppearance.BorderSize = 0;
@@ -272,7 +276,6 @@ namespace AirdPro.Forms
             // 
             // btnRedis
             // 
-            this.btnRedis.BackgroundImage = global::AirdPro.Properties.Resources.DisConnect;
             resources.ApplyResources(this.btnRedis, "btnRedis");
             this.btnRedis.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnRedis.FlatAppearance.BorderSize = 0;
@@ -283,7 +286,6 @@ namespace AirdPro.Forms
             // 
             // btnConvert
             // 
-            this.btnConvert.BackgroundImage = global::AirdPro.Properties.Resources.Start;
             resources.ApplyResources(this.btnConvert, "btnConvert");
             this.btnConvert.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnConvert.FlatAppearance.BorderSize = 0;
@@ -318,13 +320,6 @@ namespace AirdPro.Forms
             // 
             this.timerTaskScan.Interval = 2000;
             this.timerTaskScan.Tick += new System.EventHandler(this.timerTaskScan_Tick);
-            // 
-            // cbAutoExe
-            // 
-            resources.ApplyResources(this.cbAutoExe, "cbAutoExe");
-            this.cbAutoExe.Name = "cbAutoExe";
-            this.cbAutoExe.UseVisualStyleBackColor = true;
-            this.cbAutoExe.CheckedChanged += new System.EventHandler(this.cbAutoExe_CheckedChanged);
             // 
             // ConversionForm
             // 

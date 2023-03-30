@@ -21,6 +21,7 @@ using AirdPro.Storage.Config;
 using AirdSDK.Utils;
 using ThermoFisher.CommonCore.Data;
 using System.ComponentModel;
+using AirdPro.Utils;
 
 namespace AirdPro.Forms
 {
@@ -296,13 +297,13 @@ namespace AirdPro.Forms
         {
             if (connected)
             {
-                btnRedis.BackgroundImage = Properties.Resources.Connected;
+                btnRedis.BackgroundImage = ResourceUtil.readImage("Menu.Connected.png");
                 lblRedisStatus.Text = Status.Redis_Connected;
                 lblRedisStatus.ForeColor = Color.Green;
             }
             else
             {
-                btnRedis.BackgroundImage = Properties.Resources.DisConnect;
+                btnRedis.BackgroundImage = ResourceUtil.readImage("Menu.DisConnect.png");
                 lblRedisStatus.Text = Status.Redis_Not_Connected;
                 lblRedisStatus.ForeColor = Color.Red;
             }

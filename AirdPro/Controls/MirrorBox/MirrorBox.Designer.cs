@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MirrorBox));
             this.btnVendorFolder = new System.Windows.Forms.Button();
             this.btnAirdFolder = new System.Windows.Forms.Button();
             this.picBox = new System.Windows.Forms.PictureBox();
@@ -63,7 +64,7 @@
             // 
             // picBox
             // 
-            this.picBox.BackgroundImage = global::AirdPro.Properties.Resources.Arrows;
+            this.picBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picBox.BackgroundImage")));
             this.picBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.picBox.InitialImage = null;
             this.picBox.Location = new System.Drawing.Point(343, 2);

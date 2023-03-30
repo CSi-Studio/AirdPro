@@ -17,7 +17,7 @@ namespace AirdPro
                 msfile = value;
                 if (msfile)
                 {
-                    this.Icon = Resources.Spectrum16x16;
+                    this.Icon = ResourceUtil.readImage("Menu.Spectrum16x16.png");
                 }
             }
         }

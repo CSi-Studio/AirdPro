@@ -14,6 +14,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
+using System.Resources;
 using System.Text;
 using System.Windows.Forms;
 using AirdPro.Constants;
@@ -58,14 +59,14 @@ namespace AirdPro.Repository
                     using (FileStream fsFastConfig = new FileStream(Path.Combine(configFolder, fastConfigFileName),
                                FileMode.OpenOrCreate, FileAccess.Write))
                     {
-                        byte[] configFileByte = Resources.MLFastConfigFile;
+                        byte[] configFileByte = ResourceUtil.readBytes("Config.MLFastConfigFile.json");
                         fsFastConfig.Write(configFileByte, 0, configFileByte.Length);
                     }
 
                     using (FileStream fsConfig = new FileStream(Path.Combine(configFolder, configFileName),
                                FileMode.OpenOrCreate, FileAccess.Write))
                     {
-                        byte[] configFileByte = Resources.MLConfigFile;
+                        byte[] configFileByte = ResourceUtil.readBytes("Config.MLConfigFile.json");
                         fsConfig.Write(configFileByte, 0, configFileByte.Length);
                     }
                 }
@@ -175,14 +176,14 @@ namespace AirdPro.Repository
                     using (FileStream fsFastConfig = new FileStream(Path.Combine(temp, fastConfigFileName),
                                FileMode.OpenOrCreate, FileAccess.Write))
                     {
-                        byte[] configFileByte = Resources.MLFastConfigFile;
+                        byte[] configFileByte = ResourceUtil.readBytes("Config.MLFastConfigFile.json");
                         fsFastConfig.Write(configFileByte, 0, configFileByte.Length);
                     }
 
                     using (FileStream fsConfig = new FileStream(Path.Combine(temp, configFileName),
                                FileMode.OpenOrCreate, FileAccess.Write))
                     {
-                        byte[] configFileByte = Resources.MLConfigFile;
+                        byte[] configFileByte = ResourceUtil.readBytes("Config.MLConfigFile.json");
                         fsConfig.Write(configFileByte, 0, configFileByte.Length);
                     }
                 }
