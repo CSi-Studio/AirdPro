@@ -424,28 +424,25 @@ namespace AirdPro.Algorithms
             long totalPoint = 0;
             foreach (IntSpectrum spectrum in spectra)
             {
-                double intensity = spectrum.intensities[0];
-                int lastMz = spectrum.mzs[0];
-                totalPoint += spectrum.mzs.Length;
-                for (int i = 1; i < spectrum.mzs.Length; i++)
-                {
-                    if (lastMz == spectrum.mzs[i])
-                    {
-                        intensity += spectrum.intensities[i];
-                    }
-                    else
-                    {
-                        lastMz = spectrum.mzs[i];
-                        intensity = spectrum.intensities[i];
-                        matrix[iter, mzIndexDict[spectrum.mzs[i]]] = intensity;
-                    }
-                }
+                int start = 0;
 
+                while (start < spectrum.mzs.Length)
+                {
+                    int k = start + 1;
+                    double sum = spectrum.intensities[start];
+                    while (k < spectrum.mzs.Length && spectrum.mzs[k] == spectrum.mzs[start])
+                    {
+                        sum += spectrum.intensities[k];
+                        k++;
+                    }
+                    matrix[iter, mzIndexDict[spectrum.mzs[start]]] = sum;
+                    start = k;
+                }
+               
                 iter++;
                 converter.jobInfo.log(null, Tag.progress(Tag.Column, iter, spectra.Count));
             }
-            
-            matrix.Transpose();
+
             converter.jobInfo.log("有效点数：" + totalPoint);
             converter.jobInfo.log("Matrix Non Zeros Count:" + matrix.NonZerosCount+";Column Count:"+matrix.ColumnCount+";Row Count:"+matrix.RowCount);
             
