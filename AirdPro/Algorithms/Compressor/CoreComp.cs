@@ -20,14 +20,13 @@ using AirdPro.Utils;
 using AirdSDK.Beans;
 using AirdSDK.Beans.Common;
 using AirdSDK.Compressor;
-using AirdSDK.Enums;
 using pwiz.CLI.msdata;
 using Spectrum = pwiz.CLI.msdata.Spectrum;
-using System.Web.UI;
 using System.Diagnostics;
 using System.Linq;
 using System.Collections.Concurrent;
 using AirdSDK.Utils;
+using MathNet.Numerics.LinearAlgebra.Complex;
 
 namespace AirdPro.Algorithms
 {
@@ -117,7 +116,8 @@ namespace AirdPro.Algorithms
             //如果是面向搜索引擎的格式转换，则msRowTable不为空，准备启动行矩阵向列矩阵转换的过程
             if (converter.jobInfo.config.isSearchEngine())
             {
-                compressForColumnStorage(converter, msDictionary);
+                // compressForColumnStorage(converter, msDictionary);
+                compressForColumnStorageWithMatrix(converter, msDictionary);
             }
         }
 
@@ -391,7 +391,63 @@ namespace AirdPro.Algorithms
             converter.jobInfo.log("总体积为:" + totalSize / 1024 / 1024 + "MB");
             converter.jobInfo.log("纵列压缩耗时：" + sw.ElapsedTicks/1000/1000 + "毫秒");
         }
-    }
 
-    
+        public void compressForColumnStorageWithMatrix(Converter converter, ConcurrentDictionary<double, IntSpectrum> rowTable)
+        {
+            converter.jobInfo.log(null, "Column Compressing");
+            //矩阵横坐标
+            HashSet<int> mzsSet = new HashSet<int>();
+            List<double> rts = rowTable.Keys.ToList();
+            List<IntSpectrum> spectra = rowTable.Values.ToList();
+            int totalIntensityNum = 0;
+            foreach (IntSpectrum spectrum in spectra)
+            {
+                for (var i = 0; i < spectrum.mzs.Length; i++)
+                {
+                    mzsSet.Add(spectrum.mzs[i]);
+                }
+                totalIntensityNum += spectrum.intensities.Length;
+            }
+            List<int> sortedMzs = new List<int>(mzsSet);
+            sortedMzs.Sort();
+
+            Dictionary<int,int> mzIndexDict = new Dictionary<int,int>();
+            for (var i = 0; i < sortedMzs.Count; i++)
+            {
+                mzIndexDict[sortedMzs[i]] = i;
+            }
+
+            converter.jobInfo.log("合计光谱图" + rowTable.Count + "张,不同质荷比共：" + sortedMzs.Count + "个");
+            converter.jobInfo.log("质荷比范围:" + sortedMzs[0] + "-" + sortedMzs[sortedMzs.Count - 1]);
+            SparseMatrix matrix = new SparseMatrix(rts.Count, mzsSet.Count);
+            int iter = 0;
+            long totalPoint = 0;
+            foreach (IntSpectrum spectrum in spectra)
+            {
+                double intensity = spectrum.intensities[0];
+                double lastMz = spectrum.mzs[0];
+                totalPoint += spectrum.mzs.Length;
+                for (int i = 1; i < spectrum.mzs.Length; i++)
+                {
+                    if (lastMz == spectrum.mzs[i])
+                    {
+                        intensity += spectrum.intensities[i];
+                    }
+                    else
+                    {
+                        lastMz = spectrum.mzs[i];
+                        intensity = spectrum.intensities[i];
+                        matrix[iter, mzIndexDict[spectrum.mzs[i]]] = intensity;
+                    }
+                }
+
+                iter++;
+                converter.jobInfo.log(null, Tag.progress(Tag.Column, iter, spectra.Count));
+            }
+
+            converter.jobInfo.log("有效点数：" + totalPoint);
+            converter.jobInfo.log("Matrix Non Zeros Count:" + matrix.NonZerosCount+";Column Count:"+matrix.ColumnCount+";Row Count:"+matrix.RowCount);
+            
+        }
+    }
 }
