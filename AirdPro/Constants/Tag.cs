@@ -11,6 +11,7 @@
         public static string Pre = "Pre:";
         public static string Auto_Decision = "Auto Decision";
         public static string Column = "Column:";
+        public static string Column_Compress = "Column Compress:";
 
         public static string SpectrumIndex = "SpectrumIndex";
         public static string SpectrumId = "SpectrumId";
