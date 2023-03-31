@@ -154,7 +154,7 @@
     <value>Center</value>
   </data>
   <data name="headerProgress.Width" type="System.Int32, mscorlib">
-    <value>120</value>
+    <value>250</value>
   </data>
   <data name="headerPrecision.Text" xml:space="preserve">
     <value>Precision</value>

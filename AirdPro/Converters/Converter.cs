@@ -32,6 +32,10 @@ using AirdSDK.Enums;
 using AirdSDK.Utils;
 using FileUtil = AirdPro.Utils.FileUtil;
 using pwiz.CLI.util;
+using AirdSDK.Beans.Common;
+using System.Collections.Concurrent;
+using System.Reflection;
+using Spectrum = pwiz.CLI.msdata.Spectrum;
 
 namespace AirdPro.Converters
 {
@@ -48,7 +52,7 @@ namespace AirdPro.Converters
         protected List<WindowRange> ranges = new List<WindowRange>(); //SWATH/DIA Window的窗口
         protected Hashtable rangeTable = new Hashtable(); //用于存放SWATH/DIA窗口的信息,key为mz
         protected List<BlockIndex> indexList = new List<BlockIndex>(); //用于存储的全局的SWATH List
-
+        protected List<ColumnIndex> indexColumnIndex = new List<ColumnIndex>(); //列存储索引，尽在面向SearchEngine的模式下有效
         protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
 
         public List<MsIndex> ms1List = new List<MsIndex>(); //用于存放MS1索引及基础信息,泛型为MsIndex
@@ -367,6 +371,48 @@ namespace AirdPro.Converters
             foreach (int key in keys)
             {
                 addToIndex(index, table[key]);
+            }
+        }
+
+        /**
+         * 存储列存储数据
+         * 注意，本函数会操作startPosition这个全局变量
+         */
+        public void writeColumnData(ConcurrentDictionary<int, ByteColumn> compressedColumns, ColumnIndex columnIndex)
+        {
+            foreach (int mz in columnIndex.mzs)
+            {
+                ByteColumn byteColumn = compressedColumns[mz];
+                byte[] compressedMzs =
+                    new ZstdWrapper().encode(
+                        ByteTrans.intToByte(
+                            new IntegratedVarByteWrapper().encode(ArrayUtil.toIntArray(columnIndex.mzs))));
+                byte[] compressedInts =
+                    new ZstdWrapper().encode(
+                        ByteTrans.intToByte(
+                            new IntegratedVarByteWrapper().encode(ArrayUtil.toIntArray(columnIndex.rts))));
+                columnIndex.startMzListPtr = startPosition;
+                startPosition += compressedMzs.Length;
+                columnIndex.endMzListPtr = startPosition;
+                airdStream.Write(compressedMzs, 0, compressedMzs.Length);
+
+                columnIndex.startRtListPtr = startPosition;
+                startPosition += compressedInts.Length;
+                columnIndex.endRtListPtr = startPosition;
+                airdStream.Write(compressedInts, 0, compressedInts.Length);
+
+                if (byteColumn.indexIds != null && byteColumn.intensities != null)
+                {
+                    columnIndex.spectraIds.Add(byteColumn.indexIds.Length);
+                    columnIndex.intensities.Add(byteColumn.intensities.Length);
+                    columnIndex.startPtr = startPosition;
+                    startPosition = startPosition + byteColumn.indexIds.Length + byteColumn.intensities.Length;
+                    airdStream.Write(byteColumn.indexIds, 0, byteColumn.indexIds.Length);
+                    airdStream.Write(byteColumn.intensities, 0, byteColumn.intensities.Length);
+                }
+
+                columnIndex.mzs = null;
+                columnIndex.rts = null;
             }
         }
 
@@ -933,8 +979,11 @@ namespace AirdPro.Converters
             //Block index
             airdInfo.indexList = indexList;
 
+            //ChromatogramIndex
             airdInfo.chromatogramIndex = chromatogramIndex;
 
+            //ColumnIndex
+            
             //Instrument Info
             List<Instrument> instruments = new List<Instrument>();
             foreach (InstrumentConfiguration ic in msd.instrumentConfigurationList)
