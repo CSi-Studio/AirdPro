@@ -52,7 +52,7 @@ namespace AirdPro.Converters
         protected List<WindowRange> ranges = new List<WindowRange>(); //SWATH/DIA Window的窗口
         protected Hashtable rangeTable = new Hashtable(); //用于存放SWATH/DIA窗口的信息,key为mz
         protected List<BlockIndex> indexList = new List<BlockIndex>(); //用于存储的全局的SWATH List
-        protected List<ColumnIndex> indexColumnIndex = new List<ColumnIndex>(); //列存储索引，尽在面向SearchEngine的模式下有效
+        protected List<ColumnIndex> columnIndexList = new List<ColumnIndex>(); //列存储索引，尽在面向SearchEngine的模式下有效
         protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
 
         public List<MsIndex> ms1List = new List<MsIndex>(); //用于存放MS1索引及基础信息,泛型为MsIndex
@@ -380,27 +380,27 @@ namespace AirdPro.Converters
          */
         public void writeColumnData(ConcurrentDictionary<int, ByteColumn> compressedColumns, ColumnIndex columnIndex)
         {
+            byte[] compressedMzs =
+                new ZstdWrapper().encode(
+                    ByteTrans.intToByte(
+                        new IntegratedVarByteWrapper().encode(ArrayUtil.toIntArray(columnIndex.mzs))));
+            byte[] compressedInts =
+                new ZstdWrapper().encode(
+                    ByteTrans.intToByte(
+                        new IntegratedVarByteWrapper().encode(ArrayUtil.toIntArray(columnIndex.rts))));
+            columnIndex.startMzListPtr = startPosition;
+            startPosition += compressedMzs.Length;
+            columnIndex.endMzListPtr = startPosition;
+            airdStream.Write(compressedMzs, 0, compressedMzs.Length);
+
+            columnIndex.startRtListPtr = startPosition;
+            startPosition += compressedInts.Length;
+            columnIndex.endRtListPtr = startPosition;
+            airdStream.Write(compressedInts, 0, compressedInts.Length);
+            
             foreach (int mz in columnIndex.mzs)
             {
                 ByteColumn byteColumn = compressedColumns[mz];
-                byte[] compressedMzs =
-                    new ZstdWrapper().encode(
-                        ByteTrans.intToByte(
-                            new IntegratedVarByteWrapper().encode(ArrayUtil.toIntArray(columnIndex.mzs))));
-                byte[] compressedInts =
-                    new ZstdWrapper().encode(
-                        ByteTrans.intToByte(
-                            new IntegratedVarByteWrapper().encode(ArrayUtil.toIntArray(columnIndex.rts))));
-                columnIndex.startMzListPtr = startPosition;
-                startPosition += compressedMzs.Length;
-                columnIndex.endMzListPtr = startPosition;
-                airdStream.Write(compressedMzs, 0, compressedMzs.Length);
-
-                columnIndex.startRtListPtr = startPosition;
-                startPosition += compressedInts.Length;
-                columnIndex.endRtListPtr = startPosition;
-                airdStream.Write(compressedInts, 0, compressedInts.Length);
-
                 if (byteColumn.indexIds != null && byteColumn.intensities != null)
                 {
                     columnIndex.spectraIds.Add(byteColumn.indexIds.Length);
@@ -410,10 +410,10 @@ namespace AirdPro.Converters
                     airdStream.Write(byteColumn.indexIds, 0, byteColumn.indexIds.Length);
                     airdStream.Write(byteColumn.intensities, 0, byteColumn.intensities.Length);
                 }
-
-                columnIndex.mzs = null;
-                columnIndex.rts = null;
             }
+            columnIndex.mzs = null;
+            columnIndex.rts = null;
+            columnIndexList.Add(columnIndex);
         }
 
         //注意:本函数会操作startPosition这个全局变量
@@ -585,6 +585,7 @@ namespace AirdPro.Converters
                 airdInfo.indexList = null;
                 airdStream.Write(indexListByte, 0, indexListByte.Length);
             }
+            
             string airdInfoStr = JsonConvert.SerializeObject(airdInfo, new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
             byte[] airdBytes = Encoding.Default.GetBytes(airdInfoStr);
             airdJsonStream.Write(airdBytes, 0, airdBytes.Length);
@@ -905,6 +906,7 @@ namespace AirdPro.Converters
             List<ParentFile> parentFiles = new List<ParentFile>();
 
             //Basic Job Info
+            airdInfo.scene = jobInfo.config.scene;
             airdInfo.airdPath = jobInfo.airdFilePath;
             airdInfo.fileSize = fileSize;
             airdInfo.createDate = DateTime.Now.ToString();
@@ -983,7 +985,8 @@ namespace AirdPro.Converters
             airdInfo.chromatogramIndex = chromatogramIndex;
 
             //ColumnIndex
-            
+            airdInfo.columnIndexList = columnIndexList;
+
             //Instrument Info
             List<Instrument> instruments = new List<Instrument>();
             foreach (InstrumentConfiguration ic in msd.instrumentConfigurationList)

@@ -171,5 +171,15 @@ namespace AirdPro.Forms
         {
             Program.conversionConfigHandler.detach(this);
         }
+
+        private void btnAddClose_Click(object sender, EventArgs e)
+        {
+            bool addResult = addToList();
+            if (addResult)
+            {
+                clearInfos();
+            }
+            Hide();
+        }
     }
 }

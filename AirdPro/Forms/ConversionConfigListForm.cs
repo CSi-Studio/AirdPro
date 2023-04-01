@@ -140,7 +140,7 @@ namespace AirdPro.Forms
             {
                 config.stack = false;
             }
-
+            config.compressedIndex = cbCompressedIndex.Checked;
             config.suffix = tbConfigFileNameSuffix.Text;
             config.creator = tbConfigOperator.Text;
             config.autoDesicion = cbAutoDecision.Checked;
@@ -233,6 +233,7 @@ namespace AirdPro.Forms
             tableAutoDecision.Enabled = !config.autoDesicion;
             cbAutoDecision.Checked = config.autoDesicion;
             cbAutoExplore.Checked = config.autoExplorer;
+            cbCompressedIndex.Checked = config.compressedIndex;
             tbSpectraToPredict.Text = config.spectraToPredict+"";
             cbCSWeight.Text = config.compressionSizeWeight+"";
             cbCTWeight.Text = config.compressionTimeWeight+"";
