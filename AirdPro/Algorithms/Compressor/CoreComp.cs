@@ -25,7 +25,7 @@ using Spectrum = pwiz.CLI.msdata.Spectrum;
 using System.Linq;
 using System.Collections.Concurrent;
 using System.Numerics;
-using AirdSDK.Utils;
+using AirdSDK.Enums;
 using MathNet.Numerics.LinearAlgebra.Complex;
 using MathNet.Numerics.LinearAlgebra.Storage;
 
@@ -41,6 +41,7 @@ namespace AirdPro.Algorithms
 
         public override void compressMS1(Converter converter, BlockIndex index)
         {
+            //仅当面向SearchEngine的Aird模式下有效
             ConcurrentDictionary<double, IntSpectrum> msDictionary = new ConcurrentDictionary<double, IntSpectrum>();
             if (multiThread)
             {
@@ -115,7 +116,6 @@ namespace AirdPro.Algorithms
             {
                 ColumnIndex columnIndex = new ColumnIndex();
                 columnIndex.level = 1;
-                // compressForColumnStorage(converter, msDictionary); //性能不高，使用稀疏矩阵的初始化方法性能更高且可以并行计算
                 ConcurrentDictionary<int, ByteColumn> compressedColumns = compressAsColumnMatrix(converter, msDictionary, columnIndex);
                 converter.writeColumnData(compressedColumns, columnIndex);
             }
@@ -123,6 +123,8 @@ namespace AirdPro.Algorithms
 
         public override void compressMS2(Converter converter, List<MsIndex> ms2List, BlockIndex index)
         {
+            //仅当面向SearchEngine的Aird模式下有效
+            ConcurrentDictionary<double, IntSpectrum> msDictionary = new ConcurrentDictionary<double, IntSpectrum>();
             if (multiThread)
             {
                 Hashtable table = Hashtable.Synchronized(new Hashtable());
@@ -143,7 +145,16 @@ namespace AirdPro.Algorithms
                     }
                     else
                     {
-                        compress(spectrum, ts);
+                        //在面向搜索引擎的场景时，仅DIA模式的二级谱图具备时间上的逻辑相关性
+                        if (converter.jobInfo.config.isSearchEngine() &&
+                            converter.jobInfo.type.Equals(AcquisitionMethod.DIA))
+                        {
+                            msDictionary[ts.rt] = readSpectrum(spectrum);
+                        }
+                        else
+                        {
+                            compress(spectrum, ts);
+                        }
                     }
 
                     table.Add(i, ts);
@@ -163,12 +174,32 @@ namespace AirdPro.Algorithms
                         }
                         else
                         {
-                            compress(spectrum, ts);
+                            //在面向搜索引擎的场景时，仅DIA模式的二级谱图具备时间上的逻辑相关性
+                            if (converter.jobInfo.config.isSearchEngine() &&
+                                converter.jobInfo.type.Equals(AcquisitionMethod.DIA))
+                            {
+                                msDictionary[ts.rt] = readSpectrum(spectrum);
+                            }
+                            else
+                            {
+                                compress(spectrum, ts);
+                            }
                         }
                     }
 
                     converter.addToIndex(index, ts);
                 }
+            }
+
+            //如果是面向搜索引擎的格式转换，则msRowTable不为空，准备启动行矩阵向列矩阵转换的过程
+            if (converter.jobInfo.config.isSearchEngine() &&
+                converter.jobInfo.type.Equals(AcquisitionMethod.DIA))
+            {
+                ColumnIndex columnIndex = new ColumnIndex();
+                columnIndex.level = 2;
+                columnIndex.range = index.getWindowRange();
+                ConcurrentDictionary<int, ByteColumn> compressedColumns = compressAsColumnMatrix(converter, msDictionary, columnIndex);
+                converter.writeColumnData(compressedColumns, columnIndex);
             }
         }
 
@@ -194,9 +225,6 @@ namespace AirdPro.Algorithms
 
             byte[] compressedRtArray = rtByteComp4Chroma.encode(ByteTrans.intToByte(rtIntComp4Chroma.encode(rtArray)));
             byte[] compressedIntArray = intByteComp4Chroma.encode(ByteTrans.intToByte(intIntComp4Chroma.encode(intensityArray)));
-
-            // int[] rtList = rtIntComp4Chroma.decode(ByteTrans.byteToInt(rtByteComp4Chroma.decode(compressedRtArray)));
-            // int[] intList = intIntComp4Chroma.decode(ByteTrans.byteToInt(intByteComp4Chroma.decode(compressedIntArray)));
 
             ts.rtArrayBytes = compressedRtArray;
             ts.intArrayBytes = compressedIntArray;
@@ -316,7 +344,7 @@ namespace AirdPro.Algorithms
         public ConcurrentDictionary<int, ByteColumn> compressAsColumnMatrix(Converter converter, ConcurrentDictionary<double, IntSpectrum> rowTable, ColumnIndex columnIndex)
         {
             var dict = rowTable.OrderBy(x => x.Key).ToDictionary(k=>k.Key,v=>v.Value);
-            converter.jobInfo.log(null, "Column Compressing");
+            converter.jobInfo.log(null, columnIndex.toString()+"Compressing");
             //矩阵横坐标
             HashSet<int> mzsSet = new HashSet<int>();
             List<double> rts = dict.Keys.ToList();
@@ -368,7 +396,7 @@ namespace AirdPro.Algorithms
                 }
                
                 iter++;
-                converter.jobInfo.log(null, Tag.progress(Tag.Column, iter, spectra.Count));
+                converter.jobInfo.log(null, Tag.progress(columnIndex.toString(), iter, spectra.Count));
             }
 
             converter.jobInfo.log("Column Index Finished", "Column Index Finished");
@@ -381,7 +409,7 @@ namespace AirdPro.Algorithms
                 Interlocked.Increment(ref progress);
                 if (progress % 100000 == 0)
                 {
-                    converter.jobInfo.log(null, Tag.Column_Compress+(progress * 100.0 / matrix.ColumnCount).ToString("F1")+"%");
+                    converter.jobInfo.log(null, columnIndex.toString()+(progress * 100.0 / matrix.ColumnCount).ToString("F1")+"%");
                 }
                 MathNet.Numerics.LinearAlgebra.Vector<Complex> column = matrix.Column(i);
                 SparseVectorStorage<Complex> storage = (SparseVectorStorage<Complex>)(column.Storage);
