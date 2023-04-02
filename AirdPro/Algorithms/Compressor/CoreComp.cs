@@ -26,6 +26,7 @@ using System.Linq;
 using System.Collections.Concurrent;
 using System.Numerics;
 using AirdSDK.Enums;
+using AirdSDK.Utils;
 using MathNet.Numerics.LinearAlgebra.Complex;
 using MathNet.Numerics.LinearAlgebra.Storage;
 
@@ -116,7 +117,16 @@ namespace AirdPro.Algorithms
             {
                 ColumnIndex columnIndex = new ColumnIndex();
                 columnIndex.level = 1;
-                ConcurrentDictionary<int, ByteColumn> compressedColumns = compressAsColumnMatrix(converter, msDictionary, columnIndex);
+                ConcurrentDictionary<int, ByteColumn> compressedColumns = null;
+                try
+                {
+                    compressedColumns = compressAsColumnMatrix(converter, msDictionary, columnIndex);
+                }
+                catch (Exception e)
+                {
+                    compressedColumns = compressAsColumnMatrixV1(converter, msDictionary, columnIndex);
+                }
+                
                 converter.writeColumnData(compressedColumns, columnIndex);
             }
         }
@@ -198,7 +208,15 @@ namespace AirdPro.Algorithms
                 ColumnIndex columnIndex = new ColumnIndex();
                 columnIndex.level = 2;
                 columnIndex.range = index.getWindowRange();
-                ConcurrentDictionary<int, ByteColumn> compressedColumns = compressAsColumnMatrix(converter, msDictionary, columnIndex);
+                ConcurrentDictionary<int, ByteColumn> compressedColumns = null;
+                try
+                {
+                    compressedColumns = compressAsColumnMatrix(converter, msDictionary, columnIndex);
+                }
+                catch (Exception e)
+                {
+                    compressedColumns = compressAsColumnMatrixV1(converter, msDictionary, columnIndex);
+                }
                 converter.writeColumnData(compressedColumns, columnIndex);
             }
         }
@@ -335,6 +353,98 @@ namespace AirdPro.Algorithms
         }
 
         /**
+         * 将按光谱(即按行)存储的模式改为按列存储
+         * 第一代野鸡算法，转换速度慢
+         */
+        public ConcurrentDictionary<int, ByteColumn> compressAsColumnMatrixV1(Converter converter, ConcurrentDictionary<double, IntSpectrum> rowTable, ColumnIndex columnIndex)
+        {
+            converter.jobInfo.log(null, "Column Compressing");
+            //矩阵横坐标
+            HashSet<int> mzsSet = new HashSet<int>();
+            List<double> rts = rowTable.Keys.ToList();
+            List<int> rtsInt = new List<int>();
+            for (var i = 0; i < rts.Count; i++)
+            {
+                rtsInt.Add((int)Math.Round(rts[i] * 1000));
+            }
+            List<IntSpectrum> spectra = rowTable.Values.ToList();
+            int totalIntensityNum = 0;
+            foreach (IntSpectrum spectrum in spectra)
+            {
+                for (var i = 0; i < spectrum.mzs.Length; i++)
+                {
+                    mzsSet.Add(spectrum.mzs[i]);
+                }
+                totalIntensityNum += spectrum.intensities.Length;
+            }
+            List<int> sortedMzs = new List<int>(mzsSet);
+            sortedMzs.Sort();
+            converter.jobInfo.log("合计光谱图" + rowTable.Count + "张,不同质荷比共：" + sortedMzs.Count + "个");
+            converter.jobInfo.log("质荷比范围:" + sortedMzs[0] + "-" + sortedMzs[sortedMzs.Count - 1]);
+            Dictionary<double, int> ptrDict = new Dictionary<double, int>();
+            foreach (double rt in rts)
+            {
+                ptrDict[rt] = 0;
+            }
+
+            converter.jobInfo.log("总计包含有效点数:" + totalIntensityNum);
+            long totalSize = 0;
+            int step = 1;
+            long totalPoint = 0;
+            ConcurrentDictionary<int, ByteColumn> treeColumn = new ConcurrentDictionary<int, ByteColumn>();
+            foreach (int mz in sortedMzs)
+            {
+                List<int> indexIdList = new List<int>();
+                List<int> intensityList = new List<int>();
+                step++;
+                if (step % 100000 == 0)
+                {
+                    converter.jobInfo.log(null, Tag.progress(Tag.Column, step, sortedMzs.Count));
+                }
+                for (var index = 0; index < rts.Count; index++)
+                {
+                    double rt = rts[index];
+                    IntSpectrum spectrum = rowTable[rt];
+                    int[] currentMzs = spectrum.mzs;
+                    double[] currentInts = spectrum.intensities;
+                    int iter = ptrDict[rt];
+                    bool effect = false;
+                    double intensity = 0;
+                    while (iter < currentMzs.Length && currentMzs[iter] == mz)
+                    {
+                        effect = true;
+                        intensity += currentInts[iter];
+                        iter++;
+                    }
+
+                    if (effect)
+                    {
+                        indexIdList.Add(index);
+                        intensityList.Add(DataUtil.fetchIntensity(intensity, converter.compressor.intensityPrecision));
+                        ptrDict[rt] = iter;
+                    }
+                }
+
+                totalPoint += intensityList.Count;
+                byte[] compressedIndexIds = new ZstdWrapper().encode(
+                    ByteTrans.intToByte(
+                        new IntegratedVarByteWrapper().encode(
+                            ArrayUtil.toIntArray(indexIdList))));
+                byte[] compressedInts = new ZstdWrapper().encode(
+                    ByteTrans.intToByte(
+                        new VarByteWrapper().encode(
+                            ArrayUtil.toIntArray(intensityList))));
+                treeColumn[mz] = new ByteColumn(compressedIndexIds, compressedInts);
+                totalSize += (compressedIndexIds.Length + compressedInts.Length);
+            }
+            converter.jobInfo.log("有效点数:" + totalPoint + "个");
+            converter.jobInfo.log("总体积为:" + totalSize / 1024 / 1024 + "MB");
+            columnIndex.mzs = sortedMzs.ToArray();
+            columnIndex.rts = rtsInt.ToArray();
+            return treeColumn;
+        }
+
+        /**
          * 使用Math.NET中的稀疏矩阵进行数据初始化与横纵列转换，
          * 同时本算法支持多线程计算，速度更快
          * 第二代算法，转换速度快，比第一代快5-10倍
@@ -390,7 +500,8 @@ namespace AirdPro.Algorithms
                         intensitySum += spectrum.intensities[j];
                         j++;
                     }
-                  
+
+                    
                     matrix[iter, mzIndexDict[spectrum.mzs[i]]] = intensitySum;
                     i = j;
                 }
@@ -438,8 +549,8 @@ namespace AirdPro.Algorithms
             converter.jobInfo.log("NonZero Points:" + matrix.NonZerosCount);
             converter.jobInfo.log("Column Count:"+matrix.ColumnCount+";Row Count:"+matrix.RowCount);
 
-            columnIndex.mzs = sortedMzs;
-            columnIndex.rts = rtsInt;
+            columnIndex.mzs = sortedMzs.ToArray();
+            columnIndex.rts = rtsInt.ToArray();
 
             return treeColumn;
         }

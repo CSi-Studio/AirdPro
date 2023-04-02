@@ -383,11 +383,11 @@ namespace AirdPro.Converters
             byte[] compressedMzs =
                 new ZstdWrapper().encode(
                     ByteTrans.intToByte(
-                        new IntegratedVarByteWrapper().encode(ArrayUtil.toIntArray(columnIndex.mzs))));
+                        new IntegratedVarByteWrapper().encode(columnIndex.mzs)));
             byte[] compressedRts =
                 new ZstdWrapper().encode(
                     ByteTrans.intToByte(
-                        new IntegratedVarByteWrapper().encode(ArrayUtil.toIntArray(columnIndex.rts))));
+                        new IntegratedVarByteWrapper().encode(columnIndex.rts)));
             //写入矩阵的横坐标实际值
             columnIndex.startMzListPtr = startPosition;
             startPosition += compressedMzs.Length;
@@ -399,30 +399,40 @@ namespace AirdPro.Converters
             startPosition += compressedRts.Length;
             columnIndex.endRtListPtr = startPosition;
             airdStream.Write(compressedRts, 0, compressedRts.Length);
-            
-            foreach (int mz in columnIndex.mzs)
+
+            columnIndex.spectraIds = new int[columnIndex.mzs.Length];
+            columnIndex.intensities = new int[columnIndex.mzs.Length];
+            for (var i = 0; i < columnIndex.mzs.Length; i++)
             {
+                int mz = columnIndex.mzs[i];
                 ByteColumn byteColumn = compressedColumns[mz];
                 if (byteColumn.indexIds != null && byteColumn.intensities != null)
                 {
-                    columnIndex.spectraIds.Add(byteColumn.indexIds.Length);
-                    columnIndex.intensities.Add(byteColumn.intensities.Length);
+                    columnIndex.spectraIds[i] = byteColumn.indexIds.Length;
+                    columnIndex.intensities[i] = byteColumn.intensities.Length;
                     columnIndex.startPtr = startPosition;
                     startPosition = startPosition + byteColumn.indexIds.Length + byteColumn.intensities.Length;
                     columnIndex.endPtr = startPosition;
                     airdStream.Write(byteColumn.indexIds, 0, byteColumn.indexIds.Length);
                     airdStream.Write(byteColumn.intensities, 0, byteColumn.intensities.Length);
                 }
+                else
+                {
+                    columnIndex.spectraIds[i] = 0;
+                    columnIndex.intensities[i] = 0;
+                    columnIndex.startPtr = startPosition;
+                    columnIndex.endPtr = startPosition;
+                }
             }
 
             byte[] compressedSpectraIds =
                 new ZstdWrapper().encode(
                     ByteTrans.intToByte(
-                        new VarByteWrapper().encode(ArrayUtil.toIntArray(columnIndex.spectraIds))));
+                        new VarByteWrapper().encode(columnIndex.spectraIds)));
             byte[] compressedInts =
                 new ZstdWrapper().encode(
                     ByteTrans.intToByte(
-                        new VarByteWrapper().encode(ArrayUtil.toIntArray(columnIndex.intensities))));
+                        new VarByteWrapper().encode(columnIndex.intensities)));
             //写入矩阵的横坐标实际值
             columnIndex.startSpecrtaIdListPtr = startPosition;
             startPosition += compressedSpectraIds.Length;
