@@ -73,6 +73,7 @@ namespace AirdPro.Forms
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
             this.redisConsumer = new System.Windows.Forms.Timer(this.components);
             this.timerTaskScan = new System.Windows.Forms.Timer(this.components);
+            this.headerScene = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -88,32 +89,34 @@ namespace AirdPro.Forms
             // container.Panel1
             // 
             this.container.Panel1.Controls.Add(this.lvFileList);
+            this.container.Panel1.Controls.Add(this.btnImport);
+            this.container.Panel1.Controls.Add(this.cbAutoExe);
+            this.container.Panel1.Controls.Add(this.btnConvert);
+            this.container.Panel1.Controls.Add(this.label4);
+            this.container.Panel1.Controls.Add(this.btnRedis);
+            this.container.Panel1.Controls.Add(this.btnMirrorTrans);
+            this.container.Panel1.Controls.Add(this.lblRedisStatus);
+            this.container.Panel1.Controls.Add(this.label5);
+            this.container.Panel1.Controls.Add(this.btnCleanFinished);
+            this.container.Panel1.Controls.Add(this.label3);
+            this.container.Panel1.Controls.Add(this.btnSetting);
+            this.container.Panel1.Controls.Add(this.label2);
+            this.container.Panel1.Controls.Add(this.label1);
             // 
             // container.Panel2
             // 
-            this.container.Panel2.Controls.Add(this.cbAutoExe);
-            this.container.Panel2.Controls.Add(this.label4);
-            this.container.Panel2.Controls.Add(this.btnMirrorTrans);
-            this.container.Panel2.Controls.Add(this.label5);
-            this.container.Panel2.Controls.Add(this.label3);
-            this.container.Panel2.Controls.Add(this.label2);
-            this.container.Panel2.Controls.Add(this.label1);
-            this.container.Panel2.Controls.Add(this.btnSetting);
-            this.container.Panel2.Controls.Add(this.btnCleanFinished);
-            this.container.Panel2.Controls.Add(this.btnImport);
-            this.container.Panel2.Controls.Add(this.lblRedisStatus);
-            this.container.Panel2.Controls.Add(this.btnRedis);
-            this.container.Panel2.Controls.Add(this.btnConvert);
             this.container.Panel2.Controls.Add(this.tbConsole);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
             // 
             // lvFileList
             // 
+            resources.ApplyResources(this.lvFileList, "lvFileList");
             this.lvFileList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.headerJobId,
             this.headerFilePath,
             this.headerType,
+            this.headerScene,
             this.headerProgress,
             this.headerPrecision,
             this.headerCompressor,
@@ -121,7 +124,6 @@ namespace AirdPro.Forms
             this.headerSuffix,
             this.headerOutput});
             this.lvFileList.ContextMenuStrip = this.contentMenu;
-            resources.ApplyResources(this.lvFileList, "lvFileList");
             this.lvFileList.FullRowSelect = true;
             this.lvFileList.GridLines = true;
             this.lvFileList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -321,6 +323,10 @@ namespace AirdPro.Forms
             this.timerTaskScan.Interval = 2000;
             this.timerTaskScan.Tick += new System.EventHandler(this.timerTaskScan_Tick);
             // 
+            // headerScene
+            // 
+            resources.ApplyResources(this.headerScene, "headerScene");
+            // 
             // ConversionForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -331,6 +337,7 @@ namespace AirdPro.Forms
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ConversionForm_FormClosing);
             this.Load += new System.EventHandler(this.ProproForm_Load);
             this.container.Panel1.ResumeLayout(false);
+            this.container.Panel1.PerformLayout();
             this.container.Panel2.ResumeLayout(false);
             this.container.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.container)).EndInit();
@@ -374,6 +381,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Timer timerTaskScan;
         private System.Windows.Forms.CheckBox cbAutoExe;
+        private System.Windows.Forms.ColumnHeader headerScene;
     }
 }
 

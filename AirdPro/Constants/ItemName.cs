@@ -15,11 +15,12 @@ namespace AirdPro.Constants
         public static int JOB_ID = 0;
         public static int INPUT_PATH = 1;
         public static int TYPE = 2;
-        public static int PROGRESS = 3;
-        public static int PRECISION = 4;
-        public static int COMPRESSOR = 5;
-        public static int IGNORE_ZERO = 6;
-        public static int SUFFIX = 7;
-        public static int OUTPUT_PATH = 8;
+        public static int SCENE = 3;
+        public static int PROGRESS = 4;
+        public static int PRECISION = 5;
+        public static int COMPRESSOR = 6;
+        public static int IGNORE_ZERO = 7;
+        public static int SUFFIX = 8;
+        public static int OUTPUT_PATH = 9;
     }
 }

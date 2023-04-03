@@ -102,7 +102,8 @@ namespace AirdPro.Domains
             {
                 getJobId(),
                 inputPath,
-                "",
+                type,
+                config.scene,
                 status,
                 config.getMzPrecisionStr(),
                 getCompressorStr(),

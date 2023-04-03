@@ -402,6 +402,7 @@ namespace AirdPro.Converters
 
             columnIndex.spectraIds = new int[columnIndex.mzs.Length];
             columnIndex.intensities = new int[columnIndex.mzs.Length];
+            columnIndex.startPtr = startPosition;
             for (var i = 0; i < columnIndex.mzs.Length; i++)
             {
                 int mz = columnIndex.mzs[i];
@@ -410,9 +411,7 @@ namespace AirdPro.Converters
                 {
                     columnIndex.spectraIds[i] = byteColumn.indexIds.Length;
                     columnIndex.intensities[i] = byteColumn.intensities.Length;
-                    columnIndex.startPtr = startPosition;
                     startPosition = startPosition + byteColumn.indexIds.Length + byteColumn.intensities.Length;
-                    columnIndex.endPtr = startPosition;
                     airdStream.Write(byteColumn.indexIds, 0, byteColumn.indexIds.Length);
                     airdStream.Write(byteColumn.intensities, 0, byteColumn.intensities.Length);
                 }
@@ -420,10 +419,10 @@ namespace AirdPro.Converters
                 {
                     columnIndex.spectraIds[i] = 0;
                     columnIndex.intensities[i] = 0;
-                    columnIndex.startPtr = startPosition;
-                    columnIndex.endPtr = startPosition;
+                   
                 }
             }
+            columnIndex.endPtr = startPosition;
 
             byte[] compressedSpectraIds =
                 new ZstdWrapper().encode(
