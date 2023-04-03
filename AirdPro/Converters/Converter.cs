@@ -49,6 +49,7 @@ namespace AirdPro.Converters
         protected Stopwatch stopwatch = new Stopwatch();
         public FileStream airdStream;
         public FileStream airdJsonStream;
+        public FileStream airdColumnJsonStream;
         protected List<WindowRange> ranges = new List<WindowRange>(); //SWATH/DIA Window的窗口
         protected Hashtable rangeTable = new Hashtable(); //用于存放SWATH/DIA窗口的信息,key为mz
         protected List<BlockIndex> indexList = new List<BlockIndex>(); //用于存储的全局的SWATH List
@@ -608,7 +609,8 @@ namespace AirdPro.Converters
         public void writeToAirdInfoFile()
         {
             jobInfo.log(Tag.Write_Index_File, Status.Writing_Index_File);
-            AirdInfo airdInfo = buildBasicInfo();
+            AirdInfo airdInfo = buildAirdInfo();
+
             if (jobInfo.config.compressedIndex)
             {
                 List<BlockIndex> indexList = airdInfo.indexList;
@@ -625,6 +627,17 @@ namespace AirdPro.Converters
             string airdInfoStr = JsonConvert.SerializeObject(airdInfo, new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
             byte[] airdBytes = Encoding.Default.GetBytes(airdInfoStr);
             airdJsonStream.Write(airdBytes, 0, airdBytes.Length);
+
+            if (jobInfo.config.isSearchEngine())
+            {
+                ColumnInfo columnInfo = buildColumnInfo();
+                string columnInfoStr = JsonConvert.SerializeObject(columnInfo, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                byte[] columnInfoBytes = Encoding.Default.GetBytes(columnInfoStr);
+                using (airdColumnJsonStream = new FileStream(jobInfo.airdColumnJsonFilePath, FileMode.Create))
+                {
+                    airdColumnJsonStream.Write(columnInfoBytes, 0, columnInfoBytes.Length);
+                }
+            }
         }
 
         public void clearCache()
@@ -935,7 +948,7 @@ namespace AirdPro.Converters
             chromatogramIndex.endPtr = startPosition;
         }
 
-        protected AirdInfo buildBasicInfo()
+        protected AirdInfo buildAirdInfo()
         {
             AirdInfo airdInfo = new AirdInfo();
             List<AirdSDK.Beans.Software> softwares = new List<AirdSDK.Beans.Software>();
@@ -1019,9 +1032,6 @@ namespace AirdPro.Converters
 
             //ChromatogramIndex
             airdInfo.chromatogramIndex = chromatogramIndex;
-
-            //ColumnIndex
-            airdInfo.columnIndexList = columnIndexList;
 
             //Instrument Info
             List<Instrument> instruments = new List<Instrument>();
@@ -1173,6 +1183,17 @@ namespace AirdPro.Converters
             airdInfo.features = FeaturesUtil.toString(featuresMap);
             airdInfo.version = SoftwareInfo.VERSION;
             return airdInfo;
+        }
+
+        protected ColumnInfo buildColumnInfo()
+        {
+            ColumnInfo columnInfo = new ColumnInfo();
+            columnInfo.type = jobInfo.type;
+            columnInfo.indexList = columnIndexList;
+            columnInfo.mzPrecision = jobInfo.config.mzPrecision;
+            columnInfo.intPrecision = intensityPrecision;
+            columnInfo.airdPath = jobInfo.airdFilePath;
+            return columnInfo;
         }
 
         List<ByteComp> byteCompList = new()
