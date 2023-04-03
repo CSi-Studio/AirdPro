@@ -351,12 +351,12 @@ namespace AirdPro.Forms
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                e.Cancel = true;
-                this.ShowInTaskbar = false;
-                this.Hide();
-            }
+            // if (e.CloseReason == CloseReason.UserClosing)
+            // {
+            //     e.Cancel = true;
+            //     this.ShowInTaskbar = false;
+            //     this.Hide();
+            // }
         }
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)

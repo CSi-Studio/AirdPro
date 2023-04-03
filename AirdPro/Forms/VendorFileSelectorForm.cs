@@ -26,6 +26,8 @@ namespace AirdPro.Forms
 {
     public partial class VendorFileSelectorForm : Form, Observer<Dictionary<string, ConversionConfig>>
     {
+        private ConversionConfigListForm configListForm;
+
         public VendorFileSelectorForm()
         {
             InitializeComponent();
@@ -142,7 +144,10 @@ namespace AirdPro.Forms
         //选择已有参数，或者重新编辑参数，并将参数应用于选中的单个或一批文件
         private void btnCreateConfigs_Click(object sender, EventArgs e)
         {
-            ConversionConfigListForm configListForm = new ConversionConfigListForm();
+            if (this.configListForm == null || this.configListForm.IsDisposed)
+            {
+                configListForm = new ConversionConfigListForm();
+            }
             configListForm.Show();
         }
 
@@ -178,8 +183,8 @@ namespace AirdPro.Forms
             if (addResult)
             {
                 clearInfos();
+                Hide();
             }
-            Hide();
         }
     }
 }

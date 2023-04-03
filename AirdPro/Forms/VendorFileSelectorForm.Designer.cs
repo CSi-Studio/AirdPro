@@ -50,8 +50,8 @@ namespace AirdPro.Forms
             this.label1 = new System.Windows.Forms.Label();
             this.imgList = new System.Windows.Forms.ImageList(this.components);
             this.btnAdd = new System.Windows.Forms.Button();
-            this.msFileViews = new AirdPro.FolderFileBrowser();
             this.btnAddClose = new System.Windows.Forms.Button();
+            this.msFileViews = new AirdPro.FolderFileBrowser();
             this.gBoxMode.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,10 +59,9 @@ namespace AirdPro.Forms
             // 
             this.radioButton1.AutoSize = true;
             this.radioButton1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.radioButton1.Location = new System.Drawing.Point(12, 76);
-            this.radioButton1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton1.Location = new System.Drawing.Point(8, 51);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(76, 28);
+            this.radioButton1.Size = new System.Drawing.Size(52, 21);
             this.radioButton1.TabIndex = 1;
             this.radioButton1.Text = "DDA";
             this.radioButton1.UseVisualStyleBackColor = true;
@@ -78,11 +77,9 @@ namespace AirdPro.Forms
             this.gBoxMode.Controls.Add(this.radioButton2);
             this.gBoxMode.Controls.Add(this.radioButton1);
             this.gBoxMode.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.gBoxMode.Location = new System.Drawing.Point(969, 129);
-            this.gBoxMode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gBoxMode.Location = new System.Drawing.Point(614, 91);
             this.gBoxMode.Name = "gBoxMode";
-            this.gBoxMode.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.gBoxMode.Size = new System.Drawing.Size(312, 308);
+            this.gBoxMode.Size = new System.Drawing.Size(240, 205);
             this.gBoxMode.TabIndex = 2;
             this.gBoxMode.TabStop = false;
             this.gBoxMode.Text = "Acquisition Mode";
@@ -91,10 +88,9 @@ namespace AirdPro.Forms
             // 
             this.radioButton4.AutoSize = true;
             this.radioButton4.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.radioButton4.Location = new System.Drawing.Point(12, 266);
-            this.radioButton4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton4.Location = new System.Drawing.Point(8, 177);
             this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(83, 28);
+            this.radioButton4.Size = new System.Drawing.Size(58, 21);
             this.radioButton4.TabIndex = 9;
             this.radioButton4.Text = "MRM";
             this.radioButton4.UseVisualStyleBackColor = true;
@@ -103,10 +99,9 @@ namespace AirdPro.Forms
             // 
             this.radioButton3.AutoSize = true;
             this.radioButton3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.radioButton3.Location = new System.Drawing.Point(12, 226);
-            this.radioButton3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton3.Location = new System.Drawing.Point(8, 151);
             this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(76, 28);
+            this.radioButton3.Size = new System.Drawing.Size(53, 21);
             this.radioButton3.TabIndex = 8;
             this.radioButton3.Text = "PRM";
             this.radioButton3.UseVisualStyleBackColor = true;
@@ -116,10 +111,9 @@ namespace AirdPro.Forms
             this.rbAuto.AutoSize = true;
             this.rbAuto.Checked = true;
             this.rbAuto.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.rbAuto.Location = new System.Drawing.Point(12, 40);
-            this.rbAuto.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rbAuto.Location = new System.Drawing.Point(8, 27);
             this.rbAuto.Name = "rbAuto";
-            this.rbAuto.Size = new System.Drawing.Size(77, 28);
+            this.rbAuto.Size = new System.Drawing.Size(53, 21);
             this.rbAuto.TabIndex = 7;
             this.rbAuto.TabStop = true;
             this.rbAuto.Text = "Auto";
@@ -129,10 +123,9 @@ namespace AirdPro.Forms
             // 
             this.radioButton6.AutoSize = true;
             this.radioButton6.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.radioButton6.Location = new System.Drawing.Point(12, 116);
-            this.radioButton6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton6.Location = new System.Drawing.Point(8, 77);
             this.radioButton6.Name = "radioButton6";
-            this.radioButton6.Size = new System.Drawing.Size(138, 28);
+            this.radioButton6.Size = new System.Drawing.Size(92, 21);
             this.radioButton6.TabIndex = 6;
             this.radioButton6.Text = "DDA_PASEF";
             this.radioButton6.UseVisualStyleBackColor = true;
@@ -141,10 +134,9 @@ namespace AirdPro.Forms
             // 
             this.radioButton5.AutoSize = true;
             this.radioButton5.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.radioButton5.Location = new System.Drawing.Point(12, 189);
-            this.radioButton5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton5.Location = new System.Drawing.Point(8, 126);
             this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(129, 28);
+            this.radioButton5.Size = new System.Drawing.Size(87, 21);
             this.radioButton5.TabIndex = 5;
             this.radioButton5.Text = "DIA_PASEF";
             this.radioButton5.UseVisualStyleBackColor = true;
@@ -153,10 +145,9 @@ namespace AirdPro.Forms
             // 
             this.radioButton2.AutoSize = true;
             this.radioButton2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.radioButton2.Location = new System.Drawing.Point(12, 153);
-            this.radioButton2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton2.Location = new System.Drawing.Point(8, 102);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(67, 28);
+            this.radioButton2.Size = new System.Drawing.Size(47, 21);
             this.radioButton2.TabIndex = 2;
             this.radioButton2.Text = "DIA";
             this.radioButton2.UseVisualStyleBackColor = true;
@@ -170,10 +161,9 @@ namespace AirdPro.Forms
             // btnEditConfigs
             // 
             this.btnEditConfigs.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnEditConfigs.Location = new System.Drawing.Point(480, 18);
-            this.btnEditConfigs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnEditConfigs.Location = new System.Drawing.Point(320, 12);
             this.btnEditConfigs.Name = "btnEditConfigs";
-            this.btnEditConfigs.Size = new System.Drawing.Size(112, 39);
+            this.btnEditConfigs.Size = new System.Drawing.Size(75, 26);
             this.btnEditConfigs.TabIndex = 6;
             this.btnEditConfigs.Text = "Browser";
             this.btnEditConfigs.UseVisualStyleBackColor = true;
@@ -182,10 +172,9 @@ namespace AirdPro.Forms
             // btnClose
             // 
             this.btnClose.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnClose.Location = new System.Drawing.Point(969, 536);
-            this.btnClose.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnClose.Location = new System.Drawing.Point(627, 357);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(308, 57);
+            this.btnClose.Size = new System.Drawing.Size(227, 38);
             this.btnClose.TabIndex = 7;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
@@ -197,10 +186,9 @@ namespace AirdPro.Forms
             this.lblConfigOutputPath.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.lblConfigOutputPath.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblConfigOutputPath.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblConfigOutputPath.Location = new System.Drawing.Point(632, 22);
-            this.lblConfigOutputPath.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblConfigOutputPath.Location = new System.Drawing.Point(421, 15);
             this.lblConfigOutputPath.Name = "lblConfigOutputPath";
-            this.lblConfigOutputPath.Size = new System.Drawing.Size(121, 24);
+            this.lblConfigOutputPath.Size = new System.Drawing.Size(80, 17);
             this.lblConfigOutputPath.TabIndex = 119;
             this.lblConfigOutputPath.Text = "Output Path:";
             // 
@@ -208,10 +196,9 @@ namespace AirdPro.Forms
             // 
             this.btnConfigChooseFolder.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.btnConfigChooseFolder.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnConfigChooseFolder.Location = new System.Drawing.Point(1178, 15);
-            this.btnConfigChooseFolder.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnConfigChooseFolder.Location = new System.Drawing.Point(785, 10);
             this.btnConfigChooseFolder.Name = "btnConfigChooseFolder";
-            this.btnConfigChooseFolder.Size = new System.Drawing.Size(112, 39);
+            this.btnConfigChooseFolder.Size = new System.Drawing.Size(75, 26);
             this.btnConfigChooseFolder.TabIndex = 120;
             this.btnConfigChooseFolder.Text = "Browser";
             this.btnConfigChooseFolder.UseVisualStyleBackColor = true;
@@ -220,30 +207,27 @@ namespace AirdPro.Forms
             // tbOutputPath
             // 
             this.tbOutputPath.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.tbOutputPath.Location = new System.Drawing.Point(760, 18);
-            this.tbOutputPath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbOutputPath.Location = new System.Drawing.Point(507, 12);
             this.tbOutputPath.Name = "tbOutputPath";
-            this.tbOutputPath.Size = new System.Drawing.Size(406, 31);
+            this.tbOutputPath.Size = new System.Drawing.Size(272, 23);
             this.tbOutputPath.TabIndex = 118;
             // 
             // cbConfig
             // 
             this.cbConfig.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbConfig.FormattingEnabled = true;
-            this.cbConfig.Location = new System.Drawing.Point(196, 18);
-            this.cbConfig.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbConfig.Location = new System.Drawing.Point(131, 12);
             this.cbConfig.Name = "cbConfig";
-            this.cbConfig.Size = new System.Drawing.Size(272, 32);
+            this.cbConfig.Size = new System.Drawing.Size(183, 25);
             this.cbConfig.TabIndex = 121;
             // 
             // lblConvertConfig
             // 
             this.lblConvertConfig.AutoSize = true;
             this.lblConvertConfig.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.lblConvertConfig.Location = new System.Drawing.Point(14, 24);
-            this.lblConvertConfig.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblConvertConfig.Location = new System.Drawing.Point(9, 16);
             this.lblConvertConfig.Name = "lblConvertConfig";
-            this.lblConvertConfig.Size = new System.Drawing.Size(171, 24);
+            this.lblConvertConfig.Size = new System.Drawing.Size(118, 17);
             this.lblConvertConfig.TabIndex = 122;
             this.lblConvertConfig.Text = "Conversion Config:";
             // 
@@ -251,10 +235,9 @@ namespace AirdPro.Forms
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.label1.Location = new System.Drawing.Point(964, 66);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(603, 44);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(305, 48);
+            this.label1.Size = new System.Drawing.Size(208, 34);
             this.label1.TabIndex = 123;
             this.label1.Text = "If your acquisition method is PRM,\r\nselect the PRM option directly!";
             // 
@@ -269,40 +252,38 @@ namespace AirdPro.Forms
             // btnAdd
             // 
             this.btnAdd.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnAdd.Location = new System.Drawing.Point(969, 470);
-            this.btnAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAdd.Location = new System.Drawing.Point(627, 313);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(150, 57);
+            this.btnAdd.Size = new System.Drawing.Size(100, 38);
             this.btnAdd.TabIndex = 127;
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
-            // msFileViews
-            // 
-            this.msFileViews.Location = new System.Drawing.Point(9, 66);
-            this.msFileViews.Margin = new System.Windows.Forms.Padding(6);
-            this.msFileViews.Name = "msFileViews";
-            this.msFileViews.Size = new System.Drawing.Size(938, 526);
-            this.msFileViews.TabIndex = 125;
-            // 
             // btnAddClose
             // 
             this.btnAddClose.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnAddClose.Location = new System.Drawing.Point(1127, 470);
-            this.btnAddClose.Margin = new System.Windows.Forms.Padding(4);
+            this.btnAddClose.Location = new System.Drawing.Point(741, 313);
             this.btnAddClose.Name = "btnAddClose";
-            this.btnAddClose.Size = new System.Drawing.Size(150, 57);
+            this.btnAddClose.Size = new System.Drawing.Size(113, 38);
             this.btnAddClose.TabIndex = 128;
-            this.btnAddClose.Text = "Add,Close";
+            this.btnAddClose.Text = "Add and Close";
             this.btnAddClose.UseVisualStyleBackColor = true;
             this.btnAddClose.Click += new System.EventHandler(this.btnAddClose_Click);
             // 
+            // msFileViews
+            // 
+            this.msFileViews.Location = new System.Drawing.Point(6, 44);
+            this.msFileViews.Margin = new System.Windows.Forms.Padding(4);
+            this.msFileViews.Name = "msFileViews";
+            this.msFileViews.Size = new System.Drawing.Size(590, 351);
+            this.msFileViews.TabIndex = 125;
+            // 
             // VendorFileSelectorForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1299, 610);
+            this.ClientSize = new System.Drawing.Size(866, 407);
             this.Controls.Add(this.btnAddClose);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.msFileViews);
@@ -316,7 +297,6 @@ namespace AirdPro.Forms
             this.Controls.Add(this.btnEditConfigs);
             this.Controls.Add(this.gBoxMode);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "VendorFileSelectorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "File/Folder Selector";

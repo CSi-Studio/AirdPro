@@ -488,26 +488,34 @@ namespace AirdPro.Algorithms
             SparseMatrix matrix = new SparseMatrix(rts.Count, mzsSet.Count);
             int iter = 0;
             long totalPoint = 0;
-            foreach (IntSpectrum spectrum in spectra)
+            try
             {
-                int i = 0;
-                while (i < spectrum.mzs.Length)
+                foreach (IntSpectrum spectrum in spectra)
                 {
-                    int j = i + 1;
-                    double intensitySum = spectrum.intensities[i];
-                    while (j < spectrum.mzs.Length && spectrum.mzs[j] == spectrum.mzs[i])
+                    int i = 0;
+                    while (i < spectrum.mzs.Length)
                     {
-                        intensitySum += spectrum.intensities[j];
-                        j++;
+                        int j = i + 1;
+                        double intensitySum = spectrum.intensities[i];
+                        while (j < spectrum.mzs.Length && spectrum.mzs[j] == spectrum.mzs[i])
+                        {
+                            intensitySum += spectrum.intensities[j];
+                            j++;
+                        }
+
+
+                        matrix[iter, mzIndexDict[spectrum.mzs[i]]] = intensitySum;
+                        i = j;
                     }
 
-                    
-                    matrix[iter, mzIndexDict[spectrum.mzs[i]]] = intensitySum;
-                    i = j;
+                    iter++;
+                    converter.jobInfo.log(null, Tag.progress(columnIndex.toString(), iter, spectra.Count));
                 }
-               
-                iter++;
-                converter.jobInfo.log(null, Tag.progress(columnIndex.toString(), iter, spectra.Count));
+            }
+            catch (Exception e)
+            {
+                converter.jobInfo.log(e.Message);
+                throw e;
             }
 
             converter.jobInfo.log("Column Index Finished", "Column Index Finished");
