@@ -74,6 +74,8 @@ namespace AirdPro.Forms
             this.redisConsumer = new System.Windows.Forms.Timer(this.components);
             this.timerTaskScan = new System.Windows.Forms.Timer(this.components);
             this.headerScene = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tbJobInfo = new System.Windows.Forms.TextBox();
+            this.headerConfigName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -105,6 +107,7 @@ namespace AirdPro.Forms
             // 
             // container.Panel2
             // 
+            this.container.Panel2.Controls.Add(this.tbJobInfo);
             this.container.Panel2.Controls.Add(this.tbConsole);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
             // 
@@ -116,6 +119,7 @@ namespace AirdPro.Forms
             this.headerJobId,
             this.headerFilePath,
             this.headerType,
+            this.headerConfigName,
             this.headerScene,
             this.headerProgress,
             this.headerPrecision,
@@ -327,6 +331,17 @@ namespace AirdPro.Forms
             // 
             resources.ApplyResources(this.headerScene, "headerScene");
             // 
+            // tbJobInfo
+            // 
+            resources.ApplyResources(this.tbJobInfo, "tbJobInfo");
+            this.tbJobInfo.BackColor = System.Drawing.SystemColors.Window;
+            this.tbJobInfo.ForeColor = System.Drawing.SystemColors.InfoText;
+            this.tbJobInfo.Name = "tbJobInfo";
+            // 
+            // headerConfigName
+            // 
+            resources.ApplyResources(this.headerConfigName, "headerConfigName");
+            // 
             // ConversionForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -382,6 +397,8 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Timer timerTaskScan;
         private System.Windows.Forms.CheckBox cbAutoExe;
         private System.Windows.Forms.ColumnHeader headerScene;
+        private System.Windows.Forms.TextBox tbJobInfo;
+        private System.Windows.Forms.ColumnHeader headerConfigName;
     }
 }
 

@@ -138,9 +138,7 @@ namespace AirdPro.Forms
                     {
                         content += job.logs[i].dateTime + " " + job.logs[i].content + Const.Change_Line;
                     }
-
-                    string jobInfo = job.getJsonInfo();
-                    content += jobInfo + Const.Change_Line;
+                    content += Const.Change_Line;
                 }
                 else if (ConvertTaskManager.getInstance().finishedTable[item.Text] != null)
                 {
@@ -150,15 +148,15 @@ namespace AirdPro.Forms
                     {
                         content += job.logs[i].dateTime + " " + job.logs[i].content + Const.Change_Line;
                     }
-
-                    string jobInfo = job.getJsonInfo();
-                    content += jobInfo + Const.Change_Line;
+                    content += Const.Change_Line;
                 }
                 else
                 {
+                    job = (JobInfo)item.Tag;
                     content = Constants.Tag.Not_Start_Converting;
                 }
 
+                tbJobInfo.Text = job.getJsonInfo();
                 tbConsole.Text = content;
             }
             else

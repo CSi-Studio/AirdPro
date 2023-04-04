@@ -111,6 +111,7 @@ namespace AirdPro.Forms
             config.ignoreZeroIntensity = cbConfigIsZeroIntensityIgnore.Checked;
             config.threadAccelerate = cbConfigThreadAccelerate.Checked;
             config.scene = cbScene.Text;
+            config.configName = tbNameConfig.Text;
             //如果不是自动决策的,则会使用配置的组合压缩器
             if (!cbAutoDecision.Checked)
             {
@@ -140,6 +141,7 @@ namespace AirdPro.Forms
             {
                 config.stack = false;
             }
+     
             config.compressedIndex = cbCompressedIndex.Checked;
             config.suffix = tbConfigFileNameSuffix.Text;
             config.creator = tbConfigOperator.Text;

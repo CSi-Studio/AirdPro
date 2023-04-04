@@ -107,6 +107,7 @@ namespace AirdPro.Domains
                 getJobId(),
                 inputPath,
                 type,
+                config.configName,
                 config.scene,
                 status,
                 config.getMzPrecisionStr(),
@@ -192,11 +193,14 @@ namespace AirdPro.Domains
         public string getJsonInfo()
         {
             string jobInfo = Tag.Empty;
+            jobInfo += Tag.ConfigName + config.configName + Const.Change_Line;
+            jobInfo += Tag.Scene + config.scene + Const.Change_Line;
             jobInfo += Tag.Input_Path + inputPath + Const.Change_Line;
             jobInfo += Tag.Output_Path + outputPath + Const.Change_Line;
             jobInfo += Tag.Aird_File_Name + airdFileName + Const.Change_Line;
             jobInfo += Tag.Aird_File_Path + airdFilePath + Const.Change_Line;
             jobInfo += Tag.Aird_Json_File_Path + airdJsonFilePath + Const.Change_Line;
+            jobInfo += Tag.Aird_Column_Json_File_Path + airdColumnJsonFilePath + Const.Change_Line;
             jobInfo += Tag.Ignore_Zero_Intensity + config.ignoreZeroIntensity + Const.Change_Line;
             jobInfo += Tag.Suffix + config.suffix + Const.Change_Line;
             jobInfo += Tag.Thread_Id + threadId + Const.Change_Line;

@@ -19,6 +19,10 @@ namespace AirdPro.Storage.Config
     public class ConversionConfig : ICloneable
     {
         /**
+         * 配置名称
+         */
+        public string configName;
+        /**
          * Ignore the MZ-intensity pairs whose intensity is zero.
          * 忽略intensity为0的数据
          */

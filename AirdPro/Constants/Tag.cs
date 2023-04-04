@@ -23,7 +23,7 @@
         public static string Effective_MS1_List_Size = "Effective MS1 List Size:";
         public static string MS2_Group_List_Size = "MS2 Group List Size:";
         public static string MS2_Group_Finished = "MS2 Group Finished:";
-        public static string Start_Processing_MS1_List = "Start Processing MS1 List:";
+        public static string Start_Processing_MS1_List = "Start Processing MS1 List";
         public static string Best_Combo_Comp = "Best Combo Comp:";
         public static string Start_Processing_MS2_List = "Start Processing MS2 List:";
         public static string Write_Index_File = "Writing Index File";
@@ -38,7 +38,7 @@
         public static string Adapting_Vendor_File_API = "Adapting Vendor File API";
         public static string Adapting_Finished = "Adapting Finished";
         public static string Total_Spectra = "Total Spectra:";
-        public static string Total_Chromatograms = "Total Chromatograms";
+        public static string Total_Chromatograms = "Total Chromatograms:";
         public static string Retrying_Left_Retry_Times = "Retrying...left retry times:";
         public static string No_File_Is_Selected = "No file is selected!";
         public static string Input_Path = "InputPath:";
@@ -46,8 +46,11 @@
         public static string Aird_File_Name = "AirdFileName:";
         public static string Aird_File_Path = "AirdFilePath:";
         public static string Aird_Json_File_Path = "AirdJsonFilePath:";
+        public static string Aird_Column_Json_File_Path = "AirdColumnJsonFilePath:";
         public static string Ignore_Zero_Intensity = "IgnoreZeroIntensity:";
         public static string Suffix = "Suffix:";
+        public static string Scene = "Scene:";
+        public static string ConfigName = "ConfigName:";
         public static string Thread_Accelerate = "ThreadAccelerate:";
         public static string Mz_Precision = "MzPrecision:";
         public static string Compressor = "Compressor:";

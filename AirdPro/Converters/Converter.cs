@@ -569,8 +569,8 @@ namespace AirdPro.Converters
             }
           
             jobInfo.log(Tag.Adapting_Finished);
-            jobInfo.log(totalSize + Const.SPACE + Tag.Total_Spectra);
-            jobInfo.log(totalChroma + Const.SPACE + Tag.Total_Chromatograms);
+            jobInfo.log(Tag.Total_Spectra + totalSize);
+            jobInfo.log(Tag.Total_Chromatograms + totalChroma);
 
             switch (jobInfo.format)
             {

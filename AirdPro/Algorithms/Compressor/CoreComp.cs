@@ -482,7 +482,7 @@ namespace AirdPro.Algorithms
                 mzIndexDict[sortedMzs[i]] = i;
             }
 
-            converter.jobInfo.log("Total Spectra:" + dict.Count );
+            converter.jobInfo.log("Total Spectra:" + dict.Count);
             converter.jobInfo.log("Total Diff m/z：" + sortedMzs.Count);
             converter.jobInfo.log("mz range:" + sortedMzs[0]*1.0/converter.compressor.mzPrecision + "-" + sortedMzs[sortedMzs.Count - 1] * 1.0 / converter.compressor.mzPrecision);
             SparseMatrix matrix = new SparseMatrix(rts.Count, mzsSet.Count);

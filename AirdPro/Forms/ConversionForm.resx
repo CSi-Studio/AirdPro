@@ -153,6 +153,12 @@
   <data name="headerType.Width" type="System.Int32, mscorlib">
     <value>70</value>
   </data>
+  <data name="headerConfigName.Text" xml:space="preserve">
+    <value>ConfigName</value>
+  </data>
+  <data name="headerConfigName.Width" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
   <data name="headerScene.Text" xml:space="preserve">
     <value>Scene</value>
   </data>
@@ -327,7 +333,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnImport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
+    <value>8, 8</value>
   </data>
   <data name="btnImport.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
@@ -461,7 +467,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnConvert.Location" type="System.Drawing.Point, System.Drawing">
-    <value>64, 12</value>
+    <value>61, 8</value>
   </data>
   <data name="btnConvert.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
@@ -497,7 +503,7 @@
     <value>NoControl</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>234, 64</value>
+    <value>231, 60</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>38, 16</value>
@@ -593,7 +599,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnRedis.Location" type="System.Drawing.Point, System.Drawing">
-    <value>285, 12</value>
+    <value>281, 8</value>
   </data>
   <data name="btnRedis.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
@@ -732,7 +738,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnMirrorTrans.Location" type="System.Drawing.Point, System.Drawing">
-    <value>229, 12</value>
+    <value>225, 8</value>
   </data>
   <data name="btnMirrorTrans.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
@@ -768,7 +774,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblRedisStatus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>282, 64</value>
+    <value>278, 60</value>
   </data>
   <data name="lblRedisStatus.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 16</value>
@@ -804,7 +810,7 @@
     <value>NoControl</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>176, 63</value>
+    <value>172, 59</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 16</value>
@@ -877,7 +883,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnCleanFinished.Location" type="System.Drawing.Point, System.Drawing">
-    <value>117, 12</value>
+    <value>115, 8</value>
   </data>
   <data name="btnCleanFinished.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
@@ -913,7 +919,7 @@
     <value>NoControl</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>126, 63</value>
+    <value>123, 59</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>35, 16</value>
@@ -1055,7 +1061,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnSetting.Location" type="System.Drawing.Point, System.Drawing">
-    <value>173, 12</value>
+    <value>171, 8</value>
   </data>
   <data name="btnSetting.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
@@ -1091,7 +1097,7 @@
     <value>NoControl</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>75, 63</value>
+    <value>73, 59</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>31, 16</value>
@@ -1124,7 +1130,7 @@
     <value>NoControl</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>19, 63</value>
+    <value>13, 59</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>39, 16</value>
@@ -1159,11 +1165,44 @@
   <data name="&gt;&gt;container.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="tbJobInfo.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="tbJobInfo.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 9pt</value>
+  </data>
+  <data name="tbJobInfo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="tbJobInfo.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tbJobInfo.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
+  <data name="tbJobInfo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>672, 224</value>
+  </data>
+  <data name="tbJobInfo.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;tbJobInfo.Name" xml:space="preserve">
+    <value>tbJobInfo</value>
+  </data>
+  <data name="&gt;&gt;tbJobInfo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbJobInfo.Parent" xml:space="preserve">
+    <value>container.Panel2</value>
+  </data>
+  <data name="&gt;&gt;tbJobInfo.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="tbConsole.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="tbConsole.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>681, 6</value>
   </data>
   <data name="tbConsole.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1172,7 +1211,7 @@
     <value>Vertical</value>
   </data>
   <data name="tbConsole.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1562, 224</value>
+    <value>884, 224</value>
   </data>
   <data name="tbConsole.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1190,7 +1229,7 @@
     <value>container.Panel2</value>
   </data>
   <data name="&gt;&gt;tbConsole.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="container.Panel2.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 9pt</value>
@@ -4989,6 +5028,12 @@
     <value>headerScene</value>
   </data>
   <data name="&gt;&gt;headerScene.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;headerConfigName.Name" xml:space="preserve">
+    <value>headerConfigName</value>
+  </data>
+  <data name="&gt;&gt;headerConfigName.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
