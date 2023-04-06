@@ -304,7 +304,7 @@ namespace AirdPro.Algorithms
                 intensityArray[j] = intData[t];
                 j++;
             }
-
+            //TODO 王金银 在这里做Centroid和降噪
             int[] mzSubArray = new int[j];
             Array.Copy(mzArray, mzSubArray, j);
             double[] intensitySubArray = new double[j];
