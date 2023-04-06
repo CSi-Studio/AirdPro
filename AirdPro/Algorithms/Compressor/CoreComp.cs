@@ -42,7 +42,7 @@ namespace AirdPro.Algorithms
 
         public override void compressMS1(Converter converter, BlockIndex index)
         {
-            //仅当面向SearchEngine的Aird模式下有效
+            //仅当面向Search的Aird模式下有效
             ConcurrentDictionary<double, IntSpectrum> msDictionary = new ConcurrentDictionary<double, IntSpectrum>();
             if (multiThread)
             {
@@ -113,7 +113,7 @@ namespace AirdPro.Algorithms
             }
 
             //如果是面向搜索引擎的格式转换，则msRowTable不为空，准备启动行矩阵向列矩阵转换的过程
-            if (converter.jobInfo.config.isSearchEngine())
+            if (converter.jobInfo.config.isSearch())
             {
                 ColumnIndex columnIndex = new ColumnIndex();
                 columnIndex.level = 1;
@@ -133,7 +133,7 @@ namespace AirdPro.Algorithms
 
         public override void compressMS2(Converter converter, List<MsIndex> ms2List, BlockIndex index)
         {
-            //仅当面向SearchEngine的Aird模式下有效
+            //仅当面向Search的Aird模式下有效
             ConcurrentDictionary<double, IntSpectrum> msDictionary = new ConcurrentDictionary<double, IntSpectrum>();
             if (multiThread)
             {
@@ -156,7 +156,7 @@ namespace AirdPro.Algorithms
                     else
                     {
                         //在面向搜索引擎的场景时，仅DIA模式的二级谱图具备时间上的逻辑相关性
-                        if (converter.jobInfo.config.isSearchEngine() &&
+                        if (converter.jobInfo.config.isSearch() &&
                             converter.jobInfo.type.Equals(AcquisitionMethod.DIA))
                         {
                             msDictionary[ts.rt] = readSpectrum(spectrum);
@@ -185,7 +185,7 @@ namespace AirdPro.Algorithms
                         else
                         {
                             //在面向搜索引擎的场景时，仅DIA模式的二级谱图具备时间上的逻辑相关性
-                            if (converter.jobInfo.config.isSearchEngine() &&
+                            if (converter.jobInfo.config.isSearch() &&
                                 converter.jobInfo.type.Equals(AcquisitionMethod.DIA))
                             {
                                 msDictionary[ts.rt] = readSpectrum(spectrum);
@@ -202,7 +202,7 @@ namespace AirdPro.Algorithms
             }
 
             //如果是面向搜索引擎的格式转换，则msRowTable不为空，准备启动行矩阵向列矩阵转换的过程
-            if (converter.jobInfo.config.isSearchEngine() &&
+            if (converter.jobInfo.config.isSearch() &&
                 converter.jobInfo.type.Equals(AcquisitionMethod.DIA))
             {
                 ColumnIndex columnIndex = new ColumnIndex();

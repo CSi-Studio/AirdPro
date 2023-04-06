@@ -21,7 +21,7 @@ namespace AirdPro.Constants
                                                           "3. New Func: Remote Repository Async Tool;\r\n" +
                                                           "4. New Func: Support Conversion for mzML and mzXML;\r\n" +
                                                           "5. New Func: Support Acquisition Method for SRM/MRM;\r\n" +
-                                                          "6. New Func: Support Scene for SearchEngine;\r\n"
+                                                          "6. New Func: Support Scene for Search;\r\n"
 
             ;
 

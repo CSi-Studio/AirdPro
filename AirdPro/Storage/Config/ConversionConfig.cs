@@ -63,8 +63,8 @@ namespace AirdPro.Storage.Config
         public bool autoDesicion = true;
 
         /**
-         * 面向的场景,默认为Aird-ComboComp面相计算的场景，主要使用行存储的方式进行排列与压缩
-         * Aird-SearchEngine为面相搜索的场景，主要使用列存储的方式进行存储与压缩
+         * 面向的场景,默认为Aird-ComboComp面向计算的场景，主要使用行存储的方式进行排列与压缩
+         * Aird-Search为面向搜索的场景，主要使用列存储的方式进行存储与压缩
          */
         public string scene = Scene.Computation;
 
@@ -148,9 +148,9 @@ namespace AirdPro.Storage.Config
             return scene == Scene.Computation;
         }
 
-        public bool isSearchEngine()
+        public bool isSearch()
         {
-            return scene == Scene.SearchEngine;
+            return scene == Scene.Search;
         }
 
         /**

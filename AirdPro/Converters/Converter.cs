@@ -53,7 +53,7 @@ namespace AirdPro.Converters
         protected List<WindowRange> ranges = new List<WindowRange>(); //SWATH/DIA Window的窗口
         protected Hashtable rangeTable = new Hashtable(); //用于存放SWATH/DIA窗口的信息,key为mz
         protected List<BlockIndex> indexList = new List<BlockIndex>(); //用于存储的全局的SWATH List
-        protected List<ColumnIndex> columnIndexList = new List<ColumnIndex>(); //列存储索引，尽在面向SearchEngine的模式下有效
+        protected List<ColumnIndex> columnIndexList = new List<ColumnIndex>(); //列存储索引，尽在面向Search的场景下有效
         protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
 
         public List<MsIndex> ms1List = new List<MsIndex>(); //用于存放MS1索引及基础信息,泛型为MsIndex
@@ -628,7 +628,7 @@ namespace AirdPro.Converters
             byte[] airdBytes = Encoding.Default.GetBytes(airdInfoStr);
             airdJsonStream.Write(airdBytes, 0, airdBytes.Length);
 
-            if (jobInfo.config.isSearchEngine())
+            if (jobInfo.config.isSearch())
             {
                 ColumnInfo columnInfo = buildColumnInfo();
                 string columnInfoStr = JsonConvert.SerializeObject(columnInfo, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });

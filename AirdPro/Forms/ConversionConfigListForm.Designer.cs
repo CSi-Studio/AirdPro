@@ -706,7 +706,7 @@
             this.cbScene.FormattingEnabled = true;
             this.cbScene.Items.AddRange(new object[] {
             "Computation",
-            "SearchEngine"});
+            "Search"});
             this.cbScene.Location = new System.Drawing.Point(693, 5);
             this.cbScene.Name = "cbScene";
             this.cbScene.Size = new System.Drawing.Size(125, 25);
@@ -771,7 +771,7 @@
             this.pageSearchEngine.Padding = new System.Windows.Forms.Padding(3);
             this.pageSearchEngine.Size = new System.Drawing.Size(603, 346);
             this.pageSearchEngine.TabIndex = 1;
-            this.pageSearchEngine.Text = "SearchEngine";
+            this.pageSearchEngine.Text = "Search";
             this.pageSearchEngine.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel1

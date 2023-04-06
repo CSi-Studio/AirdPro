@@ -83,7 +83,7 @@ namespace AirdPro.Forms
                 if (configEntry.Value.scene.Equals(Scene.Computation))
                 {
                     item.ImageIndex = 0;
-                }else if (configEntry.Value.scene.Equals(Scene.SearchEngine))
+                }else if (configEntry.Value.scene.Equals(Scene.Search))
                 {
                     item.ImageIndex = 1;
                 }
