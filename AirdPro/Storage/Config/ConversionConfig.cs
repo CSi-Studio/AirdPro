@@ -29,6 +29,12 @@ namespace AirdPro.Storage.Config
         public bool ignoreZeroIntensity = true;
 
         /**
+         * Generate centroided data.
+         * 生成centroid数据
+         */
+        public bool isCentroid = false;
+
+        /**
          * the decimal point of the MZ. The default value is 5dp
          * mz精度,默认保留到小数点后第5位
          */

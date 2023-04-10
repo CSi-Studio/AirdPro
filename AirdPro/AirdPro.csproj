@@ -306,6 +306,7 @@
     <Compile Include="Storage\Handler\ConversionConfigHandler.cs" />
     <Compile Include="Storage\Observer.cs" />
     <Compile Include="Storage\Subject.cs" />
+    <Compile Include="Utils\CentroidUtil.cs" />
     <Compile Include="Utils\CVUtil.cs" />
     <Compile Include="Utils\FeatureUtil.cs" />
     <Compile Include="Utils\FileUtil.cs" />

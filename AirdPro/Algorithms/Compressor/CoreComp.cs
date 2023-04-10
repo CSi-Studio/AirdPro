@@ -309,9 +309,9 @@ namespace AirdPro.Algorithms
             Array.Copy(mzArray, mzSubArray, j);
             double[] intensitySubArray = new double[j];
             Array.Copy(intensityArray, intensitySubArray, j);
-            return new IntSpectrum(mzSubArray, intensitySubArray);
+            return isCentroid ? CentroidUtil.centroid(mzSubArray, intensitySubArray, 0d) : new IntSpectrum(mzSubArray, intensitySubArray);
         }
-        
+
         public override void compressMobility(Spectrum spectrum, TempScan ts)
         {
             double[] mzData = spectrum.getMZArray().data.Storage();

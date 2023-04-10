@@ -103,12 +103,18 @@ namespace AirdPro.Forms
             tbConfigFileNameSuffix.Text = suffix;
         }
 
+        private void cbConfigIsCentroid_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
         //设置所有参数
         private ConversionConfig buildConfigInfo()
         {
             ConversionConfig config = new ConversionConfig();
             config.mzPrecision = (int) Math.Pow(10, int.Parse(cbConfigMzPrecision.Text));
             config.ignoreZeroIntensity = cbConfigIsZeroIntensityIgnore.Checked;
+            config.isCentroid = cbConfigIsCentroid.Checked;
             config.threadAccelerate = cbConfigThreadAccelerate.Checked;
             config.scene = cbScene.Text;
             config.configName = tbNameConfig.Text;
@@ -211,6 +217,7 @@ namespace AirdPro.Forms
             tbConfigFileNameSuffix.Text = config.suffix;
             tbConfigOperator.Text = config.creator;
             cbConfigIsZeroIntensityIgnore.Checked = config.ignoreZeroIntensity;
+            cbConfigIsCentroid.Checked = config.isCentroid;
             cbConfigThreadAccelerate.Checked = config.threadAccelerate;
             cbConfigMzPrecision.SelectedItem = ((int) Math.Log10(config.mzPrecision)).ToString();
             cbMzIntComp.SelectedItem = config.mzIntComp.ToString();

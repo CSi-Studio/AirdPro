@@ -22,6 +22,7 @@ namespace AirdPro.Algorithms
         public bool multiThread = true;
         public int mzPrecision = 100000;
         public bool ignoreZero = true;
+        public bool isCentroid = false;
         public bool includeCV = true;
         public int digit = 8;
 
@@ -45,6 +46,7 @@ namespace AirdPro.Algorithms
             this.multiThread = converter.jobInfo.config.threadAccelerate;
             this.mzPrecision = converter.jobInfo.config.mzPrecision;
             this.ignoreZero = converter.jobInfo.config.ignoreZeroIntensity;
+            this.isCentroid = converter.jobInfo.config.isCentroid;
             this.includeCV = true;
             this.digit = converter.jobInfo.config.digit;
         }
