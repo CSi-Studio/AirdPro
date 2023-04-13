@@ -36,11 +36,10 @@ namespace AirdPro.Forms
         private void VendorFileSelectorForm_Load(object sender, EventArgs e)
         {
             Program.conversionConfigHandler.attach(this);
-         
+
             rbAuto.Checked = true;
             tbOutputPath.Text = Settings.Default.LastOutputPath;
             cbConfig.SelectedIndex = 0;
-           
         }
 
         public void clearInfos()
@@ -83,7 +82,6 @@ namespace AirdPro.Forms
                 return false;
             }
 
-           
 
             if (msFileViews.files.SelectedNodes.IsNullOrEmpty())
             {
@@ -119,7 +117,7 @@ namespace AirdPro.Forms
                 }
                 else
                 {
-                    Program.conversionForm.addFile(path, outputPath, airdType, (ConversionConfig) config.Clone());
+                    Program.conversionForm.addFile(path, outputPath, airdType, (ConversionConfig)config.Clone());
                 }
             }
 
@@ -148,6 +146,7 @@ namespace AirdPro.Forms
             {
                 configListForm = new ConversionConfigListForm();
             }
+
             configListForm.Show();
         }
 

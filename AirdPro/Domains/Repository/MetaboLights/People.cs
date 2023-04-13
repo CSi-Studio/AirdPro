@@ -24,6 +24,5 @@ namespace AirdPro.Repository.MetaboLights
         public string midInitials { get; set; }
         public string phone { get; set; }
         public List<Annotation> roles { get; set; }
-
     }
 }

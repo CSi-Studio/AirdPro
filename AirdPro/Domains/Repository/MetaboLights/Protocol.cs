@@ -21,6 +21,5 @@ namespace AirdPro.Repository.MetaboLights
         public string uri { get; set; }
         public string version { get; set; }
         public List<Parameter> parameters { get; set; }
-
     }
 }

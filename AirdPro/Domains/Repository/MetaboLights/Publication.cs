@@ -20,6 +20,5 @@ namespace AirdPro.Repository.MetaboLights
         public string pubMedID { get; set; }
         public string doi { get; set; }
         public Annotation status { get; set; }
-
     }
 }

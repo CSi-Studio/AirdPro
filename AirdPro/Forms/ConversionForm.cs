@@ -52,6 +52,7 @@ namespace AirdPro.Forms
                 MessageBox.Show(Constants.Tag.No_File_Is_Selected);
                 return;
             }
+
             doConvert();
         }
 
@@ -61,6 +62,7 @@ namespace AirdPro.Forms
             {
                 return;
             }
+
             foreach (ListViewItem item in lvFileList.Items)
             {
                 JobInfo jobInfo = (JobInfo)item.Tag;
@@ -100,7 +102,7 @@ namespace AirdPro.Forms
 
         private void removeFile(ListViewItem fileItem)
         {
-            JobInfo jobInfo = (JobInfo) fileItem.Tag;
+            JobInfo jobInfo = (JobInfo)fileItem.Tag;
             if (jobInfo.threadId != -1 && !jobInfo.status.Equals(Status.Finished))
             {
                 MessageBox.Show(Constants.Tag.Cannot_Be_Deleted_When_Running);
@@ -138,6 +140,7 @@ namespace AirdPro.Forms
                     {
                         content += job.logs[i].dateTime + " " + job.logs[i].content + Const.Change_Line;
                     }
+
                     content += Const.Change_Line;
                 }
                 else if (ConvertTaskManager.getInstance().finishedTable[item.Text] != null)
@@ -148,6 +151,7 @@ namespace AirdPro.Forms
                     {
                         content += job.logs[i].dateTime + " " + job.logs[i].content + Const.Change_Line;
                     }
+
                     content += Const.Change_Line;
                 }
                 else
@@ -187,7 +191,7 @@ namespace AirdPro.Forms
 
             int index = lvFileList.FocusedItem.Index; //获取选中Item的索引值
             ListViewItem item = lvFileList.Items[index];
-            JobInfo jobInfo = (JobInfo) (item.Tag);
+            JobInfo jobInfo = (JobInfo)(item.Tag);
             ConversionConfig config = jobInfo.config;
 
             if (Program.configListForm == null || Program.configListForm.IsDisposed)
@@ -225,7 +229,7 @@ namespace AirdPro.Forms
         {
             foreach (ListViewItem item in lvFileList.SelectedItems)
             {
-                JobInfo jobInfo = (JobInfo) item.Tag;
+                JobInfo jobInfo = (JobInfo)item.Tag;
                 if (ConvertTaskManager.getInstance().finishedTable.ContainsKey(jobInfo.getJobId()))
                 {
                     ConvertTaskManager.getInstance().finishedTable.Remove(jobInfo.getJobId());
@@ -248,7 +252,7 @@ namespace AirdPro.Forms
         {
             foreach (ListViewItem item in lvFileList.SelectedItems)
             {
-                JobInfo jobInfo = (JobInfo) item.Tag;
+                JobInfo jobInfo = (JobInfo)item.Tag;
                 if (!jobInfo.status.Equals(ProcessingStatus.RUNNING))
                 {
                     removeFile(item);
@@ -313,7 +317,7 @@ namespace AirdPro.Forms
             {
                 fileSelector = new VendorFileSelectorForm();
             }
-            
+
             fileSelector.clearInfos();
             fileSelector.Show();
         }
@@ -342,7 +346,8 @@ namespace AirdPro.Forms
             {
                 foreach (ListViewItem item in lvFileList.Items)
                 {
-                    if (item.SubItems[ItemName.PROGRESS].Text.Equals(Status.Finished) || item.SubItems[ItemName.PROGRESS].Text.Equals(Status.Error))
+                    if (item.SubItems[ItemName.PROGRESS].Text.Equals(Status.Finished) ||
+                        item.SubItems[ItemName.PROGRESS].Text.Equals(Status.Error))
                     {
                         item.Remove();
                         jobIdList.Remove(item.SubItems[0].Text);
@@ -364,7 +369,6 @@ namespace AirdPro.Forms
 
         private void btnMirrorTrans_Click(object sender, EventArgs e)
         {
-
         }
 
         private void timerTaskScan_Tick(object sender, EventArgs e)

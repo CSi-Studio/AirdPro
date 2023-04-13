@@ -1,602 +1,600 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E8027102-CAE0-476F-832D-04EC120098A9}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>AirdPro</RootNamespace>
-    <AssemblyName>AirdPro</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <PublishUrl>D:\AirdPro\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>4.2.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <PublishWizardCompleted>true</PublishWizardCompleted>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>default</LangVersion>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>Resources\Ico\AIR.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestCertificateThumbprint>5F95A1501E2C28258F05F0E990B1BC24EDA0969D</ManifestCertificateThumbprint>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <GenerateManifests>false</GenerateManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <TargetZone>LocalIntranet</TargetZone>
-  </PropertyGroup>
-  <PropertyGroup />
-  <PropertyGroup>
-    <SignManifests>false</SignManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>AirdPro.Program</StartupObject>
-  </PropertyGroup>
-  <PropertyGroup />
-  <PropertyGroup />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>latest</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Prefer32bit>false</Prefer32bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>latest</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup />
-  <PropertyGroup>
-    <NoWin32Manifest>true</NoWin32Manifest>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Interop.EDAL, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\ImportLibs\Interop.EDAL.dll</HintPath>
-    </Reference>
-    <Reference Include="Interop.HSREADWRITELib, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\ImportLibs\Interop.HSREADWRITELib.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="pwiz_bindings_cli, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ImportLibs\pwiz_bindings_cli.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.DirectoryServices" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Forms.DataVisualization" />
-    <Reference Include="System.Xml" />
-    <Reference Include="ThermoFisher.CommonCore.Data">
-      <HintPath>..\ImportLibs\ThermoFisher.CommonCore.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="ThermoFisher.CommonCore.RawFileReader">
-      <HintPath>..\ImportLibs\ThermoFisher.CommonCore.RawFileReader.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Algorithms\Compressor\ICompressor.cs" />
-    <Compile Include="Algorithms\Compressor\StackComp.cs" />
-    <Compile Include="Algorithms\Compressor\CoreComp.cs" />
-    <Compile Include="Asyncs\ConvertTaskManager.cs" />
-    <Compile Include="Asyncs\DownloadTaskManager.cs" />
-    <Compile Include="Asyncs\LimitedConcurrencyLevelTaskScheduler.cs" />
-    <Compile Include="Constants\Activator.cs" />
-    <Compile Include="Constants\Manufacturer.cs" />
-    <Compile Include="Constants\Tag.cs" />
-    <Compile Include="Constants\Status.cs" />
-    <Compile Include="Constants\MessageInfo.cs" />
-    <Compile Include="Constants\ByteOrder.cs" />
-    <Compile Include="Constants\FileFormat.cs" />
-    <Compile Include="Constants\ItemName.cs" />
-    <Compile Include="Constants\MobilityType.cs" />
-    <Compile Include="Constants\RedisConst.cs" />
-    <Compile Include="Constants\Const.cs" />
-    <Compile Include="Constants\MSType.cs" />
-    <Compile Include="Constants\Polarity.cs" />
-    <Compile Include="Constants\ProcessingStatus.cs" />
-    <Compile Include="Constants\ResultCode.cs" />
-    <Compile Include="Constants\SoftwareInfo.cs" />
-    <Compile Include="Constants\UrlConst.cs" />
-    <Compile Include="Controls\MirrorBox\MirrorBox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\MirrorBox\MirrorBox.Designer.cs">
-      <DependentUpon>MirrorBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Converters\ConverterWorkFlow.cs" />
-    <Compile Include="Domains\Common\StrKV.cs" />
-    <Compile Include="Domains\HardwareInfo\HardwareInfo.cs" />
-    <Compile Include="Domains\Logs\AppLogs.cs" />
-    <Compile Include="Domains\Logs\Log.cs" />
-    <Compile Include="Domains\Scan\Combination.cs" />
-    <Compile Include="Domains\Scan\MsIndex.cs" />
-    <Compile Include="Domains\Scan\TempScan.cs" />
-    <Compile Include="Domains\Scan\TempScanChroma.cs" />
-    <Compile Include="Domains\Scan\TempScanSZDPD.cs" />
-    <Compile Include="Domains\Scan\TimsData.cs" />
-    <Compile Include="Domains\Sort\CompressStat.cs" />
-    <Compile Include="Domains\Statistic\Stat.cs" />
-    <Compile Include="Domains\View\SpectrumRow.cs" />
-    <Compile Include="Forms\MirrorTransForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\MirrorTransForm.Designer.cs">
-      <DependentUpon>MirrorTransForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\MSFileBrowser\FolderFileBrowser.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\MSFileBrowser\FolderFileBrowser.designer.cs">
-      <DependentUpon>FolderFileBrowser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\MSFileBrowser\FolderFileBrowserModel.cs" />
-    <Compile Include="Controls\MSFileBrowser\MSFileItems.cs" />
-    <Compile Include="Controls\MSFileBrowser\FolderFileItemSorter.cs" />
-    <Compile Include="Forms\AboutForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\AboutForm.Designer.cs">
-      <DependentUpon>AboutForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\SpectrumForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\SpectrumForm.Designer.cs">
-      <DependentUpon>SpectrumForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Domains\Repository\FileRow.cs" />
-    <Compile Include="Domains\Repository\Project.cs" />
-    <Compile Include="Forms\DownloadDetailForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\DownloadDetailForm.designer.cs">
-      <DependentUpon>DownloadDetailForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\ReposWizardForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ReposWizardForm.Designer.cs">
-      <DependentUpon>ReposWizardForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\MLForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\MLForm.Designer.cs">
-      <DependentUpon>MLForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\PXForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\PXForm.Designer.cs">
-      <DependentUpon>PXForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Domains\Repository\MetaboLights\Annotation.cs" />
-    <Compile Include="Domains\Repository\MetaboLights\Assay.cs" />
-    <Compile Include="Domains\Repository\MetaboLights\Factor.cs" />
-    <Compile Include="Domains\Repository\MetaboLights\IsaInvestigation.cs" />
-    <Compile Include="Domains\Repository\MetaboLights\MtblsStudy.cs" />
-    <Compile Include="Domains\Repository\MetaboLights\NameValue.cs" />
-    <Compile Include="Domains\Repository\MetaboLights\Parameter.cs" />
-    <Compile Include="Domains\Repository\MetaboLights\People.cs" />
-    <Compile Include="Domains\Repository\MetaboLights\Protocol.cs" />
-    <Compile Include="Domains\Repository\MetaboLights\Publication.cs" />
-    <Compile Include="Domains\Repository\MetaboLights\Repository.cs" />
-    <Compile Include="Domains\Repository\MetaboLights\Source.cs" />
-    <Compile Include="Domains\Repository\MetaboLights\Study.cs" />
-    <Compile Include="Domains\Repository\MetaboLights\StudySummary.cs" />
-    <Compile Include="Domains\Repository\ProteomeXchange\Node.cs" />
-    <Compile Include="Domains\Repository\ProteomeXchange\RootProject.cs" />
-    <Compile Include="Domains\Repository\ProteomeXchange\TermNode.cs" />
-    <Compile Include="Domains\Job\JobInfo.cs" />
-    <Compile Include="Storage\Config\ConversionConfig.cs" />
-    <Compile Include="Domains\Job\RemoteConvertJob.cs" />
-    <Compile Include="Domains\Sort\IntArrayNode.cs" />
-    <Compile Include="Forms\ConversionConfigListForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ConversionConfigListForm.Designer.cs">
-      <DependentUpon>ConversionConfigListForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\GlobalSettingForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\GlobalSettingForm.Designer.cs">
-      <DependentUpon>GlobalSettingForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\VendorFileSelectorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\VendorFileSelectorForm.Designer.cs">
-      <DependentUpon>VendorFileSelectorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Redis\RedisClient.cs" />
-    <Compile Include="Forms\ConversionForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ConversionForm.Designer.cs">
-      <DependentUpon>ConversionForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Converters\Converter.cs" />
-    <Compile Include="Converters\ScanningSWATH.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Storage\Handler\ConversionConfigHandler.cs" />
-    <Compile Include="Storage\Observer.cs" />
-    <Compile Include="Storage\Subject.cs" />
-    <Compile Include="Utils\CentroidUtil.cs" />
-    <Compile Include="Utils\CVUtil.cs" />
-    <Compile Include="Utils\FeatureUtil.cs" />
-    <Compile Include="Utils\FileUtil.cs" />
-    <Compile Include="Utils\HttpUtil.cs" />
-    <Compile Include="Utils\DataUtil.cs" />
-    <Compile Include="Utils\ResourceUtil.cs" />
-    <Compile Include="Utils\StatUtil.cs" />
-    <EmbeddedResource Include="Controls\MirrorBox\MirrorBox.resx">
-      <DependentUpon>MirrorBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MirrorTransForm.resx">
-      <DependentUpon>MirrorTransForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\MSFileBrowser\FolderFileBrowser.resx">
-      <DependentUpon>FolderFileBrowser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ConversionForm.resx">
-      <DependentUpon>ConversionForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ConversionConfigListForm.resx">
-      <DependentUpon>ConversionConfigListForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\GlobalSettingForm.resx">
-      <DependentUpon>GlobalSettingForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AboutForm.resx">
-      <DependentUpon>AboutForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SpectrumForm.resx">
-      <DependentUpon>SpectrumForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\VendorFileSelectorForm.resx">
-      <DependentUpon>VendorFileSelectorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DownloadDetailForm.resx">
-      <DependentUpon>DownloadDetailForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ReposWizardForm.resx">
-      <DependentUpon>ReposWizardForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MLForm.resx">
-      <DependentUpon>MLForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PXForm.resx">
-      <DependentUpon>PXForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="app.config" />
-    <None Include="log4net.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Properties\app.manifest" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <None Include="PSI-MS.obo" />
-    <EmbeddedResource Include="Resources\Config\MLConfigFile.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Config\MLFastConfigFile.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Ico\AIR.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Imgs\Arrows.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Imgs\Computation.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Imgs\SearchEngine.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Logo\AIR.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Logo\AirdPro.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Logo\AirdProLogo.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Logo\AirdProTrans.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Ico\AIR_01.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Logo\AIR_01.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\Connected.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\Conversion.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\DirectoryClose.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\DirectoryClose16x16.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\DirectoryClose32x32.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\DirectoryOpen.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\DirectoryOpen16x16.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\DirectoryOpen32x32.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\Help.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\Repository.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\Spectrum.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\Spectrum16x16.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\MirrorTrans.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\SelectFiles.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Pay\AliPay.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\ConversionCenter.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\AirdManager.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\CleanFinished.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\CleanErrors.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\DisConnect.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\Files.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\Import.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Brand\MetaboLights.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Brand\Proteomexchange.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\Setting.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Menu\Start.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Pay\Weixin.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <Content Include="Version-CN.xml" />
-    <Content Include="Version.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 和 x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="AirdSDK">
-      <Version>2.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="MathNet.Numerics">
-      <Version>5.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.3</Version>
-    </PackageReference>
-  </ItemGroup>
-  <!-- <ItemGroup> -->
-  <!--   <PackageReference Include="AirdSDK"> -->
-  <!--     <Version>2.2.0</Version> -->
-  <!--   </PackageReference> -->
-  <!--   <PackageReference Include="Autoupdater.NET.Official"> -->
-  <!--     <Version>1.7.7</Version> -->
-  <!--   </PackageReference> -->
-  <!--   <PackageReference Include="BrotliSharpLib"> -->
-  <!--     <Version>0.3.3</Version> -->
-  <!--   </PackageReference> -->
-  <!--   <PackageReference Include="HDF5DotNet.x64"> -->
-  <!--     <Version>1.8.9</Version> -->
-  <!--   </PackageReference> -->
-  <!--   <PackageReference Include="HtmlAgilityPack.NetCore"> -->
-  <!--     <Version>1.5.0.1</Version> -->
-  <!--   </PackageReference> -->
-  <!--   <PackageReference Include="HZH_Controls"> -->
-  <!--     <Version>1.0.14</Version> -->
-  <!--   </PackageReference> -->
-  <!--   <PackageReference Include="IronSnappy"> -->
-  <!--     <Version>1.3.1</Version> -->
-  <!--   </PackageReference> -->
-  <!--   <PackageReference Include="log4net"> -->
-  <!--     <Version>2.0.15</Version> -->
-  <!--   </PackageReference> -->
-  <!--   <PackageReference Include="Newtonsoft.Json"> -->
-  <!--     <Version>13.0.3</Version> -->
-  <!--   </PackageReference> -->
-  <!--   <PackageReference Include="OptimizedPriorityQueue"> -->
-  <!--     <Version>5.1.0</Version> -->
-  <!--   </PackageReference> -->
-  <!--   <PackageReference Include="StackExchange.Redis"> -->
-  <!--     <Version>2.6.96</Version> -->
-  <!--   </PackageReference> -->
-  <!--   <PackageReference Include="System.Resources.Extensions"> -->
-  <!--     <Version>7.0.0</Version> -->
-  <!--   </PackageReference> -->
-  <!--   <PackageReference Include="System.Runtime.CompilerServices.Unsafe"> -->
-  <!--     <Version>7.0.0-preview.2.22152.2</Version> -->
-  <!--   </PackageReference> -->
-  <!--   <PackageReference Include="TreeViewAdv"> -->
-  <!--     <Version>1.7.0</Version> -->
-  <!--   </PackageReference> -->
-  <!--   <PackageReference Include="WeifenLuo.WinFormsUI.Docking"> -->
-  <!--     <Version>2.1.0</Version> -->
-  <!--   </PackageReference> -->
-  <!--   <PackageReference Include="xunit"> -->
-  <!--     <Version>2.4.2</Version> -->
-  <!--   </PackageReference> -->
-  <!--   <PackageReference Include="ZstdNet"> -->
-  <!--     <Version>1.4.5</Version> -->
-  <!--   </PackageReference> -->
-  <!-- </ItemGroup> -->
-  <ItemGroup>
-    <Folder Include="Test\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Autoupdater.NET.Official" Version="1.7.7" />
-    <PackageReference Include="BrotliSharpLib" Version="0.3.3" />
-    <PackageReference Include="HtmlAgilityPack.NetCore" Version="1.5.0.1" />
-    <PackageReference Include="HZH_Controls" Version="1.0.14" />
-    <PackageReference Include="IronSnappy" Version="1.3.1" />
-    <PackageReference Include="log4net" Version="2.0.15" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="OptimizedPriorityQueue" Version="5.1.0" />
-    <PackageReference Include="StackExchange.Redis" Version="2.6.96" />
-    <PackageReference Include="System.Resources.Extensions" Version="7.0.0" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
-    <PackageReference Include="TreeViewAdv" Version="1.7.0" />
-    <PackageReference Include="WeifenLuo.WinFormsUI.Docking" Version="2.1.0" />
-    <PackageReference Include="xunit" Version="2.4.2" />
-    <PackageReference Include="ZstdNet" Version="1.4.5" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(SolutionDir)ImportLibs\*.*" "$(TargetDir)"</PostBuildEvent>
-    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
-  </PropertyGroup>
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{E8027102-CAE0-476F-832D-04EC120098A9}</ProjectGuid>
+        <OutputType>WinExe</OutputType>
+        <RootNamespace>AirdPro</RootNamespace>
+        <AssemblyName>AirdPro</AssemblyName>
+        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <Deterministic>true</Deterministic>
+        <IsWebBootstrapper>false</IsWebBootstrapper>
+        <TargetFrameworkProfile />
+        <NuGetPackageImportStamp>
+        </NuGetPackageImportStamp>
+        <PublishUrl>D:\AirdPro\</PublishUrl>
+        <Install>true</Install>
+        <InstallFrom>Disk</InstallFrom>
+        <UpdateEnabled>false</UpdateEnabled>
+        <UpdateMode>Foreground</UpdateMode>
+        <UpdateInterval>7</UpdateInterval>
+        <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+        <UpdatePeriodically>false</UpdatePeriodically>
+        <UpdateRequired>false</UpdateRequired>
+        <MapFileExtensions>true</MapFileExtensions>
+        <ApplicationRevision>0</ApplicationRevision>
+        <ApplicationVersion>4.2.0.%2a</ApplicationVersion>
+        <UseApplicationTrust>false</UseApplicationTrust>
+        <PublishWizardCompleted>true</PublishWizardCompleted>
+        <BootstrapperEnabled>true</BootstrapperEnabled>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <Prefer32Bit>false</Prefer32Bit>
+        <LangVersion>default</LangVersion>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>x64</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup>
+        <ApplicationIcon>Resources\Ico\AIR.ico</ApplicationIcon>
+    </PropertyGroup>
+    <PropertyGroup>
+        <ManifestCertificateThumbprint>5F95A1501E2C28258F05F0E990B1BC24EDA0969D</ManifestCertificateThumbprint>
+    </PropertyGroup>
+    <PropertyGroup>
+        <ManifestKeyFile>
+        </ManifestKeyFile>
+    </PropertyGroup>
+    <PropertyGroup>
+        <GenerateManifests>false</GenerateManifests>
+    </PropertyGroup>
+    <PropertyGroup>
+        <TargetZone>LocalIntranet</TargetZone>
+    </PropertyGroup>
+    <PropertyGroup />
+    <PropertyGroup>
+        <SignManifests>false</SignManifests>
+    </PropertyGroup>
+    <PropertyGroup>
+        <SignAssembly>false</SignAssembly>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AssemblyOriginatorKeyFile>
+        </AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+    <PropertyGroup>
+        <StartupObject>AirdPro.Program</StartupObject>
+    </PropertyGroup>
+    <PropertyGroup />
+    <PropertyGroup />
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+        <DebugSymbols>true</DebugSymbols>
+        <OutputPath>bin\x64\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <DebugType>full</DebugType>
+        <PlatformTarget>x64</PlatformTarget>
+        <LangVersion>latest</LangVersion>
+        <ErrorReport>prompt</ErrorReport>
+        <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Prefer32bit>false</Prefer32bit>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+        <OutputPath>bin\x64\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <Optimize>true</Optimize>
+        <DebugType>pdbonly</DebugType>
+        <PlatformTarget>x64</PlatformTarget>
+        <LangVersion>latest</LangVersion>
+        <ErrorReport>prompt</ErrorReport>
+        <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+        <Prefer32Bit>true</Prefer32Bit>
+    </PropertyGroup>
+    <PropertyGroup />
+    <PropertyGroup>
+        <NoWin32Manifest>true</NoWin32Manifest>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="Interop.EDAL, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+            <SpecificVersion>False</SpecificVersion>
+            <EmbedInteropTypes>True</EmbedInteropTypes>
+            <HintPath>..\ImportLibs\Interop.EDAL.dll</HintPath>
+        </Reference>
+        <Reference Include="Interop.HSREADWRITELib, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+            <SpecificVersion>False</SpecificVersion>
+            <EmbedInteropTypes>True</EmbedInteropTypes>
+            <HintPath>..\ImportLibs\Interop.HSREADWRITELib.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.VisualBasic" />
+        <Reference Include="pwiz_bindings_cli, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>..\ImportLibs\pwiz_bindings_cli.dll</HintPath>
+        </Reference>
+        <Reference Include="System" />
+        <Reference Include="System.Configuration" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.DirectoryServices" />
+        <Reference Include="System.Drawing" />
+        <Reference Include="System.Management" />
+        <Reference Include="System.Numerics" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Net.Http" />
+        <Reference Include="System.Web.Extensions" />
+        <Reference Include="System.Windows.Forms" />
+        <Reference Include="System.Windows.Forms.DataVisualization" />
+        <Reference Include="System.Xml" />
+        <Reference Include="ThermoFisher.CommonCore.Data">
+            <HintPath>..\ImportLibs\ThermoFisher.CommonCore.Data.dll</HintPath>
+        </Reference>
+        <Reference Include="ThermoFisher.CommonCore.RawFileReader">
+            <HintPath>..\ImportLibs\ThermoFisher.CommonCore.RawFileReader.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Algorithms\Compressor\ICompressor.cs" />
+        <Compile Include="Algorithms\Compressor\StackComp.cs" />
+        <Compile Include="Algorithms\Compressor\CoreComp.cs" />
+        <Compile Include="Asyncs\ConvertTaskManager.cs" />
+        <Compile Include="Asyncs\DownloadTaskManager.cs" />
+        <Compile Include="Asyncs\LimitedConcurrencyLevelTaskScheduler.cs" />
+        <Compile Include="Constants\Activator.cs" />
+        <Compile Include="Constants\Manufacturer.cs" />
+        <Compile Include="Constants\Tag.cs" />
+        <Compile Include="Constants\Status.cs" />
+        <Compile Include="Constants\MessageInfo.cs" />
+        <Compile Include="Constants\ByteOrder.cs" />
+        <Compile Include="Constants\FileFormat.cs" />
+        <Compile Include="Constants\ItemName.cs" />
+        <Compile Include="Constants\MobilityType.cs" />
+        <Compile Include="Constants\RedisConst.cs" />
+        <Compile Include="Constants\Const.cs" />
+        <Compile Include="Constants\MSType.cs" />
+        <Compile Include="Constants\Polarity.cs" />
+        <Compile Include="Constants\ProcessingStatus.cs" />
+        <Compile Include="Constants\ResultCode.cs" />
+        <Compile Include="Constants\SoftwareInfo.cs" />
+        <Compile Include="Constants\UrlConst.cs" />
+        <Compile Include="Controls\MirrorBox\MirrorBox.cs">
+            <SubType>UserControl</SubType>
+        </Compile>
+        <Compile Include="Controls\MirrorBox\MirrorBox.Designer.cs">
+            <DependentUpon>MirrorBox.cs</DependentUpon>
+        </Compile>
+        <Compile Include="Converters\ConverterWorkFlow.cs" />
+        <Compile Include="Domains\Common\StrKV.cs" />
+        <Compile Include="Domains\HardwareInfo\HardwareInfo.cs" />
+        <Compile Include="Domains\Logs\AppLogs.cs" />
+        <Compile Include="Domains\Logs\Log.cs" />
+        <Compile Include="Domains\Scan\Combination.cs" />
+        <Compile Include="Domains\Scan\MsIndex.cs" />
+        <Compile Include="Domains\Scan\TempScan.cs" />
+        <Compile Include="Domains\Scan\TempScanChroma.cs" />
+        <Compile Include="Domains\Scan\TempScanSZDPD.cs" />
+        <Compile Include="Domains\Scan\TimsData.cs" />
+        <Compile Include="Domains\Sort\CompressStat.cs" />
+        <Compile Include="Domains\Statistic\Stat.cs" />
+        <Compile Include="Domains\View\SpectrumRow.cs" />
+        <Compile Include="Forms\MirrorTransForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="Forms\MirrorTransForm.Designer.cs">
+            <DependentUpon>MirrorTransForm.cs</DependentUpon>
+        </Compile>
+        <Compile Include="Controls\MSFileBrowser\FolderFileBrowser.cs">
+            <SubType>UserControl</SubType>
+        </Compile>
+        <Compile Include="Controls\MSFileBrowser\FolderFileBrowser.designer.cs">
+            <DependentUpon>FolderFileBrowser.cs</DependentUpon>
+        </Compile>
+        <Compile Include="Controls\MSFileBrowser\FolderFileBrowserModel.cs" />
+        <Compile Include="Controls\MSFileBrowser\MSFileItems.cs" />
+        <Compile Include="Controls\MSFileBrowser\FolderFileItemSorter.cs" />
+        <Compile Include="Forms\AboutForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="Forms\AboutForm.Designer.cs">
+            <DependentUpon>AboutForm.cs</DependentUpon>
+        </Compile>
+        <Compile Include="Forms\MainForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="Forms\MainForm.Designer.cs">
+            <DependentUpon>MainForm.cs</DependentUpon>
+        </Compile>
+        <Compile Include="Forms\SpectrumForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="Forms\SpectrumForm.Designer.cs">
+            <DependentUpon>SpectrumForm.cs</DependentUpon>
+        </Compile>
+        <Compile Include="Domains\Repository\FileRow.cs" />
+        <Compile Include="Domains\Repository\Project.cs" />
+        <Compile Include="Forms\DownloadDetailForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="Forms\DownloadDetailForm.designer.cs">
+            <DependentUpon>DownloadDetailForm.cs</DependentUpon>
+        </Compile>
+        <Compile Include="Forms\ReposWizardForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="Forms\ReposWizardForm.Designer.cs">
+            <DependentUpon>ReposWizardForm.cs</DependentUpon>
+        </Compile>
+        <Compile Include="Forms\MLForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="Forms\MLForm.Designer.cs">
+            <DependentUpon>MLForm.cs</DependentUpon>
+        </Compile>
+        <Compile Include="Forms\PXForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="Forms\PXForm.Designer.cs">
+            <DependentUpon>PXForm.cs</DependentUpon>
+        </Compile>
+        <Compile Include="Domains\Repository\MetaboLights\Annotation.cs" />
+        <Compile Include="Domains\Repository\MetaboLights\Assay.cs" />
+        <Compile Include="Domains\Repository\MetaboLights\Factor.cs" />
+        <Compile Include="Domains\Repository\MetaboLights\IsaInvestigation.cs" />
+        <Compile Include="Domains\Repository\MetaboLights\MtblsStudy.cs" />
+        <Compile Include="Domains\Repository\MetaboLights\NameValue.cs" />
+        <Compile Include="Domains\Repository\MetaboLights\Parameter.cs" />
+        <Compile Include="Domains\Repository\MetaboLights\People.cs" />
+        <Compile Include="Domains\Repository\MetaboLights\Protocol.cs" />
+        <Compile Include="Domains\Repository\MetaboLights\Publication.cs" />
+        <Compile Include="Domains\Repository\MetaboLights\Repository.cs" />
+        <Compile Include="Domains\Repository\MetaboLights\Source.cs" />
+        <Compile Include="Domains\Repository\MetaboLights\Study.cs" />
+        <Compile Include="Domains\Repository\MetaboLights\StudySummary.cs" />
+        <Compile Include="Domains\Repository\ProteomeXchange\Node.cs" />
+        <Compile Include="Domains\Repository\ProteomeXchange\RootProject.cs" />
+        <Compile Include="Domains\Repository\ProteomeXchange\TermNode.cs" />
+        <Compile Include="Domains\Job\JobInfo.cs" />
+        <Compile Include="Storage\Config\ConversionConfig.cs" />
+        <Compile Include="Domains\Job\RemoteConvertJob.cs" />
+        <Compile Include="Domains\Sort\IntArrayNode.cs" />
+        <Compile Include="Forms\ConversionConfigListForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="Forms\ConversionConfigListForm.Designer.cs">
+            <DependentUpon>ConversionConfigListForm.cs</DependentUpon>
+        </Compile>
+        <Compile Include="Forms\GlobalSettingForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="Forms\GlobalSettingForm.Designer.cs">
+            <DependentUpon>GlobalSettingForm.cs</DependentUpon>
+        </Compile>
+        <Compile Include="Forms\VendorFileSelectorForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="Forms\VendorFileSelectorForm.Designer.cs">
+            <DependentUpon>VendorFileSelectorForm.cs</DependentUpon>
+        </Compile>
+        <Compile Include="Redis\RedisClient.cs" />
+        <Compile Include="Forms\ConversionForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="Forms\ConversionForm.Designer.cs">
+            <DependentUpon>ConversionForm.cs</DependentUpon>
+        </Compile>
+        <Compile Include="Converters\Converter.cs" />
+        <Compile Include="Converters\ScanningSWATH.cs" />
+        <Compile Include="Program.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Storage\Handler\ConversionConfigHandler.cs" />
+        <Compile Include="Storage\Observer.cs" />
+        <Compile Include="Storage\Subject.cs" />
+        <Compile Include="Utils\CentroidUtil.cs" />
+        <Compile Include="Utils\CVUtil.cs" />
+        <Compile Include="Utils\FeatureUtil.cs" />
+        <Compile Include="Utils\FileUtil.cs" />
+        <Compile Include="Utils\HttpUtil.cs" />
+        <Compile Include="Utils\DataUtil.cs" />
+        <Compile Include="Utils\ResourceUtil.cs" />
+        <Compile Include="Utils\StatUtil.cs" />
+        <EmbeddedResource Include="Controls\MirrorBox\MirrorBox.resx">
+            <DependentUpon>MirrorBox.cs</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Forms\MirrorTransForm.resx">
+            <DependentUpon>MirrorTransForm.cs</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Controls\MSFileBrowser\FolderFileBrowser.resx">
+            <DependentUpon>FolderFileBrowser.cs</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Forms\ConversionForm.resx">
+            <DependentUpon>ConversionForm.cs</DependentUpon>
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Forms\ConversionConfigListForm.resx">
+            <DependentUpon>ConversionConfigListForm.cs</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Forms\GlobalSettingForm.resx">
+            <DependentUpon>GlobalSettingForm.cs</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Forms\AboutForm.resx">
+            <DependentUpon>AboutForm.cs</DependentUpon>
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Forms\MainForm.resx">
+            <DependentUpon>MainForm.cs</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Forms\SpectrumForm.resx">
+            <DependentUpon>SpectrumForm.cs</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Forms\VendorFileSelectorForm.resx">
+            <DependentUpon>VendorFileSelectorForm.cs</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Forms\DownloadDetailForm.resx">
+            <DependentUpon>DownloadDetailForm.cs</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Forms\ReposWizardForm.resx">
+            <DependentUpon>ReposWizardForm.cs</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Forms\MLForm.resx">
+            <DependentUpon>MLForm.cs</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Forms\PXForm.resx">
+            <DependentUpon>PXForm.cs</DependentUpon>
+        </EmbeddedResource>
+        <None Include="app.config" />
+        <None Include="log4net.config">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="Properties\app.manifest" />
+        <None Include="Properties\Settings.settings">
+            <Generator>SettingsSingleFileGenerator</Generator>
+            <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+        </None>
+        <Compile Include="Properties\Settings.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Settings.settings</DependentUpon>
+            <DesignTimeSharedInput>True</DesignTimeSharedInput>
+        </Compile>
+        <None Include="PSI-MS.obo" />
+        <EmbeddedResource Include="Resources\Config\MLConfigFile.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Config\MLFastConfigFile.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Resources\Ico\AIR.ico">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Imgs\Arrows.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Imgs\Computation.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Imgs\SearchEngine.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Logo\AIR.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Logo\AirdPro.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Logo\AirdProLogo.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Logo\AirdProTrans.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Ico\AIR_01.ico">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Logo\AIR_01.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\Connected.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\Conversion.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\DirectoryClose.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\DirectoryClose16x16.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\DirectoryClose32x32.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\DirectoryOpen.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\DirectoryOpen16x16.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\DirectoryOpen32x32.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\Help.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\Repository.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\Spectrum.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\Spectrum16x16.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\MirrorTrans.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\SelectFiles.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Pay\AliPay.jpg">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\ConversionCenter.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\AirdManager.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\CleanFinished.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\CleanErrors.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\DisConnect.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\Files.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\Import.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Brand\MetaboLights.jpg">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Brand\Proteomexchange.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\Setting.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Menu\Start.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Pay\Weixin.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <Content Include="Version-CN.xml" />
+        <Content Include="Version.xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+            <Visible>False</Visible>
+            <ProductName>Microsoft .NET Framework 4.6.1 %28x86 和 x64%29</ProductName>
+            <Install>true</Install>
+        </BootstrapperPackage>
+        <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+            <Visible>False</Visible>
+            <ProductName>.NET Framework 3.5 SP1</ProductName>
+            <Install>false</Install>
+        </BootstrapperPackage>
+    </ItemGroup>
+    <ItemGroup>
+        <WCFMetadata Include="Connected Services\" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="AirdSDK" Version="2.3.0" />
+        <PackageReference Include="MathNet.Numerics">
+            <Version>5.0.0</Version>
+        </PackageReference>
+        <PackageReference Include="Newtonsoft.Json">
+            <Version>13.0.3</Version>
+        </PackageReference>
+    </ItemGroup>
+    <!-- <ItemGroup> -->
+    <!--   <PackageReference Include="AirdSDK"> -->
+    <!--     <Version>2.2.0</Version> -->
+    <!--   </PackageReference> -->
+    <!--   <PackageReference Include="Autoupdater.NET.Official"> -->
+    <!--     <Version>1.7.7</Version> -->
+    <!--   </PackageReference> -->
+    <!--   <PackageReference Include="BrotliSharpLib"> -->
+    <!--     <Version>0.3.3</Version> -->
+    <!--   </PackageReference> -->
+    <!--   <PackageReference Include="HDF5DotNet.x64"> -->
+    <!--     <Version>1.8.9</Version> -->
+    <!--   </PackageReference> -->
+    <!--   <PackageReference Include="HtmlAgilityPack.NetCore"> -->
+    <!--     <Version>1.5.0.1</Version> -->
+    <!--   </PackageReference> -->
+    <!--   <PackageReference Include="HZH_Controls"> -->
+    <!--     <Version>1.0.14</Version> -->
+    <!--   </PackageReference> -->
+    <!--   <PackageReference Include="IronSnappy"> -->
+    <!--     <Version>1.3.1</Version> -->
+    <!--   </PackageReference> -->
+    <!--   <PackageReference Include="log4net"> -->
+    <!--     <Version>2.0.15</Version> -->
+    <!--   </PackageReference> -->
+    <!--   <PackageReference Include="Newtonsoft.Json"> -->
+    <!--     <Version>13.0.3</Version> -->
+    <!--   </PackageReference> -->
+    <!--   <PackageReference Include="OptimizedPriorityQueue"> -->
+    <!--     <Version>5.1.0</Version> -->
+    <!--   </PackageReference> -->
+    <!--   <PackageReference Include="StackExchange.Redis"> -->
+    <!--     <Version>2.6.96</Version> -->
+    <!--   </PackageReference> -->
+    <!--   <PackageReference Include="System.Resources.Extensions"> -->
+    <!--     <Version>7.0.0</Version> -->
+    <!--   </PackageReference> -->
+    <!--   <PackageReference Include="System.Runtime.CompilerServices.Unsafe"> -->
+    <!--     <Version>7.0.0-preview.2.22152.2</Version> -->
+    <!--   </PackageReference> -->
+    <!--   <PackageReference Include="TreeViewAdv"> -->
+    <!--     <Version>1.7.0</Version> -->
+    <!--   </PackageReference> -->
+    <!--   <PackageReference Include="WeifenLuo.WinFormsUI.Docking"> -->
+    <!--     <Version>2.1.0</Version> -->
+    <!--   </PackageReference> -->
+    <!--   <PackageReference Include="xunit"> -->
+    <!--     <Version>2.4.2</Version> -->
+    <!--   </PackageReference> -->
+    <!--   <PackageReference Include="ZstdNet"> -->
+    <!--     <Version>1.4.5</Version> -->
+    <!--   </PackageReference> -->
+    <!-- </ItemGroup> -->
+    <ItemGroup>
+        <Folder Include="Test\" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Autoupdater.NET.Official" Version="1.7.7" />
+        <PackageReference Include="BrotliSharpLib" Version="0.3.3" />
+        <PackageReference Include="HtmlAgilityPack.NetCore" Version="1.5.0.1" />
+        <PackageReference Include="HZH_Controls" Version="1.0.14" />
+        <PackageReference Include="IronSnappy" Version="1.3.1" />
+        <PackageReference Include="log4net" Version="2.0.15" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="OptimizedPriorityQueue" Version="5.1.0" />
+        <PackageReference Include="StackExchange.Redis" Version="2.6.96" />
+        <PackageReference Include="System.Resources.Extensions" Version="7.0.0" />
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+        <PackageReference Include="TreeViewAdv" Version="1.7.0" />
+        <PackageReference Include="WeifenLuo.WinFormsUI.Docking" Version="2.1.0" />
+        <PackageReference Include="xunit" Version="2.4.2" />
+        <PackageReference Include="ZstdNet" Version="1.4.5" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <PropertyGroup>
+        <PostBuildEvent>copy /Y "$(SolutionDir)ImportLibs\*.*" "$(TargetDir)"</PostBuildEvent>
+        <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+    </PropertyGroup>
 </Project>

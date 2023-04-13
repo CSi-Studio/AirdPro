@@ -34,8 +34,9 @@ namespace AirdPro.Domains
         public byte[] tagArrayBytes;
 
         public TempScanSZDPD(List<int> nums, List<double> rts, List<long> tics, List<double> basePeakIntensities,
-            List<double> basePeakMzs,List<float> injectionTimes,
-            List<string> filterStrings, List<string> polarities, List<float> energies, List<string> activators, List<string> msTypes,
+            List<double> basePeakMzs, List<float> injectionTimes,
+            List<string> filterStrings, List<string> polarities, List<float> energies, List<string> activators,
+            List<string> msTypes,
             List<List<CV>> cvs)
         {
             this.nums = nums;
@@ -54,7 +55,7 @@ namespace AirdPro.Domains
 
         public int CompareTo(object obj)
         {
-            TempScanSZDPD ts = (TempScanSZDPD) obj;
+            TempScanSZDPD ts = (TempScanSZDPD)obj;
             return ts.rts[0].CompareTo(this.rts[0]);
         }
     }

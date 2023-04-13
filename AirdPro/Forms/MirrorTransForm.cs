@@ -21,9 +21,6 @@ namespace AirdPro.Forms
         private void MirrorTransForm_Load(object sender, EventArgs e)
         {
             string mirrorPairsString = Settings.Default.MirrorPairs;
-
         }
-
-        
     }
 }

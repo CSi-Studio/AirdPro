@@ -20,7 +20,7 @@ namespace AirdPro.Forms
     public partial class MainForm : Form
     {
         private AboutForm aboutForm;
-      
+
         private ReposWizardForm reposWizardForm;
         private HashSet<string> airdFiles = new HashSet<string>();
         private FileInfo airdFile;
@@ -262,16 +262,22 @@ namespace AirdPro.Forms
         private SpectrumRow parseFromIndexAndAirdInfo(AirdInfo airdInfo, BlockIndex index, int k)
         {
             SpectrumRow row = new SpectrumRow();
-            row.Polarity = (index.polarities == null || index.polarities.Count == 0) ? airdInfo.polarity : index.polarities[k];
+            row.Polarity = (index.polarities == null || index.polarities.Count == 0)
+                ? airdInfo.polarity
+                : index.polarities[k];
             row.Energy = (index.energies == null || index.energies.Count == 0) ? airdInfo.energy : index.energies[k];
-            row.Activator = (index.activators == null || index.activators.Count == 0) ? airdInfo.activator : index.activators[k];
+            row.Activator = (index.activators == null || index.activators.Count == 0)
+                ? airdInfo.activator
+                : index.activators[k];
             row.Scan = index.nums[k] + 1;
             row.ScanType = (index.msTypes == null || index.msTypes.Count == 0) ? airdInfo.msType : index.msTypes[k];
             row.RT = index.rts[k];
             row.BasePeakIntensity = index.basePeakIntensities[k];
             row.BasePeakMz = index.basePeakMzs[k];
             row.TotalIons = index.tics[k];
-            row.FilterString = (index.filterStrings == null || index.filterStrings.Count == 0) ? airdInfo.filterString : index.filterStrings[k];
+            row.FilterString = (index.filterStrings == null || index.filterStrings.Count == 0)
+                ? airdInfo.filterString
+                : index.filterStrings[k];
             return row;
         }
 
@@ -300,8 +306,9 @@ namespace AirdPro.Forms
                     parser = new MRMParser(indexFile.FullName, airdInfo);
                     break;
             }
+
             Spectrum spectrum = parser.getSpectrumByNum(row.Scan - 1);
-            
+
             IList<double> mzArray = spectrum.mzs;
             IList<double> intensityArray = spectrum.ints;
 
@@ -326,7 +333,7 @@ namespace AirdPro.Forms
                 mzArray = uniqueMz;
                 intensityArray = summedIntensity;
             }
-            
+
             spectrumChart.Series[0].Points.Clear();
             for (var i = 0; i < mzArray.Count; i++)
             {

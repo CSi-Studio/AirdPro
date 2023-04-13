@@ -17,8 +17,6 @@ using System.Threading.Tasks;
 using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdPro.Utils;
-using AirdSDK.Beans;
-using AirdSDK.Enums;
 
 /**
  * Converter is not Compelted. Please do not use this Converter.

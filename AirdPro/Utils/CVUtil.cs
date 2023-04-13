@@ -69,10 +69,10 @@ public class CVUtil
     public static CV build(CVParam param)
     {
         var cv = new CV();
-        cv.cvid = (int) param.cvid + ":" + param.name;
+        cv.cvid = (int)param.cvid + ":" + param.name;
         cv.value = param.value.ToString();
-        var unitsId = (int) param.units;
-        if (unitsId != -1) cv.units = (int) param.units + ":" + param.unitsName;
+        var unitsId = (int)param.units;
+        if (unitsId != -1) cv.units = (int)param.units + ":" + param.unitsName;
 
         return cv;
     }
@@ -103,7 +103,6 @@ public class CVUtil
         {
             return null;
         }
-    
     }
 
     public static void parseMobility(Scan scan, MobiInfo mobiInfo)
@@ -329,8 +328,10 @@ public class CVUtil
     {
         var windowRange = new WindowRange();
         var precursorMz = parsePrecursorParams(precursor.isolationWindow, CVID.MS_isolation_window_target_m_z, jobInfo);
-        var lowerOffset = parsePrecursorParams(precursor.isolationWindow, CVID.MS_isolation_window_lower_offset, jobInfo);
-        var upperOffset = parsePrecursorParams(precursor.isolationWindow, CVID.MS_isolation_window_upper_offset, jobInfo);
+        var lowerOffset =
+            parsePrecursorParams(precursor.isolationWindow, CVID.MS_isolation_window_lower_offset, jobInfo);
+        var upperOffset =
+            parsePrecursorParams(precursor.isolationWindow, CVID.MS_isolation_window_upper_offset, jobInfo);
         var charge = parsePrecursorCharge(precursor, jobInfo);
         windowRange.charge = charge;
         windowRange.mz = precursorMz;
@@ -345,7 +346,7 @@ public class CVUtil
         var precursorMz = parsePrecursorParams(isolationWindow, CVID.MS_isolation_window_target_m_z, jobInfo);
         var lowerOffset = parsePrecursorParams(isolationWindow, CVID.MS_isolation_window_lower_offset, jobInfo);
         var upperOffset = parsePrecursorParams(isolationWindow, CVID.MS_isolation_window_upper_offset, jobInfo);
-       
+
         windowRange.mz = precursorMz;
         windowRange.start = precursorMz - lowerOffset;
         windowRange.end = precursorMz + upperOffset;

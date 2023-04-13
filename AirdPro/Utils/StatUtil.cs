@@ -80,7 +80,8 @@ namespace AirdPro.Utils
                 int[] decodeList = ComboComp.decode(intComp, byteComp, encodeList[i]);
 
                 //测试总长度和首位数据是否一致
-                if (decodeList.Length != arrays[i].Length || decodeList[0] != arrays[i][0] || decodeList[decodeList.Length-1] != arrays[i][decodeList.Length - 1])
+                if (decodeList.Length != arrays[i].Length || decodeList[0] != arrays[i][0] ||
+                    decodeList[decodeList.Length - 1] != arrays[i][decodeList.Length - 1])
                 {
                     MessageBox.Show("数据不一致: Encoding Error");
                 }
@@ -114,7 +115,7 @@ namespace AirdPro.Utils
             watchMz.Stop();
         }
 
-        public static int calcBestIndex(List<CompressStat> statList,double csWeight, double ctWeight, double dtWeight)
+        public static int calcBestIndex(List<CompressStat> statList, double csWeight, double ctWeight, double dtWeight)
         {
             statList.Sort((a, b) => a.size.CompareTo(b.size));
             List<double> sizeList = new List<double>();
@@ -147,7 +148,7 @@ namespace AirdPro.Utils
             List<double> totalList = new List<double>();
             for (int i = 0; i <= endIndex; i++)
             {
-                double total = csWeight*normSize[i] + ctWeight*normCt[i] + dtWeight*normDt[i];
+                double total = csWeight * normSize[i] + ctWeight * normCt[i] + dtWeight * normDt[i];
                 totalList.Add(total);
                 if (total < bestValue)
                 {

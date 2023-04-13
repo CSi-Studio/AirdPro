@@ -10,4 +10,3 @@
         public static string No_Chromatograms_Found = "No Chromatograms Found";
     }
 }
-

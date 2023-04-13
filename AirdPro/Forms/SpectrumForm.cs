@@ -22,7 +22,6 @@ namespace AirdPro.Forms
 
         private void SpectrumForm_Load(object sender, EventArgs e)
         {
-
         }
     }
 }

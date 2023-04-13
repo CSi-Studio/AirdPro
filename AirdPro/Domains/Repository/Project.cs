@@ -14,6 +14,7 @@ namespace AirdPro.Repository.ProteomeXchange
     {
         //仓库识别号
         public string Identifier { set; get; }
+
         //仓库标题
         public string Title { set; get; }
         public string Repos { set; get; }

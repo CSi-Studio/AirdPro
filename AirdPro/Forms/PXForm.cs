@@ -256,6 +256,7 @@ namespace AirdPro.Repository
                                 {
                                     continue;
                                 }
+
                                 foreach (string filePath in filePathList)
                                 {
                                     string fileName = Path.GetFileName(filePath);

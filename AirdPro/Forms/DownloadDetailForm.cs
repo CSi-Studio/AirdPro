@@ -25,10 +25,13 @@ namespace AirdPro.Repository
 
         private List<FileRow> fileList = new List<FileRow>();
         private DownloadTaskManager manager;
-        public DownloadDetailForm(string identifier, string homeUrl, string remoteUrl, string localDirectory, List<string> remotes, List<string> locals)
+
+        public DownloadDetailForm(string identifier, string homeUrl, string remoteUrl, string localDirectory,
+            List<string> remotes, List<string> locals)
         {
             InitializeComponent();
-            SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);
+            SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer,
+                true);
             manager = new DownloadTaskManager(this);
             this.identifier = identifier;
             this.localDirectory = localDirectory;
@@ -56,11 +59,12 @@ namespace AirdPro.Repository
 
             fileList.Add(row);
             lvFileList.Items.Add(item);
-            
+
             return row;
         }
 
-        private ListViewItem buildListViewItem(FileRow row, string fileName, string remotePath, string localPath, string prefix)
+        private ListViewItem buildListViewItem(FileRow row, string fileName, string remotePath, string localPath,
+            string prefix)
         {
             row.remotePath = Path.Combine(remotePath);
             row.fileName = Path.GetFileName(fileName);
@@ -77,7 +81,7 @@ namespace AirdPro.Repository
             ListViewItem item = new ListViewItem(itemInfo);
             Progress<string> status = new Progress<string>((progressValue) =>
             {
-                if (item!= null)
+                if (item != null)
                 {
                     item.SubItems[3].Text = progressValue;
                 }

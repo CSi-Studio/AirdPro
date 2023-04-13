@@ -56,10 +56,10 @@ namespace AirdPro.Algorithms
          */
         public void initForChromatogram()
         {
-          rtIntComp4Chroma = new IntegratedVarByteWrapper();
-          rtByteComp4Chroma = new ZstdWrapper();
-          intIntComp4Chroma = new VarByteWrapper();
-          intByteComp4Chroma = new ZstdWrapper();
+            rtIntComp4Chroma = new IntegratedVarByteWrapper();
+            rtByteComp4Chroma = new ZstdWrapper();
+            intIntComp4Chroma = new VarByteWrapper();
+            intByteComp4Chroma = new ZstdWrapper();
         }
 
         public abstract void compressMS1(Converter converter, BlockIndex index);

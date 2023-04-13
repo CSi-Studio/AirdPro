@@ -19,6 +19,5 @@ namespace AirdPro.Repository.MetaboLights
         public Annotation technologyType { get; set; }
         public string technologyPlatform { get; set; }
         public string filename { get; set; }
-
     }
 }

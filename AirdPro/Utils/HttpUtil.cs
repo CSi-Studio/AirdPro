@@ -27,7 +27,7 @@ namespace AirdPro.Utils
 
             long size = 0;
             if (fileRow.remotePath.StartsWith("ftp"))
-            { 
+            {
                 size = fetchFtpFileSize(fileRow.remotePath);
             }
             else if (fileRow.remotePath.StartsWith("http"))
@@ -64,10 +64,9 @@ namespace AirdPro.Utils
             }
             catch (Exception ex)
             {
-                Console.WriteLine("获取"+remoteDirectory+"下文件列表失败:"+ex.Message);
+                Console.WriteLine("获取" + remoteDirectory + "下文件列表失败:" + ex.Message);
                 return null;
             }
-           
         }
 
         public static long fetchHttpFileSize(string httpPath)

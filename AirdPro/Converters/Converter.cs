@@ -54,7 +54,9 @@ namespace AirdPro.Converters
         protected Hashtable rangeTable = new Hashtable(); //用于存放SWATH/DIA窗口的信息,key为mz
         protected List<BlockIndex> indexList = new List<BlockIndex>(); //用于存储的全局的SWATH List
         protected List<ColumnIndex> columnIndexList = new List<ColumnIndex>(); //列存储索引，尽在面向Search的场景下有效
-        protected Hashtable ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
+
+        protected Hashtable
+            ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
 
         public List<MsIndex> ms1List = new List<MsIndex>(); //用于存放MS1索引及基础信息,泛型为MsIndex
         protected Hashtable featuresMap = new Hashtable();
@@ -68,7 +70,7 @@ namespace AirdPro.Converters
         public long startPosition = 0; //文件指针
         protected int totalSize = 0; //总计的谱图数目
         protected int totalChroma = 0; //总计的色谱数目
-        
+
         protected int intensityPrecision = 1; //Intensity默认精确到个位数
         protected int mobiPrecision = 10000000; //mobility默认精确到小数点后7位
 
@@ -86,12 +88,11 @@ namespace AirdPro.Converters
         {
             start();
             initDirectory(); //创建文件夹
-          
+
             using (airdStream = new FileStream(jobInfo.airdFilePath, FileMode.Create))
             {
                 using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                 {
-
                     readVendorFile(); //准备读取Vendor文件
                     predictAcquisitionMethod();
                     switch (jobInfo.type)
@@ -288,14 +289,14 @@ namespace AirdPro.Converters
                 {
                     List<Chromatogram> predictChromatoList = new List<Chromatogram>();
                     // 首先取10个窗口
-                     for (int i = 0; i < 10; i++)
-                     {
-                         using (Chromatogram chroma = chromatogramList.chromatogram(i, false))
-                         {
-                             predictChromatoList.Add(chroma);
-                         }
-                     }
-                     
+                    for (int i = 0; i < 10; i++)
+                    {
+                        using (Chromatogram chroma = chromatogramList.chromatogram(i, false))
+                        {
+                            predictChromatoList.Add(chroma);
+                        }
+                    }
+
                     jobInfo.setType(AcquisitionMethod.MRM);
                 }
             }
@@ -338,7 +339,7 @@ namespace AirdPro.Converters
                 Spectrum spectrum = spectrumList.spectrum(i, true);
                 foreach (double d in spectrum.getIntensityArray().data.Storage())
                 {
-                    if ((d - (int) d) != 0) //如果随机采集到的intensity是精确到小数点后一位的,精确确定为10,即精确到小数点后一位
+                    if ((d - (int)d) != 0) //如果随机采集到的intensity是精确到小数点后一位的,精确确定为10,即精确到小数点后一位
                     {
                         findIt = true;
                         break;
@@ -420,9 +421,9 @@ namespace AirdPro.Converters
                 {
                     columnIndex.spectraIds[i] = 0;
                     columnIndex.intensities[i] = 0;
-                   
                 }
             }
+
             columnIndex.endPtr = startPosition;
 
             byte[] compressedSpectraIds =
@@ -458,7 +459,7 @@ namespace AirdPro.Converters
         {
             if (jobInfo.config.stack)
             {
-                TempScanSZDPD ts = (TempScanSZDPD) tempScan;
+                TempScanSZDPD ts = (TempScanSZDPD)tempScan;
 
                 index.nums.AddRange(ts.nums);
                 index.rts.AddRange(ts.rts);
@@ -488,7 +489,7 @@ namespace AirdPro.Converters
             }
             else
             {
-                TempScan ts = (TempScan) tempScan;
+                TempScan ts = (TempScan)tempScan;
 
                 index.nums.Add(ts.num);
                 index.rts.Add(ts.rt);
@@ -512,14 +513,13 @@ namespace AirdPro.Converters
                     airdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
                     airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
                 }
-               
+
                 if (ts.mobilityArrayBytes != null)
-                { 
+                {
                     index.mobilities.Add(ts.mobilityArrayBytes.Length);
                     startPosition += ts.mobilityArrayBytes.Length;
                     airdStream.Write(ts.mobilityArrayBytes, 0, ts.mobilityArrayBytes.Length);
                 }
-                
             }
         }
 
@@ -567,7 +567,7 @@ namespace AirdPro.Converters
             {
                 totalChroma = chromatogramList.size();
             }
-          
+
             jobInfo.log(Tag.Adapting_Finished);
             jobInfo.log(Tag.Total_Spectra + totalSize);
             jobInfo.log(Tag.Total_Chromatograms + totalChroma);
@@ -623,15 +623,17 @@ namespace AirdPro.Converters
                 airdInfo.indexList = null;
                 airdStream.Write(indexListByte, 0, indexListByte.Length);
             }
-            
-            string airdInfoStr = JsonConvert.SerializeObject(airdInfo, new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
+
+            string airdInfoStr = JsonConvert.SerializeObject(airdInfo,
+                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             byte[] airdBytes = Encoding.Default.GetBytes(airdInfoStr);
             airdJsonStream.Write(airdBytes, 0, airdBytes.Length);
 
             if (jobInfo.config.isSearch())
             {
                 ColumnInfo columnInfo = buildColumnInfo();
-                string columnInfoStr = JsonConvert.SerializeObject(columnInfo, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                string columnInfoStr = JsonConvert.SerializeObject(columnInfo,
+                    new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 byte[] columnInfoBytes = Encoding.Default.GetBytes(columnInfoStr);
                 using (airdColumnJsonStream = new FileStream(jobInfo.airdColumnJsonFilePath, FileMode.Create))
                 {
@@ -677,6 +679,7 @@ namespace AirdPro.Converters
             {
                 return ms1;
             }
+
             Scan scan = spectrum.scanList.scans[0];
             ms1.cvs = CVUtil.trans(spectrum.cvParams);
             //将对应scan的cvParams也冗余到ms1上来
@@ -727,7 +730,7 @@ namespace AirdPro.Converters
 
             if (spectrum.scanList.scans.Count != 1) return ms2;
 
-          
+
             var result = CVUtil.parseActivator(spectrum.precursors[0].activation);
             ms2.activator = result.activator;
             ms2.energy = result.energy;
@@ -738,6 +741,7 @@ namespace AirdPro.Converters
             {
                 CVUtil.parseMobility(scan, mobiInfo);
             }
+
             ms2.filterString = CVUtil.parseFilterString(scan, jobInfo);
             ms2.cvs = CVUtil.trans(spectrum.cvParams);
             if (scan.cvParams != null) ms2.cvs.AddRange(CVUtil.trans(scan.cvParams));
@@ -778,7 +782,7 @@ namespace AirdPro.Converters
             int[] mobiIntArray = new int[mobiArray.Length];
             for (var i = 0; i < mobiArray.Length; i++)
             {
-                mobiIntArray[i] = (int) Math.Round(mobiArray[i] * mobiPrecision);
+                mobiIntArray[i] = (int)Math.Round(mobiArray[i] * mobiPrecision);
             }
 
             byte[] compressedMobiData =
@@ -804,7 +808,7 @@ namespace AirdPro.Converters
             jobInfo.log(Tag.Start_Processing_MS2_List);
             int progress = 0;
             foreach (double precursorMz in ms2Table.Keys)
-            { 
+            {
                 List<MsIndex> ms2List = ms2Table[precursorMz] as List<MsIndex>;
                 WindowRange range = rangeTable[precursorMz] as WindowRange;
 
@@ -914,11 +918,12 @@ namespace AirdPro.Converters
                 chromatogramIndex.activators.Add(result.activator);
                 chromatogramIndex.energies.Add(result.energy);
                 chromatogramIndex.polarities.Add(CVUtil.parsePolarity(chromatogram));
-                
+
                 try
                 {
                     chromatogramIndex.precursors.Add(CVUtil.parseIsolationWindow(chromatogram.precursor, jobInfo));
-                    chromatogramIndex.products.Add(CVUtil.parseIsolationWindow(chromatogram.product.isolationWindow, jobInfo));
+                    chromatogramIndex.products.Add(CVUtil.parseIsolationWindow(chromatogram.product.isolationWindow,
+                        jobInfo));
                 }
                 catch (Exception e)
                 {
@@ -932,7 +937,7 @@ namespace AirdPro.Converters
                             .cvParamChild(CVID.MS_isolation_window_upper_offset).value);
                     throw e;
                 }
-                
+
                 compressor.compress(chromatogram, tempScan);
                 chromatogramIndex.rts.Add(tempScan.rtArrayBytes.Length);
                 chromatogramIndex.ints.Add(tempScan.intArrayBytes.Length);
@@ -977,6 +982,7 @@ namespace AirdPro.Converters
                 msTypes.UnionWith(indexList[i].msTypes);
                 filterStrings.UnionWith(indexList[i].filterStrings);
             }
+
             if (activators.Count == 1)
             {
                 airdInfo.activator = indexList[0].activators[0];
@@ -1011,8 +1017,8 @@ namespace AirdPro.Converters
                 {
                     indexList[i].msTypes = null;
                 }
-            } 
-            
+            }
+
             if (filterStrings.Count == 1)
             {
                 airdInfo.filterString = indexList[0].filterStrings[0];
@@ -1232,7 +1238,6 @@ namespace AirdPro.Converters
                         mobiNoArrays.Add(dataList[2]);
                     }
                 }
-                
             }
 
             return compressForTargetArrays(mzArrays, intensityArrays, mobiNoArrays, ionMobi);

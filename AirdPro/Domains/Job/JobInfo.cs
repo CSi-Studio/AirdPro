@@ -117,10 +117,7 @@ namespace AirdPro.Domains
                 outputPath
             };
             ListViewItem item = new ListViewItem(itemInfo);
-            typeLabel = new Progress<string>((typeLabel) =>
-            {
-                item.SubItems[ItemName.TYPE].Text = typeLabel;
-            });
+            typeLabel = new Progress<string>((typeLabel) => { item.SubItems[ItemName.TYPE].Text = typeLabel; });
             progress = new Progress<string>((progressValue) =>
             {
                 item.SubItems[ItemName.PROGRESS].Text = progressValue;
@@ -207,11 +204,13 @@ namespace AirdPro.Domains
             jobInfo += Tag.Thread_Accelerate + config.threadAccelerate + Const.Change_Line;
             jobInfo += Tag.Mz_Precision + config.getMzPrecisionStr() + Const.Change_Line;
             jobInfo += Tag.Compressor + getCompressorStr() + Const.Change_Line;
-            if(config.autoDesicion)
+            if (config.autoDesicion)
             {
                 jobInfo += config.spectraToPredict + " spectra for prediction" + Const.Change_Line;
-                jobInfo += "size:ct:dt=" + config.compressionSizeWeight + ":" + config.compressionTimeWeight + ":" + config.decompressionTimeWeight + Const.Change_Line;
+                jobInfo += "size:ct:dt=" + config.compressionSizeWeight + ":" + config.compressionTimeWeight + ":" +
+                           config.decompressionTimeWeight + Const.Change_Line;
             }
+
             return jobInfo;
         }
 

@@ -67,7 +67,7 @@ public class ConverterWorkFlow
             converter.compressMS2BlockForDDA(); //处理MS2,并将索引写入文件流中
             converter.writeToAirdInfoFile(); //将Info数据写入文件
         }
-    
+
         converter.compressChromatograms();
         converter.writeToAirdInfoFile(); //将Info数据写入文件
     }

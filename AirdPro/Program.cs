@@ -21,9 +21,9 @@ namespace AirdPro
     static class Program
     {
         public static MainForm mainForm { get; private set; }
-        public static ConversionForm conversionForm { get;  set; }
-        public static ConversionConfigListForm configListForm { get;  set; }
-        public static GlobalSettingForm globalSettingForm { get;  set; }
+        public static ConversionForm conversionForm { get; set; }
+        public static ConversionConfigListForm configListForm { get; set; }
+        public static GlobalSettingForm globalSettingForm { get; set; }
         public static ConversionConfigHandler conversionConfigHandler { get; private set; }
 
         /// <summary>

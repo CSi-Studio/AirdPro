@@ -107,16 +107,16 @@ namespace AirdPro.Async
                             fileRow.retryTimes--;
                             if (fileRow.retryTimes > 0)
                             {
-                                fileRow.status.Report("Retry After 3s:"+ex.Message);
+                                fileRow.status.Report("Retry After 3s:" + ex.Message);
                                 Thread.Sleep(3000);
                             }
                             else
                             {
-                                fileRow.status.Report("Error:"+ex.Message);
+                                fileRow.status.Report("Error:" + ex.Message);
                             }
                         }
                     }
-                    
+
                     finishedJob(fileRow);
                 }, fileRow.tokenSource.Token);
             }
@@ -135,8 +135,11 @@ namespace AirdPro.Async
                     foreach (string filePath in filePaths)
                     {
                         string fileName = Path.GetFileName(filePath);
-                        FileRow row = detailForm.buildItem(Path.Combine(detailForm.remoteUrl, currentRow.prefix, currentRow.fileName, fileName).Replace("\\","/"), 
-                            Path.Combine(detailForm.localDirectory, currentRow.prefix, currentRow.fileName, fileName).Replace("/", "\\"),
+                        FileRow row = detailForm.buildItem(
+                            Path.Combine(detailForm.remoteUrl, currentRow.prefix, currentRow.fileName, fileName)
+                                .Replace("\\", "/"),
+                            Path.Combine(detailForm.localDirectory, currentRow.prefix, currentRow.fileName, fileName)
+                                .Replace("/", "\\"),
                             Path.Combine(currentRow.prefix, currentRow.fileName));
                         download(row);
                         row.status.Report("Finished");
@@ -155,6 +158,7 @@ namespace AirdPro.Async
                 }
             }
         }
+
         private void downloadAsFTP(FileRow fileRow)
         {
             FileStream outputStream = null;

@@ -8,6 +8,7 @@ namespace AirdPro.Utils;
 public class ResourceUtil
 {
     public static string resourceSpace = "AirdPro.Resources.";
+
     public static Image readImage(string resourceName)
     {
         resourceName = resourceSpace + resourceName;
@@ -27,5 +28,4 @@ public class ResourceUtil
             return memoryStream.ToArray();
         }
     }
-
 }

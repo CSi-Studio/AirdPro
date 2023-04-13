@@ -11,6 +11,7 @@ namespace AirdPro.Domains
         public string physicMemory;
         public string opVersion;
         private static HardwareInfo instance;
+
         public static HardwareInfo Instance()
         {
             if (instance == null)
@@ -25,6 +26,7 @@ namespace AirdPro.Domains
             physicMemory = getPhysicMemory();
             opVersion = getOPVersion();
         }
+
         //获取系统类型
         public string getSystemType()
         {
@@ -50,6 +52,7 @@ namespace AirdPro.Domains
             {
             }
         }
+
         //获取操作系统型号
         public string getOPVersion()
         {
@@ -57,6 +60,7 @@ namespace AirdPro.Domains
             opVersion = new ComputerInfo().OSFullName;
             return opVersion;
         }
+
         //获取CPU信息
         public string getCPUInfo()
         {
@@ -66,9 +70,11 @@ namespace AirdPro.Domains
             {
                 CPUName = mo["Name"].ToString();
             }
+
             mos.Dispose();
             return CPUName;
         }
+
         //获取物理内存数目和大小
         public string getPhysicMemory()
         {
@@ -81,14 +87,15 @@ namespace AirdPro.Domains
             foreach (ManagementObject mo in moc)
             {
                 count++;
-                capacity = ((Math.Round(Int64.Parse(mo.Properties["Capacity"].Value.ToString()) / 1024 / 1024 / 1024.0, 1)));
-                physicMemoryInfo += "The Size of No." + count.ToString() + " Physical Memory is " + capacity.ToString() + " G " + "\r\n";
+                capacity = ((Math.Round(Int64.Parse(mo.Properties["Capacity"].Value.ToString()) / 1024 / 1024 / 1024.0,
+                    1)));
+                physicMemoryInfo += "The Size of No." + count.ToString() + " Physical Memory is " +
+                                    capacity.ToString() + " G " + "\r\n";
             }
+
             moc.Dispose();
             mc.Dispose();
             return physicMemoryInfo;
         }
-
-
     }
 }

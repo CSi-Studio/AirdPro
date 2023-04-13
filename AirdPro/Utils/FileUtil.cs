@@ -23,6 +23,7 @@ namespace AirdPro.Utils
             {
                 return "文件夹";
             }
+
             if (size < 1024)
             {
                 return size + " Byte";
@@ -90,15 +91,18 @@ namespace AirdPro.Utils
             {
                 return 0;
             }
+
             foreach (FileInfo fi in di.GetFiles())
             {
                 directorySize += fi.Length;
             }
+
             DirectoryInfo[] dirs = di.GetDirectories();
             foreach (DirectoryInfo sondir in dirs)
             {
                 directorySize += getDirectorySize(sondir.FullName);
             }
+
             return directorySize;
         }
     }

@@ -20,7 +20,6 @@ using static AirdPro.Constants.ProcessingStatus;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Forms;
-using AirdSDK.Beans;
 using pwiz.CLI.msdata;
 
 namespace AirdPro.Asyncs
@@ -94,7 +93,7 @@ namespace AirdPro.Asyncs
                 {
                     return;
                 }
-            
+
                 JobInfo jobInfo = null;
                 try
                 {
@@ -103,12 +102,12 @@ namespace AirdPro.Asyncs
                 catch
                 {
                 }
-            
+
                 if (jobInfo == null)
                 {
                     return;
                 }
-                
+
                 runJob(jobInfo);
                 Application.DoEvents();
                 // fac.StartNew(() => runJob(jobInfo), jobInfo.tokenSource.Token);
@@ -148,6 +147,7 @@ namespace AirdPro.Asyncs
                     }
                 }
             }
+
             finishedJob(jobInfo);
         }
     }

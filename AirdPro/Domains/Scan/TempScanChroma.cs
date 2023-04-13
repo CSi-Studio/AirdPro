@@ -34,7 +34,8 @@ namespace AirdPro.Domains
         {
         }
 
-        public TempScanChroma(int num, WindowRange precursor, WindowRange product, string activator, float energy, string polarity, string msType, List<CV> cvs)
+        public TempScanChroma(int num, WindowRange precursor, WindowRange product, string activator, float energy,
+            string polarity, string msType, List<CV> cvs)
         {
             this.num = num;
             this.precursor = precursor;

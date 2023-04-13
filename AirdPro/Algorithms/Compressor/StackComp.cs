@@ -31,7 +31,7 @@ namespace AirdPro.Algorithms
 
         public override void compressMS1(Converter converter, BlockIndex index)
         {
-            int layers = (int) Math.Pow(2, digit); //计算堆叠层数
+            int layers = (int)Math.Pow(2, digit); //计算堆叠层数
             int iter = converter.ms1List.Count % layers == 0
                 ? (converter.ms1List.Count / layers)
                 : (converter.ms1List.Count / layers + 1); //计算循环周期
@@ -86,7 +86,8 @@ namespace AirdPro.Algorithms
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
 
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs, injectionTimes, filterStrings, polarities, energies, activators, msTypes, cvs);
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs,
+                        injectionTimes, filterStrings, polarities, energies, activators, msTypes, cvs);
 
                     compress(spectrumGroup, ts);
                     table.Add(i, ts);
@@ -140,7 +141,8 @@ namespace AirdPro.Algorithms
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
 
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs, injectionTimes, filterStrings, polarities, energies, activators, msTypes, cvs);
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs,
+                        injectionTimes, filterStrings, polarities, energies, activators, msTypes, cvs);
                     compress(spectrumGroup, ts);
                     converter.addToIndex(index, ts);
                 }
@@ -149,7 +151,7 @@ namespace AirdPro.Algorithms
 
         public override void compressMS2(Converter converter, List<MsIndex> ms2List, BlockIndex index)
         {
-            int layers = (int) Math.Pow(2, digit); //计算堆叠层数
+            int layers = (int)Math.Pow(2, digit); //计算堆叠层数
             int iter = ms2List.Count % layers == 0 ? (ms2List.Count / layers) : (ms2List.Count / layers + 1); //计算循环周期
 
             if (multiThread)
@@ -199,7 +201,8 @@ namespace AirdPro.Algorithms
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
 
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs, injectionTimes, filterStrings, polarities, energies, activators, msTypes, cvs);
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs,
+                        injectionTimes, filterStrings, polarities, energies, activators, msTypes, cvs);
 
                     compress(spectrumGroup, ts);
                     table.Add(i, ts);
@@ -251,7 +254,8 @@ namespace AirdPro.Algorithms
                         spectrumGroup.Add(converter.spectrumList.spectrum(scanIndex.num, true));
                     }
 
-                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs, injectionTimes, filterStrings, polarities, energies, activators, msTypes, cvs);
+                    TempScanSZDPD ts = new TempScanSZDPD(nums, rts, tics, basePeakIntensities, basePeakMzs,
+                        injectionTimes, filterStrings, polarities, energies, activators, msTypes, cvs);
                     compress(spectrumGroup, ts);
                     converter.addToIndex(index, ts);
                 }
@@ -298,7 +302,7 @@ namespace AirdPro.Algorithms
                 //空光谱的情况下会填充一个mz=0,intensity=0的点
                 if (j == 0)
                 {
-                    mzListGroup.Add(new int[] {0});
+                    mzListGroup.Add(new int[] { 0 });
                     intensityList.Add(0);
                 }
                 else

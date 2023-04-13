@@ -30,7 +30,7 @@ namespace AirdPro.Repository
     {
         public static string configFileName = "MLConfigFile.json";
         public static string fastConfigFileName = "MLFastConfigFile.json";
-        
+
         private static readonly HttpClient client = new HttpClient();
         public DataTable projectsTable;
         public DataTable searchProjectsTable = new DataTable();
@@ -50,12 +50,13 @@ namespace AirdPro.Repository
                 tbConfigFolder.Text = configFolder;
             }
 
-            var configFilePath = fastLoad? Path.Combine(configFolder, fastConfigFileName): Path.Combine(configFolder, configFileName);
+            var configFilePath = fastLoad
+                ? Path.Combine(configFolder, fastConfigFileName)
+                : Path.Combine(configFolder, configFileName);
             if (!File.Exists(configFilePath))
             {
                 try
                 {
-
                     using (FileStream fsFastConfig = new FileStream(Path.Combine(configFolder, fastConfigFileName),
                                FileMode.OpenOrCreate, FileAccess.Write))
                     {
@@ -72,10 +73,9 @@ namespace AirdPro.Repository
                 }
                 catch
                 {
-
                 }
             }
-            
+
             using (var fsRead = new FileStream(configFilePath, FileMode.Open))
             {
                 var fsLen = (int)fsRead.Length;
@@ -105,10 +105,7 @@ namespace AirdPro.Repository
             string localConfigFile = Path.Combine(configFolder, configFileName);
             List<Project> projects = FileUtil.readFromFileAsJSON<List<Project>>(localConfigFile);
             HashSet<string> projectIdSet = new HashSet<string>();
-            projects.ForEach(project =>
-            {
-                projectIdSet.Add(project.Identifier);
-            });
+            projects.ForEach(project => { projectIdSet.Add(project.Identifier); });
 
             string response = null;
             try
@@ -116,9 +113,9 @@ namespace AirdPro.Repository
                 response = await client.GetStringAsync(UrlConst.mlListUrl);
                 btnLoad.Text = "Start Parsing";
                 StudySummary studies = JsonConvert.DeserializeObject<StudySummary>(response);
-                
+
                 long total = studies.studies;
-                lblLoading.Text = "0/"+total+ " Loaded";
+                lblLoading.Text = "0/" + total + " Loaded";
                 for (int i = 0; i < studies.content.Count; i++)
                 {
                     if (projectIdSet.Contains(studies.content[i]))
@@ -126,8 +123,10 @@ namespace AirdPro.Repository
                         lblLoading.Text = (i + 1) + "/" + total + " Loaded";
                         continue;
                     }
-                    response = await client.GetStringAsync(UrlConst.mlListUrl +"/" + studies.content[i]);
-                    MetaboLights.Repository repository = JsonConvert.DeserializeObject<MetaboLights.Repository>(response);
+
+                    response = await client.GetStringAsync(UrlConst.mlListUrl + "/" + studies.content[i]);
+                    MetaboLights.Repository repository =
+                        JsonConvert.DeserializeObject<MetaboLights.Repository>(response);
                     Study study = repository.isaInvestigation.studies[0];
                     Project project = new Project();
                     project.Title = study.title;
@@ -140,7 +139,6 @@ namespace AirdPro.Repository
 
                     project.Repos = "MetaboLights";
                     projects.Add(project);
-                    
                 }
 
                 FileUtil.writeToFile(projects, Path.Combine(configFolder, configFileName));
@@ -170,9 +168,9 @@ namespace AirdPro.Repository
                     Settings.Default.ConfigFolder = temp;
                     Settings.Default.Save();
                 }
+
                 try
                 {
-
                     using (FileStream fsFastConfig = new FileStream(Path.Combine(temp, fastConfigFileName),
                                FileMode.OpenOrCreate, FileAccess.Write))
                     {
@@ -189,7 +187,6 @@ namespace AirdPro.Repository
                 }
                 catch
                 {
-
                 }
             }
 
@@ -278,7 +275,9 @@ namespace AirdPro.Repository
                     MessageBox.Show("Get " + identifier + " Failed," + exception.Message);
                 }
 
-                DownloadDetailForm detailForm = new DownloadDetailForm(identifier,Path.Combine(UrlConst.mlDetailUrl, identifier),Path.Combine(UrlConst.mlFtpUrl, identifier) + "/", localDirectory, remotes, locals);
+                DownloadDetailForm detailForm = new DownloadDetailForm(identifier,
+                    Path.Combine(UrlConst.mlDetailUrl, identifier), Path.Combine(UrlConst.mlFtpUrl, identifier) + "/",
+                    localDirectory, remotes, locals);
                 detailForm.Show();
                 lblLoading.Text = "Loaded";
                 btnDetail.Enabled = true;
@@ -318,9 +317,8 @@ namespace AirdPro.Repository
                             break;
                         }
                     }
-                        
                 }
-                   
+
 
                 setDataSource(searchProjectsTable);
             }
@@ -358,12 +356,13 @@ namespace AirdPro.Repository
                 for (int i = 0; i < studies.content.Count; i++)
                 {
                     Project project = new Project();
-                    
+
                     project.Identifier = studies.content[i];
                     project.Repos = "MetaboLights";
                     projects.Add(project);
                     lblLoading.Text = (i + 1) + "/" + total + " Loaded";
                 }
+
                 FileUtil.writeToFile(projects, Path.Combine(configFolder, fastConfigFileName));
                 load(true);
             }

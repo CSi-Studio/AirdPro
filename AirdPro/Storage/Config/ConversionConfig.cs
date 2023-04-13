@@ -22,6 +22,7 @@ namespace AirdPro.Storage.Config
          * 配置名称
          */
         public string configName;
+
         /**
          * Ignore the MZ-intensity pairs whose intensity is zero.
          * 忽略intensity为0的数据
@@ -136,6 +137,7 @@ namespace AirdPro.Storage.Config
          * 决策器的权重，默认为1:1:1
          */
         public double compressionSizeWeight = 1;
+
         public double compressionTimeWeight = 1;
         public double decompressionTimeWeight = 1;
         public int spectraToPredict = 50;
@@ -146,7 +148,7 @@ namespace AirdPro.Storage.Config
 
         public string getMzPrecisionStr()
         {
-            return ((int) Math.Log10(mzPrecision)) + "dp";
+            return ((int)Math.Log10(mzPrecision)) + "dp";
         }
 
         public bool isComputation()
@@ -197,7 +199,7 @@ namespace AirdPro.Storage.Config
                                     foreach (ByteCompType mobiByteCompType in byteCompTypes)
                                     {
                                         mobiByteComp = mobiByteCompType;
-                                        ConversionConfig config = (ConversionConfig) Clone();
+                                        ConversionConfig config = (ConversionConfig)Clone();
                                         config.mzIntComp = mzIntComp;
                                         config.mzByteComp = mzByteComp;
                                         config.intIntComp = intIntComp;
@@ -215,7 +217,7 @@ namespace AirdPro.Storage.Config
                             }
                             else
                             {
-                                ConversionConfig config = (ConversionConfig) Clone();
+                                ConversionConfig config = (ConversionConfig)Clone();
                                 config.mzIntComp = mzIntComp;
                                 config.mzByteComp = mzByteComp;
                                 config.intIntComp = intIntComp;

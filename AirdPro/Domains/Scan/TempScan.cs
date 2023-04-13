@@ -34,7 +34,8 @@ namespace AirdPro.Domains
         public byte[] intArrayBytes;
         public byte[] mobilityArrayBytes;
 
-        public TempScan(int num, double rt, long tic, double basePeakIntensity, double basePeakMz, float injectionTime, List<CV> cvs)
+        public TempScan(int num, double rt, long tic, double basePeakIntensity, double basePeakMz, float injectionTime,
+            List<CV> cvs)
         {
             this.num = num;
             this.rt = rt;
@@ -63,7 +64,7 @@ namespace AirdPro.Domains
 
         public int CompareTo(object obj)
         {
-            TempScan ts = (TempScan) obj;
+            TempScan ts = (TempScan)obj;
             return ts.rt.CompareTo(this.rt);
         }
     }
