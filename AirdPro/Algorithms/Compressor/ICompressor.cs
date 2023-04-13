@@ -46,7 +46,7 @@ namespace AirdPro.Algorithms
             this.multiThread = converter.jobInfo.config.threadAccelerate;
             this.mzPrecision = converter.jobInfo.config.mzPrecision;
             this.ignoreZero = converter.jobInfo.config.ignoreZeroIntensity;
-            this.isCentroid = converter.jobInfo.config.isCentroid;
+            this.isCentroid = converter.jobInfo.config.centroid;
             this.includeCV = true;
             this.digit = converter.jobInfo.config.digit;
         }

@@ -8,8 +8,6 @@
  * See the Mulan PSL v2 for more details.
  */
 
-using System.Windows;
-
 namespace AirdPro.Constants
 {
     class SoftwareInfo

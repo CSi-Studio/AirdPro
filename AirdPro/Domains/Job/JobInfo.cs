@@ -109,6 +109,7 @@ namespace AirdPro.Domains
                 type,
                 config.configName,
                 config.scene,
+                config.centroid.ToString(),
                 status,
                 config.getMzPrecisionStr(),
                 getCompressorStr(),

@@ -11,7 +11,6 @@
 using System;
 using System.Windows.Forms;
 using AirdPro.Properties;
-using AirdPro.Storage.Config;
 
 namespace AirdPro.Forms
 {

@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using AirdPro.Constants;
 using AirdSDK.Beans;
 
 namespace AirdPro.Domains

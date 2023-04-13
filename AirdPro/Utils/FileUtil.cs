@@ -8,7 +8,6 @@
  * See the Mulan PSL v2 for more details.
  */
 
-using System;
 using System.IO;
 using System.Text;
 using Newtonsoft.Json;

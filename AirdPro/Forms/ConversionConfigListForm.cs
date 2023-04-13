@@ -11,14 +11,12 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using AirdPro.Storage;
 using AirdPro.Constants;
 using AirdPro.Domains;
+using AirdPro.Storage;
 using AirdPro.Storage.Config;
-using AirdSDK.Compressor;
-using ThermoFisher.CommonCore.Data;
 using AirdSDK.Enums;
-using CSharpFastPFOR.Port;
+using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Forms
 {
@@ -115,10 +113,11 @@ namespace AirdPro.Forms
             ConversionConfig config = new ConversionConfig();
             config.mzPrecision = (int)Math.Pow(10, int.Parse(cbConfigMzPrecision.Text));
             config.ignoreZeroIntensity = cbConfigIsZeroIntensityIgnore.Checked;
-            config.isCentroid = cbConfigIsCentroid.Checked;
+            config.centroid = cbConfigIsCentroid.Checked;
             config.threadAccelerate = cbConfigThreadAccelerate.Checked;
             config.scene = cbScene.Text;
             config.configName = tbNameConfig.Text;
+            
             //如果不是自动决策的,则会使用配置的组合压缩器
             if (!cbAutoDecision.Checked)
             {
@@ -218,7 +217,7 @@ namespace AirdPro.Forms
             tbConfigFileNameSuffix.Text = config.suffix;
             tbConfigOperator.Text = config.creator;
             cbConfigIsZeroIntensityIgnore.Checked = config.ignoreZeroIntensity;
-            cbConfigIsCentroid.Checked = config.isCentroid;
+            cbConfigIsCentroid.Checked = config.centroid;
             cbConfigThreadAccelerate.Checked = config.threadAccelerate;
             cbConfigMzPrecision.SelectedItem = ((int)Math.Log10(config.mzPrecision)).ToString();
             cbMzIntComp.SelectedItem = config.mzIntComp.ToString();

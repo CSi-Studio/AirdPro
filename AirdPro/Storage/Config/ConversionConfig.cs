@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using AirdPro.Constants;
-using AirdSDK.Compressor;
 using AirdSDK.Enums;
 
 namespace AirdPro.Storage.Config
@@ -33,7 +32,7 @@ namespace AirdPro.Storage.Config
          * Generate centroided data.
          * 生成centroid数据
          */
-        public bool isCentroid = false;
+        public bool centroid = false;
 
         /**
          * the decimal point of the MZ. The default value is 5dp

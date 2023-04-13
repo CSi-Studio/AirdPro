@@ -17,11 +17,12 @@ namespace AirdPro.Constants
         public static int TYPE = 2;
         public static int CONFIG_NAME = 3;
         public static int SCENE = 4;
-        public static int PROGRESS = 5;
-        public static int PRECISION = 6;
-        public static int COMPRESSOR = 7;
-        public static int IGNORE_ZERO = 8;
-        public static int SUFFIX = 9;
-        public static int OUTPUT_PATH = 10;
+        public static int CENTROID = 5;
+        public static int PROGRESS = 6;
+        public static int PRECISION = 7;
+        public static int COMPRESSOR = 8;
+        public static int IGNORE_ZERO = 9;
+        public static int SUFFIX = 10;
+        public static int OUTPUT_PATH = 11;
     }
 }

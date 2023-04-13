@@ -8,33 +8,29 @@
  * See the Mulan PSL v2 for more details.
  */
 
-using AirdPro.Constants;
-using AirdPro.Utils;
-using Newtonsoft.Json;
-using pwiz.CLI.analysis;
-using pwiz.CLI.data;
-using pwiz.CLI.msdata;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using AirdPro.Algorithms;
+using AirdPro.Constants;
 using AirdPro.Domains;
+using AirdPro.Utils;
 using AirdSDK.Beans;
+using AirdSDK.Beans.Common;
 using AirdSDK.Compressor;
-using pwiz.CLI.cv;
-using ByteOrder = AirdPro.Constants.ByteOrder;
-using Combination = AirdPro.Domains.Combination;
-using Software = pwiz.CLI.msdata.Software;
 using AirdSDK.Enums;
 using AirdSDK.Utils;
+using Newtonsoft.Json;
+using pwiz.CLI.analysis;
+using pwiz.CLI.cv;
+using pwiz.CLI.data;
+using pwiz.CLI.msdata;
 using FileUtil = AirdPro.Utils.FileUtil;
-using pwiz.CLI.util;
-using AirdSDK.Beans.Common;
-using System.Collections.Concurrent;
-using System.Reflection;
+using Software = AirdSDK.Beans.Software;
 using Spectrum = pwiz.CLI.msdata.Spectrum;
 
 namespace AirdPro.Converters
@@ -956,7 +952,7 @@ namespace AirdPro.Converters
         protected AirdInfo buildAirdInfo()
         {
             AirdInfo airdInfo = new AirdInfo();
-            List<AirdSDK.Beans.Software> softwares = new List<AirdSDK.Beans.Software>();
+            List<Software> softwares = new List<Software>();
             List<ParentFile> parentFiles = new List<ParentFile>();
 
             //Basic Job Info
@@ -1118,15 +1114,15 @@ namespace AirdPro.Converters
             airdInfo.instruments = instruments;
             airdInfo.startTimeStamp = msd.run.startTimeStamp;
             //Software Info
-            foreach (Software soft in msd.softwareList)
+            foreach (pwiz.CLI.msdata.Software soft in msd.softwareList)
             {
-                AirdSDK.Beans.Software software = new AirdSDK.Beans.Software();
+                Software software = new Software();
                 software.name = soft.id;
                 software.version = soft.version;
                 softwares.Add(software);
             }
 
-            AirdSDK.Beans.Software airdPro = new AirdSDK.Beans.Software();
+            Software airdPro = new Software();
             airdPro.name = SoftwareInfo.NAME;
             airdPro.version = SoftwareInfo.VERSION;
             airdPro.type = "DataFormatConversion";
