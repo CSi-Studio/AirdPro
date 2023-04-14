@@ -8,8 +8,10 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using AirdPro.Constants;
 using Newtonsoft.Json;
 
 namespace AirdPro.Utils
@@ -104,5 +106,33 @@ namespace AirdPro.Utils
 
             return directorySize;
         }
+        
+        public static List<string> scan(FolderItem parent)
+        {
+            List<string> items = new List<string>();
+            foreach (string str in Directory.GetDirectories(parent.ItemPath))
+            {
+                if (str.ToLower().EndsWith(FileFormat.DotD.ToLower()) ||
+                    str.ToLower().EndsWith(FileFormat.DotRAW.ToLower()))
+                {
+                    items.Add(str);
+                }
+            }
+
+            foreach (string str in Directory.GetFiles(parent.ItemPath))
+            {
+                string extension = Path.GetExtension(str);
+                if (FileFormat.DotWIFF.ToLower().Equals(extension.ToLower())
+                    || FileFormat.DotRAW.ToLower().Equals(extension.ToLower())
+                    || FileFormat.DotmzML.ToLower().Equals(extension.ToLower())
+                    || FileFormat.DotmzXML.ToLower().Equals(extension.ToLower()))
+                {
+                    items.Add(str);
+                }
+            }
+
+            return items;
+        }
+        
     }
 }
