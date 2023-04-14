@@ -86,7 +86,7 @@ namespace AirdPro.Forms
             var selectedNodes = msFileViews.files.SelectedNodes;
             if (selectedNodes.IsNullOrEmpty())
             {
-                MessageBox.Show(MessageInfo.Input_Your_Own_Paths_First);
+                MessageBox.Show(MessageInfo.Select_Files_First);
                 return false;
             }
             
@@ -107,11 +107,9 @@ namespace AirdPro.Forms
                     MessageBox.Show(MessageInfo.Only_Source_Folder_Can_Be_Selected_In_Mirror_Conversion_Mode);
                     return false;
                 }
-                else
-                {
-                    sourceFolder = item.ItemPath;
-                    filePathList.AddRange(AirdProFileUtil.scan(item.ItemPath));
-                }
+
+                sourceFolder = item.ItemPath;
+                filePathList.AddRange(AirdProFileUtil.scan(item.ItemPath));
             }
             else
             {
