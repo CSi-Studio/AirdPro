@@ -41,18 +41,22 @@ namespace AirdPro.Forms
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConversionForm));
             this.container = new System.Windows.Forms.SplitContainer();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.lvFileList = new System.Windows.Forms.ListView();
-            this.headerJobId = new System.Windows.Forms.ColumnHeader();
-            this.headerFilePath = new System.Windows.Forms.ColumnHeader();
-            this.headerType = new System.Windows.Forms.ColumnHeader();
-            this.headerConfigName = new System.Windows.Forms.ColumnHeader();
-            this.headerScene = new System.Windows.Forms.ColumnHeader();
-            this.headerProgress = new System.Windows.Forms.ColumnHeader();
-            this.headerPrecision = new System.Windows.Forms.ColumnHeader();
-            this.headerCompressor = new System.Windows.Forms.ColumnHeader();
-            this.headerIgnoreZero = new System.Windows.Forms.ColumnHeader();
-            this.headerSuffix = new System.Windows.Forms.ColumnHeader();
-            this.headerOutput = new System.Windows.Forms.ColumnHeader();
+            this.headerJobId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerFilePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerConfigName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerScene = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerCentroid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerProgress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerPrecision = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerCompressor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerIgnoreZero = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerSuffix = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerOutput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contentMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.rerun = new System.Windows.Forms.ToolStripMenuItem();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,7 +80,8 @@ namespace AirdPro.Forms
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
             this.redisConsumer = new System.Windows.Forms.Timer(this.components);
             this.timerTaskScan = new System.Windows.Forms.Timer(this.components);
-            this.headerCentroid = new System.Windows.Forms.ColumnHeader();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -91,6 +96,11 @@ namespace AirdPro.Forms
             // 
             // container.Panel1
             // 
+            this.container.Panel1.Controls.Add(this.label12);
+            this.container.Panel1.Controls.Add(this.label11);
+            this.container.Panel1.Controls.Add(this.label8);
+            this.container.Panel1.Controls.Add(this.label7);
+            this.container.Panel1.Controls.Add(this.label6);
             this.container.Panel1.Controls.Add(this.lvFileList);
             this.container.Panel1.Controls.Add(this.btnImport);
             this.container.Panel1.Controls.Add(this.cbAutoExe);
@@ -112,11 +122,41 @@ namespace AirdPro.Forms
             this.container.Panel2.Controls.Add(this.tbConsole);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
             // 
+            // label8
+            // 
+            resources.ApplyResources(this.label8, "label8");
+            this.label8.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label8.Name = "label8";
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label7.Name = "label7";
+            // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label6.Name = "label6";
+            // 
             // lvFileList
             // 
             resources.ApplyResources(this.lvFileList, "lvFileList");
             this.lvFileList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.headerJobId, this.headerFilePath, this.headerType, this.headerConfigName, this.headerScene, this.headerCentroid, this.headerProgress, this.headerPrecision, this.headerCompressor, this.headerIgnoreZero, this.headerSuffix, this.headerOutput });
+            this.lvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.headerJobId,
+            this.headerFilePath,
+            this.headerType,
+            this.headerConfigName,
+            this.headerScene,
+            this.headerCentroid,
+            this.headerProgress,
+            this.headerPrecision,
+            this.headerCompressor,
+            this.headerIgnoreZero,
+            this.headerSuffix,
+            this.headerOutput});
             this.lvFileList.ContextMenuStrip = this.contentMenu;
             this.lvFileList.FullRowSelect = true;
             this.lvFileList.GridLines = true;
@@ -150,6 +190,10 @@ namespace AirdPro.Forms
             // 
             resources.ApplyResources(this.headerScene, "headerScene");
             // 
+            // headerCentroid
+            // 
+            resources.ApplyResources(this.headerCentroid, "headerCentroid");
+            // 
             // headerProgress
             // 
             resources.ApplyResources(this.headerProgress, "headerProgress");
@@ -177,7 +221,9 @@ namespace AirdPro.Forms
             // contentMenu
             // 
             this.contentMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contentMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.rerun, this.removeToolStripMenuItem });
+            this.contentMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.rerun,
+            this.removeToolStripMenuItem});
             this.contentMenu.Name = "contentMenu";
             resources.ApplyResources(this.contentMenu, "contentMenu");
             // 
@@ -312,7 +358,6 @@ namespace AirdPro.Forms
             // 
             // logTimer
             // 
-            this.logTimer.Enabled = true;
             this.logTimer.Tick += new System.EventHandler(this.logTimer_Tick);
             // 
             // ofd
@@ -330,13 +375,22 @@ namespace AirdPro.Forms
             this.timerTaskScan.Interval = 2000;
             this.timerTaskScan.Tick += new System.EventHandler(this.timerTaskScan_Tick);
             // 
-            // headerCentroid
+            // label11
             // 
-            resources.ApplyResources(this.headerCentroid, "headerCentroid");
+            resources.ApplyResources(this.label11, "label11");
+            this.label11.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label11.Name = "label11";
+            // 
+            // label12
+            // 
+            resources.ApplyResources(this.label12, "label12");
+            this.label12.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label12.Name = "label12";
             // 
             // ConversionForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.SystemColors.Control;
             resources.ApplyResources(this, "$this");
             this.Controls.Add(this.container);
             this.DoubleBuffered = true;
@@ -351,7 +405,16 @@ namespace AirdPro.Forms
             this.container.ResumeLayout(false);
             this.contentMenu.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
+
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+
+        private System.Windows.Forms.Label label6;
+
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnMirrorTrans;
 
         private System.Windows.Forms.ColumnHeader headerCentroid;
 
@@ -385,13 +448,15 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button btnMirrorTrans;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Timer timerTaskScan;
         private System.Windows.Forms.CheckBox cbAutoExe;
         private System.Windows.Forms.ColumnHeader headerScene;
         private System.Windows.Forms.TextBox tbJobInfo;
         private System.Windows.Forms.ColumnHeader headerConfigName;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label11;
     }
 }
 

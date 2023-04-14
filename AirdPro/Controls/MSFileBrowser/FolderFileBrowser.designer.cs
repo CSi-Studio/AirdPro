@@ -52,7 +52,7 @@ namespace AirdPro
             this.files.Cursor = System.Windows.Forms.Cursors.Default;
             this.files.DefaultToolTipProvider = null;
             this.files.DragDropMarkColor = System.Drawing.Color.Black;
-            this.files.Font = new System.Drawing.Font("Î¢ÈíÑÅºÚ", 8F);
+            this.files.Font = new System.Drawing.Font("å¾®è½¯é›…é»‘", 8F);
             this.files.FullRowSelect = true;
             this.files.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
             this.files.LineColor = System.Drawing.SystemColors.ControlDark;

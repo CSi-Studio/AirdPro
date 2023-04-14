@@ -16,7 +16,7 @@ using Newtonsoft.Json;
 
 namespace AirdPro.Utils
 {
-    public class FileUtil
+    public class AirdProFileUtil
     {
         public static string getSizeLabel(long size)
         {
@@ -107,19 +107,26 @@ namespace AirdPro.Utils
             return directorySize;
         }
         
-        public static List<string> scan(FolderItem parent)
+        /**
+         * 循环遍历指定文件夹下的所有质谱文件
+         */
+        public static List<string> scan(string folderPath)
         {
             List<string> items = new List<string>();
-            foreach (string str in Directory.GetDirectories(parent.ItemPath))
+            foreach (string str in Directory.GetDirectories(folderPath))
             {
                 if (str.ToLower().EndsWith(FileFormat.DotD.ToLower()) ||
                     str.ToLower().EndsWith(FileFormat.DotRAW.ToLower()))
                 {
                     items.Add(str);
                 }
+                else
+                {
+                    items.AddRange(scan(str));
+                }
             }
 
-            foreach (string str in Directory.GetFiles(parent.ItemPath))
+            foreach (string str in Directory.GetFiles(folderPath))
             {
                 string extension = Path.GetExtension(str);
                 if (FileFormat.DotWIFF.ToLower().Equals(extension.ToLower())

@@ -36,7 +36,7 @@ namespace AirdPro.Utils
             }
 
             fileRow.fileSize = size;
-            fileRow.fileSizeLabel.Report(FileUtil.getSizeLabel(size));
+            fileRow.fileSizeLabel.Report(AirdProFileUtil.getSizeLabel(size));
         }
 
         public static List<string> fetchFtpFilePaths(string remoteDirectory)

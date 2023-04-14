@@ -19,5 +19,7 @@ namespace AirdPro.Constants
         public static string Choose_One_Conversion_Config_First = "Choose one conversion config first!";
         public static string Set_Your_Output_Path_First = "Set your output path first!";
         public static string Input_Your_Own_Paths_First = "Input your own paths first!";
+        public static string Only_One_Source_Folder_Can_Be_Selected_In_Mirror_Conversion_Mode = "Only one source folder can be selected in Mirror Conversion Mode";
+        public static string Only_Source_Folder_Can_Be_Selected_In_Mirror_Conversion_Mode = "Only source folder can be selected in Mirror Conversion Mode";
     }
 }

@@ -44,7 +44,7 @@ namespace AirdPro.Repository
             var configFolder = Settings.Default.ConfigFolder;
             if (configFolder.Equals(string.Empty) || !Directory.Exists(configFolder)) return;
 
-            string content = FileUtil.readFromFile(Path.Combine(configFolder, configFileName));
+            string content = AirdProFileUtil.readFromFile(Path.Combine(configFolder, configFileName));
             if (content == null)
             {
                 return;
@@ -134,7 +134,7 @@ namespace AirdPro.Repository
 
             if (projects.Count != 0)
             {
-                FileUtil.writeToFile(projects, Path.Combine(configFolder, configFileName));
+                AirdProFileUtil.writeToFile(projects, Path.Combine(configFolder, configFileName));
                 load();
             }
 

@@ -152,7 +152,6 @@ namespace AirdPro.Forms
             config.suffix = tbConfigFileNameSuffix.Text;
             config.creator = tbConfigOperator.Text;
             config.autoDesicion = cbAutoDecision.Checked;
-            config.autoExplorer = cbAutoExplore.Checked;
             try
             {
                 config.spectraToPredict = int.Parse(tbSpectraToPredict.Text);
@@ -241,7 +240,6 @@ namespace AirdPro.Forms
 
             tableAutoDecision.Enabled = !config.autoDesicion;
             cbAutoDecision.Checked = config.autoDesicion;
-            cbAutoExplore.Checked = config.autoExplorer;
             cbCompressedIndex.Checked = config.compressedIndex;
             tbSpectraToPredict.Text = config.spectraToPredict + "";
             cbCSWeight.Text = config.compressionSizeWeight + "";

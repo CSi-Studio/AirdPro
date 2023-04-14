@@ -127,12 +127,6 @@ namespace AirdPro.Storage.Config
         public int digit = 8;
 
         /**
-         * 是否开启自动探索模式方案下
-         * 自动探索模式下, AirdPro会对每一个转换的数据文件进行全组合模式的格式转换,并且自动配置相关后缀
-         */
-        public bool autoExplorer = false;
-
-        /**
          * 决策器的权重，默认为1:1:1
          */
         public double compressionSizeWeight = 1;

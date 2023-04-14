@@ -309,7 +309,7 @@
         <Compile Include="Utils\CentroidUtil.cs" />
         <Compile Include="Utils\CVUtil.cs" />
         <Compile Include="Utils\FeatureUtil.cs" />
-        <Compile Include="Utils\FileUtil.cs" />
+        <Compile Include="Utils\AirdProFileUtil.cs" />
         <Compile Include="Utils\HttpUtil.cs" />
         <Compile Include="Utils\DataUtil.cs" />
         <Compile Include="Utils\ResourceUtil.cs" />

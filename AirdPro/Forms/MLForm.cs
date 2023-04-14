@@ -111,7 +111,7 @@ namespace AirdPro.Repository
             }
 
             string localConfigFile = Path.Combine(configFolder, configFileName);
-            List<Project> projects = FileUtil.readFromFileAsJSON<List<Project>>(localConfigFile);
+            List<Project> projects = AirdProFileUtil.readFromFileAsJSON<List<Project>>(localConfigFile);
             HashSet<string> projectIdSet = new HashSet<string>();
             projects.ForEach(project => { projectIdSet.Add(project.Identifier); });
 
@@ -149,7 +149,7 @@ namespace AirdPro.Repository
                     projects.Add(project);
                 }
 
-                FileUtil.writeToFile(projects, Path.Combine(configFolder, configFileName));
+                AirdProFileUtil.writeToFile(projects, Path.Combine(configFolder, configFileName));
                 load(false);
             }
             catch (Exception exception)
@@ -371,7 +371,7 @@ namespace AirdPro.Repository
                     lblLoading.Text = (i + 1) + "/" + total + " Loaded";
                 }
 
-                FileUtil.writeToFile(projects, Path.Combine(configFolder, fastConfigFileName));
+                AirdProFileUtil.writeToFile(projects, Path.Combine(configFolder, fastConfigFileName));
                 load(true);
             }
             catch (Exception exception)

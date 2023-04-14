@@ -52,6 +52,7 @@ namespace AirdPro.Forms
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnAddClose = new System.Windows.Forms.Button();
             this.msFileViews = new AirdPro.FolderFileBrowser();
+            this.btnMirrorScan = new System.Windows.Forms.Button();
             this.gBoxMode.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -79,7 +80,7 @@ namespace AirdPro.Forms
             this.gBoxMode.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.gBoxMode.Location = new System.Drawing.Point(614, 91);
             this.gBoxMode.Name = "gBoxMode";
-            this.gBoxMode.Size = new System.Drawing.Size(240, 205);
+            this.gBoxMode.Size = new System.Drawing.Size(240, 206);
             this.gBoxMode.TabIndex = 2;
             this.gBoxMode.TabStop = false;
             this.gBoxMode.Text = "Acquisition Mode";
@@ -172,9 +173,9 @@ namespace AirdPro.Forms
             // btnClose
             // 
             this.btnClose.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnClose.Location = new System.Drawing.Point(627, 357);
+            this.btnClose.Location = new System.Drawing.Point(603, 391);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(227, 38);
+            this.btnClose.Size = new System.Drawing.Size(251, 38);
             this.btnClose.TabIndex = 7;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
@@ -252,9 +253,9 @@ namespace AirdPro.Forms
             // btnAdd
             // 
             this.btnAdd.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnAdd.Location = new System.Drawing.Point(627, 313);
+            this.btnAdd.Location = new System.Drawing.Point(603, 303);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(100, 38);
+            this.btnAdd.Size = new System.Drawing.Size(132, 38);
             this.btnAdd.TabIndex = 127;
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -263,7 +264,7 @@ namespace AirdPro.Forms
             // btnAddClose
             // 
             this.btnAddClose.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnAddClose.Location = new System.Drawing.Point(741, 313);
+            this.btnAddClose.Location = new System.Drawing.Point(741, 303);
             this.btnAddClose.Name = "btnAddClose";
             this.btnAddClose.Size = new System.Drawing.Size(113, 38);
             this.btnAddClose.TabIndex = 128;
@@ -276,14 +277,26 @@ namespace AirdPro.Forms
             this.msFileViews.Location = new System.Drawing.Point(6, 44);
             this.msFileViews.Margin = new System.Windows.Forms.Padding(4);
             this.msFileViews.Name = "msFileViews";
-            this.msFileViews.Size = new System.Drawing.Size(590, 351);
+            this.msFileViews.Size = new System.Drawing.Size(590, 385);
             this.msFileViews.TabIndex = 125;
+            // 
+            // btnMirrorScan
+            // 
+            this.btnMirrorScan.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnMirrorScan.Location = new System.Drawing.Point(603, 347);
+            this.btnMirrorScan.Name = "btnMirrorScan";
+            this.btnMirrorScan.Size = new System.Drawing.Size(251, 38);
+            this.btnMirrorScan.TabIndex = 129;
+            this.btnMirrorScan.Text = "Mirror Convert";
+            this.btnMirrorScan.UseVisualStyleBackColor = true;
+            this.btnMirrorScan.Click += new System.EventHandler(this.btnMirrorScan_Click);
             // 
             // VendorFileSelectorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(866, 407);
+            this.ClientSize = new System.Drawing.Size(866, 432);
+            this.Controls.Add(this.btnMirrorScan);
             this.Controls.Add(this.btnAddClose);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.msFileViews);
@@ -306,8 +319,9 @@ namespace AirdPro.Forms
             this.gBoxMode.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
+
+        private System.Windows.Forms.Button btnMirrorScan;
 
         #endregion
         private System.Windows.Forms.RadioButton radioButton1;
@@ -327,7 +341,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.RadioButton radioButton3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ImageList imgList;
-        private FolderFileBrowser msFileViews;
+        private AirdPro.FolderFileBrowser msFileViews;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.RadioButton radioButton4;
         private System.Windows.Forms.Button btnAddClose;

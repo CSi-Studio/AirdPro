@@ -56,7 +56,7 @@ namespace AirdPro
             set
             {
                 size = value;
-                SizeLabel = FileUtil.getSizeLabel(size);
+                SizeLabel = AirdProFileUtil.getSizeLabel(size);
             }
         }
 

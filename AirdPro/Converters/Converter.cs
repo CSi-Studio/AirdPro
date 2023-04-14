@@ -29,7 +29,6 @@ using pwiz.CLI.analysis;
 using pwiz.CLI.cv;
 using pwiz.CLI.data;
 using pwiz.CLI.msdata;
-using FileUtil = AirdPro.Utils.FileUtil;
 using Software = AirdSDK.Beans.Software;
 using Spectrum = pwiz.CLI.msdata.Spectrum;
 
@@ -141,7 +140,7 @@ namespace AirdPro.Converters
         {
             ICompressor comp = jobInfo.config.stack ? new StackComp(this) : new CoreComp(this);
             //探索模式和非自动决策模式,会在此处初始化指定的压缩内核
-            if (jobInfo.config.autoExplorer || !jobInfo.config.autoDesicion)
+            if (!jobInfo.config.autoDesicion)
             {
                 if (jobInfo.ionMobility)
                 {
@@ -591,7 +590,7 @@ namespace AirdPro.Converters
                     if (mzXML.Exists) fileSize += mzXML.Length;
                     break;
                 case FileFormat.D:
-                    long totalSize = FileUtil.getDirectorySize(jobInfo.inputPath);
+                    long totalSize = AirdProFileUtil.getDirectorySize(jobInfo.inputPath);
                     fileSize += totalSize;
                     break;
                 default:

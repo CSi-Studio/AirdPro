@@ -65,7 +65,6 @@
             this.lblGeneralPurpose = new System.Windows.Forms.Label();
             this.tableAutoDecision = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
-            this.cbAutoExplore = new System.Windows.Forms.CheckBox();
             this.tableDeciderWeight = new System.Windows.Forms.TableLayoutPanel();
             this.cbCSWeight = new System.Windows.Forms.ComboBox();
             this.lblWeight = new System.Windows.Forms.Label();
@@ -504,19 +503,6 @@
             this.label4.TabIndex = 149;
             this.label4.Text = "Target";
             // 
-            // cbAutoExplore
-            // 
-            this.cbAutoExplore.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbAutoExplore.AutoSize = true;
-            this.cbAutoExplore.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cbAutoExplore.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cbAutoExplore.Location = new System.Drawing.Point(12, 242);
-            this.cbAutoExplore.Name = "cbAutoExplore";
-            this.cbAutoExplore.Size = new System.Drawing.Size(102, 21);
-            this.cbAutoExplore.TabIndex = 153;
-            this.cbAutoExplore.Text = "Auto Explore";
-            this.cbAutoExplore.UseVisualStyleBackColor = true;
-            // 
             // tableDeciderWeight
             // 
             this.tableDeciderWeight.ColumnCount = 2;
@@ -700,14 +686,13 @@
             this.pageComputation.Controls.Add(this.cbCompressedIndex);
             this.pageComputation.Controls.Add(this.cbAutoDecision);
             this.pageComputation.Controls.Add(this.tableAutoDecision);
-            this.pageComputation.Controls.Add(this.cbAutoExplore);
             this.pageComputation.Controls.Add(this.tableDeciderWeight);
             this.pageComputation.Controls.Add(this.tbSpectraToPredict);
             this.pageComputation.Controls.Add(this.lblSelectSpectraCount);
             this.pageComputation.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.pageComputation.Location = new System.Drawing.Point(4, 54);
             this.pageComputation.Name = "pageComputation";
-            this.pageComputation.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.pageComputation.Padding = new System.Windows.Forms.Padding(3);
             this.pageComputation.Size = new System.Drawing.Size(603, 346);
             this.pageComputation.TabIndex = 0;
             this.pageComputation.Text = "Computation";
@@ -733,7 +718,7 @@
             this.pageSearchEngine.Controls.Add(this.tableLayoutPanel1);
             this.pageSearchEngine.Location = new System.Drawing.Point(4, 54);
             this.pageSearchEngine.Name = "pageSearchEngine";
-            this.pageSearchEngine.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.pageSearchEngine.Padding = new System.Windows.Forms.Padding(3);
             this.pageSearchEngine.Size = new System.Drawing.Size(603, 346);
             this.pageSearchEngine.TabIndex = 1;
             this.pageSearchEngine.Text = "Search";
@@ -947,7 +932,6 @@
         private System.Windows.Forms.Label lblGeneralPurpose;
         private System.Windows.Forms.TableLayoutPanel tableAutoDecision;
         private System.Windows.Forms.Label label4;
-        public System.Windows.Forms.CheckBox cbAutoExplore;
         private System.Windows.Forms.TableLayoutPanel tableDeciderWeight;
         private System.Windows.Forms.Label lblWeight;
         private System.Windows.Forms.Label lblWeightValue;
