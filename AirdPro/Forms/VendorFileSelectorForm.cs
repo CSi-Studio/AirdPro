@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 using Aga.Controls.Tree;
 using AirdPro.Constants;
@@ -17,6 +18,7 @@ using AirdPro.Properties;
 using AirdPro.Storage;
 using AirdPro.Storage.Config;
 using AirdPro.Utils;
+using AirdSDK.Utils;
 using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Forms
@@ -131,7 +133,8 @@ namespace AirdPro.Forms
             {
                 if (mirrorConvert) //如果不是镜像转换,则需要将源路径的文件夹结构也同时拷贝
                 {
-                    Program.conversionForm.addFile(path, path.Replace(sourceFolder, outputPath), airdType, (ConversionConfig)config.Clone());
+                    Program.conversionForm.addFile(path, Path.GetDirectoryName(path.Replace(sourceFolder, outputPath))
+                        , airdType, (ConversionConfig)config.Clone());
                 }
                 else //如果不是镜像转换,则直接转换至指定文件夹位置即可
                 {
