@@ -279,6 +279,7 @@ namespace AirdPro.Algorithms
             int[] intensitySubArray = new int[j];
             Array.Copy(intensityArray, intensitySubArray, j);
 
+
             byte[] compressedMzArray = ComboComp.encode(mzIntComp, mzByteComp, mzSubArray);
             byte[] compressedIntArray = ComboComp.encode(intIntComp, intByteComp, intensitySubArray);
 

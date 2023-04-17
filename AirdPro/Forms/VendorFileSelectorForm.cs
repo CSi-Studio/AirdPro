@@ -140,7 +140,6 @@ namespace AirdPro.Forms
                 {
                     Program.conversionForm.addFile(path, outputPath, airdType, (ConversionConfig)config.Clone());
                 }
-               
             }
 
             return true;
