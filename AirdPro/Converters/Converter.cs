@@ -81,42 +81,47 @@ namespace AirdPro.Converters
 
         public void doConvert()
         {
-            start();
-            initDirectory(); //创建文件夹
-
-            using (airdStream = new FileStream(jobInfo.airdFilePath, FileMode.Create))
+            try
             {
-                using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
+                start();
+                initDirectory(); //创建文件夹
+
+                using (airdStream = new FileStream(jobInfo.airdFilePath, FileMode.Create))
                 {
-                    readVendorFile(); //准备读取Vendor文件
-                    predictAcquisitionMethod();
-                    switch (jobInfo.type)
+                    using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                     {
-                        case AcquisitionMethod.DIA:
-                            ConverterWorkFlow.DIA(this);
-                            break;
-                        case AcquisitionMethod.DDA:
-                            ConverterWorkFlow.DDA(this);
-                            break;
-                        case AcquisitionMethod.PRM:
-                            ConverterWorkFlow.PRM(this);
-                            break;
-                        case AcquisitionMethod.MRM:
-                            ConverterWorkFlow.MRM(this);
-                            break;
-                        case AcquisitionMethod.DDA_PASEF:
-                            jobInfo.ionMobility = true;
-                            ConverterWorkFlow.DDAPasef(this);
-                            break;
-                        case AcquisitionMethod.DIA_PASEF:
-                            jobInfo.ionMobility = true;
-                            ConverterWorkFlow.DIAPasef(this);
-                            break;
+                        readVendorFile(); //准备读取Vendor文件
+                        predictAcquisitionMethod();
+                        switch (jobInfo.type)
+                        {
+                            case AcquisitionMethod.DIA:
+                                ConverterWorkFlow.DIA(this);
+                                break;
+                            case AcquisitionMethod.DDA:
+                                ConverterWorkFlow.DDA(this);
+                                break;
+                            case AcquisitionMethod.PRM:
+                                ConverterWorkFlow.PRM(this);
+                                break;
+                            case AcquisitionMethod.MRM:
+                                ConverterWorkFlow.MRM(this);
+                                break;
+                            case AcquisitionMethod.DDA_PASEF:
+                                jobInfo.ionMobility = true;
+                                ConverterWorkFlow.DDAPasef(this);
+                                break;
+                            case AcquisitionMethod.DIA_PASEF:
+                                jobInfo.ionMobility = true;
+                                ConverterWorkFlow.DIAPasef(this);
+                                break;
+                        }
                     }
                 }
             }
-
-            finish();
+            finally
+            {
+                finish();
+            }
         }
 
         public void start()
@@ -528,7 +533,7 @@ namespace AirdPro.Converters
                 combineIonMobilitySpectra = true,
                 ignoreZeroIntensityPoints = jobInfo.config.ignoreZeroIntensity
             };
-
+            
             MSDataList msInfo = new MSDataList();
             readerList.read(jobInfo.inputPath, msInfo, readerConfig);
             if (msInfo == null || msInfo.Count == 0)

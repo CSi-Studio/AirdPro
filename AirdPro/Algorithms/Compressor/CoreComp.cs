@@ -518,8 +518,7 @@ namespace AirdPro.Algorithms
                             intensitySum += spectrum.intensities[j];
                             j++;
                         }
-
-
+                        
                         matrix[iter, mzIndexDict[spectrum.mzs[i]]] = intensitySum;
                         i = j;
                     }
