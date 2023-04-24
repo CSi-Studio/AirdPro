@@ -138,7 +138,10 @@ namespace AirdPro.Converters
             jobInfo.log(Tag.Total_Time_Cost + stopwatch.Elapsed.TotalSeconds, Status.Finished);
             clearCache();
             jobInfo.setStatus(ProcessingStatus.FINISHED);
-            msd.Dispose();
+            if (msd != null)
+            {
+                msd.Dispose();
+            }
         }
 
         public void initCompressor()
