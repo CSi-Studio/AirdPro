@@ -182,6 +182,7 @@
         </Compile>
         <Compile Include="Converters\ConverterWorkFlow.cs" />
         <Compile Include="Domains\Common\StrKV.cs" />
+        <Compile Include="Domains\Common\TempSpectrum.cs" />
         <Compile Include="Domains\HardwareInfo\HardwareInfo.cs" />
         <Compile Include="Domains\Logs\AppLogs.cs" />
         <Compile Include="Domains\Logs\Log.cs" />

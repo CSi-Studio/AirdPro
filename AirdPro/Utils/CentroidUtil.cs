@@ -9,11 +9,12 @@
  */
 
 using System.Collections.Generic;
+using AirdPro.Domains.Common;
 using AirdSDK.Beans.Common;
 
 public class CentroidUtil
 {
-    public static IntSpectrum centroid(int[] mzs, double[] intensities, double noiseLevel)
+    public static TempSpectrum centroid(int[] mzs, float[] intensities, double noiseLevel)
     {
         if (mzs == null)
         {
@@ -25,7 +26,7 @@ public class CentroidUtil
 
         // lists of primitive doubles
         List<int> pickedMzs = new List<int>();
-        List<double> pickedInts = new List<double>();
+        List<float> pickedInts = new List<float>();
 
         //计算局部最大值，作为峰的候选点
         int localMaximumIndex = 0;
@@ -74,10 +75,10 @@ public class CentroidUtil
             }
         }
 
-        return new IntSpectrum(pickedMzs.ToArray(), pickedInts.ToArray());
+        return new TempSpectrum(pickedMzs.ToArray(), pickedInts.ToArray());
     }
 
-    private static int calculateExactMass(int[] mzs, double[] intensities, int topIndex, List<int> rangeDataPoints)
+    private static int calculateExactMass(int[] mzs, float[] intensities, int topIndex, List<int> rangeDataPoints)
     {
         double xRight = -1, xLeft = -1;
         double halfInt = intensities[topIndex] / 2;
