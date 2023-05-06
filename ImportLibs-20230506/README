@@ -1,0 +1,4 @@
+
+This example project is bundled with the vendor DLLs in order to show you how to use them in a C# project,
+but use of these DLLs in your derived works is subject to license agreements. You must agree to each vendor's
+license agreement and have your end users agree to them as well.
