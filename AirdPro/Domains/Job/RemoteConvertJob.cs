@@ -14,10 +14,13 @@ namespace AirdPro.Domains
     {
         public string sourcePath;
         public string targetPath;
-        public string type;
-        public int mzPrecision;
+        public string? type = JobInfo.AutoType;
+        public int? mzPrecision;
         public string creator;
         public string suffix;
+        public string? scene;
+        public bool? centroid = false;
         public bool ignoreZeroIntensity = true;
+        public bool? compressedIndex = true;
     }
 }

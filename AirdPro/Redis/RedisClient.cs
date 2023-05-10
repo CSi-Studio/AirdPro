@@ -133,8 +133,20 @@ namespace AirdPro.Redis
                             conversionConfig.suffix = job.suffix;
                             conversionConfig.ignoreZeroIntensity = job.ignoreZeroIntensity;
                             conversionConfig.creator = job.creator;
-                            conversionConfig.mzPrecision = job.mzPrecision;
+                            if (job.mzPrecision != null)
+                            {
+                                conversionConfig.mzPrecision = job.mzPrecision.Value;
+                            }
+                            if (job.centroid != null)
+                            {
+                                conversionConfig.centroid = job.centroid.Value;
+                            }
 
+                            if (job.compressedIndex != null)
+                            {
+                                conversionConfig.compressedIndex = job.compressedIndex.Value;
+                            }
+                            
                             JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
                             ListViewItem item = jobInfo.buildItem();
                             if (!ConvertTaskManager.getInstance().jobTable.Contains(jobInfo.getJobId()))
