@@ -16,6 +16,7 @@ using StackExchange.Redis;
 using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdPro.Storage.Config;
+using AirdSDK.Enums;
 using Newtonsoft.Json;
 
 namespace AirdPro.Redis
@@ -133,6 +134,11 @@ namespace AirdPro.Redis
                             conversionConfig.suffix = job.suffix;
                             conversionConfig.ignoreZeroIntensity = job.ignoreZeroIntensity;
                             conversionConfig.creator = job.creator;
+                            if (job.scene != null && job.scene == "Search")
+                            {
+                                conversionConfig.scene = Scene.Search;
+                            }
+
                             if (job.mzPrecision != null)
                             {
                                 conversionConfig.mzPrecision = job.mzPrecision.Value;
