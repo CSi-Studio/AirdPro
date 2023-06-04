@@ -49,7 +49,6 @@ namespace AirdPro.Forms
             foreach (string sortedIntCompType in Enum.GetNames(typeof(SortedIntCompType)))
             {
                 cbMzIntComp.Items.Add(sortedIntCompType);
-                cbRtIntComp.Items.Add(sortedIntCompType);
             }
 
             foreach (string intCompType in Enum.GetNames(typeof(IntCompType)))
@@ -63,7 +62,6 @@ namespace AirdPro.Forms
                 cbMzByteComp.Items.Add(byteCompType);
                 cbIntByteComp.Items.Add(byteCompType);
                 cbMobiByteComp.Items.Add(byteCompType);
-                cbRtByteComp.Items.Add(byteCompType);
             }
 
             showConfig("", new ConversionConfig());
@@ -117,7 +115,7 @@ namespace AirdPro.Forms
             config.threadAccelerate = cbConfigThreadAccelerate.Checked;
             config.scene = cbScene.Text;
             config.configName = tbNameConfig.Text;
-            
+            config.fastMode = cbFastReadMode.Checked;
             //如果不是自动决策的,则会使用配置的组合压缩器
             if (!cbAutoDecision.Checked)
             {
@@ -132,10 +130,6 @@ namespace AirdPro.Forms
                     (IntCompType)Enum.Parse(typeof(IntCompType), cbMobiIntComp.SelectedItem.ToString());
                 config.mobiByteComp =
                     (ByteCompType)Enum.Parse(typeof(ByteCompType), cbMobiByteComp.SelectedItem.ToString());
-                config.rtIntComp =
-                    (SortedIntCompType)Enum.Parse(typeof(SortedIntCompType), cbRtIntComp.SelectedItem.ToString());
-                config.rtByteComp =
-                    (ByteCompType)Enum.Parse(typeof(ByteCompType), cbRtByteComp.SelectedItem.ToString());
             }
 
             if (cbConfigStack.Checked)
@@ -165,6 +159,7 @@ namespace AirdPro.Forms
             config.compressionSizeWeight = int.Parse(cbCSWeight.Text);
             config.compressionTimeWeight = int.Parse(cbCTWeight.Text);
             config.decompressionTimeWeight = int.Parse(cbDTWeight.Text);
+           
             return config;
         }
 
@@ -225,9 +220,7 @@ namespace AirdPro.Forms
             cbIntByteComp.SelectedItem = config.intByteComp.ToString();
             cbMobiIntComp.SelectedItem = config.mobiIntComp.ToString();
             cbMobiByteComp.SelectedItem = config.mobiByteComp.ToString();
-            cbRtIntComp.SelectedItem = config.rtIntComp.ToString();
-            cbRtByteComp.SelectedItem = config.rtByteComp.ToString();
-
+            cbFastReadMode.Checked = config.fastMode;
             if (config.stack)
             {
                 cbConfigStack.Checked = true;

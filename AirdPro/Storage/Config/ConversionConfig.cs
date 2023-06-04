@@ -105,7 +105,7 @@ namespace AirdPro.Storage.Config
         public ByteCompType mobiByteComp = ByteCompType.Zstd;
 
         /**
-       * 用于rt压缩的int数组压缩方法
+        * 用于rt压缩的int数组压缩方法
        */
         public SortedIntCompType rtIntComp = SortedIntCompType.IVB;
 
@@ -119,6 +119,11 @@ namespace AirdPro.Storage.Config
          */
         public bool stack = false;
 
+        /**
+         * Slice版本下生效，如果为true，则仅使用FastPFor内核进行压缩
+         */
+        public bool fastMode = true;
+        
         /**
          * The stack layers's tag
          * 2^digit = layer's count
