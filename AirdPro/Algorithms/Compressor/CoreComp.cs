@@ -540,6 +540,7 @@ namespace AirdPro.Algorithms
             ConcurrentDictionary<int, ByteColumn> treeColumn = new ConcurrentDictionary<int, ByteColumn>();
 
             int progress = 0;
+            bool fastMode = converter.jobInfo.config.fastMode;
             Parallel.For(0, matrix.ColumnCount, (i, ParallelLoopState) =>
             {
                 Interlocked.Increment(ref progress);
@@ -564,14 +565,29 @@ namespace AirdPro.Algorithms
                 }
                 //如果使用组合压缩，最小的压缩byte也需要17个byte,当列中的点小于4个时默认不压缩
                 int length = spectraIds.Length;
-                byte[] compressedIndexIds = length > 4
-                    ? new ZstdWrapper().encode(
-                        ByteTrans.intToByte(new IntegratedVarByteWrapper().encode(spectraIds)))
-                    : ByteTrans.intToByte(spectraIds);
-                
-                byte[] compressedInts = length > 4 ? new ZstdWrapper().encode(
-                    ByteTrans.intToByte(new VarByteWrapper().encode(ints)))
-                        : ByteTrans.intToByte(ints);
+                byte[] compressedIndexIds = null;
+                byte[] compressedInts = null;
+                if (length > 4)
+                {
+                    if (fastMode)
+                    {
+                        compressedIndexIds = ByteTrans.intToByte(new IntegratedVarByteWrapper().encode(spectraIds));
+                        compressedInts = ByteTrans.intToByte(new VarByteWrapper().encode(ints));
+                    }
+                    else
+                    {
+                        compressedIndexIds =
+                            new ZstdWrapper().encode(
+                                ByteTrans.intToByte(new IntegratedVarByteWrapper().encode(spectraIds)));
+                        compressedInts = new ZstdWrapper().encode(
+                            ByteTrans.intToByte(new VarByteWrapper().encode(ints)));
+                    }
+                }
+                else
+                {
+                    compressedIndexIds = ByteTrans.intToByte(spectraIds);
+                    compressedInts = ByteTrans.intToByte(ints);
+                }
 
                 treeColumn[sortedMzs[i]] = new ByteColumn(compressedIndexIds, compressedInts);
             });

@@ -122,7 +122,7 @@ namespace AirdPro.Storage.Config
         /**
          * Slice版本下生效，如果为true，则仅使用FastPFor内核进行压缩
          */
-        public bool fastMode = true;
+        public bool fastMode = false;
         
         /**
          * The stack layers's tag
