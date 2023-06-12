@@ -29,6 +29,8 @@ using pwiz.CLI.analysis;
 using pwiz.CLI.cv;
 using pwiz.CLI.data;
 using pwiz.CLI.msdata;
+using StackExchange.Redis;
+using Activator = AirdPro.Constants.Activator;
 using Software = AirdSDK.Beans.Software;
 using Spectrum = pwiz.CLI.msdata.Spectrum;
 
@@ -733,6 +735,8 @@ namespace AirdPro.Converters
 
             ms1.msType = CVUtil.parseMsType(spectrum);
             ms1.polarity = CVUtil.parsePolarity(spectrum);
+            ms1.activator = Activator.UNKNOWN;
+            ms1.energy = -1;
             return ms1;
         }
 
