@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using AirdPro.Constants;
 using Newtonsoft.Json;
 
@@ -139,6 +140,17 @@ namespace AirdPro.Utils
             }
 
             return items;
+        }
+
+        public static string replaceLast(string input, string pattern, string replacement)
+        {
+            string output = Regex.Replace(input, pattern, match => {  
+                if (match.Index == input.LastIndexOf(pattern)) {  
+                    return replacement;  
+                }  
+                return match.Value;  
+            }, RegexOptions.IgnoreCase);
+            return output;
         }
         
     }

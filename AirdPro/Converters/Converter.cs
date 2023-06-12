@@ -84,38 +84,60 @@ namespace AirdPro.Converters
             try
             {
                 start();
-                initDirectory(); //创建文件夹
-
-                using (airdStream = new FileStream(jobInfo.airdFilePath, FileMode.Create))
+                MSDataList msdList = readVendorFile(); //准备读取Vendor文件
+                if (msdList.Count == 0 || msdList == null)
                 {
-                    using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
+                    return;
+                }
+                for (int i = 0; i < msdList.Count; i++)
+                {
+                    if (msdList.Count > 1) //如果msdList中包含多个msd，那么每一个msd会被单独导出为一个文件，导出的文件名按照msd的ID进行命名
                     {
-                        readVendorFile(); //准备读取Vendor文件
-                        predictAcquisitionMethod();
-                        switch (jobInfo.type)
+                        String id = msdList[i].id;
+                        jobInfo.airdFilePath =
+                            AirdProFileUtil.replaceLast(jobInfo.airdFilePath, jobInfo.airdFileName, id);
+                        jobInfo.airdJsonFilePath =
+                            AirdProFileUtil.replaceLast(jobInfo.airdJsonFilePath, jobInfo.airdFileName, id);
+                        jobInfo.airdFileName = id;
+                    }
+
+                    readMsd(msdList[i]);
+                    initDirectory(); //创建文件夹
+                    using (airdStream = new FileStream(jobInfo.airdFilePath, FileMode.Create))
+                    {
+                        using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                         {
-                            case AcquisitionMethod.DIA:
-                                ConverterWorkFlow.DIA(this);
-                                break;
-                            case AcquisitionMethod.DDA:
-                                ConverterWorkFlow.DDA(this);
-                                break;
-                            case AcquisitionMethod.PRM:
-                                ConverterWorkFlow.PRM(this);
-                                break;
-                            case AcquisitionMethod.MRM:
-                                ConverterWorkFlow.MRM(this);
-                                break;
-                            case AcquisitionMethod.DDA_PASEF:
-                                jobInfo.ionMobility = true;
-                                ConverterWorkFlow.DDAPasef(this);
-                                break;
-                            case AcquisitionMethod.DIA_PASEF:
-                                jobInfo.ionMobility = true;
-                                ConverterWorkFlow.DIAPasef(this);
-                                break;
+                            predictAcquisitionMethod();
+                            switch (jobInfo.type)
+                            {
+                                case AcquisitionMethod.DIA:
+                                    ConverterWorkFlow.DIA(this);
+                                    break;
+                                case AcquisitionMethod.DDA:
+                                    ConverterWorkFlow.DDA(this);
+                                    break;
+                                case AcquisitionMethod.PRM:
+                                    ConverterWorkFlow.PRM(this);
+                                    break;
+                                case AcquisitionMethod.MRM:
+                                    ConverterWorkFlow.MRM(this);
+                                    break;
+                                case AcquisitionMethod.DDA_PASEF:
+                                    jobInfo.ionMobility = true;
+                                    ConverterWorkFlow.DDAPasef(this);
+                                    break;
+                                case AcquisitionMethod.DIA_PASEF:
+                                    jobInfo.ionMobility = true;
+                                    ConverterWorkFlow.DIAPasef(this);
+                                    break;
+                            }
                         }
                     }
+                   clearCache();
+                   if (msd != null)
+                   {
+                       msd.Dispose();
+                   }
                 }
             }
             finally
@@ -526,7 +548,7 @@ namespace AirdPro.Converters
             }
         }
 
-        protected void readVendorFile()
+        protected MSDataList readVendorFile()
         {
             jobInfo.log(Tag.Prepare_To_Parse_Vendor_File, Status.Prepare);
             ReaderList readerList = ReaderList.FullReaderList;
@@ -542,38 +564,10 @@ namespace AirdPro.Converters
             if (msInfo == null || msInfo.Count == 0)
             {
                 jobInfo.logError(ResultCode.Reading_Vendor_File_Error_Run_Is_Null);
-                return;
+                return null;
             }
-
-            msd = msInfo[0];
+            
             jobInfo.log(Tag.Adapting_Vendor_File_API, Status.Adapting);
-
-            List<string> filter = new List<string>();
-            SpectrumListFactory.wrap(msd, filter); //这一步操作可以帮助加快Wiff文件的初始化速度
-
-            spectrumList = msd.run.spectrumList;
-            if (spectrumList == null || spectrumList.empty())
-            {
-                jobInfo.log(ResultCode.No_Spectra_Found);
-            }
-            else
-            {
-                totalSize = spectrumList.size();
-            }
-
-            chromatogramList = msd.run.chromatogramList;
-            if (chromatogramList == null || chromatogramList.empty())
-            {
-                jobInfo.log(ResultCode.No_Chromatograms_Found);
-            }
-            else
-            {
-                totalChroma = chromatogramList.size();
-            }
-
-            jobInfo.log(Tag.Adapting_Finished);
-            jobInfo.log(Tag.Total_Spectra + totalSize);
-            jobInfo.log(Tag.Total_Chromatograms + totalChroma);
 
             switch (jobInfo.format)
             {
@@ -606,8 +600,41 @@ namespace AirdPro.Converters
                     if (file.Exists) fileSize += file.Length;
                     break;
             }
+
+            return msInfo;
         }
 
+        public void readMsd(MSData msd)
+        {
+            this.msd = msd;
+            List<string> filter = new List<string>();
+            SpectrumListFactory.wrap(msd, filter); //这一步操作可以帮助加快Wiff文件的初始化速度
+
+            spectrumList = msd.run.spectrumList;
+            if (spectrumList == null || spectrumList.empty())
+            {
+                jobInfo.log(ResultCode.No_Spectra_Found);
+            }
+            else
+            {
+                totalSize = spectrumList.size();
+            }
+
+            chromatogramList = msd.run.chromatogramList;
+            if (chromatogramList == null || chromatogramList.empty())
+            {
+                jobInfo.log(ResultCode.No_Chromatograms_Found);
+            }
+            else
+            {
+                totalChroma = chromatogramList.size();
+            }
+
+            jobInfo.log(Tag.Adapting_Finished);
+            jobInfo.log(Tag.Total_Spectra + totalSize);
+            jobInfo.log(Tag.Total_Chromatograms + totalChroma);
+        }
+        
         //将最终的数据写入文件中
         public void writeToAirdInfoFile()
         {
@@ -648,6 +675,8 @@ namespace AirdPro.Converters
         public void clearCache()
         {
             ranges = new();
+            spectrumList = null;
+            
             rangeTable = new();
             indexList = new();
             ms2Table = new();
