@@ -93,6 +93,7 @@ namespace AirdPro.Converters
                 }
                 for (int i = 0; i < msdList.Count; i++)
                 {
+                    startPosition = 0;
                     if (msdList.Count > 1) //如果msdList中包含多个msd，那么每一个msd会被单独导出为一个文件，导出的文件名按照msd的ID进行命名
                     {
                         String id = msdList[i].id;
