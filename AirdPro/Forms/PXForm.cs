@@ -329,6 +329,10 @@ namespace AirdPro.Repository
 
         private void search()
         {
+            if (projectsTable.Rows == null)
+            {
+                return;
+            }
             if (projectsTable.Rows.Count != 0)
             {
                 searchProjectsTable.Clear();
