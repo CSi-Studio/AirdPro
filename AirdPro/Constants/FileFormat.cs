@@ -13,6 +13,7 @@ namespace AirdPro.Constants
     public static class FileFormat
     {
         public const string WIFF = "WIFF";
+        public const string WIFF2 = "WIFF2";
         public const string RAW = "RAW";
         public const string D = "D";
         public const string mzML = "mzML";
@@ -20,6 +21,7 @@ namespace AirdPro.Constants
 
         public const string DotD = ".D";
         public const string DotWIFF = ".WIFF";
+        public const string DotWIFF2 = ".WIFF2";
         public const string DotRAW = ".RAW";
         public const string DotmzML = ".mzML";
         public const string DotmzXML = ".mzXML";

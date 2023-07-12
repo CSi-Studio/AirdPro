@@ -26,7 +26,7 @@ namespace AirdPro.Asyncs
     {
         public static ConvertTaskManager instance;
 
-        public TaskFactory fac = null;
+       // public TaskFactory fac = null;
 
         public Queue<JobInfo> jobQueue = new Queue<JobInfo>();
 
@@ -38,7 +38,7 @@ namespace AirdPro.Asyncs
 
         public ConvertTaskManager()
         {
-            fac = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(Settings.Default.MaxConversionTasks));
+            //fac = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(Settings.Default.MaxConversionTasks));
         }
 
         public static ConvertTaskManager getInstance()
@@ -106,8 +106,9 @@ namespace AirdPro.Asyncs
                     return;
                 }
 
-                runJob(jobInfo);
-                Application.DoEvents();
+                // runJob(jobInfo);
+                // Application.DoEvents();
+                new Thread(()=>runJob(jobInfo)).Start();
                 // fac.StartNew(() => runJob(jobInfo), jobInfo.tokenSource.Token);
             }
         }

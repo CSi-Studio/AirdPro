@@ -246,7 +246,7 @@ public class CVUtil
                 else
                     result = 0;
             }
-            catch (FormatException e)
+            catch (Exception e)
             {
                 jobInfo.log(cvid + "-Retry Times-" + retryTimes + "-Result:" + result);
                 jobInfo.log(e.StackTrace);

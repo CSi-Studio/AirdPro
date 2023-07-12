@@ -29,7 +29,6 @@ using pwiz.CLI.analysis;
 using pwiz.CLI.cv;
 using pwiz.CLI.data;
 using pwiz.CLI.msdata;
-using StackExchange.Redis;
 using Activator = AirdPro.Constants.Activator;
 using Software = AirdSDK.Beans.Software;
 using Spectrum = pwiz.CLI.msdata.Spectrum;
@@ -559,12 +558,15 @@ namespace AirdPro.Converters
             {
                 allowMsMsWithoutPrecursor = false,
                 combineIonMobilitySpectra = true,
-                ignoreZeroIntensityPoints = jobInfo.config.ignoreZeroIntensity
+                acceptZeroLengthSpectra = false,
+                ignoreZeroIntensityPoints = false,//jobInfo.config.ignoreZeroIntensity,
+                simAsSpectra = false,
+                srmAsSpectra = false
             };
             
             MSDataList msInfo = new MSDataList();
             readerList.read(jobInfo.inputPath, msInfo, readerConfig);
-            if (msInfo == null || msInfo.Count == 0)
+            if (msInfo.Count == 0)
             {
                 jobInfo.logError(ResultCode.Reading_Vendor_File_Error_Run_Is_Null);
                 return null;
@@ -575,6 +577,7 @@ namespace AirdPro.Converters
             switch (jobInfo.format)
             {
                 case FileFormat.WIFF:
+                case FileFormat.WIFF2:
                     FileInfo wiff = new FileInfo(jobInfo.inputPath);
                     if (wiff.Exists) fileSize += wiff.Length;
                     FileInfo mtd = new FileInfo(jobInfo.inputPath + ".mtd");
@@ -1082,7 +1085,7 @@ namespace AirdPro.Converters
             {
                 Instrument instrument = new Instrument();
                 //仪器设备信息
-                if (jobInfo.format.Equals(FileFormat.WIFF))
+                if (jobInfo.format.Equals(FileFormat.WIFF) || jobInfo.format.Equals(FileFormat.WIFF2))
                 {
                     instrument.manufacturer = Manufacturer.SCIEX;
                 }

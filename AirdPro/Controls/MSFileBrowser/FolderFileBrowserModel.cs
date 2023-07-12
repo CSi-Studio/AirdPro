@@ -144,6 +144,7 @@ namespace AirdPro
                                 FileItem item = new FileItem(str, parent, this);
                                 string extension = Path.GetExtension(str);
                                 if (FileFormat.DotWIFF.ToLower().Equals(extension.ToLower())
+                                    || FileFormat.DotWIFF2.ToLower().Equals(extension.ToLower())
                                     || FileFormat.DotRAW.ToLower().Equals(extension.ToLower())
                                     || FileFormat.DotmzML.ToLower().Equals(extension.ToLower())
                                     || FileFormat.DotmzXML.ToLower().Equals(extension.ToLower()))

@@ -22,7 +22,6 @@ using AirdSDK.Utils;
 using ThermoFisher.CommonCore.Data;
 using System.ComponentModel;
 using AirdPro.Utils;
-
 namespace AirdPro.Forms
 {
     public partial class ConversionForm : Form
