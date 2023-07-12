@@ -46,6 +46,7 @@ namespace AirdPro
             conversionConfigHandler = new ConversionConfigHandler();
             mainForm = new MainForm();
             Application.Run(mainForm);
+        
         }
 
         #region Exception handling

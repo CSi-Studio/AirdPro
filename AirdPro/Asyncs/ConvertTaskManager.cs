@@ -106,9 +106,9 @@ namespace AirdPro.Asyncs
                     return;
                 }
 
-                // runJob(jobInfo);
-                // Application.DoEvents();
-                new Thread(()=>runJob(jobInfo)).Start();
+                 runJob(jobInfo);
+                 Application.DoEvents();
+             
                 // fac.StartNew(() => runJob(jobInfo), jobInfo.tokenSource.Token);
             }
         }

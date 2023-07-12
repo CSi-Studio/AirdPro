@@ -135,11 +135,11 @@ namespace AirdPro.Converters
                             }
                         }
                     }
-                   clearCache();
-                   if (msd != null)
-                   {
-                       msd.Dispose();
-                   }
+                    clearCache();
+                    if (msd != null)
+                    {
+                        msd.Dispose();
+                    }
                 }
             }
             finally
@@ -558,10 +558,7 @@ namespace AirdPro.Converters
             {
                 allowMsMsWithoutPrecursor = false,
                 combineIonMobilitySpectra = true,
-                acceptZeroLengthSpectra = false,
-                ignoreZeroIntensityPoints = false,//jobInfo.config.ignoreZeroIntensity,
-                simAsSpectra = false,
-                srmAsSpectra = false
+                ignoreZeroIntensityPoints = jobInfo.config.ignoreZeroIntensity
             };
             
             MSDataList msInfo = new MSDataList();
@@ -1437,9 +1434,9 @@ namespace AirdPro.Converters
             jobInfo.log(Tag.Pretreatment + totalSize, Status.Pretreatment);
             for (var i = 0; i < totalSize; i++)
             {
-                Spectrum spectrum = spectrumList.spectrum(i);
+                Spectrum spectrum = spectrumList.spectrum(i, false);
                 string msLevel = CVUtil.parseMsLevel(spectrum);
-
+                jobInfo.setStatus("Pre:" + i+"/"+totalSize);
                 //最后一个谱图,单独判断
                 if (i == totalSize - 1)
                 {

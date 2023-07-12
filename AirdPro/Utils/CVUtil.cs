@@ -235,9 +235,9 @@ public class CVUtil
 
     public static double parsePrecursorParams(IsolationWindow isolationWindow, CVID cvid, JobInfo jobInfo)
     {
-        double result = -1;
+        double? result = null;
         var retryTimes = 3;
-        while (result < 0 && retryTimes > 0)
+        while (result == null && retryTimes > 0)
         {
             try
             {
@@ -255,9 +255,13 @@ public class CVUtil
             retryTimes--;
         }
 
-        if (result < 0) throw new Exception(ResultCode.Parse_Double_Error + result);
-
-        return result;
+        if (result == null)
+        {
+            throw new Exception(ResultCode.Parse_Double_Error + ":" + isolationWindow.cvParamChild(cvid).value);
+        }
+       
+        return result.Value;
+        
     }
 
     public static double parsePrecursorWidth(IsolationWindow isolationWindow, JobInfo jobInfo)

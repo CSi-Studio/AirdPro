@@ -24,6 +24,8 @@ using AirdPro.Repository;
 using AirdPro.Constants;
 using AirdSDK.Utils;
 using AutoUpdaterDotNET;
+using pwiz.CLI.msdata;
+using Spectrum = AirdSDK.Beans.Common.Spectrum;
 
 namespace AirdPro.Forms
 {
