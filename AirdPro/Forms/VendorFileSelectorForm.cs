@@ -68,6 +68,11 @@ namespace AirdPro.Forms
                 return false;
             }
 
+            if (cbConfig.SelectedItem == null && !cbConfig.Text.IsNullOrEmpty())
+            {
+                cbConfig.SelectedItem = cbConfig.Text;
+            }
+            
             if (cbConfig.SelectedItem == null || cbConfig.SelectedItem.ToString().IsNullOrEmpty() ||
                 !Program.conversionConfigHandler.configMap.ContainsKey(cbConfig.SelectedItem.ToString()))
             {

@@ -55,7 +55,7 @@ namespace AirdPro.Storage.Config
         /**
          * 是否压缩索引，是则会将IndexList的信息转化为JSON格式后使用Zstd进行压缩并存储与Aird文件中
          */
-        public bool compressedIndex = false;
+        public bool compressedIndex = true;
 
         /**
          * The operator's name
@@ -66,7 +66,7 @@ namespace AirdPro.Storage.Config
         /**
          * 是否使用动态参数决策
          */
-        public bool autoDesicion = true;
+        public bool autoDesicion = false;
 
         /**
          * 面向的场景,默认为Aird-ComboComp面向计算的场景，主要使用行存储的方式进行排列与压缩
