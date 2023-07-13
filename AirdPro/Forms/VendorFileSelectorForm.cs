@@ -45,7 +45,7 @@ namespace AirdPro.Forms
         {
             msFileViews.files.ClearSelection();
         }
-
+        
         /**
          * mirrorConvert if use mirror conversion,
          * if true,AirdPro will scan the selected files into target output file with same directory structure.
@@ -84,7 +84,7 @@ namespace AirdPro.Forms
                 MessageBox.Show(MessageInfo.Set_Your_Output_Path_First);
                 return false;
             }
-
+            
             var selectedNodes = msFileViews.files.SelectedNodes;
             if (selectedNodes.IsNullOrEmpty())
             {

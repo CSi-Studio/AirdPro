@@ -69,10 +69,14 @@ namespace AirdPro
 
             (files.Model as SortedTreeModel).Comparer = new FolderFileItemSorter(clicked.Header, clicked.SortOrder);
         }
-
+        
         private void _treeView_NodeMouseDoubleClick(object sender, TreeNodeAdvMouseEventArgs e)
         {
-            Console.WriteLine(e.Node);
+            BaseItem item = e.Node.Tag as BaseItem;
+            if (item.MSFile)
+            {
+                Console.WriteLine(e.Node);
+            }
         }
     }
 }
