@@ -60,6 +60,10 @@ namespace AirdPro.Algorithms
             rtByteComp4Chroma = new ZstdWrapper();
             intIntComp4Chroma = new VarByteWrapper();
             intByteComp4Chroma = new ZstdWrapper();
+            // rtIntComp4Chroma = new SortIntEmpty();
+            // rtByteComp4Chroma = new ZlibWrapper();
+            // intIntComp4Chroma = new Empty();
+            // intByteComp4Chroma = new ZlibWrapper();
         }
 
         public abstract void compressMS1(Converter converter, BlockIndex index);
