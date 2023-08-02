@@ -1,15 +1,20 @@
-AirdPro V4 is now released at 2022.10
+AirdPro V4 is now available at 2022.10
 
 # AirdPro
-AirdPro is an GUI client for conversion from vendor file to Aird file. AirdPro is written in C# and is based on pwiz_bindings_cli.dll from ProteoWizard project.
+AirdPro is a GUI client for conversion from vendor files to Aird files. AirdPro is written in C# and is based on pwiz_bindings_cli.dll from the ProteoWizard project.
 AirdPro is opensource under the MulanPSL2 license
 
 ## Version Description
+### V5.1.0
+- [New Feature] New File Selection UI
+- [New Feature] Supporting MRM acquisition method
+- [New Feature] Supporting Wiff2 format
+
 ### V4.4.X
-- [New Feature] Automatic identification for Acquisition Method
-- [New Feature] Batch Conversion, Scan the directory structure and convert automatically
-- [New Feature] Aird-Slice, Search-oriented MS data format, search speed increased 50-500 times for single m/z
-- [New Feature] New Acuiqisition Method Support: MRM/SRM
+- [New Feature] Automatic identification for Acquisition methods
+- [New Feature] Batch Conversion: Scan the directory structure and convert automatically
+- [New Feature] Aird-Slice, Search-oriented MS data format, search speed increased 50–500 times for single m/z
+- [New Feature] New Acquisition Method Support: MRM/SRM
 
 ### V4.0.X
 - [New Feature] XIC, Spectrum View for Aird
@@ -19,17 +24,17 @@ AirdPro is opensource under the MulanPSL2 license
 - [New Feature] Auto Client Update Checking for AirdPro
 
 ### V3.0.0
-- [New Feature] New Compressors Strategy: Combinable Compressors for m/z, intensity and mobility
+- [New Feature] New Compressor Strategy: Combinable Compressors for m/z, intensity and mobility
 - [New Feature] Integer-Purpose Compressors: Variable Byte, Binary Packing
-- [New Feature] General-Purpose Compressors: Brotli, Snappy, Zstd, Zlib
+- [New Feature] General-Purpose Compressors: Brotli, Snappy, Zstd, and Zlib
 - [New Feature] Dynamic-Decider for Best ComboComp
-- [New Feature] New GUI for Version3.0
+- [New Feature] New GUI for Version 3.0
 - [New Feature] New Conversion Config Panel
 - [New Feature] New Software Config Panel
 
 
 ### V2.1.0
-- [New Feature] New compression algorithm ZDVB is released, which has 10%-20% compression performance improvement compared with ZDPD kernel.Furthermore, ZDVB provides faster decoding speed than ZDPD.
+- [New Feature] A new compression algorithm ZDVB is released, which has 10%-20% compression performance improvement compared with ZDPD kernel.Furthermore, ZDVB provides faster decoding speed than ZDPD.
 - [New Feature] PASEF mode support for both DDA and DIA
 
 ### V2.0.0

@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\Compressor\ICompressor.cs" />
+    <Compile Include="Algorithms\Compressor\SortIntEmpty.cs" />
     <Compile Include="Algorithms\Compressor\StackComp.cs" />
     <Compile Include="Algorithms\Compressor\CoreComp.cs" />
     <Compile Include="Asyncs\ConvertTaskManager.cs" />
