@@ -339,6 +339,7 @@ public class CVUtil
         var charge = parsePrecursorCharge(precursor, jobInfo);
         windowRange.charge = charge;
         windowRange.mz = precursorMz;
+        
         windowRange.start = precursorMz - lowerOffset;
         windowRange.end = precursorMz + upperOffset;
         return windowRange;

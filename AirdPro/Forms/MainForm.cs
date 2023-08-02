@@ -261,7 +261,7 @@ namespace AirdPro.Forms
                         SpectrumRow row = parseFromIndexAndAirdInfo(airdInfo, index, k);
                         row.ParentScan = index.num;
                         row.MSn = 2;
-                        row.Precursor = index.getWindowRange().start + "-" + index.getWindowRange().end;
+                        row.Precursor = index.getWindowRange().mz+"("+index.getWindowRange().start + "-" + index.getWindowRange().end+")";
                         rowList.Add(row);
                     }
                 }
