@@ -90,6 +90,7 @@ namespace AirdPro.Converters
                 {
                     return;
                 }
+
                 for (int i = 0; i < msdList.Count; i++)
                 {
                     startPosition = 0;
@@ -135,6 +136,7 @@ namespace AirdPro.Converters
                             }
                         }
                     }
+
                     clearCache();
                     if (msd != null)
                     {
@@ -560,7 +562,7 @@ namespace AirdPro.Converters
                 combineIonMobilitySpectra = true,
                 ignoreZeroIntensityPoints = jobInfo.config.ignoreZeroIntensity
             };
-            
+
             MSDataList msInfo = new MSDataList();
             readerList.read(jobInfo.inputPath, msInfo, readerConfig);
             if (msInfo.Count == 0)
@@ -568,7 +570,7 @@ namespace AirdPro.Converters
                 jobInfo.logError(ResultCode.Reading_Vendor_File_Error_Run_Is_Null);
                 return null;
             }
-            
+
             jobInfo.log(Tag.Adapting_Vendor_File_API, Status.Adapting);
 
             switch (jobInfo.format)
@@ -637,7 +639,7 @@ namespace AirdPro.Converters
             jobInfo.log(Tag.Total_Spectra + totalSize);
             jobInfo.log(Tag.Total_Chromatograms + totalChroma);
         }
-        
+
         //将最终的数据写入文件中
         public void writeToAirdInfoFile()
         {
@@ -660,6 +662,7 @@ namespace AirdPro.Converters
             string airdInfoStr = JsonConvert.SerializeObject(airdInfo,
                 new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             byte[] airdBytes = Encoding.Default.GetBytes(airdInfoStr);
+            startPosition += airdBytes.Length;
             airdJsonStream.Write(airdBytes, 0, airdBytes.Length);
 
             if (jobInfo.config.isSearch())
@@ -679,7 +682,7 @@ namespace AirdPro.Converters
         {
             ranges = new();
             spectrumList = null;
-            
+
             rangeTable = new();
             indexList = new();
             ms2Table = new();
@@ -1436,7 +1439,7 @@ namespace AirdPro.Converters
             {
                 Spectrum spectrum = spectrumList.spectrum(i, false);
                 string msLevel = CVUtil.parseMsLevel(spectrum);
-                jobInfo.setStatus("Pre:" + i+"/"+totalSize);
+                jobInfo.setStatus("Pre:" + i + "/" + totalSize);
                 //最后一个谱图,单独判断
                 if (i == totalSize - 1)
                 {
