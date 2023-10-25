@@ -203,27 +203,6 @@ namespace AirdPro.Forms
             Program.configListForm.showConfig(Constants.Tag.Empty, config);
         }
 
-        private void selectFilesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (fileSelector == null || fileSelector.IsDisposed)
-            {
-                fileSelector = new VendorFileSelectorForm();
-            }
-
-            fileSelector.clearInfos();
-            fileSelector.Show();
-        }
-
-        private void globalSettingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (Program.globalSettingForm == null || Program.globalSettingForm.IsDisposed)
-            {
-                Program.globalSettingForm = new GlobalSettingForm();
-            }
-
-            Program.globalSettingForm.Show();
-        }
-
         private void rerun_Click(object sender, EventArgs e)
         {
             foreach (ListViewItem item in lvFileList.SelectedItems)
@@ -261,7 +240,9 @@ namespace AirdPro.Forms
 
         private void redisConsumer_Tick(object sender, EventArgs e)
         {
+            redisConsumer.Stop();
             RedisClient.getInstance().consume();
+            redisConsumer.Start();
         }
 
         public void connectToRedis()

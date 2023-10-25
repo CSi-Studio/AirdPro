@@ -139,7 +139,7 @@
     <value>NoControl</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>457, 59</value>
+    <value>455, 59</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
     <value>30, 16</value>
@@ -256,7 +256,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnHelp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>446, 8</value>
+    <value>445, 8</value>
   </data>
   <data name="btnHelp.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
@@ -1213,7 +1213,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblRedisStatus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>389, 60</value>
+    <value>389, 58</value>
   </data>
   <data name="lblRedisStatus.Size" type="System.Drawing.Size, System.Drawing">
     <value>52, 16</value>

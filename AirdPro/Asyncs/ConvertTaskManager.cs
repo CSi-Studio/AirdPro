@@ -17,7 +17,6 @@ using System.Windows.Forms;
 using AirdPro.Constants;
 using AirdPro.Converters;
 using AirdPro.Domains;
-using AirdPro.Properties;
 using static AirdPro.Constants.ProcessingStatus;
 
 namespace AirdPro.Asyncs
@@ -84,33 +83,33 @@ namespace AirdPro.Asyncs
 
         public void run()
         {
-            while (true)
-            {
-                //如果队列中没有待执行的任务,那么进行休眠当前进程两秒
-                if (jobQueue.Count == 0)
+                while (true)
                 {
-                    return;
-                }
+                    //如果队列中没有待执行的任务,那么进行休眠当前进程两秒
+                    if (jobQueue.Count == 0)
+                    {
+                        return;
+                    }
 
-                JobInfo jobInfo = null;
-                try
-                {
-                    jobInfo = jobQueue.Dequeue();
-                }
-                catch
-                {
-                }
+                    JobInfo jobInfo = null;
+                    try
+                    {
+                        jobInfo = jobQueue.Dequeue();
+                    }
+                    catch
+                    {
+                    }
 
-                if (jobInfo == null)
-                {
-                    return;
-                }
+                    if (jobInfo == null)
+                    {
+                        return;
+                    }
 
-                 runJob(jobInfo);
-                 Application.DoEvents();
-             
-                // fac.StartNew(() => runJob(jobInfo), jobInfo.tokenSource.Token);
-            }
+                    runJob(jobInfo);
+                    Application.DoEvents();
+
+                    // fac.StartNew(() => runJob(jobInfo), jobInfo.tokenSource.Token);
+                }
         }
 
         public void clear()

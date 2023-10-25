@@ -179,7 +179,8 @@ namespace AirdPro.Redis
                 //如果在Redis获取到了相关的转换任务
                 if (needToExecute)
                 {
-                    ConvertTaskManager.getInstance().run();
+                    Program.conversionForm.doConvert();
+                    // ConvertTaskManager.getInstance().run();
                 }
             }
 
