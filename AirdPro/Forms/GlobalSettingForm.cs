@@ -40,5 +40,11 @@ namespace AirdPro.Forms
             tbRedisUsername.Text = Settings.Default.RedisUsername;
             tbRedisPassword.Text = Settings.Default.RedisPassword;
         }
+
+        private void GlobalSettingForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            this.Visible = false;
+        }
     }
 }

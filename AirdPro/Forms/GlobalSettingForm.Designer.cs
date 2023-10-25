@@ -54,7 +54,7 @@
             this.lblIP.Location = new System.Drawing.Point(112, 16);
             this.lblIP.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblIP.Name = "lblIP";
-            this.lblIP.Size = new System.Drawing.Size(102, 24);
+            this.lblIP.Size = new System.Drawing.Size(71, 17);
             this.lblIP.TabIndex = 29;
             this.lblIP.Text = "Redis Host";
             this.lblIP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -67,7 +67,7 @@
             this.tbRedisHost.Location = new System.Drawing.Point(200, 13);
             this.tbRedisHost.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisHost.Name = "tbRedisHost";
-            this.tbRedisHost.Size = new System.Drawing.Size(140, 31);
+            this.tbRedisHost.Size = new System.Drawing.Size(140, 23);
             this.tbRedisHost.TabIndex = 28;
             this.tbRedisHost.Text = "127.0.0.1";
             // 
@@ -77,7 +77,7 @@
             this.tbRedisPort.Location = new System.Drawing.Point(200, 45);
             this.tbRedisPort.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisPort.Name = "tbRedisPort";
-            this.tbRedisPort.Size = new System.Drawing.Size(66, 31);
+            this.tbRedisPort.Size = new System.Drawing.Size(66, 23);
             this.tbRedisPort.TabIndex = 121;
             this.tbRedisPort.Text = "6379";
             // 
@@ -106,7 +106,7 @@
             this.lblMaxTasks.Location = new System.Drawing.Point(13, 140);
             this.lblMaxTasks.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMaxTasks.Name = "lblMaxTasks";
-            this.lblMaxTasks.Size = new System.Drawing.Size(260, 24);
+            this.lblMaxTasks.Size = new System.Drawing.Size(180, 17);
             this.lblMaxTasks.TabIndex = 125;
             this.lblMaxTasks.Text = "Max Tasks (Restart Required)";
             this.lblMaxTasks.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -127,7 +127,7 @@
             0,
             0});
             this.numMaxTasks.Name = "numMaxTasks";
-            this.numMaxTasks.Size = new System.Drawing.Size(111, 31);
+            this.numMaxTasks.Size = new System.Drawing.Size(111, 23);
             this.numMaxTasks.TabIndex = 126;
             this.numMaxTasks.Value = new decimal(new int[] {
             1,
@@ -146,7 +146,7 @@
             this.label1.Location = new System.Drawing.Point(118, 48);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(98, 24);
+            this.label1.Size = new System.Drawing.Size(68, 17);
             this.label1.TabIndex = 127;
             this.label1.Text = "Redis Port";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -162,7 +162,7 @@
             this.label2.Location = new System.Drawing.Point(84, 80);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(148, 24);
+            this.label2.Size = new System.Drawing.Size(103, 17);
             this.label2.TabIndex = 128;
             this.label2.Text = "Redis Username";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -173,7 +173,7 @@
             this.tbRedisUsername.Location = new System.Drawing.Point(200, 77);
             this.tbRedisUsername.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisUsername.Name = "tbRedisUsername";
-            this.tbRedisUsername.Size = new System.Drawing.Size(66, 31);
+            this.tbRedisUsername.Size = new System.Drawing.Size(66, 23);
             this.tbRedisUsername.TabIndex = 129;
             // 
             // tbRedisPassword
@@ -182,7 +182,7 @@
             this.tbRedisPassword.Location = new System.Drawing.Point(200, 108);
             this.tbRedisPassword.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisPassword.Name = "tbRedisPassword";
-            this.tbRedisPassword.Size = new System.Drawing.Size(66, 31);
+            this.tbRedisPassword.Size = new System.Drawing.Size(66, 23);
             this.tbRedisPassword.TabIndex = 131;
             // 
             // label3
@@ -196,7 +196,7 @@
             this.label3.Location = new System.Drawing.Point(89, 111);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(143, 24);
+            this.label3.Size = new System.Drawing.Size(100, 17);
             this.label3.TabIndex = 130;
             this.label3.Text = "Redis Password";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -204,7 +204,7 @@
             // GlobalSettingForm
             // 
             this.AcceptButton = this.btnSave;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(498, 227);
             this.Controls.Add(this.tbRedisPassword);
@@ -228,6 +228,7 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Global Settings";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GlobalSettingForm_FormClosing);
             this.Load += new System.EventHandler(this.GlobalSettingForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numMaxTasks)).EndInit();
             this.ResumeLayout(false);

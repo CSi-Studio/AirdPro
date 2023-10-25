@@ -84,5 +84,11 @@ namespace AirdPro.Forms
         {
             AutoUpdater.Start("https://airdpro.oss-cn-hangzhou.aliyuncs.com/Version-CN.xml");
         }
+
+        private void AboutForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            this.Visible = false;
+        }
     }
 }

@@ -67,9 +67,11 @@ namespace AirdPro.Forms
             if (Program.globalSettingForm == null || Program.globalSettingForm.IsDisposed)
             {
                 Program.globalSettingForm = new GlobalSettingForm();
+                Program.globalSettingForm.Show();
             }
 
-            Program.globalSettingForm.Show();
+            Program.globalSettingForm.Visible = true;
+
         }
 
         private void openRepositoryToolStripMenuItem_Click(object sender, EventArgs e)

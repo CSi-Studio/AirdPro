@@ -392,9 +392,10 @@ namespace AirdPro.Forms
             if (Program.globalSettingForm == null || Program.globalSettingForm.IsDisposed)
             {
                 Program.globalSettingForm = new GlobalSettingForm();
+                Program.globalSettingForm.Show();
             }
 
-            Program.globalSettingForm.Show();
+            Program.globalSettingForm.Visible = true;
         }
 
         private void btnHelp_Click(object sender, EventArgs e)
@@ -402,9 +403,10 @@ namespace AirdPro.Forms
             if (Program.aboutForm == null || Program.aboutForm.IsDisposed)
             {
                 Program.aboutForm = new AboutForm();
+                Program.aboutForm.Show();
             }
 
-            Program.aboutForm.Show();
+            Program.aboutForm.Visible = true;
         }
     }
 }

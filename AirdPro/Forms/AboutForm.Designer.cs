@@ -249,7 +249,7 @@
             // 
             this.pbCheckUpdate.Image = ((System.Drawing.Image)(resources.GetObject("pbCheckUpdate.Image")));
             this.pbCheckUpdate.Location = new System.Drawing.Point(258, 3);
-            this.pbCheckUpdate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pbCheckUpdate.Margin = new System.Windows.Forms.Padding(2);
             this.pbCheckUpdate.Name = "pbCheckUpdate";
             this.pbCheckUpdate.Size = new System.Drawing.Size(204, 49);
             this.pbCheckUpdate.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -287,6 +287,7 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "About";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AboutForm_FormClosing);
             this.Load += new System.EventHandler(this.HelpAboutForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbCheckUpdate)).EndInit();
             this.ResumeLayout(false);
