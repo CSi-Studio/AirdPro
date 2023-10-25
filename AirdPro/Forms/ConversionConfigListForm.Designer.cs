@@ -30,10 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConversionConfigListForm));
-            this.headerName = new System.Windows.Forms.ColumnHeader();
+            this.headerName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvConfigList = new System.Windows.Forms.ListView();
-            this.mzPrecision = new System.Windows.Forms.ColumnHeader();
-            this.headerAuto = new System.Windows.Forms.ColumnHeader();
+            this.mzPrecision = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerAuto = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imgsForList = new System.Windows.Forms.ImageList(this.components);
@@ -102,9 +102,13 @@
             // 
             // lvConfigList
             // 
-            this.lvConfigList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left)));
+            this.lvConfigList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.lvConfigList.BackColor = System.Drawing.SystemColors.Window;
-            this.lvConfigList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.headerName, this.mzPrecision, this.headerAuto });
+            this.lvConfigList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.headerName,
+            this.mzPrecision,
+            this.headerAuto});
             this.lvConfigList.ContextMenuStrip = this.contextMenu;
             this.lvConfigList.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.lvConfigList.FullRowSelect = true;
@@ -135,7 +139,8 @@
             // contextMenu
             // 
             this.contextMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.deleteToolStripMenuItem });
+            this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.deleteToolStripMenuItem});
             this.contextMenu.Name = "contextMenu";
             this.contextMenu.Size = new System.Drawing.Size(114, 26);
             // 
@@ -175,7 +180,8 @@
             // 
             // lblNameConfig
             // 
-            this.lblNameConfig.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblNameConfig.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblNameConfig.AutoSize = true;
             this.lblNameConfig.Font = new System.Drawing.Font("微软雅黑", 8F);
             this.lblNameConfig.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -238,7 +244,13 @@
             this.cbConfigStackLayers.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbConfigStackLayers.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbConfigStackLayers.FormattingEnabled = true;
-            this.cbConfigStackLayers.Items.AddRange(new object[] { "32", "64", "128", "256", "512", "1024" });
+            this.cbConfigStackLayers.Items.AddRange(new object[] {
+            "32",
+            "64",
+            "128",
+            "256",
+            "512",
+            "1024"});
             this.cbConfigStackLayers.Location = new System.Drawing.Point(128, 4);
             this.cbConfigStackLayers.Name = "cbConfigStackLayers";
             this.cbConfigStackLayers.Size = new System.Drawing.Size(82, 25);
@@ -323,7 +335,11 @@
             this.cbConfigMzPrecision.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbConfigMzPrecision.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbConfigMzPrecision.FormattingEnabled = true;
-            this.cbConfigMzPrecision.Items.AddRange(new object[] { "3", "4", "5", "6" });
+            this.cbConfigMzPrecision.Items.AddRange(new object[] {
+            "3",
+            "4",
+            "5",
+            "6"});
             this.cbConfigMzPrecision.Location = new System.Drawing.Point(468, 37);
             this.cbConfigMzPrecision.Name = "cbConfigMzPrecision";
             this.cbConfigMzPrecision.Size = new System.Drawing.Size(82, 25);
@@ -417,7 +433,8 @@
             // 
             // cbAutoDecision
             // 
-            this.cbAutoDecision.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbAutoDecision.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cbAutoDecision.AutoSize = true;
             this.cbAutoDecision.Checked = true;
             this.cbAutoDecision.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -525,7 +542,12 @@
             this.cbCSWeight.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCSWeight.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbCSWeight.FormattingEnabled = true;
-            this.cbCSWeight.Items.AddRange(new object[] { "1", "2", "3", "4", "5" });
+            this.cbCSWeight.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"});
             this.cbCSWeight.Location = new System.Drawing.Point(154, 33);
             this.cbCSWeight.Name = "cbCSWeight";
             this.cbCSWeight.Size = new System.Drawing.Size(82, 25);
@@ -561,7 +583,12 @@
             this.cbDTWeight.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDTWeight.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbDTWeight.FormattingEnabled = true;
-            this.cbDTWeight.Items.AddRange(new object[] { "1", "2", "3", "4", "5" });
+            this.cbDTWeight.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"});
             this.cbDTWeight.Location = new System.Drawing.Point(154, 97);
             this.cbDTWeight.Name = "cbDTWeight";
             this.cbDTWeight.Size = new System.Drawing.Size(82, 25);
@@ -573,7 +600,12 @@
             this.cbCTWeight.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCTWeight.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbCTWeight.FormattingEnabled = true;
-            this.cbCTWeight.Items.AddRange(new object[] { "1", "2", "3", "4", "5" });
+            this.cbCTWeight.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"});
             this.cbCTWeight.Location = new System.Drawing.Point(154, 64);
             this.cbCTWeight.Name = "cbCTWeight";
             this.cbCTWeight.Size = new System.Drawing.Size(82, 25);
@@ -651,7 +683,9 @@
             this.cbScene.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbScene.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbScene.FormattingEnabled = true;
-            this.cbScene.Items.AddRange(new object[] { "Computation", "Search" });
+            this.cbScene.Items.AddRange(new object[] {
+            "Computation",
+            "Search"});
             this.cbScene.Location = new System.Drawing.Point(693, 5);
             this.cbScene.Name = "cbScene";
             this.cbScene.Size = new System.Drawing.Size(125, 25);
@@ -685,7 +719,7 @@
             this.pageComputation.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.pageComputation.Location = new System.Drawing.Point(4, 54);
             this.pageComputation.Name = "pageComputation";
-            this.pageComputation.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.pageComputation.Padding = new System.Windows.Forms.Padding(3);
             this.pageComputation.Size = new System.Drawing.Size(603, 346);
             this.pageComputation.TabIndex = 0;
             this.pageComputation.Text = "Computation";
@@ -693,7 +727,8 @@
             // 
             // cbCompressedIndex
             // 
-            this.cbCompressedIndex.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbCompressedIndex.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cbCompressedIndex.AutoSize = true;
             this.cbCompressedIndex.Checked = true;
             this.cbCompressedIndex.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -711,7 +746,7 @@
             this.pageSearchEngine.Controls.Add(this.cbFastReadMode);
             this.pageSearchEngine.Location = new System.Drawing.Point(4, 54);
             this.pageSearchEngine.Name = "pageSearchEngine";
-            this.pageSearchEngine.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.pageSearchEngine.Padding = new System.Windows.Forms.Padding(3);
             this.pageSearchEngine.Size = new System.Drawing.Size(603, 346);
             this.pageSearchEngine.TabIndex = 1;
             this.pageSearchEngine.Text = "Search";
@@ -809,6 +844,7 @@
             this.pageStorage.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         public System.Windows.Forms.CheckBox cbFastReadMode;

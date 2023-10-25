@@ -8,6 +8,8 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using AirdSDK.Enums;
+
 namespace AirdPro.Domains
 {
     public class RemoteConvertJob
@@ -18,9 +20,9 @@ namespace AirdPro.Domains
         public int? mzPrecision;
         public string creator;
         public string suffix;
-        public string? scene;
+        public string? scene = Scene.Computation;
         public bool? centroid = false;
         public bool ignoreZeroIntensity = true;
-        public bool? compressedIndex = true;
+        public bool? compressedIndex = false;
     }
 }

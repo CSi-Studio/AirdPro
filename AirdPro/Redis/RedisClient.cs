@@ -125,12 +125,13 @@ namespace AirdPro.Redis
                         {
                             // 如果获取到转换队列中相关的任务,那么将消息队列中的转换任务加入到执行队列中
                             valueStr = value.ToString();
-                            // 目前远程任务还不支持第二代压缩算法
+                            // 目前远程任务不支持Stack-ZDPD
                             RemoteConvertJob job = JsonConvert.DeserializeObject<RemoteConvertJob>(valueStr);
                             ConversionConfig conversionConfig = new ConversionConfig();
                             conversionConfig.ignoreZeroIntensity = true;
-                            conversionConfig.autoDesicion = true;
+                            conversionConfig.autoDesicion = false;
                             conversionConfig.threadAccelerate = true;
+                            conversionConfig.configName = "RedisDefault";
                             conversionConfig.suffix = job.suffix;
                             conversionConfig.ignoreZeroIntensity = job.ignoreZeroIntensity;
                             conversionConfig.creator = job.creator;

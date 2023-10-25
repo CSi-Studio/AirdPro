@@ -34,8 +34,10 @@ namespace AirdPro.Forms
 
         private void VendorFileSelectorForm_Load(object sender, EventArgs e)
         {
-            Program.conversionConfigHandler.attach(this);
-
+            if (!Program.conversionConfigHandler.contains(this))
+            {
+                Program.conversionConfigHandler.attach(this);
+            }
             rbAuto.Checked = true;
             tbOutputPath.Text = Settings.Default.LastOutputPath;
             cbConfig.SelectedIndex = 0;
@@ -197,11 +199,6 @@ namespace AirdPro.Forms
             }
         }
 
-        private void VendorFileSelectorForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Program.conversionConfigHandler.detach(this);
-        }
-
         private void btnAddClose_Click(object sender, EventArgs e)
         {
             bool addResult = addToList(false);
@@ -219,6 +216,12 @@ namespace AirdPro.Forms
             {
                 clearInfos();
             }
+        }
+
+        private void VendorFileSelectorForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            this.Visible = false;
         }
     }
 }

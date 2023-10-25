@@ -41,6 +41,11 @@ namespace AirdPro.Forms
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConversionForm));
             this.container = new System.Windows.Forms.SplitContainer();
+            this.label12 = new System.Windows.Forms.Label();
+            this.btnHelp = new System.Windows.Forms.Button();
+            this.label112 = new System.Windows.Forms.Label();
+            this.btnRedisSetting = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -80,8 +85,6 @@ namespace AirdPro.Forms
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
             this.redisConsumer = new System.Windows.Forms.Timer(this.components);
             this.timerTaskScan = new System.Windows.Forms.Timer(this.components);
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -97,6 +100,9 @@ namespace AirdPro.Forms
             // container.Panel1
             // 
             this.container.Panel1.Controls.Add(this.label12);
+            this.container.Panel1.Controls.Add(this.btnHelp);
+            this.container.Panel1.Controls.Add(this.label112);
+            this.container.Panel1.Controls.Add(this.btnRedisSetting);
             this.container.Panel1.Controls.Add(this.label11);
             this.container.Panel1.Controls.Add(this.label8);
             this.container.Panel1.Controls.Add(this.label7);
@@ -121,6 +127,46 @@ namespace AirdPro.Forms
             this.container.Panel2.Controls.Add(this.tbJobInfo);
             this.container.Panel2.Controls.Add(this.tbConsole);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
+            // 
+            // label12
+            // 
+            resources.ApplyResources(this.label12, "label12");
+            this.label12.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label12.Name = "label12";
+            // 
+            // btnHelp
+            // 
+            this.btnHelp.BackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(this.btnHelp, "btnHelp");
+            this.btnHelp.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnHelp.FlatAppearance.BorderSize = 0;
+            this.btnHelp.Name = "btnHelp";
+            this.ttAlgorithm.SetToolTip(this.btnHelp, resources.GetString("btnHelp.ToolTip"));
+            this.btnHelp.UseVisualStyleBackColor = false;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+            // 
+            // label112
+            // 
+            resources.ApplyResources(this.label112, "label112");
+            this.label112.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label112.Name = "label112";
+            // 
+            // btnRedisSetting
+            // 
+            this.btnRedisSetting.BackColor = System.Drawing.SystemColors.Control;
+            resources.ApplyResources(this.btnRedisSetting, "btnRedisSetting");
+            this.btnRedisSetting.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnRedisSetting.FlatAppearance.BorderSize = 0;
+            this.btnRedisSetting.Name = "btnRedisSetting";
+            this.ttAlgorithm.SetToolTip(this.btnRedisSetting, resources.GetString("btnRedisSetting.ToolTip"));
+            this.btnRedisSetting.UseVisualStyleBackColor = false;
+            this.btnRedisSetting.Click += new System.EventHandler(this.btnRedisSetting_Click);
+            // 
+            // label11
+            // 
+            resources.ApplyResources(this.label11, "label11");
+            this.label11.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label11.Name = "label11";
             // 
             // label8
             // 
@@ -375,18 +421,6 @@ namespace AirdPro.Forms
             this.timerTaskScan.Interval = 2000;
             this.timerTaskScan.Tick += new System.EventHandler(this.timerTaskScan_Tick);
             // 
-            // label11
-            // 
-            resources.ApplyResources(this.label11, "label11");
-            this.label11.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label11.Name = "label11";
-            // 
-            // label12
-            // 
-            resources.ApplyResources(this.label12, "label12");
-            this.label12.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label12.Name = "label12";
-            // 
             // ConversionForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -455,8 +489,11 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ColumnHeader headerConfigName;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label112;
+        private System.Windows.Forms.Button btnRedisSetting;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Button btnHelp;
     }
 }
 

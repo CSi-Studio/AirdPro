@@ -278,9 +278,11 @@ namespace AirdPro.Forms
             // 
             // msFileViews
             // 
-            this.msFileViews.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.msFileViews.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.msFileViews.Location = new System.Drawing.Point(6, 44);
-            this.msFileViews.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.msFileViews.Margin = new System.Windows.Forms.Padding(4);
             this.msFileViews.Name = "msFileViews";
             this.msFileViews.Size = new System.Drawing.Size(590, 385);
             this.msFileViews.TabIndex = 125;
@@ -319,12 +321,13 @@ namespace AirdPro.Forms
             this.Name = "VendorFileSelectorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "File/Folder Selector";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.VendorFileSelectorForm_FormClosed);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VendorFileSelectorForm_FormClosing);
             this.Load += new System.EventHandler(this.VendorFileSelectorForm_Load);
             this.gBoxMode.ResumeLayout(false);
             this.gBoxMode.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private System.Windows.Forms.Button btnMirrorScan;

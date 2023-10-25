@@ -315,10 +315,11 @@ namespace AirdPro.Forms
             if (fileSelector == null || fileSelector.IsDisposed)
             {
                 fileSelector = new VendorFileSelectorForm();
+                fileSelector.Show();
             }
 
             fileSelector.clearInfos();
-            fileSelector.Show();
+            fileSelector.Visible = true;
         }
 
         private void ConversionForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -368,6 +369,12 @@ namespace AirdPro.Forms
 
         private void btnMirrorTrans_Click(object sender, EventArgs e)
         {
+            if (Program.mainForm == null || Program.mainForm.IsDisposed)
+            {
+                Program.mainForm = new MainForm();
+            }
+
+            Program.mainForm.Show();
         }
 
         private void timerTaskScan_Tick(object sender, EventArgs e)
@@ -378,6 +385,26 @@ namespace AirdPro.Forms
         private void cbAutoExe_CheckedChanged(object sender, EventArgs e)
         {
             timerTaskScan.Enabled = cbAutoExe.Checked;
+        }
+
+        private void btnRedisSetting_Click(object sender, EventArgs e)
+        {
+            if (Program.globalSettingForm == null || Program.globalSettingForm.IsDisposed)
+            {
+                Program.globalSettingForm = new GlobalSettingForm();
+            }
+
+            Program.globalSettingForm.Show();
+        }
+
+        private void btnHelp_Click(object sender, EventArgs e)
+        {
+            if (Program.aboutForm == null || Program.aboutForm.IsDisposed)
+            {
+                Program.aboutForm = new AboutForm();
+            }
+
+            Program.aboutForm.Show();
         }
     }
 }

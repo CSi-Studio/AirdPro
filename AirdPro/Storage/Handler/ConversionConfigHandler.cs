@@ -117,6 +117,11 @@ namespace AirdPro.Storage.Handler
             }
         }
 
+        public bool contains(Observer<Dictionary<string, ConversionConfig>> observer)
+        {
+            return observers.Contains(observer);
+        }
+
         public void attach(Observer<Dictionary<string, ConversionConfig>> observer)
         {
             observers.Add(observer);

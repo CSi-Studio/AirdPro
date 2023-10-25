@@ -20,7 +20,8 @@ namespace AirdPro
 {
     static class Program
     {
-        public static MainForm mainForm { get; private set; }
+        public static MainForm mainForm { get; set; }
+        public static AboutForm aboutForm { get; set; }
         public static ConversionForm conversionForm { get; set; }
         public static ConversionConfigListForm configListForm { get; set; }
         public static GlobalSettingForm globalSettingForm { get; set; }
@@ -44,8 +45,8 @@ namespace AirdPro
             // configListForm = new ConversionConfigListForm();
             // globalSettingForm = new GlobalSettingForm();
             conversionConfigHandler = new ConversionConfigHandler();
-            mainForm = new MainForm();
-            Application.Run(mainForm);
+            // mainForm = new MainForm();
+            Application.Run(conversionForm);
         
         }
 

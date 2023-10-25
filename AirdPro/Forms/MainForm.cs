@@ -31,7 +31,7 @@ namespace AirdPro.Forms
 {
     public partial class MainForm : Form
     {
-        private AboutForm aboutForm;
+       
 
         private ReposWizardForm reposWizardForm;
         private HashSet<string> airdFiles = new HashSet<string>();
@@ -54,12 +54,12 @@ namespace AirdPro.Forms
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (aboutForm == null || aboutForm.IsDisposed)
+            if (Program.aboutForm == null || Program.aboutForm.IsDisposed)
             {
-                aboutForm = new AboutForm();
+                Program.aboutForm = new AboutForm();
             }
 
-            aboutForm.Show();
+            Program.aboutForm.Show();
         }
 
         private void globalSettingToolStripMenuItem_Click(object sender, EventArgs e)
