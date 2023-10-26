@@ -141,16 +141,16 @@ namespace AirdPro.Converters
                     {
                         msd.Dispose();
                     }
-
-                    if (msdList != null)
-                    {
-                        msdList.Dispose();
-                    }
+                }
+                if (msdList != null)
+                {
+                    msdList.Dispose();
                 }
             }
             finally
             {
                 finish();
+               
             }
         }
 
