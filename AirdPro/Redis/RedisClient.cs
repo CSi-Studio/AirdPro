@@ -180,7 +180,6 @@ namespace AirdPro.Redis
                 if (needToExecute)
                 {
                     Program.conversionForm.doConvert();
-                    // ConvertTaskManager.getInstance().run();
                 }
             }
 

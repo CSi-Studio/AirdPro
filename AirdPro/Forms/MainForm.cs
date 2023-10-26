@@ -378,6 +378,9 @@ namespace AirdPro.Forms
             //     this.ShowInTaskbar = false;
             //     this.Hide();
             // }
+
+            e.Cancel = true;
+            this.Visible = false;
         }
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)

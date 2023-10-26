@@ -35,10 +35,7 @@ namespace AirdPro.Asyncs
         //存放已经完成转换的JobInfo,不管是否转换成功
         public Hashtable finishedTable = new Hashtable();
 
-        public ConvertTaskManager()
-        {
-            //fac = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(Settings.Default.MaxConversionTasks));
-        }
+        public ConvertTaskManager() {}
 
         public static ConvertTaskManager getInstance()
         {
@@ -83,33 +80,31 @@ namespace AirdPro.Asyncs
 
         public void run()
         {
-                while (true)
-                {
-                    //如果队列中没有待执行的任务,那么进行休眠当前进程两秒
-                    if (jobQueue.Count == 0)
-                    {
-                        return;
-                    }
+            while (true)
+            {
+                 //如果队列中没有待执行的任务,那么进行休眠当前进程两秒
+                 if (jobQueue.Count == 0)
+                 {
+                     return;
+                 }
 
-                    JobInfo jobInfo = null;
-                    try
-                    {
-                        jobInfo = jobQueue.Dequeue();
-                    }
-                    catch
-                    {
-                    }
+                 JobInfo jobInfo = null;
+                 try
+                 {
+                     jobInfo = jobQueue.Dequeue();
+                 }
+                 catch
+                 {
+                 }
 
-                    if (jobInfo == null)
-                    {
-                        return;
-                    }
+                 if (jobInfo == null)
+                 {
+                     return;
+                 }
 
-                    runJob(jobInfo);
-                    Application.DoEvents();
-
-                    // fac.StartNew(() => runJob(jobInfo), jobInfo.tokenSource.Token);
-                }
+                 runJob(jobInfo);
+                 // Application.DoEvents();
+            }
         }
 
         public void clear()

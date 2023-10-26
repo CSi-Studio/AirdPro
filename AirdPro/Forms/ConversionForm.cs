@@ -60,7 +60,7 @@ namespace AirdPro.Forms
             if (lvFileList.Items.Count == 0)
             {
                 return;
-            }
+            } 
 
             foreach (ListViewItem item in lvFileList.Items)
             {
@@ -305,8 +305,9 @@ namespace AirdPro.Forms
 
         private void ConversionForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = true;
-            this.Visible = false;
+            Environment.Exit(0);
+            // e.Cancel = true;
+            // this.Visible = false;
         }
 
         private void btnRedis_Click(object sender, EventArgs e)
@@ -388,6 +389,16 @@ namespace AirdPro.Forms
             }
 
             Program.aboutForm.Visible = true;
+        }
+
+        private void btnMainView_Click(object sender, EventArgs e)
+        {
+            if (Program.mainForm == null || Program.mainForm.IsDisposed)
+            {
+                Program.mainForm = new MainForm();
+            }
+
+            Program.mainForm.Show();
         }
     }
 }

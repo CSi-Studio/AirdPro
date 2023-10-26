@@ -68,9 +68,7 @@ namespace AirdPro.Forms
             this.btnImport = new System.Windows.Forms.Button();
             this.cbAutoExe = new System.Windows.Forms.CheckBox();
             this.btnConvert = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
             this.btnRedis = new System.Windows.Forms.Button();
-            this.btnMirrorTrans = new System.Windows.Forms.Button();
             this.lblRedisStatus = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.btnCleanFinished = new System.Windows.Forms.Button();
@@ -85,6 +83,8 @@ namespace AirdPro.Forms
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
             this.redisConsumer = new System.Windows.Forms.Timer(this.components);
             this.timerTaskScan = new System.Windows.Forms.Timer(this.components);
+            this.btnMainView = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -99,6 +99,8 @@ namespace AirdPro.Forms
             // 
             // container.Panel1
             // 
+            this.container.Panel1.Controls.Add(this.label4);
+            this.container.Panel1.Controls.Add(this.btnMainView);
             this.container.Panel1.Controls.Add(this.label12);
             this.container.Panel1.Controls.Add(this.btnHelp);
             this.container.Panel1.Controls.Add(this.label112);
@@ -111,9 +113,7 @@ namespace AirdPro.Forms
             this.container.Panel1.Controls.Add(this.btnImport);
             this.container.Panel1.Controls.Add(this.cbAutoExe);
             this.container.Panel1.Controls.Add(this.btnConvert);
-            this.container.Panel1.Controls.Add(this.label4);
             this.container.Panel1.Controls.Add(this.btnRedis);
-            this.container.Panel1.Controls.Add(this.btnMirrorTrans);
             this.container.Panel1.Controls.Add(this.lblRedisStatus);
             this.container.Panel1.Controls.Add(this.label5);
             this.container.Panel1.Controls.Add(this.btnCleanFinished);
@@ -136,8 +136,8 @@ namespace AirdPro.Forms
             // 
             // btnHelp
             // 
-            this.btnHelp.BackColor = System.Drawing.SystemColors.Control;
             resources.ApplyResources(this.btnHelp, "btnHelp");
+            this.btnHelp.BackColor = System.Drawing.SystemColors.Window;
             this.btnHelp.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnHelp.FlatAppearance.BorderSize = 0;
             this.btnHelp.Name = "btnHelp";
@@ -153,8 +153,8 @@ namespace AirdPro.Forms
             // 
             // btnRedisSetting
             // 
-            this.btnRedisSetting.BackColor = System.Drawing.SystemColors.Control;
             resources.ApplyResources(this.btnRedisSetting, "btnRedisSetting");
+            this.btnRedisSetting.BackColor = System.Drawing.SystemColors.Window;
             this.btnRedisSetting.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnRedisSetting.FlatAppearance.BorderSize = 0;
             this.btnRedisSetting.Name = "btnRedisSetting";
@@ -312,12 +312,6 @@ namespace AirdPro.Forms
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
             // 
-            // label4
-            // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label4.Name = "label4";
-            // 
             // btnRedis
             // 
             resources.ApplyResources(this.btnRedis, "btnRedis");
@@ -327,16 +321,6 @@ namespace AirdPro.Forms
             this.ttAlgorithm.SetToolTip(this.btnRedis, resources.GetString("btnRedis.ToolTip"));
             this.btnRedis.UseVisualStyleBackColor = true;
             this.btnRedis.Click += new System.EventHandler(this.btnRedis_Click);
-            // 
-            // btnMirrorTrans
-            // 
-            resources.ApplyResources(this.btnMirrorTrans, "btnMirrorTrans");
-            this.btnMirrorTrans.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnMirrorTrans.FlatAppearance.BorderSize = 0;
-            this.btnMirrorTrans.Name = "btnMirrorTrans";
-            this.ttAlgorithm.SetToolTip(this.btnMirrorTrans, resources.GetString("btnMirrorTrans.ToolTip"));
-            this.btnMirrorTrans.UseVisualStyleBackColor = true;
-            this.btnMirrorTrans.Click += new System.EventHandler(this.btnMirrorTrans_Click);
             // 
             // lblRedisStatus
             // 
@@ -421,6 +405,22 @@ namespace AirdPro.Forms
             this.timerTaskScan.Interval = 2000;
             this.timerTaskScan.Tick += new System.EventHandler(this.timerTaskScan_Tick);
             // 
+            // btnMainView
+            // 
+            resources.ApplyResources(this.btnMainView, "btnMainView");
+            this.btnMainView.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnMainView.FlatAppearance.BorderSize = 0;
+            this.btnMainView.Name = "btnMainView";
+            this.ttAlgorithm.SetToolTip(this.btnMainView, resources.GetString("btnMainView.ToolTip"));
+            this.btnMainView.UseVisualStyleBackColor = true;
+            this.btnMainView.Click += new System.EventHandler(this.btnMainView_Click);
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label4.Name = "label4";
+            // 
             // ConversionForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -446,9 +446,6 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Label label8;
 
         private System.Windows.Forms.Label label6;
-
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button btnMirrorTrans;
 
         private System.Windows.Forms.ColumnHeader headerCentroid;
 
@@ -494,6 +491,8 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Button btnRedisSetting;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button btnHelp;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnMainView;
     }
 }
 

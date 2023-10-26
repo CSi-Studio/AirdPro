@@ -137,10 +137,14 @@ namespace AirdPro.Converters
                         }
                     }
 
-                    clearCache();
                     if (msd != null)
                     {
                         msd.Dispose();
+                    }
+
+                    if (msdList != null)
+                    {
+                        msdList.Dispose();
                     }
                 }
             }
@@ -167,6 +171,7 @@ namespace AirdPro.Converters
             if (msd != null)
             {
                 msd.Dispose();
+                msd = null;
             }
         }
 
