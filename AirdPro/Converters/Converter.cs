@@ -509,7 +509,7 @@ namespace AirdPro.Converters
                 index.msTypes.AddRange(ts.msTypes);
                 index.cvList.AddRange(ts.cvs);
 
-                if (ts.mzArrayBytes.Length != 0 && ts.intArrayBytes.Length != 0 && ts.tagArrayBytes.Length != 0)
+                if (ts.mzArrayBytes.Length != 0 && ts.intArrayBytes.Length != 0 && ts.tagArrayBytes.Length != 0) 
                 {
                     index.mzs.Add(ts.mzArrayBytes.Length);
                     index.ints.Add(ts.intArrayBytes.Length);
@@ -696,6 +696,11 @@ namespace AirdPro.Converters
             mobiDict = new();
             mobiInfo = new();
             chromatogramIndex = new();
+            if (msd != null)
+            {
+                msd.Dispose();
+                msd = null;
+            }
         }
 
         //DDA模式下,key为ms2Index.pNum, DIA模式下,key为ms2Index.precursorMz

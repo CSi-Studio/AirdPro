@@ -279,11 +279,27 @@ namespace AirdPro.Algorithms
             Array.Copy(mzArray, mzSubArray, j);
             int[] intensitySubArray = new int[j];
             Array.Copy(intensityArray, intensitySubArray, j);
+            byte[] compressedMzArray = null;
+            byte[] compressedIntArray = null;
+            
+            if (mzSubArray.Length == 0)
+            {
+                compressedMzArray = new byte[0];
+            }
+            else
+            {
+                compressedMzArray = ComboComp.encode(mzIntComp, mzByteComp, mzSubArray);
+            }
 
-           
-            byte[] compressedMzArray = ComboComp.encode(mzIntComp, mzByteComp, mzSubArray);
-            byte[] compressedIntArray = ComboComp.encode(intIntComp, intByteComp, intensitySubArray);
-
+            if (intensitySubArray.Length == 0)
+            {
+                compressedIntArray = new byte[0];
+            }
+            else
+            {
+                compressedIntArray = ComboComp.encode(intIntComp, intByteComp, intensitySubArray);
+            }
+            
             ts.mzArrayBytes = compressedMzArray;
             ts.intArrayBytes = compressedIntArray;
         }
