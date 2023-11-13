@@ -97,10 +97,11 @@ namespace AirdPro.Converters
                     if (msdList.Count > 1) //如果msdList中包含多个msd，那么每一个msd会被单独导出为一个文件，导出的文件名按照msd的ID进行命名
                     {
                         String id = msdList[i].id;
-                        jobInfo.airdFilePath =
-                            AirdProFileUtil.replaceLast(jobInfo.airdFilePath, jobInfo.airdFileName, id);
-                        jobInfo.airdJsonFilePath =
-                            AirdProFileUtil.replaceLast(jobInfo.airdJsonFilePath, jobInfo.airdFileName, id);
+                        jobInfo.airdFilePath = Path.Combine(jobInfo.outputPath, id+".aird");
+                        jobInfo.airdJsonFilePath = Path.Combine(jobInfo.outputPath, id+".json");
+                        //     AirdProFileUtil.replaceLast(jobInfo.airdFilePath, jobInfo.airdFileName, id);
+                        // jobInfo.airdJsonFilePath =
+                        //     AirdProFileUtil.replaceLast(jobInfo.airdJsonFilePath, jobInfo.airdFileName, id);
                         jobInfo.airdFileName = id;
                     }
 
@@ -141,6 +142,7 @@ namespace AirdPro.Converters
                     {
                         msd.Dispose();
                     }
+                    clearCache();
                 }
                 if (msdList != null)
                 {
@@ -150,7 +152,6 @@ namespace AirdPro.Converters
             finally
             {
                 finish();
-               
             }
         }
 
@@ -696,6 +697,8 @@ namespace AirdPro.Converters
             mobiDict = new();
             mobiInfo = new();
             chromatogramIndex = new();
+            spectrumList = null;
+            chromatogramList = null;
             if (msd != null)
             {
                 msd.Dispose();
@@ -1110,7 +1113,10 @@ namespace AirdPro.Converters
                 {
                     foreach (CVParam cv in ic.cvParams)
                     {
-                        featuresMap.Add(cv.name, cv.value);
+                        if (!featuresMap.ContainsKey(cv.name))
+                        {
+                            featuresMap.Add(cv.name, cv.value);
+                        }
                     }
 
                     instrument.model = ic.cvParams[0].name;
