@@ -17,11 +17,6 @@ namespace Aga.Controls.Tree
 		public event EventHandler<TreePathEventArgs> StructureChanged;
 		public event EventHandler<TreeModelEventArgs> NodesInserted;
 		public event EventHandler<TreeModelEventArgs> NodesRemoved;
-		public void clearCache(TreePath treePath)
-		{
-			throw new NotImplementedException();
-		}
-
 		public event EventHandler<TreeModelEventArgs> NodesChanged;
 
 		public Node Root

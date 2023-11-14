@@ -41,7 +41,9 @@ namespace AirdPro
             // files
             // 
             this.files.AllowColumnReorder = true;
-            this.files.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.files.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.files.AutoRowHeight = true;
             this.files.BackColor = System.Drawing.SystemColors.Window;
             this.files.Columns.Add(this.FileName);
@@ -57,7 +59,7 @@ namespace AirdPro
             this.files.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
             this.files.LineColor = System.Drawing.SystemColors.ControlDark;
             this.files.LoadOnDemand = true;
-            this.files.Location = new System.Drawing.Point(0, -3);
+            this.files.Location = new System.Drawing.Point(3, 3);
             this.files.Model = null;
             this.files.Name = "files";
             this.files.NodeControls.Add(this.icon);
@@ -68,7 +70,7 @@ namespace AirdPro
             this.files.SelectedNode = null;
             this.files.SelectionMode = Aga.Controls.Tree.TreeSelectionMode.Multi;
             this.files.ShowNodeToolTips = true;
-            this.files.Size = new System.Drawing.Size(623, 291);
+            this.files.Size = new System.Drawing.Size(617, 290);
             this.files.TabIndex = 0;
             this.files.UseColumns = true;
             this.files.NodeMouseDoubleClick += new System.EventHandler<Aga.Controls.Tree.TreeNodeAdvMouseEventArgs>(this._treeView_NodeMouseDoubleClick);
@@ -134,11 +136,12 @@ namespace AirdPro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.Controls.Add(this.files);
             this.Name = "FolderFileBrowser";
-            this.Size = new System.Drawing.Size(623, 291);
+            this.Size = new System.Drawing.Size(623, 296);
             this.ResumeLayout(false);
+
         }
 
         #endregion

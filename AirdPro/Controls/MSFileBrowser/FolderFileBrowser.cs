@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using Aga.Controls.Tree.NodeControls;
 using Aga.Controls.Tree;
+using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro
 {
@@ -66,6 +67,24 @@ namespace AirdPro
             if (item.MSFile)
             {
                 Console.WriteLine(e.Node);
+            }
+        }
+
+        private void btnFileRefresh_Click(object sender, EventArgs e)
+        {
+            TreeViewAdv treeViewAdv = this.files;
+            SortedTreeModel model = treeViewAdv.Model as SortedTreeModel;
+            FolderFileBrowserModel innerModel = model.InnerModel as FolderFileBrowserModel;
+            if (treeViewAdv.SelectedNodes.IsNullOrEmpty())
+            {
+                innerModel.clearCache();
+            }
+            else
+            {
+                for (var i = 0; i < treeViewAdv.SelectedNodes.Count; i++)
+                {
+                    innerModel.clearCache(treeViewAdv.GetPath(treeViewAdv.SelectedNodes[i]));
+                }
             }
         }
     }

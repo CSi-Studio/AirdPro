@@ -735,7 +735,6 @@
     <PackageReference Include="System.Resources.Extensions" Version="7.0.0" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="7.0.0-preview.2.22152.2" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-    <PackageReference Include="TreeViewAdv" Version="1.7.0" />
     <PackageReference Include="WeifenLuo.WinFormsUI.Docking" Version="2.1.0" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="ZstdNet" Version="1.4.5" />

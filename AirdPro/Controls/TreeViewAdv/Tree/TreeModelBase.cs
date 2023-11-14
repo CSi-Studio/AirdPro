@@ -8,11 +8,6 @@ namespace Aga.Controls.Tree
 	{
 		public abstract System.Collections.IEnumerable GetChildren(TreePath treePath);
 		public abstract bool IsLeaf(TreePath treePath);
-		public void clearCache(TreePath treePath)
-		{
-			throw new NotImplementedException();
-		}
-
 
 		public event EventHandler<TreeModelEventArgs> NodesChanged;
 		protected void OnNodesChanged(TreeModelEventArgs args)

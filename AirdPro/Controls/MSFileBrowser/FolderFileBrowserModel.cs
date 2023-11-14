@@ -89,6 +89,13 @@ namespace AirdPro
                 {
                     items = new List<BaseItem>();
                     cache.Add("ROOT", items);
+                    //增加桌面作为一个独立的文件夹
+                    string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                    DirectoryInfo desktopDir = new DirectoryInfo(desktop);
+                    RootItem desktopItem = new RootItem(desktop, this);
+                    desktopItem.Date = desktopDir.CreationTime;
+                    items.Add(desktopItem);
+                    
                     foreach (string str in Environment.GetLogicalDrives())
                     {
                         try

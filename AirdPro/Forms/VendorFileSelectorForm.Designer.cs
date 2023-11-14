@@ -51,9 +51,9 @@ namespace AirdPro.Forms
             this.imgList = new System.Windows.Forms.ImageList(this.components);
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnAddClose = new System.Windows.Forms.Button();
-            this.msFileViews = new AirdPro.FolderFileBrowser();
             this.btnMirrorScan = new System.Windows.Forms.Button();
             this.btnFileRefresh = new System.Windows.Forms.Button();
+            this.msFileViews = new AirdPro.FolderFileBrowser();
             this.gBoxMode.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -239,7 +239,7 @@ namespace AirdPro.Forms
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.label1.Location = new System.Drawing.Point(614, 44);
+            this.label1.Location = new System.Drawing.Point(614, 50);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(208, 34);
             this.label1.TabIndex = 123;
@@ -277,15 +277,6 @@ namespace AirdPro.Forms
             this.btnAddClose.UseVisualStyleBackColor = true;
             this.btnAddClose.Click += new System.EventHandler(this.btnAddClose_Click);
             // 
-            // msFileViews
-            // 
-            this.msFileViews.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-            this.msFileViews.Location = new System.Drawing.Point(6, 72);
-            this.msFileViews.Margin = new System.Windows.Forms.Padding(4);
-            this.msFileViews.Name = "msFileViews";
-            this.msFileViews.Size = new System.Drawing.Size(590, 357);
-            this.msFileViews.TabIndex = 125;
-            // 
             // btnMirrorScan
             // 
             this.btnMirrorScan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -301,13 +292,25 @@ namespace AirdPro.Forms
             // btnFileRefresh
             // 
             this.btnFileRefresh.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnFileRefresh.Location = new System.Drawing.Point(6, 44);
+            this.btnFileRefresh.Location = new System.Drawing.Point(6, 41);
             this.btnFileRefresh.Name = "btnFileRefresh";
             this.btnFileRefresh.Size = new System.Drawing.Size(75, 26);
-            this.btnFileRefresh.TabIndex = 130;
+            this.btnFileRefresh.TabIndex = 132;
             this.btnFileRefresh.Text = "Refresh";
             this.btnFileRefresh.UseVisualStyleBackColor = true;
-            this.btnFileRefresh.Click += new System.EventHandler(this.btnFileRefresh_Click);
+            this.btnFileRefresh.Click += new System.EventHandler(this.btnFileRefresh_Click_1);
+            // 
+            // msFileViews
+            // 
+            this.msFileViews.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.msFileViews.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.msFileViews.Location = new System.Drawing.Point(6, 68);
+            this.msFileViews.Margin = new System.Windows.Forms.Padding(4);
+            this.msFileViews.Name = "msFileViews";
+            this.msFileViews.Size = new System.Drawing.Size(590, 354);
+            this.msFileViews.TabIndex = 125;
             // 
             // VendorFileSelectorForm
             // 
@@ -338,9 +341,8 @@ namespace AirdPro.Forms
             this.gBoxMode.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-        }
 
-        private System.Windows.Forms.Button btnFileRefresh;
+        }
 
         private System.Windows.Forms.Button btnMirrorScan;
 
@@ -366,5 +368,6 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.RadioButton radioButton4;
         private System.Windows.Forms.Button btnAddClose;
+        private System.Windows.Forms.Button btnFileRefresh;
     }
 }

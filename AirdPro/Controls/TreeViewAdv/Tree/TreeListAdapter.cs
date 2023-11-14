@@ -32,11 +32,6 @@ namespace Aga.Controls.Tree
 			return true;
 		}
 
-		public void clearCache(TreePath treePath)
-		{
-			throw new NotImplementedException();
-		}
-
 		public event EventHandler<TreeModelEventArgs> NodesChanged;
 		public void OnNodesChanged(TreeModelEventArgs args)
 		{
