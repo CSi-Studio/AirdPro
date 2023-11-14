@@ -41,6 +41,8 @@ namespace AirdPro.Forms
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConversionForm));
             this.container = new System.Windows.Forms.SplitContainer();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnMainView = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.btnHelp = new System.Windows.Forms.Button();
             this.label112 = new System.Windows.Forms.Label();
@@ -50,18 +52,18 @@ namespace AirdPro.Forms
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.lvFileList = new System.Windows.Forms.ListView();
-            this.headerJobId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.headerFilePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.headerType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.headerConfigName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.headerScene = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.headerCentroid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.headerProgress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.headerPrecision = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.headerCompressor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.headerIgnoreZero = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.headerSuffix = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.headerOutput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerJobId = new System.Windows.Forms.ColumnHeader();
+            this.headerFilePath = new System.Windows.Forms.ColumnHeader();
+            this.headerType = new System.Windows.Forms.ColumnHeader();
+            this.headerConfigName = new System.Windows.Forms.ColumnHeader();
+            this.headerScene = new System.Windows.Forms.ColumnHeader();
+            this.headerCentroid = new System.Windows.Forms.ColumnHeader();
+            this.headerProgress = new System.Windows.Forms.ColumnHeader();
+            this.headerPrecision = new System.Windows.Forms.ColumnHeader();
+            this.headerCompressor = new System.Windows.Forms.ColumnHeader();
+            this.headerIgnoreZero = new System.Windows.Forms.ColumnHeader();
+            this.headerSuffix = new System.Windows.Forms.ColumnHeader();
+            this.headerOutput = new System.Windows.Forms.ColumnHeader();
             this.contentMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.rerun = new System.Windows.Forms.ToolStripMenuItem();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,8 +85,6 @@ namespace AirdPro.Forms
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
             this.redisConsumer = new System.Windows.Forms.Timer(this.components);
             this.timerTaskScan = new System.Windows.Forms.Timer(this.components);
-            this.btnMainView = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -127,6 +127,22 @@ namespace AirdPro.Forms
             this.container.Panel2.Controls.Add(this.tbJobInfo);
             this.container.Panel2.Controls.Add(this.tbConsole);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label4.Name = "label4";
+            // 
+            // btnMainView
+            // 
+            resources.ApplyResources(this.btnMainView, "btnMainView");
+            this.btnMainView.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnMainView.FlatAppearance.BorderSize = 0;
+            this.btnMainView.Name = "btnMainView";
+            this.ttAlgorithm.SetToolTip(this.btnMainView, resources.GetString("btnMainView.ToolTip"));
+            this.btnMainView.UseVisualStyleBackColor = true;
+            this.btnMainView.Click += new System.EventHandler(this.btnMainView_Click);
             // 
             // label12
             // 
@@ -190,19 +206,7 @@ namespace AirdPro.Forms
             // 
             resources.ApplyResources(this.lvFileList, "lvFileList");
             this.lvFileList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.headerJobId,
-            this.headerFilePath,
-            this.headerType,
-            this.headerConfigName,
-            this.headerScene,
-            this.headerCentroid,
-            this.headerProgress,
-            this.headerPrecision,
-            this.headerCompressor,
-            this.headerIgnoreZero,
-            this.headerSuffix,
-            this.headerOutput});
+            this.lvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.headerJobId, this.headerFilePath, this.headerType, this.headerConfigName, this.headerScene, this.headerCentroid, this.headerProgress, this.headerPrecision, this.headerCompressor, this.headerIgnoreZero, this.headerSuffix, this.headerOutput });
             this.lvFileList.ContextMenuStrip = this.contentMenu;
             this.lvFileList.FullRowSelect = true;
             this.lvFileList.GridLines = true;
@@ -267,9 +271,7 @@ namespace AirdPro.Forms
             // contentMenu
             // 
             this.contentMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contentMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.rerun,
-            this.removeToolStripMenuItem});
+            this.contentMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.rerun, this.removeToolStripMenuItem });
             this.contentMenu.Name = "contentMenu";
             resources.ApplyResources(this.contentMenu, "contentMenu");
             // 
@@ -405,22 +407,6 @@ namespace AirdPro.Forms
             this.timerTaskScan.Interval = 2000;
             this.timerTaskScan.Tick += new System.EventHandler(this.timerTaskScan_Tick);
             // 
-            // btnMainView
-            // 
-            resources.ApplyResources(this.btnMainView, "btnMainView");
-            this.btnMainView.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnMainView.FlatAppearance.BorderSize = 0;
-            this.btnMainView.Name = "btnMainView";
-            this.ttAlgorithm.SetToolTip(this.btnMainView, resources.GetString("btnMainView.ToolTip"));
-            this.btnMainView.UseVisualStyleBackColor = true;
-            this.btnMainView.Click += new System.EventHandler(this.btnMainView_Click);
-            // 
-            // label4
-            // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label4.Name = "label4";
-            // 
             // ConversionForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -439,7 +425,6 @@ namespace AirdPro.Forms
             this.container.ResumeLayout(false);
             this.contentMenu.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
 
         private System.Windows.Forms.Label label7;

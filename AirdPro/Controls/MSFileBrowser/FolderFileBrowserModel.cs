@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2020 CSi Studio
- * AirdSDK and AirdPro are licensed under Mulan PSL v2.
- * You can use this software according to the terms and conditions of the Mulan PSL v2. 
- * You may obtain a copy of Mulan PSL v2 at:
- *          http://license.coscl.org.cn/MulanPSL2 
- * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.  
- * See the Mulan PSL v2 for more details.
- */
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -40,8 +30,7 @@ namespace AirdPro
             {
                 BaseItem item = itemsToRead[0];
                 itemsToRead.RemoveAt(0);
-
-                // Thread.Sleep(50); //emulate time consuming operation
+                
                 if (item is FolderItem)
                 {
                     DirectoryInfo info = new DirectoryInfo(item.ItemPath);
@@ -175,6 +164,21 @@ namespace AirdPro
             return treePath.LastNode is FileItem;
         }
 
+        public void clearCache(TreePath treePath = null)
+        {
+            if (treePath == null)
+            {
+                cache.Clear();
+            }
+            else
+            {
+                BaseItem item = treePath.FirstNode as BaseItem;
+                cache.Remove(item.ItemPath);
+            }
+            
+            this.OnStructureChanged(treePath);
+        }
+
         public event EventHandler<TreeModelEventArgs> NodesChanged;
 
         internal void OnNodesChanged(BaseItem item)
@@ -190,10 +194,21 @@ namespace AirdPro
         public event EventHandler<TreeModelEventArgs> NodesRemoved;
         public event EventHandler<TreePathEventArgs> StructureChanged;
 
-        public void OnStructureChanged()
+        public void OnStructureChanged(TreePath treePath)
         {
             if (StructureChanged != null)
-                StructureChanged(this, new TreePathEventArgs());
+            {
+                if (treePath == null)
+                {
+                    StructureChanged(this, new TreePathEventArgs());
+                }
+                else
+                {
+                    StructureChanged(this, new TreePathEventArgs(treePath));
+                }
+            
+            }
+                
         }
     }
 }

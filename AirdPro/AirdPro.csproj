@@ -128,6 +128,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
@@ -176,6 +177,133 @@
     <Compile Include="Controls\MirrorBox\MirrorBox.Designer.cs">
       <DependentUpon>MirrorBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TreeViewAdv\BitmapHelper.cs" />
+    <Compile Include="Controls\TreeViewAdv\GifDecoder.cs" />
+    <Compile Include="Controls\TreeViewAdv\NumericTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\PerformanceAnalyzer.cs" />
+    <Compile Include="Controls\TreeViewAdv\ResourceHelper.cs" />
+    <Compile Include="Controls\TreeViewAdv\StringCollectionEditor.cs" />
+    <Compile Include="Controls\TreeViewAdv\TextHelper.cs" />
+    <Compile Include="Controls\TreeViewAdv\Threading\AbortableThreadPool.cs" />
+    <Compile Include="Controls\TreeViewAdv\Threading\WorkItem.cs" />
+    <Compile Include="Controls\TreeViewAdv\Threading\WorkItemStatus.cs" />
+    <Compile Include="Controls\TreeViewAdv\TimeCounter.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\AutoHeaderHeightLayout.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\AutoRowHeightLayout.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\ColumnCollection.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\DrawColumnEventArgs.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\DrawContext.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\DropNodeValidatingEventArgs.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\DropPosition.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\EditorContext.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\Enums.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\FixedHeaderHeightLayout.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\FixedRowHeightLayout.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\IHeaderLayout.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\IncrementalSearch.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\Input\ClickColumnState.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\Input\ColumnState.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\Input\InputState.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\Input\InputWithControl.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\Input\InputWithShift.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\Input\NormalInputState.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\Input\ReorderColumnState.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\Input\ResizeColumnState.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\IRowLayout.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\IToolTipProvider.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\ITreeModel.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\ListModel.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\NativeMethods.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\Node.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControlInfo.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\BaseTextControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\BindableControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\DrawEventArgs.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\DrawIconEventArgs.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\DrawTextEventArgs.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\EditableControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\EditEventArgs.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\ExpandingIcon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\InteractiveControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\LabelEventArgs.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\NodeCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\NodeComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\NodeControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\NodeControlsCollection.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\NodeControlValueEventArgs.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\NodeDecimalTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\NodeEventArgs.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\NodeIcon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\NodeIntegerTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\NodeNumericUpDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\NodePlusMinus.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\NodeStateIcon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\NodeControls\NodeTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\SortedTreeModel.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\TreeColumn.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\TreeColumnCollection.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\TreeColumnEventArgs.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\TreeListAdapter.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\TreeModel.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\TreeModelBase.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\TreeModelEventArgs.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\TreeNodeAdv.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\TreeNodeAdvMouseEventArgs.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\TreePath.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\TreePathEventArgs.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\TreeViewAdv.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\TreeViewAdv.Designer.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\TreeViewAdv.Draw.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\TreeViewAdv.Editor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\TreeViewAdv.Input.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\TreeViewAdv.Properties.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeViewAdv\Tree\TreeViewAdvCancelEventArgs.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\TreeViewAdvEventArgs.cs" />
+    <Compile Include="Controls\TreeViewAdv\Tree\TreeViewRowDrawEventArgs.cs" />
     <Compile Include="Converters\ConverterWorkFlow.cs" />
     <Compile Include="Domains\Common\StrKV.cs" />
     <Compile Include="Domains\Common\TempSpectrum.cs" />
@@ -319,6 +447,7 @@
     <EmbeddedResource Include="Controls\MirrorBox\MirrorBox.resx">
       <DependentUpon>MirrorBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TreeViewAdv\Tree\TreeViewAdv.resx" />
     <EmbeddedResource Include="Forms\MirrorTransForm.resx">
       <DependentUpon>MirrorTransForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -498,7 +627,20 @@
     <EmbeddedResource Include="Resources\Pay\Weixin.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <Content Include="Controls\TreeViewAdv\Migrated rules for Aga.Controls.ruleset" />
+    <Content Include="Controls\TreeViewAdv\Tree\ClassDiagram.cd" />
+    <Content Include="Controls\TreeViewAdv\Tree\NodeControls\ClassDiagram.cd" />
     <Content Include="Resources\Menu\Redis.png" />
+    <Content Include="Resources\TreeViewAdv\check.bmp" />
+    <Content Include="Resources\TreeViewAdv\DVSplit.cur" />
+    <Content Include="Resources\TreeViewAdv\Folder.bmp" />
+    <Content Include="Resources\TreeViewAdv\FolderClosed.bmp" />
+    <Content Include="Resources\TreeViewAdv\Leaf.bmp" />
+    <Content Include="Resources\TreeViewAdv\loading_icon" />
+    <Content Include="Resources\TreeViewAdv\minus.bmp" />
+    <Content Include="Resources\TreeViewAdv\plus.bmp" />
+    <Content Include="Resources\TreeViewAdv\uncheck.bmp" />
+    <Content Include="Resources\TreeViewAdv\unknown.bmp" />
     <Content Include="Version-CN.xml" />
     <Content Include="Version.xml" />
   </ItemGroup>

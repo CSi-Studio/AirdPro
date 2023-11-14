@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using Aga.Controls.Tree;
 using AirdPro.Constants;
@@ -222,6 +223,24 @@ namespace AirdPro.Forms
         {
             e.Cancel = true;
             this.Visible = false;
+        }
+
+        private void btnFileRefresh_Click(object sender, EventArgs e)
+        {
+            TreeViewAdv treeViewAdv = msFileViews.files;
+            SortedTreeModel model = treeViewAdv.Model as SortedTreeModel;
+            FolderFileBrowserModel innerModel = model.InnerModel as FolderFileBrowserModel;
+            if (treeViewAdv.SelectedNodes.IsNullOrEmpty())
+            {
+                innerModel.clearCache();
+            }
+            else
+            {
+                for (var i = 0; i < treeViewAdv.SelectedNodes.Count; i++)
+                {
+                    innerModel.clearCache(treeViewAdv.GetPath(treeViewAdv.SelectedNodes[i]));
+                }
+            }
         }
     }
 }

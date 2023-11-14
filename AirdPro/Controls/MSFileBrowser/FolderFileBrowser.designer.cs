@@ -52,21 +52,23 @@ namespace AirdPro
             this.files.DragDropMarkColor = System.Drawing.Color.Black;
             this.files.Font = new System.Drawing.Font("微软雅黑", 8F);
             this.files.FullRowSelect = true;
+            this.files.FullRowSelectActiveColor = System.Drawing.Color.Gray;
+            this.files.FullRowSelectInactiveColor = System.Drawing.Color.Empty;
             this.files.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
             this.files.LineColor = System.Drawing.SystemColors.ControlDark;
             this.files.LoadOnDemand = true;
-            this.files.Location = new System.Drawing.Point(0, -2);
-            this.files.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.files.Location = new System.Drawing.Point(0, -3);
             this.files.Model = null;
             this.files.Name = "files";
             this.files.NodeControls.Add(this.icon);
             this.files.NodeControls.Add(this.name);
             this.files.NodeControls.Add(this.size);
             this.files.NodeControls.Add(this.date);
+            this.files.NodeFilter = null;
             this.files.SelectedNode = null;
             this.files.SelectionMode = Aga.Controls.Tree.TreeSelectionMode.Multi;
             this.files.ShowNodeToolTips = true;
-            this.files.Size = new System.Drawing.Size(932, 432);
+            this.files.Size = new System.Drawing.Size(623, 291);
             this.files.TabIndex = 0;
             this.files.UseColumns = true;
             this.files.NodeMouseDoubleClick += new System.EventHandler<Aga.Controls.Tree.TreeNodeAdvMouseEventArgs>(this._treeView_NodeMouseDoubleClick);
@@ -130,12 +132,12 @@ namespace AirdPro
             // 
             // FolderFileBrowser
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.Controls.Add(this.files);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FolderFileBrowser";
-            this.Size = new System.Drawing.Size(934, 436);
+            this.Size = new System.Drawing.Size(623, 291);
             this.ResumeLayout(false);
         }
 

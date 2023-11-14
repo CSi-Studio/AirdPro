@@ -53,6 +53,7 @@ namespace AirdPro.Forms
             this.btnAddClose = new System.Windows.Forms.Button();
             this.msFileViews = new AirdPro.FolderFileBrowser();
             this.btnMirrorScan = new System.Windows.Forms.Button();
+            this.btnFileRefresh = new System.Windows.Forms.Button();
             this.gBoxMode.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -188,7 +189,7 @@ namespace AirdPro.Forms
             this.lblConfigOutputPath.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.lblConfigOutputPath.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblConfigOutputPath.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblConfigOutputPath.Location = new System.Drawing.Point(421, 15);
+            this.lblConfigOutputPath.Location = new System.Drawing.Point(410, 16);
             this.lblConfigOutputPath.Name = "lblConfigOutputPath";
             this.lblConfigOutputPath.Size = new System.Drawing.Size(80, 17);
             this.lblConfigOutputPath.TabIndex = 119;
@@ -198,7 +199,7 @@ namespace AirdPro.Forms
             // 
             this.btnConfigChooseFolder.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.btnConfigChooseFolder.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnConfigChooseFolder.Location = new System.Drawing.Point(785, 10);
+            this.btnConfigChooseFolder.Location = new System.Drawing.Point(774, 12);
             this.btnConfigChooseFolder.Name = "btnConfigChooseFolder";
             this.btnConfigChooseFolder.Size = new System.Drawing.Size(75, 26);
             this.btnConfigChooseFolder.TabIndex = 120;
@@ -209,7 +210,7 @@ namespace AirdPro.Forms
             // tbOutputPath
             // 
             this.tbOutputPath.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.tbOutputPath.Location = new System.Drawing.Point(507, 12);
+            this.tbOutputPath.Location = new System.Drawing.Point(496, 14);
             this.tbOutputPath.Name = "tbOutputPath";
             this.tbOutputPath.Size = new System.Drawing.Size(272, 23);
             this.tbOutputPath.TabIndex = 118;
@@ -238,7 +239,7 @@ namespace AirdPro.Forms
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.label1.Location = new System.Drawing.Point(603, 44);
+            this.label1.Location = new System.Drawing.Point(614, 44);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(208, 34);
             this.label1.TabIndex = 123;
@@ -278,13 +279,11 @@ namespace AirdPro.Forms
             // 
             // msFileViews
             // 
-            this.msFileViews.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.msFileViews.Location = new System.Drawing.Point(6, 44);
+            this.msFileViews.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.msFileViews.Location = new System.Drawing.Point(6, 72);
             this.msFileViews.Margin = new System.Windows.Forms.Padding(4);
             this.msFileViews.Name = "msFileViews";
-            this.msFileViews.Size = new System.Drawing.Size(590, 385);
+            this.msFileViews.Size = new System.Drawing.Size(590, 357);
             this.msFileViews.TabIndex = 125;
             // 
             // btnMirrorScan
@@ -299,11 +298,23 @@ namespace AirdPro.Forms
             this.btnMirrorScan.UseVisualStyleBackColor = true;
             this.btnMirrorScan.Click += new System.EventHandler(this.btnMirrorScan_Click);
             // 
+            // btnFileRefresh
+            // 
+            this.btnFileRefresh.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnFileRefresh.Location = new System.Drawing.Point(6, 44);
+            this.btnFileRefresh.Name = "btnFileRefresh";
+            this.btnFileRefresh.Size = new System.Drawing.Size(75, 26);
+            this.btnFileRefresh.TabIndex = 130;
+            this.btnFileRefresh.Text = "Refresh";
+            this.btnFileRefresh.UseVisualStyleBackColor = true;
+            this.btnFileRefresh.Click += new System.EventHandler(this.btnFileRefresh_Click);
+            // 
             // VendorFileSelectorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(866, 432);
+            this.Controls.Add(this.btnFileRefresh);
             this.Controls.Add(this.btnMirrorScan);
             this.Controls.Add(this.btnAddClose);
             this.Controls.Add(this.btnAdd);
@@ -327,8 +338,9 @@ namespace AirdPro.Forms
             this.gBoxMode.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
+
+        private System.Windows.Forms.Button btnFileRefresh;
 
         private System.Windows.Forms.Button btnMirrorScan;
 
