@@ -67,12 +67,14 @@ namespace AirdPro.Forms
             if (connected)
             {
                 Program.conversionForm.btnRedisSetting.BackgroundImage = ResourceUtil.readImage("Menu.Redis.png");
-                this.btnConnect.Text = "Connected";
+                this.btnConnect.Text = "Disconnect";
+                lblStatus.BackColor = Color.Green;
             }
             else
             {
                 Program.conversionForm.btnRedisSetting.BackgroundImage = ResourceUtil.readImage("Menu.Redis_Disconnected.png");
-                this.btnConnect.Text = "Disconnected";
+                this.btnConnect.Text = "Connect";
+                lblStatus.BackColor = Color.Red;
             }
         }
 
