@@ -116,6 +116,7 @@ namespace AirdPro.Utils
         {
             List<string> items = new List<string>();
             string[] dirs = new string[0];
+            //这个try catch是为了防止访问部分windows文件夹异常时做的容错逻辑
             try
             {
                 dirs = Directory.GetDirectories(folderPath);
@@ -139,10 +140,10 @@ namespace AirdPro.Utils
                 }
                 else
                 {
-                    List<string> children = scan(str);
-                    if (children != null)
+                    List<string> files = scan(str);
+                    if (files != null)
                     {
-                        items.AddRange(children);
+                        items.AddRange(files);
                     }
                 }
             }

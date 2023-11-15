@@ -114,7 +114,11 @@ namespace AirdPro.Forms
                 }
                 else //如果是文件夹并且不是质谱文件,则直接扫描该文件夹下第一层的所有质谱文件
                 {
-                    filePathList.AddRange(AirdProFileUtil.scan(item.ItemPath));
+                    List<string> files = AirdProFileUtil.scan(item.ItemPath);
+                    if (files != null)
+                    {
+                        filePathList.AddRange(files);
+                    }
                 }
             }
 
