@@ -410,11 +410,11 @@
     <Compile Include="Forms\ConversionConfigListForm.Designer.cs">
       <DependentUpon>ConversionConfigListForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\GlobalSettingForm.cs">
+    <Compile Include="Forms\RedisForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\GlobalSettingForm.Designer.cs">
-      <DependentUpon>GlobalSettingForm.cs</DependentUpon>
+    <Compile Include="Forms\RedisForm.Designer.cs">
+      <DependentUpon>RedisForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\VendorFileSelectorForm.cs">
       <SubType>Form</SubType>
@@ -461,8 +461,8 @@
     <EmbeddedResource Include="Forms\ConversionConfigListForm.resx">
       <DependentUpon>ConversionConfigListForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\GlobalSettingForm.resx">
-      <DependentUpon>GlobalSettingForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\RedisForm.resx">
+      <DependentUpon>RedisForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
@@ -639,11 +639,18 @@
     <EmbeddedResource Include="Resources\Menu\Refresh.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Menu\Redis_Disconnected.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Menu\Redis.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="Controls\TreeViewAdv\Migrated rules for Aga.Controls.ruleset" />
     <Content Include="Controls\TreeViewAdv\Tree\ClassDiagram.cd" />
     <Content Include="Controls\TreeViewAdv\Tree\NodeControls\ClassDiagram.cd" />
     <Content Include="Resources\Conversion.png" />
     <Content Include="Resources\Menu\Pin.png" />
+    <Content Include="Resources\Menu\Redis_Disconnected.png" />
     <Content Include="Resources\Menu\Redis.png" />
     <Content Include="Resources\Menu\Refresh.png" />
     <Content Include="Resources\Menu\Unpin.png" />
@@ -738,7 +745,7 @@
     <Folder Include="Test\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Autoupdater.NET.Official" Version="1.7.7" />
+    <PackageReference Include="Autoupdater.NET.Official" Version="1.8.4" />
     <PackageReference Include="BrotliSharpLib" Version="0.3.3" />
     <PackageReference Include="HtmlAgilityPack.NetCore" Version="1.5.0.1" />
     <PackageReference Include="HZH_Controls" Version="1.0.14" />
@@ -747,12 +754,12 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OptimizedPriorityQueue" Version="5.1.0" />
     <PackageReference Include="protobuf-net" Version="3.2.26" />
-    <PackageReference Include="StackExchange.Redis" Version="2.6.96" />
-    <PackageReference Include="System.Resources.Extensions" Version="7.0.0" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="7.0.0-preview.2.22152.2" />
+    <PackageReference Include="StackExchange.Redis" Version="2.7.4" />
+    <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="WeifenLuo.WinFormsUI.Docking" Version="2.1.0" />
-    <PackageReference Include="xunit" Version="2.4.2" />
+    <PackageReference Include="xunit" Version="2.6.1" />
     <PackageReference Include="ZstdNet" Version="1.4.5" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

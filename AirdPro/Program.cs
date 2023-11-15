@@ -24,7 +24,7 @@ namespace AirdPro
         public static AboutForm aboutForm { get; set; }
         public static ConversionForm conversionForm { get; set; }
         public static ConversionConfigListForm configListForm { get; set; }
-        public static GlobalSettingForm globalSettingForm { get; set; }
+        public static RedisForm redisForm { get; set; }
         public static ConversionConfigHandler conversionConfigHandler { get; private set; }
 
         /// <summary>

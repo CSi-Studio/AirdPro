@@ -28,30 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RedisForm));
             this.lblIP = new System.Windows.Forms.Label();
             this.tbRedisHost = new System.Windows.Forms.TextBox();
             this.tbRedisPort = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
-            this.lblMaxTasks = new System.Windows.Forms.Label();
-            this.numMaxTasks = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tbRedisUsername = new System.Windows.Forms.TextBox();
             this.tbRedisPassword = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.numMaxTasks)).BeginInit();
+            this.btnConnect = new System.Windows.Forms.Button();
+            this.redisConsumer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // lblIP
             // 
-            this.lblIP.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblIP.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.lblIP.AutoSize = true;
             this.lblIP.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblIP.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblIP.Location = new System.Drawing.Point(112, 16);
+            this.lblIP.Location = new System.Drawing.Point(1, 7);
             this.lblIP.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblIP.Name = "lblIP";
             this.lblIP.Size = new System.Drawing.Size(71, 17);
@@ -61,10 +59,9 @@
             // 
             // tbRedisHost
             // 
-            this.tbRedisHost.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.tbRedisHost.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left)));
             this.tbRedisHost.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbRedisHost.Location = new System.Drawing.Point(200, 13);
+            this.tbRedisHost.Location = new System.Drawing.Point(80, 4);
             this.tbRedisHost.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisHost.Name = "tbRedisHost";
             this.tbRedisHost.Size = new System.Drawing.Size(140, 23);
@@ -74,76 +71,33 @@
             // tbRedisPort
             // 
             this.tbRedisPort.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbRedisPort.Location = new System.Drawing.Point(200, 45);
+            this.tbRedisPort.Location = new System.Drawing.Point(304, 4);
             this.tbRedisPort.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisPort.Name = "tbRedisPort";
-            this.tbRedisPort.Size = new System.Drawing.Size(66, 23);
+            this.tbRedisPort.Size = new System.Drawing.Size(58, 23);
             this.tbRedisPort.TabIndex = 121;
             this.tbRedisPort.Text = "6379";
             // 
             // btnSave
             // 
-            this.btnSave.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnSave.Font = new System.Drawing.Font("微软雅黑", 8F);
             this.btnSave.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnSave.Location = new System.Drawing.Point(340, 180);
+            this.btnSave.Location = new System.Drawing.Point(854, 3);
             this.btnSave.Margin = new System.Windows.Forms.Padding(4);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(145, 34);
+            this.btnSave.Size = new System.Drawing.Size(71, 26);
             this.btnSave.TabIndex = 123;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // lblMaxTasks
-            // 
-            this.lblMaxTasks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblMaxTasks.AutoSize = true;
-            this.lblMaxTasks.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblMaxTasks.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblMaxTasks.Location = new System.Drawing.Point(13, 140);
-            this.lblMaxTasks.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblMaxTasks.Name = "lblMaxTasks";
-            this.lblMaxTasks.Size = new System.Drawing.Size(180, 17);
-            this.lblMaxTasks.TabIndex = 125;
-            this.lblMaxTasks.Text = "Max Tasks (Restart Required)";
-            this.lblMaxTasks.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // numMaxTasks
-            // 
-            this.numMaxTasks.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.numMaxTasks.Location = new System.Drawing.Point(200, 138);
-            this.numMaxTasks.Maximum = new decimal(new int[] {
-            6,
-            0,
-            0,
-            0});
-            this.numMaxTasks.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numMaxTasks.Name = "numMaxTasks";
-            this.numMaxTasks.Size = new System.Drawing.Size(111, 23);
-            this.numMaxTasks.TabIndex = 126;
-            this.numMaxTasks.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label1.Location = new System.Drawing.Point(118, 48);
+            this.label1.Location = new System.Drawing.Point(228, 7);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(68, 17);
@@ -153,13 +107,11 @@
             // 
             // label2
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label2.Location = new System.Drawing.Point(84, 80);
+            this.label2.Location = new System.Drawing.Point(370, 7);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(103, 17);
@@ -170,30 +122,28 @@
             // tbRedisUsername
             // 
             this.tbRedisUsername.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbRedisUsername.Location = new System.Drawing.Point(200, 77);
+            this.tbRedisUsername.Location = new System.Drawing.Point(472, 4);
             this.tbRedisUsername.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisUsername.Name = "tbRedisUsername";
-            this.tbRedisUsername.Size = new System.Drawing.Size(66, 23);
+            this.tbRedisUsername.Size = new System.Drawing.Size(135, 23);
             this.tbRedisUsername.TabIndex = 129;
             // 
             // tbRedisPassword
             // 
             this.tbRedisPassword.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbRedisPassword.Location = new System.Drawing.Point(200, 108);
+            this.tbRedisPassword.Location = new System.Drawing.Point(714, 4);
             this.tbRedisPassword.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisPassword.Name = "tbRedisPassword";
-            this.tbRedisPassword.Size = new System.Drawing.Size(66, 23);
+            this.tbRedisPassword.Size = new System.Drawing.Size(130, 23);
             this.tbRedisPassword.TabIndex = 131;
             // 
             // label3
             // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label3.Location = new System.Drawing.Point(89, 111);
+            this.label3.Location = new System.Drawing.Point(615, 7);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(100, 17);
@@ -201,12 +151,33 @@
             this.label3.Text = "Redis Password";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // GlobalSettingForm
+            // btnConnect
+            // 
+            this.btnConnect.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnConnect.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnConnect.FlatAppearance.BorderSize = 0;
+            this.btnConnect.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.btnConnect.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnConnect.Location = new System.Drawing.Point(929, 3);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(94, 26);
+            this.btnConnect.TabIndex = 133;
+            this.btnConnect.Text = "Connect";
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            // 
+            // redisConsumer
+            // 
+            this.redisConsumer.Interval = 3000;
+            this.redisConsumer.Tick += new System.EventHandler(this.redisConsumer_Tick);
+            // 
+            // RedisForm
             // 
             this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(498, 227);
+            this.ClientSize = new System.Drawing.Size(1029, 227);
+            this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.tbRedisPassword);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.tbRedisUsername);
@@ -216,8 +187,6 @@
             this.Controls.Add(this.tbRedisHost);
             this.Controls.Add(this.tbRedisPort);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.lblMaxTasks);
-            this.Controls.Add(this.numMaxTasks);
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -227,22 +196,22 @@
             this.Name = "RedisForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Global Settings";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GlobalSettingForm_FormClosing);
-            this.Load += new System.EventHandler(this.GlobalSettingForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.numMaxTasks)).EndInit();
+            this.Text = "Redis";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RedisForm_FormClosing);
+            this.Load += new System.EventHandler(this.RedisForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
+
+        private System.Windows.Forms.Timer redisConsumer;
+
+        private System.Windows.Forms.Button btnConnect;
 
         #endregion
         private System.Windows.Forms.Label lblIP;
         private System.Windows.Forms.TextBox tbRedisHost;
         private System.Windows.Forms.TextBox tbRedisPort;
         private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Label lblMaxTasks;
-        private System.Windows.Forms.NumericUpDown numMaxTasks;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tbRedisUsername;

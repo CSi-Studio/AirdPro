@@ -58,7 +58,6 @@ namespace AirdPro.Redis
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.StackTrace);
                 return false;
             }
 
@@ -156,7 +155,7 @@ namespace AirdPro.Redis
                             
                             JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
                             ListViewItem item = jobInfo.buildItem();
-                            if (!ConvertTaskManager.getInstance().jobTable.Contains(jobInfo.getJobId()))
+                            if (!ConvertTaskManager.getInstance().jobTable.Contains(jobInfo.jobId))
                             {
                                 Program.conversionForm.lvFileList.Items.Add(item);
                                 ConvertTaskManager.getInstance().pushJob(jobInfo);

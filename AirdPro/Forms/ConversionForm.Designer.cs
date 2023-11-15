@@ -70,8 +70,6 @@ namespace AirdPro.Forms
             this.btnImport = new System.Windows.Forms.Button();
             this.cbAutoExe = new System.Windows.Forms.CheckBox();
             this.btnConvert = new System.Windows.Forms.Button();
-            this.btnRedis = new System.Windows.Forms.Button();
-            this.lblRedisStatus = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.btnCleanFinished = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -83,7 +81,6 @@ namespace AirdPro.Forms
             this.logTimer = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
-            this.redisConsumer = new System.Windows.Forms.Timer(this.components);
             this.timerTaskScan = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
@@ -113,8 +110,6 @@ namespace AirdPro.Forms
             this.container.Panel1.Controls.Add(this.btnImport);
             this.container.Panel1.Controls.Add(this.cbAutoExe);
             this.container.Panel1.Controls.Add(this.btnConvert);
-            this.container.Panel1.Controls.Add(this.btnRedis);
-            this.container.Panel1.Controls.Add(this.lblRedisStatus);
             this.container.Panel1.Controls.Add(this.label5);
             this.container.Panel1.Controls.Add(this.btnCleanFinished);
             this.container.Panel1.Controls.Add(this.label3);
@@ -219,6 +214,7 @@ namespace AirdPro.Forms
             this.lvFileList.View = System.Windows.Forms.View.Details;
             this.lvFileList.SelectedIndexChanged += new System.EventHandler(this.lvFileList_SelectedIndexChanged);
             this.lvFileList.DoubleClick += new System.EventHandler(this.lvFileList_DoubleClick);
+            this.lvFileList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvFileList_KeyDown);
             // 
             // headerJobId
             // 
@@ -285,7 +281,7 @@ namespace AirdPro.Forms
             // 
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
             resources.ApplyResources(this.removeToolStripMenuItem, "removeToolStripMenuItem");
-            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
+            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeSelectedItems);
             // 
             // btnImport
             // 
@@ -313,22 +309,6 @@ namespace AirdPro.Forms
             this.ttAlgorithm.SetToolTip(this.btnConvert, resources.GetString("btnConvert.ToolTip"));
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
-            // 
-            // btnRedis
-            // 
-            resources.ApplyResources(this.btnRedis, "btnRedis");
-            this.btnRedis.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnRedis.FlatAppearance.BorderSize = 0;
-            this.btnRedis.Name = "btnRedis";
-            this.ttAlgorithm.SetToolTip(this.btnRedis, resources.GetString("btnRedis.ToolTip"));
-            this.btnRedis.UseVisualStyleBackColor = true;
-            this.btnRedis.Click += new System.EventHandler(this.btnRedis_Click);
-            // 
-            // lblRedisStatus
-            // 
-            resources.ApplyResources(this.lblRedisStatus, "lblRedisStatus");
-            this.lblRedisStatus.ForeColor = System.Drawing.Color.Red;
-            this.lblRedisStatus.Name = "lblRedisStatus";
             // 
             // label5
             // 
@@ -397,11 +377,6 @@ namespace AirdPro.Forms
             resources.ApplyResources(this.ofd, "ofd");
             this.ofd.Multiselect = true;
             // 
-            // redisConsumer
-            // 
-            this.redisConsumer.Interval = 3000;
-            this.redisConsumer.Tick += new System.EventHandler(this.redisConsumer_Tick);
-            // 
             // timerTaskScan
             // 
             this.timerTaskScan.Interval = 2000;
@@ -454,9 +429,6 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ColumnHeader headerJobId;
         private System.Windows.Forms.ColumnHeader headerIgnoreZero;
         private System.Windows.Forms.ColumnHeader headerSuffix;
-        private System.Windows.Forms.Timer redisConsumer;
-        private System.Windows.Forms.Button btnRedis;
-        private System.Windows.Forms.Label lblRedisStatus;
         private System.Windows.Forms.Button btnImport;
         private System.Windows.Forms.Button btnCleanFinished;
         private System.Windows.Forms.Button btnSetting;
@@ -473,7 +445,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label112;
-        private System.Windows.Forms.Button btnRedisSetting;
+        public System.Windows.Forms.Button btnRedisSetting;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.Label label4;

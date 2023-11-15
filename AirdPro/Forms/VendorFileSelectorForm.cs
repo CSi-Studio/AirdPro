@@ -203,6 +203,7 @@ namespace AirdPro.Forms
                 if (node.Tag is FileItem)
                 {
                     alert = true;
+                    continue;
                 }
 
                 FolderItem folderItem = node.Tag as FolderItem;

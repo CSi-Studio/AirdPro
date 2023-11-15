@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using AirdPro.Constants;
 using AirdPro.Domains;
+using AirdPro.Properties;
 using AirdPro.Storage;
 using AirdPro.Storage.Config;
 using AirdSDK.Enums;
@@ -65,6 +66,7 @@ namespace AirdPro.Forms
             }
 
             showConfig("", new ConversionConfig());
+            numMaxTasks.Text = Settings.Default.MaxConversionTasks.ToString();
         }
 
         public void update(Dictionary<string, ConversionConfig> configMap)
@@ -174,6 +176,7 @@ namespace AirdPro.Forms
 
             ConversionConfig config = buildConfigInfo();
             Program.conversionConfigHandler.saveConfig(tbNameConfig.Text, config);
+            Settings.Default.MaxConversionTasks = (int)numMaxTasks.Value;
         }
 
 
@@ -271,6 +274,11 @@ namespace AirdPro.Forms
             tableAutoDecision.Enabled = !cbAutoDecision.Checked;
             tableDeciderWeight.Enabled = cbAutoDecision.Checked;
             tbSpectraToPredict.Enabled = cbAutoDecision.Checked;
+        }
+
+        private void btnGlobalSettingSave_Click(object sender, EventArgs e)
+        {
+            Settings.Default.MaxConversionTasks = (int)numMaxTasks.Value;
         }
     }
 }

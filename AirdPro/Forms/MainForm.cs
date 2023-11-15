@@ -64,13 +64,13 @@ namespace AirdPro.Forms
 
         private void globalSettingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Program.globalSettingForm == null || Program.globalSettingForm.IsDisposed)
+            if (Program.redisForm == null || Program.redisForm.IsDisposed)
             {
-                Program.globalSettingForm = new GlobalSettingForm();
-                Program.globalSettingForm.Show();
+                Program.redisForm = new RedisForm();
+                Program.redisForm.Show();
             }
 
-            Program.globalSettingForm.Visible = true;
+            Program.redisForm.Visible = true;
 
         }
 

@@ -55,7 +55,7 @@ namespace AirdPro.Storage.Config
         /**
          * 是否压缩索引，是则会将IndexList的信息转化为JSON格式后使用Zstd进行压缩并存储与Aird文件中
          */
-        public bool compressedIndex = true;
+        public bool compressedIndex = false;
 
         /**
          * The operator's name
@@ -122,7 +122,7 @@ namespace AirdPro.Storage.Config
         /**
          * Slice版本下生效，如果为true，则仅使用FastPFor内核进行压缩
          */
-        public bool fastMode = false;
+        public bool fastMode = true;
         
         /**
          * The stack layers's tag

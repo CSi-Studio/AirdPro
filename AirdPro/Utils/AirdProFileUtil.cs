@@ -122,32 +122,28 @@ namespace AirdPro.Utils
                 dirs = Directory.GetDirectories(folderPath);
             }
             catch (Exception e)
-            {
-                return null;
-            }
+            {}
 
-            if (dirs.Length == 0)
+            if (dirs.Length > 0)
             {
-                return null;
-            }
-            
-            foreach (string str in dirs)
-            {
-                if (str.ToLower().EndsWith(FileFormat.DotD.ToLower()) ||
-                    str.ToLower().EndsWith(FileFormat.DotRAW.ToLower()))
+                foreach (string str in dirs)
                 {
-                    items.Add(str);
-                }
-                else
-                {
-                    List<string> files = scan(str);
-                    if (files != null)
+                    if (str.ToLower().EndsWith(FileFormat.DotD.ToLower()) ||
+                        str.ToLower().EndsWith(FileFormat.DotRAW.ToLower()))
                     {
-                        items.AddRange(files);
+                        items.Add(str);
+                    }
+                    else
+                    {
+                        List<string> files = scan(str);
+                        if (files != null)
+                        {
+                            items.AddRange(files);
+                        }
                     }
                 }
             }
-
+            
             foreach (string str in Directory.GetFiles(folderPath))
             {
                 string extension = Path.GetExtension(str);

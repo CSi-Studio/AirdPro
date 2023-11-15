@@ -51,31 +51,31 @@ namespace AirdPro.Asyncs
         //加入一个新的转换任务,如果该任务已经在转换完毕的列表内,则将其重新放入待转换队列重新转换
         public void pushJob(JobInfo job)
         {
-            if (finishedTable.ContainsKey(job.getJobId()))
+            if (finishedTable.ContainsKey(job.jobId))
             {
-                finishedTable.Remove(job.getJobId());
+                finishedTable.Remove(job.jobId);
             }
 
-            if (!jobTable.Contains(job.getJobId()))
+            if (!jobTable.Contains(job.jobId))
             {
                 jobQueue.Enqueue(job);
-                jobTable.Add(job.getJobId(), job);
+                jobTable.Add(job.jobId, job);
             }
         }
 
         //将一个任务置为已完成状态
         public void finishedJob(JobInfo jobInfo)
         {
-            jobTable.Remove(jobInfo.getJobId());
-            finishedTable.Add(jobInfo.getJobId(), jobInfo);
+            jobTable.Remove(jobInfo.jobId);
+            finishedTable.Add(jobInfo.jobId, jobInfo);
         }
 
         //删除一个任务
         public void removeJob(JobInfo jobInfo)
         {
             jobInfo.tokenSource.Cancel();
-            jobTable.Remove(jobInfo.getJobId());
-            finishedTable.Remove(jobInfo.getJobId());
+            jobTable.Remove(jobInfo.jobId);
+            finishedTable.Remove(jobInfo.jobId);
         }
 
         public void run()

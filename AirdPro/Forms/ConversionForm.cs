@@ -1,10 +1,10 @@
 ﻿/*
  * Copyright (c) 2020 CSi Studio
  * AirdSDK and AirdPro are licensed under Mulan PSL v2.
- * You can use this software according to the terms and conditions of the Mulan PSL v2. 
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
- *          http://license.coscl.org.cn/MulanPSL2 
- * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.  
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
  * See the Mulan PSL v2 for more details.
  */
 
@@ -22,6 +22,7 @@ using AirdSDK.Utils;
 using ThermoFisher.CommonCore.Data;
 using System.ComponentModel;
 using AirdPro.Utils;
+
 namespace AirdPro.Forms
 {
     public partial class ConversionForm : Form
@@ -60,12 +61,12 @@ namespace AirdPro.Forms
             if (lvFileList.Items.Count == 0)
             {
                 return;
-            } 
+            }
 
             foreach (ListViewItem item in lvFileList.Items)
             {
                 JobInfo jobInfo = (JobInfo)item.Tag;
-                if (!ConvertTaskManager.getInstance().finishedTable.ContainsKey(jobInfo.getJobId()))
+                if (!ConvertTaskManager.getInstance().finishedTable.ContainsKey(jobInfo.jobId))
                 {
                     item.Tag = jobInfo;
                     ConvertTaskManager.getInstance().pushJob(jobInfo);
@@ -95,7 +96,7 @@ namespace AirdPro.Forms
                 ListViewItem item = jobInfo.buildItem();
 
                 lvFileList.Items.Add(item);
-                jobIdList.Add(jobInfo.getJobId());
+                jobIdList.Add(jobInfo.jobId);
             }
         }
 
@@ -208,9 +209,9 @@ namespace AirdPro.Forms
             foreach (ListViewItem item in lvFileList.SelectedItems)
             {
                 JobInfo jobInfo = (JobInfo)item.Tag;
-                if (ConvertTaskManager.getInstance().finishedTable.ContainsKey(jobInfo.getJobId()))
+                if (ConvertTaskManager.getInstance().finishedTable.ContainsKey(jobInfo.jobId))
                 {
-                    ConvertTaskManager.getInstance().finishedTable.Remove(jobInfo.getJobId());
+                    ConvertTaskManager.getInstance().finishedTable.Remove(jobInfo.jobId);
                     ConvertTaskManager.getInstance().pushJob(jobInfo);
                     jobInfo.refreshItem(item);
                 }
@@ -226,7 +227,7 @@ namespace AirdPro.Forms
             }
         }
 
-        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void removeSelectedItems(object sender, EventArgs e)
         {
             foreach (ListViewItem item in lvFileList.SelectedItems)
             {
@@ -235,59 +236,6 @@ namespace AirdPro.Forms
                 {
                     removeFile(item);
                 }
-            }
-        }
-
-        private void redisConsumer_Tick(object sender, EventArgs e)
-        {
-            redisConsumer.Stop();
-            RedisClient.getInstance().consume();
-            redisConsumer.Start();
-        }
-
-        public void connectToRedis()
-        {
-            string connectLink = Settings.Default.RedisHost + ":" + Settings.Default.RedisPort;
-            if (connectLink.IsNullOrEmpty())
-            {
-                redisConsumer.Enabled = false;
-                MessageBox.Show(Constants.Tag.Redis_Host_Cannot_Be_Empty);
-                return;
-            }
-
-            bool initResult = RedisClient.getInstance().connect(connectLink);
-            if (initResult)
-            {
-                redisConsumer.Enabled = true;
-                updateRedisStatus(true);
-            }
-            else
-            {
-                MessageBox.Show(Constants.Tag.Connect_Failed_Please_Check_The_Redis_Host_And_Port);
-                redisConsumer.Enabled = false;
-                updateRedisStatus(false);
-            }
-        }
-
-        public void disconnectFromRedis()
-        {
-            RedisClient.getInstance().disconnect();
-            updateRedisStatus(false);
-        }
-
-        private void updateRedisStatus(bool connected)
-        {
-            if (connected)
-            {
-                btnRedis.BackgroundImage = ResourceUtil.readImage("Menu.Connected.png");
-                lblRedisStatus.Text = Status.Redis_Connected;
-                lblRedisStatus.ForeColor = Color.Green;
-            }
-            else
-            {
-                btnRedis.BackgroundImage = ResourceUtil.readImage("Menu.DisConnect.png");
-                lblRedisStatus.Text = Status.Redis_Not_Connected;
-                lblRedisStatus.ForeColor = Color.Red;
             }
         }
 
@@ -308,18 +256,6 @@ namespace AirdPro.Forms
             Environment.Exit(0);
             // e.Cancel = true;
             // this.Visible = false;
-        }
-
-        private void btnRedis_Click(object sender, EventArgs e)
-        {
-            if (RedisClient.getInstance().check())
-            {
-                disconnectFromRedis();
-            }
-            else
-            {
-                connectToRedis();
-            }
         }
 
         private void btnCleanFinished_Click(object sender, EventArgs e)
@@ -371,13 +307,13 @@ namespace AirdPro.Forms
 
         private void btnRedisSetting_Click(object sender, EventArgs e)
         {
-            if (Program.globalSettingForm == null || Program.globalSettingForm.IsDisposed)
+            if (Program.redisForm == null || Program.redisForm.IsDisposed)
             {
-                Program.globalSettingForm = new GlobalSettingForm();
-                Program.globalSettingForm.Show();
+                Program.redisForm = new RedisForm();
+                Program.redisForm.Show();
             }
 
-            Program.globalSettingForm.Visible = true;
+            Program.redisForm.Visible = true;
         }
 
         private void btnHelp_Click(object sender, EventArgs e)
@@ -399,6 +335,38 @@ namespace AirdPro.Forms
             }
 
             Program.mainForm.Show();
+        }
+
+        private bool IsCtrlA(KeyEventArgs e)
+        {
+            return (e.Control && e.KeyCode == Keys.A);
+        }
+
+        private bool IsDelete(KeyEventArgs e)
+        {
+            return e.KeyCode == Keys.Delete;
+        }
+
+        private void lvFileList_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (IsCtrlA(e))
+            {
+                foreach (ListViewItem item in ((ListView)sender).Items)
+                {
+                    item.Selected = true;
+                }
+
+                e.SuppressKeyPress = true; // 阻止控件处理这个按键事件  
+            }
+            else if (IsDelete(e))
+            {
+                removeSelectedItems(null, null);
+            }
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

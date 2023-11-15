@@ -27,8 +27,8 @@ namespace AirdPro.Domains
 
         //以C:/data/plasma.wiff为例
 
-        //C:/data/plasma.wiff,作为job的ID存在
-        private string jobId;
+        //使用NextId作为自增函数
+        public string jobId;
 
         //任务状态,不用于界面展示,界面展示的字段使用的是progress
         public string status;
@@ -85,9 +85,16 @@ namespace AirdPro.Domains
 
         public bool refreshReport = true;
 
+        public static int id = 0;
+
+        public static string NextId()
+        {
+            return Interlocked.Increment(ref id)+"";
+        }
+        
         public JobInfo(string inputPath, string outputPath, string type, ConversionConfig config)
         {
-            jobId = inputPath + config.GetHashCode();
+            jobId = NextId();
             this.inputPath = inputPath;
             this.type = type;
             this.outputPath = outputPath;
@@ -104,7 +111,7 @@ namespace AirdPro.Domains
         {
             string[] itemInfo = new string[]
             {
-                getJobId(),
+                jobId,
                 inputPath,
                 type,
                 config.configName,
@@ -215,15 +222,10 @@ namespace AirdPro.Domains
             return jobInfo;
         }
 
-        public string getJobId()
+        public string getUniqueId()
         {
-            if (jobId.IsNullOrEmpty())
-            {
-                jobId = (inputPath + outputPath + getCompressorStr() + config.getMzPrecisionStr() +
-                         config.ignoreZeroIntensity).GetHashCode() + "";
-            }
-
-            return jobId;
+            return inputPath + outputPath + getCompressorStr() + config.getMzPrecisionStr() +
+                   config.ignoreZeroIntensity;
         }
 
         public string getCompressorStr()
