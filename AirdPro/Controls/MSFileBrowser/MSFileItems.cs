@@ -8,6 +8,7 @@ namespace AirdPro
     public abstract class BaseItem
     {
         private bool msfile = false;
+        private bool exist = true;
 
         public bool MSFile
         {
@@ -18,6 +19,19 @@ namespace AirdPro
                 if (msfile)
                 {
                     this.Icon = ResourceUtil.readImage("Menu.Spectrum16x16.png");
+                }
+            }
+        }
+
+        public bool Exist
+        {
+            get { return exist; }
+            set
+            {
+                exist = value;
+                if (!exist)
+                {
+                    this.Icon = ResourceUtil.readImage("Menu.notExist.png");
                 }
             }
         }
@@ -97,18 +111,18 @@ namespace AirdPro
             set { owner = value; }
         }
 
-        /*public override bool Equals(object obj)
-        {
-            if (obj is BaseItem)
-                return path.Equals((obj as BaseItem).ItemPath);
-            else
-                return base.Equals(obj);
-        }
+         public override bool Equals(object obj)
+         {
+             if (obj is BaseItem)
+                 return path.Equals((obj as BaseItem).ItemPath);
+             else
+                 return base.Equals(obj);
+         }
 
-        public override int GetHashCode()
-        {
-            return path.GetHashCode();
-        }*/
+         public override int GetHashCode()
+         {
+             return path.GetHashCode();
+         }
 
         public override string ToString()
         {

@@ -260,5 +260,99 @@ namespace AirdPro.Forms
                 }
             }
         }
+
+        //将某个文件目录收藏至根目录下
+        private void btnPin_Click(object sender, EventArgs e)
+        {
+            bool alert = false;
+            FolderFileBrowserModel innerModel = msFileViews.getInnerModel();
+            List<string> addedPaths = new List<string>();
+            for (var i = 0; i < msFileViews.files.SelectedNodes.Count; i++)
+            {
+                TreeNodeAdv node = msFileViews.files.SelectedNodes[i];
+                if (node.Tag is RootItem)
+                {
+                    continue;
+                }
+
+                if (node.Tag is FileItem)
+                {
+                    alert = true;
+                }
+                
+                FolderItem folderItem = node.Tag as FolderItem;
+                RootItem rootItem = msFileViews.getInnerModel().buildRoot(folderItem.ItemPath);
+                string path = innerModel.AddRootItemToCache(rootItem);
+                if (path != null)
+                {
+                    addedPaths.Add(path);
+                    addToSettingStorage(addedPaths);
+                }
+            }
+
+            if (addedPaths.Count > 0)
+            {
+                innerModel.OnStructureChanged(null);
+            }
+          
+            if (alert)
+            {
+                MessageBox.Show("Files cannot be pinned");
+            }
+        }
+
+        private void btnUnpin_Click(object sender, EventArgs e)
+        {
+            FolderFileBrowserModel innerModel = msFileViews.getInnerModel();
+            List<string> removedPaths = new List<string>();
+            for (var i = 0; i < msFileViews.files.SelectedNodes.Count; i++)
+            {
+                TreeNodeAdv node = msFileViews.files.SelectedNodes[i];
+                if (node.Tag is FileItem || node.Tag is FolderItem)
+                {
+                    continue;
+                }
+
+                RootItem rootItem = node.Tag as RootItem;
+                string removedPath = innerModel.RemoveRootItemFromCache(rootItem);
+                if (removedPath != null)
+                {
+                    removedPaths.Add(removedPath);
+                }
+            }
+
+            if (removedPaths.Count > 0)
+            {
+                removeFromSettingStorage(removedPaths);
+                innerModel.OnStructureChanged(null);
+            }
+        }
+
+        public void addToSettingStorage(List<string> addedPaths)
+        {
+            string pinPathStr = Settings.Default.PinPathList;
+            string[] pinPathArray = pinPathStr.Split(',');
+            HashSet<string> pinPathSet = new HashSet<string>(pinPathArray);
+            for (var i = 0; i < addedPaths.Count; i++)
+            {
+                pinPathSet.Add(addedPaths[i]);
+            }
+
+            Settings.Default.PinPathList = string.Join(",",pinPathSet);
+            Settings.Default.Save();
+        }
+
+        public void removeFromSettingStorage(List<string> removedPaths)
+        {
+            string pinPathStr = Settings.Default.PinPathList;
+            string[] pinPathArray = pinPathStr.Split(',');
+            HashSet<string> pinPathSet = new HashSet<string>(pinPathArray);
+            for (var i = 0; i < removedPaths.Count; i++)
+            {
+                pinPathSet.Remove(removedPaths[i]);
+            }
+            Settings.Default.PinPathList = string.Join(",",pinPathSet);
+            Settings.Default.Save();
+        }
     }
 }

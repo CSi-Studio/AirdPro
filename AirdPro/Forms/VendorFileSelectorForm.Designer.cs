@@ -54,6 +54,8 @@ namespace AirdPro.Forms
             this.btnMirrorScan = new System.Windows.Forms.Button();
             this.btnFileRefresh = new System.Windows.Forms.Button();
             this.msFileViews = new AirdPro.FolderFileBrowser();
+            this.btnPin = new System.Windows.Forms.Button();
+            this.btnUnpin = new System.Windows.Forms.Button();
             this.gBoxMode.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -302,9 +304,7 @@ namespace AirdPro.Forms
             // 
             // msFileViews
             // 
-            this.msFileViews.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.msFileViews.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.msFileViews.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.msFileViews.Location = new System.Drawing.Point(6, 68);
             this.msFileViews.Margin = new System.Windows.Forms.Padding(4);
@@ -312,11 +312,35 @@ namespace AirdPro.Forms
             this.msFileViews.Size = new System.Drawing.Size(590, 354);
             this.msFileViews.TabIndex = 125;
             // 
+            // btnPin
+            // 
+            this.btnPin.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnPin.Location = new System.Drawing.Point(87, 41);
+            this.btnPin.Name = "btnPin";
+            this.btnPin.Size = new System.Drawing.Size(75, 26);
+            this.btnPin.TabIndex = 133;
+            this.btnPin.Text = "Pin";
+            this.btnPin.UseVisualStyleBackColor = true;
+            this.btnPin.Click += new System.EventHandler(this.btnPin_Click);
+            // 
+            // btnUnpin
+            // 
+            this.btnUnpin.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnUnpin.Location = new System.Drawing.Point(168, 41);
+            this.btnUnpin.Name = "btnUnpin";
+            this.btnUnpin.Size = new System.Drawing.Size(75, 26);
+            this.btnUnpin.TabIndex = 134;
+            this.btnUnpin.Text = "Unpin";
+            this.btnUnpin.UseVisualStyleBackColor = true;
+            this.btnUnpin.Click += new System.EventHandler(this.btnUnpin_Click);
+            // 
             // VendorFileSelectorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(866, 432);
+            this.Controls.Add(this.btnUnpin);
+            this.Controls.Add(this.btnPin);
             this.Controls.Add(this.btnFileRefresh);
             this.Controls.Add(this.btnMirrorScan);
             this.Controls.Add(this.btnAddClose);
@@ -341,8 +365,11 @@ namespace AirdPro.Forms
             this.gBoxMode.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
+
+        private System.Windows.Forms.Button btnPin;
+
+        private System.Windows.Forms.Button btnUnpin;
 
         private System.Windows.Forms.Button btnMirrorScan;
 

@@ -28,6 +28,14 @@ namespace AirdPro
             files.Model = new SortedTreeModel(new FolderFileBrowserModel());
         }
 
+        public FolderFileBrowserModel getInnerModel()
+        {
+            TreeViewAdv treeView = this.files;
+            SortedTreeModel model = treeView.Model as SortedTreeModel;
+            FolderFileBrowserModel innerModel = model.InnerModel as FolderFileBrowserModel;
+            return innerModel;
+        }
+
         void _name_EditorShowing(object sender, CancelEventArgs e)
         {
             if (files.CurrentNode.Tag is RootItem)

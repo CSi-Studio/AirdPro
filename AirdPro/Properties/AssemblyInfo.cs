@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CSi Studio")]
 [assembly: AssemblyProduct("AirdPro")]
-[assembly: AssemblyCopyright("Copyright ©  2023")]
+[assembly: AssemblyCopyright("Copyright © 2024")]
 [assembly: AssemblyTrademark("AirdPro")]
 [assembly: AssemblyCulture("")]
 
@@ -30,4 +30,4 @@ using System.Runtime.InteropServices;
 //
 // 可以指定所有值，也可以使用以下所示的 "*" 预置版本号和修订号
 // 方法是按如下所示使用“*”: :
-[assembly: AssemblyVersion("5.2.2.0")]
+[assembly: AssemblyVersion("5.3.0.0")]
