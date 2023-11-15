@@ -8,6 +8,7 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -114,7 +115,22 @@ namespace AirdPro.Utils
         public static List<string> scan(string folderPath)
         {
             List<string> items = new List<string>();
-            foreach (string str in Directory.GetDirectories(folderPath))
+            string[] dirs = new string[0];
+            try
+            {
+                dirs = Directory.GetDirectories(folderPath);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+
+            if (dirs.Length == 0)
+            {
+                return null;
+            }
+            
+            foreach (string str in dirs)
             {
                 if (str.ToLower().EndsWith(FileFormat.DotD.ToLower()) ||
                     str.ToLower().EndsWith(FileFormat.DotRAW.ToLower()))
@@ -123,7 +139,11 @@ namespace AirdPro.Utils
                 }
                 else
                 {
-                    items.AddRange(scan(str));
+                    List<string> children = scan(str);
+                    if (children != null)
+                    {
+                        items.AddRange(children);
+                    }
                 }
             }
 

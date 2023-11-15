@@ -630,10 +630,23 @@
     <EmbeddedResource Include="Resources\Menu\notExist.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Menu\Pin.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Menu\Unpin.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Menu\Refresh.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="Controls\TreeViewAdv\Migrated rules for Aga.Controls.ruleset" />
     <Content Include="Controls\TreeViewAdv\Tree\ClassDiagram.cd" />
     <Content Include="Controls\TreeViewAdv\Tree\NodeControls\ClassDiagram.cd" />
+    <Content Include="Resources\Conversion.png" />
+    <Content Include="Resources\Menu\Pin.png" />
     <Content Include="Resources\Menu\Redis.png" />
+    <Content Include="Resources\Menu\Refresh.png" />
+    <Content Include="Resources\Menu\Unpin.png" />
     <Content Include="Resources\TreeViewAdv\check.bmp" />
     <Content Include="Resources\TreeViewAdv\DVSplit.cur" />
     <Content Include="Resources\TreeViewAdv\Folder.bmp" />

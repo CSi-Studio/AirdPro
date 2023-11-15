@@ -41,7 +41,6 @@ namespace AirdPro.Forms
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.btnEditConfigs = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
             this.lblConfigOutputPath = new System.Windows.Forms.Label();
             this.btnConfigChooseFolder = new System.Windows.Forms.Button();
             this.tbOutputPath = new System.Windows.Forms.TextBox();
@@ -49,13 +48,13 @@ namespace AirdPro.Forms
             this.lblConvertConfig = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.imgList = new System.Windows.Forms.ImageList(this.components);
-            this.btnAdd = new System.Windows.Forms.Button();
-            this.btnAddClose = new System.Windows.Forms.Button();
-            this.btnMirrorScan = new System.Windows.Forms.Button();
             this.btnFileRefresh = new System.Windows.Forms.Button();
             this.msFileViews = new AirdPro.FolderFileBrowser();
             this.btnPin = new System.Windows.Forms.Button();
             this.btnUnpin = new System.Windows.Forms.Button();
+            this.btnTooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.imgBtnAdd = new HZH_Controls.Controls.UCBtnImg();
+            this.imgBtnClose = new HZH_Controls.Controls.UCBtnImg();
             this.gBoxMode.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,7 +71,6 @@ namespace AirdPro.Forms
             // 
             // gBoxMode
             // 
-            this.gBoxMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.gBoxMode.Controls.Add(this.radioButton4);
             this.gBoxMode.Controls.Add(this.radioButton3);
             this.gBoxMode.Controls.Add(this.rbAuto);
@@ -81,9 +79,9 @@ namespace AirdPro.Forms
             this.gBoxMode.Controls.Add(this.radioButton2);
             this.gBoxMode.Controls.Add(this.radioButton1);
             this.gBoxMode.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.gBoxMode.Location = new System.Drawing.Point(614, 91);
+            this.gBoxMode.Location = new System.Drawing.Point(604, 128);
             this.gBoxMode.Name = "gBoxMode";
-            this.gBoxMode.Size = new System.Drawing.Size(240, 206);
+            this.gBoxMode.Size = new System.Drawing.Size(142, 206);
             this.gBoxMode.TabIndex = 2;
             this.gBoxMode.TabStop = false;
             this.gBoxMode.Text = "Acquisition Mode";
@@ -165,7 +163,7 @@ namespace AirdPro.Forms
             // btnEditConfigs
             // 
             this.btnEditConfigs.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnEditConfigs.Location = new System.Drawing.Point(320, 12);
+            this.btnEditConfigs.Location = new System.Drawing.Point(292, 12);
             this.btnEditConfigs.Name = "btnEditConfigs";
             this.btnEditConfigs.Size = new System.Drawing.Size(75, 26);
             this.btnEditConfigs.TabIndex = 6;
@@ -173,25 +171,13 @@ namespace AirdPro.Forms
             this.btnEditConfigs.UseVisualStyleBackColor = true;
             this.btnEditConfigs.Click += new System.EventHandler(this.btnCreateConfigs_Click);
             // 
-            // btnClose
-            // 
-            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClose.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnClose.Location = new System.Drawing.Point(603, 391);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(251, 38);
-            this.btnClose.TabIndex = 7;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
             // lblConfigOutputPath
             // 
             this.lblConfigOutputPath.AutoSize = true;
             this.lblConfigOutputPath.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.lblConfigOutputPath.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblConfigOutputPath.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblConfigOutputPath.Location = new System.Drawing.Point(410, 16);
+            this.lblConfigOutputPath.Location = new System.Drawing.Point(384, 17);
             this.lblConfigOutputPath.Name = "lblConfigOutputPath";
             this.lblConfigOutputPath.Size = new System.Drawing.Size(80, 17);
             this.lblConfigOutputPath.TabIndex = 119;
@@ -201,7 +187,7 @@ namespace AirdPro.Forms
             // 
             this.btnConfigChooseFolder.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.btnConfigChooseFolder.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnConfigChooseFolder.Location = new System.Drawing.Point(774, 12);
+            this.btnConfigChooseFolder.Location = new System.Drawing.Point(670, 14);
             this.btnConfigChooseFolder.Name = "btnConfigChooseFolder";
             this.btnConfigChooseFolder.Size = new System.Drawing.Size(75, 26);
             this.btnConfigChooseFolder.TabIndex = 120;
@@ -212,9 +198,9 @@ namespace AirdPro.Forms
             // tbOutputPath
             // 
             this.tbOutputPath.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.tbOutputPath.Location = new System.Drawing.Point(496, 14);
+            this.tbOutputPath.Location = new System.Drawing.Point(462, 14);
             this.tbOutputPath.Name = "tbOutputPath";
-            this.tbOutputPath.Size = new System.Drawing.Size(272, 23);
+            this.tbOutputPath.Size = new System.Drawing.Size(202, 23);
             this.tbOutputPath.TabIndex = 118;
             // 
             // cbConfig
@@ -223,7 +209,7 @@ namespace AirdPro.Forms
             this.cbConfig.FormattingEnabled = true;
             this.cbConfig.Location = new System.Drawing.Point(131, 12);
             this.cbConfig.Name = "cbConfig";
-            this.cbConfig.Size = new System.Drawing.Size(183, 25);
+            this.cbConfig.Size = new System.Drawing.Size(155, 25);
             this.cbConfig.TabIndex = 121;
             // 
             // lblConvertConfig
@@ -238,12 +224,10 @@ namespace AirdPro.Forms
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.label1.Location = new System.Drawing.Point(614, 50);
+            this.label1.Location = new System.Drawing.Point(606, 50);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(208, 34);
+            this.label1.Size = new System.Drawing.Size(142, 75);
             this.label1.TabIndex = 123;
             this.label1.Text = "If your acquisition method is PRM,\r\nselect the PRM option directly!";
             // 
@@ -255,96 +239,130 @@ namespace AirdPro.Forms
             this.imgList.Images.SetKeyName(1, "DirectoryOpen16x16.png");
             this.imgList.Images.SetKeyName(2, "Spectrum16x16.png");
             // 
-            // btnAdd
-            // 
-            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAdd.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnAdd.Location = new System.Drawing.Point(603, 303);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(132, 38);
-            this.btnAdd.TabIndex = 127;
-            this.btnAdd.Text = "Add";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
-            // btnAddClose
-            // 
-            this.btnAddClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddClose.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnAddClose.Location = new System.Drawing.Point(741, 303);
-            this.btnAddClose.Name = "btnAddClose";
-            this.btnAddClose.Size = new System.Drawing.Size(113, 38);
-            this.btnAddClose.TabIndex = 128;
-            this.btnAddClose.Text = "Add and Close";
-            this.btnAddClose.UseVisualStyleBackColor = true;
-            this.btnAddClose.Click += new System.EventHandler(this.btnAddClose_Click);
-            // 
-            // btnMirrorScan
-            // 
-            this.btnMirrorScan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnMirrorScan.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnMirrorScan.Location = new System.Drawing.Point(603, 347);
-            this.btnMirrorScan.Name = "btnMirrorScan";
-            this.btnMirrorScan.Size = new System.Drawing.Size(251, 38);
-            this.btnMirrorScan.TabIndex = 129;
-            this.btnMirrorScan.Text = "Mirror Convert";
-            this.btnMirrorScan.UseVisualStyleBackColor = true;
-            this.btnMirrorScan.Click += new System.EventHandler(this.btnMirrorScan_Click);
-            // 
             // btnFileRefresh
             // 
+            this.btnFileRefresh.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnFileRefresh.BackgroundImage")));
+            this.btnFileRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnFileRefresh.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnFileRefresh.Location = new System.Drawing.Point(6, 41);
+            this.btnFileRefresh.Location = new System.Drawing.Point(10, 43);
             this.btnFileRefresh.Name = "btnFileRefresh";
-            this.btnFileRefresh.Size = new System.Drawing.Size(75, 26);
+            this.btnFileRefresh.Size = new System.Drawing.Size(30, 30);
             this.btnFileRefresh.TabIndex = 132;
-            this.btnFileRefresh.Text = "Refresh";
+            this.btnTooltip.SetToolTip(this.btnFileRefresh, "refresh the selected folder");
             this.btnFileRefresh.UseVisualStyleBackColor = true;
-            this.btnFileRefresh.Click += new System.EventHandler(this.btnFileRefresh_Click_1);
+            this.btnFileRefresh.Click += new System.EventHandler(this.btnFileRefresh_Click);
             // 
             // msFileViews
             // 
-            this.msFileViews.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.msFileViews.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.msFileViews.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.msFileViews.Location = new System.Drawing.Point(6, 68);
+            this.msFileViews.Location = new System.Drawing.Point(6, 76);
             this.msFileViews.Margin = new System.Windows.Forms.Padding(4);
             this.msFileViews.Name = "msFileViews";
-            this.msFileViews.Size = new System.Drawing.Size(590, 354);
+            this.msFileViews.Size = new System.Drawing.Size(592, 354);
             this.msFileViews.TabIndex = 125;
             // 
             // btnPin
             // 
+            this.btnPin.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnPin.BackgroundImage")));
+            this.btnPin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnPin.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnPin.Location = new System.Drawing.Point(87, 41);
+            this.btnPin.Location = new System.Drawing.Point(46, 43);
             this.btnPin.Name = "btnPin";
-            this.btnPin.Size = new System.Drawing.Size(75, 26);
+            this.btnPin.Size = new System.Drawing.Size(30, 30);
             this.btnPin.TabIndex = 133;
-            this.btnPin.Text = "Pin";
+            this.btnTooltip.SetToolTip(this.btnPin, "Pin the selected folder");
             this.btnPin.UseVisualStyleBackColor = true;
             this.btnPin.Click += new System.EventHandler(this.btnPin_Click);
             // 
             // btnUnpin
             // 
+            this.btnUnpin.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnUnpin.BackgroundImage")));
+            this.btnUnpin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnUnpin.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnUnpin.Location = new System.Drawing.Point(168, 41);
+            this.btnUnpin.Location = new System.Drawing.Point(82, 43);
             this.btnUnpin.Name = "btnUnpin";
-            this.btnUnpin.Size = new System.Drawing.Size(75, 26);
+            this.btnUnpin.Size = new System.Drawing.Size(30, 30);
             this.btnUnpin.TabIndex = 134;
-            this.btnUnpin.Text = "Unpin";
+            this.btnTooltip.SetToolTip(this.btnUnpin, "Unpin the selected folder");
             this.btnUnpin.UseVisualStyleBackColor = true;
             this.btnUnpin.Click += new System.EventHandler(this.btnUnpin_Click);
+            // 
+            // imgBtnAdd
+            // 
+            this.imgBtnAdd.BackColor = System.Drawing.Color.Transparent;
+            this.imgBtnAdd.BtnBackColor = System.Drawing.Color.White;
+            this.imgBtnAdd.BtnFont = new System.Drawing.Font("微软雅黑", 9F);
+            this.imgBtnAdd.BtnForeColor = System.Drawing.Color.Black;
+            this.imgBtnAdd.BtnText = " Add";
+            this.imgBtnAdd.ConerRadius = 1;
+            this.imgBtnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.imgBtnAdd.EnabledMouseEffect = true;
+            this.imgBtnAdd.FillColor = System.Drawing.Color.White;
+            this.imgBtnAdd.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.imgBtnAdd.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
+            this.imgBtnAdd.Image = ((System.Drawing.Image)(resources.GetObject("imgBtnAdd.Image")));
+            this.imgBtnAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.imgBtnAdd.ImageFontIcons = ((object)(resources.GetObject("imgBtnAdd.ImageFontIcons")));
+            this.imgBtnAdd.IsRadius = true;
+            this.imgBtnAdd.IsShowRect = true;
+            this.imgBtnAdd.IsShowTips = false;
+            this.imgBtnAdd.Location = new System.Drawing.Point(603, 337);
+            this.imgBtnAdd.Margin = new System.Windows.Forms.Padding(0);
+            this.imgBtnAdd.Name = "imgBtnAdd";
+            this.imgBtnAdd.RectColor = System.Drawing.Color.Silver;
+            this.imgBtnAdd.RectWidth = 1;
+            this.imgBtnAdd.Size = new System.Drawing.Size(142, 38);
+            this.imgBtnAdd.TabIndex = 135;
+            this.imgBtnAdd.TabStop = false;
+            this.imgBtnAdd.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.imgBtnAdd.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
+            this.imgBtnAdd.TipsText = "";
+            this.imgBtnAdd.BtnClick += new System.EventHandler(this.imgBtnAdd_BtnClick);
+            // 
+            // imgBtnClose
+            // 
+            this.imgBtnClose.BackColor = System.Drawing.Color.White;
+            this.imgBtnClose.BtnBackColor = System.Drawing.Color.White;
+            this.imgBtnClose.BtnFont = new System.Drawing.Font("微软雅黑", 9F);
+            this.imgBtnClose.BtnForeColor = System.Drawing.Color.Black;
+            this.imgBtnClose.BtnText = "Close";
+            this.imgBtnClose.ConerRadius = 1;
+            this.imgBtnClose.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.imgBtnClose.EnabledMouseEffect = true;
+            this.imgBtnClose.FillColor = System.Drawing.Color.White;
+            this.imgBtnClose.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.imgBtnClose.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
+            this.imgBtnClose.Image = ((System.Drawing.Image)(resources.GetObject("imgBtnClose.Image")));
+            this.imgBtnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.imgBtnClose.ImageFontIcons = ((object)(resources.GetObject("imgBtnClose.ImageFontIcons")));
+            this.imgBtnClose.IsRadius = true;
+            this.imgBtnClose.IsShowRect = true;
+            this.imgBtnClose.IsShowTips = false;
+            this.imgBtnClose.Location = new System.Drawing.Point(603, 380);
+            this.imgBtnClose.Margin = new System.Windows.Forms.Padding(0);
+            this.imgBtnClose.Name = "imgBtnClose";
+            this.imgBtnClose.RectColor = System.Drawing.Color.Silver;
+            this.imgBtnClose.RectWidth = 1;
+            this.imgBtnClose.Size = new System.Drawing.Size(142, 38);
+            this.imgBtnClose.TabIndex = 136;
+            this.imgBtnClose.TabStop = false;
+            this.imgBtnClose.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.imgBtnClose.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
+            this.imgBtnClose.TipsText = "";
+            this.imgBtnClose.BtnClick += new System.EventHandler(this.imgBtnClose_BtnClick);
             // 
             // VendorFileSelectorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(866, 432);
+            this.ClientSize = new System.Drawing.Size(755, 432);
+            this.Controls.Add(this.imgBtnClose);
+            this.Controls.Add(this.imgBtnAdd);
             this.Controls.Add(this.btnUnpin);
             this.Controls.Add(this.btnPin);
             this.Controls.Add(this.btnFileRefresh);
-            this.Controls.Add(this.btnMirrorScan);
-            this.Controls.Add(this.btnAddClose);
-            this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.msFileViews);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblConvertConfig);
@@ -352,7 +370,6 @@ namespace AirdPro.Forms
             this.Controls.Add(this.lblConfigOutputPath);
             this.Controls.Add(this.btnConfigChooseFolder);
             this.Controls.Add(this.tbOutputPath);
-            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnEditConfigs);
             this.Controls.Add(this.gBoxMode);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -365,13 +382,12 @@ namespace AirdPro.Forms
             this.gBoxMode.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private System.Windows.Forms.Button btnPin;
 
         private System.Windows.Forms.Button btnUnpin;
-
-        private System.Windows.Forms.Button btnMirrorScan;
 
         #endregion
         private System.Windows.Forms.RadioButton radioButton1;
@@ -381,7 +397,6 @@ namespace AirdPro.Forms
         private System.Windows.Forms.RadioButton radioButton6;
         private System.Windows.Forms.RadioButton radioButton5;
         private System.Windows.Forms.Button btnEditConfigs;
-        private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Label lblConfigOutputPath;
         private System.Windows.Forms.Button btnConfigChooseFolder;
         public System.Windows.Forms.TextBox tbOutputPath;
@@ -392,9 +407,10 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ImageList imgList;
         private AirdPro.FolderFileBrowser msFileViews;
-        private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.RadioButton radioButton4;
-        private System.Windows.Forms.Button btnAddClose;
         private System.Windows.Forms.Button btnFileRefresh;
+        private System.Windows.Forms.ToolTip btnTooltip;
+        private HZH_Controls.Controls.UCBtnImg imgBtnAdd;
+        private HZH_Controls.Controls.UCBtnImg imgBtnClose;
     }
 }

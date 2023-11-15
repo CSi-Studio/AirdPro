@@ -39,6 +39,7 @@ namespace AirdPro.Forms
             {
                 Program.conversionConfigHandler.attach(this);
             }
+
             rbAuto.Checked = true;
             tbOutputPath.Text = Settings.Default.LastOutputPath;
             cbConfig.SelectedIndex = 0;
@@ -48,12 +49,12 @@ namespace AirdPro.Forms
         {
             msFileViews.files.ClearSelection();
         }
-        
+
         /**
          * mirrorConvert if use mirror conversion,
          * if true,AirdPro will scan the selected files into target output file with same directory structure.
          */
-        private bool addToList(bool mirrorConvert)
+        private bool addToList()
         {
             string airdType = null;
             for (int i = 0; i < gBoxMode.Controls.Count; i++)
@@ -75,7 +76,7 @@ namespace AirdPro.Forms
             {
                 cbConfig.SelectedItem = cbConfig.Text;
             }
-            
+
             if (cbConfig.SelectedItem == null || cbConfig.SelectedItem.ToString().IsNullOrEmpty() ||
                 !Program.conversionConfigHandler.configMap.ContainsKey(cbConfig.SelectedItem.ToString()))
             {
@@ -92,80 +93,37 @@ namespace AirdPro.Forms
                 MessageBox.Show(MessageInfo.Set_Your_Output_Path_First);
                 return false;
             }
-            
+
             var selectedNodes = msFileViews.files.SelectedNodes;
             if (selectedNodes.IsNullOrEmpty())
             {
                 MessageBox.Show(MessageInfo.Select_Files_First);
                 return false;
             }
-            
+
             List<string> filePathList = new List<string>();
             string sourceFolder = "";
-            if (mirrorConvert)
-            {
-                if (selectedNodes.Count != 1)
-                {
-                    MessageBox.Show(MessageInfo.Only_One_Source_Folder_Can_Be_Selected_In_Mirror_Conversion_Mode);
-                    return false;
-                }
 
-                var selectedNode = selectedNodes[0];
-                BaseItem item = selectedNode.Tag as BaseItem;
-                if (item.MSFile)
-                {
-                    MessageBox.Show(MessageInfo.Only_Source_Folder_Can_Be_Selected_In_Mirror_Conversion_Mode);
-                    return false;
-                }
 
-                sourceFolder = item.ItemPath;
-                filePathList.AddRange(AirdProFileUtil.scan(item.ItemPath));
-            }
-            else
+            foreach (TreeNodeAdv node in selectedNodes)
             {
-                foreach (TreeNodeAdv node in selectedNodes)
+                BaseItem item = node.Tag as BaseItem;
+                if (item.MSFile) //如果是质谱文件则直接导入
                 {
-                    BaseItem item = node.Tag as BaseItem;
-                    if (item.MSFile) //如果是质谱文件则直接导入
-                    {
-                        filePathList.Add(item.ItemPath);
-                    }
-                    else //如果是文件夹并且不是质谱文件,则直接扫描该文件夹下第一层的所有质谱文件
-                    {
-                        filePathList.AddRange(AirdProFileUtil.scan(item.ItemPath));
-                    }
+                    filePathList.Add(item.ItemPath);
+                }
+                else //如果是文件夹并且不是质谱文件,则直接扫描该文件夹下第一层的所有质谱文件
+                {
+                    filePathList.AddRange(AirdProFileUtil.scan(item.ItemPath));
                 }
             }
-            
+
             foreach (string path in filePathList)
             {
-                if (mirrorConvert) //如果不是镜像转换,则需要将源路径的文件夹结构也同时拷贝
-                {
-                    Program.conversionForm.addFile(path, Path.GetDirectoryName(path.Replace(sourceFolder, outputPath))
-                        , airdType, (ConversionConfig)config.Clone());
-                }
-                else //如果不是镜像转换,则直接转换至指定文件夹位置即可
-                {
-                    Program.conversionForm.addFile(path, outputPath, airdType, (ConversionConfig)config.Clone());
-                }
+                Program.conversionForm.addFile(path, outputPath, airdType, (ConversionConfig)config.Clone());
             }
 
             return true;
-        }
-
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            clearInfos();
-            Hide();
-        }
-
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
-            bool addResult = addToList(false);
-            if (addResult)
-            {
-                clearInfos();
-            }
         }
 
         //选择已有参数，或者重新编辑参数，并将参数应用于选中的单个或一批文件
@@ -200,25 +158,6 @@ namespace AirdPro.Forms
             }
         }
 
-        private void btnAddClose_Click(object sender, EventArgs e)
-        {
-            bool addResult = addToList(false);
-            if (addResult)
-            {
-                clearInfos();
-                Hide();
-            }
-        }
-
-        private void btnMirrorScan_Click(object sender, EventArgs e)
-        {
-            bool addResult = addToList(true);
-            if (addResult)
-            {
-                clearInfos();
-            }
-        }
-
         private void VendorFileSelectorForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;
@@ -226,24 +165,6 @@ namespace AirdPro.Forms
         }
 
         private void btnFileRefresh_Click(object sender, EventArgs e)
-        {
-            TreeViewAdv treeViewAdv = msFileViews.files;
-            SortedTreeModel model = treeViewAdv.Model as SortedTreeModel;
-            FolderFileBrowserModel innerModel = model.InnerModel as FolderFileBrowserModel;
-            if (treeViewAdv.SelectedNodes.IsNullOrEmpty())
-            {
-                innerModel.clearCache();
-            }
-            else
-            {
-                for (var i = 0; i < treeViewAdv.SelectedNodes.Count; i++)
-                {
-                    innerModel.clearCache(treeViewAdv.GetPath(treeViewAdv.SelectedNodes[i]));
-                }
-            }
-        }
-
-        private void btnFileRefresh_Click_1(object sender, EventArgs e)
         {
             TreeViewAdv treeViewAdv = msFileViews.files;
             SortedTreeModel model = treeViewAdv.Model as SortedTreeModel;
@@ -279,7 +200,7 @@ namespace AirdPro.Forms
                 {
                     alert = true;
                 }
-                
+
                 FolderItem folderItem = node.Tag as FolderItem;
                 RootItem rootItem = msFileViews.getInnerModel().buildRoot(folderItem.ItemPath);
                 string path = innerModel.AddRootItemToCache(rootItem);
@@ -294,7 +215,7 @@ namespace AirdPro.Forms
             {
                 innerModel.OnStructureChanged(null);
             }
-          
+
             if (alert)
             {
                 MessageBox.Show("Files cannot be pinned");
@@ -338,7 +259,7 @@ namespace AirdPro.Forms
                 pinPathSet.Add(addedPaths[i]);
             }
 
-            Settings.Default.PinPathList = string.Join(",",pinPathSet);
+            Settings.Default.PinPathList = string.Join(",", pinPathSet);
             Settings.Default.Save();
         }
 
@@ -351,8 +272,24 @@ namespace AirdPro.Forms
             {
                 pinPathSet.Remove(removedPaths[i]);
             }
-            Settings.Default.PinPathList = string.Join(",",pinPathSet);
+
+            Settings.Default.PinPathList = string.Join(",", pinPathSet);
             Settings.Default.Save();
+        }
+
+        private void imgBtnAdd_BtnClick(object sender, EventArgs e)
+        {
+            bool addResult = addToList();
+            if (addResult)
+            {
+                clearInfos();
+            }
+        }
+
+        private void imgBtnClose_BtnClick(object sender, EventArgs e)
+        {
+            clearInfos();
+            Hide();
         }
     }
 }
