@@ -1,6 +1,6 @@
 ﻿namespace AirdPro.Forms
 {
-    partial class GlobalSettingForm
+    partial class RedisForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GlobalSettingForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RedisForm));
             this.lblIP = new System.Windows.Forms.Label();
             this.tbRedisHost = new System.Windows.Forms.TextBox();
             this.tbRedisPort = new System.Windows.Forms.TextBox();
@@ -224,7 +224,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "GlobalSettingForm";
+            this.Name = "RedisForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Global Settings";

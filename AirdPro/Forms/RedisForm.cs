@@ -14,9 +14,9 @@ using AirdPro.Properties;
 
 namespace AirdPro.Forms
 {
-    public partial class GlobalSettingForm : Form
+    public partial class RedisForm : Form
     {
-        public GlobalSettingForm()
+        public RedisForm()
         {
             InitializeComponent();
         }
