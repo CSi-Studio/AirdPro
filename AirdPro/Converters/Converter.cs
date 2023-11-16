@@ -15,7 +15,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Xml;
 using AirdPro.Algorithms;
+using AirdPro.Algorithms.Parser;
 using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdPro.Utils;
@@ -74,6 +76,8 @@ namespace AirdPro.Converters
 
         public ChromatogramIndex chromatogramIndex;
 
+        public Dictionary<string, AcqCompound> mrmCompoundDict = new Dictionary<string, AcqCompound>(); //用于MRM采集模式下,预存储化合物名称与离子对的词典,当前仅适用于Agilent的.d文件夹类型的质谱文件
+        
         public Converter(JobInfo jobInfo)
         {
             this.jobInfo = jobInfo;
@@ -954,7 +958,9 @@ namespace AirdPro.Converters
 
             chromatogramIndex = new ChromatogramIndex();
             compressor.initForChromatogram();
-
+            //如果是.d的文件夹类型的质谱文件,可以直接解析AcqMethod.xml文件,用于读取设定的化合物名称
+            readMRMCompounds();
+            
             int totalSize = chromatogramList.size();
             int progress = 0;
             jobInfo.log(null, Tag.progress(Tag.Chroma, progress, totalSize));
@@ -1006,6 +1012,17 @@ namespace AirdPro.Converters
             chromatogramIndex.endPtr = startPosition;
         }
 
+        /**
+         * 用于解析.d文件中的AcqMethod.XML文件
+         */
+        public void readMRMCompounds()
+        {
+            if (jobInfo.format.Equals(FileFormat.D))
+            {
+                mrmCompoundDict = new AcqMethodParser(jobInfo.inputPath).parse();
+            }
+        }
+        
         protected AirdInfo buildAirdInfo()
         {
             AirdInfo airdInfo = new AirdInfo();

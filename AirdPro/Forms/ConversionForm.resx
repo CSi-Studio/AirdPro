@@ -236,11 +236,11 @@
   <data name="btnMainView.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
-  <metadata name="ttAlgorithm.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="tooltip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>165, 18</value>
   </metadata>
   <data name="btnMainView.ToolTip" xml:space="preserve">
-    <value>Clean Finished</value>
+    <value>Main View(Laboratory Function)</value>
   </data>
   <data name="&gt;&gt;btnMainView.Name" xml:space="preserve">
     <value>btnMainView</value>
@@ -399,7 +399,7 @@
     <value>MiddleRight</value>
   </data>
   <data name="btnHelp.ToolTip" xml:space="preserve">
-    <value>Convert Setting</value>
+    <value>Help Information</value>
   </data>
   <data name="&gt;&gt;btnHelp.Name" xml:space="preserve">
     <value>btnHelp</value>
@@ -539,7 +539,7 @@
     <value>MiddleRight</value>
   </data>
   <data name="btnRedisSetting.ToolTip" xml:space="preserve">
-    <value>Convert Setting</value>
+    <value>Redis Form</value>
   </data>
   <data name="&gt;&gt;btnRedisSetting.Name" xml:space="preserve">
     <value>btnRedisSetting</value>
@@ -5270,10 +5270,10 @@
   <data name="&gt;&gt;ofd.Type" xml:space="preserve">
     <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ttAlgorithm.Name" xml:space="preserve">
-    <value>ttAlgorithm</value>
+  <data name="&gt;&gt;tooltip.Name" xml:space="preserve">
+    <value>tooltip</value>
   </data>
-  <data name="&gt;&gt;ttAlgorithm.Type" xml:space="preserve">
+  <data name="&gt;&gt;tooltip.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;timerTaskScan.Name" xml:space="preserve">

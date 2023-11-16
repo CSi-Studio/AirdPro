@@ -76,7 +76,7 @@ namespace AirdPro.Converters
                 converter.compressMS1Block(); //处理MS1,并将索引写入文件流中
                 converter.compressMS2BlockForDDA(); //处理MS2,并将索引写入文件流中
             }
-
+            
             converter.compressChromatograms();
             converter.writeToAirdInfoFile(); //将Info数据写入文件
         }

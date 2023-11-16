@@ -52,18 +52,18 @@ namespace AirdPro.Forms
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.lvFileList = new System.Windows.Forms.ListView();
-            this.headerJobId = new System.Windows.Forms.ColumnHeader();
-            this.headerFilePath = new System.Windows.Forms.ColumnHeader();
-            this.headerType = new System.Windows.Forms.ColumnHeader();
-            this.headerConfigName = new System.Windows.Forms.ColumnHeader();
-            this.headerScene = new System.Windows.Forms.ColumnHeader();
-            this.headerCentroid = new System.Windows.Forms.ColumnHeader();
-            this.headerProgress = new System.Windows.Forms.ColumnHeader();
-            this.headerPrecision = new System.Windows.Forms.ColumnHeader();
-            this.headerCompressor = new System.Windows.Forms.ColumnHeader();
-            this.headerIgnoreZero = new System.Windows.Forms.ColumnHeader();
-            this.headerSuffix = new System.Windows.Forms.ColumnHeader();
-            this.headerOutput = new System.Windows.Forms.ColumnHeader();
+            this.headerJobId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerFilePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerConfigName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerScene = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerCentroid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerProgress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerPrecision = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerCompressor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerIgnoreZero = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerSuffix = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerOutput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contentMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.rerun = new System.Windows.Forms.ToolStripMenuItem();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,7 +80,7 @@ namespace AirdPro.Forms
             this.tbConsole = new System.Windows.Forms.TextBox();
             this.logTimer = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
-            this.ttAlgorithm = new System.Windows.Forms.ToolTip(this.components);
+            this.tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.timerTaskScan = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
@@ -135,7 +135,7 @@ namespace AirdPro.Forms
             this.btnMainView.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnMainView.FlatAppearance.BorderSize = 0;
             this.btnMainView.Name = "btnMainView";
-            this.ttAlgorithm.SetToolTip(this.btnMainView, resources.GetString("btnMainView.ToolTip"));
+            this.tooltip.SetToolTip(this.btnMainView, resources.GetString("btnMainView.ToolTip"));
             this.btnMainView.UseVisualStyleBackColor = true;
             this.btnMainView.Click += new System.EventHandler(this.btnMainView_Click);
             // 
@@ -152,7 +152,7 @@ namespace AirdPro.Forms
             this.btnHelp.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnHelp.FlatAppearance.BorderSize = 0;
             this.btnHelp.Name = "btnHelp";
-            this.ttAlgorithm.SetToolTip(this.btnHelp, resources.GetString("btnHelp.ToolTip"));
+            this.tooltip.SetToolTip(this.btnHelp, resources.GetString("btnHelp.ToolTip"));
             this.btnHelp.UseVisualStyleBackColor = false;
             this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
@@ -169,7 +169,7 @@ namespace AirdPro.Forms
             this.btnRedisSetting.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnRedisSetting.FlatAppearance.BorderSize = 0;
             this.btnRedisSetting.Name = "btnRedisSetting";
-            this.ttAlgorithm.SetToolTip(this.btnRedisSetting, resources.GetString("btnRedisSetting.ToolTip"));
+            this.tooltip.SetToolTip(this.btnRedisSetting, resources.GetString("btnRedisSetting.ToolTip"));
             this.btnRedisSetting.UseVisualStyleBackColor = false;
             this.btnRedisSetting.Click += new System.EventHandler(this.btnRedisSetting_Click);
             // 
@@ -201,7 +201,19 @@ namespace AirdPro.Forms
             // 
             resources.ApplyResources(this.lvFileList, "lvFileList");
             this.lvFileList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.headerJobId, this.headerFilePath, this.headerType, this.headerConfigName, this.headerScene, this.headerCentroid, this.headerProgress, this.headerPrecision, this.headerCompressor, this.headerIgnoreZero, this.headerSuffix, this.headerOutput });
+            this.lvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.headerJobId,
+            this.headerFilePath,
+            this.headerType,
+            this.headerConfigName,
+            this.headerScene,
+            this.headerCentroid,
+            this.headerProgress,
+            this.headerPrecision,
+            this.headerCompressor,
+            this.headerIgnoreZero,
+            this.headerSuffix,
+            this.headerOutput});
             this.lvFileList.ContextMenuStrip = this.contentMenu;
             this.lvFileList.FullRowSelect = true;
             this.lvFileList.GridLines = true;
@@ -267,7 +279,9 @@ namespace AirdPro.Forms
             // contentMenu
             // 
             this.contentMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contentMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.rerun, this.removeToolStripMenuItem });
+            this.contentMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.rerun,
+            this.removeToolStripMenuItem});
             this.contentMenu.Name = "contentMenu";
             resources.ApplyResources(this.contentMenu, "contentMenu");
             // 
@@ -289,7 +303,7 @@ namespace AirdPro.Forms
             this.btnImport.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnImport.FlatAppearance.BorderSize = 0;
             this.btnImport.Name = "btnImport";
-            this.ttAlgorithm.SetToolTip(this.btnImport, resources.GetString("btnImport.ToolTip"));
+            this.tooltip.SetToolTip(this.btnImport, resources.GetString("btnImport.ToolTip"));
             this.btnImport.UseVisualStyleBackColor = true;
             this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
             // 
@@ -306,7 +320,7 @@ namespace AirdPro.Forms
             this.btnConvert.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnConvert.FlatAppearance.BorderSize = 0;
             this.btnConvert.Name = "btnConvert";
-            this.ttAlgorithm.SetToolTip(this.btnConvert, resources.GetString("btnConvert.ToolTip"));
+            this.tooltip.SetToolTip(this.btnConvert, resources.GetString("btnConvert.ToolTip"));
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
             // 
@@ -322,7 +336,7 @@ namespace AirdPro.Forms
             this.btnCleanFinished.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCleanFinished.FlatAppearance.BorderSize = 0;
             this.btnCleanFinished.Name = "btnCleanFinished";
-            this.ttAlgorithm.SetToolTip(this.btnCleanFinished, resources.GetString("btnCleanFinished.ToolTip"));
+            this.tooltip.SetToolTip(this.btnCleanFinished, resources.GetString("btnCleanFinished.ToolTip"));
             this.btnCleanFinished.UseVisualStyleBackColor = true;
             this.btnCleanFinished.Click += new System.EventHandler(this.btnCleanFinished_Click);
             // 
@@ -338,7 +352,7 @@ namespace AirdPro.Forms
             this.btnSetting.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnSetting.FlatAppearance.BorderSize = 0;
             this.btnSetting.Name = "btnSetting";
-            this.ttAlgorithm.SetToolTip(this.btnSetting, resources.GetString("btnSetting.ToolTip"));
+            this.tooltip.SetToolTip(this.btnSetting, resources.GetString("btnSetting.ToolTip"));
             this.btnSetting.UseVisualStyleBackColor = true;
             this.btnSetting.Click += new System.EventHandler(this.btnSetting_Click);
             // 
@@ -400,6 +414,7 @@ namespace AirdPro.Forms
             this.container.ResumeLayout(false);
             this.contentMenu.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         private System.Windows.Forms.Label label7;
@@ -421,7 +436,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ColumnHeader headerOutput;
         private System.Windows.Forms.OpenFileDialog ofd;
         private System.Windows.Forms.ColumnHeader headerCompressor;
-        private System.Windows.Forms.ToolTip ttAlgorithm;
+        private System.Windows.Forms.ToolTip tooltip;
         private System.Windows.Forms.ColumnHeader headerPrecision;
         private System.Windows.Forms.ContextMenuStrip contentMenu;
         private System.Windows.Forms.ToolStripMenuItem rerun;

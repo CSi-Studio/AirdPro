@@ -152,6 +152,10 @@
     <Compile Include="Algorithms\Compressor\SortIntEmpty.cs" />
     <Compile Include="Algorithms\Compressor\StackComp.cs" />
     <Compile Include="Algorithms\Compressor\CoreComp.cs" />
+    <Compile Include="Algorithms\Parser\AcqMethod\AcqCompound.cs" />
+    <Compile Include="Algorithms\Parser\AcqMethod\NewDataSet.cs" />
+    <Compile Include="Algorithms\Parser\AcqMethod\AcqMethodParser.cs" />
+    <Compile Include="Algorithms\Parser\AcqMethod\SectionInfo.cs" />
     <Compile Include="Asyncs\ConvertTaskManager.cs" />
     <Compile Include="Asyncs\DownloadTaskManager.cs" />
     <Compile Include="Asyncs\LimitedConcurrencyLevelTaskScheduler.cs" />
