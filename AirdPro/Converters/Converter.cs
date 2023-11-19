@@ -1017,7 +1017,7 @@ namespace AirdPro.Converters
          */
         public void readMRMCompounds()
         {
-            if (jobInfo.format.Equals(FileFormat.D))
+            if (jobInfo.format.Equals(FileFormat.D) && jobInfo.type.Equals(AcquisitionMethod.MRM))
             {
                 mrmCompoundDict = new AcqMethodParser(jobInfo.inputPath).parse();
             }
