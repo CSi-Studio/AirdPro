@@ -68,6 +68,7 @@ namespace AirdPro.Domains
         public string airdColumnJsonFilePath;
 
         //任务运行时产生的日志
+        [JsonIgnore]
         public List<Log> logs = new List<Log>();
 
         //任务运行时产生的进度信息

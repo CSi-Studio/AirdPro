@@ -43,7 +43,7 @@
             this.redisConsumer = new System.Windows.Forms.Timer(this.components);
             this.lblStatus = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lblMessageNum = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblIP
@@ -197,19 +197,19 @@
             this.label4.Text = "Consumed Jobs:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label5
+            // lblMessageNum
             // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label5.Location = new System.Drawing.Point(113, 80);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(15, 17);
-            this.label5.TabIndex = 136;
-            this.label5.Text = "0";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblMessageNum.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblMessageNum.AutoSize = true;
+            this.lblMessageNum.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblMessageNum.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.lblMessageNum.Location = new System.Drawing.Point(113, 80);
+            this.lblMessageNum.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblMessageNum.Name = "lblMessageNum";
+            this.lblMessageNum.Size = new System.Drawing.Size(15, 17);
+            this.lblMessageNum.TabIndex = 136;
+            this.lblMessageNum.Text = "0";
+            this.lblMessageNum.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // RedisForm
             // 
@@ -217,7 +217,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(555, 175);
-            this.Controls.Add(this.label5);
+            this.Controls.Add(this.lblMessageNum);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.btnConnect);
@@ -246,7 +246,7 @@
             this.PerformLayout();
         }
 
-        public System.Windows.Forms.Label label5;
+        public System.Windows.Forms.Label lblMessageNum;
 
         private System.Windows.Forms.Label label4;
 

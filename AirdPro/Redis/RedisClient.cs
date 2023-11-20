@@ -10,6 +10,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Windows.Forms;
 using AirdPro.Asyncs;
 using StackExchange.Redis;
@@ -27,7 +28,13 @@ namespace AirdPro.Redis
         private ConnectionMultiplexer redis;
         private IDatabase db;
         private int db_num = 1;
-
+        public static int messageNum = 0;
+        
+        public static string increment()
+        {
+            return Interlocked.Increment(ref messageNum)+"";
+        }
+        
         private RedisClient()
         {
         }
@@ -61,14 +68,7 @@ namespace AirdPro.Redis
                 return false;
             }
 
-            if (redis.IsConnected)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return redis.IsConnected;
         }
 
         public Boolean check()
@@ -90,6 +90,7 @@ namespace AirdPro.Redis
             }
         }
         
+        //从Redis中读取相关的任务消息并转化为本地任务JobInfo
         public bool consume()
         {
             bool check = this.check();
@@ -105,7 +106,7 @@ namespace AirdPro.Redis
                         RedisValue value = db.SetPop(RedisConst.Redis_Queue_Convert);
                         if (!value.IsNullOrEmpty)
                         {
-                            
+                            Program.redisForm.lblMessageNum.Text = increment();
                             // 如果获取到转换队列中相关的任务,那么将消息队列中的转换任务加入到执行队列中
                             valueStr = value.ToString();
                             // 目前远程任务不支持Stack-ZDPD
