@@ -980,9 +980,20 @@ namespace AirdPro.Converters
 
                 try
                 {
-                    chromatogramIndex.precursors.Add(CVUtil.parseIsolationWindow(chromatogram.precursor, jobInfo));
-                    chromatogramIndex.products.Add(CVUtil.parseIsolationWindow(chromatogram.product.isolationWindow,
-                        jobInfo));
+                    WindowRange precursorMz = CVUtil.parseIsolationWindow(chromatogram.precursor, jobInfo);
+                    WindowRange productMz = CVUtil.parseIsolationWindow(chromatogram.product.isolationWindow, jobInfo);
+                    string ionPair = Math.Round(precursorMz.mz, 1)+"-"+Math.Round(productMz.mz, 1);
+                    if (mrmCompoundDict.ContainsKey(ionPair))
+                    {
+                        string compoundName = mrmCompoundDict[ionPair].name;
+                        chromatogramIndex.compounds.Add(compoundName);
+                    }
+                    else
+                    {
+                        chromatogramIndex.compounds.Add(null);
+                    }
+                    chromatogramIndex.precursors.Add(precursorMz);
+                    chromatogramIndex.products.Add(productMz);
                 }
                 catch (Exception e)
                 {
@@ -996,7 +1007,7 @@ namespace AirdPro.Converters
                             .cvParamChild(CVID.MS_isolation_window_upper_offset).value);
                     throw e;
                 }
-
+                
                 compressor.compress(chromatogram, tempScan);
                 chromatogramIndex.rts.Add(tempScan.rtArrayBytes.Length);
                 chromatogramIndex.ints.Add(tempScan.intArrayBytes.Length);
