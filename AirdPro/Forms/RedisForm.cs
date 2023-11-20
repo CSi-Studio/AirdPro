@@ -87,15 +87,19 @@ namespace AirdPro.Forms
         
         public void connectToRedis()
         {
-            string connectLink = Settings.Default.RedisHost + ":" + Settings.Default.RedisPort;
-            if (connectLink == null || connectLink.IsEmpty())
+            if (tbRedisHost.Text == null || tbRedisHost.Text.IsEmpty())
             {
                 redisConsumer.Enabled = false;
                 MessageBox.Show(Constants.Tag.Redis_Host_Cannot_Be_Empty);
                 return;
             }
 
-            bool initResult = RedisClient.getInstance().connect(connectLink);
+            if (tbRedisPort.Text == null || tbRedisPort.IsEmpty())
+            {
+                tbRedisPort.Text = "6379";
+            }
+
+            bool initResult = RedisClient.getInstance().connect(tbRedisHost.Text, int.Parse(tbRedisPort.Text));
             if (initResult)
             {
                 redisConsumer.Enabled = true;

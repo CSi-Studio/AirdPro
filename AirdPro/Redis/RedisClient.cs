@@ -25,7 +25,6 @@ namespace AirdPro.Redis
     {
         private static RedisClient instance;
         private ConnectionMultiplexer redis;
-        private string hostAndPort;
         private IDatabase db;
         private int db_num = 1;
 
@@ -43,17 +42,18 @@ namespace AirdPro.Redis
             return instance;
         }
 
-        public Boolean connect(string hostAndPort)
+        public Boolean connect(string host, int port)
         {
-            if (!hostAndPort.Contains(":"))
+            ConfigurationOptions options = new ConfigurationOptions
             {
-                hostAndPort = hostAndPort + ":" + 6379;
-            }
-
-            this.hostAndPort = hostAndPort;
+                EndPoints = {{host, port}},
+                ConnectTimeout = 1000,
+                ConnectRetry = 1
+            };
+            
             try
             {
-                redis = ConnectionMultiplexer.Connect(hostAndPort);
+                redis = ConnectionMultiplexer.Connect(options);
                 db = redis.GetDatabase(db_num);
             }
             catch (Exception e)
@@ -89,24 +89,7 @@ namespace AirdPro.Redis
                 }
             }
         }
-
-        //使用当前的配置进行重试
-        public void retry()
-        {
-            if (this.hostAndPort != null && !this.hostAndPort.Equals(""))
-            {
-                try
-                {
-                    redis = ConnectionMultiplexer.Connect(hostAndPort);
-                    db = redis.GetDatabase(db_num);
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.StackTrace);
-                }
-            }
-        }
-
+        
         public bool consume()
         {
             bool check = this.check();
