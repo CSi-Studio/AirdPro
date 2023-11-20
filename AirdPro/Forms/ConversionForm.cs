@@ -13,6 +13,7 @@ using AirdPro.Constants;
 using AirdPro.Redis;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using AirdPro.Domains;
@@ -21,14 +22,15 @@ using AirdPro.Storage.Config;
 using AirdSDK.Utils;
 using ThermoFisher.CommonCore.Data;
 using System.ComponentModel;
+using System.Windows.Documents;
 using AirdPro.Utils;
+using Newtonsoft.Json;
 
 namespace AirdPro.Forms
 {
     public partial class ConversionForm : Form
     {
         ArrayList jobIdList = new();
-        VendorFileSelectorForm fileSelector = new VendorFileSelectorForm();
         MirrorTransForm mirrorTransForm;
         BackgroundWorker bw;
 
@@ -40,9 +42,25 @@ namespace AirdPro.Forms
         private void ProproForm_Load(object sender, EventArgs e)
         {
             this.Text = SoftwareInfo.getVersion() + Const.Dash + NetworkUtil.getHostIP();
-            RedisClient.getInstance();
+            initJobsFromStorage();
             bw = new BackgroundWorker();
             bw.DoWork += (sender, e) => ConvertTaskManager.getInstance().run();
+        }
+
+        private void initJobsFromStorage()
+        {
+            string jobInfoListJson = Settings.Default.JobInfoList;
+            List<JobInfo> jobInfoList = JsonConvert.DeserializeObject<List<JobInfo>>(jobInfoListJson);
+            foreach (var jobInfo in jobInfoList)
+            {
+                jobInfo.reset();
+                ListViewItem item = jobInfo.buildItem();
+                if (!ConvertTaskManager.getInstance().jobTable.Contains(jobInfo.jobId))
+                {
+                    Program.conversionForm.lvFileList.Items.Add(item);
+                    ConvertTaskManager.getInstance().pushJob(jobInfo);
+                }
+            }
         }
 
         private void btnConvert_Click(object sender, EventArgs e)
@@ -241,21 +259,24 @@ namespace AirdPro.Forms
 
         private void btnImport_Click(object sender, EventArgs e)
         {
-            if (fileSelector == null || fileSelector.IsDisposed)
+            if (Program.fileSelector == null || Program.fileSelector.IsDisposed)
             {
-                fileSelector = new VendorFileSelectorForm();
-                fileSelector.Show();
+                Program.fileSelector = new VendorFileSelectorForm();
+                Program.fileSelector.Show();
             }
 
-            fileSelector.clearInfos();
-            fileSelector.Visible = true;
+            Program.fileSelector.clearInfos();
+            Program.fileSelector.Visible = true;
         }
 
         private void ConversionForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //需要将未完成转换的任务保存到本地
+            string jobInfoListStr = JsonConvert.SerializeObject(ConvertTaskManager.getInstance().jobTable.Values,
+                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            Settings.Default.JobInfoList = jobInfoListStr;
+            Settings.Default.Save();
             Environment.Exit(0);
-            // e.Cancel = true;
-            // this.Visible = false;
         }
 
         private void btnCleanFinished_Click(object sender, EventArgs e)
@@ -283,16 +304,6 @@ namespace AirdPro.Forms
             }
 
             Program.configListForm.Show();
-        }
-
-        private void btnMirrorTrans_Click(object sender, EventArgs e)
-        {
-            if (Program.mainForm == null || Program.mainForm.IsDisposed)
-            {
-                Program.mainForm = new MainForm();
-            }
-
-            Program.mainForm.Show();
         }
 
         private void timerTaskScan_Tick(object sender, EventArgs e)
@@ -362,11 +373,6 @@ namespace AirdPro.Forms
             {
                 removeSelectedItems(null, null);
             }
-        }
-
-        private void timer2_Tick(object sender, EventArgs e)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

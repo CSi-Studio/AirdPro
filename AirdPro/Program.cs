@@ -25,8 +25,9 @@ namespace AirdPro
         public static ConversionForm conversionForm { get; set; }
         public static ConversionConfigListForm configListForm { get; set; }
         public static RedisForm redisForm { get; set; }
-        public static ConversionConfigHandler conversionConfigHandler { get; private set; }
-
+        public static ConversionConfigHandler conversionConfigHandler { get; set; }
+        public static VendorFileSelectorForm fileSelector { get; set; }
+        
         /// <summary>
         ///     The main entry point for the application.
         /// </summary>
@@ -42,12 +43,8 @@ namespace AirdPro
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             conversionForm = new ConversionForm();
-            // configListForm = new ConversionConfigListForm();
-            // globalSettingForm = new GlobalSettingForm();
             conversionConfigHandler = new ConversionConfigHandler();
-            // mainForm = new MainForm();
             Application.Run(conversionForm);
-        
         }
 
         #region Exception handling

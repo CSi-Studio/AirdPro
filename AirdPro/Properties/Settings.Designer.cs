@@ -177,5 +177,17 @@ namespace AirdPro.Properties {
                 this["PinPathList"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("[]")]
+        public string JobInfoList {
+            get {
+                return ((string)(this["JobInfoList"]));
+            }
+            set {
+                this["JobInfoList"] = value;
+            }
+        }
     }
 }

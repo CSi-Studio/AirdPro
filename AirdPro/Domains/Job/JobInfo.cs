@@ -16,6 +16,7 @@ using System.Threading;
 using AirdPro.Constants;
 using AirdPro.Storage.Config;
 using AirdSDK.Utils;
+using Newtonsoft.Json;
 using ThermoFisher.CommonCore.Data;
 using ListViewItem = System.Windows.Forms.ListViewItem;
 
@@ -41,7 +42,8 @@ namespace AirdPro.Domains
 
         //DIA,PRM,DDA. see AcquisitionMethod
         public string type;
-
+        
+        [JsonIgnore]
         public IProgress<string> typeLabel;
 
         //是否是IonMobility文件
@@ -69,15 +71,18 @@ namespace AirdPro.Domains
         public List<Log> logs = new List<Log>();
 
         //任务运行时产生的进度信息
+        [JsonIgnore]
         private IProgress<string> progress;
 
         //任务运行时产生的组合压缩,在使用动态决策器时有效
+        [JsonIgnore]
         private IProgress<string> compressor;
 
         //任务的线程ID,当未分配线程ID时为-1
         public int threadId = -1;
 
         //分配一个线程终止用的token
+        [JsonIgnore]
         public CancellationTokenSource tokenSource = new CancellationTokenSource();
 
         //出现异常错误的时候进行重试的次数,每一个job会被自动重试2次
@@ -86,12 +91,17 @@ namespace AirdPro.Domains
         public bool refreshReport = true;
 
         public static int id = 0;
-
+        
         public static string NextId()
         {
             return Interlocked.Increment(ref id)+"";
         }
-        
+
+        //本构造函数不能删除,可以避免在JSON反序列化的时候调用下面的有参构造函数,从而提前调用NextId()的自增函数
+        public JobInfo()
+        {
+        }
+
         public JobInfo(string inputPath, string outputPath, string type, ConversionConfig config)
         {
             jobId = NextId();
@@ -259,6 +269,13 @@ namespace AirdPro.Domains
             item.SubItems[ItemName.IGNORE_ZERO].Text = config.ignoreZeroIntensity.ToString();
             item.SubItems[ItemName.SUFFIX].Text = config.suffix;
             item.SubItems[ItemName.OUTPUT_PATH].Text = outputPath;
+        }
+
+        public void reset()
+        {
+            this.jobId = NextId();
+            this.status = ProcessingStatus.WAITING;
+            this.logs = new List<Log>();
         }
     }
 }

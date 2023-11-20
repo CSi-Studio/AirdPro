@@ -105,6 +105,7 @@ namespace AirdPro.Redis
                         RedisValue value = db.SetPop(RedisConst.Redis_Queue_Convert);
                         if (!value.IsNullOrEmpty)
                         {
+                            
                             // 如果获取到转换队列中相关的任务,那么将消息队列中的转换任务加入到执行队列中
                             valueStr = value.ToString();
                             // 目前远程任务不支持Stack-ZDPD
