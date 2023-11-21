@@ -13,6 +13,7 @@ using System.Security.Permissions;
 using System.Threading;
 using System.Windows.Forms;
 using AirdPro.Forms;
+using AirdPro.Repository;
 using AirdPro.Storage.Handler;
 using pwiz.CLI.msdata;
 
@@ -27,6 +28,10 @@ namespace AirdPro
         public static RedisForm redisForm { get; set; }
         public static ConversionConfigHandler conversionConfigHandler { get; set; }
         public static VendorFileSelectorForm fileSelector { get; set; }
+        public static MLForm mlForm { get; set; }
+        public static PXForm pxForm { get; set; }
+        
+        
         
         /// <summary>
         ///     The main entry point for the application.

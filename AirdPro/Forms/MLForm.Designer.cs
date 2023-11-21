@@ -363,6 +363,7 @@ namespace AirdPro.Repository
             this.Name = "MLForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MetaboLights";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MLForm_FormClosed);
             this.Load += new System.EventHandler(this.mainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.projectListView)).EndInit();
             this.ResumeLayout(false);

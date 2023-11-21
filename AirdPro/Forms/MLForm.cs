@@ -43,11 +43,14 @@ namespace AirdPro.Repository
         private static readonly HttpClient client = new HttpClient();
         public DataTable projectsTable;
         public DataTable searchProjectsTable = new DataTable();
-
+        private Dictionary<string, DownloadDetailForm> detailFormMap = new Dictionary<string, DownloadDetailForm>();
+        public FtpClient ftpClient = null;
         public MLForm()
         {
             InitializeComponent();
             load(false);
+            ftpClient = new FtpClient(UrlConst.ebi);
+            ftpClient.Connect();
         }
 
         private void load(bool fastLoad)
@@ -273,7 +276,7 @@ namespace AirdPro.Repository
                 {
                     string remoteUrl = UrlConst.mlFtpUrl + identifier;
                     //用于获取FTP文件夹根目录
-                    FtpListItem[] items = HttpUtil.getFtpFilesFromMetaboLights(UrlConst.ebiMetabolights + identifier);
+                    FtpListItem[] items = HttpUtil.getFtpFilesFromMetaboLights(ftpClient, UrlConst.ebiMetabolights + identifier);
                     foreach (FtpListItem file in items)
                     {
                         remotes.Add(Path.Combine(remoteUrl, file.Name));
@@ -281,19 +284,24 @@ namespace AirdPro.Repository
                         sizes.Add(file.Size);
                         fileTypes.Add(file.Type.ToString());
                     }
+
+                    DownloadDetailForm detailForm = new DownloadDetailForm(identifier,
+                        Path.Combine(UrlConst.mlDetailUrl, identifier),
+                        Path.Combine(UrlConst.mlFtpUrl, identifier) + "/",
+                        localDirectory, remotes, locals, sizes, fileTypes);
+                    detailForm.Show();
                 }
                 catch (Exception exception)
                 {
                     MessageBox.Show("Get " + identifier + " Failed," + exception.Message);
-                    return;
+                }
+                finally
+                {
+                    lblLoading.Text = "Loaded";
+                    btnDetail.Enabled = true;
                 }
 
-                DownloadDetailForm detailForm = new DownloadDetailForm(identifier,
-                    Path.Combine(UrlConst.mlDetailUrl, identifier), Path.Combine(UrlConst.mlFtpUrl, identifier) + "/",
-                    localDirectory, remotes, locals, sizes, fileTypes);
-                detailForm.Show();
-                lblLoading.Text = "Loaded";
-                btnDetail.Enabled = true;
+                
             }
             else
             {
@@ -386,6 +394,14 @@ namespace AirdPro.Repository
             finally
             {
                 btnFastLoad.Text = "Load From Web";
+            }
+        }
+
+        private void MLForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (ftpClient != null)
+            {
+                ftpClient.Disconnect();
             }
         }
     }

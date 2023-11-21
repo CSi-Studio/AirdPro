@@ -95,7 +95,7 @@ namespace AirdPro.Repository
             string fileName = Path.GetFileName(remotePath);
             FileRow row = new FileRow();
             ListViewItem item = buildListViewItem(row, fileName, remotePath, localPath, parent,
-                AirdProFileUtil.getSizeLabel(size), fileType);
+                size, fileType);
 
             fileList.Add(row);
             lvFileList.Items.Add(item);
@@ -104,19 +104,20 @@ namespace AirdPro.Repository
         }
 
         private ListViewItem buildListViewItem(FileRow row, string fileName, string remotePath, string localPath,
-            string parent, string? size, string? fileType)
+            string parent, long? size, string? fileType)
         {
             row.remotePath = Path.Combine(remotePath);
             row.fileName = Path.GetFileName(fileName);
             row.localPath = Path.Combine(localPath);
             row.parent = parent;
+            row.fileSize = size.Value;
             string[] itemInfo = new string[]
             {
                 row.remotePath,
                 row.fileName,
                 row.localPath,
                 "Wait",
-                size == null ? "Fetching" : size,
+                AirdProFileUtil.getSizeLabel(size.Value),
                 fileType,
             };
             ListViewItem item = new ListViewItem(itemInfo);
@@ -140,7 +141,7 @@ namespace AirdPro.Repository
             return item;
         }
 
-        private void btnAsync_Click(object sender, EventArgs e)
+        private void btnDownload_Click(object sender, EventArgs e)
         {
             HashSet<string> skipFormats = new HashSet<string>();
             if (cbMzData.Checked)

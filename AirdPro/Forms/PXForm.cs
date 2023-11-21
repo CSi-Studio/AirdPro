@@ -32,7 +32,7 @@ namespace AirdPro.Repository
         private static readonly HttpClient client = new HttpClient();
         public DataTable projectsTable;
         public DataTable searchProjectsTable = new DataTable();
-
+        
         public PXForm()
         {
             InitializeComponent();

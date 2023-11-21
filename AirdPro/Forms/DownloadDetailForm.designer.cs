@@ -35,7 +35,8 @@
             this.headerLocalPath = new System.Windows.Forms.ColumnHeader();
             this.headerStatus = new System.Windows.Forms.ColumnHeader();
             this.headerSize = new System.Windows.Forms.ColumnHeader();
-            this.btnAsync = new System.Windows.Forms.Button();
+            this.headerFileType = new System.Windows.Forms.ColumnHeader();
+            this.btnDownload = new System.Windows.Forms.Button();
             this.tbRemote = new System.Windows.Forms.TextBox();
             this.tbHome = new System.Windows.Forms.TextBox();
             this.lblDowload = new System.Windows.Forms.Label();
@@ -44,7 +45,8 @@
             this.lblSkip = new System.Windows.Forms.Label();
             this.cbMzML = new System.Windows.Forms.CheckBox();
             this.cbMzXML = new System.Windows.Forms.CheckBox();
-            this.headerFileType = new System.Windows.Forms.ColumnHeader();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblStatus = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lvFileList
@@ -58,7 +60,7 @@
             this.lvFileList.Location = new System.Drawing.Point(0, 90);
             this.lvFileList.Margin = new System.Windows.Forms.Padding(2);
             this.lvFileList.Name = "lvFileList";
-            this.lvFileList.Size = new System.Drawing.Size(967, 619);
+            this.lvFileList.Size = new System.Drawing.Size(842, 619);
             this.lvFileList.TabIndex = 0;
             this.lvFileList.UseCompatibleStateImageBehavior = false;
             this.lvFileList.View = System.Windows.Forms.View.Details;
@@ -88,16 +90,20 @@
             this.headerSize.Text = "File Size";
             this.headerSize.Width = 150;
             // 
-            // btnAsync
+            // headerFileType
             // 
-            this.btnAsync.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnAsync.Location = new System.Drawing.Point(835, 3);
-            this.btnAsync.Name = "btnAsync";
-            this.btnAsync.Size = new System.Drawing.Size(127, 26);
-            this.btnAsync.TabIndex = 2;
-            this.btnAsync.Text = "Download";
-            this.btnAsync.UseVisualStyleBackColor = true;
-            this.btnAsync.Click += new System.EventHandler(this.btnAsync_Click);
+            this.headerFileType.Text = "Type";
+            // 
+            // btnDownload
+            // 
+            this.btnDownload.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.btnDownload.Location = new System.Drawing.Point(707, 4);
+            this.btnDownload.Name = "btnDownload";
+            this.btnDownload.Size = new System.Drawing.Size(127, 26);
+            this.btnDownload.TabIndex = 2;
+            this.btnDownload.Text = "Download";
+            this.btnDownload.UseVisualStyleBackColor = true;
+            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
             // 
             // tbRemote
             // 
@@ -105,7 +111,7 @@
             this.tbRemote.Location = new System.Drawing.Point(97, 6);
             this.tbRemote.Name = "tbRemote";
             this.tbRemote.ReadOnly = true;
-            this.tbRemote.Size = new System.Drawing.Size(726, 22);
+            this.tbRemote.Size = new System.Drawing.Size(604, 22);
             this.tbRemote.TabIndex = 3;
             // 
             // tbHome
@@ -114,7 +120,7 @@
             this.tbHome.Location = new System.Drawing.Point(97, 34);
             this.tbHome.Name = "tbHome";
             this.tbHome.ReadOnly = true;
-            this.tbHome.Size = new System.Drawing.Size(468, 22);
+            this.tbHome.Size = new System.Drawing.Size(501, 22);
             this.tbHome.TabIndex = 4;
             // 
             // lblDowload
@@ -180,15 +186,33 @@
             this.cbMzXML.Text = "mzXML";
             this.cbMzXML.UseVisualStyleBackColor = true;
             // 
-            // headerFileType
+            // label2
             // 
-            this.headerFileType.Text = "Type";
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.label2.Location = new System.Drawing.Point(670, 37);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(99, 16);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Download Status:";
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.lblStatus.Location = new System.Drawing.Point(775, 38);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(48, 16);
+            this.lblStatus.TabIndex = 12;
+            this.lblStatus.Text = "Waiting";
             // 
             // DownloadDetailForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(965, 707);
+            this.ClientSize = new System.Drawing.Size(845, 707);
+            this.Controls.Add(this.lblStatus);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.cbMzXML);
             this.Controls.Add(this.cbMzML);
             this.Controls.Add(this.lblSkip);
@@ -197,7 +221,7 @@
             this.Controls.Add(this.lblDowload);
             this.Controls.Add(this.tbHome);
             this.Controls.Add(this.tbRemote);
-            this.Controls.Add(this.btnAsync);
+            this.Controls.Add(this.btnDownload);
             this.Controls.Add(this.lvFileList);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -209,6 +233,9 @@
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.Label label2;
+        public System.Windows.Forms.Label lblStatus;
 
         private System.Windows.Forms.ColumnHeader headerFileType;
 
@@ -226,7 +253,7 @@
         private System.Windows.Forms.ColumnHeader headerLocalPath;
         private System.Windows.Forms.ColumnHeader headerStatus;
         private System.Windows.Forms.ColumnHeader headerSize;
-        private System.Windows.Forms.Button btnAsync;
+        private System.Windows.Forms.Button btnDownload;
         private System.Windows.Forms.TextBox tbRemote;
         private System.Windows.Forms.TextBox tbHome;
         private System.Windows.Forms.Label lblDowload;

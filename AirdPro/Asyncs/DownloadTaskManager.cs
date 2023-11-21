@@ -16,10 +16,12 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using AirdPro.Asyncs;
 using AirdPro.Repository;
 using AirdPro.Repository.ProteomeXchange;
 using AirdPro.Utils;
+using FluentFTP;
 
 namespace AirdPro.Async
 {
@@ -64,20 +66,16 @@ namespace AirdPro.Async
             finishedTable.Add(job.remotePath, job);
         }
 
-        //删除一个任务
-        public void removeJob(FileRow jobInfo)
-        {
-            jobInfo.tokenSource.Cancel();
-            jobTable.Remove(jobInfo.remotePath);
-            finishedTable.Remove(jobInfo.remotePath);
-        }
-
         public void run(HashSet<string> skipFormats)
         {
             while (true)
             {
                 //如果队列中没有待执行的任务,那么进行休眠当前进程两秒
-                if (jobQueue.Count == 0) return;
+                if (jobQueue.Count == 0)
+                {
+                    detailForm.lblStatus.Text = "Finished";
+                    return;
+                };
 
                 FileRow fileRow = null;
                 try
@@ -90,9 +88,11 @@ namespace AirdPro.Async
 
                 if (fileRow == null)
                 {
+                    detailForm.lblStatus.Text = "Finished";
                     return;
                 }
 
+                detailForm.lblStatus.Text = "Downloading";
                 fac.StartNew(() =>
                 {
                     while (fileRow.retryTimes > 0)
@@ -125,8 +125,6 @@ namespace AirdPro.Async
         private void download(FileRow currentRow, HashSet<string> skipFormats)
         {
             currentRow.status.Report("Running");
-            // HttpUtil.fetchFileSize(currentRow);
-            
             foreach (var skipFormat in skipFormats)
             {
                 if (currentRow.remotePath.ToLower().EndsWith(skipFormat))
@@ -139,22 +137,24 @@ namespace AirdPro.Async
             if (currentRow.fileType.Equals("Directory"))
             {
                 Directory.CreateDirectory(currentRow.localPath);
-                List<string> filePaths = HttpUtil.fetchFtpFilePaths(currentRow.remotePath);
-                if (filePaths != null && filePaths.Count > 0)
+                FtpListItem[] items = HttpUtil.getFtpFilesFromMetaboLights(Program.mlForm.ftpClient, currentRow.remotePath);
+                // List<string> filePaths = HttpUtil.fetchFtpFilePaths(currentRow.remotePath);
+                if (items != null && items.Length > 0)
                 {
-                    foreach (string filePath in filePaths)
+                    foreach (FtpListItem item in items)
                     {
-                        string fileName = Path.GetFileName(filePath);
                         FileRow row = detailForm.buildItem(
-                            Path.Combine(detailForm.remoteUrl, currentRow.parent, currentRow.fileName, fileName)
+                            Path.Combine(detailForm.remoteUrl, currentRow.parent, currentRow.fileName, item.Name)
                                 .Replace("\\", "/"),
-                            Path.Combine(detailForm.localDirectory, currentRow.parent, currentRow.fileName, fileName)
+                            Path.Combine(detailForm.localDirectory, currentRow.parent, currentRow.fileName, item.Name)
                                 .Replace("/", "\\"),
+                            item.Size,
+                            item.Type.ToString(),
                             Path.Combine(currentRow.parent, currentRow.fileName));
                         download(row, skipFormats);
                     }
-                    currentRow.status.Report("Finished");
                 }
+                currentRow.status.Report("Finished");
             }
             else
             {

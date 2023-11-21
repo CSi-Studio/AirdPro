@@ -41,27 +41,17 @@ namespace AirdPro.Utils
             fileRow.fileSizeLabel.Report(AirdProFileUtil.getSizeLabel(size));
         }
 
-        public static FtpListItem[] getFtpFilesFromMetaboLights(string remoteDir)
+        public static FtpListItem[] getFtpFilesFromMetaboLights(FtpClient client, string remoteDir)
         {
             //用于获取FTP文件夹根目录
-            FtpClient client = null;
             FtpListItem[] items = null;
             try
             {
-                client = new FtpClient(UrlConst.ebi);
-                client.Connect();
                 items = client.GetListing(remoteDir);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-            }
-            finally
-            {
-                if (client != null)
-                {
-                    client.Disconnect();
-                }
             }
             return items;
         }

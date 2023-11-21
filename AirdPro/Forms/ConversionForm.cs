@@ -378,12 +378,22 @@ namespace AirdPro.Forms
 
         private void btnMetaboLights_Click(object sender, EventArgs e)
         {
-            new MLForm().Show();
+            if (Program.mlForm == null || Program.mlForm.IsDisposed)
+            {
+                Program.mlForm = new MLForm();
+            }
+
+            Program.mlForm.Show();
         }
 
         private void btnPX_Click(object sender, EventArgs e)
         {
-            new PXForm().Show();
+            if (Program.pxForm == null || Program.pxForm.IsDisposed)
+            {
+                Program.pxForm = new PXForm();
+            }
+
+            Program.pxForm.Show();
         }
     }
 }
