@@ -72,7 +72,7 @@ namespace AirdPro.Async
             finishedTable.Remove(jobInfo.remotePath);
         }
 
-        public void run()
+        public void run(HashSet<string> skipFormats)
         {
             while (true)
             {
@@ -99,7 +99,7 @@ namespace AirdPro.Async
                     {
                         try
                         {
-                            download(fileRow);
+                            download(fileRow, skipFormats);
                             break;
                         }
                         catch (Exception ex)
@@ -122,11 +122,21 @@ namespace AirdPro.Async
             }
         }
 
-        private void download(FileRow currentRow)
+        private void download(FileRow currentRow, HashSet<string> skipFormats)
         {
             currentRow.status.Report("Running");
-            HttpUtil.fetchFileSize(currentRow);
-            if (currentRow.fileSize == 0)
+            // HttpUtil.fetchFileSize(currentRow);
+            
+            foreach (var skipFormat in skipFormats)
+            {
+                if (currentRow.remotePath.ToLower().EndsWith(skipFormat))
+                {
+                    currentRow.status.Report("Skip Format");
+                    return;
+                }
+            }
+        
+            if (currentRow.fileType.Equals("Directory"))
             {
                 Directory.CreateDirectory(currentRow.localPath);
                 List<string> filePaths = HttpUtil.fetchFtpFilePaths(currentRow.remotePath);
@@ -136,14 +146,14 @@ namespace AirdPro.Async
                     {
                         string fileName = Path.GetFileName(filePath);
                         FileRow row = detailForm.buildItem(
-                            Path.Combine(detailForm.remoteUrl, currentRow.prefix, currentRow.fileName, fileName)
+                            Path.Combine(detailForm.remoteUrl, currentRow.parent, currentRow.fileName, fileName)
                                 .Replace("\\", "/"),
-                            Path.Combine(detailForm.localDirectory, currentRow.prefix, currentRow.fileName, fileName)
+                            Path.Combine(detailForm.localDirectory, currentRow.parent, currentRow.fileName, fileName)
                                 .Replace("/", "\\"),
-                            Path.Combine(currentRow.prefix, currentRow.fileName));
-                        download(row);
-                        row.status.Report("Finished");
+                            Path.Combine(currentRow.parent, currentRow.fileName));
+                        download(row, skipFormats);
                     }
+                    currentRow.status.Report("Finished");
                 }
             }
             else
@@ -175,7 +185,8 @@ namespace AirdPro.Async
                 }
 
                 //开始下载
-                outputStream = new FileStream(fileRow.localPath, FileMode.Create);
+                outputStream = new FileStream(fileRow.localPath, FileMode.OpenOrCreate);
+                outputStream.SetLength(0);
                 var ftpRequest = (FtpWebRequest)WebRequest.Create(new Uri(fileRow.remotePath));
                 ftpRequest.Method = WebRequestMethods.Ftp.DownloadFile;
                 ftpRequest.UseBinary = true;
@@ -207,7 +218,6 @@ namespace AirdPro.Async
             {
                 if (ftpStream != null) ftpStream.Close();
                 if (outputStream != null) outputStream.Close();
-
                 if (ftpResponse != null) ftpResponse.Close();
             }
         }

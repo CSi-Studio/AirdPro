@@ -23,6 +23,7 @@ using AirdSDK.Utils;
 using ThermoFisher.CommonCore.Data;
 using System.ComponentModel;
 using System.Windows.Documents;
+using AirdPro.Repository;
 using AirdPro.Utils;
 using Newtonsoft.Json;
 
@@ -121,7 +122,7 @@ namespace AirdPro.Forms
         private void removeFile(ListViewItem fileItem)
         {
             JobInfo jobInfo = (JobInfo)fileItem.Tag;
-            if (jobInfo.threadId != -1 && !jobInfo.status.Equals(Status.Finished))
+            if (jobInfo.threadId != -1 && !jobInfo.status.Equals(Status.Finished) && !jobInfo.status.Equals(Status.Waiting))
             {
                 MessageBox.Show(Constants.Tag.Cannot_Be_Deleted_When_Running);
                 return;
@@ -373,6 +374,16 @@ namespace AirdPro.Forms
             {
                 removeSelectedItems(null, null);
             }
+        }
+
+        private void btnMetaboLights_Click(object sender, EventArgs e)
+        {
+            new MLForm().Show();
+        }
+
+        private void btnPX_Click(object sender, EventArgs e)
+        {
+            new PXForm().Show();
         }
     }
 }

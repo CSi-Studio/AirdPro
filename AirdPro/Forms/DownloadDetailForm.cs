@@ -1,10 +1,10 @@
 ﻿/*
  * Copyright (c) 2020 CSi Studio
  * AirdSDK and AirdPro are licensed under Mulan PSL v2.
- * You can use this software according to the terms and conditions of the Mulan PSL v2. 
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
- *          http://license.coscl.org.cn/MulanPSL2 
- * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.  
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
  * See the Mulan PSL v2 for more details.
  */
 
@@ -14,6 +14,8 @@ using System.IO;
 using System.Windows.Forms;
 using AirdPro.Async;
 using AirdPro.Repository.ProteomeXchange;
+using AirdPro.Utils;
+using FluentFTP;
 
 namespace AirdPro.Repository
 {
@@ -41,6 +43,21 @@ namespace AirdPro.Repository
             init(remotes, locals);
         }
 
+        public DownloadDetailForm(string identifier, string homeUrl, string remoteUrl, string localDirectory,
+            List<string> remotes, List<string> locals, List<long> sizes, List<string> fileTypes)
+        {
+            InitializeComponent();
+            SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer,
+                true);
+            manager = new DownloadTaskManager(this);
+            this.identifier = identifier;
+            this.localDirectory = localDirectory;
+            this.remoteUrl = remoteUrl;
+            tbRemote.Text = remoteUrl;
+            tbHome.Text = homeUrl;
+            init(remotes, locals, sizes, fileTypes);
+        }
+
         public void init(List<string> remotes, List<string> locals)
         {
             Text = "Repository:" + identifier;
@@ -51,11 +68,34 @@ namespace AirdPro.Repository
             }
         }
 
-        public FileRow buildItem(string remotePath, string localPath, string prefix)
+        public void init(List<string> remotes, List<string> locals, List<long> sizes, List<string> fileTypes)
+        {
+            Text = "Repository:" + identifier;
+            for (var i = 0; i < remotes.Count; i++)
+            {
+                FileRow row = buildItem(remotes[i], locals[i], sizes[i], fileTypes[i], String.Empty);
+                manager.pushJob(row);
+            }
+        }
+
+        public FileRow buildItem(string remotePath, string localPath, string parent)
         {
             string fileName = Path.GetFileName(remotePath);
             FileRow row = new FileRow();
-            ListViewItem item = buildListViewItem(row, fileName, remotePath, localPath, prefix);
+            ListViewItem item = buildListViewItem(row, fileName, remotePath, localPath, parent, null, null);
+
+            fileList.Add(row);
+            lvFileList.Items.Add(item);
+
+            return row;
+        }
+
+        public FileRow buildItem(string remotePath, string localPath, long size, string fileType, string parent)
+        {
+            string fileName = Path.GetFileName(remotePath);
+            FileRow row = new FileRow();
+            ListViewItem item = buildListViewItem(row, fileName, remotePath, localPath, parent,
+                AirdProFileUtil.getSizeLabel(size), fileType);
 
             fileList.Add(row);
             lvFileList.Items.Add(item);
@@ -64,19 +104,20 @@ namespace AirdPro.Repository
         }
 
         private ListViewItem buildListViewItem(FileRow row, string fileName, string remotePath, string localPath,
-            string prefix)
+            string parent, string? size, string? fileType)
         {
             row.remotePath = Path.Combine(remotePath);
             row.fileName = Path.GetFileName(fileName);
             row.localPath = Path.Combine(localPath);
-            row.prefix = prefix;
+            row.parent = parent;
             string[] itemInfo = new string[]
             {
                 row.remotePath,
                 row.fileName,
                 row.localPath,
                 "Wait",
-                "Fetching"
+                size == null ? "Fetching" : size,
+                fileType,
             };
             ListViewItem item = new ListViewItem(itemInfo);
             Progress<string> status = new Progress<string>((progressValue) =>
@@ -95,13 +136,29 @@ namespace AirdPro.Repository
             });
             row.status = status;
             row.fileSizeLabel = fileSizeLabel;
-
+            row.fileType = fileType;
             return item;
         }
 
         private void btnAsync_Click(object sender, EventArgs e)
         {
-            manager.run();
+            HashSet<string> skipFormats = new HashSet<string>();
+            if (cbMzData.Checked)
+            {
+                skipFormats.Add(".mzData");
+            }
+
+            if (cbMzML.Checked)
+            {
+                skipFormats.Add(".mzML");
+            }
+
+            if (cbMzXML.Checked)
+            {
+                skipFormats.Add(".mzXML");
+            }
+
+            manager.run(skipFormats);
         }
 
         private void DetailForm_Load(object sender, EventArgs e)

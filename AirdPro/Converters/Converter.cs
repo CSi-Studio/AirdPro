@@ -589,10 +589,22 @@ namespace AirdPro.Converters
                 case FileFormat.WIFF2:
                     FileInfo wiff = new FileInfo(jobInfo.inputPath);
                     if (wiff.Exists) fileSize += wiff.Length;
+                    if (jobInfo.inputPath.ToLower().EndsWith(".wiff"))
+                    {
+                        FileInfo wiff2 = new FileInfo(jobInfo.inputPath.Replace("wiff","wiff2"));
+                        if (wiff2.Exists) fileSize += wiff2.Length;
+                    }
+                    else
+                    {
+                        FileInfo wiff1 = new FileInfo(jobInfo.inputPath.Replace("wiff2","wiff"));
+                        if (wiff1.Exists) fileSize += wiff1.Length;
+                    }
                     FileInfo mtd = new FileInfo(jobInfo.inputPath + ".mtd");
                     if (mtd.Exists) fileSize += mtd.Length;
                     FileInfo scan = new FileInfo(jobInfo.inputPath + ".scan");
                     if (scan.Exists) fileSize += scan.Length;
+                    FileInfo timeseries = new FileInfo(jobInfo.inputPath + ".timeseries.data");
+                    if (timeseries.Exists) fileSize += timeseries.Length;
                     break;
                 case FileFormat.RAW:
                     FileInfo raw = new FileInfo(jobInfo.inputPath);

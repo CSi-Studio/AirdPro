@@ -30,6 +30,7 @@ using AirdPro.Properties;
 using AirdPro.Repository.MetaboLights;
 using AirdPro.Repository.ProteomeXchange;
 using AirdPro.Utils;
+using FluentFTP;
 using Newtonsoft.Json;
 
 namespace AirdPro.Repository
@@ -250,7 +251,7 @@ namespace AirdPro.Repository
                 MessageBox.Show("Local Repo not Exists");
                 return;
             }
-
+            
             if (projectListView.SelectedCells.Count > 0)
             {
                 var index = projectListView.SelectedCells[0].RowIndex;
@@ -266,26 +267,30 @@ namespace AirdPro.Repository
                 btnDetail.Enabled = false;
                 List<string> remotes = new List<string>();
                 List<string> locals = new List<string>();
+                List<string> fileTypes = new List<string>();
+                List<long> sizes = new List<long>();
                 try
                 {
                     string remoteUrl = UrlConst.mlFtpUrl + identifier;
                     //用于获取FTP文件夹根目录
-                    List<string> filePathList = HttpUtil.fetchFtpFilePaths(remoteUrl);
-                    foreach (string filePath in filePathList)
+                    FtpListItem[] items = HttpUtil.getFtpFilesFromMetaboLights(UrlConst.ebiMetabolights + identifier);
+                    foreach (FtpListItem file in items)
                     {
-                        string fileName = Path.GetFileName(filePath);
-                        remotes.Add(Path.Combine(remoteUrl, fileName));
-                        locals.Add(Path.Combine(localDirectory, fileName));
+                        remotes.Add(Path.Combine(remoteUrl, file.Name));
+                        locals.Add(Path.Combine(localDirectory, file.Name));
+                        sizes.Add(file.Size);
+                        fileTypes.Add(file.Type.ToString());
                     }
                 }
                 catch (Exception exception)
                 {
                     MessageBox.Show("Get " + identifier + " Failed," + exception.Message);
+                    return;
                 }
 
                 DownloadDetailForm detailForm = new DownloadDetailForm(identifier,
                     Path.Combine(UrlConst.mlDetailUrl, identifier), Path.Combine(UrlConst.mlFtpUrl, identifier) + "/",
-                    localDirectory, remotes, locals);
+                    localDirectory, remotes, locals, sizes, fileTypes);
                 detailForm.Show();
                 lblLoading.Text = "Loaded";
                 btnDetail.Enabled = true;

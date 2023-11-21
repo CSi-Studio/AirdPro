@@ -220,11 +220,11 @@ namespace AirdPro.Forms
                     return;
                 }
 
-                MRMParser mrmParser = new MRMParser(indexFilePath);
-                List<MrmPair> srms = mrmParser.getAllSrmPairs();
+                // MRMParser mrmParser = new MRMParser(indexFilePath);
+                // List<MrmPair> srms = mrmParser.getAllSrmPairs();
                 List<SpectrumRow> spectra = parseAsSpectra(airdInfo);
                 spectraDataGrids.DataSource = spectra;
-
+                
                 for (var i = 0; i < spectra.Count; i++)
                 {
                     ticChart.Series[0].Points.AddXY(Math.Round(spectra[i].RT, 2), spectra[i].TotalIons);

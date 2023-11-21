@@ -24,7 +24,7 @@ namespace AirdPro.Utils
         {
             if (size == 0)
             {
-                return "文件夹";
+                return "0";
             }
 
             if (size < 1024)

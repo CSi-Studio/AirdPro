@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using AirdPro.Constants;
 using AirdPro.Domains;
+using AirdPro.Properties;
 using AutoUpdaterDotNET;
 
 namespace AirdPro.Forms
@@ -89,6 +90,13 @@ namespace AirdPro.Forms
         {
             e.Cancel = true;
             this.Visible = false;
+        }
+
+        private void btnClearCache_Click(object sender, EventArgs e)
+        {
+            Settings.Default.JobInfoList = "[]";
+            Settings.Default.Save();
+            MessageBox.Show("Clear Cache Successful");
         }
     }
 }

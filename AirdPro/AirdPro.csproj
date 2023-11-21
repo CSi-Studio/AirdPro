@@ -689,6 +689,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AirdSDK" Version="2.4.1.4" />
+    <PackageReference Include="FluentFTP" Version="48.0.3" />
     <PackageReference Include="MathNet.Numerics">
       <Version>5.0.0</Version>
     </PackageReference>

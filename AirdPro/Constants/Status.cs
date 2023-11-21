@@ -14,6 +14,7 @@ namespace AirdPro.Constants
     {
         public static string Prepare = "Prepare";
         public static string Init = "Init";
+        public static string Waiting = "Waiting";
         public static string Starting = "Starting";
         public static string Adapting = "Adapting";
         public static string Finished = "Finished";

@@ -190,7 +190,6 @@ namespace AirdPro.Domains
                 Log log = new Log(DateTime.Now, content);
                 logs.Add(log);
                 AppLogs.WriteInfo(content, true);
-                Debug.WriteLine(content);
             }
 
             return this;

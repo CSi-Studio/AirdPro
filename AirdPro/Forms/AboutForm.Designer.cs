@@ -48,6 +48,7 @@
             this.lblDesc = new System.Windows.Forms.Label();
             this.tbPaperZDPD = new System.Windows.Forms.TextBox();
             this.pbCheckUpdate = new System.Windows.Forms.PictureBox();
+            this.btnClearCache = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbCheckUpdate)).BeginInit();
             this.SuspendLayout();
             // 
@@ -257,12 +258,23 @@
             this.pbCheckUpdate.TabStop = false;
             this.pbCheckUpdate.Click += new System.EventHandler(this.pbCheckUpdate_Click);
             // 
+            // btnClearCache
+            // 
+            this.btnClearCache.Location = new System.Drawing.Point(15, 12);
+            this.btnClearCache.Name = "btnClearCache";
+            this.btnClearCache.Size = new System.Drawing.Size(145, 35);
+            this.btnClearCache.TabIndex = 24;
+            this.btnClearCache.Text = "Clear Cache";
+            this.btnClearCache.UseVisualStyleBackColor = true;
+            this.btnClearCache.Click += new System.EventHandler(this.btnClearCache_Click);
+            // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(772, 585);
+            this.Controls.Add(this.btnClearCache);
             this.Controls.Add(this.tbPaperZDPD);
             this.Controls.Add(this.lblDesc);
             this.Controls.Add(this.label2);
@@ -292,8 +304,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbCheckUpdate)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
+
+        private System.Windows.Forms.Button btnClearCache;
 
         #endregion
 

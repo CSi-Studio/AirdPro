@@ -25,5 +25,8 @@ namespace AirdPro.Constants
         public static string mlDetailUrl = "https://www.ebi.ac.uk/metabolights/";
 
         public static string mlFtpUrl = "ftp://ftp.ebi.ac.uk/pub/databases/metabolights/studies/public/";
+        
+        public static string ebi = "ftp://ftp.ebi.ac.uk/";
+        public static string ebiMetabolights = "/pub/databases/metabolights/studies/public/";
     }
 }

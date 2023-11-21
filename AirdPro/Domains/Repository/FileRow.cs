@@ -26,8 +26,10 @@ namespace AirdPro.Repository.ProteomeXchange
     {
         public int retryTimes = 3;
 
-        public string prefix = "";
+        public string parent = "";
 
+        public string fileType = null;
+        
         public CancellationTokenSource tokenSource = new CancellationTokenSource();
         public string remotePath { get; set; }
         public long fileSize { get; set; }
