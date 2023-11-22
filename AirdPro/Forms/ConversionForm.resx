@@ -178,7 +178,7 @@
         XTesb3QPLh88M+QwdP6m681Lt7xuXbu94vbgcOjwnZHokdE77DtTd1PuvriXeW/h/sYH6AdFD6UeVjxS
         fNTws+7PbaOWo6fHXMf6Hwc/vj/OGn/2S8Yv7ycKnpCfVEyqTDZPmU2dmnafvvF05dOJZ+nPFmYKf5X+
         tfa5zvMffnP8rX82YnbiBf/Fp99LXsq/PPRq2aueuYC5R69TXy/MF72Rf3P4LeNt37vwd5MLWe+x7ys/
-        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAALEAAACxABrSO9dQAADn1JREFUeF7tnTsLZUkV
+        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAALDwAACw8BkvkDpQAADn1JREFUeF7tnTsLZUkV
         hfsnzE9ojBU6nHAQBBOhzYykwUAYGOhgUBGEhgbFQFsURDGYwMTISTQwGsRYOzaazLTBP9CzvkvVpc4+
         u87Z53Hfe8Gi+5za9Ty1Vz1v95P///BrH4gfBfj0SSKRSCxFEZD3Qb4TPxM/KtETiURiGghGEZClfFOS
         SCQSiT4kFmtFBn5WkkkkEgkfEgorMu5SqNi9aewm7ROJROIARGKJaCj8pbH/vARdNVTO3LhOJC4BOd8i
@@ -1038,7 +1038,7 @@
     <value>11</value>
   </data>
   <data name="lvFileList.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="headerJobId.Text" xml:space="preserve">
     <value>ID</value>

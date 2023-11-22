@@ -49,8 +49,15 @@ namespace AirdPro.Repository
         {
             InitializeComponent();
             load(false);
-            ftpClient = new FtpClient(UrlConst.ebi);
-            ftpClient.Connect();
+            try
+            {
+                ftpClient = new FtpClient(UrlConst.ebi);
+                ftpClient.Connect();
+            }
+            catch (Exception ex)
+            {
+            }
+
         }
 
         private void load(bool fastLoad)

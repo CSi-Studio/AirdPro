@@ -190,7 +190,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.label2.Location = new System.Drawing.Point(670, 37);
+            this.label2.Location = new System.Drawing.Point(604, 37);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(99, 16);
             this.label2.TabIndex = 11;
@@ -200,7 +200,7 @@
             // 
             this.lblStatus.AutoSize = true;
             this.lblStatus.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.lblStatus.Location = new System.Drawing.Point(775, 38);
+            this.lblStatus.Location = new System.Drawing.Point(709, 38);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(48, 16);
             this.lblStatus.TabIndex = 12;

@@ -18,6 +18,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AirdPro.Asyncs;
+using AirdPro.Constants;
 using AirdPro.Repository;
 using AirdPro.Repository.ProteomeXchange;
 using AirdPro.Utils;
@@ -73,7 +74,6 @@ namespace AirdPro.Async
                 //如果队列中没有待执行的任务,那么进行休眠当前进程两秒
                 if (jobQueue.Count == 0)
                 {
-                    detailForm.lblStatus.Text = "Finished";
                     return;
                 };
 
@@ -88,7 +88,6 @@ namespace AirdPro.Async
 
                 if (fileRow == null)
                 {
-                    detailForm.lblStatus.Text = "Finished";
                     return;
                 }
 
@@ -127,7 +126,7 @@ namespace AirdPro.Async
             currentRow.status.Report("Running");
             foreach (var skipFormat in skipFormats)
             {
-                if (currentRow.remotePath.ToLower().EndsWith(skipFormat))
+                if (currentRow.remotePath.ToLower().EndsWith(skipFormat.ToLower()))
                 {
                     currentRow.status.Report("Skip Format");
                     return;
@@ -137,8 +136,7 @@ namespace AirdPro.Async
             if (currentRow.fileType.Equals("Directory"))
             {
                 Directory.CreateDirectory(currentRow.localPath);
-                FtpListItem[] items = HttpUtil.getFtpFilesFromMetaboLights(Program.mlForm.ftpClient, currentRow.remotePath);
-                // List<string> filePaths = HttpUtil.fetchFtpFilePaths(currentRow.remotePath);
+                FtpListItem[] items = HttpUtil.getFtpFilesFromMetaboLights(Program.mlForm.ftpClient, Path.Combine(Path.Combine(UrlConst.ebiMetabolights + detailForm.identifier, currentRow.parent), currentRow.fileName));
                 if (items != null && items.Length > 0)
                 {
                     foreach (FtpListItem item in items)
