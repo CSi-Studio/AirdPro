@@ -156,8 +156,10 @@
     <Compile Include="Algorithms\Parser\AcqMethod\NewDataSet.cs" />
     <Compile Include="Algorithms\Parser\AcqMethod\AcqMethodParser.cs" />
     <Compile Include="Algorithms\Parser\AcqMethod\SectionInfo.cs" />
+    <Compile Include="Algorithms\Parser\DownloadXML\CvParam.cs" />
+    <Compile Include="Algorithms\Parser\DownloadXML\DatasetFile.cs" />
+    <Compile Include="Algorithms\Parser\DownloadXML\ProteomeXchangeDataset.cs" />
     <Compile Include="Asyncs\ConvertTaskManager.cs" />
-    <Compile Include="Asyncs\DownloadTaskManager.cs" />
     <Compile Include="Asyncs\LimitedConcurrencyLevelTaskScheduler.cs" />
     <Compile Include="Constants\Activator.cs" />
     <Compile Include="Constants\Manufacturer.cs" />
@@ -324,6 +326,12 @@
     <Compile Include="Domains\Sort\CompressStat.cs" />
     <Compile Include="Domains\Statistic\Stat.cs" />
     <Compile Include="Domains\View\SpectrumRow.cs" />
+    <Compile Include="Forms\DownloadLinksForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DownloadLinksForm.Designer.cs">
+      <DependentUpon>DownloadLinksForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\MirrorTransForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -359,18 +367,6 @@
     </Compile>
     <Compile Include="Domains\Repository\FileRow.cs" />
     <Compile Include="Domains\Repository\Project.cs" />
-    <Compile Include="Forms\DownloadDetailForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\DownloadDetailForm.designer.cs">
-      <DependentUpon>DownloadDetailForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\ReposWizardForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ReposWizardForm.Designer.cs">
-      <DependentUpon>ReposWizardForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\MLForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -453,6 +449,9 @@
       <DependentUpon>MirrorBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TreeViewAdv\Tree\TreeViewAdv.resx" />
+    <EmbeddedResource Include="Forms\DownloadLinksForm.resx">
+      <DependentUpon>DownloadLinksForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\MirrorTransForm.resx">
       <DependentUpon>MirrorTransForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -481,12 +480,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\VendorFileSelectorForm.resx">
       <DependentUpon>VendorFileSelectorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DownloadDetailForm.resx">
-      <DependentUpon>DownloadDetailForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ReposWizardForm.resx">
-      <DependentUpon>ReposWizardForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MLForm.resx">
       <DependentUpon>MLForm.cs</DependentUpon>

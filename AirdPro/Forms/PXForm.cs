@@ -16,6 +16,7 @@ using System.IO;
 using System.Net.Http;
 using System.Windows.Forms;
 using AirdPro.Constants;
+using AirdPro.Forms;
 using AirdPro.Properties;
 using AirdPro.Repository.ProteomeXchange;
 using AirdPro.Utils;
@@ -201,118 +202,6 @@ namespace AirdPro.Repository
             lblResult.Text = table.Rows.Count + " Record(s)";
         }
 
-        private async void btnDetail_Click(object sender, EventArgs e)
-        {
-            var repos = Settings.Default.PXReposFolder;
-            if (repos.Equals(string.Empty) || !Directory.Exists(repos))
-            {
-                MessageBox.Show("Local Repo not Exists");
-                return;
-            }
-
-            lblLoading.Text = "Loading";
-            btnDetail.Enabled = false;
-            //确认是否选中了某一行的数据
-            if (projectListView.SelectedCells.Count > 0)
-            {
-                var index = projectListView.SelectedCells[0].RowIndex;
-                //获取仓库ID
-                string identifier = projectListView.Rows[index].Cells[0].Value.ToString();
-
-
-                //检查本地仓库是否存在对应的文件夹
-                string localDirectory = Path.Combine(Settings.Default.PXReposFolder, identifier);
-                if (!Directory.Exists(localDirectory))
-                {
-                    //本地建仓
-                    Directory.CreateDirectory(localDirectory);
-                }
-
-                List<string> remotes = new List<string>();
-                List<string> locals = new List<string>();
-                string remoteUrl = "";
-                string homeUrl = "";
-                try
-                {
-                    string response = await client.GetStringAsync(UrlConst.pxDetailJsonUrl + identifier);
-                    RootProject rootProject = JsonConvert.DeserializeObject<RootProject>(response);
-                    if (rootProject.datasetFiles != null && rootProject.datasetFiles.Count > 0)
-                    {
-                        foreach (Node fileNode in rootProject.datasetFiles)
-                        {
-                            remotes.Add(fileNode.value);
-                            locals.Add(Path.Combine(localDirectory, Path.GetFileName(fileNode.value)));
-                        }
-                    }
-                    else if (rootProject.fullDatasetLinks != null && rootProject.fullDatasetLinks.Count > 0)
-                    {
-                        //用于获取FTP文件夹根目录
-                        foreach (Node link in rootProject.fullDatasetLinks)
-                        {
-                            if (link.accession.Equals("MS:1002852")) // Dataset FTP location
-                            {
-                                List<string> filePathList = HttpUtil.fetchFtpFilePaths(link.value);
-                                if (filePathList == null)
-                                {
-                                    continue;
-                                }
-
-                                foreach (string filePath in filePathList)
-                                {
-                                    string fileName = Path.GetFileName(filePath);
-                                    remotes.Add(Path.Combine(link.value, fileName));
-                                    locals.Add(Path.Combine(localDirectory, fileName));
-                                }
-                            }
-                        }
-                    }
-
-                    if (rootProject.fullDatasetLinks != null && rootProject.fullDatasetLinks.Count > 0)
-                    {
-                        //用于获取FTP文件夹根目录
-                        foreach (Node link in rootProject.fullDatasetLinks)
-                        {
-                            if (link.accession.Equals("MS:1002633"))
-                            {
-                                homeUrl = link.value;
-                            }
-                            else if (link.accession.Equals("MS:1002837"))
-                            {
-                                homeUrl = link.value;
-                            }
-                            else if (link.accession.Equals("MS:1002488"))
-                            {
-                                homeUrl = link.value;
-                            }
-                            else
-                            {
-                                homeUrl = UrlConst.pxDetailUrl + identifier;
-                            }
-
-                            if (link.accession.Equals("MS:1002852"))
-                            {
-                                remoteUrl = link.value;
-                            }
-                        }
-                    }
-                }
-                catch (Exception exception)
-                {
-                    MessageBox.Show("Get " + identifier + " Failed," + exception.Message);
-                }
-
-                lblLoading.Text = "Loaded";
-                btnDetail.Enabled = true;
-                DownloadDetailForm asyncForm =
-                    new DownloadDetailForm(identifier, homeUrl, remoteUrl, localDirectory, remotes, locals);
-                asyncForm.Show();
-            }
-            else
-            {
-                MessageBox.Show("Select One Row First");
-            }
-        }
-
         private void btnUrl_Click(object sender, EventArgs e)
         {
             if (projectListView.SelectedCells.Count > 0)
@@ -360,107 +249,19 @@ namespace AirdPro.Repository
             }
         }
 
-        private async void btnDirectOpen_Click(object sender, EventArgs e)
+        private void btnDownloadLinks_Click(object sender, EventArgs e)
         {
-            var repos = Settings.Default.PXReposFolder;
-            if (repos.Equals(string.Empty) || !Directory.Exists(repos))
+            if (projectListView.SelectedCells.Count > 0)
             {
-                MessageBox.Show("Local Repo not Exists");
-                return;
+                var index = projectListView.SelectedCells[0].RowIndex;
+                var identifier = projectListView.Rows[index].Cells[0].Value.ToString();
+                var repo = projectListView.Rows[index].Cells[2].Value.ToString();
+                new DownloadLinksForm(repo, identifier).ShowDialog();
             }
-
-            lblLoading.Text = "Loading";
-            btnDirectOpen.Enabled = false;
-
-            //获取仓库ID
-            string identifier = tbPXD.Text;
-            if (identifier == null || identifier == String.Empty)
+            else
             {
-                MessageBox.Show("PXD ID cannot be empty!");
-                return;
+                MessageBox.Show("Select One Row First");
             }
-
-            //检查本地仓库是否存在对应的文件夹
-            string localDirectory = Path.Combine(Settings.Default.PXReposFolder, identifier);
-            if (!Directory.Exists(localDirectory))
-            {
-                //本地建仓
-                Directory.CreateDirectory(localDirectory);
-            }
-
-            List<string> remotes = new List<string>();
-            List<string> locals = new List<string>();
-            string remoteUrl = "";
-            string homeUrl = "";
-            try
-            {
-                string response = await client.GetStringAsync(UrlConst.pxDetailJsonUrl + identifier);
-                RootProject rootProject = JsonConvert.DeserializeObject<RootProject>(response);
-                if (rootProject.datasetFiles != null && rootProject.datasetFiles.Count > 0)
-                {
-                    foreach (Node fileNode in rootProject.datasetFiles)
-                    {
-                        remotes.Add(fileNode.value);
-                        locals.Add(Path.Combine(localDirectory, Path.GetFileName(fileNode.value)));
-                    }
-                }
-                else if (rootProject.fullDatasetLinks != null && rootProject.fullDatasetLinks.Count > 0)
-                {
-                    //用于获取FTP文件夹根目录
-                    foreach (Node link in rootProject.fullDatasetLinks)
-                    {
-                        if (link.accession.Equals("MS:1002852")) // Dataset FTP location
-                        {
-                            List<string> filePathList = HttpUtil.fetchFtpFilePaths(link.value);
-                            foreach (string filePath in filePathList)
-                            {
-                                string fileName = Path.GetFileName(filePath);
-                                remotes.Add(Path.Combine(link.value, fileName));
-                                locals.Add(Path.Combine(localDirectory, fileName));
-                            }
-                        }
-                    }
-                }
-
-                if (rootProject.fullDatasetLinks != null && rootProject.fullDatasetLinks.Count > 0)
-                {
-                    //用于获取FTP文件夹根目录
-                    foreach (Node link in rootProject.fullDatasetLinks)
-                    {
-                        if (link.accession.Equals("MS:1002633"))
-                        {
-                            homeUrl = link.value;
-                        }
-                        else if (link.accession.Equals("MS:1002837"))
-                        {
-                            homeUrl = link.value;
-                        }
-                        else if (link.accession.Equals("MS:1002488"))
-                        {
-                            homeUrl = link.value;
-                        }
-                        else
-                        {
-                            homeUrl = UrlConst.pxDetailUrl + identifier;
-                        }
-
-                        if (link.accession.Equals("MS:1002852"))
-                        {
-                            remoteUrl = link.value;
-                        }
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show("Get " + identifier + " Failed," + exception.Message);
-            }
-
-            lblLoading.Text = "Loaded";
-            btnDetail.Enabled = true;
-            DownloadDetailForm asyncForm =
-                new DownloadDetailForm(identifier, homeUrl, remoteUrl, localDirectory, remotes, locals);
-            asyncForm.Show();
         }
     }
 }

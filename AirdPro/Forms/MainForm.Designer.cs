@@ -124,14 +124,6 @@
             this.startConversionToolStripMenuItem.Text = "Conversion";
             this.startConversionToolStripMenuItem.Click += new System.EventHandler(this.startConversionToolStripMenuItem_Click);
             // 
-            // repositoryToolStripMenuItem
-            // 
-            this.repositoryToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("repositoryToolStripMenuItem.Image")));
-            this.repositoryToolStripMenuItem.Name = "repositoryToolStripMenuItem";
-            this.repositoryToolStripMenuItem.Size = new System.Drawing.Size(107, 28);
-            this.repositoryToolStripMenuItem.Text = "Repository";
-            this.repositoryToolStripMenuItem.Click += new System.EventHandler(this.repositoryToolStripMenuItem_Click);
-            // 
             // settingToolStripMenuItem
             // 
             this.settingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {

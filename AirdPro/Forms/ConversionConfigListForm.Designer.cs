@@ -243,7 +243,7 @@
             this.cbConfigStackLayers.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbConfigStackLayers.FormattingEnabled = true;
             this.cbConfigStackLayers.Items.AddRange(new object[] { "32", "64", "128", "256", "512", "1024" });
-            this.cbConfigStackLayers.Location = new System.Drawing.Point(128, 4);
+            this.cbConfigStackLayers.Location = new System.Drawing.Point(107, 4);
             this.cbConfigStackLayers.Name = "cbConfigStackLayers";
             this.cbConfigStackLayers.Size = new System.Drawing.Size(82, 25);
             this.cbConfigStackLayers.TabIndex = 129;

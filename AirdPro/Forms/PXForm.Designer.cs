@@ -25,8 +25,8 @@ namespace AirdPro.Repository
         #region Windows 窗体设计器生成的代码
 
         /// <summary>
-        /// 设计器支持所需的方法 - 不要修改
-        /// 使用代码编辑器修改此方法的内容。
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
@@ -49,16 +49,6 @@ namespace AirdPro.Repository
             this.tbRepos = new System.Windows.Forms.TextBox();
             this.btnChangeRepos = new System.Windows.Forms.Button();
             this.projectListView = new System.Windows.Forms.DataGridView();
-            this.tbSearch = new System.Windows.Forms.TextBox();
-            this.btnSearch = new System.Windows.Forms.Button();
-            this.btnReset = new System.Windows.Forms.Button();
-            this.lblResult = new System.Windows.Forms.Label();
-            this.btnDetail = new System.Windows.Forms.Button();
-            this.btnUrl = new System.Windows.Forms.Button();
-            this.lblLoading = new System.Windows.Forms.Label();
-            this.tbPXD = new System.Windows.Forms.TextBox();
-            this.btnDirectOpen = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.Identifier = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Repos = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -68,6 +58,15 @@ namespace AirdPro.Repository
             this.LabHead = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Announce = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Keywords = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tbSearch = new System.Windows.Forms.TextBox();
+            this.btnSearch = new System.Windows.Forms.Button();
+            this.btnReset = new System.Windows.Forms.Button();
+            this.lblResult = new System.Windows.Forms.Label();
+            this.btnUrl = new System.Windows.Forms.Button();
+            this.lblLoading = new System.Windows.Forms.Label();
+            this.tbPXD = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnDownloadLinks = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.projectListView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -156,16 +155,7 @@ namespace AirdPro.Repository
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.projectListView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.projectListView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.projectListView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Identifier,
-            this.Title,
-            this.Repos,
-            this.Species,
-            this.Instrument,
-            this.Publication,
-            this.LabHead,
-            this.Announce,
-            this.Keywords});
+            this.projectListView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.Identifier, this.Title, this.Repos, this.Species, this.Instrument, this.Publication, this.LabHead, this.Announce, this.Keywords });
             this.projectListView.Location = new System.Drawing.Point(5, 65);
             this.projectListView.Name = "projectListView";
             this.projectListView.RowHeadersWidth = 62;
@@ -173,108 +163,6 @@ namespace AirdPro.Repository
             this.projectListView.Size = new System.Drawing.Size(1391, 656);
             this.projectListView.TabIndex = 7;
             this.projectListView.VirtualMode = true;
-            // 
-            // tbSearch
-            // 
-            this.tbSearch.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.tbSearch.Location = new System.Drawing.Point(12, 36);
-            this.tbSearch.Name = "tbSearch";
-            this.tbSearch.Size = new System.Drawing.Size(505, 22);
-            this.tbSearch.TabIndex = 8;
-            this.tbSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyUp);
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnSearch.Location = new System.Drawing.Point(523, 35);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(110, 25);
-            this.btnSearch.TabIndex = 9;
-            this.btnSearch.Text = "Search";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
-            // btnReset
-            // 
-            this.btnReset.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnReset.Location = new System.Drawing.Point(639, 35);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(77, 26);
-            this.btnReset.TabIndex = 10;
-            this.btnReset.Text = "Reset";
-            this.btnReset.UseVisualStyleBackColor = true;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
-            // 
-            // lblResult
-            // 
-            this.lblResult.AutoSize = true;
-            this.lblResult.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.lblResult.Location = new System.Drawing.Point(1248, 39);
-            this.lblResult.Name = "lblResult";
-            this.lblResult.Size = new System.Drawing.Size(49, 16);
-            this.lblResult.TabIndex = 11;
-            this.lblResult.Text = "Records";
-            // 
-            // btnDetail
-            // 
-            this.btnDetail.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnDetail.Location = new System.Drawing.Point(802, 36);
-            this.btnDetail.Name = "btnDetail";
-            this.btnDetail.Size = new System.Drawing.Size(74, 25);
-            this.btnDetail.TabIndex = 12;
-            this.btnDetail.Text = "Detail";
-            this.btnDetail.UseVisualStyleBackColor = true;
-            this.btnDetail.Click += new System.EventHandler(this.btnDetail_Click);
-            // 
-            // btnUrl
-            // 
-            this.btnUrl.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnUrl.Location = new System.Drawing.Point(722, 36);
-            this.btnUrl.Name = "btnUrl";
-            this.btnUrl.Size = new System.Drawing.Size(74, 25);
-            this.btnUrl.TabIndex = 13;
-            this.btnUrl.Text = "Web";
-            this.btnUrl.UseVisualStyleBackColor = true;
-            this.btnUrl.Click += new System.EventHandler(this.btnUrl_Click);
-            // 
-            // lblLoading
-            // 
-            this.lblLoading.AutoSize = true;
-            this.lblLoading.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.lblLoading.Location = new System.Drawing.Point(1102, 13);
-            this.lblLoading.Name = "lblLoading";
-            this.lblLoading.Size = new System.Drawing.Size(46, 16);
-            this.lblLoading.TabIndex = 14;
-            this.lblLoading.Text = "Loaded";
-            // 
-            // tbPXD
-            // 
-            this.tbPXD.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.tbPXD.Location = new System.Drawing.Point(958, 37);
-            this.tbPXD.Name = "tbPXD";
-            this.tbPXD.Size = new System.Drawing.Size(190, 22);
-            this.tbPXD.TabIndex = 15;
-            // 
-            // btnDirectOpen
-            // 
-            this.btnDirectOpen.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnDirectOpen.Location = new System.Drawing.Point(1157, 35);
-            this.btnDirectOpen.Name = "btnDirectOpen";
-            this.btnDirectOpen.Size = new System.Drawing.Size(74, 26);
-            this.btnDirectOpen.TabIndex = 16;
-            this.btnDirectOpen.Text = "Open";
-            this.btnDirectOpen.UseVisualStyleBackColor = true;
-            this.btnDirectOpen.Click += new System.EventHandler(this.btnDirectOpen_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.label1.Location = new System.Drawing.Point(906, 39);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(46, 16);
-            this.label1.TabIndex = 17;
-            this.label1.Text = "PXD ID:";
             // 
             // Identifier
             // 
@@ -366,17 +254,107 @@ namespace AirdPro.Repository
             this.Keywords.MinimumWidth = 8;
             this.Keywords.Name = "Keywords";
             // 
+            // tbSearch
+            // 
+            this.tbSearch.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.tbSearch.Location = new System.Drawing.Point(12, 36);
+            this.tbSearch.Name = "tbSearch";
+            this.tbSearch.Size = new System.Drawing.Size(505, 22);
+            this.tbSearch.TabIndex = 8;
+            this.tbSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyUp);
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.btnSearch.Location = new System.Drawing.Point(523, 35);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(110, 25);
+            this.btnSearch.TabIndex = 9;
+            this.btnSearch.Text = "Search";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // btnReset
+            // 
+            this.btnReset.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.btnReset.Location = new System.Drawing.Point(639, 35);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(77, 26);
+            this.btnReset.TabIndex = 10;
+            this.btnReset.Text = "Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
+            // lblResult
+            // 
+            this.lblResult.AutoSize = true;
+            this.lblResult.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.lblResult.Location = new System.Drawing.Point(1248, 39);
+            this.lblResult.Name = "lblResult";
+            this.lblResult.Size = new System.Drawing.Size(49, 16);
+            this.lblResult.TabIndex = 11;
+            this.lblResult.Text = "Records";
+            // 
+            // btnUrl
+            // 
+            this.btnUrl.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.btnUrl.Location = new System.Drawing.Point(722, 36);
+            this.btnUrl.Name = "btnUrl";
+            this.btnUrl.Size = new System.Drawing.Size(74, 25);
+            this.btnUrl.TabIndex = 13;
+            this.btnUrl.Text = "Web";
+            this.btnUrl.UseVisualStyleBackColor = true;
+            this.btnUrl.Click += new System.EventHandler(this.btnUrl_Click);
+            // 
+            // lblLoading
+            // 
+            this.lblLoading.AutoSize = true;
+            this.lblLoading.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.lblLoading.Location = new System.Drawing.Point(1102, 13);
+            this.lblLoading.Name = "lblLoading";
+            this.lblLoading.Size = new System.Drawing.Size(46, 16);
+            this.lblLoading.TabIndex = 14;
+            this.lblLoading.Text = "Loaded";
+            // 
+            // tbPXD
+            // 
+            this.tbPXD.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.tbPXD.Location = new System.Drawing.Point(1047, 37);
+            this.tbPXD.Name = "tbPXD";
+            this.tbPXD.Size = new System.Drawing.Size(183, 22);
+            this.tbPXD.TabIndex = 15;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.label1.Location = new System.Drawing.Point(995, 40);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(46, 16);
+            this.label1.TabIndex = 17;
+            this.label1.Text = "PXD ID:";
+            // 
+            // btnDownloadLinks
+            // 
+            this.btnDownloadLinks.Font = new System.Drawing.Font("微软雅黑", 8F);
+            this.btnDownloadLinks.Location = new System.Drawing.Point(802, 35);
+            this.btnDownloadLinks.Name = "btnDownloadLinks";
+            this.btnDownloadLinks.Size = new System.Drawing.Size(176, 25);
+            this.btnDownloadLinks.TabIndex = 18;
+            this.btnDownloadLinks.Text = "Download Links";
+            this.btnDownloadLinks.UseVisualStyleBackColor = true;
+            this.btnDownloadLinks.Click += new System.EventHandler(this.btnDownloadLinks_Click);
+            // 
             // PXForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1407, 729);
+            this.Controls.Add(this.btnDownloadLinks);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnDirectOpen);
             this.Controls.Add(this.tbPXD);
             this.Controls.Add(this.lblLoading);
             this.Controls.Add(this.btnUrl);
-            this.Controls.Add(this.btnDetail);
             this.Controls.Add(this.lblResult);
             this.Controls.Add(this.btnReset);
             this.Controls.Add(this.btnSearch);
@@ -397,8 +375,9 @@ namespace AirdPro.Repository
             ((System.ComponentModel.ISupportInitialize)(this.projectListView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
+
+        private System.Windows.Forms.Button btnDownloadLinks;
 
         #endregion
 
@@ -414,12 +393,10 @@ namespace AirdPro.Repository
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.Label lblResult;
-        private System.Windows.Forms.Button btnDetail;
         private System.Windows.Forms.Button btnUrl;
         private Label lblLoading;
-        private TextBox tbPXD;
-        private Button btnDirectOpen;
-        private Label label1;
+        private System.Windows.Forms.TextBox tbPXD;
+        private System.Windows.Forms.Label label1;
         private DataGridViewTextBoxColumn Identifier;
         private DataGridViewTextBoxColumn Title;
         private DataGridViewTextBoxColumn Repos;

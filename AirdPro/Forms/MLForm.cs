@@ -43,7 +43,6 @@ namespace AirdPro.Repository
         private static readonly HttpClient client = new HttpClient();
         public DataTable projectsTable;
         public DataTable searchProjectsTable = new DataTable();
-        private Dictionary<string, DownloadDetailForm> detailFormMap = new Dictionary<string, DownloadDetailForm>();
         public FtpClient ftpClient = null;
         public MLForm()
         {
@@ -57,7 +56,6 @@ namespace AirdPro.Repository
             catch (Exception ex)
             {
             }
-
         }
 
         private void load(bool fastLoad)
@@ -251,69 +249,6 @@ namespace AirdPro.Repository
         {
             projectListView.DataSource = table;
             lblResult.Text = table.Rows.Count + " Record(s)";
-        }
-
-        private void btnDetail_Click(object sender, EventArgs e)
-        {
-            var repos = Settings.Default.MLReposFolder;
-            if (repos.Equals(string.Empty) || !Directory.Exists(repos))
-            {
-                MessageBox.Show("Local Repo not Exists");
-                return;
-            }
-            
-            if (projectListView.SelectedCells.Count > 0)
-            {
-                var index = projectListView.SelectedCells[0].RowIndex;
-                var identifier = projectListView.Rows[index].Cells[0].Value.ToString();
-                //检查本地仓库是否存在对应的文件夹
-                string localDirectory = Path.Combine(Settings.Default.MLReposFolder, identifier);
-                if (!Directory.Exists(localDirectory))
-                {
-                    //本地建仓
-                    Directory.CreateDirectory(localDirectory);
-                }
-
-                btnDetail.Enabled = false;
-                List<string> remotes = new List<string>();
-                List<string> locals = new List<string>();
-                List<string> fileTypes = new List<string>();
-                List<long> sizes = new List<long>();
-                try
-                {
-                    string remoteUrl = UrlConst.mlFtpUrl + identifier;
-                    //用于获取FTP文件夹根目录
-                    FtpListItem[] items = HttpUtil.getFtpFilesFromMetaboLights(ftpClient, UrlConst.ebiMetabolights + identifier);
-                    foreach (FtpListItem file in items)
-                    {
-                        remotes.Add(Path.Combine(remoteUrl, file.Name));
-                        locals.Add(Path.Combine(localDirectory, file.Name));
-                        sizes.Add(file.Size);
-                        fileTypes.Add(file.Type.ToString());
-                    }
-
-                    DownloadDetailForm detailForm = new DownloadDetailForm(identifier,
-                        Path.Combine(UrlConst.mlDetailUrl, identifier),
-                        Path.Combine(UrlConst.mlFtpUrl, identifier) + "/",
-                        localDirectory, remotes, locals, sizes, fileTypes);
-                    detailForm.Show();
-                }
-                catch (Exception exception)
-                {
-                    MessageBox.Show("Get " + identifier + " Failed," + exception.Message);
-                }
-                finally
-                {
-                    lblLoading.Text = "Loaded";
-                    btnDetail.Enabled = true;
-                }
-
-                
-            }
-            else
-            {
-                MessageBox.Show("Select One Row First");
-            }
         }
 
         private void btnUrl_Click(object sender, EventArgs e)

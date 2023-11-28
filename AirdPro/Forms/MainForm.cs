@@ -31,9 +31,6 @@ namespace AirdPro.Forms
 {
     public partial class MainForm : Form
     {
-       
-
-        private ReposWizardForm reposWizardForm;
         private HashSet<string> airdFiles = new HashSet<string>();
         private FileInfo airdFile;
         private FileInfo indexFile;
@@ -353,16 +350,6 @@ namespace AirdPro.Forms
             {
                 spectrumChart.Series[0].Points.AddXY(Math.Round(mzArray[i], 3), Math.Round(intensityArray[i], 1));
             }
-        }
-
-        private void repositoryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (reposWizardForm == null || reposWizardForm.IsDisposed)
-            {
-                reposWizardForm = new ReposWizardForm();
-            }
-
-            reposWizardForm.Show();
         }
 
         private void updateToolStripMenuItem_Click(object sender, EventArgs e)
