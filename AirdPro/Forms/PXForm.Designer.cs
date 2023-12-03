@@ -49,8 +49,8 @@ namespace AirdPro.Repository
             this.tbRepos = new System.Windows.Forms.TextBox();
             this.btnChangeRepos = new System.Windows.Forms.Button();
             this.projectListView = new System.Windows.Forms.DataGridView();
-            this.Identifier = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Identifier = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Repos = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Species = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Instrument = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -155,7 +155,7 @@ namespace AirdPro.Repository
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.projectListView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.projectListView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.projectListView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.Identifier, this.Title, this.Repos, this.Species, this.Instrument, this.Publication, this.LabHead, this.Announce, this.Keywords });
+            this.projectListView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.Title, this.Identifier, this.Repos, this.Species, this.Instrument, this.Publication, this.LabHead, this.Announce, this.Keywords });
             this.projectListView.Location = new System.Drawing.Point(5, 65);
             this.projectListView.Name = "projectListView";
             this.projectListView.RowHeadersWidth = 62;
@@ -164,25 +164,25 @@ namespace AirdPro.Repository
             this.projectListView.TabIndex = 7;
             this.projectListView.VirtualMode = true;
             // 
-            // Identifier
-            // 
-            this.Identifier.DataPropertyName = "Identifier";
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 7F);
-            this.Identifier.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Identifier.FillWeight = 67.53138F;
-            this.Identifier.HeaderText = "Identifier";
-            this.Identifier.MinimumWidth = 8;
-            this.Identifier.Name = "Identifier";
-            // 
             // Title
             // 
             this.Title.DataPropertyName = "Title";
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 7F);
-            this.Title.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 7F);
+            this.Title.DefaultCellStyle = dataGridViewCellStyle2;
             this.Title.FillWeight = 228.4264F;
             this.Title.HeaderText = "Title";
             this.Title.MinimumWidth = 8;
             this.Title.Name = "Title";
+            // 
+            // Identifier
+            // 
+            this.Identifier.DataPropertyName = "Identifier";
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 7F);
+            this.Identifier.DefaultCellStyle = dataGridViewCellStyle3;
+            this.Identifier.FillWeight = 67.53138F;
+            this.Identifier.HeaderText = "Identifier";
+            this.Identifier.MinimumWidth = 8;
+            this.Identifier.Name = "Identifier";
             // 
             // Repos
             // 
@@ -397,15 +397,15 @@ namespace AirdPro.Repository
         private Label lblLoading;
         private System.Windows.Forms.TextBox tbPXD;
         private System.Windows.Forms.Label label1;
-        private DataGridViewTextBoxColumn Identifier;
-        private DataGridViewTextBoxColumn Title;
-        private DataGridViewTextBoxColumn Repos;
-        private DataGridViewTextBoxColumn Species;
-        private DataGridViewTextBoxColumn Instrument;
-        private DataGridViewTextBoxColumn Publication;
-        private DataGridViewTextBoxColumn LabHead;
-        private DataGridViewTextBoxColumn Announce;
-        private DataGridViewTextBoxColumn Keywords;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Identifier;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Title;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Repos;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Species;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Instrument;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Publication;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LabHead;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Announce;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Keywords;
     }
 }
 

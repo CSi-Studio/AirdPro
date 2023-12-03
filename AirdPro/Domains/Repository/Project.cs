@@ -16,7 +16,6 @@ namespace AirdPro.Repository.ProteomeXchange
     {
         //仓库识别号
         public string Identifier { set; get; }
-
         //仓库标题
         public string Title { set; get; }
         public string Repos { set; get; }
@@ -26,15 +25,5 @@ namespace AirdPro.Repository.ProteomeXchange
         public string LabHead { set; get; }
         public string Announce { set; get; }
         public string Keywords { set; get; }
-        
-        public List<DFile> FileList { set; get; }
-        
-        public bool downloadAll { set; get; }
-
-        public class DFile
-        {
-            public string fileUrl;
-            public string fileSize;
-        }
     }
 }

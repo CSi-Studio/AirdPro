@@ -156,9 +156,12 @@
     <Compile Include="Algorithms\Parser\AcqMethod\NewDataSet.cs" />
     <Compile Include="Algorithms\Parser\AcqMethod\AcqMethodParser.cs" />
     <Compile Include="Algorithms\Parser\AcqMethod\SectionInfo.cs" />
-    <Compile Include="Algorithms\Parser\DownloadXML\CvParam.cs" />
-    <Compile Include="Algorithms\Parser\DownloadXML\DatasetFile.cs" />
-    <Compile Include="Algorithms\Parser\DownloadXML\ProteomeXchangeDataset.cs" />
+    <Compile Include="Algorithms\Parser\DownloadXML\JPost\JPostParser.cs" />
+    <Compile Include="Algorithms\Parser\DownloadXML\JPost\ProteomeXchangeDataset.cs" />
+    <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\CvParam.cs" />
+    <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\DatasetFile.cs" />
+    <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\PRIDEParser.cs" />
+    <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\ProteomeXchangeDataset.cs" />
     <Compile Include="Asyncs\ConvertTaskManager.cs" />
     <Compile Include="Asyncs\LimitedConcurrencyLevelTaskScheduler.cs" />
     <Compile Include="Constants\Activator.cs" />
@@ -178,6 +181,12 @@
     <Compile Include="Constants\ResultCode.cs" />
     <Compile Include="Constants\SoftwareInfo.cs" />
     <Compile Include="Constants\UrlConst.cs" />
+    <Compile Include="Controls\EditableMessageBox\XMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\EditableMessageBox\XMessageBox.Designer.cs">
+      <DependentUpon>XMessageBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\MirrorBox\MirrorBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -445,6 +454,9 @@
     <Compile Include="Utils\DataUtil.cs" />
     <Compile Include="Utils\ResourceUtil.cs" />
     <Compile Include="Utils\StatUtil.cs" />
+    <EmbeddedResource Include="Controls\EditableMessageBox\XMessageBox.resx">
+      <DependentUpon>XMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\MirrorBox\MirrorBox.resx">
       <DependentUpon>MirrorBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -750,6 +762,7 @@
     <PackageReference Include="HZH_Controls" Version="1.0.14" />
     <PackageReference Include="IronSnappy" Version="1.3.1" />
     <PackageReference Include="log4net" Version="2.0.15" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2151.40" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OptimizedPriorityQueue" Version="5.1.0" />
     <PackageReference Include="protobuf-net" Version="3.2.26" />

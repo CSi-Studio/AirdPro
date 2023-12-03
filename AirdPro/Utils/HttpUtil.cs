@@ -12,6 +12,8 @@ using System.Net;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 using AirdPro.Constants;
 using AirdPro.Repository.ProteomeXchange;
 using FluentFTP;
@@ -137,6 +139,35 @@ namespace AirdPro.Utils
             }
 
             return size;
+        }
+
+        public static async Task<string> getResponse(string url)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    // 发送GET请求并获取响应
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    // 检查响应是否成功
+                    response.EnsureSuccessStatusCode();
+                    // 读取响应内容作为数据流
+                    using (var stream = await response.Content.ReadAsStreamAsync())
+                    {
+                        using (var reader = new System.IO.StreamReader(stream))
+                        {
+                            string responseData = await reader.ReadToEndAsync();
+                            return responseData;
+                        }
+                    }
+                }
+                catch (HttpRequestException ex)
+                {
+                    Console.WriteLine($"Http Request Error: {ex.Message}");
+                }
+            }
+
+            return null;
         }
     }
 }
