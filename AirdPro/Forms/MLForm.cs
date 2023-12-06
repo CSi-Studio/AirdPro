@@ -281,8 +281,7 @@ namespace AirdPro.Repository
                         }
                     }
                 }
-
-
+                
                 setDataSource(searchProjectsTable);
             }
         }
@@ -345,6 +344,11 @@ namespace AirdPro.Repository
             {
                 ftpClient.Disconnect();
             }
+        }
+
+        private void btnTasks_Click(object sender, EventArgs e)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

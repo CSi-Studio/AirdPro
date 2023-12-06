@@ -336,6 +336,7 @@ namespace AirdPro.Repository
             this.btnTasks.TabIndex = 17;
             this.btnTasks.Text = "Download Links";
             this.btnTasks.UseVisualStyleBackColor = true;
+            this.btnTasks.Click += new System.EventHandler(this.btnTasks_Click);
             // 
             // MLForm
             // 
