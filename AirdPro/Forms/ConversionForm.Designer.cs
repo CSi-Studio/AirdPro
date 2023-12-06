@@ -41,6 +41,8 @@ namespace AirdPro.Forms
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConversionForm));
             this.container = new System.Windows.Forms.SplitContainer();
+            this.label9 = new System.Windows.Forms.Label();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.btnPX = new System.Windows.Forms.Button();
             this.btnMetaboLights = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
@@ -98,6 +100,8 @@ namespace AirdPro.Forms
             // 
             // container.Panel1
             // 
+            this.container.Panel1.Controls.Add(this.label9);
+            this.container.Panel1.Controls.Add(this.btnDelete);
             this.container.Panel1.Controls.Add(this.btnPX);
             this.container.Panel1.Controls.Add(this.btnMetaboLights);
             this.container.Panel1.Controls.Add(this.label4);
@@ -126,6 +130,22 @@ namespace AirdPro.Forms
             this.container.Panel2.Controls.Add(this.tbJobInfo);
             this.container.Panel2.Controls.Add(this.tbConsole);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
+            // 
+            // label9
+            // 
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label9.Name = "label9";
+            // 
+            // btnDelete
+            // 
+            resources.ApplyResources(this.btnDelete, "btnDelete");
+            this.btnDelete.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnDelete.FlatAppearance.BorderSize = 0;
+            this.btnDelete.Name = "btnDelete";
+            this.tooltip.SetToolTip(this.btnDelete, resources.GetString("btnDelete.ToolTip"));
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnPX
             // 
@@ -425,6 +445,9 @@ namespace AirdPro.Forms
             this.contentMenu.ResumeLayout(false);
             this.ResumeLayout(false);
         }
+
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Label label9;
 
         private System.Windows.Forms.Button btnMetaboLights;
 

@@ -395,5 +395,17 @@ namespace AirdPro.Forms
 
             Program.pxForm.Show();
         }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in lvFileList.SelectedItems)
+            {
+                JobInfo jobInfo = (JobInfo)item.Tag;
+                if (!jobInfo.status.Equals(ProcessingStatus.RUNNING))
+                {
+                    removeFile(item);
+                }
+            }
+        }
     }
 }
