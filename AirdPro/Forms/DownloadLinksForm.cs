@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Windows.Forms;
 using AirdPro.Algorithms.Parser.DownloadXML;
-using AirdPro.Controls.EditableMessageBox;
+using AirdPro.Constants;
 using AirdPro.Utils;
-using Microsoft.Web.WebView2.Core;
-using Microsoft.Web.WebView2.WinForms;
+using FluentFTP;
 
 namespace AirdPro.Forms;
 
@@ -15,8 +15,19 @@ public partial class DownloadLinksForm : Form
     public string from;
     public string identifier;
     public string PXDUrl = "https://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=";
-    public WebBrowser pxdPage = new WebBrowser();
-    public WebBrowser massIVEPage = new WebBrowser();
+    
+    public WebBrowser pxdPage;
+    public WebBrowser massIVEPage;
+    
+    //px datasets
+    public static string MassIVE = "massive";
+    public static string JPost = "jpost";
+    public static string PRIDE = "pride";
+    public static string IProX = "iprox";
+    public static string[] pxList = new[] { MassIVE, JPost, PRIDE, IProX };
+    
+    //metabolights datasets
+    public static string Metabolights = "metabolights";
     
     public string getUniqueTag()
     {
@@ -29,15 +40,25 @@ public partial class DownloadLinksForm : Form
         this.from = from;
         this.identifier = identifier;
         //忽略界面的脚本操作
-        pxdPage.ScriptErrorsSuppressed = true;
-        massIVEPage.ScriptErrorsSuppressed = true;
-        pxdPage.DocumentCompleted += readPXDPage_Completed;
-        massIVEPage.DocumentCompleted += readMassIVEPage_Completed;
-    }
+        if (from.ToLower().Equals(MassIVE))
+        {
+            massIVEPage = new WebBrowser();
+            massIVEPage.ScriptErrorsSuppressed = true;
+            massIVEPage.DocumentCompleted += readMassIVEPage_Completed;
+        }
+        
+        if (pxList.Contains(from.ToLower()))
+        {
+            pxdPage = new WebBrowser();
+            pxdPage.ScriptErrorsSuppressed = true;
+            pxdPage.DocumentCompleted += readPXDPage_Completed;
+            readPXDPage();
+        }
 
-    private void DownloadLinksForm_Load(object sender, EventArgs e)
-    {
-        readPXDPage();
+        if (from.ToLower().Equals(Metabolights))
+        {
+            readMLFileList();
+        }
     }
     
     //所有的链接均从PXD页面开始路由
@@ -45,6 +66,53 @@ public partial class DownloadLinksForm : Form
     {
         Text = getUniqueTag() + " loading";
         pxdPage.Navigate(PXDUrl + identifier);
+    }
+
+    public void readMLFileList()
+    {
+        loading(true);
+        FtpClient ftpClient = null;
+        try
+        { 
+            ftpClient = new FtpClient(UrlConst.ebi);
+            ftpClient.Connect();
+           
+            string remoteUrl = UrlConst.mlFtpUrl + identifier;
+            //用于获取FTP文件夹根目录
+            FtpListItem[] items = HttpUtil.getFtpFilesFromMetaboLights(ftpClient, UrlConst.ebiMetabolights + identifier);
+            List<string> fileList = new List<string>();
+            //解码第一层文件夹,下载其中所有的文件
+            foreach (FtpListItem file in items)
+            {
+                if (file.Type.ToString().Equals("File"))
+                {
+                    fileList.Add(remoteUrl+"/"+file.Name);
+                }
+                else if (file.Type.ToString().Equals("Directory"))
+                {
+                }
+            }
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show("Get " + identifier + " Failed," + exception.Message);
+        }
+        finally
+        {
+            loading(false);
+            if (ftpClient != null)
+            {
+                ftpClient.Disconnect();
+            }
+        }
+    }
+
+    public List<FtpListItem> lists(FtpClient client, string url)
+    {
+        List<FtpListItem> items = new List<FtpListItem>();
+        
+        
+        return items;
     }
     
     public async void readPXDPage_Completed(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -84,6 +152,7 @@ public partial class DownloadLinksForm : Form
                         Console.WriteLine($"Http Request Error: {ex.Message}");
                     }
                 }
+                lblTips.Text = "Use 迅雷,IDM,NDM to download the following files";
                 break;
             case "jpost":
                 HtmlElement jpostElement = elements[6].Children[0].Children[1].Children[0].Children[0]; //直接定位到<a>标签
@@ -91,11 +160,13 @@ public partial class DownloadLinksForm : Form
                 string[] array = jpostHref.Split('/');
                 TabPage tab = buildOutput("1-1", jpostHref+array[array.Length-2]+"_all.zip");
                 tabControl.TabPages.Add(tab);
+                lblTips.Text = "Use FileZilla or other FTP tools to download the following files";
                 break;
             case "massive":
                 HtmlElement massIVEElement = elements[6].Children[0].Children[0].Children[0].Children[0]; //直接定位到<a>标签
                 string massIVEHref = massIVEElement.GetAttribute("href");
                 massIVEPage.Navigate(massIVEHref);
+                lblTips.Text = "Use FileZilla or other FTP tools to download the following files";
                 break;
                 
         }

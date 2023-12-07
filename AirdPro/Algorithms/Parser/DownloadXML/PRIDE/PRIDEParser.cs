@@ -30,13 +30,23 @@ public class PRIDEParser
                     continue;
                 }
 
-                for (int j = 0; j < file.cvParams.Count; j++)
+                if (file.cvParams.Count == 1)
                 {
-                    if (file.cvParams[j].accession.Equals("MS:1002846"))
+                    downloadList.Add(file.cvParams[0].value);
+                }
+                else
+                {
+                    for (int j = 0; j < file.cvParams.Count; j++)
                     {
-                        downloadList.Add(file.cvParams[j].value);
+                        if (file.cvParams[j].accession.Equals("MS:1002846") 
+                            || file.cvParams[j].accession.Equals("PRIDE:0000403")
+                            || file.cvParams[j].accession.Equals("PRIDE:0000404"))
+                        {
+                            downloadList.Add(file.cvParams[j].value);
+                        }
                     }
                 }
+               
             }
         }
         catch (Exception ee)

@@ -26,6 +26,7 @@ using System.Net.Http;
 using System.Text;
 using System.Windows.Forms;
 using AirdPro.Constants;
+using AirdPro.Forms;
 using AirdPro.Properties;
 using AirdPro.Repository.MetaboLights;
 using AirdPro.Repository.ProteomeXchange;
@@ -43,19 +44,10 @@ namespace AirdPro.Repository
         private static readonly HttpClient client = new HttpClient();
         public DataTable projectsTable;
         public DataTable searchProjectsTable = new DataTable();
-        public FtpClient ftpClient = null;
         public MLForm()
         {
             InitializeComponent();
             load(false);
-            try
-            {
-                ftpClient = new FtpClient(UrlConst.ebi);
-                ftpClient.Connect();
-            }
-            catch (Exception ex)
-            {
-            }
         }
 
         private void load(bool fastLoad)
@@ -338,17 +330,19 @@ namespace AirdPro.Repository
             }
         }
 
-        private void MLForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (ftpClient != null)
-            {
-                ftpClient.Disconnect();
-            }
-        }
-
         private void btnTasks_Click(object sender, EventArgs e)
         {
-            throw new System.NotImplementedException();
+            if (projectListView.SelectedCells.Count > 0)
+            {
+                var index = projectListView.SelectedCells[0].RowIndex;
+                var identifier = projectListView.Rows[index].Cells[0].Value.ToString();
+                var repo = projectListView.Rows[index].Cells[2].Value.ToString();
+                new DownloadLinksForm(repo, identifier).ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Select One Row First");
+            }
         }
     }
 }

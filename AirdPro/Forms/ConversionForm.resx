@@ -366,10 +366,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnPX.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1146, 8</value>
+    <value>890, 8</value>
   </data>
   <data name="btnPX.Size" type="System.Drawing.Size, System.Drawing">
-    <value>87, 30</value>
+    <value>94, 30</value>
   </data>
   <data name="btnPX.TabIndex" type="System.Int32, mscorlib">
     <value>38</value>
@@ -552,7 +552,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnMetaboLights.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1010, 8</value>
+    <value>858, 43</value>
   </data>
   <data name="btnMetaboLights.Size" type="System.Drawing.Size, System.Drawing">
     <value>130, 30</value>
@@ -591,7 +591,7 @@
     <value>NoControl</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1335, 61</value>
+    <value>994, 61</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>56, 16</value>
@@ -674,7 +674,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnMainView.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1341, 8</value>
+    <value>1000, 8</value>
   </data>
   <data name="btnMainView.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
@@ -713,7 +713,7 @@
     <value>NoControl</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1519, 59</value>
+    <value>1178, 59</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
     <value>30, 16</value>
@@ -833,7 +833,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnHelp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1509, 8</value>
+    <value>1168, 8</value>
   </data>
   <data name="btnHelp.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
@@ -872,7 +872,7 @@
     <value>NoControl</value>
   </data>
   <data name="label112.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1462, 59</value>
+    <value>1121, 59</value>
   </data>
   <data name="label112.Size" type="System.Drawing.Size, System.Drawing">
     <value>34, 16</value>
@@ -973,7 +973,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnRedisSetting.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1453, 8</value>
+    <value>1112, 8</value>
   </data>
   <data name="btnRedisSetting.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
@@ -1012,7 +1012,7 @@
     <value>NoControl</value>
   </data>
   <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1401, 58</value>
+    <value>1060, 58</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>42, 16</value>
@@ -1146,7 +1146,7 @@
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="lvFileList.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="lvFileListlvFileList.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="headerJobId.Text" xml:space="preserve">
@@ -1242,28 +1242,28 @@
   <data name="&gt;&gt;contentMenu.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="lvFileList.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="lvFileListlvFileList.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 8pt</value>
   </data>
-  <data name="lvFileList.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="lvFileListlvFileList.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 79</value>
   </data>
-  <data name="lvFileList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1559, 347</value>
+  <data name="lvFileListlvFileList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1221, 397</value>
   </data>
-  <data name="lvFileList.TabIndex" type="System.Int32, mscorlib">
+  <data name="lvFileListlvFileList.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;lvFileList.Name" xml:space="preserve">
-    <value>lvFileList</value>
+  <data name="&gt;&gt;lvFileListlvFileList.Name" xml:space="preserve">
+    <value>lvFileListlvFileList</value>
   </data>
-  <data name="&gt;&gt;lvFileList.Type" xml:space="preserve">
+  <data name="&gt;&gt;lvFileListlvFileList.Type" xml:space="preserve">
     <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lvFileList.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lvFileListlvFileList.Parent" xml:space="preserve">
     <value>container.Panel1</value>
   </data>
-  <data name="&gt;&gt;lvFileList.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lvFileListlvFileList.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
   <data name="btnImport.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -1765,7 +1765,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnSetting.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1397, 8</value>
+    <value>1056, 8</value>
   </data>
   <data name="btnSetting.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
@@ -1863,6 +1863,12 @@
   <data name="&gt;&gt;container.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="splitContainer1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="splitContainer1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 3</value>
+  </data>
   <data name="tbJobInfo.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -1870,7 +1876,7 @@
     <value>微软雅黑, 9pt</value>
   </data>
   <data name="tbJobInfo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 3</value>
+    <value>-4, 3</value>
   </data>
   <data name="tbJobInfo.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1879,7 +1885,7 @@
     <value>Vertical</value>
   </data>
   <data name="tbJobInfo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>672, 278</value>
+    <value>556, 306</value>
   </data>
   <data name="tbJobInfo.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -1891,16 +1897,28 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tbJobInfo.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
+    <value>splitContainer1.Panel1</value>
   </data>
   <data name="&gt;&gt;tbJobInfo.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Panel1.Name" xml:space="preserve">
+    <value>splitContainer1.Panel1</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Panel1.Parent" xml:space="preserve">
+    <value>splitContainer1</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="tbConsole.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="tbConsole.Location" type="System.Drawing.Point, System.Drawing">
-    <value>678, 3</value>
+    <value>3, 0</value>
   </data>
   <data name="tbConsole.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1909,7 +1927,7 @@
     <value>Vertical</value>
   </data>
   <data name="tbConsole.Size" type="System.Drawing.Size, System.Drawing">
-    <value>884, 278</value>
+    <value>652, 309</value>
   </data>
   <data name="tbConsole.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1921,10 +1939,43 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tbConsole.Parent" xml:space="preserve">
-    <value>container.Panel2</value>
+    <value>splitContainer1.Panel2</value>
   </data>
   <data name="&gt;&gt;tbConsole.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Panel2.Name" xml:space="preserve">
+    <value>splitContainer1.Panel2</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Panel2.Parent" xml:space="preserve">
+    <value>splitContainer1</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Panel2.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="splitContainer1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1217, 312</value>
+  </data>
+  <data name="splitContainer1.SplitterDistance" type="System.Int32, mscorlib">
+    <value>555</value>
+  </data>
+  <data name="splitContainer1.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Name" xml:space="preserve">
+    <value>splitContainer1</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.Parent" xml:space="preserve">
+    <value>container.Panel2</value>
+  </data>
+  <data name="&gt;&gt;splitContainer1.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="container.Panel2.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 9pt</value>
@@ -1942,10 +1993,10 @@
     <value>1</value>
   </data>
   <data name="container.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1568, 718</value>
+    <value>1227, 802</value>
   </data>
   <data name="container.SplitterDistance" type="System.Int32, mscorlib">
-    <value>430</value>
+    <value>480</value>
   </data>
   <data name="container.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -1981,7 +2032,7 @@
     <value>66</value>
   </metadata>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1568, 718</value>
+    <value>1227, 802</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

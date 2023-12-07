@@ -33,10 +33,7 @@ partial class DownloadLinksForm
     {
         this.tabControl = new System.Windows.Forms.TabControl();
         this.btnReload = new System.Windows.Forms.Button();
-        this.cbMzXML = new System.Windows.Forms.CheckBox();
-        this.lblFilter = new System.Windows.Forms.Label();
-        this.cbMzML = new System.Windows.Forms.CheckBox();
-        this.cbMzData = new System.Windows.Forms.CheckBox();
+        this.lblTips = new System.Windows.Forms.Label();
         this.SuspendLayout();
         // 
         // tabControl
@@ -45,7 +42,7 @@ partial class DownloadLinksForm
         this.tabControl.Location = new System.Drawing.Point(3, 35);
         this.tabControl.Name = "tabControl";
         this.tabControl.SelectedIndex = 0;
-        this.tabControl.Size = new System.Drawing.Size(794, 413);
+        this.tabControl.Size = new System.Drawing.Size(795, 413);
         this.tabControl.TabIndex = 0;
         // 
         // btnReload
@@ -59,66 +56,31 @@ partial class DownloadLinksForm
         this.btnReload.UseVisualStyleBackColor = true;
         this.btnReload.Click += new System.EventHandler(this.btnReload_Click);
         // 
-        // cbMzXML
+        // lblTips
         // 
-        this.cbMzXML.Location = new System.Drawing.Point(84, 6);
-        this.cbMzXML.Name = "cbMzXML";
-        this.cbMzXML.Size = new System.Drawing.Size(66, 24);
-        this.cbMzXML.TabIndex = 2;
-        this.cbMzXML.Text = "mzXML";
-        this.cbMzXML.UseVisualStyleBackColor = true;
-        // 
-        // lblFilter
-        // 
-        this.lblFilter.Font = new System.Drawing.Font("宋体", 9F);
-        this.lblFilter.Location = new System.Drawing.Point(3, 6);
-        this.lblFilter.Name = "lblFilter";
-        this.lblFilter.Size = new System.Drawing.Size(75, 25);
-        this.lblFilter.TabIndex = 3;
-        this.lblFilter.Text = "Filter:";
-        this.lblFilter.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-        // 
-        // cbMzML
-        // 
-        this.cbMzML.Location = new System.Drawing.Point(144, 6);
-        this.cbMzML.Name = "cbMzML";
-        this.cbMzML.Size = new System.Drawing.Size(66, 24);
-        this.cbMzML.TabIndex = 4;
-        this.cbMzML.Text = "mzML";
-        this.cbMzML.UseVisualStyleBackColor = true;
-        // 
-        // cbMzData
-        // 
-        this.cbMzData.Location = new System.Drawing.Point(199, 6);
-        this.cbMzData.Name = "cbMzData";
-        this.cbMzData.Size = new System.Drawing.Size(66, 24);
-        this.cbMzData.TabIndex = 5;
-        this.cbMzData.Text = "mzData";
-        this.cbMzData.UseVisualStyleBackColor = true;
+        this.lblTips.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+        this.lblTips.Location = new System.Drawing.Point(3, 6);
+        this.lblTips.Name = "lblTips";
+        this.lblTips.Size = new System.Drawing.Size(695, 23);
+        this.lblTips.TabIndex = 2;
+        this.lblTips.Text = "Tips";
+        this.lblTips.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
         // 
         // DownloadLinksForm
         // 
         this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         this.ClientSize = new System.Drawing.Size(800, 450);
-        this.Controls.Add(this.cbMzData);
-        this.Controls.Add(this.cbMzML);
-        this.Controls.Add(this.lblFilter);
-        this.Controls.Add(this.cbMzXML);
+        this.Controls.Add(this.lblTips);
         this.Controls.Add(this.btnReload);
         this.Controls.Add(this.tabControl);
         this.Name = "DownloadLinksForm";
         this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
         this.Text = "DownloadLinksForm";
-        this.Load += new System.EventHandler(this.DownloadLinksForm_Load);
         this.ResumeLayout(false);
     }
 
-    private System.Windows.Forms.CheckBox cbMzXML;
-    private System.Windows.Forms.CheckBox cbMzData;
-
-    private System.Windows.Forms.CheckBox cbMzML;
-    private System.Windows.Forms.Label lblFilter;
+    private System.Windows.Forms.Label lblTips;
 
     private System.Windows.Forms.Button btnReload;
 

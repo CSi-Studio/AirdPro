@@ -55,7 +55,7 @@ namespace AirdPro.Forms
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.lvFileList = new System.Windows.Forms.ListView();
+            this.lvFileListlvFileList = new System.Windows.Forms.ListView();
             this.headerJobId = new System.Windows.Forms.ColumnHeader();
             this.headerFilePath = new System.Windows.Forms.ColumnHeader();
             this.headerType = new System.Windows.Forms.ColumnHeader();
@@ -80,6 +80,7 @@ namespace AirdPro.Forms
             this.btnSetting = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tbJobInfo = new System.Windows.Forms.TextBox();
             this.tbConsole = new System.Windows.Forms.TextBox();
             this.logTimer = new System.Windows.Forms.Timer(this.components);
@@ -91,6 +92,10 @@ namespace AirdPro.Forms
             this.container.Panel2.SuspendLayout();
             this.container.SuspendLayout();
             this.contentMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // container
@@ -114,7 +119,7 @@ namespace AirdPro.Forms
             this.container.Panel1.Controls.Add(this.label8);
             this.container.Panel1.Controls.Add(this.label7);
             this.container.Panel1.Controls.Add(this.label6);
-            this.container.Panel1.Controls.Add(this.lvFileList);
+            this.container.Panel1.Controls.Add(this.lvFileListlvFileList);
             this.container.Panel1.Controls.Add(this.btnImport);
             this.container.Panel1.Controls.Add(this.cbAutoExe);
             this.container.Panel1.Controls.Add(this.btnConvert);
@@ -127,8 +132,7 @@ namespace AirdPro.Forms
             // 
             // container.Panel2
             // 
-            this.container.Panel2.Controls.Add(this.tbJobInfo);
-            this.container.Panel2.Controls.Add(this.tbConsole);
+            this.container.Panel2.Controls.Add(this.splitContainer1);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
             // 
             // label9
@@ -241,24 +245,25 @@ namespace AirdPro.Forms
             this.label6.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.label6.Name = "label6";
             // 
-            // lvFileList
+            // lvFileListlvFileList
             // 
-            resources.ApplyResources(this.lvFileList, "lvFileList");
-            this.lvFileList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.headerJobId, this.headerFilePath, this.headerType, this.headerConfigName, this.headerScene, this.headerCentroid, this.headerProgress, this.headerPrecision, this.headerCompressor, this.headerIgnoreZero, this.headerSuffix, this.headerOutput });
-            this.lvFileList.ContextMenuStrip = this.contentMenu;
-            this.lvFileList.FullRowSelect = true;
-            this.lvFileList.GridLines = true;
-            this.lvFileList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.lvFileList.HideSelection = false;
-            this.lvFileList.Name = "lvFileList";
-            this.lvFileList.ShowGroups = false;
-            this.lvFileList.ShowItemToolTips = true;
-            this.lvFileList.UseCompatibleStateImageBehavior = false;
-            this.lvFileList.View = System.Windows.Forms.View.Details;
-            this.lvFileList.SelectedIndexChanged += new System.EventHandler(this.lvFileList_SelectedIndexChanged);
-            this.lvFileList.DoubleClick += new System.EventHandler(this.lvFileList_DoubleClick);
-            this.lvFileList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvFileList_KeyDown);
+            resources.ApplyResources(this.lvFileListlvFileList, "lvFileListlvFileList");
+            this.lvFileListlvFileList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lvFileListlvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.headerJobId, this.headerFilePath, this.headerType, this.headerConfigName, this.headerScene, this.headerCentroid, this.headerProgress, this.headerPrecision, this.headerCompressor, this.headerIgnoreZero, this.headerSuffix, this.headerOutput });
+            this.lvFileListlvFileList.ContextMenuStrip = this.contentMenu;
+            this.lvFileListlvFileList.FullRowSelect = true;
+            this.lvFileListlvFileList.GridLines = true;
+            this.lvFileListlvFileList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.lvFileListlvFileList.HideSelection = false;
+            this.lvFileListlvFileList.Name = "lvFileListlvFileList";
+            this.lvFileListlvFileList.ShowGroups = false;
+            this.lvFileListlvFileList.ShowItemToolTips = true;
+            this.lvFileListlvFileList.UseCompatibleStateImageBehavior = false;
+            this.lvFileListlvFileList.View = System.Windows.Forms.View.Details;
+            this.lvFileListlvFileList.ColumnReordered += new System.Windows.Forms.ColumnReorderedEventHandler(this.columnReordered);
+            this.lvFileListlvFileList.SelectedIndexChanged += new System.EventHandler(this.lvFileList_SelectedIndexChanged);
+            this.lvFileListlvFileList.DoubleClick += new System.EventHandler(this.lvFileList_DoubleClick);
+            this.lvFileListlvFileList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvFileList_KeyDown);
             // 
             // headerJobId
             // 
@@ -398,6 +403,19 @@ namespace AirdPro.Forms
             this.label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.label1.Name = "label1";
             // 
+            // splitContainer1
+            // 
+            resources.ApplyResources(this.splitContainer1, "splitContainer1");
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.tbJobInfo);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.tbConsole);
+            // 
             // tbJobInfo
             // 
             resources.ApplyResources(this.tbJobInfo, "tbJobInfo");
@@ -439,12 +457,19 @@ namespace AirdPro.Forms
             this.container.Panel1.ResumeLayout(false);
             this.container.Panel1.PerformLayout();
             this.container.Panel2.ResumeLayout(false);
-            this.container.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.container)).EndInit();
             this.container.ResumeLayout(false);
             this.contentMenu.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
         }
+
+        private System.Windows.Forms.SplitContainer splitContainer1;
 
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Label label9;
@@ -468,7 +493,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ColumnHeader headerProgress;
         private System.Windows.Forms.Timer logTimer;
         private System.Windows.Forms.ColumnHeader headerType;
-        public System.Windows.Forms.ListView lvFileList;
+        public System.Windows.Forms.ListView lvFileListlvFileList;
         private System.Windows.Forms.ColumnHeader headerOutput;
         private System.Windows.Forms.OpenFileDialog ofd;
         private System.Windows.Forms.ColumnHeader headerCompressor;
