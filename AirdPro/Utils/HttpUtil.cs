@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows;
 using AirdPro.Constants;
 using AirdPro.Repository.ProteomeXchange;
 using FluentFTP;
@@ -43,31 +44,46 @@ namespace AirdPro.Utils
             fileRow.fileSizeLabel.Report(AirdProFileUtil.getSizeLabel(size));
         }
 
-        public static FtpListItem[] getFtpFilesFromMetaboLights(FtpClient client, string remoteDir)
+        public static List<FtpListItem> listAllFtpFiles(FtpClient client, string remoteDir, int deep)
         {
-            //用于获取FTP文件夹根目录
-            FtpListItem[] items = null;
+            List<FtpListItem> files = new List<FtpListItem> ();
             try
             {
-                items = client.GetListing(remoteDir);
+                FtpListItem[] items = client.GetListing(remoteDir);
+                for (int i = 0; i < items.Length; i++)
+                {
+                    FtpListItem item = items[i];
+                    if (item.Type.ToString().Equals("Directory"))
+                    {
+                        if (deep > 0)
+                        {
+                            //files.AddRange(listAllFtpFiles(client, item.FullName, deep - 1));
+                        }
+                        
+                    }
+                    else if (item.Type.ToString().Equals("File"))
+                    {
+                        files.Add(item);
+                    }
+                }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                MessageBox.Show("FTP Connect Failed:" + e.Message);
             }
-            return items;
+            return files;
         }
 
-        public static List<string> fetchFtpFilePaths(string remoteDirectory)
+        public static List<string> fetchFtpFilePaths(string baseUrl, string identifier)
         {
             try
             {
-                FtpWebRequest ftpRequest = (FtpWebRequest)FtpWebRequest.Create(new Uri(remoteDirectory));
+                FtpWebRequest ftpRequest = (FtpWebRequest)FtpWebRequest.Create(new Uri(baseUrl+identifier));
                 ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
                 WebResponse ftpResponse = ftpRequest.GetResponse();
                 StreamReader reader = new StreamReader(ftpResponse.GetResponseStream());
 
-                List<string> files = new List<string>();
+                List<string> paths = new List<string>();
                 while (true)
                 {
                     string fileName = reader.ReadLine();
@@ -76,14 +92,14 @@ namespace AirdPro.Utils
                         break;
                     }
 
-                    files.Add(fileName);
+                    paths.Add(baseUrl + fileName);
                 }
 
-                return files;
+                return paths;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("获取" + remoteDirectory + "下文件列表失败:" + ex.Message);
+                Console.WriteLine("获取" + identifier + "下文件列表失败:" + ex.Message);
                 return null;
             }
         }

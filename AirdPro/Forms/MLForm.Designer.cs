@@ -72,9 +72,10 @@ namespace AirdPro.Repository
             // btnLoad
             // 
             this.btnLoad.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnLoad.Location = new System.Drawing.Point(970, 9);
+            this.btnLoad.Location = new System.Drawing.Point(1455, 14);
+            this.btnLoad.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(149, 22);
+            this.btnLoad.Size = new System.Drawing.Size(224, 33);
             this.btnLoad.TabIndex = 0;
             this.btnLoad.Text = "Load From Web";
             this.btnLoad.UseVisualStyleBackColor = true;
@@ -84,26 +85,29 @@ namespace AirdPro.Repository
             // 
             this.lblConfigFolder.AutoSize = true;
             this.lblConfigFolder.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.lblConfigFolder.Location = new System.Drawing.Point(13, 12);
+            this.lblConfigFolder.Location = new System.Drawing.Point(20, 18);
+            this.lblConfigFolder.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblConfigFolder.Name = "lblConfigFolder";
-            this.lblConfigFolder.Size = new System.Drawing.Size(63, 16);
+            this.lblConfigFolder.Size = new System.Drawing.Size(92, 21);
             this.lblConfigFolder.TabIndex = 1;
             this.lblConfigFolder.Text = "Config File";
             // 
             // tbConfigFolder
             // 
             this.tbConfigFolder.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.tbConfigFolder.Location = new System.Drawing.Point(82, 8);
+            this.tbConfigFolder.Location = new System.Drawing.Point(123, 12);
+            this.tbConfigFolder.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tbConfigFolder.Name = "tbConfigFolder";
-            this.tbConfigFolder.Size = new System.Drawing.Size(274, 22);
+            this.tbConfigFolder.Size = new System.Drawing.Size(409, 29);
             this.tbConfigFolder.TabIndex = 2;
             // 
             // btnChangeConfigFolder
             // 
             this.btnChangeConfigFolder.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnChangeConfigFolder.Location = new System.Drawing.Point(362, 8);
+            this.btnChangeConfigFolder.Location = new System.Drawing.Point(543, 12);
+            this.btnChangeConfigFolder.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnChangeConfigFolder.Name = "btnChangeConfigFolder";
-            this.btnChangeConfigFolder.Size = new System.Drawing.Size(75, 23);
+            this.btnChangeConfigFolder.Size = new System.Drawing.Size(112, 34);
             this.btnChangeConfigFolder.TabIndex = 3;
             this.btnChangeConfigFolder.Text = "Modify";
             this.btnChangeConfigFolder.UseVisualStyleBackColor = true;
@@ -113,26 +117,29 @@ namespace AirdPro.Repository
             // 
             this.lblRepos.AutoSize = true;
             this.lblRepos.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.lblRepos.Location = new System.Drawing.Point(465, 11);
+            this.lblRepos.Location = new System.Drawing.Point(698, 16);
+            this.lblRepos.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblRepos.Name = "lblRepos";
-            this.lblRepos.Size = new System.Drawing.Size(65, 16);
+            this.lblRepos.Size = new System.Drawing.Size(93, 21);
             this.lblRepos.TabIndex = 4;
             this.lblRepos.Text = "Local Repo";
             // 
             // tbRepos
             // 
             this.tbRepos.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.tbRepos.Location = new System.Drawing.Point(536, 7);
+            this.tbRepos.Location = new System.Drawing.Point(804, 10);
+            this.tbRepos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tbRepos.Name = "tbRepos";
-            this.tbRepos.Size = new System.Drawing.Size(350, 22);
+            this.tbRepos.Size = new System.Drawing.Size(523, 29);
             this.tbRepos.TabIndex = 5;
             // 
             // btnChangeRepos
             // 
             this.btnChangeRepos.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnChangeRepos.Location = new System.Drawing.Point(892, 7);
+            this.btnChangeRepos.Location = new System.Drawing.Point(1338, 10);
+            this.btnChangeRepos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnChangeRepos.Name = "btnChangeRepos";
-            this.btnChangeRepos.Size = new System.Drawing.Size(75, 24);
+            this.btnChangeRepos.Size = new System.Drawing.Size(112, 36);
             this.btnChangeRepos.TabIndex = 6;
             this.btnChangeRepos.Text = "Modify";
             this.btnChangeRepos.UseVisualStyleBackColor = true;
@@ -144,6 +151,9 @@ namespace AirdPro.Repository
             this.projectListView.AllowUserToDeleteRows = false;
             this.projectListView.AllowUserToOrderColumns = true;
             this.projectListView.AllowUserToResizeRows = false;
+            this.projectListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.projectListView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
@@ -154,12 +164,22 @@ namespace AirdPro.Repository
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.projectListView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.projectListView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.projectListView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.Identifier, this.Title, this.Repos, this.Species, this.Instrument, this.Publication, this.LabHead, this.Announce, this.Keywords });
-            this.projectListView.Location = new System.Drawing.Point(13, 66);
+            this.projectListView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Identifier,
+            this.Title,
+            this.Repos,
+            this.Species,
+            this.Instrument,
+            this.Publication,
+            this.LabHead,
+            this.Announce,
+            this.Keywords});
+            this.projectListView.Location = new System.Drawing.Point(20, 99);
+            this.projectListView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.projectListView.Name = "projectListView";
             this.projectListView.RowHeadersWidth = 62;
             this.projectListView.RowTemplate.Height = 23;
-            this.projectListView.Size = new System.Drawing.Size(1243, 514);
+            this.projectListView.Size = new System.Drawing.Size(1864, 771);
             this.projectListView.TabIndex = 7;
             this.projectListView.VirtualMode = true;
             // 
@@ -256,9 +276,10 @@ namespace AirdPro.Repository
             // tbSearch
             // 
             this.tbSearch.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.tbSearch.Location = new System.Drawing.Point(12, 36);
+            this.tbSearch.Location = new System.Drawing.Point(18, 54);
+            this.tbSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tbSearch.Name = "tbSearch";
-            this.tbSearch.Size = new System.Drawing.Size(502, 22);
+            this.tbSearch.Size = new System.Drawing.Size(751, 29);
             this.tbSearch.TabIndex = 8;
             this.tbSearch.Text = "MTBLS";
             this.tbSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyUp);
@@ -266,9 +287,10 @@ namespace AirdPro.Repository
             // btnSearch
             // 
             this.btnSearch.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnSearch.Location = new System.Drawing.Point(536, 34);
+            this.btnSearch.Location = new System.Drawing.Point(804, 51);
+            this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(107, 26);
+            this.btnSearch.Size = new System.Drawing.Size(160, 39);
             this.btnSearch.TabIndex = 9;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -277,9 +299,10 @@ namespace AirdPro.Repository
             // btnReset
             // 
             this.btnReset.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnReset.Location = new System.Drawing.Point(649, 36);
+            this.btnReset.Location = new System.Drawing.Point(974, 54);
+            this.btnReset.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(77, 24);
+            this.btnReset.Size = new System.Drawing.Size(116, 36);
             this.btnReset.TabIndex = 10;
             this.btnReset.Text = "Reset";
             this.btnReset.UseVisualStyleBackColor = true;
@@ -289,18 +312,20 @@ namespace AirdPro.Repository
             // 
             this.lblResult.AutoSize = true;
             this.lblResult.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.lblResult.Location = new System.Drawing.Point(1091, 42);
+            this.lblResult.Location = new System.Drawing.Point(1636, 63);
+            this.lblResult.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblResult.Name = "lblResult";
-            this.lblResult.Size = new System.Drawing.Size(49, 16);
+            this.lblResult.Size = new System.Drawing.Size(70, 21);
             this.lblResult.TabIndex = 11;
             this.lblResult.Text = "Records";
             // 
             // btnUrl
             // 
             this.btnUrl.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnUrl.Location = new System.Drawing.Point(732, 36);
+            this.btnUrl.Location = new System.Drawing.Point(1098, 54);
+            this.btnUrl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnUrl.Name = "btnUrl";
-            this.btnUrl.Size = new System.Drawing.Size(74, 24);
+            this.btnUrl.Size = new System.Drawing.Size(111, 36);
             this.btnUrl.TabIndex = 13;
             this.btnUrl.Text = "Web";
             this.btnUrl.UseVisualStyleBackColor = true;
@@ -310,18 +335,20 @@ namespace AirdPro.Repository
             // 
             this.lblLoading.AutoSize = true;
             this.lblLoading.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.lblLoading.Location = new System.Drawing.Point(970, 40);
+            this.lblLoading.Location = new System.Drawing.Point(1455, 60);
+            this.lblLoading.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblLoading.Name = "lblLoading";
-            this.lblLoading.Size = new System.Drawing.Size(46, 16);
+            this.lblLoading.Size = new System.Drawing.Size(66, 21);
             this.lblLoading.TabIndex = 15;
             this.lblLoading.Text = "Loaded";
             // 
             // btnFastLoad
             // 
             this.btnFastLoad.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnFastLoad.Location = new System.Drawing.Point(1158, 10);
+            this.btnFastLoad.Location = new System.Drawing.Point(1737, 15);
+            this.btnFastLoad.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnFastLoad.Name = "btnFastLoad";
-            this.btnFastLoad.Size = new System.Drawing.Size(100, 21);
+            this.btnFastLoad.Size = new System.Drawing.Size(150, 32);
             this.btnFastLoad.TabIndex = 16;
             this.btnFastLoad.Text = "Fast Load";
             this.btnFastLoad.UseVisualStyleBackColor = true;
@@ -330,9 +357,10 @@ namespace AirdPro.Repository
             // btnTasks
             // 
             this.btnTasks.Font = new System.Drawing.Font("微软雅黑", 8F);
-            this.btnTasks.Location = new System.Drawing.Point(812, 36);
+            this.btnTasks.Location = new System.Drawing.Point(1218, 54);
+            this.btnTasks.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnTasks.Name = "btnTasks";
-            this.btnTasks.Size = new System.Drawing.Size(132, 24);
+            this.btnTasks.Size = new System.Drawing.Size(198, 36);
             this.btnTasks.TabIndex = 17;
             this.btnTasks.Text = "Download Links";
             this.btnTasks.UseVisualStyleBackColor = true;
@@ -340,9 +368,9 @@ namespace AirdPro.Repository
             // 
             // MLForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1265, 585);
+            this.ClientSize = new System.Drawing.Size(1898, 878);
             this.Controls.Add(this.btnTasks);
             this.Controls.Add(this.btnFastLoad);
             this.Controls.Add(this.lblLoading);
@@ -360,6 +388,7 @@ namespace AirdPro.Repository
             this.Controls.Add(this.lblConfigFolder);
             this.Controls.Add(this.btnLoad);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MLForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MetaboLights";
@@ -367,6 +396,7 @@ namespace AirdPro.Repository
             ((System.ComponentModel.ISupportInitialize)(this.projectListView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private System.Windows.Forms.Button btnTasks;

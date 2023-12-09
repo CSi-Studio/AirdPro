@@ -139,10 +139,10 @@
     <value>NoControl</value>
   </data>
   <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>171, 58</value>
+    <value>176, 58</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 20</value>
+    <value>40, 16</value>
   </data>
   <data name="label9.TabIndex" type="System.Int32, mscorlib">
     <value>40</value>
@@ -366,7 +366,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnPX.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1099, 9</value>
+    <value>1202, 10</value>
   </data>
   <data name="btnPX.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 30</value>
@@ -552,7 +552,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnMetaboLights.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1099, 43</value>
+    <value>1202, 44</value>
   </data>
   <data name="btnMetaboLights.Size" type="System.Drawing.Size, System.Drawing">
     <value>130, 30</value>
@@ -591,10 +591,10 @@
     <value>NoControl</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1390, 62</value>
+    <value>1395, 58</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 20</value>
+    <value>32, 16</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>36</value>
@@ -713,10 +713,10 @@
     <value>NoControl</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1558, 59</value>
+    <value>1563, 59</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 20</value>
+    <value>30, 16</value>
   </data>
   <data name="label12.TabIndex" type="System.Int32, mscorlib">
     <value>34</value>
@@ -872,10 +872,10 @@
     <value>NoControl</value>
   </data>
   <data name="label112.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1500, 59</value>
+    <value>1506, 59</value>
   </data>
   <data name="label112.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 20</value>
+    <value>34, 16</value>
   </data>
   <data name="label112.TabIndex" type="System.Int32, mscorlib">
     <value>32</value>
@@ -1012,10 +1012,10 @@
     <value>NoControl</value>
   </data>
   <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1440, 59</value>
+    <value>1444, 59</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>57, 20</value>
+    <value>42, 16</value>
   </data>
   <data name="label11.TabIndex" type="System.Int32, mscorlib">
     <value>30</value>
@@ -1048,10 +1048,10 @@
     <value>NoControl</value>
   </data>
   <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>118, 59</value>
+    <value>120, 58</value>
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 20</value>
+    <value>35, 16</value>
   </data>
   <data name="label8.TabIndex" type="System.Int32, mscorlib">
     <value>29</value>
@@ -1084,10 +1084,10 @@
     <value>NoControl</value>
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>67, 59</value>
+    <value>70, 58</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 20</value>
+    <value>31, 16</value>
   </data>
   <data name="label7.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
@@ -1120,10 +1120,10 @@
     <value>NoControl</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 58</value>
+    <value>11, 58</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 20</value>
+    <value>39, 16</value>
   </data>
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -1222,19 +1222,19 @@
     <value>403, 18</value>
   </metadata>
   <data name="rerun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 30</value>
+    <value>123, 22</value>
   </data>
   <data name="rerun.Text" xml:space="preserve">
     <value>Rerun</value>
   </data>
   <data name="removeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 30</value>
+    <value>123, 22</value>
   </data>
   <data name="removeToolStripMenuItem.Text" xml:space="preserve">
     <value>Remove</value>
   </data>
   <data name="contentMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 64</value>
+    <value>124, 48</value>
   </data>
   <data name="&gt;&gt;contentMenu.Name" xml:space="preserve">
     <value>contentMenu</value>
@@ -1246,10 +1246,10 @@
     <value>微软雅黑, 8pt</value>
   </data>
   <data name="lvFileList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 82</value>
+    <value>8, 82</value>
   </data>
   <data name="lvFileList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1605, 394</value>
+    <value>1594, 394</value>
   </data>
   <data name="lvFileList.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1380,7 +1380,7 @@
     <value>833, 17</value>
   </data>
   <data name="cbAutoExe.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 22</value>
+    <value>96, 16</value>
   </data>
   <data name="cbAutoExe.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
@@ -1520,7 +1520,7 @@
     <value>172, 59</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 20</value>
+    <value>0, 16</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -1626,7 +1626,7 @@
     <value>123, 59</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 20</value>
+    <value>0, 16</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -1804,7 +1804,7 @@
     <value>73, 59</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 20</value>
+    <value>0, 16</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -1834,7 +1834,7 @@
     <value>13, 59</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 20</value>
+    <value>0, 16</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
