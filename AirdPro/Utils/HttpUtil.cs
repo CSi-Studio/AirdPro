@@ -74,12 +74,13 @@ namespace AirdPro.Utils
             return files;
         }
 
-        public static List<string> fetchFtpFilePaths(string baseUrl, string identifier)
+        public static List<string> fetchFtpFilePaths(string ftp)
         {
             try
             {
-                FtpWebRequest ftpRequest = (FtpWebRequest)FtpWebRequest.Create(new Uri(baseUrl+identifier));
+                FtpWebRequest ftpRequest = (FtpWebRequest)FtpWebRequest.Create(new Uri(ftp));
                 ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
+                ftpRequest.Timeout = 5000;
                 WebResponse ftpResponse = ftpRequest.GetResponse();
                 StreamReader reader = new StreamReader(ftpResponse.GetResponseStream());
 
@@ -92,14 +93,15 @@ namespace AirdPro.Utils
                         break;
                     }
 
-                    paths.Add(baseUrl + fileName);
+                    string[] fileNamePath = fileName.Split('/');
+                    paths.Add(ftp+"/"+fileNamePath[fileNamePath.Length-1]);
                 }
 
                 return paths;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("获取" + identifier + "下文件列表失败:" + ex.Message);
+                Console.WriteLine("获取" + ftp + "下文件列表失败:" + ex.Message);
                 return null;
             }
         }
@@ -110,9 +112,10 @@ namespace AirdPro.Utils
             long size = 0;
             try
             {
-                var reqSize = (HttpWebRequest)WebRequest.Create(new Uri(httpPath));
-                reqSize.Method = WebRequestMethods.Http.Head;
-                httpResponse = (HttpWebResponse)reqSize.GetResponse();
+                var request = (HttpWebRequest)WebRequest.Create(new Uri(httpPath));
+                request.Method = WebRequestMethods.Http.Head;
+                request.Timeout = 5000;
+                httpResponse = (HttpWebResponse)request.GetResponse();
                 size = httpResponse.ContentLength;
             }
             catch (Exception e)

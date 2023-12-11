@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Timers;
 using System.Windows.Forms;
 using AirdPro.Algorithms.Parser.DownloadXML;
 using AirdPro.Constants;
 using AirdPro.Utils;
-using FluentFTP;
-using System.Threading.Tasks;
-using AirdPro.Repository;
+using HZH_Controls;
 
 namespace AirdPro.Forms;
 
@@ -34,9 +30,11 @@ public partial class DownloadLinksForm : Form
         this.web = web;
         this.from = from;
         this.identifier = identifier;
+        tbFrom.Text = from;
+        tbIdentifier.Text = identifier;
         Text = from + ":" + identifier;
     }
-    
+
     private void DownloadLinksForm_Load(object sender, EventArgs e)
     {
         if (web.Equals(Froms.WEB_ML))
@@ -66,14 +64,15 @@ public partial class DownloadLinksForm : Form
             loading(false);
             return;
         }
-        
+
         tbFTP.Text = elements[6].Children[0].Children[0].Children[0].Children[0].GetAttribute("href");
         //路由，不同的源需要解码PXD详情页上不同的元素
         switch (from.ToLower())
         {
             case "pride":
             case "iprox":
-                HtmlElement announcementXMLElement = elements[1].Children[0].Children[4].Children[1].Children[0]; //直接定位到<a>标签
+                HtmlElement announcementXMLElement =
+                    elements[1].Children[0].Children[4].Children[1].Children[0]; //直接定位到<a>标签
                 string prideHref = announcementXMLElement.GetAttribute("href");
                 using (HttpClient client = new HttpClient())
                 {
@@ -96,6 +95,7 @@ public partial class DownloadLinksForm : Form
                         Console.WriteLine($"Http Request Error: {ex.Message}");
                     }
                 }
+
                 lblTips.Text = "Use 迅雷,IDM,NDM to download the following files";
                 break;
             case "jpost":
@@ -112,7 +112,6 @@ public partial class DownloadLinksForm : Form
                 massIVEPage.Navigate(massIVEHref);
                 lblTips.Text = "Use FileZilla or other FTP tools to download the following files";
                 break;
-
         }
     }
 
@@ -159,6 +158,7 @@ public partial class DownloadLinksForm : Form
         {
             Console.WriteLine(ee.Message);
         }
+
         loading(false);
     }
 
@@ -185,7 +185,7 @@ public partial class DownloadLinksForm : Form
     {
         Text = getUniqueTag() + (load ? " loading" : " loaded");
     }
-    
+
     private void btnReload_Click(object sender, EventArgs e)
     {
         loadData();
@@ -203,7 +203,7 @@ public partial class DownloadLinksForm : Form
                 massIVEPage.ScriptErrorsSuppressed = true;
                 massIVEPage.DocumentCompleted += readMassIVEPage_Completed;
             }
-            
+
             pxdPage = new WebBrowser();
             pxdPage.ScriptErrorsSuppressed = true;
             pxdPage.DocumentCompleted += readPXDPage_Completed;
@@ -217,8 +217,8 @@ public partial class DownloadLinksForm : Form
 
     public void readMLFileList()
     {
-        List<string> paths = HttpUtil.fetchFtpFilePaths(UrlConst.mlFtpUrl, identifier);
-        if(paths == null)
+        List<string> paths = HttpUtil.fetchFtpFilePaths(UrlConst.mlFtpUrl+identifier);
+        if (paths == null)
         {
             MessageBox.Show("Getting FTP files Error!");
         }
@@ -226,12 +226,33 @@ public partial class DownloadLinksForm : Form
         {
             renderList(paths);
         }
-        
+
         loading(false);
     }
 
     private void btnListFtpFiles_Click(object sender, EventArgs e)
     {
+        if (tbFTP.Text.IsEmpty())
+        {
+            MessageBox.Show("FTP Link is empty!");
+            return;
+        }
+
+        List<string> paths = null;
+        int count = 3;
+        while (paths == null && count > 0)
+        {
+            count--;
+            paths = HttpUtil.fetchFtpFilePaths(tbFTP.Text);
+        }
         
+        if (paths == null)
+        {
+            MessageBox.Show("Getting FTP files Error!");
+        }
+        else
+        {
+            renderList(paths);
+        }
     }
 }
