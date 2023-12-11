@@ -20,7 +20,7 @@ namespace AirdPro.Constants
         public static string pxDetailJsonUrl =
             "http://proteomecentral.proteomexchange.org/cgi/GetDataset?outputMode=JSON&test=no&ID=";
 
-        public static string mlListUrl = "https://www.ebi.ac.uk/metabolights/ws/studies";
+        public static string mlListUrl = "https://www.ebi.ac.uk/metabolights/ws/studies/";
 
         public static string mlDetailUrl = "https://www.ebi.ac.uk/metabolights/";
 

@@ -9,45 +9,52 @@ using AirdPro.Constants;
 using AirdPro.Utils;
 using FluentFTP;
 using System.Threading.Tasks;
+using AirdPro.Repository;
 
 namespace AirdPro.Forms;
 
 public partial class DownloadLinksForm : Form
 {
+    public string web;
     public string from;
     public string identifier;
-    public string PXDUrl = "https://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=";
 
     public WebBrowser pxdPage;
     public WebBrowser massIVEPage;
 
-    //px datasets
-    public static string MassIVE = "massive";
-    public static string JPost = "jpost";
-    public static string PRIDE = "pride";
-    public static string IProX = "iprox";
-    public static string[] pxList = new[] { MassIVE, JPost, PRIDE, IProX };
-
-    //metabolights datasets
-    public static string Metabolights = "metabolights";
 
     public string getUniqueTag()
     {
         return from + ":" + identifier;
     }
 
-    public DownloadLinksForm(string from, string identifier)
+    public DownloadLinksForm(string web, string from, string identifier)
     {
         InitializeComponent();
+        this.web = web;
         this.from = from;
         this.identifier = identifier;
+        Text = from + ":" + identifier;
+    }
+    
+    private void DownloadLinksForm_Load(object sender, EventArgs e)
+    {
+        if (web.Equals(Froms.WEB_ML))
+        {
+            tbHome.Text = UrlConst.pxDetailUrl + identifier;
+            tbFTP.Text = UrlConst.mlFtpUrl + identifier;
+        }
+        else if (web.Equals(Froms.WEB_PX))
+        {
+            tbHome.Text = UrlConst.pxDetailUrl + identifier;
+        }
     }
 
     //所有的链接均从PXD页面开始路由
     public void readPXDPage()
     {
         Text = getUniqueTag() + " loading";
-        pxdPage.Navigate(PXDUrl + identifier);
+        pxdPage.Navigate(UrlConst.pxDetailUrl + identifier);
     }
 
     public async void readPXDPage_Completed(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -59,6 +66,8 @@ public partial class DownloadLinksForm : Form
             loading(false);
             return;
         }
+        
+        tbFTP.Text = elements[6].Children[0].Children[0].Children[0].Children[0].GetAttribute("href");
         //路由，不同的源需要解码PXD详情页上不同的元素
         switch (from.ToLower())
         {
@@ -122,7 +131,7 @@ public partial class DownloadLinksForm : Form
         {
             if (downloadList.Count == 0)
             {
-                MessageBox.Show("Content is Empty");
+                MessageBox.Show("File list is empty");
                 loading(false);
                 return;
             }
@@ -176,36 +185,31 @@ public partial class DownloadLinksForm : Form
     {
         Text = getUniqueTag() + (load ? " loading" : " loaded");
     }
+    
     private void btnReload_Click(object sender, EventArgs e)
     {
-        loading(true);
-        tabControl.TabPages.Clear();
         loadData();
-    }
-
-    private void DownloadLinksForm_Load(object sender, EventArgs e)
-    {
     }
 
     public void loadData()
     {
-        //忽略界面的脚本操作
-        if (from.ToLower().Equals(MassIVE))
+        loading(true);
+        tabControl.TabPages.Clear();
+        if (web.Equals(Froms.WEB_PX))
         {
-            massIVEPage = new WebBrowser();
-            massIVEPage.ScriptErrorsSuppressed = true;
-            massIVEPage.DocumentCompleted += readMassIVEPage_Completed;
-        }
-
-        if (pxList.Contains(from.ToLower()))
-        {
+            if (from.ToLower().Equals(Froms.MassIVE))
+            {
+                massIVEPage = new WebBrowser();
+                massIVEPage.ScriptErrorsSuppressed = true;
+                massIVEPage.DocumentCompleted += readMassIVEPage_Completed;
+            }
+            
             pxdPage = new WebBrowser();
             pxdPage.ScriptErrorsSuppressed = true;
             pxdPage.DocumentCompleted += readPXDPage_Completed;
             readPXDPage();
         }
-
-        if (from.ToLower().Equals(Metabolights))
+        else if (web.Equals(Froms.WEB_ML))
         {
             readMLFileList();
         }
@@ -216,7 +220,7 @@ public partial class DownloadLinksForm : Form
         List<string> paths = HttpUtil.fetchFtpFilePaths(UrlConst.mlFtpUrl, identifier);
         if(paths == null)
         {
-            MessageBox.Show("读取FTP文件列表异常");
+            MessageBox.Show("Getting FTP files Error!");
         }
         else
         {
@@ -224,5 +228,10 @@ public partial class DownloadLinksForm : Form
         }
         
         loading(false);
+    }
+
+    private void btnListFtpFiles_Click(object sender, EventArgs e)
+    {
+        
     }
 }

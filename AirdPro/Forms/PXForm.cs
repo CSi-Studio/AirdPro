@@ -257,7 +257,7 @@ namespace AirdPro.Repository
                 var index = projectListView.SelectedCells[0].RowIndex;
                 var identifier = projectListView.Rows[index].Cells[0].Value.ToString();
                 var repo = projectListView.Rows[index].Cells[2].Value.ToString();
-                new DownloadLinksForm(repo, identifier).ShowDialog();
+                new DownloadLinksForm(Froms.WEB_PX,repo, identifier).ShowDialog();
             }
             else
             {
