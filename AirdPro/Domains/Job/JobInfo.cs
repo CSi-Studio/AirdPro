@@ -51,7 +51,7 @@ namespace AirdPro.Domains
 
         //文件的格式,全部大写: WIFF, RAW. See FileFormat.cs
         public string format;
-
+        
         //C:/data/plasma.wiff
         public string inputPath;
 

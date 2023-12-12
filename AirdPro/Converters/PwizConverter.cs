@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using System.Xml;
 using AirdPro.Algorithms;
 using AirdPro.Algorithms.Parser;
 using AirdPro.Constants;
@@ -37,16 +36,16 @@ using Spectrum = pwiz.CLI.msdata.Spectrum;
 
 namespace AirdPro.Converters
 {
-    public class Converter
+    public class PwizConverter : IConverter
     {
         protected MSData msd;
         public SpectrumList spectrumList;
         public ChromatogramList chromatogramList;
 
-        public JobInfo jobInfo;
-        protected Stopwatch stopwatch = new Stopwatch();
-        public FileStream airdStream;
-        public FileStream airdJsonStream;
+        // public JobInfo jobInfo;
+        // protected Stopwatch stopwatch = new Stopwatch();
+        // public FileStream airdStream;
+        // public FileStream airdJsonStream;
         public FileStream airdColumnJsonStream;
         protected List<WindowRange> ranges = new List<WindowRange>(); //SWATH/DIA Window的窗口
         protected Hashtable rangeTable = new Hashtable(); //用于存放SWATH/DIA窗口的信息,key为mz
@@ -58,7 +57,6 @@ namespace AirdPro.Converters
 
         public List<MsIndex> ms1List = new List<MsIndex>(); //用于存放MS1索引及基础信息,泛型为MsIndex
         protected Hashtable featuresMap = new Hashtable();
-        public ICompressor compressor;
 
         public double[] mobiArray;
         public Dictionary<double, int> mobiDict;
@@ -78,13 +76,15 @@ namespace AirdPro.Converters
 
         public Dictionary<string, AcqCompound> mrmCompoundDict = new Dictionary<string, AcqCompound>(); //用于MRM采集模式下,预存储化合物名称与离子对的词典,当前仅适用于Agilent的.d文件夹类型的质谱文件
         
-        public Converter(JobInfo jobInfo)
+        public PwizConverter(){}
+
+        public override void init(JobInfo jobInfo)
         {
             this.jobInfo = jobInfo;
             initCompressor();
         }
 
-        public void doConvert()
+        public override void doConvert()
         {
             try
             {
@@ -159,13 +159,6 @@ namespace AirdPro.Converters
             }
         }
 
-        public void start()
-        {
-            stopwatch.Start();
-            jobInfo.log(Tag.Ready_To_Start, Status.Starting);
-            AppLogs.WriteInfo(Tag.BaseInfo + jobInfo.getJsonInfo(), true);
-        }
-
         public void finish()
         {
             stopwatch.Stop();
@@ -179,35 +172,7 @@ namespace AirdPro.Converters
                 msd = null;
             }
         }
-
-        public void initCompressor()
-        {
-            ICompressor comp = jobInfo.config.stack ? new StackComp(this) : new CoreComp(this);
-            //探索模式和非自动决策模式,会在此处初始化指定的压缩内核
-            if (!jobInfo.config.autoDesicion)
-            {
-                if (jobInfo.ionMobility)
-                {
-                    comp.mobiIntComp = IntComp.build(jobInfo.config.mobiIntComp);
-                    comp.mobiByteComp = ByteComp.build(jobInfo.config.mobiByteComp);
-                }
-
-                comp.mzIntComp = SortedIntComp.build(jobInfo.config.mzIntComp);
-                comp.mzByteComp = ByteComp.build(jobInfo.config.mzByteComp);
-
-                comp.intIntComp = IntComp.build(jobInfo.config.intIntComp);
-                comp.intByteComp = ByteComp.build(jobInfo.config.intByteComp);
-            }
-
-            this.compressor = comp;
-        }
-
-        public void initDirectory()
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(jobInfo.airdFilePath));
-            Directory.CreateDirectory(Path.GetDirectoryName(jobInfo.airdJsonFilePath));
-        }
-
+        
         public void initBrukerMobi()
         {
             jobInfo.log(Tag.Init_Mobility_Array);

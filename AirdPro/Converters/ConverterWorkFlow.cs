@@ -12,7 +12,7 @@ namespace AirdPro.Converters
 {
     public class ConverterWorkFlow
     {
-        public static void DDA(Converter converter)
+        public static void DDA(PwizConverter converter)
         {
             converter.predictForIntensityPrecision(); //预测intensity需要保留的精度
             converter.predictForBestCombination(); //预测最佳压缩组合
@@ -22,7 +22,7 @@ namespace AirdPro.Converters
             converter.writeToAirdInfoFile(); //将Info数据写入文件
         }
 
-        public static void DIA(Converter converter)
+        public static void DIA(PwizConverter converter)
         {
             converter.predictForIntensityPrecision(); //预测intensity需要保留的精度
             converter.predictForBestCombination(); //预测最佳压缩组合
@@ -32,7 +32,7 @@ namespace AirdPro.Converters
             converter.writeToAirdInfoFile(); //将Info数据写入文件
         }
 
-        public static void DDAPasef(Converter converter)
+        public static void DDAPasef(PwizConverter converter)
         {
             converter.initBrukerMobi();
             converter.predictForIntensityPrecision(); //预测intensity需要保留的精度
@@ -44,7 +44,7 @@ namespace AirdPro.Converters
             converter.writeToAirdInfoFile(); //将Info数据写入文件
         }
 
-        public static void DIAPasef(Converter converter)
+        public static void DIAPasef(PwizConverter converter)
         {
             converter.initBrukerMobi();
             converter.predictForIntensityPrecision(); //预测intensity需要保留的精度
@@ -56,7 +56,7 @@ namespace AirdPro.Converters
             converter.writeToAirdInfoFile(); //将Info数据写入文件
         }
 
-        public static void PRM(Converter converter)
+        public static void PRM(PwizConverter converter)
         {
             converter.predictForIntensityPrecision(); //预测intensity需要保留的精度
             converter.predictForBestCombination(); //预测最佳压缩组合
@@ -66,7 +66,7 @@ namespace AirdPro.Converters
             converter.writeToAirdInfoFile(); //将Info数据写入文件
         }
 
-        public static void MRM(Converter converter)
+        public static void MRM(PwizConverter converter)
         {
             if (converter.spectrumList.size() > 0)
             {

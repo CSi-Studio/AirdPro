@@ -30,7 +30,7 @@ namespace AirdPro.Forms
             HardwareInfo hardwareInfo = new HardwareInfo();
             lblSoftwareVersion.Text = SoftwareInfo.getVersion();
             lblCompanyInfo.Text =
-                "CopyRight © 2022 CSi (HangZhou) Biotechnology Corporation co.,ltd. All rights reserved.";
+                "CopyRight © 2024 CSi (HangZhou) Biotechnology Corporation co.,ltd. All rights reserved.";
             lblCPUInfo.Text = hardwareInfo.cpuInfo;
             lblPhysicMemory.Text = hardwareInfo.physicMemory;
             lblOpVersion.Text = hardwareInfo.opVersion + " " + hardwareInfo.systemType;

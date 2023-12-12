@@ -17,6 +17,7 @@ using System.Windows.Forms;
 using AirdPro.Constants;
 using AirdPro.Converters;
 using AirdPro.Domains;
+using Microsoft.SqlServer.Server;
 using static AirdPro.Constants.ProcessingStatus;
 
 namespace AirdPro.Asyncs
@@ -121,7 +122,17 @@ namespace AirdPro.Asyncs
                 try
                 {
                     jobInfo.setStatus(RUNNING);
-                    Converter converter = new Converter(jobInfo);
+                    IConverter converter = null;
+                    if (jobInfo.format.Equals(FileFormat.TDMS))
+                    {
+                        converter = new TdmsConverter();
+                    }
+                    else
+                    {
+                        converter = new PwizConverter();
+                    }
+                 
+                    converter.init(jobInfo);
                     converter.doConvert();
                     jobInfo.setStatus(FINISHED);
                     break;

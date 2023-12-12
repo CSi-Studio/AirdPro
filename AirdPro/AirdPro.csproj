@@ -322,6 +322,8 @@
     <Compile Include="Controls\TreeViewAdv\Tree\TreeViewAdvEventArgs.cs" />
     <Compile Include="Controls\TreeViewAdv\Tree\TreeViewRowDrawEventArgs.cs" />
     <Compile Include="Converters\ConverterWorkFlow.cs" />
+    <Compile Include="Converters\IConverter.cs" />
+    <Compile Include="Converters\TdmsConverter.cs" />
     <Compile Include="Domains\Common\StrKV.cs" />
     <Compile Include="Domains\Common\TempSpectrum.cs" />
     <Compile Include="Domains\HardwareInfo\HardwareInfo.cs" />
@@ -441,13 +443,20 @@
     <Compile Include="Forms\ConversionForm.Designer.cs">
       <DependentUpon>ConversionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Converters\Converter.cs" />
+    <Compile Include="Converters\PwizConverter.cs" />
     <Compile Include="Converters\ScanningSWATH.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\Handler\ConversionConfigHandler.cs" />
     <Compile Include="Storage\Observer.cs" />
     <Compile Include="Storage\Subject.cs" />
+    <Compile Include="ThirdParty\TdmsReader\BinaryReaderExtensions.cs" />
+    <Compile Include="ThirdParty\TdmsReader\Channel.cs" />
+    <Compile Include="ThirdParty\TdmsReader\DataType.cs" />
+    <Compile Include="ThirdParty\TdmsReader\File.cs" />
+    <Compile Include="ThirdParty\TdmsReader\Group.cs" />
+    <Compile Include="ThirdParty\TdmsReader\Reader.cs" />
+    <Compile Include="ThirdParty\TdmsReader\Writer.cs" />
     <Compile Include="Utils\CentroidUtil.cs" />
     <Compile Include="Utils\CVUtil.cs" />
     <Compile Include="Utils\FeatureUtil.cs" />
@@ -764,16 +773,16 @@
     <PackageReference Include="HZH_Controls" Version="1.0.14" />
     <PackageReference Include="IronSnappy" Version="1.3.1" />
     <PackageReference Include="log4net" Version="2.0.15" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2151.40" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2210.55" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OptimizedPriorityQueue" Version="5.1.0" />
-    <PackageReference Include="protobuf-net" Version="3.2.26" />
+    <PackageReference Include="protobuf-net" Version="3.2.30" />
     <PackageReference Include="StackExchange.Redis" Version="2.7.4" />
     <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="WeifenLuo.WinFormsUI.Docking" Version="2.1.0" />
-    <PackageReference Include="xunit" Version="2.6.1" />
+    <PackageReference Include="xunit" Version="2.6.3" />
     <PackageReference Include="ZstdNet" Version="1.4.5" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

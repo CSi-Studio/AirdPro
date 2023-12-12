@@ -37,11 +37,11 @@ namespace AirdPro.Algorithms
     {
         private static readonly object locker = new object();
 
-        public CoreComp(Converter converter) : base(converter)
+        public CoreComp(IConverter converter) : base(converter)
         {
         }
 
-        public override void compressMS1(Converter converter, BlockIndex index)
+        public override void compressMS1(PwizConverter converter, BlockIndex index)
         {
             //仅当面向Search的Aird模式下有效
             ConcurrentDictionary<double, TempSpectrum> msDictionary = new ConcurrentDictionary<double, TempSpectrum>();
@@ -132,7 +132,7 @@ namespace AirdPro.Algorithms
             }
         }
 
-        public override void compressMS2(Converter converter, List<MsIndex> ms2List, BlockIndex index)
+        public override void compressMS2(PwizConverter converter, List<MsIndex> ms2List, BlockIndex index)
         {
             //仅当面向Search的Aird模式下有效
             ConcurrentDictionary<double, TempSpectrum> msDictionary = new ConcurrentDictionary<double, TempSpectrum>();
@@ -379,7 +379,7 @@ namespace AirdPro.Algorithms
          * 将按光谱(即按行)存储的模式改为按列存储
          * 第一代野鸡算法，转换速度慢
          */
-        public ConcurrentDictionary<int, ByteColumn> compressAsColumnMatrixV1(Converter converter,
+        public ConcurrentDictionary<int, ByteColumn> compressAsColumnMatrixV1(PwizConverter converter,
             ConcurrentDictionary<double, TempSpectrum> rowTable, ColumnIndex columnIndex)
         {
             converter.jobInfo.log(null, "Column Compressing");
@@ -480,7 +480,7 @@ namespace AirdPro.Algorithms
          *
          * 返回值中key为转化为整型的mz,value为压缩以后得数组
          */
-        public ConcurrentDictionary<int, ByteColumn> compressAsColumnMatrix(Converter converter,
+        public ConcurrentDictionary<int, ByteColumn> compressAsColumnMatrix(PwizConverter converter,
             ConcurrentDictionary<double, TempSpectrum> rowTable, ColumnIndex columnIndex)
         {
             var dict = rowTable.OrderBy(x => x.Key).ToDictionary(k => k.Key, v => v.Value);

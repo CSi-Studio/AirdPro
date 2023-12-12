@@ -41,7 +41,7 @@ namespace AirdPro.Algorithms
         public Dictionary<double, int> mobiDict;
         public int intensityPrecision;
 
-        public ICompressor(Converter converter)
+        public ICompressor(IConverter converter)
         {
             this.multiThread = converter.jobInfo.config.threadAccelerate;
             this.mzPrecision = converter.jobInfo.config.mzPrecision;
@@ -66,9 +66,9 @@ namespace AirdPro.Algorithms
             // intByteComp4Chroma = new ZlibWrapper();
         }
 
-        public abstract void compressMS1(Converter converter, BlockIndex index);
+        public abstract void compressMS1(PwizConverter converter, BlockIndex index);
 
-        public abstract void compressMS2(Converter converter, List<MsIndex> ms2List, BlockIndex index);
+        public abstract void compressMS2(PwizConverter converter, List<MsIndex> ms2List, BlockIndex index);
 
         public abstract void compress(Spectrum spectrum, TempScan ts);
 
