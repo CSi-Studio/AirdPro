@@ -30,5 +30,10 @@ namespace NationalInstruments.Tdms
         {
             return _rawData.SelectMany(_reader.ReadRawData).Select(value => (T)value);
         }
+
+        public IEnumerable<T> GetFirstData<T>()
+        {
+            return _reader.ReadRawData(_rawData.First()).Select(value => (T)value);
+        }
     }
 }

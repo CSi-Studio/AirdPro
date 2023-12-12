@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AirdPro.Domains;
 using System.Diagnostics;
 using System.IO;
+using NationalInstruments.Tdms;
 
 namespace AirdPro.Converters
 {
@@ -33,20 +34,20 @@ namespace AirdPro.Converters
                         using (var tdms = new NationalInstruments.Tdms.File(jobInfo.inputPath))
                         {
                             tdms.Open();
-                            foreach (var group in tdms)
+                            foreach (Group group in tdms)
                             {
                                 Console.WriteLine("Group: {0}", group.Name);
                                 int iter = 0;
                                 
-                                foreach (var channel in group)
+                                foreach (Channel channel in group)
                                 {
                                     if (iter % 2 == 0)
                                     {
-                                        List<double> dataList = new List<double>(channel.GetData<double>());
+                                        List<double> dataList = new List<double>(channel.GetFirstData<double>());
                                     }
                                     else
                                     {
-                                        List<float> dataList = new List<float>(channel.GetData<float>());
+                                        List<float> dataList = new List<float>(channel.GetFirstData<float>());
                                     }
 
                                     iter++;
