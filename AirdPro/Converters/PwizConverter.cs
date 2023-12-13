@@ -61,17 +61,12 @@ namespace AirdPro.Converters
         public double[] mobiArray;
         public Dictionary<double, int> mobiDict;
         public MobiInfo mobiInfo = new MobiInfo();
-
-        protected long fileSize; //厂商文件大小
-        public long startPosition = 0; //文件指针
-        protected int totalSize = 0; //总计的谱图数目
-        protected int totalChroma = 0; //总计的色谱数目
-
+        
         protected int intensityPrecision = 1; //Intensity默认精确到个位数
         protected int mobiPrecision = 10000000; //mobility默认精确到小数点后7位
 
         protected int spectraNumForIntensityPrecisionPredict = 5; //用于ComboComp预测Intensity精度时的采样光谱数
-
+        public ICompressor compressor;
         public ChromatogramIndex chromatogramIndex;
 
         public Dictionary<string, AcqCompound> mrmCompoundDict = new Dictionary<string, AcqCompound>(); //用于MRM采集模式下,预存储化合物名称与离子对的词典,当前仅适用于Agilent的.d文件夹类型的质谱文件
@@ -84,6 +79,28 @@ namespace AirdPro.Converters
             initCompressor();
         }
 
+        public void initCompressor()
+        {
+            ICompressor comp = jobInfo.config.stack ? new StackComp(this) : new CoreComp(this);
+            //探索模式和非自动决策模式,会在此处初始化指定的压缩内核
+            if (!jobInfo.config.autoDesicion)
+            {
+                if (jobInfo.ionMobility)
+                {
+                    comp.mobiIntComp = IntComp.build(jobInfo.config.mobiIntComp);
+                    comp.mobiByteComp = ByteComp.build(jobInfo.config.mobiByteComp);
+                }
+
+                comp.mzIntComp = SortedIntComp.build(jobInfo.config.mzIntComp);
+                comp.mzByteComp = ByteComp.build(jobInfo.config.mzByteComp);
+
+                comp.intIntComp = IntComp.build(jobInfo.config.intIntComp);
+                comp.intByteComp = ByteComp.build(jobInfo.config.intByteComp);
+            }
+
+            this.compressor = comp;
+        }
+        
         public override void doConvert()
         {
             try
@@ -1207,7 +1224,7 @@ namespace AirdPro.Converters
             airdInfo.parentFiles = parentFiles;
 
             //Compressor Info
-            List<Compressor> coms = new List<Compressor>();
+            List<Compressor> comps = new List<Compressor>();
             Compressor mzCompressor = new Compressor(Compressor.TARGET_MZ);
             Compressor intCompressor = new Compressor(Compressor.TARGET_INTENSITY);
             Compressor mobiCompressor = new Compressor(Compressor.TARGET_MOBILITY);
@@ -1235,10 +1252,10 @@ namespace AirdPro.Converters
                 mobiCompressor.precision = mobiPrecision;
             }
 
-            coms.Add(mzCompressor);
-            coms.Add(intCompressor);
-            coms.Add(mobiCompressor);
-            airdInfo.compressors = coms;
+            comps.Add(mzCompressor);
+            comps.Add(intCompressor);
+            comps.Add(mobiCompressor);
+            airdInfo.compressors = comps;
 
             airdInfo.ignoreZeroIntensityPoint = jobInfo.config.ignoreZeroIntensity;
             //Features Info

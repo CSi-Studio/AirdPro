@@ -148,10 +148,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms\Compressor\ICompressor.cs" />
-    <Compile Include="Algorithms\Compressor\SortIntEmpty.cs" />
-    <Compile Include="Algorithms\Compressor\StackComp.cs" />
-    <Compile Include="Algorithms\Compressor\CoreComp.cs" />
+    <Compile Include="Algorithms\Compressor\Pwiz\CoreComp.cs" />
+    <Compile Include="Algorithms\Compressor\Pwiz\ICompressor.cs" />
+    <Compile Include="Algorithms\Compressor\Pwiz\SortIntEmpty.cs" />
+    <Compile Include="Algorithms\Compressor\Pwiz\StackComp.cs" />
+    <Compile Include="Algorithms\Compressor\Tdms\TdmsComp.cs" />
     <Compile Include="Algorithms\Parser\AcqMethod\AcqCompound.cs" />
     <Compile Include="Algorithms\Parser\AcqMethod\NewDataSet.cs" />
     <Compile Include="Algorithms\Parser\AcqMethod\AcqMethodParser.cs" />
@@ -331,6 +332,7 @@
     <Compile Include="Domains\Logs\Log.cs" />
     <Compile Include="Domains\Scan\Combination.cs" />
     <Compile Include="Domains\Scan\MsIndex.cs" />
+    <Compile Include="Domains\Scan\TdmsSpectrum.cs" />
     <Compile Include="Domains\Scan\TempScan.cs" />
     <Compile Include="Domains\Scan\TempScanChroma.cs" />
     <Compile Include="Domains\Scan\TempScanSZDPD.cs" />

@@ -18,7 +18,11 @@ namespace AirdPro.Converters
         protected Stopwatch stopwatch = new Stopwatch();
         public FileStream airdStream;
         public FileStream airdJsonStream;
-        public ICompressor compressor;
+        
+        protected long fileSize; //厂商文件大小
+        public long startPosition = 0; //文件指针
+        protected int totalSize = 0; //总计的谱图数目
+        protected int totalChroma = 0; //总计的色谱数目
         
         public void start()
         {
@@ -31,28 +35,6 @@ namespace AirdPro.Converters
         {
             Directory.CreateDirectory(Path.GetDirectoryName(jobInfo.airdFilePath));
             Directory.CreateDirectory(Path.GetDirectoryName(jobInfo.airdJsonFilePath));
-        }
-        
-        public void initCompressor()
-        {
-            ICompressor comp = jobInfo.config.stack ? new StackComp(this) : new CoreComp(this);
-            //探索模式和非自动决策模式,会在此处初始化指定的压缩内核
-            if (!jobInfo.config.autoDesicion)
-            {
-                if (jobInfo.ionMobility)
-                {
-                    comp.mobiIntComp = IntComp.build(jobInfo.config.mobiIntComp);
-                    comp.mobiByteComp = ByteComp.build(jobInfo.config.mobiByteComp);
-                }
-
-                comp.mzIntComp = SortedIntComp.build(jobInfo.config.mzIntComp);
-                comp.mzByteComp = ByteComp.build(jobInfo.config.mzByteComp);
-
-                comp.intIntComp = IntComp.build(jobInfo.config.intIntComp);
-                comp.intByteComp = ByteComp.build(jobInfo.config.intByteComp);
-            }
-
-            this.compressor = comp;
         }
         
         public abstract void init(JobInfo jobInfo);
