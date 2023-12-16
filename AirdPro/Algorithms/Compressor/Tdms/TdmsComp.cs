@@ -105,7 +105,11 @@ public class TdmsComp
         {
             compressedIntArray = ComboComp.encode(intIntComp, intByteComp, intensitySubArray);
         }
-            
+
+        ts.tic = (long)intData.Sum();
+        int index = DataUtil.findMaxIndex(intData);
+        ts.basePeakIntensity = intData[index];
+        ts.basePeakMz = mzData[index];
         ts.mzArrayBytes = compressedMzArray;
         ts.intArrayBytes = compressedIntArray;
     }

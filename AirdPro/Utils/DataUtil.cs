@@ -9,6 +9,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using pwiz.CLI.cv;
 using pwiz.CLI.msdata;
@@ -73,6 +74,22 @@ namespace AirdPro.Utils
                    spectrum.getArrayByCVID(CVID.MS_raw_ion_mobility_array)?.data.Storage() ??
                    spectrum.getArrayByCVID(CVID.MS_raw_inverse_reduced_ion_mobility_array)
                        ?.data.Storage();
+        }
+
+        public static int findMaxIndex(List<float> targets)
+        {
+            int maxIndex = 0;
+            float currentMax = float.MinValue;
+            for (var i = 0; i < targets.Count; i++)
+            {
+                if (targets[i] > currentMax)
+                {
+                    maxIndex = i;
+                    currentMax = targets[i];
+                }
+            }
+
+            return maxIndex;
         }
     }
 }

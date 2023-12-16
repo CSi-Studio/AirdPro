@@ -98,6 +98,7 @@ namespace AirdPro.Converters
             int spectraCount = 0;
             jobInfo.log(Tag.Pretreatment + totalSize, Status.Pretreatment);
 
+            int totalCount = 1;
             foreach (Group group in tdms)
             {
                 spectraCount += group.Channels.Count / 2;
@@ -107,10 +108,11 @@ namespace AirdPro.Converters
                 {
                     if (iter % 2 == 1)
                     {
-                        MsIndex ms1 = parseMS1(channel, iter);
+                        MsIndex ms1 = parseMS1(channel, totalCount);
                         ms1List.Add(ms1);
                         spectrum.intChannel = channel;
                         spectra.Add(spectrum);
+                        totalCount++;
                     }
                     else
                     {
@@ -119,6 +121,7 @@ namespace AirdPro.Converters
                     }
 
                     iter++;
+                    
                 }
             }
 
