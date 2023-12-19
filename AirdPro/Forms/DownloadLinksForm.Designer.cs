@@ -45,21 +45,21 @@ partial class DownloadLinksForm
         // 
         // tabControl
         // 
+        this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
         this.tabControl.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-        this.tabControl.Location = new System.Drawing.Point(4, 196);
-        this.tabControl.Margin = new System.Windows.Forms.Padding(4);
+        this.tabControl.Location = new System.Drawing.Point(3, 131);
         this.tabControl.Name = "tabControl";
         this.tabControl.SelectedIndex = 0;
-        this.tabControl.Size = new System.Drawing.Size(1071, 667);
+        this.tabControl.Size = new System.Drawing.Size(721, 445);
         this.tabControl.TabIndex = 0;
         // 
         // btnReload
         // 
+        this.btnReload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
         this.btnReload.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-        this.btnReload.Location = new System.Drawing.Point(935, 66);
-        this.btnReload.Margin = new System.Windows.Forms.Padding(4);
+        this.btnReload.Location = new System.Drawing.Point(623, 44);
         this.btnReload.Name = "btnReload";
-        this.btnReload.Size = new System.Drawing.Size(139, 77);
+        this.btnReload.Size = new System.Drawing.Size(93, 51);
         this.btnReload.TabIndex = 1;
         this.btnReload.Text = "Load";
         this.btnReload.UseVisualStyleBackColor = true;
@@ -67,32 +67,34 @@ partial class DownloadLinksForm
         // 
         // lblTips
         // 
+        this.lblTips.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
         this.lblTips.BackColor = System.Drawing.SystemColors.ControlDark;
         this.lblTips.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-        this.lblTips.Location = new System.Drawing.Point(13, 68);
-        this.lblTips.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+        this.lblTips.Location = new System.Drawing.Point(9, 45);
         this.lblTips.Name = "lblTips";
-        this.lblTips.Size = new System.Drawing.Size(915, 34);
+        this.lblTips.Size = new System.Drawing.Size(610, 23);
         this.lblTips.TabIndex = 2;
         this.lblTips.Text = "Tips";
         this.lblTips.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
         // 
         // tbHome
         // 
+        this.tbHome.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
         this.tbHome.Font = new System.Drawing.Font("微软雅黑", 9F);
-        this.tbHome.Location = new System.Drawing.Point(83, 111);
+        this.tbHome.Location = new System.Drawing.Point(55, 74);
+        this.tbHome.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
         this.tbHome.Name = "tbHome";
         this.tbHome.ReadOnly = true;
-        this.tbHome.Size = new System.Drawing.Size(844, 31);
+        this.tbHome.Size = new System.Drawing.Size(564, 23);
         this.tbHome.TabIndex = 3;
         // 
         // btnListFtpFiles
         // 
+        this.btnListFtpFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
         this.btnListFtpFiles.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-        this.btnListFtpFiles.Location = new System.Drawing.Point(936, 152);
-        this.btnListFtpFiles.Margin = new System.Windows.Forms.Padding(4);
+        this.btnListFtpFiles.Location = new System.Drawing.Point(624, 101);
         this.btnListFtpFiles.Name = "btnListFtpFiles";
-        this.btnListFtpFiles.Size = new System.Drawing.Size(139, 36);
+        this.btnListFtpFiles.Size = new System.Drawing.Size(93, 24);
         this.btnListFtpFiles.TabIndex = 4;
         this.btnListFtpFiles.Text = "FTP Files";
         this.btnListFtpFiles.UseVisualStyleBackColor = true;
@@ -102,10 +104,9 @@ partial class DownloadLinksForm
         // 
         this.label1.BackColor = System.Drawing.SystemColors.ButtonFace;
         this.label1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-        this.label1.Location = new System.Drawing.Point(11, 112);
-        this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+        this.label1.Location = new System.Drawing.Point(7, 75);
         this.label1.Name = "label1";
-        this.label1.Size = new System.Drawing.Size(65, 31);
+        this.label1.Size = new System.Drawing.Size(43, 21);
         this.label1.TabIndex = 5;
         this.label1.Text = "Home";
         this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -114,47 +115,50 @@ partial class DownloadLinksForm
         // 
         this.label2.BackColor = System.Drawing.SystemColors.ButtonFace;
         this.label2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-        this.label2.Location = new System.Drawing.Point(26, 155);
-        this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+        this.label2.Location = new System.Drawing.Point(17, 103);
         this.label2.Name = "label2";
-        this.label2.Size = new System.Drawing.Size(50, 31);
+        this.label2.Size = new System.Drawing.Size(33, 21);
         this.label2.TabIndex = 6;
         this.label2.Text = "FTP";
         this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
         // 
         // tbFTP
         // 
+        this.tbFTP.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
         this.tbFTP.Font = new System.Drawing.Font("微软雅黑", 9F);
-        this.tbFTP.Location = new System.Drawing.Point(83, 155);
+        this.tbFTP.Location = new System.Drawing.Point(55, 103);
+        this.tbFTP.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
         this.tbFTP.Name = "tbFTP";
-        this.tbFTP.Size = new System.Drawing.Size(845, 31);
+        this.tbFTP.Size = new System.Drawing.Size(565, 23);
         this.tbFTP.TabIndex = 7;
         // 
         // tbFrom
         // 
         this.tbFrom.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-        this.tbFrom.Location = new System.Drawing.Point(13, 12);
+        this.tbFrom.Location = new System.Drawing.Point(9, 8);
+        this.tbFrom.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
         this.tbFrom.Name = "tbFrom";
         this.tbFrom.ReadOnly = true;
-        this.tbFrom.Size = new System.Drawing.Size(427, 47);
+        this.tbFrom.Size = new System.Drawing.Size(286, 34);
         this.tbFrom.TabIndex = 8;
         // 
         // tbIdentifier
         // 
         this.tbIdentifier.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
         this.tbIdentifier.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-        this.tbIdentifier.Location = new System.Drawing.Point(621, 12);
+        this.tbIdentifier.Location = new System.Drawing.Point(414, 8);
+        this.tbIdentifier.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
         this.tbIdentifier.Name = "tbIdentifier";
         this.tbIdentifier.ReadOnly = true;
         this.tbIdentifier.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-        this.tbIdentifier.Size = new System.Drawing.Size(454, 47);
+        this.tbIdentifier.Size = new System.Drawing.Size(304, 34);
         this.tbIdentifier.TabIndex = 9;
         // 
         // DownloadLinksForm
         // 
-        this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+        this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        this.ClientSize = new System.Drawing.Size(1087, 867);
+        this.ClientSize = new System.Drawing.Size(725, 578);
         this.Controls.Add(this.tbIdentifier);
         this.Controls.Add(this.tbFrom);
         this.Controls.Add(this.tbFTP);
@@ -165,7 +169,6 @@ partial class DownloadLinksForm
         this.Controls.Add(this.lblTips);
         this.Controls.Add(this.btnReload);
         this.Controls.Add(this.tabControl);
-        this.Margin = new System.Windows.Forms.Padding(4);
         this.Name = "DownloadLinksForm";
         this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
         this.Text = "DownloadLinksForm";
