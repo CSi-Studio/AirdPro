@@ -82,7 +82,7 @@ partial class DownloadLinksForm
         this.tbHome.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
         this.tbHome.Font = new System.Drawing.Font("微软雅黑", 9F);
         this.tbHome.Location = new System.Drawing.Point(55, 74);
-        this.tbHome.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+        this.tbHome.Margin = new System.Windows.Forms.Padding(2);
         this.tbHome.Name = "tbHome";
         this.tbHome.ReadOnly = true;
         this.tbHome.Size = new System.Drawing.Size(564, 23);
@@ -127,7 +127,7 @@ partial class DownloadLinksForm
         this.tbFTP.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
         this.tbFTP.Font = new System.Drawing.Font("微软雅黑", 9F);
         this.tbFTP.Location = new System.Drawing.Point(55, 103);
-        this.tbFTP.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+        this.tbFTP.Margin = new System.Windows.Forms.Padding(2);
         this.tbFTP.Name = "tbFTP";
         this.tbFTP.Size = new System.Drawing.Size(565, 23);
         this.tbFTP.TabIndex = 7;
@@ -136,7 +136,7 @@ partial class DownloadLinksForm
         // 
         this.tbFrom.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
         this.tbFrom.Location = new System.Drawing.Point(9, 8);
-        this.tbFrom.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+        this.tbFrom.Margin = new System.Windows.Forms.Padding(2);
         this.tbFrom.Name = "tbFrom";
         this.tbFrom.ReadOnly = true;
         this.tbFrom.Size = new System.Drawing.Size(286, 34);
@@ -147,7 +147,7 @@ partial class DownloadLinksForm
         this.tbIdentifier.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
         this.tbIdentifier.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
         this.tbIdentifier.Location = new System.Drawing.Point(414, 8);
-        this.tbIdentifier.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+        this.tbIdentifier.Margin = new System.Windows.Forms.Padding(2);
         this.tbIdentifier.Name = "tbIdentifier";
         this.tbIdentifier.ReadOnly = true;
         this.tbIdentifier.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
