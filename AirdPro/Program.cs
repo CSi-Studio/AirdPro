@@ -16,6 +16,7 @@ using AirdPro.Forms;
 using AirdPro.Repository;
 using AirdPro.Storage.Handler;
 using pwiz.CLI.msdata;
+using Control = System.Windows.Controls.Control;
 
 namespace AirdPro
 {
@@ -46,7 +47,7 @@ namespace AirdPro
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-
+            
             conversionForm = new ConversionForm();
             conversionConfigHandler = new ConversionConfigHandler();
             Application.Run(conversionForm);

@@ -211,6 +211,7 @@ namespace AirdPro.Forms
             this.cbConfig.Name = "cbConfig";
             this.cbConfig.Size = new System.Drawing.Size(155, 25);
             this.cbConfig.TabIndex = 121;
+            this.cbConfig.SelectionChangeCommitted += new System.EventHandler(this.cbConfig_SelectionChangeCommitted);
             // 
             // lblConvertConfig
             // 
@@ -254,8 +255,7 @@ namespace AirdPro.Forms
             // 
             // msFileViews
             // 
-            this.msFileViews.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.msFileViews.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left)));
             this.msFileViews.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.msFileViews.Location = new System.Drawing.Point(6, 76);
             this.msFileViews.Margin = new System.Windows.Forms.Padding(4);
@@ -291,7 +291,7 @@ namespace AirdPro.Forms
             // 
             // imgBtnAdd
             // 
-            this.imgBtnAdd.BackColor = System.Drawing.Color.Transparent;
+            this.imgBtnAdd.BackColor = System.Drawing.Color.White;
             this.imgBtnAdd.BtnBackColor = System.Drawing.Color.White;
             this.imgBtnAdd.BtnFont = new System.Drawing.Font("微软雅黑", 9F);
             this.imgBtnAdd.BtnForeColor = System.Drawing.Color.Black;
@@ -382,7 +382,6 @@ namespace AirdPro.Forms
             this.gBoxMode.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         private System.Windows.Forms.Button btnPin;

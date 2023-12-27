@@ -42,7 +42,13 @@ namespace AirdPro.Forms
 
             rbAuto.Checked = true;
             tbOutputPath.Text = Settings.Default.LastOutputPath;
-            cbConfig.SelectedIndex = 0;
+            string selectedConfig = Settings.Default.LastSelectedConfig;
+            int selectedIndex = cbConfig.Items.IndexOf(selectedConfig);
+            if (selectedIndex < 0)
+            {
+                selectedIndex = 0;
+            }
+            cbConfig.SelectedIndex = selectedIndex;
         }
 
         public void clearInfos()
@@ -295,6 +301,12 @@ namespace AirdPro.Forms
         {
             clearInfos();
             Hide();
+        }
+
+        private void cbConfig_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            Settings.Default.LastSelectedConfig = cbConfig.SelectedItem.ToString();
+            Settings.Default.Save();
         }
     }
 }

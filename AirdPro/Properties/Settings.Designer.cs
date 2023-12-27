@@ -189,5 +189,17 @@ namespace AirdPro.Properties {
                 this["JobInfoList"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Default")]
+        public string LastSelectedConfig {
+            get {
+                return ((string)(this["LastSelectedConfig"]));
+            }
+            set {
+                this["LastSelectedConfig"] = value;
+            }
+        }
     }
 }

@@ -102,6 +102,11 @@ namespace AirdPro.Asyncs
                  {
                      return;
                  }
+                 
+                 if (!jobTable.Contains(jobInfo.jobId))
+                 {
+                     continue;
+                 }
 
                  runJob(jobInfo);
                  // Application.DoEvents();
