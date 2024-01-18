@@ -780,8 +780,7 @@ namespace AirdPro.Converters
             }
 
             if (spectrum.scanList.scans.Count != 1) return ms2;
-
-
+            
             var result = CVUtil.parseActivator(spectrum.precursors[0].activation);
             ms2.activator = result.activator;
             ms2.energy = result.energy;
