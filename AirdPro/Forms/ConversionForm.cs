@@ -32,7 +32,7 @@ namespace AirdPro.Forms
     public partial class ConversionForm : Form
     {
         ArrayList jobIdList = new();
-        MirrorTransForm mirrorTransForm;
+        // MirrorTransForm mirrorTransForm;
         BackgroundWorker bw;
 
         public ConversionForm()

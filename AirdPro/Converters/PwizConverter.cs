@@ -1,10 +1,10 @@
 ﻿/*
  * Copyright (c) 2020 CSi Studio
  * AirdSDK and AirdPro are licensed under Mulan PSL v2.
- * You can use this software according to the terms and conditions of the Mulan PSL v2. 
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
- *          http://license.coscl.org.cn/MulanPSL2 
- * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.  
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
  * See the Mulan PSL v2 for more details.
  */
 
@@ -12,7 +12,6 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
 using AirdPro.Algorithms;
@@ -38,14 +37,13 @@ namespace AirdPro.Converters
 {
     public class PwizConverter : IConverter
     {
+        /**
+         * 非托管内存，需要手动回收
+         */
         protected MSData msd;
         public SpectrumList spectrumList;
         public ChromatogramList chromatogramList;
 
-        // public JobInfo jobInfo;
-        // protected Stopwatch stopwatch = new Stopwatch();
-        // public FileStream airdStream;
-        // public FileStream airdJsonStream;
         public FileStream airdColumnJsonStream;
         protected List<WindowRange> ranges = new List<WindowRange>(); //SWATH/DIA Window的窗口
         protected Hashtable rangeTable = new Hashtable(); //用于存放SWATH/DIA窗口的信息,key为mz
@@ -61,7 +59,7 @@ namespace AirdPro.Converters
         public double[] mobiArray;
         public Dictionary<double, int> mobiDict;
         public MobiInfo mobiInfo = new MobiInfo();
-        
+
         protected int intensityPrecision = 1; //Intensity默认精确到个位数
         protected int mobiPrecision = 10000000; //mobility默认精确到小数点后7位
 
@@ -70,8 +68,10 @@ namespace AirdPro.Converters
         public ChromatogramIndex chromatogramIndex;
 
         public Dictionary<string, AcqCompound> mrmCompoundDict = new Dictionary<string, AcqCompound>(); //用于MRM采集模式下,预存储化合物名称与离子对的词典,当前仅适用于Agilent的.d文件夹类型的质谱文件
-        
-        public PwizConverter(){}
+
+        public PwizConverter()
+        {
+        }
 
         public override void init(JobInfo jobInfo)
         {
@@ -100,14 +100,15 @@ namespace AirdPro.Converters
 
             this.compressor = comp;
         }
-        
+
         public override void doConvert()
         {
+            start(); 
+            MSDataList msdList = null;
             try
             {
-                start();
-                MSDataList msdList = readVendorFile(); //准备读取Vendor文件
-                if (msdList.Count == 0 || msdList == null)
+                msdList = readVendorFile();
+                if (msdList.Count == 0)
                 {
                     return;
                 }
@@ -118,15 +119,12 @@ namespace AirdPro.Converters
                     if (msdList.Count > 1) //如果msdList中包含多个msd，那么每一个msd会被单独导出为一个文件，导出的文件名按照msd的ID进行命名
                     {
                         String id = msdList[i].id;
-                        jobInfo.airdFilePath = Path.Combine(jobInfo.outputPath, id+".aird");
-                        jobInfo.airdJsonFilePath = Path.Combine(jobInfo.outputPath, id+".json");
-                        //     AirdProFileUtil.replaceLast(jobInfo.airdFilePath, jobInfo.airdFileName, id);
-                        // jobInfo.airdJsonFilePath =
-                        //     AirdProFileUtil.replaceLast(jobInfo.airdJsonFilePath, jobInfo.airdFileName, id);
+                        jobInfo.airdFilePath = Path.Combine(jobInfo.outputPath, id + ".aird");
+                        jobInfo.airdJsonFilePath = Path.Combine(jobInfo.outputPath, id + ".json");
                         jobInfo.airdFileName = id;
                     }
 
-                    readMsd(msdList[i]);
+                    readMsd(msdList[i]); 
                     initDirectory(); //创建文件夹
                     using (airdStream = new FileStream(jobInfo.airdFilePath, FileMode.Create))
                     {
@@ -163,16 +161,18 @@ namespace AirdPro.Converters
                     {
                         msd.Dispose();
                     }
+
                     clearCache();
-                }
-                if (msdList != null)
-                {
-                    msdList.Dispose();
                 }
             }
             finally
             {
                 finish();
+                if (msdList != null)
+                {
+                    msdList.Dispose();
+                    Console.WriteLine("msdList Dispose成功");
+                }
             }
         }
 
@@ -189,7 +189,7 @@ namespace AirdPro.Converters
                 msd = null;
             }
         }
-        
+
         public void initBrukerMobi()
         {
             jobInfo.log(Tag.Init_Mobility_Array);
@@ -371,6 +371,8 @@ namespace AirdPro.Converters
                 {
                     break;
                 }
+                
+                spectrum.Dispose(); 
             }
 
             intensityPrecision = findIt ? 10 : 1;
@@ -496,7 +498,7 @@ namespace AirdPro.Converters
                 index.msTypes.AddRange(ts.msTypes);
                 index.cvList.AddRange(ts.cvs);
 
-                if (ts.mzArrayBytes.Length != 0 && ts.intArrayBytes.Length != 0 && ts.tagArrayBytes.Length != 0) 
+                if (ts.mzArrayBytes.Length != 0 && ts.intArrayBytes.Length != 0 && ts.tagArrayBytes.Length != 0)
                 {
                     index.mzs.Add(ts.mzArrayBytes.Length);
                     index.ints.Add(ts.intArrayBytes.Length);
@@ -544,6 +546,9 @@ namespace AirdPro.Converters
             }
         }
 
+        /**
+         * 引用本函数的时候需要注意在使用完MSDataList对象以后需要手动释放
+         */
         protected MSDataList readVendorFile()
         {
             jobInfo.log(Tag.Prepare_To_Parse_Vendor_File, Status.Prepare);
@@ -556,10 +561,12 @@ namespace AirdPro.Converters
             };
 
             MSDataList msInfo = new MSDataList();
+
             readerList.read(jobInfo.inputPath, msInfo, readerConfig);
             if (msInfo.Count == 0)
             {
                 jobInfo.logError(ResultCode.Reading_Vendor_File_Error_Run_Is_Null);
+                msInfo.Dispose();
                 return null;
             }
 
@@ -573,14 +580,15 @@ namespace AirdPro.Converters
                     if (wiff.Exists) fileSize += wiff.Length;
                     if (jobInfo.inputPath.ToLower().EndsWith(".wiff"))
                     {
-                        FileInfo wiff2 = new FileInfo(jobInfo.inputPath.Replace("wiff","wiff2"));
+                        FileInfo wiff2 = new FileInfo(jobInfo.inputPath.Replace("wiff", "wiff2"));
                         if (wiff2.Exists) fileSize += wiff2.Length;
                     }
                     else
                     {
-                        FileInfo wiff1 = new FileInfo(jobInfo.inputPath.Replace("wiff2","wiff"));
+                        FileInfo wiff1 = new FileInfo(jobInfo.inputPath.Replace("wiff2", "wiff"));
                         if (wiff1.Exists) fileSize += wiff1.Length;
                     }
+
                     FileInfo mtd = new FileInfo(jobInfo.inputPath + ".mtd");
                     if (mtd.Exists) fileSize += mtd.Length;
                     FileInfo scan = new FileInfo(jobInfo.inputPath + ".scan");
@@ -685,8 +693,6 @@ namespace AirdPro.Converters
         public void clearCache()
         {
             ranges = new();
-            spectrumList = null;
-
             rangeTable = new();
             indexList = new();
             ms2Table = new();
@@ -695,8 +701,18 @@ namespace AirdPro.Converters
             mobiDict = new();
             mobiInfo = new();
             chromatogramIndex = new();
-            spectrumList = null;
-            chromatogramList = null;
+            
+            //清空所有非托管内存
+            if (spectrumList != null)
+            {
+                spectrumList.Dispose();
+                spectrumList = null;
+            }
+            if (chromatogramList != null)
+            {
+                chromatogramList.Dispose();
+                chromatogramList = null;
+            }
             if (msd != null)
             {
                 msd.Dispose();
@@ -780,7 +796,7 @@ namespace AirdPro.Converters
             }
 
             if (spectrum.scanList.scans.Count != 1) return ms2;
-            
+
             var result = CVUtil.parseActivator(spectrum.precursors[0].activation);
             ms2.activator = result.activator;
             ms2.energy = result.energy;
@@ -953,7 +969,7 @@ namespace AirdPro.Converters
             compressor.initForChromatogram();
             //如果是.d的文件夹类型的质谱文件,可以直接解析AcqMethod.xml文件,用于读取设定的化合物名称
             readMRMCompounds();
-            
+
             int totalSize = chromatogramList.size();
             int progress = 0;
             jobInfo.log(null, Tag.progress(Tag.Chroma, progress, totalSize));
@@ -975,7 +991,7 @@ namespace AirdPro.Converters
                 {
                     WindowRange precursorMz = CVUtil.parseIsolationWindow(chromatogram.precursor, jobInfo);
                     WindowRange productMz = CVUtil.parseIsolationWindow(chromatogram.product.isolationWindow, jobInfo);
-                    string ionPair = Math.Round(precursorMz.mz, 1)+"-"+Math.Round(productMz.mz, 1);
+                    string ionPair = Math.Round(precursorMz.mz, 1) + "-" + Math.Round(productMz.mz, 1);
                     if (mrmCompoundDict.ContainsKey(ionPair))
                     {
                         string compoundName = mrmCompoundDict[ionPair].name;
@@ -985,6 +1001,7 @@ namespace AirdPro.Converters
                     {
                         chromatogramIndex.compounds.Add(null);
                     }
+
                     chromatogramIndex.precursors.Add(precursorMz);
                     chromatogramIndex.products.Add(productMz);
                 }
@@ -1000,7 +1017,7 @@ namespace AirdPro.Converters
                             .cvParamChild(CVID.MS_isolation_window_upper_offset).value);
                     throw e;
                 }
-                
+
                 compressor.compress(chromatogram, tempScan);
                 chromatogramIndex.rts.Add(tempScan.rtArrayBytes.Length);
                 chromatogramIndex.ints.Add(tempScan.intArrayBytes.Length);
@@ -1026,7 +1043,7 @@ namespace AirdPro.Converters
                 mrmCompoundDict = new AcqMethodParser(jobInfo.inputPath).parse();
             }
         }
-        
+
         protected AirdInfo buildAirdInfo()
         {
             AirdInfo airdInfo = new AirdInfo();
@@ -1326,7 +1343,7 @@ namespace AirdPro.Converters
             Spectrum spectrum = spectrumList.spectrum(index, true);
             double[] mzData = spectrum.getMZArray().data.Storage();
             double[] intData = spectrum.getIntensityArray().data.Storage();
-
+            
             var size = mzData.Length;
             int[] mzArray = new int[size];
             int[] intensityArray = new int[size];
@@ -1361,6 +1378,8 @@ namespace AirdPro.Converters
             arrays.Add(mzArray);
             arrays.Add(intensityArray);
             arrays.Add(mobilityNoArray);
+            
+            spectrum.Dispose();
             return arrays;
         }
 

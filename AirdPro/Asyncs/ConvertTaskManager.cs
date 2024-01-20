@@ -12,8 +12,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using AirdPro.Constants;
 using AirdPro.Converters;
 using AirdPro.Domains;
@@ -25,8 +23,6 @@ namespace AirdPro.Asyncs
     internal class ConvertTaskManager
     {
         public static ConvertTaskManager instance;
-
-       // public TaskFactory fac = null;
 
         public Queue<JobInfo> jobQueue = new Queue<JobInfo>();
 

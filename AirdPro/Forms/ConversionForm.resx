@@ -366,7 +366,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnPX.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1202, 10</value>
+    <value>1148, 10</value>
   </data>
   <data name="btnPX.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 30</value>
@@ -552,7 +552,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnMetaboLights.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1202, 44</value>
+    <value>1248, 10</value>
   </data>
   <data name="btnMetaboLights.Size" type="System.Drawing.Size, System.Drawing">
     <value>130, 30</value>
@@ -1377,7 +1377,7 @@
     <value>NoControl</value>
   </data>
   <data name="cbAutoExe.Location" type="System.Drawing.Point, System.Drawing">
-    <value>833, 17</value>
+    <value>1012, 10</value>
   </data>
   <data name="cbAutoExe.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 16</value>

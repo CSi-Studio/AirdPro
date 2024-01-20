@@ -56,18 +56,18 @@ namespace AirdPro.Forms
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.lvFileList = new System.Windows.Forms.ListView();
-            this.headerJobId = new System.Windows.Forms.ColumnHeader();
-            this.headerFilePath = new System.Windows.Forms.ColumnHeader();
-            this.headerType = new System.Windows.Forms.ColumnHeader();
-            this.headerConfigName = new System.Windows.Forms.ColumnHeader();
-            this.headerScene = new System.Windows.Forms.ColumnHeader();
-            this.headerCentroid = new System.Windows.Forms.ColumnHeader();
-            this.headerProgress = new System.Windows.Forms.ColumnHeader();
-            this.headerPrecision = new System.Windows.Forms.ColumnHeader();
-            this.headerCompressor = new System.Windows.Forms.ColumnHeader();
-            this.headerIgnoreZero = new System.Windows.Forms.ColumnHeader();
-            this.headerSuffix = new System.Windows.Forms.ColumnHeader();
-            this.headerOutput = new System.Windows.Forms.ColumnHeader();
+            this.headerJobId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerFilePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerConfigName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerScene = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerCentroid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerProgress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerPrecision = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerCompressor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerIgnoreZero = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerSuffix = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerOutput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contentMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.rerun = new System.Windows.Forms.ToolStripMenuItem();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -250,7 +250,19 @@ namespace AirdPro.Forms
             this.lvFileList.AllowColumnReorder = true;
             resources.ApplyResources(this.lvFileList, "lvFileList");
             this.lvFileList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.headerJobId, this.headerFilePath, this.headerType, this.headerConfigName, this.headerScene, this.headerCentroid, this.headerProgress, this.headerPrecision, this.headerCompressor, this.headerIgnoreZero, this.headerSuffix, this.headerOutput });
+            this.lvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.headerJobId,
+            this.headerFilePath,
+            this.headerType,
+            this.headerConfigName,
+            this.headerScene,
+            this.headerCentroid,
+            this.headerProgress,
+            this.headerPrecision,
+            this.headerCompressor,
+            this.headerIgnoreZero,
+            this.headerSuffix,
+            this.headerOutput});
             this.lvFileList.ContextMenuStrip = this.contentMenu;
             this.lvFileList.FullRowSelect = true;
             this.lvFileList.GridLines = true;
@@ -316,7 +328,9 @@ namespace AirdPro.Forms
             // contentMenu
             // 
             this.contentMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contentMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.rerun, this.removeToolStripMenuItem });
+            this.contentMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.rerun,
+            this.removeToolStripMenuItem});
             this.contentMenu.Name = "contentMenu";
             resources.ApplyResources(this.contentMenu, "contentMenu");
             // 
@@ -468,6 +482,7 @@ namespace AirdPro.Forms
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         private System.Windows.Forms.SplitContainer splitContainer1;
@@ -518,7 +533,6 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ColumnHeader headerScene;
         private System.Windows.Forms.TextBox tbJobInfo;
         private System.Windows.Forms.ColumnHeader headerConfigName;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label112;
         public System.Windows.Forms.Button btnRedisSetting;

@@ -108,8 +108,6 @@ namespace AirdPro.Forms
             }
 
             List<string> filePathList = new List<string>();
-            string sourceFolder = "";
-
 
             foreach (TreeNodeAdv node in selectedNodes)
             {

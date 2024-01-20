@@ -78,12 +78,12 @@ namespace AirdPro.Utils
         {
             try
             {
-                FtpWebRequest ftpRequest = (FtpWebRequest)FtpWebRequest.Create(new Uri(ftp));
+                FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create(new Uri(ftp));
                 ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
                 ftpRequest.Timeout = 5000;
                 WebResponse ftpResponse = ftpRequest.GetResponse();
-                StreamReader reader = new StreamReader(ftpResponse.GetResponseStream());
-
+                StreamReader reader = new StreamReader(ftpResponse.GetResponseStream()!);
+                
                 List<string> paths = new List<string>();
                 while (true)
                 {

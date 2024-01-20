@@ -32,7 +32,6 @@ using MathNet.Numerics.LinearAlgebra.Complex;
 using MathNet.Numerics.LinearAlgebra.Storage;
 using System.Diagnostics;
 using Control = MathNet.Numerics.Control;
-using MathNet.Numerics.LinearAlgebra;
 
 namespace AirdPro.Algorithms
 {
@@ -60,30 +59,40 @@ namespace AirdPro.Algorithms
                     converter.jobInfo.log(null, Tag.progress(Tag.MS1, process, converter.ms1List.Count));
                     MsIndex ms1Index = converter.ms1List[i];
                     TempScan ts = new TempScan(ms1Index);
-                    Spectrum spectrum;
-                    lock (locker)
+                    Spectrum spectrum = null;
+                    try
                     {
-                        spectrum = converter.spectrumList.spectrum(ts.num, true);
-                    }
-
-                    if (converter.jobInfo.ionMobility)
-                    {
-                        compressMobility(spectrum, ts);
-                    }
-                    else
-                    {
-                        //使用行式存储
-                        if (converter.jobInfo.config.isComputation())
+                        //部分情况下读取Spectrum是不能并行的，需要加锁以避免异步读取错误
+                        lock (locker)
                         {
-                            compress(spectrum, ts);
+                            spectrum = converter.spectrumList.spectrum(ts.num, true);
                         }
-                        else //使用列式存储，准备构建存储信息
+
+                        if (converter.jobInfo.ionMobility)
                         {
-                            msDictionary[ts.rt] = readSpectrum(spectrum);
+                            compressMobility(spectrum, ts);
+                        }
+                        else
+                        {
+                            //使用行式存储
+                            if (converter.jobInfo.config.isComputation())
+                            {
+                                compress(spectrum, ts);
+                            }
+                            else //使用列式存储，准备构建存储信息
+                            {
+                                msDictionary[ts.rt] = readSpectrum(spectrum);
+                            }
+                        }
+                        ms1Table.Add(i, ts);
+                    }
+                    finally
+                    {
+                        if (spectrum != null)
+                        {
+                            spectrum.Dispose();
                         }
                     }
-
-                    ms1Table.Add(i, ts);
                 });
                 converter.writeToFile(ms1Table, index);
             }
@@ -148,31 +157,44 @@ namespace AirdPro.Algorithms
                 {
                     MsIndex ms2Index = ms2List[i];
                     TempScan ts = new TempScan(ms2Index);
-                    Spectrum spectrum;
-                    lock (locker)
+                    Spectrum spectrum = null;
+                    try
                     {
-                        spectrum = converter.spectrumList.spectrum(ts.num, true);
-                    }
-
-                    if (converter.jobInfo.ionMobility)
-                    {
-                        compressMobility(spectrum, ts);
-                    }
-                    else
-                    {
-                        //在面向搜索引擎的场景时，仅DIA模式的二级谱图具备时间上的逻辑相关性
-                        if (converter.jobInfo.config.isSearch() &&
-                            converter.jobInfo.type.Equals(AcquisitionMethod.DIA))
+                        lock (locker)
                         {
-                            msDictionary[ts.rt] = readSpectrum(spectrum);
+                            spectrum = converter.spectrumList.spectrum(ts.num, true);
+                        }
+
+                        if (converter.jobInfo.ionMobility)
+                        {
+                            compressMobility(spectrum, ts);
                         }
                         else
                         {
-                            compress(spectrum, ts);
+                            //在面向搜索引擎的场景时，仅DIA模式的二级谱图具备时间上的逻辑相关性
+                            if (converter.jobInfo.config.isSearch() &&
+                                converter.jobInfo.type.Equals(AcquisitionMethod.DIA))
+                            {
+                                msDictionary[ts.rt] = readSpectrum(spectrum);
+                            }
+                            else
+                            {
+                                compress(spectrum, ts);
+                            }
+                        }
+
+                        table.Add(i, ts);
+                    }
+                    finally
+                    {
+                        if (spectrum != null)
+                        {
+                            spectrum.Dispose();
                         }
                     }
+                    
 
-                    table.Add(i, ts);
+                    
                 });
                 converter.writeToFile(table, index);
             }
@@ -274,7 +296,6 @@ namespace AirdPro.Algorithms
             {
                 if (ignoreZero && intData[t] == 0) continue;
                 mzArray[j] = DataUtil.fetchMz(mzData[t], mzPrecision);
-                // intensityArray[j] = Convert.ToInt32(Math.Log(intData[t]) / Math.Log(2) * 100);
                 intensityArray[j] = DataUtil.fetchIntensity(intData[t], intensityPrecision);
                 j++;
             }
@@ -292,7 +313,8 @@ namespace AirdPro.Algorithms
             }
             else
             {
-                compressedMzArray = ComboComp.encode(mzIntComp, mzByteComp, mzSubArray);
+                // compressedMzArray = ComboComp.encode(mzIntComp, mzByteComp, mzSubArray);
+                compressedMzArray = mzByteComp.encode(AirdProUtil.intToByte(mzIntComp.encode(mzSubArray)));
             }
 
             if (intensitySubArray.Length == 0)
@@ -301,7 +323,8 @@ namespace AirdPro.Algorithms
             }
             else
             {
-                compressedIntArray = ComboComp.encode(intIntComp, intByteComp, intensitySubArray);
+                // compressedIntArray = ComboComp.encode(intIntComp, intByteComp, intensitySubArray);
+                compressedIntArray = intByteComp.encode(AirdProUtil.intToByte(intIntComp.encode(intensitySubArray)));
             }
 
             ts.mzArrayBytes = compressedMzArray;
@@ -329,7 +352,6 @@ namespace AirdPro.Algorithms
                 j++;
             }
 
-            //TODO 王金银 在这里做Centroid和降噪
             int[] mzSubArray = new int[j];
             Array.Copy(mzArray, mzSubArray, j);
             float[] intensitySubArray = new float[j];
