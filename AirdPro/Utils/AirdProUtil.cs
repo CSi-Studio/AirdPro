@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace AirdPro.Utils;
 
@@ -20,5 +21,11 @@ public class AirdProUtil
         }
 
         return byteArray;
+    }
+    
+    public static int[] byteToInt(byte[] src)
+    {
+        var intArray = MemoryMarshal.Cast<byte, int>(src);
+        return intArray.ToArray();
     }
 }

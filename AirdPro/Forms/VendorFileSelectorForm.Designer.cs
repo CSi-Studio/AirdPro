@@ -255,7 +255,7 @@ namespace AirdPro.Forms
             // 
             // msFileViews
             // 
-            this.msFileViews.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left)));
+            this.msFileViews.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.msFileViews.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.msFileViews.Location = new System.Drawing.Point(6, 76);
             this.msFileViews.Margin = new System.Windows.Forms.Padding(4);

@@ -270,8 +270,13 @@ namespace AirdPro.Forms
                 Program.fileSelector.Show();
             }
 
-            Program.fileSelector.clearInfos();
-            Program.fileSelector.Visible = true;
+            if (Program.fileSelector.Visible == false)
+            {
+                Program.fileSelector.clearInfos();
+                Program.fileSelector.Visible = true;
+            }
+       
+            Program.fileSelector.BringToFront();
         }
 
         private void ConversionForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -309,6 +314,7 @@ namespace AirdPro.Forms
             }
 
             Program.configListForm.Show();
+            Program.mainForm.BringToFront();
         }
 
         private void timerTaskScan_Tick(object sender, EventArgs e)
@@ -328,8 +334,9 @@ namespace AirdPro.Forms
                 Program.redisForm = new RedisForm();
                 Program.redisForm.Show();
             }
-
+            
             Program.redisForm.Visible = true;
+            Program.redisForm.BringToFront();
         }
 
         private void btnHelp_Click(object sender, EventArgs e)
@@ -341,6 +348,7 @@ namespace AirdPro.Forms
             }
 
             Program.aboutForm.Visible = true;
+            Program.aboutForm.BringToFront();
         }
 
         private void btnMainView_Click(object sender, EventArgs e)
@@ -351,6 +359,7 @@ namespace AirdPro.Forms
             }
 
             Program.mainForm.Show();
+            Program.mainForm.BringToFront();
         }
 
         private bool IsCtrlA(KeyEventArgs e)
@@ -388,6 +397,7 @@ namespace AirdPro.Forms
             }
 
             Program.mlForm.Show();
+            Program.mlForm.BringToFront();
         }
 
         private void btnPX_Click(object sender, EventArgs e)
@@ -398,6 +408,8 @@ namespace AirdPro.Forms
             }
 
             Program.pxForm.Show();
+            Program.pxForm.BringToFront();
+            
         }
 
         private void btnDelete_Click(object sender, EventArgs e)

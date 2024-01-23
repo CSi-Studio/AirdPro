@@ -134,7 +134,7 @@ namespace AirdPro.Algorithms
                 ConcurrentDictionary<int, ByteColumn> compressedColumns = null;
                 try
                 {
-                    compressedColumns = compressAsColumnMatrix(converter, msDictionary, columnIndex);
+                    compressedColumns = compressAsColumnMatrixV1(converter, msDictionary, columnIndex);
                 }
                 catch (Exception e)
                 {
@@ -192,9 +192,6 @@ namespace AirdPro.Algorithms
                             spectrum.Dispose();
                         }
                     }
-                    
-
-                    
                 });
                 converter.writeToFile(table, index);
             }
@@ -238,7 +235,7 @@ namespace AirdPro.Algorithms
                 ConcurrentDictionary<int, ByteColumn> compressedColumns = null;
                 try
                 {
-                    compressedColumns = compressAsColumnMatrix(converter, msDictionary, columnIndex);
+                    compressedColumns = compressAsColumnMatrixV1(converter, msDictionary, columnIndex);
                 }
                 catch (Exception e)
                 {
@@ -299,11 +296,12 @@ namespace AirdPro.Algorithms
                 intensityArray[j] = DataUtil.fetchIntensity(intData[t], intensityPrecision);
                 j++;
             }
-
+            
             int[] mzSubArray = new int[j];
             Array.Copy(mzArray, mzSubArray, j);
             int[] intensitySubArray = new int[j];
             Array.Copy(intensityArray, intensitySubArray, j);
+            
             byte[] compressedMzArray = null;
             byte[] compressedIntArray = null;
 
@@ -313,7 +311,6 @@ namespace AirdPro.Algorithms
             }
             else
             {
-                // compressedMzArray = ComboComp.encode(mzIntComp, mzByteComp, mzSubArray);
                 compressedMzArray = mzByteComp.encode(AirdProUtil.intToByte(mzIntComp.encode(mzSubArray)));
             }
 
@@ -323,7 +320,6 @@ namespace AirdPro.Algorithms
             }
             else
             {
-                // compressedIntArray = ComboComp.encode(intIntComp, intByteComp, intensitySubArray);
                 compressedIntArray = intByteComp.encode(AirdProUtil.intToByte(intIntComp.encode(intensitySubArray)));
             }
 
@@ -441,17 +437,19 @@ namespace AirdPro.Algorithms
             int step = 1;
             long totalPoint = 0;
             ConcurrentDictionary<int, ByteColumn> treeColumn = new ConcurrentDictionary<int, ByteColumn>();
-            foreach (int mz in totalMzs)
+            // 并行化处理质荷比
+            Parallel.ForEach(totalMzs, mz =>
             {
                 List<int> indexIdList = new List<int>();
                 List<int> intensityList = new List<int>();
-                step++;
-                if (step % 100000 == 0)
+                int currentStep = Interlocked.Increment(ref step);
+
+                if (currentStep % 100000 == 0)
                 {
-                    converter.jobInfo.log(null, Tag.progress(Tag.Column, step, totalMzs.Length));
+                    converter.jobInfo.log(null, Tag.progress(Tag.Column, currentStep, totalMzs.Length));
                 }
 
-                for (var index = 0; index < rts.Count; index++)
+                for (int index = 0; index < rts.Count; index++)
                 {
                     double rt = rts[index];
                     TempSpectrum spectrum = rowTable[rt];
@@ -460,6 +458,7 @@ namespace AirdPro.Algorithms
                     int iter = ptrDict[rt];
                     bool effect = false;
                     double intensity = 0;
+
                     while (iter < currentMzs.Length && currentMzs[iter] == mz)
                     {
                         effect = true;
@@ -475,18 +474,22 @@ namespace AirdPro.Algorithms
                     }
                 }
 
-                totalPoint += intensityList.Count;
+                Interlocked.Add(ref totalPoint, intensityList.Count);
+
                 byte[] compressedIndexIds = new ZstdWrapper().encode(
                     ByteTrans.intToByte(
                         new IntegratedVarByteWrapper().encode(
                             ArrayUtil.toIntArray(indexIdList))));
+
                 byte[] compressedInts = new ZstdWrapper().encode(
                     ByteTrans.intToByte(
                         new VarByteWrapper().encode(
                             ArrayUtil.toIntArray(intensityList))));
+
                 treeColumn[mz] = new ByteColumn(compressedIndexIds, compressedInts);
-                totalSize += (compressedIndexIds.Length + compressedInts.Length);
-            }
+
+                Interlocked.Add(ref totalSize, compressedIndexIds.Length + compressedInts.Length);
+            });
 
             converter.jobInfo.log("有效点数:" + totalPoint + "个");
             converter.jobInfo.log("总体积为:" + totalSize / 1024 / 1024 + "MB");
@@ -507,20 +510,18 @@ namespace AirdPro.Algorithms
         {
             var dict = rowTable.OrderBy(x => x.Key).ToDictionary(k => k.Key, v => v.Value);
             converter.jobInfo.log(null, columnIndex.toString() + "Compressing");
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
+            Stopwatch stopwatch = Stopwatch.StartNew();
 
             //矩阵横坐标
-            List<double> rts = dict.Keys.ToList();
-            List<int> rtsInt = new List<int>();
-            for (var i = 0; i < rts.Count; i++)
+            double[] rts = dict.Keys.ToArray();
+            int[] rtsInt = new int[rts.Length];
+            for (var i = 0; i < rts.Length; i++)
             {
-                rtsInt.Add((int)Math.Round(rts[i] * 1000));
+                rtsInt[i] = (int)Math.Round(rts[i] * 1000);
             }
 
-            List<TempSpectrum> spectra = dict.Values.ToList();
-            int totalPoints = 0;
-            spectra.ForEach(spectrum => totalPoints += spectrum.mzs.Length);
+            TempSpectrum[] spectra = dict.Values.ToArray();
+            int totalPoints = spectra.Sum(spectrum => spectrum.mzs.Length);
             HashSet<int> mzsSet = new HashSet<int>(totalPoints);
             foreach (TempSpectrum spectrum in spectra)
             {
@@ -539,7 +540,7 @@ namespace AirdPro.Algorithms
             converter.jobInfo.log("Total Diff m/z: " + totalMzs.Length);
             converter.jobInfo.log("mz range: " + totalMzs[0] * 1.0 / converter.compressor.mzPrecision + "-" +
                                   totalMzs[totalMzs.Length - 1] * 1.0 / converter.compressor.mzPrecision);
-            SparseMatrix matrix = new SparseMatrix(rts.Count, mzsSet.Count);
+            SparseMatrix matrix = new SparseMatrix(rts.Length, mzsSet.Count);
             
             stopwatch.Restart();
             converter.jobInfo.log("Start Init Matrix");
@@ -565,7 +566,7 @@ namespace AirdPro.Algorithms
                     }
 
                     iter++;
-                    converter.jobInfo.log(null, Tag.progress(columnIndex.toString(), iter, spectra.Count));
+                    converter.jobInfo.log(null, Tag.progress(columnIndex.toString(), iter, spectra.Length));
                 }
             }
             catch (Exception e)
@@ -612,16 +613,16 @@ namespace AirdPro.Algorithms
                 {
                     if (fastMode)
                     {
-                        compressedIndexIds = ByteTrans.intToByte(new IntegratedVarByteWrapper().encode(spectraIds));
-                        compressedInts = ByteTrans.intToByte(new VarByteWrapper().encode(ints));
+                        compressedIndexIds = AirdProUtil.intToByte(new IntegratedVarByteWrapper().encode(spectraIds));
+                        compressedInts = AirdProUtil.intToByte(new VarByteWrapper().encode(ints));
                     }
                     else
                     {
                         compressedIndexIds =
                             new ZstdWrapper().encode(
-                                ByteTrans.intToByte(new IntegratedVarByteWrapper().encode(spectraIds)));
+                                AirdProUtil.intToByte(new IntegratedVarByteWrapper().encode(spectraIds)));
                         compressedInts = new ZstdWrapper().encode(
-                            ByteTrans.intToByte(new VarByteWrapper().encode(ints)));
+                            AirdProUtil.intToByte(new VarByteWrapper().encode(ints)));
                     }
                 }
                 else
