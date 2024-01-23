@@ -41,6 +41,7 @@ namespace AirdPro.Converters
          * 非托管内存，需要手动回收
          */
         protected MSData msd;
+
         public SpectrumList spectrumList;
         public ChromatogramList chromatogramList;
 
@@ -67,7 +68,9 @@ namespace AirdPro.Converters
         public ICompressor compressor;
         public ChromatogramIndex chromatogramIndex;
 
-        public Dictionary<string, AcqCompound> mrmCompoundDict = new Dictionary<string, AcqCompound>(); //用于MRM采集模式下,预存储化合物名称与离子对的词典,当前仅适用于Agilent的.d文件夹类型的质谱文件
+        public Dictionary<string, AcqCompound>
+            mrmCompoundDict =
+                new Dictionary<string, AcqCompound>(); //用于MRM采集模式下,预存储化合物名称与离子对的词典,当前仅适用于Agilent的.d文件夹类型的质谱文件
 
         public PwizConverter()
         {
@@ -103,75 +106,67 @@ namespace AirdPro.Converters
 
         public override void doConvert()
         {
-            start(); 
-            MSDataList msdList = null;
-            try
+            start();
+            using (MSDataList msdList = readVendorFile())
             {
-                msdList = readVendorFile();
-                if (msdList.Count == 0)
+                try
                 {
-                    return;
-                }
-
-                for (int i = 0; i < msdList.Count; i++)
-                {
-                    startPosition = 0;
-                    if (msdList.Count > 1) //如果msdList中包含多个msd，那么每一个msd会被单独导出为一个文件，导出的文件名按照msd的ID进行命名
+                    if (msdList.Count == 0)
                     {
-                        String id = msdList[i].id;
-                        jobInfo.airdFilePath = Path.Combine(jobInfo.outputPath, id + ".aird");
-                        jobInfo.airdJsonFilePath = Path.Combine(jobInfo.outputPath, id + ".json");
-                        jobInfo.airdFileName = id;
+                        return;
                     }
 
-                    readMsd(msdList[i]); 
-                    initDirectory(); //创建文件夹
-                    using (airdStream = new FileStream(jobInfo.airdFilePath, FileMode.Create))
+                    foreach (var msd in msdList)
                     {
-                        using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
+                        startPosition = 0;
+                        if (msdList.Count > 1) //如果msdList中包含多个msd，那么每一个msd会被单独导出为一个文件，导出的文件名按照msd的ID进行命名
                         {
-                            predictAcquisitionMethod();
-                            switch (jobInfo.type)
+                            String id = msd.id;
+                            jobInfo.airdFilePath = Path.Combine(jobInfo.outputPath, id + ".aird");
+                            jobInfo.airdJsonFilePath = Path.Combine(jobInfo.outputPath, id + ".json");
+                            jobInfo.airdFileName = id;
+                        }
+
+                        readMsd(msd);
+                        initDirectory(); //创建文件夹
+                        using (airdStream = new FileStream(jobInfo.airdFilePath, FileMode.Create))
+                        {
+                            using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
                             {
-                                case AcquisitionMethod.DIA:
-                                    ConverterWorkFlow.DIA(this);
-                                    break;
-                                case AcquisitionMethod.DDA:
-                                    ConverterWorkFlow.DDA(this);
-                                    break;
-                                case AcquisitionMethod.PRM:
-                                    ConverterWorkFlow.PRM(this);
-                                    break;
-                                case AcquisitionMethod.MRM:
-                                    ConverterWorkFlow.MRM(this);
-                                    break;
-                                case AcquisitionMethod.DDA_PASEF:
-                                    jobInfo.ionMobility = true;
-                                    ConverterWorkFlow.DDAPasef(this);
-                                    break;
-                                case AcquisitionMethod.DIA_PASEF:
-                                    jobInfo.ionMobility = true;
-                                    ConverterWorkFlow.DIAPasef(this);
-                                    break;
+                                predictAcquisitionMethod();
+                                switch (jobInfo.type)
+                                {
+                                    case AcquisitionMethod.DIA:
+                                        ConverterWorkFlow.DIA(this);
+                                        break;
+                                    case AcquisitionMethod.DDA:
+                                        ConverterWorkFlow.DDA(this);
+                                        break;
+                                    case AcquisitionMethod.PRM:
+                                        ConverterWorkFlow.PRM(this);
+                                        break;
+                                    case AcquisitionMethod.MRM:
+                                        ConverterWorkFlow.MRM(this);
+                                        break;
+                                    case AcquisitionMethod.DDA_PASEF:
+                                        jobInfo.ionMobility = true;
+                                        ConverterWorkFlow.DDAPasef(this);
+                                        break;
+                                    case AcquisitionMethod.DIA_PASEF:
+                                        jobInfo.ionMobility = true;
+                                        ConverterWorkFlow.DIAPasef(this);
+                                        break;
+                                }
                             }
                         }
-                    }
 
-                    if (msd != null)
-                    {
-                        msd.Dispose();
+                        msd?.Dispose();
+                        clearCache();
                     }
-
-                    clearCache();
                 }
-            }
-            finally
-            {
-                finish();
-                if (msdList != null)
+                finally
                 {
-                    msdList.Dispose();
-                    Console.WriteLine("msdList Dispose成功");
+                    finish();
                 }
             }
         }
@@ -357,7 +352,7 @@ namespace AirdPro.Converters
             bool findIt = false;
             for (var i = 0; i < nums.Count; i++)
             {
-                Spectrum spectrum = spectrumList.spectrum(i, true);
+                using Spectrum spectrum = spectrumList.spectrum(i, true);
                 foreach (double d in spectrum.getIntensityArray().data.Storage())
                 {
                     if ((d - (int)d) != 0) //如果随机采集到的intensity是精确到小数点后一位的,精确确定为10,即精确到小数点后一位
@@ -371,8 +366,6 @@ namespace AirdPro.Converters
                 {
                     break;
                 }
-                
-                spectrum.Dispose(); 
             }
 
             intensityPrecision = findIt ? 10 : 1;
@@ -561,12 +554,13 @@ namespace AirdPro.Converters
             };
 
             MSDataList msInfo = new MSDataList();
-
             readerList.read(jobInfo.inputPath, msInfo, readerConfig);
+
             if (msInfo.Count == 0)
             {
                 jobInfo.logError(ResultCode.Reading_Vendor_File_Error_Run_Is_Null);
                 msInfo.Dispose();
+                readerList.Dispose();
                 return null;
             }
 
@@ -618,6 +612,7 @@ namespace AirdPro.Converters
                     break;
             }
 
+            readerList.Dispose();
             return msInfo;
         }
 
@@ -701,18 +696,20 @@ namespace AirdPro.Converters
             mobiDict = new();
             mobiInfo = new();
             chromatogramIndex = new();
-            
+
             //清空所有非托管内存
             if (spectrumList != null)
             {
                 spectrumList.Dispose();
                 spectrumList = null;
             }
+
             if (chromatogramList != null)
             {
                 chromatogramList.Dispose();
                 chromatogramList = null;
             }
+
             if (msd != null)
             {
                 msd.Dispose();
@@ -745,29 +742,32 @@ namespace AirdPro.Converters
                 return ms1;
             }
 
-            Scan scan = spectrum.scanList.scans[0];
-            ms1.cvs = CVUtil.trans(spectrum.cvParams);
-            //将对应scan的cvParams也冗余到ms1上来
-            if (scan.cvParams != null)
+            using (Scan scan = spectrum.scanList.scans[0])
             {
-                ms1.cvs.AddRange(CVUtil.trans(scan.cvParams));
+                // ms1.cvs = CVUtil.trans(spectrum.cvParams);
+                //将对应scan的cvParams也冗余到ms1上来
+                // if (scan.cvParams != null)
+                // {
+                //     ms1.cvs.AddRange(CVUtil.trans(scan.cvParams));
+                // }
+
+                ms1.filterString = CVUtil.parseFilterString(scan, jobInfo);
+                ms1.rt = CVUtil.parseRT(scan, jobInfo);
+                ms1.tic = CVUtil.parseTIC(spectrum);
+                ms1.basePeakIntensity = CVUtil.parseBasePeakIntensity(spectrum);
+                ms1.basePeakMz = CVUtil.parseBasePeakMz(spectrum);
+                ms1.injectionTime = CVUtil.parseInjectionTime(scan);
+                if (mobiInfo.unit == null || mobiInfo.type == null)
+                {
+                    CVUtil.parseMobility(scan, mobiInfo);
+                }
+
+                ms1.msType = CVUtil.parseMsType(spectrum);
+                ms1.polarity = CVUtil.parsePolarity(spectrum);
+                ms1.activator = Activator.UNKNOWN;
+                ms1.energy = -1;
             }
 
-            ms1.filterString = CVUtil.parseFilterString(scan, jobInfo);
-            ms1.rt = CVUtil.parseRT(scan, jobInfo);
-            ms1.tic = CVUtil.parseTIC(spectrum);
-            ms1.basePeakIntensity = CVUtil.parseBasePeakIntensity(spectrum);
-            ms1.basePeakMz = CVUtil.parseBasePeakMz(spectrum);
-            ms1.injectionTime = CVUtil.parseInjectionTime(scan);
-            if (mobiInfo.unit == null || mobiInfo.type == null)
-            {
-                CVUtil.parseMobility(scan, mobiInfo);
-            }
-
-            ms1.msType = CVUtil.parseMsType(spectrum);
-            ms1.polarity = CVUtil.parsePolarity(spectrum);
-            ms1.activator = Activator.UNKNOWN;
-            ms1.energy = -1;
             return ms1;
         }
 
@@ -778,44 +778,67 @@ namespace AirdPro.Converters
             ms2.pNum = pNum;
             ms2.num = num;
 
-            try
+            using (Precursor precursor = spectrum.precursors[0])
             {
-                ms2.precursor = CVUtil.parseIsolationWindow(spectrum.precursors[0], jobInfo);
+                try
+                {
+                    ms2.precursor = CVUtil.parseIsolationWindow(precursor, jobInfo);
+                }
+                catch (Exception e)
+                {
+                    jobInfo.log(ResultCode.Error).log(Tag.SpectrumIndex + spectrum.index)
+                        .log(Tag.SpectrumId + spectrum.id);
+                    using (IsolationWindow isolationWindow = precursor.isolationWindow)
+                    {
+                        using (var cv = isolationWindow.cvParamChild(CVID.MS_isolation_window_target_m_z))
+                        {
+                            jobInfo.log(Tag.Key_MZ + cv.value);
+                        }
+                        using (var cv = isolationWindow.cvParamChild(CVID.MS_isolation_window_lower_offset))
+                        {
+                            jobInfo.log(Tag.LowerOffset + cv.value);
+                        }
+                        using (var cv = isolationWindow.cvParamChild(CVID.MS_isolation_window_upper_offset))
+                        {
+                            jobInfo.log(Tag.UpperOffset + cv.value);
+                        }
+                    }
+                    throw e;
+                }
             }
-            catch (Exception e)
-            {
-                jobInfo.log(ResultCode.Error).log(Tag.SpectrumIndex + spectrum.index)
-                    .log(Tag.SpectrumId + spectrum.id)
-                    .log(Tag.Key_MZ + spectrum.precursors[0].isolationWindow
-                        .cvParamChild(CVID.MS_isolation_window_target_m_z).value)
-                    .log(Tag.LowerOffset + spectrum.precursors[0].isolationWindow
-                        .cvParamChild(CVID.MS_isolation_window_lower_offset).value)
-                    .log(Tag.UpperOffset + spectrum.precursors[0].isolationWindow
-                        .cvParamChild(CVID.MS_isolation_window_upper_offset).value);
-                throw e;
-            }
-
+            
             if (spectrum.scanList.scans.Count != 1) return ms2;
-
-            var result = CVUtil.parseActivator(spectrum.precursors[0].activation);
+            
+            var result = CVUtil.parseActivator(spectrum.precursors[0]);
             ms2.activator = result.activator;
             ms2.energy = result.energy;
             ms2.msType = CVUtil.parseMsType(spectrum);
             ms2.polarity = CVUtil.parsePolarity(spectrum);
-            Scan scan = spectrum.scanList.scans[0];
-            if (mobiInfo.unit == null || mobiInfo.type == null)
-            {
-                CVUtil.parseMobility(scan, mobiInfo);
-            }
-
-            ms2.filterString = CVUtil.parseFilterString(scan, jobInfo);
-            ms2.cvs = CVUtil.trans(spectrum.cvParams);
-            if (scan.cvParams != null) ms2.cvs.AddRange(CVUtil.trans(scan.cvParams));
-            ms2.rt = CVUtil.parseRT(scan, jobInfo);
             ms2.tic = CVUtil.parseTIC(spectrum);
             ms2.basePeakIntensity = CVUtil.parseBasePeakIntensity(spectrum);
             ms2.basePeakMz = CVUtil.parseBasePeakMz(spectrum);
-            ms2.injectionTime = CVUtil.parseInjectionTime(scan);
+
+            // using (CVParamList cvParams = spectrum.cvParams)
+            // {
+            // ms2.cvs = CVUtil.trans(cvParams);
+            // }
+            
+            using (Scan scan = spectrum.scanList.scans[0])
+            {
+                ms2.rt = CVUtil.parseRT(scan, jobInfo);
+                ms2.injectionTime = CVUtil.parseInjectionTime(scan);
+                if (mobiInfo.unit == null || mobiInfo.type == null)
+                {
+                    CVUtil.parseMobility(scan, mobiInfo);
+                }
+                           
+                ms2.filterString = CVUtil.parseFilterString(scan, jobInfo); 
+                
+                // using (CVParamList cvParams = scan.cvParams)
+                // {
+                //     if (cvParams != null) ms2.cvs.AddRange(CVUtil.trans(cvParams));
+                // }
+            }
             return ms2;
         }
 
@@ -982,28 +1005,33 @@ namespace AirdPro.Converters
                 chromatogramIndex.ids.Add(chromatogram.id);
                 chromatogramIndex.cvs.Add(CVUtil.trans(chromatogram.cvParams));
 
-                var result = CVUtil.parseActivator(chromatogram.precursor.activation);
+                var result = CVUtil.parseActivator(chromatogram.precursor);
                 chromatogramIndex.activators.Add(result.activator);
                 chromatogramIndex.energies.Add(result.energy);
                 chromatogramIndex.polarities.Add(CVUtil.parsePolarity(chromatogram));
 
                 try
                 {
-                    WindowRange precursorMz = CVUtil.parseIsolationWindow(chromatogram.precursor, jobInfo);
-                    WindowRange productMz = CVUtil.parseIsolationWindow(chromatogram.product.isolationWindow, jobInfo);
-                    string ionPair = Math.Round(precursorMz.mz, 1) + "-" + Math.Round(productMz.mz, 1);
-                    if (mrmCompoundDict.ContainsKey(ionPair))
+                    using (var precursor = chromatogram.precursor)
                     {
-                        string compoundName = mrmCompoundDict[ionPair].name;
-                        chromatogramIndex.compounds.Add(compoundName);
+                        WindowRange precursorMz = CVUtil.parseIsolationWindow(precursor, jobInfo);
+                        using (var isolationWindow = chromatogram.product.isolationWindow)
+                        {
+                            WindowRange productMz = CVUtil.parseIsolationWindow(isolationWindow, jobInfo);
+                            string ionPair = Math.Round(precursorMz.mz, 1) + "-" + Math.Round(productMz.mz, 1);
+                            if (mrmCompoundDict.ContainsKey(ionPair))
+                            {
+                                string compoundName = mrmCompoundDict[ionPair].name;
+                                chromatogramIndex.compounds.Add(compoundName);
+                            }
+                            else
+                            {
+                                chromatogramIndex.compounds.Add(null);
+                            }
+                            chromatogramIndex.products.Add(productMz);
+                        }
+                        chromatogramIndex.precursors.Add(precursorMz);
                     }
-                    else
-                    {
-                        chromatogramIndex.compounds.Add(null);
-                    }
-
-                    chromatogramIndex.precursors.Add(precursorMz);
-                    chromatogramIndex.products.Add(productMz);
                 }
                 catch (Exception e)
                 {
@@ -1207,6 +1235,7 @@ namespace AirdPro.Converters
                 }
 
                 instruments.Add(instrument);
+                ic.Dispose();
             }
 
             airdInfo.instruments = instruments;
@@ -1218,6 +1247,7 @@ namespace AirdPro.Converters
                 software.name = soft.id;
                 software.version = soft.version;
                 softwares.Add(software);
+                soft.Dispose();
             }
 
             Software airdPro = new Software();
@@ -1343,7 +1373,7 @@ namespace AirdPro.Converters
             Spectrum spectrum = spectrumList.spectrum(index, true);
             double[] mzData = spectrum.getMZArray().data.Storage();
             double[] intData = spectrum.getIntensityArray().data.Storage();
-            
+
             var size = mzData.Length;
             int[] mzArray = new int[size];
             int[] intensityArray = new int[size];
@@ -1378,7 +1408,7 @@ namespace AirdPro.Converters
             arrays.Add(mzArray);
             arrays.Add(intensityArray);
             arrays.Add(mobilityNoArray);
-            
+
             spectrum.Dispose();
             return arrays;
         }
@@ -1493,40 +1523,44 @@ namespace AirdPro.Converters
             jobInfo.log(Tag.Pretreatment + totalSize, Status.Pretreatment);
             for (var i = 0; i < totalSize; i++)
             {
-                Spectrum spectrum = spectrumList.spectrum(i, false);
-                string msLevel = CVUtil.parseMsLevel(spectrum);
-                jobInfo.setStatus("Pre:" + i + "/" + totalSize);
-                //最后一个谱图,单独判断
-                if (i == totalSize - 1)
+                using (Spectrum spectrum = spectrumList.spectrum(i, false))
                 {
-                    if (msLevel.Equals(MsLevel.MS1))
+                    string msLevel = CVUtil.parseMsLevel(spectrum);
+                    jobInfo.setStatus("Pre:" + i + "/" + totalSize);
+                    //最后一个谱图,单独判断
+                    if (i == totalSize - 1)
                     {
-                        ms1List.Add(parseMS1(spectrum, i)); //如果是MS1谱图,加入到MS1List
-                    }
-
-                    if (msLevel.Equals(MsLevel.MS2))
-                    {
-                        MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
-                        addToMS2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
-                    }
-                }
-                else
-                {
-                    //如果这个谱图是MS1
-                    if (msLevel.Equals(MsLevel.MS1))
-                    {
-                        ms1List.Add(parseMS1(spectrum, i)); //加入MS1List
-                        Spectrum next = spectrumList.spectrum(i + 1);
-                        if (CVUtil.parseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
+                        if (msLevel.Equals(MsLevel.MS1))
                         {
-                            parentNum = i;
+                            ms1List.Add(parseMS1(spectrum, i)); //如果是MS1谱图,加入到MS1List
+                        }
+                        
+                        if (msLevel.Equals(MsLevel.MS2))
+                        {
+                            MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
+                            addToMS2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
                         }
                     }
-
-                    if (msLevel.Equals(MsLevel.MS2))
+                    else
                     {
-                        MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
-                        addToMS2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
+                        //如果这个谱图是MS1
+                        if (msLevel.Equals(MsLevel.MS1))
+                        {
+                            ms1List.Add(parseMS1(spectrum, i)); //加入MS1List
+                            using (Spectrum next = spectrumList.spectrum(i + 1))
+                            {
+                                if (CVUtil.parseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
+                                {
+                                    parentNum = i;
+                                }
+                            }
+                        }
+
+                        if (msLevel.Equals(MsLevel.MS2))
+                        {
+                            MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
+                            addToMS2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
+                        }
                     }
                 }
             }
@@ -1546,29 +1580,31 @@ namespace AirdPro.Converters
             {
                 progress++;
                 jobInfo.log(null, Tag.progress(Tag.Pre, progress, totalSize));
-                Spectrum spectrum = spectrumList.spectrum(i);
-                string msLevel = CVUtil.parseMsLevel(spectrum);
-                //如果这个谱图是MS1                          
-                if (msLevel.Equals(MsLevel.MS1))
+                using (Spectrum spectrum = spectrumList.spectrum(i))
                 {
-                    parentNum = i;
-                    ms1List.Add(parseMS1(spectrum, i));
-                }
-
-                //如果这个谱图是MS2
-                if (msLevel.Equals(MsLevel.MS2))
-                {
-                    MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
-                    //边扫描边建立SWATH WindowRange
-                    if (!rangeTable.Contains(ms2Index.precursor.mz))
+                    string msLevel = CVUtil.parseMsLevel(spectrum);
+                    //如果这个谱图是MS1                          
+                    if (msLevel.Equals(MsLevel.MS1))
                     {
-                        WindowRange range = ms2Index.precursor;
-                        ranges.Add(range);
-                        rangeTable.Add(range.mz, range);
+                        parentNum = i;
+                        ms1List.Add(parseMS1(spectrum, i));
                     }
 
-                    //DIA的MS2Map以precursorMz为key
-                    addToMS2Map(ms2Index.precursor.mz, ms2Index);
+                    //如果这个谱图是MS2
+                    if (msLevel.Equals(MsLevel.MS2))
+                    {
+                        MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
+                        //边扫描边建立SWATH WindowRange
+                        if (!rangeTable.Contains(ms2Index.precursor.mz))
+                        {
+                            WindowRange range = ms2Index.precursor;
+                            ranges.Add(range);
+                            rangeTable.Add(range.mz, range);
+                        }
+
+                        //DIA的MS2Map以precursorMz为key
+                        addToMS2Map(ms2Index.precursor.mz, ms2Index);
+                    }
                 }
             }
 
@@ -1585,40 +1621,43 @@ namespace AirdPro.Converters
             for (var i = 0; i < totalSize; i++)
             {
                 jobInfo.log(null, Tag.progress(Tag.Pre, i, totalSize));
-                Spectrum spectrum = spectrumList.spectrum(i);
-                string msLevel = CVUtil.parseMsLevel(spectrum);
-
-                //最后一个谱图,单独判断
-                if (i == totalSize - 1)
+                using (Spectrum spectrum = spectrumList.spectrum(i))
                 {
-                    if (msLevel.Equals(MsLevel.MS1))
+                    string msLevel = CVUtil.parseMsLevel(spectrum);
+                    //最后一个谱图,单独判断
+                    if (i == totalSize - 1)
                     {
-                        ms1List.Add(parseMS1(spectrum, i)); //如果是MS1谱图,加入到MS1List
-                    }
-
-                    if (msLevel.Equals(MsLevel.MS2))
-                    {
-                        MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
-                        addToMS2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
-                    }
-                }
-                else
-                {
-                    //如果这个谱图是MS1
-                    if (msLevel.Equals(MsLevel.MS1))
-                    {
-                        ms1List.Add(parseMS1(spectrum, i)); //加入MS1List
-                        Spectrum next = spectrumList.spectrum(i + 1);
-                        if (CVUtil.parseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
+                        if (msLevel.Equals(MsLevel.MS1))
                         {
-                            parentNum = i;
+                            ms1List.Add(parseMS1(spectrum, i)); //如果是MS1谱图,加入到MS1List
+                        }
+
+                        if (msLevel.Equals(MsLevel.MS2))
+                        {
+                            MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
+                            addToMS2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
                         }
                     }
-
-                    if (msLevel.Equals(MsLevel.MS2))
+                    else
                     {
-                        MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
-                        addToMS2Map(ms2Index.pNum, ms2Index); //如果这个谱图是MS2
+                        //如果这个谱图是MS1
+                        if (msLevel.Equals(MsLevel.MS1))
+                        {
+                            ms1List.Add(parseMS1(spectrum, i)); //加入MS1List
+                            using (Spectrum next = spectrumList.spectrum(i + 1))
+                            {
+                                if (CVUtil.parseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
+                                {
+                                    parentNum = i;
+                                }
+                            }
+                        }
+
+                        if (msLevel.Equals(MsLevel.MS2))
+                        {
+                            MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
+                            addToMS2Map(ms2Index.pNum, ms2Index); //如果这个谱图是MS2
+                        }
                     }
                 }
             }
@@ -1638,29 +1677,31 @@ namespace AirdPro.Converters
             {
                 progress++;
                 jobInfo.log(null, Tag.progress(Tag.Pre, progress, totalSize));
-                Spectrum spectrum = spectrumList.spectrum(i);
-                string msLevel = CVUtil.parseMsLevel(spectrum);
-                //如果这个谱图是MS1                          
-                if (msLevel.Equals(MsLevel.MS1))
+                using (Spectrum spectrum = spectrumList.spectrum(i))
                 {
-                    parentNum = i;
-                    ms1List.Add(parseMS1(spectrum, i));
-                }
-
-                //如果这个谱图是MS2
-                if (msLevel.Equals(MsLevel.MS2))
-                {
-                    MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
-                    //边扫描边建立SWATH WindowRange
-                    if (!rangeTable.Contains(ms2Index.precursor.mz))
+                    string msLevel = CVUtil.parseMsLevel(spectrum);
+                    //如果这个谱图是MS1                          
+                    if (msLevel.Equals(MsLevel.MS1))
                     {
-                        WindowRange range = ms2Index.precursor;
-                        ranges.Add(range);
-                        rangeTable.Add(range.mz, range);
+                        parentNum = i;
+                        ms1List.Add(parseMS1(spectrum, i));
                     }
 
-                    //DIA的MS2Map以precursorMz为key
-                    addToMS2Map(ms2Index.precursor.mz, ms2Index);
+                    //如果这个谱图是MS2
+                    if (msLevel.Equals(MsLevel.MS2))
+                    {
+                        MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
+                        //边扫描边建立SWATH WindowRange
+                        if (!rangeTable.Contains(ms2Index.precursor.mz))
+                        {
+                            WindowRange range = ms2Index.precursor;
+                            ranges.Add(range);
+                            rangeTable.Add(range.mz, range);
+                        }
+
+                        //DIA的MS2Map以precursorMz为key
+                        addToMS2Map(ms2Index.precursor.mz, ms2Index);
+                    }
                 }
             }
 
@@ -1677,48 +1718,55 @@ namespace AirdPro.Converters
             for (int i = 0; i < totalSize; i++)
             {
                 jobInfo.log(null, Tag.progress(Tag.Empty, (i + 1), totalSize));
-                Spectrum spectrum = spectrumList.spectrum(i);
-                string msLevel = CVUtil.parseMsLevel(spectrum);
-                //如果是最后一个谱图,那么单独判断
-                if (i == totalSize - 1)
+                using (Spectrum spectrum = spectrumList.spectrum(i))
                 {
-                    //如果是MS1谱图,那么直接跳过
+                    string msLevel = CVUtil.parseMsLevel(spectrum);
+                    //如果是最后一个谱图,那么单独判断
+                    if (i == totalSize - 1)
+                    {
+                        //如果是MS1谱图,那么直接跳过
+                        if (msLevel.Equals(MsLevel.MS1))
+                        {
+                            continue;
+                        }
+
+                        //如果是MS2谱图,加入到谱图组
+                        if (msLevel.Equals(MsLevel.MS2))
+                        {
+                            MsIndex ms2Index = parseMS2(spectrumList.spectrum(i), i, parentNum);
+                            addToMS2Map(ms2Index.precursor.mz, ms2Index);
+                            continue;
+                        }
+                    }
+
+                    //如果这个谱图是MS1
                     if (msLevel.Equals(MsLevel.MS1))
                     {
-                        continue;
+                        using (Spectrum next = spectrumList.spectrum(i + 1))
+                        {
+                            string msLevelNext = CVUtil.parseMsLevel(next);
+                            //如果下一个谱图仍然是MS1, 那么直接忽略这个谱图
+                            if (msLevelNext.Equals(MsLevel.MS1))
+                            {
+                                continue;
+                            }
+
+                            if (msLevelNext.Equals(MsLevel.MS2))
+                            {
+                                parentNum = i;
+                                ms1List.Add(parseMS1(spectrumList.spectrum(i), i));
+                            }
+                        }
                     }
 
-                    //如果是MS2谱图,加入到谱图组
                     if (msLevel.Equals(MsLevel.MS2))
                     {
-                        MsIndex ms2Index = parseMS2(spectrumList.spectrum(i), i, parentNum);
-                        addToMS2Map(ms2Index.precursor.mz, ms2Index);
-                        continue;
+                        using (var current = spectrumList.spectrum(i))
+                        {
+                            MsIndex ms2Index = parseMS2(current, i, parentNum);
+                            addToMS2Map(ms2Index.precursor.mz, ms2Index); //如果这个谱图是MS2
+                        }
                     }
-                }
-
-                //如果这个谱图是MS1
-                if (msLevel.Equals(MsLevel.MS1))
-                {
-                    Spectrum next = spectrumList.spectrum(i + 1);
-                    string msLevelNext = CVUtil.parseMsLevel(next);
-                    //如果下一个谱图仍然是MS1, 那么直接忽略这个谱图
-                    if (msLevelNext.Equals(MsLevel.MS1))
-                    {
-                        continue;
-                    }
-
-                    if (msLevelNext.Equals(MsLevel.MS2))
-                    {
-                        parentNum = i;
-                        ms1List.Add(parseMS1(spectrumList.spectrum(i), i));
-                    }
-                }
-
-                if (msLevel.Equals(MsLevel.MS2))
-                {
-                    MsIndex ms2Index = parseMS2(spectrumList.spectrum(i), i, parentNum);
-                    addToMS2Map(ms2Index.precursor.mz, ms2Index); //如果这个谱图是MS2
                 }
             }
 

@@ -1,10 +1,10 @@
 ﻿/*
  * Copyright (c) 2020 CSi Studio
  * AirdSDK and AirdPro are licensed under Mulan PSL v2.
- * You can use this software according to the terms and conditions of the Mulan PSL v2. 
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
- *          http://license.coscl.org.cn/MulanPSL2 
- * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.  
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
  * See the Mulan PSL v2 for more details.
  */
 
@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdSDK.Beans;
+using CSharpFastPFOR;
 using pwiz.CLI.cv;
 using pwiz.CLI.data;
 using pwiz.CLI.msdata;
@@ -53,16 +54,22 @@ public class CVUtil
 
     public static List<CV> trans(CVParamList paramList)
     {
-        if (paramList == null) return null;
-
-        var cvList = new List<CV>();
-        foreach (var cvParam in paramList)
+        if (paramList == null)
         {
-            if (skipList.Contains(cvParam.cvid)) continue;
-
-            cvList.Add(build(cvParam));
+            return null;
         }
 
+        var cvList = new List<CV>();
+        for (var i = 0; i < paramList.Count; i++)
+        {
+            CVParam cv = paramList[i];
+            CVID id = cv.cvid;
+            if (skipList.Contains(id)) continue;
+            cvList.Add(build(cv));
+            cv.Dispose();
+        }
+        
+        paramList.Dispose();
         return cvList;
     }
 
@@ -70,26 +77,35 @@ public class CVUtil
     {
         var cv = new CV();
         cv.cvid = (int)param.cvid + ":" + param.name;
-        cv.value = param.value.ToString();
+        using (var value = param.value)
+        {
+            cv.value = (String)value;
+        }
+        
         var unitsId = (int)param.units;
         if (unitsId != -1) cv.units = (int)param.units + ":" + param.unitsName;
-
         return cv;
     }
 
     public static string parseMsLevel(Spectrum spectrum)
     {
-        return spectrum.cvParamChild(CVID.MS_ms_level).value.ToString();
+        using (CVParam cv = spectrum.cvParamChild(CVID.MS_ms_level))
+        {
+            string msLevel = cv.value.ToString();
+            return msLevel;
+        }
     }
 
     public static double parseRT(Scan scan, JobInfo jobInfo)
     {
-        var cv = scan.cvParamChild(CVID.MS_scan_start_time);
-        var time = double.Parse(cv.value.ToString());
-        if (cv.unitsName.Equals("minute")) time = time * 60;
+        using (var cv = scan.cvParamChild(CVID.MS_scan_start_time))
+        {
+            var time = double.Parse(cv.value.ToString());
+            if (cv.unitsName.Equals("minute")) time = time * 60;
 
-        time = Math.Round(time * 10000) / 10000;
-        return time;
+            time = Math.Round(time * 10000) / 10000;
+            return time;
+        }
     }
 
     public static string parseFilterString(Scan scan, JobInfo jobInfo)
@@ -97,7 +113,9 @@ public class CVUtil
         if (scan.hasCVParamChild(CVID.MS_filter_string))
         {
             var cv = scan.cvParamChild(CVID.MS_filter_string);
-            return cv.value.ToString();
+            string filterString = cv.value.ToString();
+            cv.Dispose();
+            return filterString;
         }
         else
         {
@@ -107,16 +125,15 @@ public class CVUtil
 
     public static void parseMobility(Scan scan, MobiInfo mobiInfo)
     {
-        // float mobility = 0f;
         if (scan.hasCVParamChild(CVID.MS_inverse_reduced_ion_mobility))
         {
-            var cv = scan.cvParamChild(CVID.MS_inverse_reduced_ion_mobility);
+            using var cv = scan.cvParamChild(CVID.MS_inverse_reduced_ion_mobility);
             mobiInfo.unit = cv.unitsName;
             mobiInfo.type = MobilityType.TIMS;
         }
         else if (scan.hasCVParamChild(CVID.MS_ion_mobility_drift_time))
         {
-            var cv = scan.cvParamChild(CVID.MS_ion_mobility_drift_time);
+            using var cv = scan.cvParamChild(CVID.MS_ion_mobility_drift_time);
             mobiInfo.unit = cv.unitsName;
             mobiInfo.type = MobilityType.DTIMS;
         }
@@ -126,7 +143,8 @@ public class CVUtil
     {
         try
         {
-            return Convert.ToInt64(Convert.ToDouble(spectrum.cvParamChild(CVID.MS_TIC).value.ToString()));
+            using var cv = spectrum.cvParamChild(CVID.MS_TIC);
+            return Convert.ToInt64(Convert.ToDouble(cv.value.ToString()));
         }
         catch (Exception)
         {
@@ -138,7 +156,8 @@ public class CVUtil
     {
         try
         {
-            return double.Parse(spectrum.cvParamChild(CVID.MS_base_peak_intensity).value.ToString());
+            using var cv = spectrum.cvParamChild(CVID.MS_base_peak_intensity);
+            return double.Parse(cv.value.ToString());
         }
         catch (Exception)
         {
@@ -150,7 +169,8 @@ public class CVUtil
     {
         try
         {
-            return double.Parse(spectrum.cvParamChild(CVID.MS_base_peak_m_z).value.ToString());
+            using var cv = spectrum.cvParamChild(CVID.MS_base_peak_m_z);
+            return double.Parse(cv.value.ToString());
         }
         catch (Exception)
         {
@@ -163,9 +183,12 @@ public class CVUtil
          */
     public static string parsePolarity(Spectrum spectrum)
     {
-        if (!spectrum.cvParamChild(CVID.MS_negative_scan).cvid.Equals(CVID.CVID_Unknown))
+        using var cvNeg = spectrum.cvParamChild(CVID.MS_negative_scan);
+        if (!cvNeg.cvid.Equals(CVID.CVID_Unknown))
             return Polarity.NEGATIVE;
-        if (!spectrum.cvParamChild(CVID.MS_positive_scan).cvid.Equals(CVID.CVID_Unknown))
+
+        using var cvPos = spectrum.cvParamChild(CVID.MS_positive_scan);
+        if (!cvPos.cvid.Equals(CVID.CVID_Unknown))
             return Polarity.POSITIVE;
         return "Unknown";
     }
@@ -175,9 +198,12 @@ public class CVUtil
        */
     public static string parsePolarity(Chromatogram chromatogram)
     {
-        if (!chromatogram.cvParamChild(CVID.MS_negative_scan).cvid.Equals(CVID.CVID_Unknown))
+        using var cvNeg = chromatogram.cvParamChild(CVID.MS_negative_scan);
+        if (!cvNeg.cvid.Equals(CVID.CVID_Unknown))
             return Polarity.NEGATIVE;
-        if (!chromatogram.cvParamChild(CVID.MS_positive_scan).cvid.Equals(CVID.CVID_Unknown))
+
+        using var cvPos = chromatogram.cvParamChild(CVID.MS_positive_scan);
+        if (!cvPos.cvid.Equals(CVID.CVID_Unknown))
             return Polarity.POSITIVE;
         return "Unknown";
     }
@@ -187,19 +213,37 @@ public class CVUtil
          */
     public static string parseMsType(Spectrum spectrum)
     {
-        if (!spectrum.cvParamChild(CVID.MS_profile_spectrum).cvid.Equals(CVID.CVID_Unknown))
-            return MSType.PROFILE;
-        if (!spectrum.cvParamChild(CVID.MS_centroid_spectrum).cvid.Equals(CVID.CVID_Unknown))
-            return MSType.CENTROIDED;
+        using (var cvProfile = spectrum.cvParamChild(CVID.MS_profile_spectrum))
+        {
+            if (!cvProfile.cvid.Equals(CVID.CVID_Unknown))
+                return MSType.PROFILE;
+        }
+
+
+        using (var cvCentroid = spectrum.cvParamChild(CVID.MS_centroid_spectrum))
+        {
+            if (!cvCentroid.cvid.Equals(CVID.CVID_Unknown))
+                return MSType.CENTROIDED;
+        }
+
         return MSType.UNKNOWN;
     }
 
     public static string parseMsType(Chromatogram chromatogram)
     {
-        if (!chromatogram.cvParamChild(CVID.MS_profile_spectrum).cvid.Equals(CVID.CVID_Unknown))
-            return MSType.PROFILE;
-        if (!chromatogram.cvParamChild(CVID.MS_centroid_spectrum).cvid.Equals(CVID.CVID_Unknown))
-            return MSType.CENTROIDED;
+        using (var cvProfile = chromatogram.cvParamChild(CVID.MS_profile_spectrum))
+        {
+            if (!cvProfile.cvid.Equals(CVID.CVID_Unknown))
+                return MSType.PROFILE;
+        }
+
+
+        using (var cvCentroid = chromatogram.cvParamChild(CVID.MS_centroid_spectrum))
+        {
+            if (!cvCentroid.cvid.Equals(CVID.CVID_Unknown))
+                return MSType.CENTROIDED;
+        }
+
         return MSType.UNKNOWN;
     }
 
@@ -207,30 +251,32 @@ public class CVUtil
          * 解析activation以及对应的energy
          * 需要从ms2的谱图上获取
          */
-    public static (string activator, float energy) parseActivator(Activation activation)
+    public static (string activator, float energy) parseActivator(Precursor precursor)
     {
-        if (activation == null) return (Activator.UNKNOWN, -1);
+        using (Activation activation = precursor.activation)
+        {
+            if (activation == null) return (Activator.UNKNOWN, -1);
 
-        var act = "";
-        float ene = -1;
+            var act = "";
+            float ene = -1;
 
-        if (!activation.cvParamChild(CVID.MS_HCD).cvid.Equals(CVID.CVID_Unknown))
-            act = Activator.HCD;
-        else if (!activation.cvParamChild(CVID.MS_CID).cvid.Equals(CVID.CVID_Unknown))
-            act = Activator.CID;
-        else if (!activation.cvParamChild(CVID.MS_ECD).cvid.Equals(CVID.CVID_Unknown))
-            act = Activator.ECD;
-        else if (!activation.cvParamChild(CVID.MS_ETD).cvid.Equals(CVID.CVID_Unknown))
-            act = Activator.ETD;
-        else
-            act = Activator.UNKNOWN;
+            if (!activation.cvParamChild(CVID.MS_HCD).cvid.Equals(CVID.CVID_Unknown))
+                act = Activator.HCD;
+            else if (!activation.cvParamChild(CVID.MS_CID).cvid.Equals(CVID.CVID_Unknown))
+                act = Activator.CID;
+            else if (!activation.cvParamChild(CVID.MS_ECD).cvid.Equals(CVID.CVID_Unknown))
+                act = Activator.ECD;
+            else if (!activation.cvParamChild(CVID.MS_ETD).cvid.Equals(CVID.CVID_Unknown))
+                act = Activator.ETD;
+            else
+                act = Activator.UNKNOWN;
 
-        if (!activation.cvParamChild(CVID.MS_collision_energy).cvid.Equals(CVID.CVID_Unknown))
-            ene = Convert.ToSingle(activation.cvParamChild(CVID.MS_collision_energy).value.ToString());
-        else
-            ene = -1;
-
-        return (act, ene);
+            if (!activation.cvParamChild(CVID.MS_collision_energy).cvid.Equals(CVID.CVID_Unknown))
+                ene = Convert.ToSingle(activation.cvParamChild(CVID.MS_collision_energy).value.ToString());
+            else
+                ene = -1;
+            return (act, ene);
+        }
     }
 
     public static double parsePrecursorParams(IsolationWindow isolationWindow, CVID cvid, JobInfo jobInfo)
@@ -242,9 +288,14 @@ public class CVUtil
             try
             {
                 if (isolationWindow.hasCVParamChild(cvid))
-                    result = double.Parse(isolationWindow.cvParamChild(cvid).value.ToString());
+                {
+                    using var cv = isolationWindow.cvParamChild(cvid);
+                    result = double.Parse(cv.value.ToString());
+                }
                 else
+                {
                     result = 0;
+                }
             }
             catch (Exception e)
             {
@@ -257,11 +308,11 @@ public class CVUtil
 
         if (result == null)
         {
-            throw new Exception(ResultCode.Parse_Double_Error + ":" + isolationWindow.cvParamChild(cvid).value);
+            using var cv = isolationWindow.cvParamChild(cvid);
+            throw new Exception(ResultCode.Parse_Double_Error + ":" + cv.value);
         }
-       
+
         return result.Value;
-        
     }
 
     public static double parsePrecursorWidth(IsolationWindow isolationWindow, JobInfo jobInfo)
@@ -274,16 +325,25 @@ public class CVUtil
             try
             {
                 if (isolationWindow.hasCVParamChild(CVID.MS_isolation_window_lower_offset))
-                    lower = double.Parse(isolationWindow.cvParamChild(CVID.MS_isolation_window_lower_offset)
-                        .value.ToString());
+                {
+                    using var cv = isolationWindow.cvParamChild(CVID.MS_isolation_window_lower_offset);
+                    lower = double.Parse(cv.value.ToString());
+                }
                 else
+                {
                     lower = 0;
+                }
+
 
                 if (isolationWindow.hasCVParamChild(CVID.MS_isolation_window_upper_offset))
-                    upper = double.Parse(isolationWindow.cvParamChild(CVID.MS_isolation_window_upper_offset)
-                        .value.ToString());
+                {
+                    using var cv = isolationWindow.cvParamChild(CVID.MS_isolation_window_upper_offset);
+                    upper = double.Parse(cv.value.ToString());
+                }
                 else
+                {
                     upper = 0;
+                }
             }
             catch (FormatException e)
             {
@@ -339,7 +399,7 @@ public class CVUtil
         var charge = parsePrecursorCharge(precursor, jobInfo);
         windowRange.charge = charge;
         windowRange.mz = precursorMz;
-        
+
         windowRange.start = precursorMz - lowerOffset;
         windowRange.end = precursorMz + upperOffset;
         return windowRange;
@@ -360,12 +420,14 @@ public class CVUtil
 
     public static float parseInjectionTime(Scan scan)
     {
-        var cv = scan.cvParamChild(CVID.MS_ion_injection_time);
-        if (cv != null && cv.value != null)
+        using (var cv = scan.cvParamChild(CVID.MS_ion_injection_time))
         {
-            return (float)Math.Round(cv.value * 10000) / 10000;
-        }
+            if (cv != null && cv.value != null)
+            {
+                return (float)Math.Round(cv.value * 10000) / 10000;
+            }
 
-        return -1;
+            return -1;
+        }
     }
 }

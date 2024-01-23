@@ -23,18 +23,18 @@ namespace AirdPro.Converters
         public long startPosition = 0; //文件指针
         protected int totalSize = 0; //总计的谱图数目
         protected int totalChroma = 0; //总计的色谱数目
-        
-        public void start()
+
+        protected void start()
         {
             stopwatch.Start();
             jobInfo.log(Tag.Ready_To_Start, Status.Starting);
             AppLogs.WriteInfo(Tag.BaseInfo + jobInfo.getJsonInfo(), true);
         }
-        
-        public void initDirectory()
+
+        protected void initDirectory()
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(jobInfo.airdFilePath));
-            Directory.CreateDirectory(Path.GetDirectoryName(jobInfo.airdJsonFilePath));
+            Directory.CreateDirectory(Path.GetDirectoryName(jobInfo.airdFilePath) ?? string.Empty);
+            Directory.CreateDirectory(Path.GetDirectoryName(jobInfo.airdJsonFilePath) ?? string.Empty);
         }
         
         public abstract void init(JobInfo jobInfo);
