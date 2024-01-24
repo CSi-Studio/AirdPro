@@ -14,7 +14,7 @@ using Activator = AirdPro.Constants.Activator;
 
 namespace AirdPro.Converters
 {
-    public class TdmsConverter : IConverter
+    public class TdmsConverter : Converter
     {
         protected List<WindowRange> ranges = new List<WindowRange>(); //SWATH/DIA Window的窗口
         protected List<BlockIndex> indexList = new List<BlockIndex>(); //用于存储的全局的SWATH List
@@ -31,25 +31,25 @@ namespace AirdPro.Converters
         {
         }
 
-        public override void init(JobInfo jobInfo)
+        public override void Init(JobInfo jobInfo)
         {
-            this.jobInfo = jobInfo;
+            this.JobInfo = jobInfo;
             tdmsComp = new TdmsComp(jobInfo);
         }
 
-        public override void doConvert()
+        public override void DoConvert()
         {
             try
             {
-                start();
-                initDirectory();
+                Start();
+                InitDirectory();
                 long size = 0;
 
-                using (airdStream = new FileStream(jobInfo.airdFilePath, FileMode.Create))
+                using (AirdStream = new FileStream(JobInfo.airdFilePath, FileMode.Create))
                 {
-                    using (airdJsonStream = new FileStream(jobInfo.airdJsonFilePath, FileMode.Create))
+                    using (AirdJsonStream = new FileStream(JobInfo.airdJsonFilePath, FileMode.Create))
                     {
-                        using (var tdms = new NationalInstruments.Tdms.File(jobInfo.inputPath))
+                        using (var tdms = new NationalInstruments.Tdms.File(JobInfo.inputPath))
                         {
                             tdms.Open();
                             parseFirstRT(tdms);
@@ -64,7 +64,7 @@ namespace AirdPro.Converters
             }
             catch (Exception ee)
             {
-                jobInfo.log(ee.Message);
+                JobInfo.log(ee.Message);
             }
             finally
             {
@@ -94,9 +94,9 @@ namespace AirdPro.Converters
 
         public void pretreatment(NationalInstruments.Tdms.File tdms)
         {
-            FileInfo info = new FileInfo(jobInfo.inputPath);
+            FileInfo info = new FileInfo(JobInfo.inputPath);
             int spectraCount = 0;
-            jobInfo.log(Tag.Pretreatment + totalSize, Status.Pretreatment);
+            JobInfo.log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
 
             int totalCount = 1;
             foreach (Group group in tdms)
@@ -125,11 +125,11 @@ namespace AirdPro.Converters
                 }
             }
 
-            fileSize = info.Length;
-            totalSize = spectraCount;
+            FileSize = info.Length;
+            TotalSpectraCount = spectraCount;
 
-            jobInfo.log(Tag.Effective_MS1_List_Size + ms1List.Count);
-            jobInfo.log(Tag.Start_Processing_MS1_List);
+            JobInfo.log(Tag.Effective_MS1_List_Size + ms1List.Count);
+            JobInfo.log(Tag.Start_Processing_MS1_List);
         }
 
         public double parseRT(Channel channel)
@@ -149,9 +149,9 @@ namespace AirdPro.Converters
         {
             BlockIndex index = new BlockIndex();
             index.level = 1;
-            index.startPtr = startPosition;
+            index.startPtr = StartPosition;
             tdmsComp.compressMS1(this, index);
-            index.endPtr = startPosition;
+            index.endPtr = StartPosition;
             indexList.Add(index);
         }
 
@@ -200,42 +200,42 @@ namespace AirdPro.Converters
             {
                 index.mzs.Add(ts.mzArrayBytes.Length);
                 index.ints.Add(ts.intArrayBytes.Length);
-                startPosition = startPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;
-                airdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
-                airdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
+                StartPosition = StartPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;
+                AirdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
+                AirdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
             }
 
             if (ts.mobilityArrayBytes != null)
             {
                 index.mobilities.Add(ts.mobilityArrayBytes.Length);
-                startPosition += ts.mobilityArrayBytes.Length;
-                airdStream.Write(ts.mobilityArrayBytes, 0, ts.mobilityArrayBytes.Length);
+                StartPosition += ts.mobilityArrayBytes.Length;
+                AirdStream.Write(ts.mobilityArrayBytes, 0, ts.mobilityArrayBytes.Length);
             }
         }
 
         public void writeToAirdInfoFile()
         {
-            jobInfo.log(Tag.Write_Index_File, Status.Writing_Index_File);
+            JobInfo.log(Tag.Write_Index_File, Status.Writing_Index_File);
             AirdInfo airdInfo = buildAirdInfo();
 
-            if (jobInfo.config.compressedIndex)
+            if (JobInfo.config.compressedIndex)
             {
                 List<BlockIndex> indexList = airdInfo.indexList;
                 string indexListStr = JsonConvert.SerializeObject(indexList,
                     new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 byte[] indexListByte = new ZstdWrapper().encode(Encoding.Default.GetBytes(indexListStr));
-                airdInfo.indexStartPtr = startPosition;
-                startPosition += indexListByte.Length;
-                airdInfo.indexEndPtr = startPosition;
+                airdInfo.indexStartPtr = StartPosition;
+                StartPosition += indexListByte.Length;
+                airdInfo.indexEndPtr = StartPosition;
                 airdInfo.indexList = null;
-                airdStream.Write(indexListByte, 0, indexListByte.Length);
+                AirdStream.Write(indexListByte, 0, indexListByte.Length);
             }
 
             string airdInfoStr = JsonConvert.SerializeObject(airdInfo,
                 new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             byte[] airdBytes = Encoding.Default.GetBytes(airdInfoStr);
-            startPosition += airdBytes.Length;
-            airdJsonStream.Write(airdBytes, 0, airdBytes.Length);
+            StartPosition += airdBytes.Length;
+            AirdJsonStream.Write(airdBytes, 0, airdBytes.Length);
         }
 
         public AirdInfo buildAirdInfo()
@@ -245,13 +245,13 @@ namespace AirdPro.Converters
             List<ParentFile> parentFiles = new List<ParentFile>();
             
             //Basic Job Info
-            airdInfo.scene = jobInfo.config.scene;
-            airdInfo.airdPath = jobInfo.airdFilePath;
-            airdInfo.fileSize = fileSize;
+            airdInfo.scene = JobInfo.config.scene;
+            airdInfo.airdPath = JobInfo.airdFilePath;
+            airdInfo.fileSize = FileSize;
             airdInfo.createDate = DateTime.Now.ToString();
-            airdInfo.type = jobInfo.type;
+            airdInfo.type = JobInfo.type;
             // airdInfo.totalCount = msd.run.spectrumList.size();
-            airdInfo.creator = jobInfo.config.creator;
+            airdInfo.creator = JobInfo.config.creator;
 
             //Scan index and window range info
             airdInfo.rangeList = ranges;
@@ -272,16 +272,16 @@ namespace AirdPro.Converters
             Compressor intCompressor = new Compressor(Compressor.TARGET_INTENSITY);
             Compressor mobiCompressor = new Compressor(Compressor.TARGET_MOBILITY);
             
-            mzCompressor.addMethod(jobInfo.config.mzIntComp.ToString());
-            mzCompressor.addMethod(jobInfo.config.mzByteComp.ToString());
-            mzCompressor.precision = jobInfo.config.mzPrecision;
+            mzCompressor.addMethod(JobInfo.config.mzIntComp.ToString());
+            mzCompressor.addMethod(JobInfo.config.mzByteComp.ToString());
+            mzCompressor.precision = JobInfo.config.mzPrecision;
 
-            intCompressor.addMethod(jobInfo.config.intIntComp.ToString());
-            intCompressor.addMethod(jobInfo.config.intByteComp.ToString());
+            intCompressor.addMethod(JobInfo.config.intIntComp.ToString());
+            intCompressor.addMethod(JobInfo.config.intByteComp.ToString());
             intCompressor.precision = tdmsComp.intensityPrecision;
 
-            mobiCompressor.addMethod(jobInfo.config.mobiIntComp.ToString());
-            mobiCompressor.addMethod(jobInfo.config.mobiByteComp.ToString());
+            mobiCompressor.addMethod(JobInfo.config.mobiIntComp.ToString());
+            mobiCompressor.addMethod(JobInfo.config.mobiByteComp.ToString());
             mobiCompressor.precision = 10000000;
             
             comps.Add(mzCompressor);
@@ -289,17 +289,17 @@ namespace AirdPro.Converters
             comps.Add(mobiCompressor);
             airdInfo.compressors = comps;
             
-            airdInfo.ignoreZeroIntensityPoint = jobInfo.config.ignoreZeroIntensity;
+            airdInfo.ignoreZeroIntensityPoint = JobInfo.config.ignoreZeroIntensity;
             airdInfo.version = SoftwareInfo.VERSION;
             return airdInfo;
         }
 
         public void finish()
         {
-            stopwatch.Stop();
-            jobInfo.refreshReport = true;
-            jobInfo.log(Tag.Total_Time_Cost + stopwatch.Elapsed.TotalSeconds, Status.Finished);
-            jobInfo.setStatus(ProcessingStatus.FINISHED);
+            Stopwatch.Stop();
+            JobInfo.refreshReport = true;
+            JobInfo.log(Tag.Total_Time_Cost + Stopwatch.Elapsed.TotalSeconds, Status.Finished);
+            JobInfo.setStatus(ProcessingStatus.FINISHED);
         }
     }
 }

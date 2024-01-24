@@ -123,7 +123,7 @@ namespace AirdPro.Asyncs
                 try
                 {
                     jobInfo.setStatus(RUNNING);
-                    IConverter converter = null;
+                    Converter converter = null;
                     if (jobInfo.format.Equals(FileFormat.TDMS))
                     {
                         converter = new TdmsConverter();
@@ -133,8 +133,8 @@ namespace AirdPro.Asyncs
                         converter = new PwizConverter();
                     }
                  
-                    converter.init(jobInfo);
-                    converter.doConvert();
+                    converter.Init(jobInfo);
+                    converter.DoConvert();
                     jobInfo.setStatus(FINISHED);
                     break;
                 }

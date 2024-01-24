@@ -40,11 +40,9 @@
             this.btnSaveToLocal = new System.Windows.Forms.Button();
             this.tbNameConfig = new System.Windows.Forms.TextBox();
             this.lblNameConfig = new System.Windows.Forms.Label();
-            this.cbConfigStack = new System.Windows.Forms.CheckBox();
             this.lblConfigIntIntComp = new System.Windows.Forms.Label();
             this.cbIntIntComp = new System.Windows.Forms.ComboBox();
             this.cbMzByteComp = new System.Windows.Forms.ComboBox();
-            this.cbConfigStackLayers = new System.Windows.Forms.ComboBox();
             this.lblConfigMzIntComp = new System.Windows.Forms.Label();
             this.cbMzIntComp = new System.Windows.Forms.ComboBox();
             this.lblConfigOperator = new System.Windows.Forms.Label();
@@ -95,7 +93,6 @@
             this.tabs.SuspendLayout();
             this.pageComputation.SuspendLayout();
             this.pageSearchEngine.SuspendLayout();
-            this.pageStorage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxTasks)).BeginInit();
             this.SuspendLayout();
             // 
@@ -190,19 +187,6 @@
             this.lblNameConfig.TabIndex = 136;
             this.lblNameConfig.Text = "Config Name";
             // 
-            // cbConfigStack
-            // 
-            this.cbConfigStack.AutoSize = true;
-            this.cbConfigStack.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cbConfigStack.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cbConfigStack.Location = new System.Drawing.Point(8, 8);
-            this.cbConfigStack.Name = "cbConfigStack";
-            this.cbConfigStack.Size = new System.Drawing.Size(93, 21);
-            this.cbConfigStack.TabIndex = 135;
-            this.cbConfigStack.Text = "Stack Layer";
-            this.cbConfigStack.UseVisualStyleBackColor = true;
-            this.cbConfigStack.CheckedChanged += new System.EventHandler(this.cbConfigStack_CheckedChanged);
-            // 
             // lblConfigIntIntComp
             // 
             this.lblConfigIntIntComp.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -236,17 +220,6 @@
             this.cbMzByteComp.Name = "cbMzByteComp";
             this.cbMzByteComp.Size = new System.Drawing.Size(82, 25);
             this.cbMzByteComp.TabIndex = 131;
-            // 
-            // cbConfigStackLayers
-            // 
-            this.cbConfigStackLayers.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbConfigStackLayers.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cbConfigStackLayers.FormattingEnabled = true;
-            this.cbConfigStackLayers.Items.AddRange(new object[] { "32", "64", "128", "256", "512", "1024" });
-            this.cbConfigStackLayers.Location = new System.Drawing.Point(107, 4);
-            this.cbConfigStackLayers.Name = "cbConfigStackLayers";
-            this.cbConfigStackLayers.Size = new System.Drawing.Size(82, 25);
-            this.cbConfigStackLayers.TabIndex = 129;
             // 
             // lblConfigMzIntComp
             // 
@@ -736,8 +709,6 @@
             // 
             // pageStorage
             // 
-            this.pageStorage.Controls.Add(this.cbConfigStackLayers);
-            this.pageStorage.Controls.Add(this.cbConfigStack);
             this.pageStorage.Location = new System.Drawing.Point(4, 54);
             this.pageStorage.Name = "pageStorage";
             this.pageStorage.Size = new System.Drawing.Size(603, 346);
@@ -849,8 +820,6 @@
             this.pageComputation.ResumeLayout(false);
             this.pageComputation.PerformLayout();
             this.pageSearchEngine.ResumeLayout(false);
-            this.pageStorage.ResumeLayout(false);
-            this.pageStorage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxTasks)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -884,8 +853,6 @@
         public System.Windows.Forms.ComboBox cbMzIntComp;
         public System.Windows.Forms.ComboBox cbMzByteComp;
         public System.Windows.Forms.ComboBox cbIntIntComp;
-        public System.Windows.Forms.CheckBox cbConfigStack;
-        public System.Windows.Forms.ComboBox cbConfigStackLayers;
         private System.Windows.Forms.ContextMenuStrip contextMenu;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         public System.Windows.Forms.ComboBox cbIntByteComp;

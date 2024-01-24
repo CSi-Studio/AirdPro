@@ -169,7 +169,7 @@ namespace AirdPro.Converters
         //         TempScan ts = new TempScan(i, parseRT(spectrum.scanList.scans[0]), parseTIC(spectrum),
         //             parseBasePeakIntensity(spectrum), parseBasePeakMz(spectrum),
         //             CVUtil.trans(spectrum.cvParams));
-        //         compressor.compress(spectrum, ts);
+        //         compressor.Compress(spectrum, ts);
         //         ms2List.Add(ts);
         //     }
         //     catch (Exception exception)

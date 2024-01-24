@@ -19,61 +19,55 @@ namespace AirdPro.Algorithms
 {
     public abstract class ICompressor
     {
-        public bool multiThread = true;
-        public int mzPrecision = 100000;
-        public bool ignoreZero = true;
-        public bool isCentroid = false;
-        public bool includeCV = true;
-        public int digit = 8;
+        public bool MultiThread = true;
+        public int MzPrecision = 100000;
+        public bool IgnoreZero = true;
+        public bool IsCentroid = false;
+        public int Digit = 8;
 
-        public SortedIntComp mzIntComp;
-        public ByteComp mzByteComp;
-        public IntComp intIntComp;
-        public ByteComp intByteComp;
-        public IntComp mobiIntComp;
-        public ByteComp mobiByteComp;
+        public SortedIntComp MzIntComp;
+        public ByteComp MzByteComp;
+        public IntComp IntIntComp;
+        public ByteComp IntByteComp;
+        public IntComp MobiIntComp;
+        public ByteComp MobiByteComp;
 
-        public SortedIntComp rtIntComp4Chroma;
-        public ByteComp rtByteComp4Chroma;
-        public IntComp intIntComp4Chroma;
-        public ByteComp intByteComp4Chroma;
+        public SortedIntComp RtIntComp4Chroma;
+        public ByteComp RtByteComp4Chroma;
+        public IntComp IntIntComp4Chroma;
+        public ByteComp IntByteComp4Chroma;
 
-        public Dictionary<double, int> mobiDict;
-        public int intensityPrecision;
+        public Dictionary<double, int> MobiDict;
+        public int IntensityPrecision;
 
-        public ICompressor(IConverter converter)
+        public ICompressor(Converter converter)
         {
-            this.multiThread = converter.jobInfo.config.threadAccelerate;
-            this.mzPrecision = converter.jobInfo.config.mzPrecision;
-            this.ignoreZero = converter.jobInfo.config.ignoreZeroIntensity;
-            this.isCentroid = converter.jobInfo.config.centroid;
-            this.includeCV = true;
-            this.digit = converter.jobInfo.config.digit;
+            MultiThread = converter.JobInfo.config.threadAccelerate;
+            MzPrecision = converter.JobInfo.config.mzPrecision;
+            IgnoreZero = converter.JobInfo.config.ignoreZeroIntensity;
+            IsCentroid = converter.JobInfo.config.centroid;
+            Digit = converter.JobInfo.config.digit;
         }
 
         /**
          * 由于色谱图数据量小, 使用固定IBP+Zstd的固定组合压缩器进行压缩
          */
-        public void initForChromatogram()
+        public void InitForChromatogram()
         {
-            rtIntComp4Chroma = new IntegratedVarByteWrapper();
-            rtByteComp4Chroma = new ZstdWrapper();
-            intIntComp4Chroma = new VarByteWrapper();
-            intByteComp4Chroma = new ZstdWrapper();
-            // rtIntComp4Chroma = new SortIntEmpty();
-            // rtByteComp4Chroma = new ZlibWrapper();
-            // intIntComp4Chroma = new Empty();
-            // intByteComp4Chroma = new ZlibWrapper();
+            RtIntComp4Chroma = new IntegratedVarByteWrapper();
+            RtByteComp4Chroma = new ZstdWrapper();
+            IntIntComp4Chroma = new VarByteWrapper();
+            IntByteComp4Chroma = new ZstdWrapper();
         }
 
-        public abstract void compressMS1(PwizConverter converter, BlockIndex index);
+        public abstract void CompressMs1(PwizConverter converter, BlockIndex index);
 
-        public abstract void compressMS2(PwizConverter converter, List<MsIndex> ms2List, BlockIndex index);
+        public abstract void CompressMs2(PwizConverter converter, List<MsIndex> ms2List, BlockIndex index);
 
-        public abstract void compress(Spectrum spectrum, TempScan ts);
+        public abstract void Compress(Spectrum spectrum, TempScan ts);
 
-        public abstract void compressMobility(Spectrum spectrum, TempScan ts);
+        public abstract void CompressMobility(Spectrum spectrum, TempScan ts);
 
-        public abstract void compress(Chromatogram chromatogram, TempScanChroma ts);
+        public abstract void Compress(Chromatogram chromatogram, TempScanChroma ts);
     }
 }
