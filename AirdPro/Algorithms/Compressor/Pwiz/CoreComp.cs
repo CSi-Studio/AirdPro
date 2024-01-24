@@ -437,6 +437,56 @@ namespace AirdPro.Algorithms
             int step = 1;
             long totalPoint = 0;
             ConcurrentDictionary<int, ByteColumn> treeColumn = new ConcurrentDictionary<int, ByteColumn>();
+            
+            // 原有的循环处理逻辑
+            // foreach (int mz in totalMzs)
+            // {
+            //     List<int> indexIdList = new List<int>();
+            //     List<int> intensityList = new List<int>();
+            //     step++;
+            //     if (step % 100000 == 0)
+            //     {
+            //         converter.jobInfo.log(null, Tag.progress(Tag.Column, step, totalMzs.Length));
+            //     }
+            //
+            //     for (var index = 0; index < rts.Count; index++)
+            //     {
+            //         double rt = rts[index];
+            //         TempSpectrum spectrum = rowTable[rt];
+            //         int[] currentMzs = spectrum.mzs;
+            //         float[] currentInts = spectrum.intensities;
+            //         int iter = ptrDict[rt];
+            //         bool effect = false;
+            //         double intensity = 0;
+            //         while (iter < currentMzs.Length && currentMzs[iter] == mz)
+            //         {
+            //             effect = true;
+            //             intensity += currentInts[iter];
+            //             iter++;
+            //         }
+            //
+            //         if (effect)
+            //         {
+            //             indexIdList.Add(index);
+            //             intensityList.Add(DataUtil.fetchIntensity(intensity, converter.compressor.intensityPrecision));
+            //             ptrDict[rt] = iter;
+            //         }
+            //     }
+            //
+            //     totalPoint += intensityList.Count;
+            //     byte[] compressedIndexIds = new ZstdWrapper().encode(
+            //         ByteTrans.intToByte(
+            //             new IntegratedVarByteWrapper().encode(
+            //                 ArrayUtil.toIntArray(indexIdList))));
+            //     byte[] compressedInts = new ZstdWrapper().encode(
+            //         ByteTrans.intToByte(
+            //             new VarByteWrapper().encode(
+            //                 ArrayUtil.toIntArray(intensityList))));
+            //     treeColumn[mz] = new ByteColumn(compressedIndexIds, compressedInts);
+            //     totalSize += (compressedIndexIds.Length + compressedInts.Length);
+            // }
+            //
+            bool fastMode = converter.jobInfo.config.fastMode;
             // 并行化处理质荷比
             Parallel.ForEach(totalMzs, mz =>
             {
@@ -449,42 +499,77 @@ namespace AirdPro.Algorithms
                     converter.jobInfo.log(null, Tag.progress(Tag.Column, currentStep, totalMzs.Length));
                 }
 
+                //从每一张光谱图中搜索和当前mz相同的点，如果存在相同mz的值，则直接累加
                 for (int index = 0; index < rts.Count; index++)
                 {
                     double rt = rts[index];
                     TempSpectrum spectrum = rowTable[rt];
                     int[] currentMzs = spectrum.mzs;
                     float[] currentInts = spectrum.intensities;
-                    int iter = ptrDict[rt];
-                    bool effect = false;
-                    double intensity = 0;
+                    // int iter = ptrDict[rt];
+                    // int iter = 0;
+                    // bool effect = false;
+                    // double intensity = 0;
 
-                    while (iter < currentMzs.Length && currentMzs[iter] == mz)
-                    {
-                        effect = true;
-                        intensity += currentInts[iter];
-                        iter++;
-                    }
-
-                    if (effect)
+                    float sum = AirdProUtil.sumValuesAtIndices(currentMzs, currentInts, mz);
+                    
+                    // while (iter < currentMzs.Length && currentMzs[iter] == mz)
+                    // {
+                    //     effect = true;
+                    //     intensity += currentInts[iter];
+                    //     iter++;
+                    // }
+                    
+                    // if (effect)
+                    // {
+                    //     indexIdList.Add(index);
+                    //     intensityList.Add(DataUtil.fetchIntensity(intensity, converter.compressor.intensityPrecision));
+                    //     ptrDict[rt] = iter;
+                    // }
+                    if (sum > 0)
                     {
                         indexIdList.Add(index);
-                        intensityList.Add(DataUtil.fetchIntensity(intensity, converter.compressor.intensityPrecision));
-                        ptrDict[rt] = iter;
+                        intensityList.Add(DataUtil.fetchIntensity(sum, converter.compressor.intensityPrecision));
+                        // ptrDict[rt] = iter;
                     }
                 }
 
                 Interlocked.Add(ref totalPoint, intensityList.Count);
 
-                byte[] compressedIndexIds = new ZstdWrapper().encode(
-                    ByteTrans.intToByte(
-                        new IntegratedVarByteWrapper().encode(
-                            ArrayUtil.toIntArray(indexIdList))));
-
-                byte[] compressedInts = new ZstdWrapper().encode(
-                    ByteTrans.intToByte(
-                        new VarByteWrapper().encode(
-                            ArrayUtil.toIntArray(intensityList))));
+                int length = indexIdList.Count;
+                byte[] compressedIndexIds = null;
+                byte[] compressedInts = null;
+                if (length > 4)
+                {
+                    if (fastMode)
+                    {
+                        compressedIndexIds = AirdProUtil.intToByte(new IntegratedVarByteWrapper().encode(ArrayUtil.toIntArray(indexIdList)));
+                        compressedInts = AirdProUtil.intToByte(new VarByteWrapper().encode(ArrayUtil.toIntArray(intensityList)));
+                    }
+                    else
+                    {
+                        compressedIndexIds =
+                            new ZstdWrapper().encode(
+                                AirdProUtil.intToByte(new IntegratedVarByteWrapper().encode(ArrayUtil.toIntArray(indexIdList))));
+                        compressedInts = new ZstdWrapper().encode(
+                            AirdProUtil.intToByte(new VarByteWrapper().encode(ArrayUtil.toIntArray(intensityList))));
+                    }
+                }
+                else
+                {
+                    compressedIndexIds = ByteTrans.intToByte(ArrayUtil.toIntArray(indexIdList));
+                    compressedInts = ByteTrans.intToByte(ArrayUtil.toIntArray(intensityList));
+                }
+                
+                // byte[] compressedIndexIds = new ZstdWrapper().encode(
+                //     AirdProUtil.intToByte(
+                //         new IntegratedVarByteWrapper().encode(
+                //             ArrayUtil.toIntArray(indexIdList))));
+                //
+                // byte[] compressedInts = new ZstdWrapper().encode(
+                //     AirdProUtil.intToByte(
+                //         new VarByteWrapper().encode(
+                //             ArrayUtil.toIntArray(intensityList))));
 
                 treeColumn[mz] = new ByteColumn(compressedIndexIds, compressedInts);
 
@@ -492,7 +577,7 @@ namespace AirdPro.Algorithms
             });
 
             converter.jobInfo.log("有效点数:" + totalPoint + "个");
-            converter.jobInfo.log("总体积为:" + totalSize / 1024 / 1024 + "MB");
+            converter.jobInfo.log("总体积为:" + AirdProFileUtil.getSizeLabel(totalSize));
             columnIndex.mzs = totalMzs;
             columnIndex.rts = rtsInt.ToArray();
             return treeColumn;

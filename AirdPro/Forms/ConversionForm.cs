@@ -314,7 +314,7 @@ namespace AirdPro.Forms
             }
 
             Program.configListForm.Show();
-            Program.mainForm.BringToFront();
+            Program.configListForm.BringToFront();
         }
 
         private void timerTaskScan_Tick(object sender, EventArgs e)
