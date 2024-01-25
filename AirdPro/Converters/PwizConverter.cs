@@ -46,7 +46,8 @@ namespace AirdPro.Converters
         protected List<BlockIndex> IndexList = new(); //用于存储的全局的SWATH List
         protected List<ColumnIndex> ColumnIndexList = new(); //列存储索引，尽在面向Search的场景下有效
 
-        protected Hashtable Ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
+        protected Hashtable
+            Ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
 
         public List<MsIndex> Ms1List = new(); //用于存放MS1索引及基础信息,泛型为MsIndex
         protected Hashtable FeaturesMap = new();
@@ -62,8 +63,9 @@ namespace AirdPro.Converters
         protected int SpectraNumForIntensityPrecisionPredict = 5; //用于ComboComp预测Intensity精度时的采样光谱数
         public ICompressor Compressor;
         public ChromatogramIndex ChromatogramIndex;
-        
-        public Dictionary<string, AcqCompound> MrmCompoundDict = new(); //用于MRM采集模式下,预存储化合物名称与离子对的词典,当前仅适用于Agilent的.d文件夹类型的质谱文件
+
+        public Dictionary<string, AcqCompound>
+            MrmCompoundDict = new(); //用于MRM采集模式下,预存储化合物名称与离子对的词典,当前仅适用于Agilent的.d文件夹类型的质谱文件
 
         public override void Init(JobInfo jobInfo)
         {
@@ -462,69 +464,36 @@ namespace AirdPro.Converters
         //注意:本函数会操作startPosition这个全局变量
         public void addToIndex(BlockIndex index, object tempScan)
         {
-            if (JobInfo.config.stack)
+            TempScan ts = (TempScan)tempScan;
+
+            index.nums.Add(ts.num);
+            index.rts.Add(ts.rt);
+            index.tics.Add(ts.tic);
+            index.basePeakIntensities.Add(ts.basePeakIntensity);
+            index.injectionTimes.Add(ts.injectionTime);
+            index.basePeakMzs.Add(ts.basePeakMz);
+
+            index.polarities.Add(ts.polarity);
+            index.energies.Add(ts.energy);
+            index.activators.Add(ts.activator);
+            index.filterStrings.Add(ts.filterString);
+            index.msTypes.Add(ts.msType);
+            index.cvList.Add(ts.cvs);
+
+            if (ts.mzArrayBytes != null && ts.intArrayBytes != null)
             {
-                TempScanSZDPD ts = (TempScanSZDPD)tempScan;
-
-                index.nums.AddRange(ts.nums);
-                index.rts.AddRange(ts.rts);
-                index.tics.AddRange(ts.tics);
-                index.basePeakIntensities.AddRange(ts.basePeakIntensities);
-                index.basePeakMzs.AddRange(ts.basePeakMzs);
-                index.injectionTimes.AddRange(ts.injectionTimes);
-
-                index.polarities.AddRange(ts.polarities);
-                index.energies.AddRange(ts.energies);
-                index.activators.AddRange(ts.activators);
-                index.filterStrings.AddRange(ts.filterStrings);
-                index.msTypes.AddRange(ts.msTypes);
-                index.cvList.AddRange(ts.cvs);
-
-                if (ts.mzArrayBytes.Length != 0 && ts.intArrayBytes.Length != 0 && ts.tagArrayBytes.Length != 0)
-                {
-                    index.mzs.Add(ts.mzArrayBytes.Length);
-                    index.ints.Add(ts.intArrayBytes.Length);
-                    index.tags.Add(ts.tagArrayBytes.Length);
-                    StartPosition = StartPosition + ts.mzArrayBytes.Length + ts.tagArrayBytes.Length +
-                                    ts.intArrayBytes.Length;
-                    AirdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
-                    AirdStream.Write(ts.tagArrayBytes, 0, ts.tagArrayBytes.Length);
-                    AirdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
-                }
+                index.mzs.Add(ts.mzArrayBytes.Length);
+                index.ints.Add(ts.intArrayBytes.Length);
+                StartPosition = StartPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;
+                AirdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
+                AirdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
             }
-            else
+
+            if (ts.mobilityArrayBytes != null)
             {
-                TempScan ts = (TempScan)tempScan;
-
-                index.nums.Add(ts.num);
-                index.rts.Add(ts.rt);
-                index.tics.Add(ts.tic);
-                index.basePeakIntensities.Add(ts.basePeakIntensity);
-                index.injectionTimes.Add(ts.injectionTime);
-                index.basePeakMzs.Add(ts.basePeakMz);
-
-                index.polarities.Add(ts.polarity);
-                index.energies.Add(ts.energy);
-                index.activators.Add(ts.activator);
-                index.filterStrings.Add(ts.filterString);
-                index.msTypes.Add(ts.msType);
-                index.cvList.Add(ts.cvs);
-
-                if (ts.mzArrayBytes != null && ts.intArrayBytes != null)
-                {
-                    index.mzs.Add(ts.mzArrayBytes.Length);
-                    index.ints.Add(ts.intArrayBytes.Length);
-                    StartPosition = StartPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;
-                    AirdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
-                    AirdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
-                }
-
-                if (ts.mobilityArrayBytes != null)
-                {
-                    index.mobilities.Add(ts.mobilityArrayBytes.Length);
-                    StartPosition += ts.mobilityArrayBytes.Length;
-                    AirdStream.Write(ts.mobilityArrayBytes, 0, ts.mobilityArrayBytes.Length);
-                }
+                index.mobilities.Add(ts.mobilityArrayBytes.Length);
+                StartPosition += ts.mobilityArrayBytes.Length;
+                AirdStream.Write(ts.mobilityArrayBytes, 0, ts.mobilityArrayBytes.Length);
             }
         }
 
@@ -783,21 +752,24 @@ namespace AirdPro.Converters
                         {
                             JobInfo.log(Tag.Key_MZ + cv.value);
                         }
+
                         using (var cv = isolationWindow.cvParamChild(CVID.MS_isolation_window_lower_offset))
                         {
                             JobInfo.log(Tag.LowerOffset + cv.value);
                         }
+
                         using (var cv = isolationWindow.cvParamChild(CVID.MS_isolation_window_upper_offset))
                         {
                             JobInfo.log(Tag.UpperOffset + cv.value);
                         }
                     }
+
                     throw e;
                 }
             }
-            
+
             if (spectrum.scanList.scans.Count != 1) return ms2;
-            
+
             var result = CVUtil.parseActivator(spectrum.precursors[0]);
             ms2.activator = result.activator;
             ms2.energy = result.energy;
@@ -811,7 +783,7 @@ namespace AirdPro.Converters
             // {
             // ms2.cvs = CVUtil.trans(cvParams);
             // }
-            
+
             using (Scan scan = spectrum.scanList.scans[0])
             {
                 ms2.rt = CVUtil.parseRT(scan, JobInfo);
@@ -820,14 +792,15 @@ namespace AirdPro.Converters
                 {
                     CVUtil.parseMobility(scan, MobiInfo);
                 }
-                           
-                ms2.filterString = CVUtil.parseFilterString(scan, JobInfo); 
-                
+
+                ms2.filterString = CVUtil.parseFilterString(scan, JobInfo);
+
                 // using (CVParamList cvParams = scan.cvParams)
                 // {
                 //     if (cvParams != null) ms2.cvs.AddRange(CVUtil.trans(cvParams));
                 // }
             }
+
             return ms2;
         }
 
@@ -1017,8 +990,10 @@ namespace AirdPro.Converters
                             {
                                 ChromatogramIndex.compounds.Add(null);
                             }
+
                             ChromatogramIndex.products.Add(productMz);
                         }
+
                         ChromatogramIndex.precursors.Add(precursorMz);
                     }
                 }
@@ -1263,29 +1238,18 @@ namespace AirdPro.Converters
             Compressor mzCompressor = new Compressor(AirdSDK.Beans.Compressor.TARGET_MZ);
             Compressor intCompressor = new Compressor(AirdSDK.Beans.Compressor.TARGET_INTENSITY);
             Compressor mobiCompressor = new Compressor(AirdSDK.Beans.Compressor.TARGET_MOBILITY);
-            if (JobInfo.config.stack)
-            {
-                mzCompressor.addMethod(JobInfo.config.mzIntComp.ToString());
-                mzCompressor.addMethod(JobInfo.config.mzByteComp.ToString());
-                mzCompressor.precision = JobInfo.config.mzPrecision;
-                mzCompressor.digit = JobInfo.config.digit;
-                intCompressor.addMethod(JobInfo.config.intByteComp.ToString());
-                intCompressor.precision = 10;
-            }
-            else
-            {
-                mzCompressor.addMethod(JobInfo.config.mzIntComp.ToString());
-                mzCompressor.addMethod(JobInfo.config.mzByteComp.ToString());
-                mzCompressor.precision = JobInfo.config.mzPrecision;
 
-                intCompressor.addMethod(JobInfo.config.intIntComp.ToString());
-                intCompressor.addMethod(JobInfo.config.intByteComp.ToString());
-                intCompressor.precision = IntensityPrecision;
+            mzCompressor.addMethod(JobInfo.config.mzIntComp.ToString());
+            mzCompressor.addMethod(JobInfo.config.mzByteComp.ToString());
+            mzCompressor.precision = JobInfo.config.mzPrecision;
 
-                mobiCompressor.addMethod(JobInfo.config.mobiIntComp.ToString());
-                mobiCompressor.addMethod(JobInfo.config.mobiByteComp.ToString());
-                mobiCompressor.precision = MobiPrecision;
-            }
+            intCompressor.addMethod(JobInfo.config.intIntComp.ToString());
+            intCompressor.addMethod(JobInfo.config.intByteComp.ToString());
+            intCompressor.precision = IntensityPrecision;
+
+            mobiCompressor.addMethod(JobInfo.config.mobiIntComp.ToString());
+            mobiCompressor.addMethod(JobInfo.config.mobiByteComp.ToString());
+            mobiCompressor.precision = MobiPrecision;
 
             comps.Add(mzCompressor);
             comps.Add(intCompressor);
@@ -1523,7 +1487,7 @@ namespace AirdPro.Converters
                         {
                             Ms1List.Add(parseMS1(spectrum, i)); //如果是MS1谱图,加入到MS1List
                         }
-                        
+
                         if (msLevel.Equals(MsLevel.MS2))
                         {
                             MsIndex ms2Index = parseMS2(spectrum, i, parentNum);

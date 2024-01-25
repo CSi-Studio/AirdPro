@@ -32,7 +32,6 @@ namespace AirdPro.Forms
             btnApply.Visible = false;
             btnSaveToLocal.Visible = true;
             tableAutoDecision.Enabled = !cbAutoDecision.Checked;
-            cbConfigStackLayers.Enabled = cbConfigStack.Checked;
         }
 
         public ConversionConfigListForm(ListViewItem item)
@@ -42,7 +41,6 @@ namespace AirdPro.Forms
             btnApply.Visible = true;
             btnSaveToLocal.Visible = false;
             tableAutoDecision.Enabled = !cbAutoDecision.Checked;
-            cbConfigStackLayers.Enabled = cbConfigStack.Checked;
         }
 
         private void ConversionConfigListForm_Load(object sender, EventArgs e)
@@ -133,17 +131,7 @@ namespace AirdPro.Forms
                 config.mobiByteComp =
                     (ByteCompType)Enum.Parse(typeof(ByteCompType), cbMobiByteComp.SelectedItem.ToString());
             }
-
-            if (cbConfigStack.Checked)
-            {
-                config.stack = true;
-                config.digit = (int)Math.Log(int.Parse(cbConfigStackLayers.Text), 2);
-            }
-            else
-            {
-                config.stack = false;
-            }
-
+            
             config.compressedIndex = cbCompressedIndex.Checked;
             config.suffix = tbConfigFileNameSuffix.Text;
             config.creator = tbConfigOperator.Text;
@@ -224,15 +212,6 @@ namespace AirdPro.Forms
             cbMobiIntComp.SelectedItem = config.mobiIntComp.ToString();
             cbMobiByteComp.SelectedItem = config.mobiByteComp.ToString();
             cbFastReadMode.Checked = config.fastMode;
-            if (config.stack)
-            {
-                cbConfigStack.Checked = true;
-                cbConfigStackLayers.SelectedItem = Convert.ToString(Math.Pow(2, config.digit));
-            }
-            else
-            {
-                cbConfigStack.Checked = false;
-            }
 
             tableAutoDecision.Enabled = !config.autoDesicion;
             cbAutoDecision.Checked = config.autoDesicion;
@@ -262,11 +241,6 @@ namespace AirdPro.Forms
         private void ConversionConfigListForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Program.conversionConfigHandler.detach(this);
-        }
-
-        private void cbConfigStack_CheckedChanged(object sender, EventArgs e)
-        {
-            cbConfigStackLayers.Enabled = cbConfigStack.Checked;
         }
 
         private void cbAutoDecision_CheckedChanged(object sender, EventArgs e)

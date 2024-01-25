@@ -117,7 +117,7 @@ namespace AirdPro.Storage.Config
         /**
          * 是否使用stack layer压缩
          */
-        public bool stack = false;
+        // public bool stack = false;
 
         /**
          * Slice版本下生效，如果为true，则仅使用FastPFor内核进行压缩
@@ -129,7 +129,7 @@ namespace AirdPro.Storage.Config
          * 2^digit = layer's count
          * eg. if the layer's size is 256, then the digit is 8
          */
-        public int digit = 8;
+        // public int digit = 8;
 
         /**
          * 决策器的权重，默认为1:1:1

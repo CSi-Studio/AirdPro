@@ -333,7 +333,6 @@
     <Compile Include="Domains\Scan\TdmsSpectrum.cs" />
     <Compile Include="Domains\Scan\TempScan.cs" />
     <Compile Include="Domains\Scan\TempScanChroma.cs" />
-    <Compile Include="Domains\Scan\TempScanSZDPD.cs" />
     <Compile Include="Domains\Scan\TimsData.cs" />
     <Compile Include="Domains\Sort\CompressStat.cs" />
     <Compile Include="Domains\Sort\FileListSorter.cs" />

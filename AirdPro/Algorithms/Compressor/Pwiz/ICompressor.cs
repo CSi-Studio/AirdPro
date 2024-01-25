@@ -23,7 +23,6 @@ namespace AirdPro.Algorithms
         public int MzPrecision = 100000;
         public bool IgnoreZero = true;
         public bool IsCentroid = false;
-        public int Digit = 8;
 
         public SortedIntComp MzIntComp;
         public ByteComp MzByteComp;
@@ -46,7 +45,6 @@ namespace AirdPro.Algorithms
             MzPrecision = converter.JobInfo.config.mzPrecision;
             IgnoreZero = converter.JobInfo.config.ignoreZeroIntensity;
             IsCentroid = converter.JobInfo.config.centroid;
-            Digit = converter.JobInfo.config.digit;
         }
 
         /**
