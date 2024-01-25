@@ -74,7 +74,7 @@ namespace AirdPro.Forms
             {
                 ListViewItem item = new ListViewItem(new string[]
                 {
-                    configEntry.Key, configEntry.Value.getMzPrecisionStr(), configEntry.Value.autoDesicion + ""
+                    configEntry.Key, configEntry.Value.GetMzPrecisionStr(), configEntry.Value.autoDesicion + ""
                 });
                 if (configEntry.Value.scene.Equals(Scene.Computation))
                 {

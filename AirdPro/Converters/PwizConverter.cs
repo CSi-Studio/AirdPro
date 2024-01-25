@@ -100,7 +100,7 @@ namespace AirdPro.Converters
         public override void DoConvert()
         {
             Start();
-            using (MSDataList msdList = readVendorFile())
+            using (MSDataList msdList = ReadVendorFile())
             {
                 try
                 {
@@ -121,13 +121,13 @@ namespace AirdPro.Converters
                             JobInfo.airdFileName = id;
                         }
 
-                        readMsd(msd);
+                        ReadMsd(msd);
                         InitDirectory(); //创建文件夹
                         using (AirdStream = new FileStream(JobInfo.airdFilePath, FileMode.Create))
                         {
                             using (AirdJsonStream = new FileStream(JobInfo.airdJsonFilePath, FileMode.Create))
                             {
-                                predictAcquisitionMethod();
+                                PredictAcquisitionMethod();
                                 switch (JobInfo.type)
                                 {
                                     case AcquisitionMethod.DIA:
@@ -155,22 +155,22 @@ namespace AirdPro.Converters
                         }
 
                         msd?.Dispose();
-                        clearCache();
+                        ClearCache();
                     }
                 }
                 finally
                 {
-                    finish();
+                    Finish();
                 }
             }
         }
 
-        public void finish()
+        public void Finish()
         {
             Stopwatch.Stop();
             JobInfo.refreshReport = true;
             JobInfo.log(Tag.Total_Time_Cost + Stopwatch.Elapsed.TotalSeconds, Status.Finished);
-            clearCache();
+            ClearCache();
             JobInfo.setStatus(ProcessingStatus.FINISHED);
             if (Msd != null)
             {
@@ -179,7 +179,7 @@ namespace AirdPro.Converters
             }
         }
 
-        public void initBrukerMobi()
+        public void InitBrukerMobi()
         {
             JobInfo.log(Tag.Init_Mobility_Array);
             long handle = TdfUtil.tims_open(JobInfo.inputPath, 1);
@@ -209,7 +209,7 @@ namespace AirdPro.Converters
          * 如果MS2的precursor范围大于3,则可能是DIA
          * 如果MS2的precursor范围小于1,则可能是DDA
          */
-        public void predictAcquisitionMethod()
+        public void PredictAcquisitionMethod()
         {
             if (!JobInfo.type.Equals(JobInfo.AutoType))
             {
@@ -316,7 +316,7 @@ namespace AirdPro.Converters
             }
         }
 
-        public void predictForBestCombination()
+        public void PredictForBestCombination()
         {
             if (!JobInfo.config.autoDesicion)
             {
@@ -334,7 +334,7 @@ namespace AirdPro.Converters
         /**
          * num:采样数目,建议:5
          */
-        public void predictForIntensityPrecision()
+        public void PredictForIntensityPrecision()
         {
             Random rd = new Random();
             HashSet<int> nums = new HashSet<int>();
@@ -376,13 +376,13 @@ namespace AirdPro.Converters
             JobInfo.log(Tag.Intensity_Precision + IntensityPrecision);
         }
 
-        public void writeToFile(Hashtable table, BlockIndex index)
+        public void WriteToFile(Hashtable table, BlockIndex index)
         {
             ArrayList keys = new ArrayList(table.Keys);
             keys.Sort();
             foreach (int key in keys)
             {
-                addToIndex(index, table[key]);
+                AddToIndex(index, table[key]);
             }
         }
 
@@ -390,7 +390,7 @@ namespace AirdPro.Converters
          * 存储列存储数据
          * 注意，本函数会操作startPosition这个全局变量
          */
-        public void writeColumnData(ConcurrentDictionary<int, ByteColumn> compressedColumns, ColumnIndex columnIndex)
+        public void WriteColumnData(ConcurrentDictionary<int, ByteColumn> compressedColumns, ColumnIndex columnIndex)
         {
             byte[] compressedMzs =
                 new ZstdWrapper().encode(
@@ -465,7 +465,7 @@ namespace AirdPro.Converters
         }
 
         //注意:本函数会操作startPosition这个全局变量
-        public void addToIndex(BlockIndex index, object tempScan)
+        public void AddToIndex(BlockIndex index, object tempScan)
         {
             TempScan ts = (TempScan)tempScan;
 
@@ -503,7 +503,7 @@ namespace AirdPro.Converters
         /**
          * 引用本函数的时候需要注意在使用完MSDataList对象以后需要手动释放
          */
-        protected MSDataList readVendorFile()
+        protected MSDataList ReadVendorFile()
         {
             JobInfo.log(Tag.Prepare_To_Parse_Vendor_File, Status.Prepare);
             ReaderList readerList = ReaderList.FullReaderList;
@@ -577,7 +577,7 @@ namespace AirdPro.Converters
             return msdList;
         }
 
-        public void readMsd(MSData msd)
+        public void ReadMsd(MSData msd)
         {
             Msd = msd;
             List<string> filter = new List<string>();
@@ -633,7 +633,7 @@ namespace AirdPro.Converters
             StartPosition += airdBytes.Length;
             AirdJsonStream.Write(airdBytes, 0, airdBytes.Length);
 
-            if (JobInfo.config.isSearch())
+            if (JobInfo.config.IsSearch())
             {
                 ColumnInfo columnInfo = BuildColumnInfo();
                 string columnInfoStr = JsonConvert.SerializeObject(columnInfo,
@@ -646,7 +646,7 @@ namespace AirdPro.Converters
             }
         }
 
-        public void clearCache()
+        public void ClearCache()
         {
             Ranges = new();
             RangeTable = new();
@@ -679,11 +679,11 @@ namespace AirdPro.Converters
         }
 
         //DDA模式下,key为ms2Index.pNum, DIA模式下,key为ms2Index.precursorMz
-        protected void addToMS2Map(Object key, MsIndex ms2Index)
+        protected void AddToMs2Map(Object key, MsIndex ms2Index)
         {
             if (Ms2Table.Contains(key))
             {
-                (Ms2Table[key] as List<MsIndex>).Add(ms2Index);
+                ((List<MsIndex>)Ms2Table[key]).Add(ms2Index);
             }
             else
             {
@@ -693,7 +693,7 @@ namespace AirdPro.Converters
             }
         }
 
-        protected MsIndex parseMS1(Spectrum spectrum, int index)
+        protected MsIndex ParseMs1(Spectrum spectrum, int index)
         {
             MsIndex ms1 = new MsIndex();
             ms1.level = 1;
@@ -732,7 +732,7 @@ namespace AirdPro.Converters
             return ms1;
         }
 
-        protected MsIndex parseMS2(Spectrum spectrum, int num, int pNum)
+        protected MsIndex ParseMs2(Spectrum spectrum, int num, int pNum)
         {
             MsIndex ms2 = new MsIndex();
             ms2.level = 2;
@@ -1492,13 +1492,13 @@ namespace AirdPro.Converters
                     {
                         if (msLevel.Equals(MsLevel.MS1))
                         {
-                            Ms1List.Add(parseMS1(spectrum, i)); //如果是MS1谱图,加入到MS1List
+                            Ms1List.Add(ParseMs1(spectrum, i)); //如果是MS1谱图,加入到MS1List
                         }
 
                         if (msLevel.Equals(MsLevel.MS2))
                         {
-                            MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
-                            addToMS2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
+                            MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
+                            AddToMs2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
                         }
                     }
                     else
@@ -1506,7 +1506,7 @@ namespace AirdPro.Converters
                         //如果这个谱图是MS1
                         if (msLevel.Equals(MsLevel.MS1))
                         {
-                            Ms1List.Add(parseMS1(spectrum, i)); //加入MS1List
+                            Ms1List.Add(ParseMs1(spectrum, i)); //加入MS1List
                             using (Spectrum next = SpectrumList.spectrum(i + 1))
                             {
                                 if (CVUtil.ParseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
@@ -1518,8 +1518,8 @@ namespace AirdPro.Converters
 
                         if (msLevel.Equals(MsLevel.MS2))
                         {
-                            MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
-                            addToMS2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
+                            MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
+                            AddToMs2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
                         }
                     }
                 }
@@ -1547,13 +1547,13 @@ namespace AirdPro.Converters
                     if (msLevel.Equals(MsLevel.MS1))
                     {
                         parentNum = i;
-                        Ms1List.Add(parseMS1(spectrum, i));
+                        Ms1List.Add(ParseMs1(spectrum, i));
                     }
 
                     //如果这个谱图是MS2
                     if (msLevel.Equals(MsLevel.MS2))
                     {
-                        MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
+                        MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
                         //边扫描边建立SWATH WindowRange
                         if (!RangeTable.Contains(ms2Index.precursor.mz))
                         {
@@ -1563,7 +1563,7 @@ namespace AirdPro.Converters
                         }
 
                         //DIA的MS2Map以precursorMz为key
-                        addToMS2Map(ms2Index.precursor.mz, ms2Index);
+                        AddToMs2Map(ms2Index.precursor.mz, ms2Index);
                     }
                 }
             }
@@ -1589,13 +1589,13 @@ namespace AirdPro.Converters
                     {
                         if (msLevel.Equals(MsLevel.MS1))
                         {
-                            Ms1List.Add(parseMS1(spectrum, i)); //如果是MS1谱图,加入到MS1List
+                            Ms1List.Add(ParseMs1(spectrum, i)); //如果是MS1谱图,加入到MS1List
                         }
 
                         if (msLevel.Equals(MsLevel.MS2))
                         {
-                            MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
-                            addToMS2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
+                            MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
+                            AddToMs2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
                         }
                     }
                     else
@@ -1603,7 +1603,7 @@ namespace AirdPro.Converters
                         //如果这个谱图是MS1
                         if (msLevel.Equals(MsLevel.MS1))
                         {
-                            Ms1List.Add(parseMS1(spectrum, i)); //加入MS1List
+                            Ms1List.Add(ParseMs1(spectrum, i)); //加入MS1List
                             using (Spectrum next = SpectrumList.spectrum(i + 1))
                             {
                                 if (CVUtil.ParseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
@@ -1615,8 +1615,8 @@ namespace AirdPro.Converters
 
                         if (msLevel.Equals(MsLevel.MS2))
                         {
-                            MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
-                            addToMS2Map(ms2Index.pNum, ms2Index); //如果这个谱图是MS2
+                            MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
+                            AddToMs2Map(ms2Index.pNum, ms2Index); //如果这个谱图是MS2
                         }
                     }
                 }
@@ -1644,13 +1644,13 @@ namespace AirdPro.Converters
                     if (msLevel.Equals(MsLevel.MS1))
                     {
                         parentNum = i;
-                        Ms1List.Add(parseMS1(spectrum, i));
+                        Ms1List.Add(ParseMs1(spectrum, i));
                     }
 
                     //如果这个谱图是MS2
                     if (msLevel.Equals(MsLevel.MS2))
                     {
-                        MsIndex ms2Index = parseMS2(spectrum, i, parentNum);
+                        MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
                         //边扫描边建立SWATH WindowRange
                         if (!RangeTable.Contains(ms2Index.precursor.mz))
                         {
@@ -1660,7 +1660,7 @@ namespace AirdPro.Converters
                         }
 
                         //DIA的MS2Map以precursorMz为key
-                        addToMS2Map(ms2Index.precursor.mz, ms2Index);
+                        AddToMs2Map(ms2Index.precursor.mz, ms2Index);
                     }
                 }
             }
@@ -1693,8 +1693,8 @@ namespace AirdPro.Converters
                         //如果是MS2谱图,加入到谱图组
                         if (msLevel.Equals(MsLevel.MS2))
                         {
-                            MsIndex ms2Index = parseMS2(SpectrumList.spectrum(i), i, parentNum);
-                            addToMS2Map(ms2Index.precursor.mz, ms2Index);
+                            MsIndex ms2Index = ParseMs2(SpectrumList.spectrum(i), i, parentNum);
+                            AddToMs2Map(ms2Index.precursor.mz, ms2Index);
                             continue;
                         }
                     }
@@ -1714,7 +1714,7 @@ namespace AirdPro.Converters
                             if (msLevelNext.Equals(MsLevel.MS2))
                             {
                                 parentNum = i;
-                                Ms1List.Add(parseMS1(SpectrumList.spectrum(i), i));
+                                Ms1List.Add(ParseMs1(SpectrumList.spectrum(i), i));
                             }
                         }
                     }
@@ -1723,8 +1723,8 @@ namespace AirdPro.Converters
                     {
                         using (var current = SpectrumList.spectrum(i))
                         {
-                            MsIndex ms2Index = parseMS2(current, i, parentNum);
-                            addToMS2Map(ms2Index.precursor.mz, ms2Index); //如果这个谱图是MS2
+                            MsIndex ms2Index = ParseMs2(current, i, parentNum);
+                            AddToMs2Map(ms2Index.precursor.mz, ms2Index); //如果这个谱图是MS2
                         }
                     }
                 }

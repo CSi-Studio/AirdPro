@@ -113,23 +113,11 @@ namespace AirdPro.Storage.Config
          * 用于rt压缩的byte数组压缩方法
          */
         public ByteCompType rtByteComp = ByteCompType.Zstd;
-
-        /**
-         * 是否使用stack layer压缩
-         */
-        // public bool stack = false;
-
+        
         /**
          * Slice版本下生效，如果为true，则仅使用FastPFor内核进行压缩
          */
         public bool fastMode = true;
-        
-        /**
-         * The stack layers's tag
-         * 2^digit = layer's count
-         * eg. if the layer's size is 256, then the digit is 8
-         */
-        // public int digit = 8;
 
         /**
          * 决策器的权重，默认为1:1:1
@@ -140,21 +128,17 @@ namespace AirdPro.Storage.Config
         public double decompressionTimeWeight = 1;
         public int spectraToPredict = 50;
 
-        public ConversionConfig()
-        {
-        }
-
-        public string getMzPrecisionStr()
+        public string GetMzPrecisionStr()
         {
             return ((int)Math.Log10(mzPrecision)) + "dp";
         }
 
-        public bool isComputation()
+        public bool IsComputation()
         {
             return scene == Scene.Computation;
         }
 
-        public bool isSearch()
+        public bool IsSearch()
         {
             return scene == Scene.Search;
         }
@@ -162,7 +146,7 @@ namespace AirdPro.Storage.Config
         /**
          * 自由探索模式下自动组装所有压缩组合，面向计算场景下的函数
          */
-        public List<ConversionConfig> buildExplorerConfigs(bool mobility)
+        public List<ConversionConfig> BuildExplorerConfigs(bool mobility)
         {
             List<ConversionConfig> configList = new List<ConversionConfig>();
 

@@ -62,7 +62,7 @@ namespace AirdPro.Algorithms.Compressor
                     {
                         spectrum = converter.SpectrumList.spectrum(ts.num, true);
                     }
-
+                    
                     if (converter.JobInfo.ionMobility)
                     {
                         CompressMobility(spectrum, ts);
@@ -70,7 +70,7 @@ namespace AirdPro.Algorithms.Compressor
                     else
                     {
                         //使用行式存储
-                        if (converter.JobInfo.config.isComputation())
+                        if (converter.JobInfo.config.IsComputation())
                         {
                             Compress(spectrum, ts);
                         }
@@ -87,10 +87,10 @@ namespace AirdPro.Algorithms.Compressor
                     spectrum?.Dispose();
                 }
             });
-            converter.writeToFile(ms1Table, index);
+            converter.WriteToFile(ms1Table, index);
 
             //如果是面向搜索的格式转换，则msRowTable不为空，准备启动行矩阵向列矩阵转换的过程
-            if (converter.JobInfo.config.isSearch())
+            if (converter.JobInfo.config.IsSearch())
             {
                 ColumnIndex columnIndex = new ColumnIndex();
                 columnIndex.level = 1;
@@ -104,7 +104,7 @@ namespace AirdPro.Algorithms.Compressor
                     compressedColumns = CompressAsColumnMatrixV1(converter, msDictionary, columnIndex);
                 }
 
-                converter.writeColumnData(compressedColumns, columnIndex);
+                converter.WriteColumnData(compressedColumns, columnIndex);
             }
         }
 
@@ -134,7 +134,7 @@ namespace AirdPro.Algorithms.Compressor
                     else
                     {
                         //在面向搜索引擎的场景时，仅DIA模式的二级谱图具备时间上的逻辑相关性
-                        if (converter.JobInfo.config.isSearch() &&
+                        if (converter.JobInfo.config.IsSearch() &&
                             converter.JobInfo.type.Equals(AcquisitionMethod.DIA))
                         {
                             msDictionary[ts.rt] = ReadSpectrum(spectrum);
@@ -152,10 +152,10 @@ namespace AirdPro.Algorithms.Compressor
                     spectrum?.Dispose();
                 }
             });
-            converter.writeToFile(table, index);
+            converter.WriteToFile(table, index);
             
             //如果是面向搜索引擎的格式转换，则msRowTable不为空，准备启动行矩阵向列矩阵转换的过程
-            if (converter.JobInfo.config.isSearch() &&
+            if (converter.JobInfo.config.IsSearch() &&
                 converter.JobInfo.type.Equals(AcquisitionMethod.DIA))
             {
                 ColumnIndex columnIndex = new ColumnIndex();
@@ -171,7 +171,7 @@ namespace AirdPro.Algorithms.Compressor
                     compressedColumns = CompressAsColumnMatrixV1(converter, msDictionary, columnIndex);
                 }
 
-                converter.writeColumnData(compressedColumns, columnIndex);
+                converter.WriteColumnData(compressedColumns, columnIndex);
             }
         }
 

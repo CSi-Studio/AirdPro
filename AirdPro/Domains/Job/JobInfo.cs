@@ -129,7 +129,7 @@ namespace AirdPro.Domains
                 config.scene,
                 config.centroid.ToString(),
                 status,
-                config.getMzPrecisionStr(),
+                config.GetMzPrecisionStr(),
                 getCompressorStr(),
                 config.ignoreZeroIntensity.ToString(),
                 config.suffix,
@@ -219,7 +219,7 @@ namespace AirdPro.Domains
             jobInfo += Tag.Suffix + config.suffix + Const.Change_Line;
             jobInfo += Tag.Thread_Id + threadId + Const.Change_Line;
             jobInfo += Tag.Thread_Accelerate + config.threadAccelerate + Const.Change_Line;
-            jobInfo += Tag.Mz_Precision + config.getMzPrecisionStr() + Const.Change_Line;
+            jobInfo += Tag.Mz_Precision + config.GetMzPrecisionStr() + Const.Change_Line;
             jobInfo += Tag.Compressor + getCompressorStr() + Const.Change_Line;
             if (config.autoDesicion)
             {
@@ -233,7 +233,7 @@ namespace AirdPro.Domains
 
         public string getUniqueId()
         {
-            return inputPath + outputPath + getCompressorStr() + config.getMzPrecisionStr() +
+            return inputPath + outputPath + getCompressorStr() + config.GetMzPrecisionStr() +
                    config.ignoreZeroIntensity;
         }
 
@@ -263,7 +263,7 @@ namespace AirdPro.Domains
             item.SubItems[ItemName.JOB_ID].Text = jobId;
             item.SubItems[ItemName.INPUT_PATH].Text = inputPath;
             item.SubItems[ItemName.TYPE].Text = type;
-            item.SubItems[ItemName.PRECISION].Text = config.getMzPrecisionStr();
+            item.SubItems[ItemName.PRECISION].Text = config.GetMzPrecisionStr();
             item.SubItems[ItemName.COMPRESSOR].Text = getCompressorStr();
             item.SubItems[ItemName.IGNORE_ZERO].Text = config.ignoreZeroIntensity.ToString();
             item.SubItems[ItemName.SUFFIX].Text = config.suffix;
