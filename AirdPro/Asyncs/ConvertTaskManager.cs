@@ -22,65 +22,63 @@ namespace AirdPro.Asyncs
 {
     internal class ConvertTaskManager
     {
-        public static ConvertTaskManager instance;
+        public static ConvertTaskManager Instance;
 
-        public Queue<JobInfo> jobQueue = new Queue<JobInfo>();
+        public Queue<JobInfo> JobQueue = new();
 
         //存放全部的Job信息,用于根据JobId判定当前的Job是否已经存在
-        public Hashtable jobTable = new Hashtable();
+        public Hashtable JobTable = new();
 
         //存放已经完成转换的JobInfo,不管是否转换成功
-        public Hashtable finishedTable = new Hashtable();
+        public Hashtable FinishedTable = new();
 
-        public ConvertTaskManager() {}
-
-        public static ConvertTaskManager getInstance()
+        public static ConvertTaskManager GetInstance()
         {
-            if (instance == null)
+            if (Instance == null)
             {
-                instance = new ConvertTaskManager();
+                Instance = new ConvertTaskManager();
             }
 
-            return instance;
+            return Instance;
         }
 
 
         //加入一个新的转换任务,如果该任务已经在转换完毕的列表内,则将其重新放入待转换队列重新转换
-        public void pushJob(JobInfo job)
+        public void PushJob(JobInfo job)
         {
-            if (finishedTable.ContainsKey(job.jobId))
+            if (FinishedTable.ContainsKey(job.jobId))
             {
-                finishedTable.Remove(job.jobId);
+                FinishedTable.Remove(job.jobId);
             }
 
-            if (!jobTable.Contains(job.jobId))
+            if (!JobTable.Contains(job.jobId))
             {
-                jobQueue.Enqueue(job);
-                jobTable.Add(job.jobId, job);
+                JobQueue.Enqueue(job);
+                JobTable.Add(job.jobId, job);
             }
         }
 
         //将一个任务置为已完成状态
-        public void finishedJob(JobInfo jobInfo)
+        public void FinishedJob(JobInfo jobInfo)
         {
-            jobTable.Remove(jobInfo.jobId);
-            finishedTable.Add(jobInfo.jobId, jobInfo);
+            JobTable.Remove(jobInfo.jobId);
+            FinishedTable.Add(jobInfo.jobId, jobInfo);
         }
 
         //删除一个任务
-        public void removeJob(JobInfo jobInfo)
+        public void RemoveJob(JobInfo jobInfo)
         {
             jobInfo.tokenSource.Cancel();
-            jobTable.Remove(jobInfo.jobId);
-            finishedTable.Remove(jobInfo.jobId);
+            JobTable.Remove(jobInfo.jobId);
+            FinishedTable.Remove(jobInfo.jobId);
         }
 
-        public void run()
+        public void Run()
         {
             while (true)
             {
                  //如果队列中没有待执行的任务,那么进行休眠当前进程两秒
-                 if (jobQueue.Count == 0)
+                 if (JobQueue.Count == 0)
                  {
                      return;
                  }
@@ -88,10 +86,11 @@ namespace AirdPro.Asyncs
                  JobInfo jobInfo = null;
                  try
                  {
-                     jobInfo = jobQueue.Dequeue();
+                     jobInfo = JobQueue.Dequeue();
                  }
                  catch
                  {
+                     // ignored
                  }
 
                  if (jobInfo == null)
@@ -99,23 +98,23 @@ namespace AirdPro.Asyncs
                      return;
                  }
                  
-                 if (!jobTable.Contains(jobInfo.jobId))
+                 if (!JobTable.Contains(jobInfo.jobId))
                  {
                      continue;
                  }
 
-                 runJob(jobInfo);
+                 RunJob(jobInfo);
                  // Application.DoEvents();
             }
         }
 
-        public void clear()
+        public void Clear()
         {
-            jobQueue.Clear();
-            jobTable.Clear();
+            JobQueue.Clear();
+            JobTable.Clear();
         }
 
-        public void runJob(JobInfo jobInfo)
+        public void RunJob(JobInfo jobInfo)
         {
             jobInfo.threadId = Thread.CurrentThread.ManagedThreadId;
             while (jobInfo.retryTimes > 0)
@@ -153,7 +152,7 @@ namespace AirdPro.Asyncs
                 }
             }
 
-            finishedJob(jobInfo);
+            FinishedJob(jobInfo);
         }
     }
 }

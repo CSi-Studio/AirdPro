@@ -17,14 +17,14 @@ namespace AirdPro.Utils;
 
 public class FeatureUtil
 {
-    public static List<StrKV> parse(string pairs)
+    public static List<StrKV> Parse(string pairs)
     {
         if (pairs == null || pairs.Equals(String.Empty))
         {
             return null;
         }
 
-        List<StrKV> kvList = new List<StrKV>();
+        List<StrKV> kvList = [];
         string[] kvArrays = pairs.Split(Const.DIV.ToCharArray());
         for (var i = 0; i < kvArrays.Length; i++)
         {

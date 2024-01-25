@@ -69,14 +69,14 @@ namespace AirdPro.Repository
                     using (FileStream fsFastConfig = new FileStream(Path.Combine(configFolder, fastConfigFileName),
                                FileMode.OpenOrCreate, FileAccess.Write))
                     {
-                        byte[] configFileByte = ResourceUtil.readBytes("Config.MLFastConfigFile.json");
+                        byte[] configFileByte = ResourceUtil.ReadBytes("Config.MLFastConfigFile.json");
                         fsFastConfig.Write(configFileByte, 0, configFileByte.Length);
                     }
 
                     using (FileStream fsConfig = new FileStream(Path.Combine(configFolder, configFileName),
                                FileMode.OpenOrCreate, FileAccess.Write))
                     {
-                        byte[] configFileByte = ResourceUtil.readBytes("Config.MLConfigFile.json");
+                        byte[] configFileByte = ResourceUtil.ReadBytes("Config.MLConfigFile.json");
                         fsConfig.Write(configFileByte, 0, configFileByte.Length);
                     }
                 }
@@ -112,7 +112,7 @@ namespace AirdPro.Repository
             }
 
             string localConfigFile = Path.Combine(configFolder, configFileName);
-            List<Project> projects = AirdProFileUtil.readFromFileAsJSON<List<Project>>(localConfigFile);
+            List<Project> projects = AirdProFileUtil.ReadFromFileAsJson<List<Project>>(localConfigFile);
             HashSet<string> projectIdSet = new HashSet<string>();
             projects.ForEach(project => { projectIdSet.Add(project.Identifier); });
 
@@ -150,7 +150,7 @@ namespace AirdPro.Repository
                     projects.Add(project);
                 }
 
-                AirdProFileUtil.writeToFile(projects, Path.Combine(configFolder, configFileName));
+                AirdProFileUtil.WriteToFile(projects, Path.Combine(configFolder, configFileName));
                 load(false);
             }
             catch (Exception exception)
@@ -183,14 +183,14 @@ namespace AirdPro.Repository
                     using (FileStream fsFastConfig = new FileStream(Path.Combine(temp, fastConfigFileName),
                                FileMode.OpenOrCreate, FileAccess.Write))
                     {
-                        byte[] configFileByte = ResourceUtil.readBytes("Config.MLFastConfigFile.json");
+                        byte[] configFileByte = ResourceUtil.ReadBytes("Config.MLFastConfigFile.json");
                         fsFastConfig.Write(configFileByte, 0, configFileByte.Length);
                     }
 
                     using (FileStream fsConfig = new FileStream(Path.Combine(temp, configFileName),
                                FileMode.OpenOrCreate, FileAccess.Write))
                     {
-                        byte[] configFileByte = ResourceUtil.readBytes("Config.MLConfigFile.json");
+                        byte[] configFileByte = ResourceUtil.ReadBytes("Config.MLConfigFile.json");
                         fsConfig.Write(configFileByte, 0, configFileByte.Length);
                     }
                 }
@@ -317,7 +317,7 @@ namespace AirdPro.Repository
                     lblLoading.Text = (i + 1) + "/" + total + " Loaded";
                 }
 
-                AirdProFileUtil.writeToFile(projects, Path.Combine(configFolder, fastConfigFileName));
+                AirdProFileUtil.WriteToFile(projects, Path.Combine(configFolder, fastConfigFileName));
                 load(true);
             }
             catch (Exception exception)

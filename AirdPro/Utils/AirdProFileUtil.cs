@@ -20,7 +20,7 @@ namespace AirdPro.Utils
 {
     public class AirdProFileUtil
     {
-        public static string getSizeLabel(long size)
+        public static string GetSizeLabel(long size)
         {
             if (size == 0)
             {
@@ -31,21 +31,21 @@ namespace AirdPro.Utils
             {
                 return size + " Byte";
             }
-            else if (size >= 1024 && size < 1024 * 1024)
+
+            if (size < 1024 * 1024)
             {
                 return (size / 1024d).ToString("0.00") + "KB";
             }
-            else if (size >= 1024 * 1024 && size < 1024 * 1024 * 1024)
+
+            if (size < 1024 * 1024 * 1024)
             {
                 return (size / 1024d / 1024).ToString("0.00") + "MB";
             }
-            else
-            {
-                return (size / 1024d / 1024 / 1024).ToString("0.00") + "GB";
-            }
+
+            return (size / 1024d / 1024 / 1024).ToString("0.00") + "GB";
         }
 
-        public static string readFromFile(string filePath)
+        public static string ReadFromFile(string filePath)
         {
             if (!File.Exists(filePath)) return null;
 
@@ -61,7 +61,7 @@ namespace AirdPro.Utils
             }
         }
 
-        public static T readFromFileAsJSON<T>(string filePath)
+        public static T ReadFromFileAsJson<T>(string filePath)
         {
             if (!File.Exists(filePath)) return default(T);
 
@@ -77,7 +77,7 @@ namespace AirdPro.Utils
             }
         }
 
-        public static void writeToFile(object obj, string outputFilePath)
+        public static void WriteToFile(object obj, string outputFilePath)
         {
             var content = JsonConvert.SerializeObject(obj);
             var projectBytes = Encoding.UTF8.GetBytes(content);
@@ -86,7 +86,7 @@ namespace AirdPro.Utils
             stream.Close();
         }
 
-        public static long getDirectorySize(string directory)
+        public static long GetDirectorySize(string directory)
         {
             long directorySize = 0;
             DirectoryInfo di = new DirectoryInfo(directory);
@@ -103,7 +103,7 @@ namespace AirdPro.Utils
             DirectoryInfo[] dirs = di.GetDirectories();
             foreach (DirectoryInfo sondir in dirs)
             {
-                directorySize += getDirectorySize(sondir.FullName);
+                directorySize += GetDirectorySize(sondir.FullName);
             }
 
             return directorySize;
@@ -112,17 +112,19 @@ namespace AirdPro.Utils
         /**
          * 循环遍历指定文件夹下的所有质谱文件
          */
-        public static List<string> scan(string folderPath)
+        public static List<string> Scan(string folderPath)
         {
             List<string> items = new List<string>();
-            string[] dirs = new string[0];
+            string[] dirs = Array.Empty<string>();
             //这个try catch是为了防止访问部分windows文件夹异常时做的容错逻辑
             try
             {
                 dirs = Directory.GetDirectories(folderPath);
             }
             catch (Exception e)
-            {}
+            {
+                // ignored
+            }
 
             if (dirs.Length > 0)
             {
@@ -135,7 +137,7 @@ namespace AirdPro.Utils
                     }
                     else
                     {
-                        List<string> files = scan(str);
+                        List<string> files = Scan(str);
                         if (files != null)
                         {
                             items.AddRange(files);
@@ -159,10 +161,10 @@ namespace AirdPro.Utils
             return items;
         }
 
-        public static string replaceLast(string input, string pattern, string replacement)
+        public static string ReplaceLast(string input, string pattern, string replacement)
         {
             string output = Regex.Replace(input, pattern, match => {  
-                if (match.Index == input.LastIndexOf(pattern)) {  
+                if (match.Index == input.LastIndexOf(pattern, StringComparison.Ordinal)) {  
                     return replacement;  
                 }  
                 return match.Value;  

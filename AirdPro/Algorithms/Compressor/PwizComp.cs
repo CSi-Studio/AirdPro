@@ -84,10 +84,7 @@ namespace AirdPro.Algorithms.Compressor
                 }
                 finally
                 {
-                    if (spectrum != null)
-                    {
-                        spectrum.Dispose();
-                    }
+                    spectrum?.Dispose();
                 }
             });
             converter.writeToFile(ms1Table, index);
@@ -152,10 +149,7 @@ namespace AirdPro.Algorithms.Compressor
                 }
                 finally
                 {
-                    if (spectrum != null)
-                    {
-                        spectrum.Dispose();
-                    }
+                    spectrum?.Dispose();
                 }
             });
             converter.writeToFile(table, index);
@@ -197,8 +191,8 @@ namespace AirdPro.Algorithms.Compressor
             int[] intensityArray = new int[size];
             for (int t = 0; t < size; t++)
             {
-                rtArray[t] = DataUtil.fetchRt(rtData[t]);
-                intensityArray[t] = DataUtil.fetchIntensity(intData[t], 1);
+                rtArray[t] = DataUtil.FetchRt(rtData[t]);
+                intensityArray[t] = DataUtil.FetchIntensity(intData[t], 1);
             }
 
             byte[] compressedRtArray = RtByteComp4Chroma.encode(ByteTrans.intToByte(RtIntComp4Chroma.encode(rtArray)));
@@ -216,8 +210,8 @@ namespace AirdPro.Algorithms.Compressor
             var size = mzData.Length;
             if (size == 0)
             {
-                ts.mzArrayBytes = new byte[0];
-                ts.intArrayBytes = new byte[0];
+                ts.mzArrayBytes = Array.Empty<byte>();
+                ts.intArrayBytes = Array.Empty<byte>();
                 return;
             }
 
@@ -227,8 +221,8 @@ namespace AirdPro.Algorithms.Compressor
             for (int t = 0; t < size; t++)
             {
                 if (IgnoreZero && intData[t] == 0) continue;
-                mzArray[j] = DataUtil.fetchMz(mzData[t], MzPrecision);
-                intensityArray[j] = DataUtil.fetchIntensity(intData[t], IntensityPrecision);
+                mzArray[j] = DataUtil.FetchMz(mzData[t], MzPrecision);
+                intensityArray[j] = DataUtil.FetchIntensity(intData[t], IntensityPrecision);
                 j++;
             }
 
@@ -246,7 +240,7 @@ namespace AirdPro.Algorithms.Compressor
             }
             else
             {
-                compressedMzArray = MzByteComp.encode(AirdProUtil.intToByte(MzIntComp.encode(mzSubArray)));
+                compressedMzArray = MzByteComp.encode(AirdProUtil.IntToByte(MzIntComp.encode(mzSubArray)));
             }
 
             if (intensitySubArray.Length == 0)
@@ -255,7 +249,7 @@ namespace AirdPro.Algorithms.Compressor
             }
             else
             {
-                compressedIntArray = IntByteComp.encode(AirdProUtil.intToByte(IntIntComp.encode(intensitySubArray)));
+                compressedIntArray = IntByteComp.encode(AirdProUtil.IntToByte(IntIntComp.encode(intensitySubArray)));
             }
 
             ts.mzArrayBytes = compressedMzArray;
@@ -278,7 +272,7 @@ namespace AirdPro.Algorithms.Compressor
             for (int t = 0; t < size; t++)
             {
                 if (IgnoreZero && intData[t] == 0) continue;
-                mzArray[j] = DataUtil.fetchMz(mzData[t], MzPrecision);
+                mzArray[j] = DataUtil.FetchMz(mzData[t], MzPrecision);
                 intensityArray[j] = (float)intData[t];
                 j++;
             }
@@ -288,7 +282,7 @@ namespace AirdPro.Algorithms.Compressor
             float[] intensitySubArray = new float[j];
             Array.Copy(intensityArray, intensitySubArray, j);
             return IsCentroid
-                ? CentroidUtil.centroid(mzSubArray, intensitySubArray, 0d)
+                ? CentroidUtil.Centroid(mzSubArray, intensitySubArray, 0d)
                 : new TempSpectrum(mzSubArray, intensitySubArray);
         }
 
@@ -296,7 +290,7 @@ namespace AirdPro.Algorithms.Compressor
         {
             double[] mzData = spectrum.getMZArray().data.Storage();
             double[] intData = spectrum.getIntensityArray().data.Storage();
-            double[] mobiData = DataUtil.getMobilityData(spectrum);
+            double[] mobiData = DataUtil.GetMobilityData(spectrum);
 
             var size = mzData.Length;
             if (size == 0)
@@ -319,8 +313,8 @@ namespace AirdPro.Algorithms.Compressor
             int[] mobilityNoArray = new int[size];
             for (int i = 0; i < size; i++)
             {
-                mzArray[i] = DataUtil.fetchMz(dataArray[i].mz, MzPrecision);
-                intensityArray[i] = DataUtil.fetchIntensity(dataArray[i].intensity, IntensityPrecision);
+                mzArray[i] = DataUtil.FetchMz(dataArray[i].mz, MzPrecision);
+                intensityArray[i] = DataUtil.FetchIntensity(dataArray[i].intensity, IntensityPrecision);
                 mobilityNoArray[i] = dataArray[i].mobilityNo;
             }
 
@@ -446,7 +440,7 @@ namespace AirdPro.Algorithms.Compressor
                     // bool effect = false;
                     // double intensity = 0;
 
-                    float sum = AirdProUtil.sumValuesAtIndices(currentMzs, currentInts, mz);
+                    float sum = AirdProUtil.SumValuesAtIndices(currentMzs, currentInts, mz);
 
                     // while (iter < currentMzs.Length && currentMzs[iter] == mz)
                     // {
@@ -464,7 +458,7 @@ namespace AirdPro.Algorithms.Compressor
                     if (sum > 0)
                     {
                         indexIdList.Add(index);
-                        intensityList.Add(DataUtil.fetchIntensity(sum, converter.Compressor.IntensityPrecision));
+                        intensityList.Add(DataUtil.FetchIntensity(sum, converter.Compressor.IntensityPrecision));
                         // ptrDict[rt] = iter;
                     }
                 }
@@ -479,19 +473,19 @@ namespace AirdPro.Algorithms.Compressor
                     if (fastMode)
                     {
                         compressedIndexIds =
-                            AirdProUtil.intToByte(
+                            AirdProUtil.IntToByte(
                                 new IntegratedVarByteWrapper().encode(ArrayUtil.toIntArray(indexIdList)));
                         compressedInts =
-                            AirdProUtil.intToByte(new VarByteWrapper().encode(ArrayUtil.toIntArray(intensityList)));
+                            AirdProUtil.IntToByte(new VarByteWrapper().encode(ArrayUtil.toIntArray(intensityList)));
                     }
                     else
                     {
                         compressedIndexIds =
                             new ZstdWrapper().encode(
-                                AirdProUtil.intToByte(
+                                AirdProUtil.IntToByte(
                                     new IntegratedVarByteWrapper().encode(ArrayUtil.toIntArray(indexIdList))));
                         compressedInts = new ZstdWrapper().encode(
-                            AirdProUtil.intToByte(new VarByteWrapper().encode(ArrayUtil.toIntArray(intensityList))));
+                            AirdProUtil.IntToByte(new VarByteWrapper().encode(ArrayUtil.toIntArray(intensityList))));
                     }
                 }
                 else
@@ -516,7 +510,7 @@ namespace AirdPro.Algorithms.Compressor
             });
 
             converter.JobInfo.log("有效点数:" + totalPoint + "个");
-            converter.JobInfo.log("总体积为:" + AirdProFileUtil.getSizeLabel(totalSize));
+            converter.JobInfo.log("总体积为:" + AirdProFileUtil.GetSizeLabel(totalSize));
             columnIndex.mzs = totalMzs;
             columnIndex.rts = rtsInt.ToArray();
             return treeColumn;
@@ -586,7 +580,7 @@ namespace AirdPro.Algorithms.Compressor
                         }
 
                         matrix[iter, mzIndexDict[spectrum.mzs[i]]] =
-                            DataUtil.fetchIntensity(intensitySum, converter.Compressor.IntensityPrecision);
+                            DataUtil.FetchIntensity(intensitySum, converter.Compressor.IntensityPrecision);
                         i = j;
                     }
 
@@ -627,7 +621,7 @@ namespace AirdPro.Algorithms.Compressor
                 {
                     spectraIds[loop] = valueTuple.Item1;
                     ints[loop] =
-                        DataUtil.fetchIntensity(valueTuple.Item2.Real, converter.Compressor.IntensityPrecision);
+                        DataUtil.FetchIntensity(valueTuple.Item2.Real, converter.Compressor.IntensityPrecision);
                     loop++;
                 }
 
@@ -639,16 +633,16 @@ namespace AirdPro.Algorithms.Compressor
                 {
                     if (fastMode)
                     {
-                        compressedIndexIds = AirdProUtil.intToByte(new IntegratedVarByteWrapper().encode(spectraIds));
-                        compressedInts = AirdProUtil.intToByte(new VarByteWrapper().encode(ints));
+                        compressedIndexIds = AirdProUtil.IntToByte(new IntegratedVarByteWrapper().encode(spectraIds));
+                        compressedInts = AirdProUtil.IntToByte(new VarByteWrapper().encode(ints));
                     }
                     else
                     {
                         compressedIndexIds =
                             new ZstdWrapper().encode(
-                                AirdProUtil.intToByte(new IntegratedVarByteWrapper().encode(spectraIds)));
+                                AirdProUtil.IntToByte(new IntegratedVarByteWrapper().encode(spectraIds)));
                         compressedInts = new ZstdWrapper().encode(
-                            AirdProUtil.intToByte(new VarByteWrapper().encode(ints)));
+                            AirdProUtil.IntToByte(new VarByteWrapper().encode(ints)));
                     }
                 }
                 else

@@ -23,7 +23,7 @@ namespace AirdPro.Utils
 {
     public class HttpUtil
     {
-        public static void fetchFileSize(FileRow fileRow)
+        public static void FetchFileSize(FileRow fileRow)
         {
             if (fileRow.remotePath == null || fileRow.remotePath.Equals(String.Empty))
             {
@@ -33,18 +33,18 @@ namespace AirdPro.Utils
             long size = 0;
             if (fileRow.remotePath.StartsWith("ftp"))
             {
-                size = fetchFtpFileSize(fileRow.remotePath);
+                size = FetchFtpFileSize(fileRow.remotePath);
             }
             else if (fileRow.remotePath.StartsWith("http"))
             {
-                size = fetchHttpFileSize(fileRow.remotePath);
+                size = FetchHttpFileSize(fileRow.remotePath);
             }
 
             fileRow.fileSize = size;
-            fileRow.fileSizeLabel.Report(AirdProFileUtil.getSizeLabel(size));
+            fileRow.fileSizeLabel.Report(AirdProFileUtil.GetSizeLabel(size));
         }
 
-        public static List<FtpListItem> listAllFtpFiles(FtpClient client, string remoteDir, int deep)
+        public static List<FtpListItem> ListAllFtpFiles(FtpClient client, string remoteDir, int deep)
         {
             List<FtpListItem> files = new List<FtpListItem> ();
             try
@@ -74,7 +74,7 @@ namespace AirdPro.Utils
             return files;
         }
 
-        public static List<string> fetchFtpFilePaths(string ftp)
+        public static List<string> FetchFtpFilePaths(string ftp)
         {
             try
             {
@@ -106,7 +106,7 @@ namespace AirdPro.Utils
             }
         }
 
-        public static long fetchHttpFileSize(string httpPath)
+        public static long FetchHttpFileSize(string httpPath)
         {
             HttpWebResponse httpResponse = null;
             long size = 0;
@@ -133,7 +133,7 @@ namespace AirdPro.Utils
             return size;
         }
 
-        public static long fetchFtpFileSize(string ftpPath)
+        public static long FetchFtpFileSize(string ftpPath)
         {
             FtpWebResponse ftpResponse = null;
             long size = 0;
@@ -160,7 +160,7 @@ namespace AirdPro.Utils
             return size;
         }
 
-        public static async Task<string> getResponse(string url)
+        public static async Task<string> GetResponse(string url)
         {
             using (HttpClient client = new HttpClient())
             {

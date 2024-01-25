@@ -217,7 +217,7 @@ public partial class DownloadLinksForm : Form
 
     public void readMLFileList()
     {
-        List<string> paths = HttpUtil.fetchFtpFilePaths(UrlConst.mlFtpUrl+identifier);
+        List<string> paths = HttpUtil.FetchFtpFilePaths(UrlConst.mlFtpUrl+identifier);
         if (paths == null)
         {
             MessageBox.Show("Getting FTP files Error!");
@@ -243,7 +243,7 @@ public partial class DownloadLinksForm : Form
         while (paths == null && count > 0)
         {
             count--;
-            paths = HttpUtil.fetchFtpFilePaths(tbFTP.Text);
+            paths = HttpUtil.FetchFtpFilePaths(tbFTP.Text);
         }
         
         if (paths == null)

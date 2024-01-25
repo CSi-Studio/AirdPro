@@ -14,7 +14,7 @@ using AirdSDK.Beans.Common;
 
 public class CentroidUtil
 {
-    public static TempSpectrum centroid(int[] mzs, float[] intensities, double noiseLevel)
+    public static TempSpectrum Centroid(int[] mzs, float[] intensities, double noiseLevel)
     {
         if (mzs == null)
         {
@@ -61,7 +61,7 @@ public class CentroidUtil
             if ((!ascending) && (nextIsBigger || nextIsZero))
             {
                 //计算exact mass
-                int exactMz = calculateExactMass(mzs, intensities, localMaximumIndex, rangeDataPoints);
+                int exactMz = CalculateExactMass(mzs, intensities, localMaximumIndex, rangeDataPoints);
                 //添加强度高于噪声阈值的点
                 if (intensities[localMaximumIndex] > noiseLevel)
                 {
@@ -78,7 +78,7 @@ public class CentroidUtil
         return new TempSpectrum(pickedMzs.ToArray(), pickedInts.ToArray());
     }
 
-    private static int calculateExactMass(int[] mzs, float[] intensities, int topIndex, List<int> rangeDataPoints)
+    private static int CalculateExactMass(int[] mzs, float[] intensities, int topIndex, List<int> rangeDataPoints)
     {
         double xRight = -1, xLeft = -1;
         double halfInt = intensities[topIndex] / 2;

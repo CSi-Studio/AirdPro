@@ -30,7 +30,7 @@ namespace AirdPro.Redis
         private int db_num = 1;
         public static int messageNum = 0;
         
-        public static string increment()
+        public static string Increment()
         {
             return Interlocked.Increment(ref messageNum)+"";
         }
@@ -39,7 +39,7 @@ namespace AirdPro.Redis
         {
         }
 
-        public static RedisClient getInstance()
+        public static RedisClient GetInstance()
         {
             if (instance == null)
             {
@@ -49,7 +49,7 @@ namespace AirdPro.Redis
             return instance;
         }
 
-        public Boolean connect(string host, int port)
+        public bool Connect(string host, int port)
         {
             ConfigurationOptions options = new ConfigurationOptions
             {
@@ -71,7 +71,7 @@ namespace AirdPro.Redis
             return redis.IsConnected;
         }
 
-        public Boolean check()
+        public bool Check()
         {
             if (redis != null && redis.IsConnected)
             {
@@ -91,9 +91,9 @@ namespace AirdPro.Redis
         }
         
         //从Redis中读取相关的任务消息并转化为本地任务JobInfo
-        public bool consume()
+        public bool Consume()
         {
-            bool check = this.check();
+            bool check = this.Check();
             if (check)
             {
                 int i = 10;
@@ -106,7 +106,7 @@ namespace AirdPro.Redis
                         RedisValue value = db.SetPop(RedisConst.Redis_Queue_Convert);
                         if (!value.IsNullOrEmpty)
                         {
-                            Program.redisForm.lblMessageNum.Text = increment();
+                            Program.redisForm.lblMessageNum.Text = Increment();
                             // 如果获取到转换队列中相关的任务,那么将消息队列中的转换任务加入到执行队列中
                             valueStr = value.ToString();
                             // 目前远程任务不支持Stack-ZDPD
@@ -140,10 +140,10 @@ namespace AirdPro.Redis
                             
                             JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
                             ListViewItem item = jobInfo.buildItem();
-                            if (!ConvertTaskManager.getInstance().jobTable.Contains(jobInfo.jobId))
+                            if (!ConvertTaskManager.GetInstance().JobTable.Contains(jobInfo.jobId))
                             {
                                 Program.conversionForm.lvFileList.Items.Add(item);
-                                ConvertTaskManager.getInstance().pushJob(jobInfo);
+                                ConvertTaskManager.GetInstance().PushJob(jobInfo);
                                 needToExecute = true;
                             }
                         }
@@ -170,7 +170,7 @@ namespace AirdPro.Redis
             return check;
         }
 
-        public void disconnect()
+        public void Disconnect()
         {
             if (redis != null)
             {

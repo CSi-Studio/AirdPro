@@ -45,7 +45,7 @@ namespace AirdPro.Forms
             this.Text = SoftwareInfo.getVersion() + Const.Dash + NetworkUtil.getHostIP();
             initJobsFromStorage();
             bw = new BackgroundWorker();
-            bw.DoWork += (sender, e) => ConvertTaskManager.getInstance().run();
+            bw.DoWork += (sender, e) => ConvertTaskManager.GetInstance().Run();
             // lvFileList.ListViewItemSorter = 
             // 创建一个ListViewSorter对象
             FileListSorter sorter = new FileListSorter();
@@ -60,10 +60,10 @@ namespace AirdPro.Forms
             {
                 jobInfo.reset();
                 ListViewItem item = jobInfo.buildItem();
-                if (!ConvertTaskManager.getInstance().jobTable.Contains(jobInfo.jobId))
+                if (!ConvertTaskManager.GetInstance().JobTable.Contains(jobInfo.jobId))
                 {
                     Program.conversionForm.lvFileList.Items.Add(item);
-                    ConvertTaskManager.getInstance().pushJob(jobInfo);
+                    ConvertTaskManager.GetInstance().PushJob(jobInfo);
                 }
             }
         }
@@ -89,10 +89,10 @@ namespace AirdPro.Forms
             foreach (ListViewItem item in lvFileList.Items)
             {
                 JobInfo jobInfo = (JobInfo)item.Tag;
-                if (!ConvertTaskManager.getInstance().finishedTable.ContainsKey(jobInfo.jobId))
+                if (!ConvertTaskManager.GetInstance().FinishedTable.ContainsKey(jobInfo.jobId))
                 {
                     item.Tag = jobInfo;
-                    ConvertTaskManager.getInstance().pushJob(jobInfo);
+                    ConvertTaskManager.GetInstance().PushJob(jobInfo);
                 }
             }
 
@@ -134,7 +134,7 @@ namespace AirdPro.Forms
 
             jobIdList.Remove(fileItem.Text);
             fileItem.Remove();
-            ConvertTaskManager.getInstance().removeJob(jobInfo);
+            ConvertTaskManager.GetInstance().RemoveJob(jobInfo);
         }
 
         private void lvFileList_SelectedIndexChanged(object sender, EventArgs e)
@@ -155,9 +155,9 @@ namespace AirdPro.Forms
                 ListViewItem item = lvFileList.SelectedItems[lvFileList.SelectedItems.Count - 1];
                 string content = Constants.Tag.Empty;
                 JobInfo job;
-                if (ConvertTaskManager.getInstance().jobTable[item.Text] != null)
+                if (ConvertTaskManager.GetInstance().JobTable[item.Text] != null)
                 {
-                    job = ConvertTaskManager.getInstance().jobTable[item.Text] as JobInfo;
+                    job = ConvertTaskManager.GetInstance().JobTable[item.Text] as JobInfo;
 
                     for (int i = job.logs.Count - 1; i >= 0; i--)
                     {
@@ -166,9 +166,9 @@ namespace AirdPro.Forms
 
                     content += Const.Change_Line;
                 }
-                else if (ConvertTaskManager.getInstance().finishedTable[item.Text] != null)
+                else if (ConvertTaskManager.GetInstance().FinishedTable[item.Text] != null)
                 {
-                    job = ConvertTaskManager.getInstance().finishedTable[item.Text] as JobInfo;
+                    job = ConvertTaskManager.GetInstance().FinishedTable[item.Text] as JobInfo;
 
                     for (int i = job.logs.Count - 1; i >= 0; i--)
                     {
@@ -196,9 +196,9 @@ namespace AirdPro.Forms
         {
             foreach (ListViewItem item in lvFileList.Items)
             {
-                if (ConvertTaskManager.getInstance().jobTable[item.Text] != null)
+                if (ConvertTaskManager.GetInstance().JobTable[item.Text] != null)
                 {
-                    JobInfo job = ConvertTaskManager.getInstance().jobTable[item.Text] as JobInfo;
+                    JobInfo job = ConvertTaskManager.GetInstance().JobTable[item.Text] as JobInfo;
                     job.refreshReport = true;
                 }
             }
@@ -232,10 +232,10 @@ namespace AirdPro.Forms
             foreach (ListViewItem item in lvFileList.SelectedItems)
             {
                 JobInfo jobInfo = (JobInfo)item.Tag;
-                if (ConvertTaskManager.getInstance().finishedTable.ContainsKey(jobInfo.jobId))
+                if (ConvertTaskManager.GetInstance().FinishedTable.ContainsKey(jobInfo.jobId))
                 {
-                    ConvertTaskManager.getInstance().finishedTable.Remove(jobInfo.jobId);
-                    ConvertTaskManager.getInstance().pushJob(jobInfo);
+                    ConvertTaskManager.GetInstance().FinishedTable.Remove(jobInfo.jobId);
+                    ConvertTaskManager.GetInstance().PushJob(jobInfo);
                     jobInfo.refreshItem(item);
                 }
                 else
@@ -282,7 +282,7 @@ namespace AirdPro.Forms
         private void ConversionForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             //需要将未完成转换的任务保存到本地
-            string jobInfoListStr = JsonConvert.SerializeObject(ConvertTaskManager.getInstance().jobTable.Values,
+            string jobInfoListStr = JsonConvert.SerializeObject(ConvertTaskManager.GetInstance().JobTable.Values,
                 new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             Settings.Default.JobInfoList = jobInfoListStr;
             Settings.Default.Save();
@@ -300,7 +300,7 @@ namespace AirdPro.Forms
                     {
                         item.Remove();
                         jobIdList.Remove(item.SubItems[0].Text);
-                        ConvertTaskManager.getInstance().jobTable.Remove(item.SubItems[0].Text);
+                        ConvertTaskManager.GetInstance().JobTable.Remove(item.SubItems[0].Text);
                     }
                 }
             }

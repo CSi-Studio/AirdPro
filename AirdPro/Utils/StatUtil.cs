@@ -19,7 +19,7 @@ namespace AirdPro.Utils
 {
     public class StatUtil
     {
-        public static List<double> minMaxNorm(List<double> numbers)
+        public static List<double> MinMaxNorm(List<double> numbers)
         {
             if (numbers.Count == 0)
             {
@@ -56,7 +56,7 @@ namespace AirdPro.Utils
             return normList;
         }
 
-        public static void stat4ComboComp(BaseComp<int> intComp, ByteComp byteComp, List<int[]> arrays, string key,
+        public static void Stat4ComboComp(BaseComp<int> intComp, ByteComp byteComp, List<int[]> arrays, string key,
             Dictionary<string, long> sizeMap, Dictionary<string, long> compressTimeMap,
             Dictionary<string, long> decompressTimeMap)
         {
@@ -91,11 +91,11 @@ namespace AirdPro.Utils
             watch.Stop();
         }
 
-        public static void stat4HuffmanCode(BaseComp<int> intComp, ByteComp byteComp, List<int[]> arrays, string dim,
+        public static void Stat4HuffmanCode(BaseComp<int> intComp, ByteComp byteComp, List<int[]> arrays, string dim,
             Dictionary<string, long> sizeMap, Dictionary<string, long> compressTimeMap,
             Dictionary<string, long> decompressTimeMap)
         {
-            string key = buildComboKey(dim, intComp.getName(), byteComp.getName());
+            string key = BuildComboKey(dim, intComp.getName(), byteComp.getName());
             Stopwatch watchMz = new Stopwatch();
             watchMz.Start();
             int[] tempMobiHuffArray = HuffmanCoder.toIntArray(arrays);
@@ -115,7 +115,7 @@ namespace AirdPro.Utils
             watchMz.Stop();
         }
 
-        public static int calcBestIndex(List<CompressStat> statList, double csWeight, double ctWeight, double dtWeight)
+        public static int CalcBestIndex(List<CompressStat> statList, double csWeight, double ctWeight, double dtWeight)
         {
             statList.Sort((a, b) => a.size.CompareTo(b.size));
             List<double> sizeList = new List<double>();
@@ -128,9 +128,9 @@ namespace AirdPro.Utils
                 dtList.Add(stat.decompressTime);
             });
 
-            List<double> normSize = minMaxNorm(sizeList);
-            List<double> normCt = minMaxNorm(ctList);
-            List<double> normDt = minMaxNorm(dtList);
+            List<double> normSize = MinMaxNorm(sizeList);
+            List<double> normCt = MinMaxNorm(ctList);
+            List<double> normDt = MinMaxNorm(dtList);
             Stat sizeStat = new Stat(normSize);
             // Stat ctStat = new Stat(normCt);
             // Stat dtStat = new Stat(normDt);
@@ -160,7 +160,7 @@ namespace AirdPro.Utils
             return bestIndex;
         }
 
-        public static string buildComboKey(string key, string intCompName, string byteCompName)
+        public static string BuildComboKey(string key, string intCompName, string byteCompName)
         {
             return key + "-" + intCompName + "-" + byteCompName;
         }

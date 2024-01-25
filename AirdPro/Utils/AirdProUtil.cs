@@ -5,7 +5,7 @@ namespace AirdPro.Utils;
 
 public class AirdProUtil
 {
-    public static byte[] intToByte(int[] src)
+    public static byte[] IntToByte(int[] src)
     {
         byte[] byteArray = new byte[src.Length * 4];
         Span<byte> byteSpan = byteArray.AsSpan();
@@ -22,13 +22,13 @@ public class AirdProUtil
         return byteArray;
     }
     
-    public static int[] byteToInt(byte[] src)
+    public static int[] ByteToInt(byte[] src)
     {
         var intArray = MemoryMarshal.Cast<byte, int>(src);
         return intArray.ToArray();
     }
     
-    public static float sumValuesAtIndices(int[] arrA, float[] arrB, int target)
+    public static float SumValuesAtIndices(int[] arrA, float[] arrB, int target)
     {
         float sum = 0;
 

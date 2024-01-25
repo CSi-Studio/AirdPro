@@ -8,7 +8,7 @@ public class ResourceUtil
 {
     public static string resourceSpace = "AirdPro.Resources.";
 
-    public static Image readImage(string resourceName)
+    public static Image ReadImage(string resourceName)
     {
         resourceName = resourceSpace + resourceName;
         Assembly assembly = Assembly.GetExecutingAssembly();
@@ -16,7 +16,7 @@ public class ResourceUtil
         return Image.FromStream(stream);
     }
 
-    public static byte[] readBytes(string resourceName)
+    public static byte[] ReadBytes(string resourceName)
     {
         resourceName = resourceSpace + resourceName;
         Assembly assembly = Assembly.GetExecutingAssembly();

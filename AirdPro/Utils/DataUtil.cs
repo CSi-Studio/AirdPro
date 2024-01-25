@@ -18,7 +18,7 @@ namespace AirdPro.Utils
 {
     public class DataUtil
     {
-        public static int fetchIntensity(double target, int intensityPrecision)
+        public static int FetchIntensity(double target, int intensityPrecision)
         {
             int result = 0;
             double ori = target * intensityPrecision;
@@ -34,7 +34,7 @@ namespace AirdPro.Utils
             return result;
         }
 
-        public static int fetchMz(double target, int mzPrecision)
+        public static int FetchMz(double target, int mzPrecision)
         {
             int result = -1;
             try
@@ -50,7 +50,7 @@ namespace AirdPro.Utils
         }
 
         //yongy
-        public static int fetchRt(double target)
+        public static int FetchRt(double target)
         {
             int result = -1;
             try
@@ -65,7 +65,7 @@ namespace AirdPro.Utils
             return result;
         }
 
-        public static double[] getMobilityData(Spectrum spectrum)
+        public static double[] GetMobilityData(Spectrum spectrum)
         {
             return spectrum.getArrayByCVID(CVID.MS_mean_ion_mobility_drift_time_array)?.data
                        .Storage() ??
@@ -76,7 +76,7 @@ namespace AirdPro.Utils
                        ?.data.Storage();
         }
 
-        public static int findMaxIndex(List<float> targets)
+        public static int FindMaxIndex(List<float> targets)
         {
             int maxIndex = 0;
             float currentMax = float.MinValue;

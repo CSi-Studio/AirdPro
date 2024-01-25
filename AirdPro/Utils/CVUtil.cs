@@ -25,8 +25,8 @@ namespace AirdPro.Utils;
 public class CVUtil
 {
     //由于直接对这些指定的cv字段进行存储,因此不需要再转存一遍
-    private static readonly HashSet<CVID> skipList = new()
-    {
+    private static readonly HashSet<CVID> SkipList =
+    [
         CVID.MS_scan_start_time,
         CVID.MS_ms_level,
         CVID.MS_MSn_spectrum,
@@ -49,10 +49,10 @@ public class CVUtil
         CVID.MS_lowest_observed_m_z,
         CVID.MS_filter_string,
         CVID.MS_preset_scan_configuration,
-        CVID.MS_SRM_chromatogram,
-    };
+        CVID.MS_SRM_chromatogram
+    ];
 
-    public static List<CV> trans(CVParamList paramList)
+    public static List<CV> Trans(CVParamList paramList)
     {
         if (paramList == null)
         {
@@ -64,8 +64,8 @@ public class CVUtil
         {
             CVParam cv = paramList[i];
             CVID id = cv.cvid;
-            if (skipList.Contains(id)) continue;
-            cvList.Add(build(cv));
+            if (SkipList.Contains(id)) continue;
+            cvList.Add(Build(cv));
             cv.Dispose();
         }
         
@@ -73,7 +73,7 @@ public class CVUtil
         return cvList;
     }
 
-    public static CV build(CVParam param)
+    public static CV Build(CVParam param)
     {
         var cv = new CV();
         cv.cvid = (int)param.cvid + ":" + param.name;
@@ -87,7 +87,7 @@ public class CVUtil
         return cv;
     }
 
-    public static string parseMsLevel(Spectrum spectrum)
+    public static string ParseMsLevel(Spectrum spectrum)
     {
         using (CVParam cv = spectrum.cvParamChild(CVID.MS_ms_level))
         {
@@ -96,7 +96,7 @@ public class CVUtil
         }
     }
 
-    public static double parseRT(Scan scan, JobInfo jobInfo)
+    public static double ParseRt(Scan scan, JobInfo jobInfo)
     {
         using (var cv = scan.cvParamChild(CVID.MS_scan_start_time))
         {
@@ -108,7 +108,7 @@ public class CVUtil
         }
     }
 
-    public static string parseFilterString(Scan scan, JobInfo jobInfo)
+    public static string ParseFilterString(Scan scan, JobInfo jobInfo)
     {
         if (scan.hasCVParamChild(CVID.MS_filter_string))
         {
@@ -123,7 +123,7 @@ public class CVUtil
         }
     }
 
-    public static void parseMobility(Scan scan, MobiInfo mobiInfo)
+    public static void ParseMobility(Scan scan, MobiInfo mobiInfo)
     {
         if (scan.hasCVParamChild(CVID.MS_inverse_reduced_ion_mobility))
         {
@@ -139,7 +139,7 @@ public class CVUtil
         }
     }
 
-    public static long parseTIC(Spectrum spectrum)
+    public static long ParseTic(Spectrum spectrum)
     {
         try
         {
@@ -152,7 +152,7 @@ public class CVUtil
         }
     }
 
-    public static double parseBasePeakIntensity(Spectrum spectrum)
+    public static double ParseBasePeakIntensity(Spectrum spectrum)
     {
         try
         {
@@ -165,7 +165,7 @@ public class CVUtil
         }
     }
 
-    public static double parseBasePeakMz(Spectrum spectrum)
+    public static double ParseBasePeakMz(Spectrum spectrum)
     {
         try
         {
@@ -181,7 +181,7 @@ public class CVUtil
     /**
          * 从任意spectrum上获取
          */
-    public static string parsePolarity(Spectrum spectrum)
+    public static string ParsePolarity(Spectrum spectrum)
     {
         using var cvNeg = spectrum.cvParamChild(CVID.MS_negative_scan);
         if (!cvNeg.cvid.Equals(CVID.CVID_Unknown))
@@ -196,7 +196,7 @@ public class CVUtil
     /**
        * 从任意chromatogram上获取
        */
-    public static string parsePolarity(Chromatogram chromatogram)
+    public static string ParsePolarity(Chromatogram chromatogram)
     {
         using var cvNeg = chromatogram.cvParamChild(CVID.MS_negative_scan);
         if (!cvNeg.cvid.Equals(CVID.CVID_Unknown))
@@ -211,7 +211,7 @@ public class CVUtil
     /**
          * 从任意spectrum上获取
          */
-    public static string parseMsType(Spectrum spectrum)
+    public static string ParseMsType(Spectrum spectrum)
     {
         using (var cvProfile = spectrum.cvParamChild(CVID.MS_profile_spectrum))
         {
@@ -229,7 +229,7 @@ public class CVUtil
         return MSType.UNKNOWN;
     }
 
-    public static string parseMsType(Chromatogram chromatogram)
+    public static string ParseMsType(Chromatogram chromatogram)
     {
         using (var cvProfile = chromatogram.cvParamChild(CVID.MS_profile_spectrum))
         {
@@ -251,7 +251,7 @@ public class CVUtil
          * 解析activation以及对应的energy
          * 需要从ms2的谱图上获取
          */
-    public static (string activator, float energy) parseActivator(Precursor precursor)
+    public static (string activator, float energy) ParseActivator(Precursor precursor)
     {
         using (Activation activation = precursor.activation)
         {
@@ -279,7 +279,7 @@ public class CVUtil
         }
     }
 
-    public static double parsePrecursorParams(IsolationWindow isolationWindow, CVID cvid, JobInfo jobInfo)
+    public static double ParsePrecursorParams(IsolationWindow isolationWindow, CVID cvid, JobInfo jobInfo)
     {
         double? result = null;
         var retryTimes = 3;
@@ -315,7 +315,7 @@ public class CVUtil
         return result.Value;
     }
 
-    public static double parsePrecursorWidth(IsolationWindow isolationWindow, JobInfo jobInfo)
+    public static double ParsePrecursorWidth(IsolationWindow isolationWindow, JobInfo jobInfo)
     {
         var retryTimes = 3;
         double lower = -1;
@@ -360,11 +360,11 @@ public class CVUtil
         return upper + lower;
     }
 
-    public static int? parsePrecursorCharge(Precursor precursor, JobInfo jobInfo)
+    public static int? ParsePrecursorCharge(Precursor precursor, JobInfo jobInfo)
     {
         var result = 0;
         var retryTimes = 3;
-        while (result < 0 && retryTimes > 0)
+        while (retryTimes > 0)
         {
             try
             {
@@ -388,15 +388,15 @@ public class CVUtil
         return result;
     }
 
-    public static WindowRange parseIsolationWindow(Precursor precursor, JobInfo jobInfo)
+    public static WindowRange ParseIsolationWindow(Precursor precursor, JobInfo jobInfo)
     {
         var windowRange = new WindowRange();
-        var precursorMz = parsePrecursorParams(precursor.isolationWindow, CVID.MS_isolation_window_target_m_z, jobInfo);
+        var precursorMz = ParsePrecursorParams(precursor.isolationWindow, CVID.MS_isolation_window_target_m_z, jobInfo);
         var lowerOffset =
-            parsePrecursorParams(precursor.isolationWindow, CVID.MS_isolation_window_lower_offset, jobInfo);
+            ParsePrecursorParams(precursor.isolationWindow, CVID.MS_isolation_window_lower_offset, jobInfo);
         var upperOffset =
-            parsePrecursorParams(precursor.isolationWindow, CVID.MS_isolation_window_upper_offset, jobInfo);
-        var charge = parsePrecursorCharge(precursor, jobInfo);
+            ParsePrecursorParams(precursor.isolationWindow, CVID.MS_isolation_window_upper_offset, jobInfo);
+        var charge = ParsePrecursorCharge(precursor, jobInfo);
         windowRange.charge = charge;
         windowRange.mz = precursorMz;
 
@@ -405,12 +405,12 @@ public class CVUtil
         return windowRange;
     }
 
-    public static WindowRange parseIsolationWindow(IsolationWindow isolationWindow, JobInfo jobInfo)
+    public static WindowRange ParseIsolationWindow(IsolationWindow isolationWindow, JobInfo jobInfo)
     {
         var windowRange = new WindowRange();
-        var precursorMz = parsePrecursorParams(isolationWindow, CVID.MS_isolation_window_target_m_z, jobInfo);
-        var lowerOffset = parsePrecursorParams(isolationWindow, CVID.MS_isolation_window_lower_offset, jobInfo);
-        var upperOffset = parsePrecursorParams(isolationWindow, CVID.MS_isolation_window_upper_offset, jobInfo);
+        var precursorMz = ParsePrecursorParams(isolationWindow, CVID.MS_isolation_window_target_m_z, jobInfo);
+        var lowerOffset = ParsePrecursorParams(isolationWindow, CVID.MS_isolation_window_lower_offset, jobInfo);
+        var upperOffset = ParsePrecursorParams(isolationWindow, CVID.MS_isolation_window_upper_offset, jobInfo);
 
         windowRange.mz = precursorMz;
         windowRange.start = precursorMz - lowerOffset;
@@ -418,7 +418,7 @@ public class CVUtil
         return windowRange;
     }
 
-    public static float parseInjectionTime(Scan scan)
+    public static float ParseInjectionTime(Scan scan)
     {
         using (var cv = scan.cvParamChild(CVID.MS_ion_injection_time))
         {

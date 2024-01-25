@@ -71,9 +71,9 @@ public class TdmsComp
         for (int t = 0; t < size; t++)
         {
             if (IgnoreZero && intData[t] == 0) continue;
-            mzArray[j] = DataUtil.fetchMz(mzData[t], MzPrecision);
+            mzArray[j] = DataUtil.FetchMz(mzData[t], MzPrecision);
             // intensityArray[j] = Convert.ToInt32(Math.Log(intData[t]) / Math.Log(2) * 100);
-            intensityArray[j] = DataUtil.fetchIntensity(intData[t], IntensityPrecision);
+            intensityArray[j] = DataUtil.FetchIntensity(intData[t], IntensityPrecision);
             j++;
         }
         int[] mzSubArray = new int[j];
@@ -102,7 +102,7 @@ public class TdmsComp
         }
 
         ts.tic = (long)intData.Sum();
-        int index = DataUtil.findMaxIndex(intData);
+        int index = DataUtil.FindMaxIndex(intData);
         ts.basePeakIntensity = intData[index];
         ts.basePeakMz = mzData[index];
         ts.mzArrayBytes = compressedMzArray;

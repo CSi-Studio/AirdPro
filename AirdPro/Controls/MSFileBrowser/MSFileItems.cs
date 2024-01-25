@@ -18,7 +18,7 @@ namespace AirdPro
                 msfile = value;
                 if (msfile)
                 {
-                    this.Icon = ResourceUtil.readImage("Menu.Spectrum16x16.png");
+                    this.Icon = ResourceUtil.ReadImage("Menu.Spectrum16x16.png");
                 }
             }
         }
@@ -31,7 +31,7 @@ namespace AirdPro
                 exist = value;
                 if (!exist)
                 {
-                    this.Icon = ResourceUtil.readImage("Menu.notExist.png");
+                    this.Icon = ResourceUtil.ReadImage("Menu.notExist.png");
                 }
             }
         }
@@ -60,7 +60,7 @@ namespace AirdPro
             set
             {
                 size = value;
-                SizeLabel = AirdProFileUtil.getSizeLabel(size);
+                SizeLabel = AirdProFileUtil.GetSizeLabel(size);
             }
         }
 

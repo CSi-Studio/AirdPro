@@ -51,9 +51,9 @@ namespace AirdPro.Forms
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            if (RedisClient.getInstance().check())
+            if (RedisClient.GetInstance().Check())
             {
-                RedisClient.getInstance().disconnect();
+                RedisClient.GetInstance().Disconnect();
                 updateRedisStatus(false);
             }
             else
@@ -66,13 +66,13 @@ namespace AirdPro.Forms
         {
             if (connected)
             {
-                Program.conversionForm.btnRedisSetting.BackgroundImage = ResourceUtil.readImage("Menu.Redis.png");
+                Program.conversionForm.btnRedisSetting.BackgroundImage = ResourceUtil.ReadImage("Menu.Redis.png");
                 this.btnConnect.Text = "Disconnect";
                 lblStatus.BackColor = Color.Green;
             }
             else
             {
-                Program.conversionForm.btnRedisSetting.BackgroundImage = ResourceUtil.readImage("Menu.Redis_Disconnected.png");
+                Program.conversionForm.btnRedisSetting.BackgroundImage = ResourceUtil.ReadImage("Menu.Redis_Disconnected.png");
                 this.btnConnect.Text = "Connect";
                 lblStatus.BackColor = Color.Red;
             }
@@ -81,7 +81,7 @@ namespace AirdPro.Forms
         private void redisConsumer_Tick(object sender, EventArgs e)
         {
             redisConsumer.Stop();
-            RedisClient.getInstance().consume();
+            RedisClient.GetInstance().Consume();
             redisConsumer.Start();
         }
         
@@ -99,7 +99,7 @@ namespace AirdPro.Forms
                 tbRedisPort.Text = "6379";
             }
 
-            bool initResult = RedisClient.getInstance().connect(tbRedisHost.Text, int.Parse(tbRedisPort.Text));
+            bool initResult = RedisClient.GetInstance().Connect(tbRedisHost.Text, int.Parse(tbRedisPort.Text));
             if (initResult)
             {
                 redisConsumer.Enabled = true;

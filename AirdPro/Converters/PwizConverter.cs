@@ -251,9 +251,9 @@ namespace AirdPro.Converters
                 foreach (Spectrum spectrum in predictSpecList)
                 {
                     //如果全部扫描下来都没有MS2, 说明是Full Scan扫描模式,设置为DDA
-                    if (CVUtil.parseMsLevel(spectrum).Equals(MsLevel.MS2))
+                    if (CVUtil.ParseMsLevel(spectrum).Equals(MsLevel.MS2))
                     {
-                        double width = CVUtil.parsePrecursorWidth(spectrum.precursors[0].isolationWindow, JobInfo);
+                        double width = CVUtil.ParsePrecursorWidth(spectrum.precursors[0].isolationWindow, JobInfo);
                         //然后判断前体的宽度范围,如果范围小于4,则被预测为DDA模式,否则会被认定为DIA模式
                         if (width < 4)
                         {
@@ -564,7 +564,7 @@ namespace AirdPro.Converters
                     if (mzXML.Exists) FileSize += mzXML.Length;
                     break;
                 case FileFormat.D:
-                    long totalSize = AirdProFileUtil.getDirectorySize(JobInfo.inputPath);
+                    long totalSize = AirdProFileUtil.GetDirectorySize(JobInfo.inputPath);
                     FileSize += totalSize;
                     break;
                 default:
@@ -712,19 +712,19 @@ namespace AirdPro.Converters
                 //     ms1.cvs.AddRange(CVUtil.trans(scan.cvParams));
                 // }
 
-                ms1.filterString = CVUtil.parseFilterString(scan, JobInfo);
-                ms1.rt = CVUtil.parseRT(scan, JobInfo);
-                ms1.tic = CVUtil.parseTIC(spectrum);
-                ms1.basePeakIntensity = CVUtil.parseBasePeakIntensity(spectrum);
-                ms1.basePeakMz = CVUtil.parseBasePeakMz(spectrum);
-                ms1.injectionTime = CVUtil.parseInjectionTime(scan);
+                ms1.filterString = CVUtil.ParseFilterString(scan, JobInfo);
+                ms1.rt = CVUtil.ParseRt(scan, JobInfo);
+                ms1.tic = CVUtil.ParseTic(spectrum);
+                ms1.basePeakIntensity = CVUtil.ParseBasePeakIntensity(spectrum);
+                ms1.basePeakMz = CVUtil.ParseBasePeakMz(spectrum);
+                ms1.injectionTime = CVUtil.ParseInjectionTime(scan);
                 if (MobiInfo.unit == null || MobiInfo.type == null)
                 {
-                    CVUtil.parseMobility(scan, MobiInfo);
+                    CVUtil.ParseMobility(scan, MobiInfo);
                 }
 
-                ms1.msType = CVUtil.parseMsType(spectrum);
-                ms1.polarity = CVUtil.parsePolarity(spectrum);
+                ms1.msType = CVUtil.ParseMsType(spectrum);
+                ms1.polarity = CVUtil.ParsePolarity(spectrum);
                 ms1.activator = Activator.UNKNOWN;
                 ms1.energy = -1;
             }
@@ -743,7 +743,7 @@ namespace AirdPro.Converters
             {
                 try
                 {
-                    ms2.precursor = CVUtil.parseIsolationWindow(precursor, JobInfo);
+                    ms2.precursor = CVUtil.ParseIsolationWindow(precursor, JobInfo);
                 }
                 catch (Exception e)
                 {
@@ -773,14 +773,14 @@ namespace AirdPro.Converters
 
             if (spectrum.scanList.scans.Count != 1) return ms2;
 
-            var result = CVUtil.parseActivator(spectrum.precursors[0]);
+            var result = CVUtil.ParseActivator(spectrum.precursors[0]);
             ms2.activator = result.activator;
             ms2.energy = result.energy;
-            ms2.msType = CVUtil.parseMsType(spectrum);
-            ms2.polarity = CVUtil.parsePolarity(spectrum);
-            ms2.tic = CVUtil.parseTIC(spectrum);
-            ms2.basePeakIntensity = CVUtil.parseBasePeakIntensity(spectrum);
-            ms2.basePeakMz = CVUtil.parseBasePeakMz(spectrum);
+            ms2.msType = CVUtil.ParseMsType(spectrum);
+            ms2.polarity = CVUtil.ParsePolarity(spectrum);
+            ms2.tic = CVUtil.ParseTic(spectrum);
+            ms2.basePeakIntensity = CVUtil.ParseBasePeakIntensity(spectrum);
+            ms2.basePeakMz = CVUtil.ParseBasePeakMz(spectrum);
 
             // using (CVParamList cvParams = spectrum.cvParams)
             // {
@@ -789,14 +789,14 @@ namespace AirdPro.Converters
 
             using (Scan scan = spectrum.scanList.scans[0])
             {
-                ms2.rt = CVUtil.parseRT(scan, JobInfo);
-                ms2.injectionTime = CVUtil.parseInjectionTime(scan);
+                ms2.rt = CVUtil.ParseRt(scan, JobInfo);
+                ms2.injectionTime = CVUtil.ParseInjectionTime(scan);
                 if (MobiInfo.unit == null || MobiInfo.type == null)
                 {
-                    CVUtil.parseMobility(scan, MobiInfo);
+                    CVUtil.ParseMobility(scan, MobiInfo);
                 }
 
-                ms2.filterString = CVUtil.parseFilterString(scan, JobInfo);
+                ms2.filterString = CVUtil.ParseFilterString(scan, JobInfo);
 
                 // using (CVParamList cvParams = scan.cvParams)
                 // {
@@ -968,21 +968,21 @@ namespace AirdPro.Converters
                 TempScanChroma tempScan = new TempScanChroma();
                 ChromatogramIndex.nums.Add(i);
                 ChromatogramIndex.ids.Add(chromatogram.id);
-                ChromatogramIndex.cvs.Add(CVUtil.trans(chromatogram.cvParams));
+                ChromatogramIndex.cvs.Add(CVUtil.Trans(chromatogram.cvParams));
 
-                var result = CVUtil.parseActivator(chromatogram.precursor);
+                var result = CVUtil.ParseActivator(chromatogram.precursor);
                 ChromatogramIndex.activators.Add(result.activator);
                 ChromatogramIndex.energies.Add(result.energy);
-                ChromatogramIndex.polarities.Add(CVUtil.parsePolarity(chromatogram));
+                ChromatogramIndex.polarities.Add(CVUtil.ParsePolarity(chromatogram));
 
                 try
                 {
                     using (var precursor = chromatogram.precursor)
                     {
-                        WindowRange precursorMz = CVUtil.parseIsolationWindow(precursor, JobInfo);
+                        WindowRange precursorMz = CVUtil.ParseIsolationWindow(precursor, JobInfo);
                         using (var isolationWindow = chromatogram.product.isolationWindow)
                         {
-                            WindowRange productMz = CVUtil.parseIsolationWindow(isolationWindow, JobInfo);
+                            WindowRange productMz = CVUtil.ParseIsolationWindow(isolationWindow, JobInfo);
                             string ionPair = Math.Round(precursorMz.mz, 1) + "-" + Math.Round(productMz.mz, 1);
                             if (MrmCompoundDict.ContainsKey(ionPair))
                             {
@@ -1341,7 +1341,7 @@ namespace AirdPro.Converters
 
             if (mobi)
             {
-                double[] mobiData = DataUtil.getMobilityData(spectrum);
+                double[] mobiData = DataUtil.GetMobilityData(spectrum);
                 TimsData[] dataArray = new TimsData[size];
                 for (int t = 0; t < size; t++)
                 {
@@ -1352,7 +1352,7 @@ namespace AirdPro.Converters
                 for (int i = 0; i < size; i++)
                 {
                     mzArray[i] = Convert.ToInt32(dataArray[i].mz * JobInfo.config.mzPrecision);
-                    intensityArray[i] = DataUtil.fetchIntensity(dataArray[i].intensity, IntensityPrecision);
+                    intensityArray[i] = DataUtil.FetchIntensity(dataArray[i].intensity, IntensityPrecision);
                     mobilityNoArray[i] = dataArray[i].mobilityNo;
                 }
             }
@@ -1361,7 +1361,7 @@ namespace AirdPro.Converters
                 for (int i = 0; i < size; i++)
                 {
                     mzArray[i] = Convert.ToInt32(mzData[i] * JobInfo.config.mzPrecision);
-                    intensityArray[i] = DataUtil.fetchIntensity(intData[i], IntensityPrecision);
+                    intensityArray[i] = DataUtil.FetchIntensity(intData[i], IntensityPrecision);
                 }
             }
 
@@ -1388,7 +1388,7 @@ namespace AirdPro.Converters
                     ctMap.Add(key, 0);
                     dtMap.Add(key, 0);
                     sizeMap.Add(key, 0);
-                    StatUtil.stat4ComboComp(intComp, byteComp, mzArrays, key, sizeMap, ctMap, dtMap);
+                    StatUtil.Stat4ComboComp(intComp, byteComp, mzArrays, key, sizeMap, ctMap, dtMap);
                 }
             }
 
@@ -1400,7 +1400,7 @@ namespace AirdPro.Converters
                     ctMap.Add(key, 0);
                     dtMap.Add(key, 0);
                     sizeMap.Add(key, 0);
-                    StatUtil.stat4ComboComp(intComp, byteComp, intensityArrays, key, sizeMap, ctMap, dtMap);
+                    StatUtil.Stat4ComboComp(intComp, byteComp, intensityArrays, key, sizeMap, ctMap, dtMap);
                 }
             }
 
@@ -1414,7 +1414,7 @@ namespace AirdPro.Converters
                         ctMap.Add(key, 0);
                         dtMap.Add(key, 0);
                         sizeMap.Add(key, 0);
-                        StatUtil.stat4ComboComp(intComp, byteComp, mobiNoArrays, key, sizeMap, ctMap, dtMap);
+                        StatUtil.Stat4ComboComp(intComp, byteComp, mobiNoArrays, key, sizeMap, ctMap, dtMap);
                     }
                 }
             }
@@ -1448,12 +1448,12 @@ namespace AirdPro.Converters
             double csWeight = JobInfo.config.compressionSizeWeight;
             double ctWeight = JobInfo.config.compressionTimeWeight;
             double dtWeight = JobInfo.config.decompressionTimeWeight;
-            int bestIndex4Mz = StatUtil.calcBestIndex(mzStatList, csWeight, ctWeight, dtWeight);
-            int bestIndex4Intensity = StatUtil.calcBestIndex(intensityStatList, csWeight, ctWeight, dtWeight);
+            int bestIndex4Mz = StatUtil.CalcBestIndex(mzStatList, csWeight, ctWeight, dtWeight);
+            int bestIndex4Intensity = StatUtil.CalcBestIndex(intensityStatList, csWeight, ctWeight, dtWeight);
             Combination bestCombination = null;
             if (ionMobi)
             {
-                int bestIndex4Mobi = StatUtil.calcBestIndex(mobiStatList, csWeight, ctWeight, dtWeight);
+                int bestIndex4Mobi = StatUtil.CalcBestIndex(mobiStatList, csWeight, ctWeight, dtWeight);
                 JobInfo.log(Tag.Best_Combo_Comp + mzStatList[bestIndex4Mz].key + Const.Left_Slash +
                             intensityStatList[bestIndex4Intensity].key + Const.Left_Slash +
                             mobiStatList[bestIndex4Mobi].key);
@@ -1485,7 +1485,7 @@ namespace AirdPro.Converters
             {
                 using (Spectrum spectrum = SpectrumList.spectrum(i, false))
                 {
-                    string msLevel = CVUtil.parseMsLevel(spectrum);
+                    string msLevel = CVUtil.ParseMsLevel(spectrum);
                     JobInfo.setStatus("Pre:" + i + "/" + TotalSpectraCount);
                     //最后一个谱图,单独判断
                     if (i == TotalSpectraCount - 1)
@@ -1509,7 +1509,7 @@ namespace AirdPro.Converters
                             Ms1List.Add(parseMS1(spectrum, i)); //加入MS1List
                             using (Spectrum next = SpectrumList.spectrum(i + 1))
                             {
-                                if (CVUtil.parseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
+                                if (CVUtil.ParseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
                                 {
                                     parentNum = i;
                                 }
@@ -1542,7 +1542,7 @@ namespace AirdPro.Converters
                 JobInfo.log(null, Tag.progress(Tag.Pre, progress, TotalSpectraCount));
                 using (Spectrum spectrum = SpectrumList.spectrum(i))
                 {
-                    string msLevel = CVUtil.parseMsLevel(spectrum);
+                    string msLevel = CVUtil.ParseMsLevel(spectrum);
                     //如果这个谱图是MS1                          
                     if (msLevel.Equals(MsLevel.MS1))
                     {
@@ -1583,7 +1583,7 @@ namespace AirdPro.Converters
                 JobInfo.log(null, Tag.progress(Tag.Pre, i, TotalSpectraCount));
                 using (Spectrum spectrum = SpectrumList.spectrum(i))
                 {
-                    string msLevel = CVUtil.parseMsLevel(spectrum);
+                    string msLevel = CVUtil.ParseMsLevel(spectrum);
                     //最后一个谱图,单独判断
                     if (i == TotalSpectraCount - 1)
                     {
@@ -1606,7 +1606,7 @@ namespace AirdPro.Converters
                             Ms1List.Add(parseMS1(spectrum, i)); //加入MS1List
                             using (Spectrum next = SpectrumList.spectrum(i + 1))
                             {
-                                if (CVUtil.parseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
+                                if (CVUtil.ParseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
                                 {
                                     parentNum = i;
                                 }
@@ -1639,7 +1639,7 @@ namespace AirdPro.Converters
                 JobInfo.log(null, Tag.progress(Tag.Pre, progress, TotalSpectraCount));
                 using (Spectrum spectrum = SpectrumList.spectrum(i))
                 {
-                    string msLevel = CVUtil.parseMsLevel(spectrum);
+                    string msLevel = CVUtil.ParseMsLevel(spectrum);
                     //如果这个谱图是MS1                          
                     if (msLevel.Equals(MsLevel.MS1))
                     {
@@ -1680,7 +1680,7 @@ namespace AirdPro.Converters
                 JobInfo.log(null, Tag.progress(Tag.Empty, (i + 1), TotalSpectraCount));
                 using (Spectrum spectrum = SpectrumList.spectrum(i))
                 {
-                    string msLevel = CVUtil.parseMsLevel(spectrum);
+                    string msLevel = CVUtil.ParseMsLevel(spectrum);
                     //如果是最后一个谱图,那么单独判断
                     if (i == TotalSpectraCount - 1)
                     {
@@ -1704,7 +1704,7 @@ namespace AirdPro.Converters
                     {
                         using (Spectrum next = SpectrumList.spectrum(i + 1))
                         {
-                            string msLevelNext = CVUtil.parseMsLevel(next);
+                            string msLevelNext = CVUtil.ParseMsLevel(next);
                             //如果下一个谱图仍然是MS1, 那么直接忽略这个谱图
                             if (msLevelNext.Equals(MsLevel.MS1))
                             {
