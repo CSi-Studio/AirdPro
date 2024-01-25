@@ -13,30 +13,30 @@ namespace AirdPro.Algorithms.Compressor.Tdms;
 
 public class TdmsComp
 {
-    public int mzPrecision = 100000;
-    public bool ignoreZero = true;
-    public bool isCentroid = false;
-    public int intensityPrecision = 10;
+    public int MzPrecision = 100000;
+    public bool IgnoreZero = true;
+    public bool IsCentroid = false;
+    public int IntensityPrecision = 10;
     
-    public SortedIntComp mzIntComp;
-    public ByteComp mzByteComp;
-    public IntComp intIntComp;
-    public ByteComp intByteComp;
+    public SortedIntComp MzIntComp;
+    public ByteComp MzByteComp;
+    public IntComp IntIntComp;
+    public ByteComp IntByteComp;
     
     public TdmsComp(JobInfo jobInfo)
     {
-        this.mzPrecision = jobInfo.config.mzPrecision;
-        this.ignoreZero = jobInfo.config.ignoreZeroIntensity;
-        this.isCentroid = jobInfo.config.centroid;
+       MzPrecision = jobInfo.config.mzPrecision;
+       IgnoreZero = jobInfo.config.ignoreZeroIntensity;
+       IsCentroid = jobInfo.config.centroid;
         
-       mzIntComp = SortedIntComp.build(jobInfo.config.mzIntComp);
-       mzByteComp = ByteComp.build(jobInfo.config.mzByteComp);
+       MzIntComp = SortedIntComp.build(jobInfo.config.mzIntComp);
+       MzByteComp = ByteComp.build(jobInfo.config.mzByteComp);
 
-       intIntComp = IntComp.build(jobInfo.config.intIntComp);
-       intByteComp = ByteComp.build(jobInfo.config.intByteComp);
+       IntIntComp = IntComp.build(jobInfo.config.intIntComp);
+       IntByteComp = ByteComp.build(jobInfo.config.intByteComp);
     }
 
-    public void compressMS1(TdmsConverter converter, BlockIndex index)
+    public void CompressMs1(TdmsConverter converter, BlockIndex index)
     {
         Hashtable ms1Table = Hashtable.Synchronized(new Hashtable());
         int process = 0;
@@ -45,14 +45,14 @@ public class TdmsComp
             converter.JobInfo.log(null, Tag.progress(Tag.MS1, process, converter.ms1List.Count));
             MsIndex ms1Index = converter.ms1List[i];
             TempScan ts = new TempScan(ms1Index);
-            TdmsSpectrum spectrum = converter.spectra[i];
-            compress(spectrum, ts);
+            TdmsSpectrum spectrum = converter.Spectra[i];
+            Compress(spectrum, ts);
             ms1Table.Add(i, ts);
         }
-        converter.writeToFile(ms1Table, index);
+        converter.WriteToFile(ms1Table, index);
     }
 
-    public void compress(TdmsSpectrum spectrum, TempScan ts)
+    public void Compress(TdmsSpectrum spectrum, TempScan ts)
     {
         List<double> mzData = new List<double>(spectrum.mzChannel.GetFirstData<double>());
         List<float> intData = new List<float>(spectrum.intChannel.GetFirstData<float>());
@@ -70,10 +70,10 @@ public class TdmsComp
         int j = 0;
         for (int t = 0; t < size; t++)
         {
-            if (ignoreZero && intData[t] == 0) continue;
-            mzArray[j] = DataUtil.fetchMz(mzData[t], mzPrecision);
+            if (IgnoreZero && intData[t] == 0) continue;
+            mzArray[j] = DataUtil.fetchMz(mzData[t], MzPrecision);
             // intensityArray[j] = Convert.ToInt32(Math.Log(intData[t]) / Math.Log(2) * 100);
-            intensityArray[j] = DataUtil.fetchIntensity(intData[t], intensityPrecision);
+            intensityArray[j] = DataUtil.fetchIntensity(intData[t], IntensityPrecision);
             j++;
         }
         int[] mzSubArray = new int[j];
@@ -89,7 +89,7 @@ public class TdmsComp
         }
         else
         {
-            compressedMzArray = ComboComp.encode(mzIntComp, mzByteComp, mzSubArray);
+            compressedMzArray = ComboComp.encode(MzIntComp, MzByteComp, mzSubArray);
         }
 
         if (intensitySubArray.Length == 0)
@@ -98,7 +98,7 @@ public class TdmsComp
         }
         else
         {
-            compressedIntArray = ComboComp.encode(intIntComp, intByteComp, intensitySubArray);
+            compressedIntArray = ComboComp.encode(IntIntComp, IntByteComp, intensitySubArray);
         }
 
         ts.tic = (long)intData.Sum();

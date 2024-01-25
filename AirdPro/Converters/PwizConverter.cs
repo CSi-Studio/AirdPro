@@ -12,9 +12,11 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using AirdPro.Algorithms;
+using AirdPro.Algorithms.Compressor;
 using AirdPro.Algorithms.Parser;
 using AirdPro.Constants;
 using AirdPro.Domains;
@@ -38,9 +40,9 @@ namespace AirdPro.Converters
     public class PwizConverter : Converter
     {
         protected MSData Msd; //非托管内存，需要手动回收
+        public SpectrumList SpectrumList; //非托管内存，需要手动回收
+        protected ChromatogramList ChromatogramList; //非托管内存，需要手动回收
 
-        public SpectrumList SpectrumList;
-        protected ChromatogramList ChromatogramList;
         protected List<WindowRange> Ranges = new(); //SWATH/DIA Window的窗口
         protected Hashtable RangeTable = new(); //用于存放SWATH/DIA窗口的信息,key为mz
         protected List<BlockIndex> IndexList = new(); //用于存储的全局的SWATH List
@@ -75,7 +77,7 @@ namespace AirdPro.Converters
 
         private void InitCompressor()
         {
-            ICompressor comp = new CoreComp(this);
+            ICompressor comp = new PwizComp(this);
             //探索模式和非自动决策模式,会在此处初始化指定的压缩内核
             if (!JobInfo.config.autoDesicion)
             {
@@ -92,7 +94,7 @@ namespace AirdPro.Converters
                 comp.IntByteComp = ByteComp.build(JobInfo.config.intByteComp);
             }
 
-            this.Compressor = comp;
+            Compressor = comp;
         }
 
         public override void DoConvert()
@@ -104,6 +106,7 @@ namespace AirdPro.Converters
                 {
                     if (msdList.Count == 0)
                     {
+                        JobInfo.logError("Msd List is Empty");
                         return;
                     }
 
@@ -321,7 +324,7 @@ namespace AirdPro.Converters
             }
 
             JobInfo.log(Tag.Predict_For_Best_Combination + JobInfo.airdFileName, Status.Predicting);
-            Combination combination = randomSampling(JobInfo.config.spectraToPredict, JobInfo.ionMobility);
+            Combination combination = RandomSampling(JobInfo.config.spectraToPredict, JobInfo.ionMobility);
             combination.enable(JobInfo.config, Compressor);
             JobInfo.log(JobInfo.getCompressorStr());
             JobInfo.config.autoDesicion = false;
@@ -511,13 +514,13 @@ namespace AirdPro.Converters
                 ignoreZeroIntensityPoints = JobInfo.config.ignoreZeroIntensity
             };
 
-            MSDataList msInfo = new MSDataList();
-            readerList.read(JobInfo.inputPath, msInfo, readerConfig);
+            MSDataList msdList = new MSDataList();
+            readerList.read(JobInfo.inputPath, msdList, readerConfig);
 
-            if (msInfo.Count == 0)
+            if (msdList.Count == 0)
             {
                 JobInfo.logError(ResultCode.Reading_Vendor_File_Error_Run_Is_Null);
-                msInfo.Dispose();
+                msdList.Dispose();
                 readerList.Dispose();
                 return null;
             }
@@ -571,12 +574,12 @@ namespace AirdPro.Converters
             }
 
             readerList.Dispose();
-            return msInfo;
+            return msdList;
         }
 
         public void readMsd(MSData msd)
         {
-            this.Msd = msd;
+            Msd = msd;
             List<string> filter = new List<string>();
             SpectrumListFactory.wrap(msd, filter); //这一步操作可以帮助加快Wiff文件的初始化速度
 
@@ -606,7 +609,7 @@ namespace AirdPro.Converters
         }
 
         //将最终的数据写入文件中
-        public void writeToAirdInfoFile()
+        public void WriteToAirdInfoFile()
         {
             JobInfo.log(Tag.Write_Index_File, Status.Writing_Index_File);
             AirdInfo airdInfo = buildAirdInfo();
@@ -632,7 +635,7 @@ namespace AirdPro.Converters
 
             if (JobInfo.config.isSearch())
             {
-                ColumnInfo columnInfo = buildColumnInfo();
+                ColumnInfo columnInfo = BuildColumnInfo();
                 string columnInfoStr = JsonConvert.SerializeObject(columnInfo,
                     new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 byte[] columnInfoBytes = Encoding.Default.GetBytes(columnInfoStr);
@@ -821,7 +824,7 @@ namespace AirdPro.Converters
 
                 JobInfo.log(null, Tag.progress(Tag.MS2, progress, Ms2Table.Keys.Count));
                 progress++;
-                Compressor.CompressMs2(this, ms2List, index);
+                Compressor.CompressMS2(this, ms2List, index);
                 index.endPtr = StartPosition;
                 IndexList.Add(index);
                 JobInfo.log("MS2 Group Finished:" + progress + "/" + Ms2Table.Keys.Count);
@@ -849,7 +852,7 @@ namespace AirdPro.Converters
             BlockIndex index = new BlockIndex();
             index.level = 1;
             index.startPtr = StartPosition;
-            Compressor.CompressMs1(this, index);
+            Compressor.CompressMS1(this, index);
             index.endPtr = StartPosition;
             IndexList.Add(index);
         }
@@ -870,7 +873,7 @@ namespace AirdPro.Converters
 
                 JobInfo.log(null, Tag.progress(Tag.MS2, progress, Ms2Table.Keys.Count));
                 progress++;
-                Compressor.CompressMs2(this, ms2List, index);
+                Compressor.CompressMS2(this, ms2List, index);
                 index.endPtr = StartPosition;
                 IndexList.Add(index);
                 JobInfo.log(Tag.progress(Tag.MS2_Group_Finished, progress, Ms2Table.Keys.Count));
@@ -1046,16 +1049,16 @@ namespace AirdPro.Converters
             airdInfo.scene = JobInfo.config.scene;
             airdInfo.airdPath = JobInfo.airdFilePath;
             airdInfo.fileSize = FileSize;
-            airdInfo.createDate = DateTime.Now.ToString();
+            airdInfo.createDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
             airdInfo.type = JobInfo.type;
             airdInfo.totalCount = Msd.run.spectrumList.size();
             airdInfo.creator = JobInfo.config.creator;
 
-            HashSet<string> activators = new HashSet<string>();
-            HashSet<float> energies = new HashSet<float>();
-            HashSet<string> polarities = new HashSet<string>();
-            HashSet<string> msTypes = new HashSet<string>();
-            HashSet<string> filterStrings = new HashSet<string>();
+            HashSet<string> activators = [];
+            HashSet<float> energies = [];
+            HashSet<string> polarities = [];
+            HashSet<string> msTypes = [];
+            HashSet<string> filterStrings = [];
 
             for (var i = 0; i < IndexList.Count; i++)
             {
@@ -1069,49 +1072,48 @@ namespace AirdPro.Converters
             if (activators.Count == 1)
             {
                 airdInfo.activator = IndexList[0].activators[0];
-                for (var i = 0; i < IndexList.Count; i++)
+                foreach (var index in IndexList)
                 {
-                    IndexList[i].activators = null;
+                    index.activators = null;
                 }
             }
 
             if (energies.Count == 1)
             {
                 airdInfo.energy = IndexList[0].energies[0];
-                for (var i = 0; i < IndexList.Count; i++)
+                foreach (var index in IndexList)
                 {
-                    IndexList[i].energies = null;
+                    index.energies = null;
                 }
             }
 
             if (polarities.Count == 1)
             {
                 airdInfo.polarity = IndexList[0].polarities[0];
-                for (var i = 0; i < IndexList.Count; i++)
+                foreach (var index in IndexList)
                 {
-                    IndexList[i].polarities = null;
+                    index.polarities = null;
                 }
             }
 
             if (msTypes.Count == 1)
             {
                 airdInfo.msType = IndexList[0].msTypes[0];
-                for (var i = 0; i < IndexList.Count; i++)
+                foreach (var index in IndexList)
                 {
-                    IndexList[i].msTypes = null;
+                    index.msTypes = null;
                 }
             }
 
             if (filterStrings.Count == 1)
             {
                 airdInfo.filterString = IndexList[0].filterStrings[0];
-                for (var i = 0; i < IndexList.Count; i++)
+                foreach (var index in IndexList)
                 {
-                    IndexList[i].filterStrings = null;
+                    index.filterStrings = null;
                 }
             }
-
-            // airdInfo.rtUnit = rtUnit;
+            
             airdInfo.mobiInfo = MobiInfo;
             //Scan index and window range info
             airdInfo.rangeList = Ranges;
@@ -1127,15 +1129,16 @@ namespace AirdPro.Converters
             foreach (InstrumentConfiguration ic in Msd.instrumentConfigurationList)
             {
                 Instrument instrument = new Instrument();
-                //仪器设备信息
-                if (JobInfo.format.Equals(FileFormat.WIFF) || JobInfo.format.Equals(FileFormat.WIFF2))
+                switch (JobInfo.format)
                 {
-                    instrument.manufacturer = Manufacturer.SCIEX;
-                }
-
-                if (JobInfo.format.Equals(FileFormat.RAW))
-                {
-                    instrument.manufacturer = Manufacturer.Thermo;
+                    //仪器设备信息
+                    case FileFormat.WIFF:
+                    case FileFormat.WIFF2:
+                        instrument.manufacturer = Manufacturer.SCIEX;
+                        break;
+                    case FileFormat.RAW:
+                        instrument.manufacturer = Manufacturer.Thermo;
+                        break;
                 }
 
                 //设备信息在不同的源文件格式中取法不同,有些是在instrumentConfigurationList中获取,有些是在paramGroups获取,因此出现了以下比较丑陋的写法
@@ -1195,6 +1198,10 @@ namespace AirdPro.Converters
                             }
 
                             break;
+                        case ComponentType.ComponentType_Unknown:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
                 }
 
@@ -1205,7 +1212,7 @@ namespace AirdPro.Converters
             airdInfo.instruments = instruments;
             airdInfo.startTimeStamp = Msd.run.startTimeStamp;
             //Software Info
-            foreach (pwiz.CLI.msdata.Software soft in Msd.softwareList)
+            foreach (var soft in Msd.softwareList)
             {
                 Software software = new Software();
                 software.name = soft.id;
@@ -1214,27 +1221,31 @@ namespace AirdPro.Converters
                 soft.Dispose();
             }
 
-            Software airdPro = new Software();
-            airdPro.name = SoftwareInfo.NAME;
-            airdPro.version = SoftwareInfo.VERSION;
-            airdPro.type = "DataFormatConversion";
+            Software airdPro = new Software
+            {
+                name = SoftwareInfo.NAME,
+                version = SoftwareInfo.VERSION,
+                type = "DataFormatConversion"
+            };
             softwares.Add(airdPro);
             airdInfo.softwares = softwares;
 
             //Parent Files Info
-            foreach (SourceFile sf in Msd.fileDescription.sourceFiles)
+            foreach (var sf in Msd.fileDescription.sourceFiles)
             {
-                ParentFile file = new ParentFile();
-                file.name = sf.name;
-                file.location = sf.location;
-                file.formatType = sf.id;
+                ParentFile file = new ParentFile
+                {
+                    name = sf.name,
+                    location = sf.location,
+                    formatType = sf.id
+                };
                 parentFiles.Add(file);
             }
 
             airdInfo.parentFiles = parentFiles;
 
             //Compressor Info
-            List<Compressor> comps = new List<Compressor>();
+            List<Compressor> comps = [];
             Compressor mzCompressor = new Compressor(AirdSDK.Beans.Compressor.TARGET_MZ);
             Compressor intCompressor = new Compressor(AirdSDK.Beans.Compressor.TARGET_INTENSITY);
             Compressor mobiCompressor = new Compressor(AirdSDK.Beans.Compressor.TARGET_MOBILITY);
@@ -1268,44 +1279,40 @@ namespace AirdPro.Converters
             return airdInfo;
         }
 
-        protected ColumnInfo buildColumnInfo()
+        protected ColumnInfo BuildColumnInfo()
         {
-            ColumnInfo columnInfo = new ColumnInfo();
-            columnInfo.type = JobInfo.type;
-            columnInfo.indexList = ColumnIndexList;
-            columnInfo.mzPrecision = JobInfo.config.mzPrecision;
-            columnInfo.intPrecision = IntensityPrecision;
-            columnInfo.airdPath = JobInfo.airdFilePath;
+            ColumnInfo columnInfo = new ColumnInfo
+            {
+                type = JobInfo.type,
+                indexList = ColumnIndexList,
+                mzPrecision = JobInfo.config.mzPrecision,
+                intPrecision = IntensityPrecision,
+                airdPath = JobInfo.airdFilePath
+            };
             return columnInfo;
         }
 
-        List<ByteComp> byteCompList = new()
-        {
-            new BrotliWrapper(), new SnappyWrapper(), new ZstdWrapper(), new ZlibWrapper()
-        };
+        List<ByteComp> byteCompList = [new BrotliWrapper(), new SnappyWrapper(), new ZstdWrapper(), new ZlibWrapper()];
 
-        List<SortedIntComp> integratedIntCompList = new()
-        {
-            new DeltaWrapper(), new IntegratedBinPackingWrapper(),
-        };
+        List<SortedIntComp> integratedIntCompList =
+        [
+            new DeltaWrapper(), new IntegratedBinPackingWrapper()
+        ];
 
-        List<IntComp> intCompList = new()
-        {
-            new VarByteWrapper(), new BinPackingWrapper(), new Empty()
-        };
+        List<IntComp> intCompList = [new VarByteWrapper(), new BinPackingWrapper(), new Empty()];
 
-        public Combination randomSampling(int randomNum, bool ionMobi)
+        public Combination RandomSampling(int randomNum, bool ionMobi)
         {
-            List<int[]> mzArrays = new List<int[]>();
-            List<int[]> intensityArrays = new List<int[]>();
-            List<int[]> mobiNoArrays = new List<int[]>();
+            List<int[]> mzArrays = [];
+            List<int[]> intensityArrays = [];
+            List<int[]> mobiNoArrays = [];
             Random rn = new Random();
-            List<int> logIndexes = new List<int>();
+            List<int> logIndexes = [];
             for (var i = 0; i < randomNum; i++)
             {
                 int index = rn.Next(0, TotalSpectraCount);
                 logIndexes.Add(index);
-                List<int[]> dataList = fetchSpectrum(index, ionMobi);
+                List<int[]> dataList = FetchSpectrum(index, ionMobi);
                 if (dataList[0].Length > 0)
                 {
                     mzArrays.Add(dataList[0]);
@@ -1317,12 +1324,12 @@ namespace AirdPro.Converters
                 }
             }
 
-            return compressForTargetArrays(mzArrays, intensityArrays, mobiNoArrays, ionMobi);
+            return CompressForTargetArrays(mzArrays, intensityArrays, mobiNoArrays, ionMobi);
         }
 
-        public List<int[]> fetchSpectrum(int index, bool mobi)
+        public List<int[]> FetchSpectrum(int index, bool mobi)
         {
-            List<int[]> arrays = new List<int[]>();
+            List<int[]> arrays = [];
             Spectrum spectrum = SpectrumList.spectrum(index, true);
             double[] mzData = spectrum.getMZArray().data.Storage();
             double[] intData = spectrum.getIntensityArray().data.Storage();
@@ -1366,7 +1373,7 @@ namespace AirdPro.Converters
             return arrays;
         }
 
-        public Combination compressForTargetArrays(List<int[]> mzArrays, List<int[]> intensityArrays,
+        public Combination CompressForTargetArrays(List<int[]> mzArrays, List<int[]> intensityArrays,
             List<int[]> mobiNoArrays, bool ionMobi)
         {
             Dictionary<string, long> ctMap = new Dictionary<string, long>();
@@ -1377,7 +1384,7 @@ namespace AirdPro.Converters
             {
                 foreach (ByteComp byteComp in byteCompList)
                 {
-                    string key = buildComboKey(Tag.Key_MZ, intComp.getName(), byteComp.getName());
+                    string key = BuildComboKey(Tag.Key_MZ, intComp.getName(), byteComp.getName());
                     ctMap.Add(key, 0);
                     dtMap.Add(key, 0);
                     sizeMap.Add(key, 0);
@@ -1389,7 +1396,7 @@ namespace AirdPro.Converters
             {
                 foreach (ByteComp byteComp in byteCompList)
                 {
-                    string key = buildComboKey(Tag.Key_Intensity, intComp.getName(), byteComp.getName());
+                    string key = BuildComboKey(Tag.Key_Intensity, intComp.getName(), byteComp.getName());
                     ctMap.Add(key, 0);
                     dtMap.Add(key, 0);
                     sizeMap.Add(key, 0);
@@ -1403,7 +1410,7 @@ namespace AirdPro.Converters
                 {
                     foreach (ByteComp byteComp in byteCompList)
                     {
-                        string key = buildComboKey(Tag.Key_Mobi, intComp.getName(), byteComp.getName());
+                        string key = BuildComboKey(Tag.Key_Mobi, intComp.getName(), byteComp.getName());
                         ctMap.Add(key, 0);
                         dtMap.Add(key, 0);
                         sizeMap.Add(key, 0);
@@ -1412,9 +1419,9 @@ namespace AirdPro.Converters
                 }
             }
 
-            List<CompressStat> mzStatList = new List<CompressStat>();
-            List<CompressStat> intensityStatList = new List<CompressStat>();
-            List<CompressStat> mobiStatList = new List<CompressStat>();
+            List<CompressStat> mzStatList = [];
+            List<CompressStat> intensityStatList = [];
+            List<CompressStat> mobiStatList = [];
             foreach (KeyValuePair<string, long> pair in sizeMap)
             {
                 string key = pair.Key;
@@ -1465,12 +1472,12 @@ namespace AirdPro.Converters
             return bestCombination;
         }
 
-        public string buildComboKey(string key, string intCompName, string byteCompName)
+        public string BuildComboKey(string key, string intCompName, string byteCompName)
         {
             return key + Const.Dash + intCompName + Const.Dash + byteCompName;
         }
 
-        public void pretreatmentDDA()
+        public void PretreatmentDda()
         {
             int parentNum = 0;
             JobInfo.log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
@@ -1523,7 +1530,7 @@ namespace AirdPro.Converters
             JobInfo.log(Tag.Start_Processing_MS1_List);
         }
 
-        public void pretreatmentDIA()
+        public void PretreatmentDia()
         {
             int parentNum = 0;
             JobInfo.log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
@@ -1567,7 +1574,7 @@ namespace AirdPro.Converters
             JobInfo.log(Tag.Start_Processing_MS1_List);
         }
 
-        public void pretreatmentDDAPasef()
+        public void PretreatmentDdaPasef()
         {
             int parentNum = 0;
             JobInfo.log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
@@ -1620,7 +1627,7 @@ namespace AirdPro.Converters
             JobInfo.log(Tag.Start_Processing_MS1_List);
         }
 
-        public void pretreatmentDIAPasef()
+        public void PretreatmentDiaPasef()
         {
             int parentNum = 0;
             JobInfo.log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
@@ -1664,7 +1671,7 @@ namespace AirdPro.Converters
             JobInfo.log(Tag.Start_Processing_MS1_List);
         }
 
-        public void pretreatmentPRM()
+        public void PretreatmentPrm()
         {
             int parentNum = 0;
             JobInfo.log(Status.tag_preprocessing + TotalSpectraCount, Status.Preprocessing);

@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>AirdPro</RootNamespace>
     <AssemblyName>AirdPro</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -148,9 +148,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms\Compressor\Pwiz\CoreComp.cs" />
-    <Compile Include="Algorithms\Compressor\Pwiz\ICompressor.cs" />
-    <Compile Include="Algorithms\Compressor\Tdms\TdmsComp.cs" />
+    <Compile Include="Algorithms\Compressor\ICompressor.cs" />
+    <Compile Include="Algorithms\Compressor\PwizComp.cs" />
+    <Compile Include="Algorithms\Compressor\TdmsComp.cs" />
     <Compile Include="Algorithms\Parser\AcqMethod\AcqCompound.cs" />
     <Compile Include="Algorithms\Parser\AcqMethod\NewDataSet.cs" />
     <Compile Include="Algorithms\Parser\AcqMethod\AcqMethodParser.cs" />

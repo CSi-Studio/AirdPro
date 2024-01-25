@@ -58,9 +58,9 @@ namespace AirdPro.Algorithms
             IntByteComp4Chroma = new ZstdWrapper();
         }
 
-        public abstract void CompressMs1(PwizConverter converter, BlockIndex index);
+        public abstract void CompressMS1(PwizConverter converter, BlockIndex index);
 
-        public abstract void CompressMs2(PwizConverter converter, List<MsIndex> ms2List, BlockIndex index);
+        public abstract void CompressMS2(PwizConverter converter, List<MsIndex> ms2List, BlockIndex index);
 
         public abstract void Compress(Spectrum spectrum, TempScan ts);
 
