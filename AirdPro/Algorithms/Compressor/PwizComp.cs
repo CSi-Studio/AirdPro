@@ -83,7 +83,6 @@ namespace AirdPro.Algorithms.Compressor
                         case "Search":
                             //面向搜索场景下暂时还不支持离子淌度文件
                             spectra.Add(ReadSpectrum(spectrum));
-                            // msDictionary[ts.rt] = ReadSpectrum(spectrum);
                             break;
                     }
 
