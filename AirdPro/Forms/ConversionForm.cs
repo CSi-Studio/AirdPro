@@ -50,6 +50,7 @@ namespace AirdPro.Forms
             // 创建一个ListViewSorter对象
             FileListSorter sorter = new FileListSorter();
             lvFileList.ListViewItemSorter = sorter;
+            
         }
 
         private void initJobsFromStorage()

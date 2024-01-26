@@ -158,9 +158,9 @@
             // 
             this.btnSaveToLocal.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnSaveToLocal.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnSaveToLocal.Location = new System.Drawing.Point(715, 589);
+            this.btnSaveToLocal.Location = new System.Drawing.Point(837, 553);
             this.btnSaveToLocal.Name = "btnSaveToLocal";
-            this.btnSaveToLocal.Size = new System.Drawing.Size(264, 10);
+            this.btnSaveToLocal.Size = new System.Drawing.Size(113, 38);
             this.btnSaveToLocal.TabIndex = 138;
             this.btnSaveToLocal.Text = "Save";
             this.btnSaveToLocal.UseVisualStyleBackColor = true;

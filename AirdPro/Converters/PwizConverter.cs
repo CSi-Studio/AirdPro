@@ -12,7 +12,6 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Text;
 using AirdPro.Algorithms;
@@ -46,7 +45,7 @@ namespace AirdPro.Converters
         protected List<WindowRange> Ranges = new(); //SWATH/DIA Window的窗口
         protected Hashtable RangeTable = new(); //用于存放SWATH/DIA窗口的信息,key为mz
         protected List<BlockIndex> IndexList = new(); //用于存储的全局的SWATH List
-        protected List<ColumnIndex> ColumnIndexList = new(); //列存储索引，尽在面向Search的场景下有效
+        protected List<ColumnIndex> ColumnIndexList = new(); //列存储索引，仅在面向Search的场景下有效
 
         protected Hashtable
             Ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
@@ -116,6 +115,7 @@ namespace AirdPro.Converters
                         if (msdList.Count > 1) //如果msdList中包含多个msd，那么每一个msd会被单独导出为一个文件，导出的文件名按照msd的ID进行命名
                         {
                             String id = msd.id;
+                            id = id.Trim();
                             JobInfo.airdFilePath = Path.Combine(JobInfo.outputPath, id + ".aird");
                             JobInfo.airdJsonFilePath = Path.Combine(JobInfo.outputPath, id + ".json");
                             JobInfo.airdFileName = id;
@@ -1049,7 +1049,7 @@ namespace AirdPro.Converters
             airdInfo.scene = JobInfo.config.scene;
             airdInfo.airdPath = JobInfo.airdFilePath;
             airdInfo.fileSize = FileSize;
-            airdInfo.createDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            airdInfo.createDate = DateTime.Now.ToString();
             airdInfo.type = JobInfo.type;
             airdInfo.totalCount = Msd.run.spectrumList.size();
             airdInfo.creator = JobInfo.config.creator;

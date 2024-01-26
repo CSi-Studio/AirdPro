@@ -21,6 +21,7 @@ namespace AirdPro.Constants
         public static string Pre = "Pre:";
         public static string Auto_Decision = "Auto Decision";
         public static string Column = "Column:";
+        public static string Column_Trans = "Column Trans:";
         public static string Column_Compress = "Column Compress:";
 
         public static string SpectrumIndex = "SpectrumIndex";
@@ -85,6 +86,12 @@ namespace AirdPro.Constants
         public static string progress(string tag, int progress, int total)
         {
             return tag + progress + Const.Left_Slash + total;
+        }
+        
+        public static string percentage(string tag, int progress, int total)
+        {
+            return tag + ((double)progress / total * 100).ToString("0.0") + "%";
+            
         }
 
         public static string progress(int progress, int total)

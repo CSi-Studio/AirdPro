@@ -251,7 +251,7 @@ namespace AirdPro.Converters
             airdInfo.scene = JobInfo.config.scene;
             airdInfo.airdPath = JobInfo.airdFilePath;
             airdInfo.fileSize = FileSize;
-            airdInfo.createDate = DateTime.Now.ToString(CultureInfo.CurrentCulture);
+            airdInfo.createDate = DateTime.Now.ToString();
             airdInfo.type = JobInfo.type;
             // airdInfo.totalCount = msd.run.spectrumList.size();
             airdInfo.creator = JobInfo.config.creator;

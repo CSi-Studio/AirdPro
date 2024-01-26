@@ -364,7 +364,7 @@ public class CVUtil
     {
         var result = 0;
         var retryTimes = 3;
-        while (retryTimes > 0)
+        while (result < 0 && retryTimes > 0)
         {
             try
             {

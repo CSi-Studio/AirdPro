@@ -323,6 +323,7 @@
     <Compile Include="Converters\ConverterWorkFlow.cs" />
     <Compile Include="Converters\Converter.cs" />
     <Compile Include="Converters\TdmsConverter.cs" />
+    <Compile Include="Domains\Common\Slice.cs" />
     <Compile Include="Domains\Common\StrKV.cs" />
     <Compile Include="Domains\Common\TempSpectrum.cs" />
     <Compile Include="Domains\HardwareInfo\HardwareInfo.cs" />
@@ -336,6 +337,7 @@
     <Compile Include="Domains\Scan\TimsData.cs" />
     <Compile Include="Domains\Sort\CompressStat.cs" />
     <Compile Include="Domains\Sort\FileListSorter.cs" />
+    <Compile Include="Domains\Sort\IntComparer.cs" />
     <Compile Include="Domains\Statistic\Stat.cs" />
     <Compile Include="Domains\View\SpectrumRow.cs" />
     <Compile Include="Forms\DownloadLinksForm.cs">
@@ -705,6 +707,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AirdSDK" Version="2.4.1.4" />
+    <PackageReference Include="BloomFilter.NetCore" Version="2.2.0" />
     <PackageReference Include="FluentFTP" Version="48.0.3" />
     <PackageReference Include="MathNet.Numerics">
       <Version>5.0.0</Version>

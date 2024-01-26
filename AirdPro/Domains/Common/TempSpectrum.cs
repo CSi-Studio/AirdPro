@@ -2,10 +2,11 @@
 
 public class TempSpectrum
 {
+    public double rt;
     public int[] mzs;
-    public float[] intensities;
+    public int[] intensities;
 
-    public TempSpectrum(int[] mzs, float[] intensities)
+    public TempSpectrum(int[] mzs, int[] intensities)
     {
         this.mzs = mzs;
         this.intensities = intensities;
