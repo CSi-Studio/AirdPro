@@ -115,7 +115,6 @@ namespace AirdPro.Forms
             config.threadAccelerate = cbConfigThreadAccelerate.Checked;
             config.scene = cbScene.Text;
             config.configName = tbNameConfig.Text;
-            config.fastMode = cbFastReadMode.Checked;
             //如果不是自动决策的,则会使用配置的组合压缩器
             if (!cbAutoDecision.Checked)
             {
@@ -211,7 +210,6 @@ namespace AirdPro.Forms
             cbIntByteComp.SelectedItem = config.intByteComp.ToString();
             cbMobiIntComp.SelectedItem = config.mobiIntComp.ToString();
             cbMobiByteComp.SelectedItem = config.mobiByteComp.ToString();
-            cbFastReadMode.Checked = config.fastMode;
 
             tableAutoDecision.Enabled = !config.autoDesicion;
             cbAutoDecision.Checked = config.autoDesicion;

@@ -1,30 +1,26 @@
 ﻿/*
  * Copyright (c) 2020 CSi Studio
  * AirdSDK and AirdPro are licensed under Mulan PSL v2.
- * You can use this software according to the terms and conditions of the Mulan PSL v2. 
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
- *          http://license.coscl.org.cn/MulanPSL2 
- * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.  
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
  * See the Mulan PSL v2 for more details.
  */
 
-using AirdPro.Properties;
-using AirdSDK.Constants;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using AirdPro.Constants;
 using AirdPro.Domains.View;
+using AirdPro.Properties;
 using AirdSDK.Beans;
-using AirdSDK.Beans.Common;
+using AirdSDK.Constants;
 using AirdSDK.Enums;
 using AirdSDK.Parser;
-using AirdPro.Repository;
-using AirdPro.Constants;
 using AirdSDK.Utils;
-using AutoUpdaterDotNET;
-using pwiz.CLI.msdata;
 using Spectrum = AirdSDK.Beans.Common.Spectrum;
 
 namespace AirdPro.Forms
@@ -350,11 +346,6 @@ namespace AirdPro.Forms
             {
                 spectrumChart.Series[0].Points.AddXY(Math.Round(mzArray[i], 3), Math.Round(intensityArray[i], 1));
             }
-        }
-
-        private void updateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AutoUpdater.Start("https://airdpro.oss-cn-hangzhou.aliyuncs.com/Version.xml");
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

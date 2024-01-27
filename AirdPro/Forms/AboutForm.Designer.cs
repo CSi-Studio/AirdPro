@@ -256,7 +256,6 @@
             this.pbCheckUpdate.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbCheckUpdate.TabIndex = 0;
             this.pbCheckUpdate.TabStop = false;
-            this.pbCheckUpdate.Click += new System.EventHandler(this.pbCheckUpdate_Click);
             // 
             // btnClearCache
             // 

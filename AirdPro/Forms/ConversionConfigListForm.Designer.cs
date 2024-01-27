@@ -80,8 +80,6 @@
             this.pageComputation = new System.Windows.Forms.TabPage();
             this.cbCompressedIndex = new System.Windows.Forms.CheckBox();
             this.pageSearchEngine = new System.Windows.Forms.TabPage();
-            this.cbFastReadMode = new System.Windows.Forms.CheckBox();
-            this.pageStorage = new System.Windows.Forms.TabPage();
             this.lblSceneConfig = new System.Windows.Forms.Label();
             this.cbConfigIsCentroid = new System.Windows.Forms.CheckBox();
             this.lblMaxTasks = new System.Windows.Forms.Label();
@@ -92,7 +90,6 @@
             this.tableDeciderWeight.SuspendLayout();
             this.tabs.SuspendLayout();
             this.pageComputation.SuspendLayout();
-            this.pageSearchEngine.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxTasks)).BeginInit();
             this.SuspendLayout();
             // 
@@ -639,7 +636,6 @@
             this.tabs.CloseBtnColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(51)))));
             this.tabs.Controls.Add(this.pageComputation);
             this.tabs.Controls.Add(this.pageSearchEngine);
-            this.tabs.Controls.Add(this.pageStorage);
             this.tabs.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tabs.HeadSelectedBackColor = System.Drawing.Color.Blue;
             this.tabs.IsShowCloseBtn = false;
@@ -685,7 +681,6 @@
             // 
             // pageSearchEngine
             // 
-            this.pageSearchEngine.Controls.Add(this.cbFastReadMode);
             this.pageSearchEngine.Location = new System.Drawing.Point(4, 54);
             this.pageSearchEngine.Name = "pageSearchEngine";
             this.pageSearchEngine.Padding = new System.Windows.Forms.Padding(3);
@@ -693,28 +688,6 @@
             this.pageSearchEngine.TabIndex = 1;
             this.pageSearchEngine.Text = "Search";
             this.pageSearchEngine.UseVisualStyleBackColor = true;
-            // 
-            // cbFastReadMode
-            // 
-            this.cbFastReadMode.Checked = true;
-            this.cbFastReadMode.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbFastReadMode.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cbFastReadMode.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cbFastReadMode.Location = new System.Drawing.Point(5, 5);
-            this.cbFastReadMode.Name = "cbFastReadMode";
-            this.cbFastReadMode.Size = new System.Drawing.Size(224, 24);
-            this.cbFastReadMode.TabIndex = 159;
-            this.cbFastReadMode.Text = "Fast Reading Mode(Bigger Size)";
-            this.cbFastReadMode.UseVisualStyleBackColor = true;
-            // 
-            // pageStorage
-            // 
-            this.pageStorage.Location = new System.Drawing.Point(4, 54);
-            this.pageStorage.Name = "pageStorage";
-            this.pageStorage.Size = new System.Drawing.Size(603, 346);
-            this.pageStorage.TabIndex = 2;
-            this.pageStorage.Text = "Storage";
-            this.pageStorage.UseVisualStyleBackColor = true;
             // 
             // lblSceneConfig
             // 
@@ -819,7 +792,6 @@
             this.tabs.ResumeLayout(false);
             this.pageComputation.ResumeLayout(false);
             this.pageComputation.PerformLayout();
-            this.pageSearchEngine.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numMaxTasks)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -829,8 +801,6 @@
 
         private System.Windows.Forms.Label lblMaxTasks;
         private System.Windows.Forms.NumericUpDown numMaxTasks;
-
-        public System.Windows.Forms.CheckBox cbFastReadMode;
 
         #endregion
 
@@ -881,7 +851,6 @@
         private HZH_Controls.Controls.TabControlExt tabs;
         private System.Windows.Forms.TabPage pageComputation;
         private System.Windows.Forms.TabPage pageSearchEngine;
-        private System.Windows.Forms.TabPage pageStorage;
         private System.Windows.Forms.ColumnHeader mzPrecision;
         private System.Windows.Forms.ColumnHeader headerAuto;
         private System.Windows.Forms.Label lblSceneConfig;

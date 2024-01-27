@@ -14,7 +14,6 @@ using System.Windows.Forms;
 using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdPro.Properties;
-using AutoUpdaterDotNET;
 
 namespace AirdPro.Forms
 {
@@ -79,11 +78,6 @@ namespace AirdPro.Forms
 
         private void tbPaperZDPD_TextChanged(object sender, EventArgs e)
         {
-        }
-
-        private void pbCheckUpdate_Click(object sender, EventArgs e)
-        {
-            AutoUpdater.Start("https://airdpro.oss-cn-hangzhou.aliyuncs.com/Version-CN.xml");
         }
 
         private void AboutForm_FormClosing(object sender, FormClosingEventArgs e)

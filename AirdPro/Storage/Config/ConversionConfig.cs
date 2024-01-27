@@ -113,11 +113,6 @@ namespace AirdPro.Storage.Config
          * 用于rt压缩的byte数组压缩方法
          */
         public ByteCompType rtByteComp = ByteCompType.Zstd;
-        
-        /**
-         * Slice版本下生效，如果为true，则仅使用FastPFor内核进行压缩
-         */
-        public bool fastMode = true;
 
         /**
          * 决策器的权重，默认为1:1:1

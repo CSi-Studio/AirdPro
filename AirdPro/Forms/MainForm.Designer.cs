@@ -46,13 +46,11 @@
             this.filesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openRepositoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startConversionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.repositoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.globalSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.conversionSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainContainer = new System.Windows.Forms.SplitContainer();
             this.fileTree = new System.Windows.Forms.TreeView();
             this.fileTreeContext = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -87,12 +85,7 @@
             // menu
             // 
             this.menu.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.filesToolStripMenuItem,
-            this.startConversionToolStripMenuItem,
-            this.repositoryToolStripMenuItem,
-            this.settingToolStripMenuItem,
-            this.helpToolStripMenuItem});
+            this.menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.filesToolStripMenuItem, this.startConversionToolStripMenuItem, this.settingToolStripMenuItem, this.helpToolStripMenuItem });
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
             this.menu.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
@@ -102,8 +95,7 @@
             // 
             // filesToolStripMenuItem
             // 
-            this.filesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openRepositoryToolStripMenuItem});
+            this.filesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.openRepositoryToolStripMenuItem });
             this.filesToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("filesToolStripMenuItem.Image")));
             this.filesToolStripMenuItem.Name = "filesToolStripMenuItem";
             this.filesToolStripMenuItem.Size = new System.Drawing.Size(69, 28);
@@ -126,9 +118,7 @@
             // 
             // settingToolStripMenuItem
             // 
-            this.settingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.globalSettingToolStripMenuItem,
-            this.conversionSettingToolStripMenuItem});
+            this.settingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.globalSettingToolStripMenuItem, this.conversionSettingToolStripMenuItem });
             this.settingToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("settingToolStripMenuItem.Image")));
             this.settingToolStripMenuItem.Name = "settingToolStripMenuItem";
             this.settingToolStripMenuItem.Size = new System.Drawing.Size(84, 28);
@@ -150,9 +140,7 @@
             // 
             // helpToolStripMenuItem
             // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem,
-            this.updateToolStripMenuItem});
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.aboutToolStripMenuItem });
             this.helpToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("helpToolStripMenuItem.Image")));
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(71, 28);
@@ -161,23 +149,16 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // updateToolStripMenuItem
-            // 
-            this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-            this.updateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.updateToolStripMenuItem.Text = "Update";
-            this.updateToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
             // 
             // mainContainer
             // 
             this.mainContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainContainer.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.mainContainer.Location = new System.Drawing.Point(0, 30);
-            this.mainContainer.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.mainContainer.Margin = new System.Windows.Forms.Padding(2);
             this.mainContainer.Name = "mainContainer";
             // 
             // mainContainer.Panel1
@@ -202,7 +183,7 @@
             this.fileTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.fileTree.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.fileTree.Location = new System.Drawing.Point(0, 0);
-            this.fileTree.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.fileTree.Margin = new System.Windows.Forms.Padding(2);
             this.fileTree.Name = "fileTree";
             this.fileTree.Size = new System.Drawing.Size(288, 828);
             this.fileTree.TabIndex = 0;
@@ -212,8 +193,7 @@
             // fileTreeContext
             // 
             this.fileTreeContext.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.fileTreeContext.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itemRefresh});
+            this.fileTreeContext.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.itemRefresh });
             this.fileTreeContext.Name = "fileTreeContext";
             this.fileTreeContext.Size = new System.Drawing.Size(121, 26);
             // 
@@ -239,7 +219,7 @@
             this.tabTIC.Controls.Add(this.ticChart);
             this.tabTIC.Location = new System.Drawing.Point(4, 26);
             this.tabTIC.Name = "tabTIC";
-            this.tabTIC.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabTIC.Padding = new System.Windows.Forms.Padding(3);
             this.tabTIC.Size = new System.Drawing.Size(608, 369);
             this.tabTIC.TabIndex = 0;
             this.tabTIC.Text = "TIC";
@@ -282,7 +262,7 @@
             this.tabBasePeak.Controls.Add(this.basePeakChart);
             this.tabBasePeak.Location = new System.Drawing.Point(4, 26);
             this.tabBasePeak.Name = "tabBasePeak";
-            this.tabBasePeak.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabBasePeak.Padding = new System.Windows.Forms.Padding(3);
             this.tabBasePeak.Size = new System.Drawing.Size(608, 369);
             this.tabBasePeak.TabIndex = 1;
             this.tabBasePeak.Text = "Base Peak";
@@ -361,9 +341,7 @@
             // spectraDataGrids
             // 
             this.spectraDataGrids.AllowUserToOrderColumns = true;
-            this.spectraDataGrids.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.spectraDataGrids.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.spectraDataGrids.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.spectraDataGrids.ColumnHeadersHeight = 34;
             this.spectraDataGrids.Location = new System.Drawing.Point(3, 439);
@@ -373,7 +351,7 @@
             this.spectraDataGrids.RowHeadersWidth = 62;
             this.spectraDataGrids.RowTemplate.Height = 23;
             this.spectraDataGrids.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.spectraDataGrids.Size = new System.Drawing.Size(1217, 386);
+            this.spectraDataGrids.Size = new System.Drawing.Size(1219, 386);
             this.spectraDataGrids.TabIndex = 0;
             this.spectraDataGrids.VirtualMode = true;
             this.spectraDataGrids.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.spectraDataGrids_MouseDoubleClick);
@@ -389,8 +367,7 @@
             // notifyMenu
             // 
             this.notifyMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.notifyMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.quitToolStripMenuItem});
+            this.notifyMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.quitToolStripMenuItem });
             this.notifyMenu.Name = "notifyMenu";
             this.notifyMenu.Size = new System.Drawing.Size(101, 26);
             // 
@@ -434,7 +411,6 @@
             this.notifyMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
@@ -458,8 +434,6 @@
         private System.Windows.Forms.TabControl tabs;
         private System.Windows.Forms.TabPage tabTIC;
         private System.Windows.Forms.TabPage tabBasePeak;
-        private System.Windows.Forms.ToolStripMenuItem repositoryToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem updateToolStripMenuItem;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.ContextMenuStrip notifyMenu;
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
