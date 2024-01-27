@@ -85,7 +85,7 @@
             // 
             this.btnSave.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnSave.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnSave.Location = new System.Drawing.Point(454, 3);
+            this.btnSave.Location = new System.Drawing.Point(877, 1);
             this.btnSave.Margin = new System.Windows.Forms.Padding(4);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(94, 26);
@@ -114,7 +114,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label2.Location = new System.Drawing.Point(5, 38);
+            this.label2.Location = new System.Drawing.Point(370, 7);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 17);
@@ -125,16 +125,16 @@
             // tbRedisUsername
             // 
             this.tbRedisUsername.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbRedisUsername.Location = new System.Drawing.Point(80, 35);
+            this.tbRedisUsername.Location = new System.Drawing.Point(445, 3);
             this.tbRedisUsername.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisUsername.Name = "tbRedisUsername";
-            this.tbRedisUsername.Size = new System.Drawing.Size(135, 23);
+            this.tbRedisUsername.Size = new System.Drawing.Size(122, 23);
             this.tbRedisUsername.TabIndex = 129;
             // 
             // tbRedisPassword
             // 
             this.tbRedisPassword.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbRedisPassword.Location = new System.Drawing.Point(304, 35);
+            this.tbRedisPassword.Location = new System.Drawing.Point(639, 3);
             this.tbRedisPassword.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisPassword.Name = "tbRedisPassword";
             this.tbRedisPassword.Size = new System.Drawing.Size(130, 23);
@@ -146,7 +146,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label3.Location = new System.Drawing.Point(232, 38);
+            this.label3.Location = new System.Drawing.Point(575, 7);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(64, 17);
@@ -161,7 +161,7 @@
             this.btnConnect.FlatAppearance.BorderSize = 0;
             this.btnConnect.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.btnConnect.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnConnect.Location = new System.Drawing.Point(454, 33);
+            this.btnConnect.Location = new System.Drawing.Point(776, 2);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(94, 26);
             this.btnConnect.TabIndex = 133;
@@ -178,9 +178,9 @@
             // 
             this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStatus.BackColor = System.Drawing.Color.Red;
-            this.lblStatus.Location = new System.Drawing.Point(5, 62);
+            this.lblStatus.Location = new System.Drawing.Point(5, 31);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(543, 5);
+            this.lblStatus.Size = new System.Drawing.Size(966, 5);
             this.lblStatus.TabIndex = 134;
             // 
             // label4
@@ -189,7 +189,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label4.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label4.Location = new System.Drawing.Point(4, 80);
+            this.label4.Location = new System.Drawing.Point(5, 45);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(104, 17);
@@ -203,7 +203,7 @@
             this.lblMessageNum.AutoSize = true;
             this.lblMessageNum.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblMessageNum.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblMessageNum.Location = new System.Drawing.Point(113, 80);
+            this.lblMessageNum.Location = new System.Drawing.Point(117, 45);
             this.lblMessageNum.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMessageNum.Name = "lblMessageNum";
             this.lblMessageNum.Size = new System.Drawing.Size(15, 17);
@@ -216,7 +216,7 @@
             this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(555, 175);
+            this.ClientSize = new System.Drawing.Size(978, 302);
             this.Controls.Add(this.lblMessageNum);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.lblStatus);

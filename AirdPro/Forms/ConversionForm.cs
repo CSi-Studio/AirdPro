@@ -76,10 +76,10 @@ namespace AirdPro.Forms
                 return;
             }
 
-            doConvert();
+            DoConvert();
         }
 
-        public void doConvert()
+        public void DoConvert()
         {
             if (lvFileList.Items.Count == 0)
             {
@@ -111,7 +111,7 @@ namespace AirdPro.Forms
             }
         }
 
-        public void addFile(string inputPath, string outputPath, string type, ConversionConfig config)
+        public void AddFile(string inputPath, string outputPath, string type, ConversionConfig config)
         {
             if (!inputPath.IsNullOrEmpty())
             {
@@ -123,7 +123,7 @@ namespace AirdPro.Forms
             }
         }
 
-        private void removeFile(ListViewItem fileItem)
+        private void RemoveFile(ListViewItem fileItem)
         {
             JobInfo jobInfo = (JobInfo)fileItem.Tag;
             if (jobInfo.threadId != -1 && !jobInfo.status.Equals(Status.Finished) && !jobInfo.status.Equals(Status.Waiting))
@@ -139,16 +139,16 @@ namespace AirdPro.Forms
 
         private void lvFileList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            printLog();
+            PrintLog();
         }
 
         private void logTimer_Tick(object sender, EventArgs e)
         {
-            printLog();
+            PrintLog();
             refresh();
         }
 
-        private void printLog()
+        private void PrintLog()
         {
             if (lvFileList.SelectedItems.Count != 0)
             {
@@ -225,6 +225,7 @@ namespace AirdPro.Forms
             //以下代码的顺序不能换,必须先Show,再执行showConfig操作
             Program.configListForm.Show();
             Program.configListForm.showConfig(Constants.Tag.Empty, config);
+            Program.configListForm.BringToFront();
         }
 
         private void rerun_Click(object sender, EventArgs e)
@@ -257,7 +258,7 @@ namespace AirdPro.Forms
                 JobInfo jobInfo = (JobInfo)item.Tag;
                 if (!jobInfo.status.Equals(ProcessingStatus.RUNNING))
                 {
-                    removeFile(item);
+                    RemoveFile(item);
                 }
             }
         }
@@ -319,7 +320,7 @@ namespace AirdPro.Forms
 
         private void timerTaskScan_Tick(object sender, EventArgs e)
         {
-            doConvert();
+            DoConvert();
         }
 
         private void cbAutoExe_CheckedChanged(object sender, EventArgs e)
@@ -419,7 +420,7 @@ namespace AirdPro.Forms
                 JobInfo jobInfo = (JobInfo)item.Tag;
                 if (!jobInfo.status.Equals(ProcessingStatus.RUNNING))
                 {
-                    removeFile(item);
+                    RemoveFile(item);
                 }
             }
         }

@@ -1,99 +1,91 @@
 ﻿/*
  * Copyright (c) 2020 CSi Studio
  * AirdSDK and AirdPro are licensed under Mulan PSL v2.
- * You can use this software according to the terms and conditions of the Mulan PSL v2. 
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
- *          http://license.coscl.org.cn/MulanPSL2 
- * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.  
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
  * See the Mulan PSL v2 for more details.
  */
 
 using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
 using AirdPro.Asyncs;
-using StackExchange.Redis;
 using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdPro.Storage.Config;
 using AirdSDK.Enums;
 using Newtonsoft.Json;
+using StackExchange.Redis;
 
 namespace AirdPro.Redis
 {
     class RedisClient
     {
-        private static RedisClient instance;
-        private ConnectionMultiplexer redis;
-        private IDatabase db;
-        private int db_num = 1;
-        public static int messageNum = 0;
-        
-        public static string Increment()
+        private static RedisClient _instance;
+        private ConnectionMultiplexer _redis;
+        private IDatabase _db;
+        private readonly int _dbNum = 1;
+        private static int _messageNum = 0;
+
+        private static string Increment()
         {
-            return Interlocked.Increment(ref messageNum)+"";
+            return Interlocked.Increment(ref _messageNum) + "";
         }
-        
+
         private RedisClient()
         {
         }
 
         public static RedisClient GetInstance()
         {
-            if (instance == null)
+            if (_instance == null)
             {
-                instance = new RedisClient();
+                _instance = new RedisClient();
             }
 
-            return instance;
+            return _instance;
         }
 
-        public bool Connect(string host, int port)
+        public bool Connect(string host, int port, string user, string password)
         {
             ConfigurationOptions options = new ConfigurationOptions
             {
-                EndPoints = {{host, port}},
+                EndPoints = { { host, port } },
                 ConnectTimeout = 1000,
-                ConnectRetry = 1
+                ConnectRetry = 1,
+                User = user.Equals("") ? null : user,
+                Password = password.Equals("") ? null : password
             };
-            
+
             try
             {
-                redis = ConnectionMultiplexer.Connect(options);
-                db = redis.GetDatabase(db_num);
+                _redis = ConnectionMultiplexer.Connect(options);
+                _db = _redis.GetDatabase(_dbNum);
             }
             catch (Exception e)
             {
                 return false;
             }
 
-            return redis.IsConnected;
+            return _redis.IsConnected;
         }
 
         public bool Check()
         {
-            if (redis != null && redis.IsConnected)
+            if (_redis != null && _redis.IsConnected)
             {
                 return true;
             }
-            else
-            {
-                if (redis != null && redis.IsConnected)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
+
+            return false;
         }
-        
+
         //从Redis中读取相关的任务消息并转化为本地任务JobInfo
         public bool Consume()
         {
-            bool check = this.Check();
+            bool check = Check();
             if (check)
             {
                 int i = 10;
@@ -103,7 +95,7 @@ namespace AirdPro.Redis
                     String valueStr = null;
                     try
                     {
-                        RedisValue value = db.SetPop(RedisConst.Redis_Queue_Convert);
+                        RedisValue value = _db.SetPop(RedisConst.Redis_Queue_Convert);
                         if (!value.IsNullOrEmpty)
                         {
                             Program.redisForm.lblMessageNum.Text = Increment();
@@ -128,6 +120,7 @@ namespace AirdPro.Redis
                             {
                                 conversionConfig.mzPrecision = job.mzPrecision.Value;
                             }
+
                             if (job.centroid != null)
                             {
                                 conversionConfig.centroid = job.centroid.Value;
@@ -137,7 +130,7 @@ namespace AirdPro.Redis
                             {
                                 conversionConfig.compressedIndex = job.compressedIndex.Value;
                             }
-                            
+
                             JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
                             ListViewItem item = jobInfo.buildItem();
                             if (!ConvertTaskManager.GetInstance().JobTable.Contains(jobInfo.jobId))
@@ -153,7 +146,7 @@ namespace AirdPro.Redis
                         //出现异常的情况下需要将消息会退给Redis,方便下一次重试
                         if (valueStr != null)
                         {
-                            db.SetAdd(RedisConst.Redis_Queue_Convert, valueStr);
+                            _db.SetAdd(RedisConst.Redis_Queue_Convert, valueStr);
                         }
                     }
 
@@ -163,7 +156,7 @@ namespace AirdPro.Redis
                 //如果在Redis获取到了相关的转换任务
                 if (needToExecute)
                 {
-                    Program.conversionForm.doConvert();
+                    Program.conversionForm.DoConvert();
                 }
             }
 
@@ -172,11 +165,11 @@ namespace AirdPro.Redis
 
         public void Disconnect()
         {
-            if (redis != null)
+            if (_redis != null)
             {
-                redis.Close();
-                redis = null;
-                db = null;
+                _redis.Close();
+                _redis = null;
+                _db = null;
             }
         }
     }

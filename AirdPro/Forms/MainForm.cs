@@ -53,6 +53,7 @@ namespace AirdPro.Forms
             }
 
             Program.aboutForm.Show();
+            Program.aboutForm.BringToFront();
         }
 
         private void globalSettingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -64,7 +65,7 @@ namespace AirdPro.Forms
             }
 
             Program.redisForm.Visible = true;
-
+            Program.redisForm.BringToFront();
         }
 
         private void openRepositoryToolStripMenuItem_Click(object sender, EventArgs e)
@@ -393,6 +394,7 @@ namespace AirdPro.Forms
             }
 
             Program.configListForm.Show();
+            Program.configListForm.BringToFront();
         }
     }
 }

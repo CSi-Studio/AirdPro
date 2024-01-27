@@ -58,7 +58,7 @@ namespace AirdPro.Forms
             }
             else
             {
-                connectToRedis();
+                ConnectToRedis();
             }
         }
 
@@ -84,8 +84,8 @@ namespace AirdPro.Forms
             RedisClient.GetInstance().Consume();
             redisConsumer.Start();
         }
-        
-        public void connectToRedis()
+
+        private void ConnectToRedis()
         {
             if (tbRedisHost.Text == null || tbRedisHost.Text.IsEmpty())
             {
@@ -99,7 +99,8 @@ namespace AirdPro.Forms
                 tbRedisPort.Text = "6379";
             }
 
-            bool initResult = RedisClient.GetInstance().Connect(tbRedisHost.Text, int.Parse(tbRedisPort.Text));
+            bool initResult = RedisClient.GetInstance().Connect(tbRedisHost.Text, int.Parse(tbRedisPort.Text), 
+                tbRedisUsername.Text, tbRedisPassword.Text);
             if (initResult)
             {
                 redisConsumer.Enabled = true;

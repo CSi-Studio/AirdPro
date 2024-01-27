@@ -128,7 +128,7 @@ namespace AirdPro.Forms
 
             foreach (string path in filePathList)
             {
-                Program.conversionForm.addFile(path, outputPath, airdType, (ConversionConfig)config.Clone());
+                Program.conversionForm.AddFile(path, outputPath, airdType, (ConversionConfig)config.Clone());
             }
 
             return true;
@@ -143,6 +143,7 @@ namespace AirdPro.Forms
             }
 
             configListForm.Show();
+            configListForm.BringToFront();
         }
 
         public void update(Dictionary<string, ConversionConfig> configMap)
