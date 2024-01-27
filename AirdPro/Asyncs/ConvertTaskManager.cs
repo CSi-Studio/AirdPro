@@ -121,7 +121,7 @@ namespace AirdPro.Asyncs
             {
                 try
                 {
-                    jobInfo.setStatus(RUNNING);
+                    jobInfo.SetStatus(RUNNING);
                     Converter converter = null;
                     if (jobInfo.format.Equals(FileFormat.TDMS))
                     {
@@ -134,20 +134,20 @@ namespace AirdPro.Asyncs
                  
                     converter.Init(jobInfo);
                     converter.DoConvert();
-                    jobInfo.setStatus(FINISHED);
+                    jobInfo.SetStatus(FINISHED);
                     break;
                 }
                 catch (Exception ex)
                 {
-                    jobInfo.log(ex.ToString(), Status.Error);
+                    jobInfo.Log(ex.ToString(), Status.Error);
                     jobInfo.retryTimes--;
                     if (jobInfo.retryTimes > 0)
                     {
-                        jobInfo.log(Tag.Retrying_Left_Retry_Times + jobInfo.retryTimes);
+                        jobInfo.Log(Tag.Retrying_Left_Retry_Times + jobInfo.retryTimes);
                     }
                     else
                     {
-                        jobInfo.setStatus(ERROR);
+                        jobInfo.SetStatus(ERROR);
                     }
                 }
             }

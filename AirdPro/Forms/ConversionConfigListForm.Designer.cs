@@ -51,7 +51,6 @@
             this.tbConfigFileNameSuffix = new System.Windows.Forms.TextBox();
             this.lblMzPrecision = new System.Windows.Forms.Label();
             this.cbConfigMzPrecision = new System.Windows.Forms.ComboBox();
-            this.cbConfigThreadAccelerate = new System.Windows.Forms.CheckBox();
             this.cbConfigIsZeroIntensityIgnore = new System.Windows.Forms.CheckBox();
             this.btnApply = new System.Windows.Forms.Button();
             this.cbIntByteComp = new System.Windows.Forms.ComboBox();
@@ -303,20 +302,6 @@
             this.cbConfigMzPrecision.Size = new System.Drawing.Size(82, 25);
             this.cbConfigMzPrecision.TabIndex = 120;
             // 
-            // cbConfigThreadAccelerate
-            // 
-            this.cbConfigThreadAccelerate.AutoSize = true;
-            this.cbConfigThreadAccelerate.Checked = true;
-            this.cbConfigThreadAccelerate.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbConfigThreadAccelerate.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cbConfigThreadAccelerate.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cbConfigThreadAccelerate.Location = new System.Drawing.Point(559, 69);
-            this.cbConfigThreadAccelerate.Name = "cbConfigThreadAccelerate";
-            this.cbConfigThreadAccelerate.Size = new System.Drawing.Size(112, 21);
-            this.cbConfigThreadAccelerate.TabIndex = 119;
-            this.cbConfigThreadAccelerate.Text = "Multithreading";
-            this.cbConfigThreadAccelerate.UseVisualStyleBackColor = true;
-            // 
             // cbConfigIsZeroIntensityIgnore
             // 
             this.cbConfigIsZeroIntensityIgnore.AutoSize = true;
@@ -324,7 +309,7 @@
             this.cbConfigIsZeroIntensityIgnore.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbConfigIsZeroIntensityIgnore.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbConfigIsZeroIntensityIgnore.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cbConfigIsZeroIntensityIgnore.Location = new System.Drawing.Point(677, 69);
+            this.cbConfigIsZeroIntensityIgnore.Location = new System.Drawing.Point(554, 70);
             this.cbConfigIsZeroIntensityIgnore.Name = "cbConfigIsZeroIntensityIgnore";
             this.cbConfigIsZeroIntensityIgnore.Size = new System.Drawing.Size(149, 21);
             this.cbConfigIsZeroIntensityIgnore.TabIndex = 118;
@@ -706,7 +691,7 @@
             this.cbConfigIsCentroid.AutoSize = true;
             this.cbConfigIsCentroid.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbConfigIsCentroid.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cbConfigIsCentroid.Location = new System.Drawing.Point(827, 69);
+            this.cbConfigIsCentroid.Location = new System.Drawing.Point(704, 70);
             this.cbConfigIsCentroid.Name = "cbConfigIsCentroid";
             this.cbConfigIsCentroid.Size = new System.Drawing.Size(77, 21);
             this.cbConfigIsCentroid.TabIndex = 158;
@@ -769,7 +754,6 @@
             this.Controls.Add(this.tbConfigOperator);
             this.Controls.Add(this.cbConfigMzPrecision);
             this.Controls.Add(this.lblConfigOperator);
-            this.Controls.Add(this.cbConfigThreadAccelerate);
             this.Controls.Add(this.cbConfigIsZeroIntensityIgnore);
             this.Controls.Add(this.lblConfigFileNameTag);
             this.Controls.Add(this.btnApply);
@@ -818,7 +802,6 @@
         public System.Windows.Forms.TextBox tbConfigFileNameSuffix;
         public System.Windows.Forms.TextBox tbConfigOperator;
         public System.Windows.Forms.CheckBox cbConfigIsZeroIntensityIgnore;
-        public System.Windows.Forms.CheckBox cbConfigThreadAccelerate;
         public System.Windows.Forms.ComboBox cbConfigMzPrecision;
         public System.Windows.Forms.ComboBox cbMzIntComp;
         public System.Windows.Forms.ComboBox cbMzByteComp;

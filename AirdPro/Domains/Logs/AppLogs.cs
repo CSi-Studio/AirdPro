@@ -40,7 +40,7 @@ namespace AirdPro.Domains
         {
             if (isWrite)
             {
-                string filename = "AppLog_" + DateTime.Now.ToString("yyyy_MM_dd") + ".log";
+                string filename = "AppLog_" + DateTime.Now.ToString("yyyy_MM_dd") + ".Log";
                 var repository = LogManager.GetRepository();
 
                 #region MyRegion

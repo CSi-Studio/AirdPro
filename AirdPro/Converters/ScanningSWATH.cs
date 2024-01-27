@@ -58,7 +58,7 @@ namespace AirdPro.Converters
         // {
         //     totalSize = spectrumList.size();
         //     progress = 0;
-        //     jobInfo.log("Total Spectra:" + totalSize);
+        //     jobInfo.Log("Total Spectra:" + totalSize);
         //     startPosition = 0; //文件的存储位置,每一次解析完就会将指针往前挪移
         // }
         //
@@ -69,7 +69,7 @@ namespace AirdPro.Converters
         //  */
         // private void buildWindowsRanges()
         // {
-        //     jobInfo.log("Start getting windows", "Getting Windows");
+        //     jobInfo.Log("Start getting windows", "Getting Windows");
         //     int i = 0;
         //     Spectrum spectrum = spectrumList.spectrum(0);
         //     while (spectrum.cvParamChild(CVID.MS_ms_level).value.ToString().Equals(MsLevel.MS2))
@@ -93,23 +93,23 @@ namespace AirdPro.Converters
         //         spectrum = spectrumList.spectrum(i);
         //     }
         //
-        //     jobInfo.log("Finished Getting Windows");
+        //     jobInfo.Log("Finished Getting Windows");
         // }
         //
         // private void coreLoop()
         // {
-        //     jobInfo.log(null, Tag.progress(progress, totalSize));
+        //     jobInfo.Log(null, Tag.progress(progress, totalSize));
         //     Parallel.For(0, totalSize, (i, ParallelLoopState) =>
         //     {
         //         scan(i);
-        //         if (progress % 100 == 0) jobInfo.log(null, Tag.progress(progress + 1, totalSize));
+        //         if (progress % 100 == 0) jobInfo.Log(null, Tag.progress(progress + 1, totalSize));
         //         progress++;
         //     });
         // }
         //
         // private void sortAndWrite()
         // {
-        //     jobInfo.log("Writing Aird File", "writing file");
+        //     jobInfo.Log("Writing Aird File", "writing file");
         //     ArrayList mzKeys = new ArrayList(rangeMap.Keys); //别忘了导入System.Collections
         //     mzKeys.Sort(); //按mz顺序进行排序
         //     foreach (float key in mzKeys)
@@ -174,7 +174,7 @@ namespace AirdPro.Converters
         //     }
         //     catch (Exception exception)
         //     {
-        //         jobInfo.log(exception.Message);
+        //         jobInfo.Log(exception.Message);
         //         return;
         //     }
         // }

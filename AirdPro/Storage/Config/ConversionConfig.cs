@@ -41,12 +41,6 @@ namespace AirdPro.Storage.Config
         public int mzPrecision = 100000;
 
         /**
-         * if using the multi thread for acceleration. The default value is true
-         * 是否使用CPU多核加速,默认加速
-         */
-        public bool threadAccelerate = true;
-
-        /**
          * The extra suffix for every converted file's name
          * 额外的文件后缀名称
          */

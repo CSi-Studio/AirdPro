@@ -42,7 +42,7 @@ public class TdmsComp
         int process = 0;
         for (var i = 0; i < converter.ms1List.Count; i++)
         {
-            converter.JobInfo.log(null, Tag.progress(Tag.MS1, process, converter.ms1List.Count));
+            converter.JobInfo.Log(null, Tag.progress(Tag.MS1, process, converter.ms1List.Count));
             MsIndex ms1Index = converter.ms1List[i];
             TempScan ts = new TempScan(ms1Index);
             TdmsSpectrum spectrum = converter.Spectra[i];

@@ -19,7 +19,6 @@ namespace AirdPro.Algorithms
 {
     public abstract class ICompressor
     {
-        public bool MultiThread = true;
         public int MzPrecision = 100000;
         public bool IgnoreZero = true;
         public bool IsCentroid = false;
@@ -41,7 +40,6 @@ namespace AirdPro.Algorithms
 
         public ICompressor(Converter converter)
         {
-            MultiThread = converter.JobInfo.config.threadAccelerate;
             MzPrecision = converter.JobInfo.config.mzPrecision;
             IgnoreZero = converter.JobInfo.config.ignoreZeroIntensity;
             IsCentroid = converter.JobInfo.config.centroid;

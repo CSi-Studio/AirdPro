@@ -15,6 +15,7 @@ using System.IO;
 using System.Threading;
 using AirdPro.Constants;
 using AirdPro.Storage.Config;
+using AirdSDK.Enums;
 using AirdSDK.Utils;
 using Newtonsoft.Json;
 using ThermoFisher.CommonCore.Data;
@@ -24,7 +25,7 @@ namespace AirdPro.Domains
 {
     public class JobInfo
     {
-        public static string AutoType = "Auto";
+        public const string AutoType = "Auto";
 
         //以C:/data/plasma.wiff为例
 
@@ -118,7 +119,7 @@ namespace AirdPro.Domains
             status = ProcessingStatus.WAITING;
         }
 
-        public ListViewItem buildItem()
+        public ListViewItem BuildItem()
         {
             string[] itemInfo = new string[]
             {
@@ -130,7 +131,7 @@ namespace AirdPro.Domains
                 config.centroid.ToString(),
                 status,
                 config.GetMzPrecisionStr(),
-                getCompressorStr(),
+                GetCompressorStr(),
                 config.ignoreZeroIntensity.ToString(),
                 config.suffix,
                 outputPath
@@ -151,7 +152,7 @@ namespace AirdPro.Domains
             return item;
         }
 
-        public JobInfo log(string content)
+        public JobInfo Log(string content)
         {
             Log log = new Log(DateTime.Now, content);
             logs.Add(log);
@@ -159,24 +160,24 @@ namespace AirdPro.Domains
             return this;
         }
 
-        public void setStatus(string status)
+        public void SetStatus(string status)
         {
             this.status = status;
             progress.Report(status);
         }
 
-        public void setType(string type)
+        public void SetType(string type)
         {
             this.type = type;
             typeLabel.Report(type);
         }
 
-        public void setCombination(string combination)
+        public void SetCombination(string combination)
         {
             compressor.Report(combination);
         }
 
-        public JobInfo log(string content, string status)
+        public JobInfo Log(string content, string status)
         {
             if (refreshReport)
             {
@@ -194,7 +195,7 @@ namespace AirdPro.Domains
             return this;
         }
 
-        public void logError(string content)
+        public void LogError(string content)
         {
             progress.Report(Status.Error);
             Log log = new Log(DateTime.Now, content);
@@ -204,7 +205,7 @@ namespace AirdPro.Domains
             throw new Exception(content);
         }
 
-        public string getJsonInfo()
+        public string GetJsonInfo()
         {
             string jobInfo = Tag.Empty;
             jobInfo += Tag.ConfigName + config.configName + Const.Change_Line;
@@ -218,9 +219,8 @@ namespace AirdPro.Domains
             jobInfo += Tag.Ignore_Zero_Intensity + config.ignoreZeroIntensity + Const.Change_Line;
             jobInfo += Tag.Suffix + config.suffix + Const.Change_Line;
             jobInfo += Tag.Thread_Id + threadId + Const.Change_Line;
-            jobInfo += Tag.Thread_Accelerate + config.threadAccelerate + Const.Change_Line;
             jobInfo += Tag.Mz_Precision + config.GetMzPrecisionStr() + Const.Change_Line;
-            jobInfo += Tag.Compressor + getCompressorStr() + Const.Change_Line;
+            jobInfo += Tag.Compressor + GetCompressorStr() + Const.Change_Line;
             if (config.autoDesicion)
             {
                 jobInfo += config.spectraToPredict + " spectra for prediction" + Const.Change_Line;
@@ -231,13 +231,36 @@ namespace AirdPro.Domains
             return jobInfo;
         }
 
-        public string getUniqueId()
+        public Dictionary<string, string> GetJobDict()
         {
-            return inputPath + outputPath + getCompressorStr() + config.GetMzPrecisionStr() +
+            Dictionary<string, string> dict = new();
+            dict.Add(Tag.ConfigName, config.configName);
+            dict.Add(Tag.Scene, config.scene);
+            dict.Add(Tag.Input_Path, inputPath);
+            dict.Add(Tag.Output_Path, outputPath);
+            dict.Add(Tag.Aird_File_Name, airdFileName);
+            dict.Add(Tag.Aird_File_Path, airdFilePath);
+            dict.Add(Tag.Aird_Json_File_Path, airdJsonFilePath);
+            if (config.scene.Equals(Scene.Search))
+            {
+                dict.Add(Tag.Aird_Column_Json_File_Path, airdColumnJsonFilePath);
+            }
+            dict.Add(Tag.Ignore_Zero_Intensity, config.ignoreZeroIntensity+"");
+            dict.Add(Tag.Suffix, config.suffix);
+            dict.Add(Tag.Thread_Id, threadId+"");
+            dict.Add(Tag.Mz_Precision, config.GetMzPrecisionStr());
+            dict.Add(Tag.Compressor, GetCompressorStr());
+
+            return dict;
+        }
+
+        public string GetUniqueId()
+        {
+            return inputPath + outputPath + GetCompressorStr() + config.GetMzPrecisionStr() +
                    config.ignoreZeroIntensity;
         }
 
-        public string getCompressorStr()
+        public string GetCompressorStr()
         {
             if (config.autoDesicion)
             {
@@ -258,23 +281,23 @@ namespace AirdPro.Domains
             }
         }
 
-        public void refreshItem(ListViewItem item)
+        public void RefreshItem(ListViewItem item)
         {
             item.SubItems[ItemName.JOB_ID].Text = jobId;
             item.SubItems[ItemName.INPUT_PATH].Text = inputPath;
             item.SubItems[ItemName.TYPE].Text = type;
             item.SubItems[ItemName.PRECISION].Text = config.GetMzPrecisionStr();
-            item.SubItems[ItemName.COMPRESSOR].Text = getCompressorStr();
+            item.SubItems[ItemName.COMPRESSOR].Text = GetCompressorStr();
             item.SubItems[ItemName.IGNORE_ZERO].Text = config.ignoreZeroIntensity.ToString();
             item.SubItems[ItemName.SUFFIX].Text = config.suffix;
             item.SubItems[ItemName.OUTPUT_PATH].Text = outputPath;
         }
 
-        public void reset()
+        public void Reset()
         {
-            this.jobId = NextId();
-            this.status = ProcessingStatus.WAITING;
-            this.logs = new List<Log>();
+            jobId = NextId();
+            status = ProcessingStatus.WAITING;
+            logs = new List<Log>();
         }
     }
 }

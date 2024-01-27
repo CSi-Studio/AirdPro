@@ -299,8 +299,8 @@ public class CVUtil
             }
             catch (Exception e)
             {
-                jobInfo.log(cvid + "-Retry Times-" + retryTimes + "-Result:" + result);
-                jobInfo.log(e.StackTrace);
+                jobInfo.Log(cvid + "-Retry Times-" + retryTimes + "-Result:" + result);
+                jobInfo.Log(e.StackTrace);
             }
 
             retryTimes--;
@@ -347,9 +347,9 @@ public class CVUtil
             }
             catch (FormatException e)
             {
-                jobInfo.log("Get Precursor Width-Retry Times-" + retryTimes + "-Result:" + upper + "-" + lower + "=" +
+                jobInfo.Log("Get Precursor Width-Retry Times-" + retryTimes + "-Result:" + upper + "-" + lower + "=" +
                             (upper + lower));
-                jobInfo.log(e.StackTrace);
+                jobInfo.Log(e.StackTrace);
             }
 
             retryTimes--;
@@ -376,8 +376,8 @@ public class CVUtil
             }
             catch (FormatException e)
             {
-                jobInfo.log("Charge-Retry Times-" + retryTimes + "-Result:" + result);
-                jobInfo.log(e.StackTrace);
+                jobInfo.Log("Charge-Retry Times-" + retryTimes + "-Result:" + result);
+                jobInfo.Log(e.StackTrace);
             }
 
             retryTimes--;

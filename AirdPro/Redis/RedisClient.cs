@@ -48,7 +48,7 @@ namespace AirdPro.Redis
             return _instance;
         }
 
-        public bool Connect(string host, int port, string user, string password)
+        public void Connect(string host, int port, string user, string password)
         {
             ConfigurationOptions options = new ConfigurationOptions
             {
@@ -66,10 +66,8 @@ namespace AirdPro.Redis
             }
             catch (Exception e)
             {
-                return false;
+                // ignored
             }
-
-            return _redis.IsConnected;
         }
 
         public bool Check()
@@ -81,9 +79,9 @@ namespace AirdPro.Redis
 
             return false;
         }
-
+        
         //从Redis中读取相关的任务消息并转化为本地任务JobInfo
-        public bool Consume()
+        public void Consume()
         {
             bool check = Check();
             if (check)
@@ -106,7 +104,6 @@ namespace AirdPro.Redis
                             ConversionConfig conversionConfig = new ConversionConfig();
                             conversionConfig.ignoreZeroIntensity = true;
                             conversionConfig.autoDesicion = false;
-                            conversionConfig.threadAccelerate = true;
                             conversionConfig.configName = "RedisDefault";
                             conversionConfig.suffix = job.suffix;
                             conversionConfig.ignoreZeroIntensity = job.ignoreZeroIntensity;
@@ -132,7 +129,7 @@ namespace AirdPro.Redis
                             }
 
                             JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
-                            ListViewItem item = jobInfo.buildItem();
+                            ListViewItem item = jobInfo.BuildItem();
                             if (!ConvertTaskManager.GetInstance().JobTable.Contains(jobInfo.jobId))
                             {
                                 Program.conversionForm.lvFileList.Items.Add(item);
@@ -159,8 +156,6 @@ namespace AirdPro.Redis
                     Program.conversionForm.DoConvert();
                 }
             }
-
-            return check;
         }
 
         public void Disconnect()

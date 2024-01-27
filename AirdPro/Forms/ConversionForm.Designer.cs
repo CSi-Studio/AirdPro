@@ -81,12 +81,14 @@ namespace AirdPro.Forms
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tbJobInfo = new System.Windows.Forms.TextBox();
             this.tbConsole = new System.Windows.Forms.TextBox();
             this.logTimer = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.timerTaskScan = new System.Windows.Forms.Timer(this.components);
+            this.listViewJobInfo = new System.Windows.Forms.ListView();
+            this.colKey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -424,18 +426,11 @@ namespace AirdPro.Forms
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.tbJobInfo);
+            this.splitContainer1.Panel1.Controls.Add(this.listViewJobInfo);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tbConsole);
-            // 
-            // tbJobInfo
-            // 
-            resources.ApplyResources(this.tbJobInfo, "tbJobInfo");
-            this.tbJobInfo.BackColor = System.Drawing.SystemColors.Window;
-            this.tbJobInfo.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.tbJobInfo.Name = "tbJobInfo";
             // 
             // tbConsole
             // 
@@ -459,6 +454,27 @@ namespace AirdPro.Forms
             this.timerTaskScan.Interval = 2000;
             this.timerTaskScan.Tick += new System.EventHandler(this.timerTaskScan_Tick);
             // 
+            // listViewJobInfo
+            // 
+            this.listViewJobInfo.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colKey,
+            this.colValue});
+            resources.ApplyResources(this.listViewJobInfo, "listViewJobInfo");
+            this.listViewJobInfo.FullRowSelect = true;
+            this.listViewJobInfo.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listViewJobInfo.HideSelection = false;
+            this.listViewJobInfo.Name = "listViewJobInfo";
+            this.listViewJobInfo.UseCompatibleStateImageBehavior = false;
+            this.listViewJobInfo.View = System.Windows.Forms.View.Details;
+            // 
+            // colKey
+            // 
+            resources.ApplyResources(this.colKey, "colKey");
+            // 
+            // colValue
+            // 
+            resources.ApplyResources(this.colValue, "colValue");
+            // 
             // ConversionForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -476,7 +492,6 @@ namespace AirdPro.Forms
             this.container.ResumeLayout(false);
             this.contentMenu.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -531,7 +546,6 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Timer timerTaskScan;
         private System.Windows.Forms.CheckBox cbAutoExe;
         private System.Windows.Forms.ColumnHeader headerScene;
-        private System.Windows.Forms.TextBox tbJobInfo;
         private System.Windows.Forms.ColumnHeader headerConfigName;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label112;
@@ -540,6 +554,9 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnMainView;
+        private System.Windows.Forms.ListView listViewJobInfo;
+        private System.Windows.Forms.ColumnHeader colKey;
+        private System.Windows.Forms.ColumnHeader colValue;
     }
 }
 

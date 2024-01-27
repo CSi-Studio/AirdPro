@@ -40,7 +40,7 @@
             this.tbRedisPassword = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnConnect = new System.Windows.Forms.Button();
-            this.redisConsumer = new System.Windows.Forms.Timer(this.components);
+            this.redisTimer = new System.Windows.Forms.Timer(this.components);
             this.lblStatus = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.lblMessageNum = new System.Windows.Forms.Label();
@@ -169,10 +169,10 @@
             this.btnConnect.UseVisualStyleBackColor = true;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
-            // redisConsumer
+            // redisTimer
             // 
-            this.redisConsumer.Interval = 3000;
-            this.redisConsumer.Tick += new System.EventHandler(this.redisConsumer_Tick);
+            this.redisTimer.Interval = 5000;
+            this.redisTimer.Tick += new System.EventHandler(this.redisTimer_Tick);
             // 
             // lblStatus
             // 
@@ -250,7 +250,7 @@
 
         private System.Windows.Forms.Label label4;
 
-        private System.Windows.Forms.Timer redisConsumer;
+        private System.Windows.Forms.Timer redisTimer;
 
         private System.Windows.Forms.Button btnConnect;
 

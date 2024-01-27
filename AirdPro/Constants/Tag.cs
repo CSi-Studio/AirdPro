@@ -62,7 +62,6 @@ namespace AirdPro.Constants
         public static string Suffix = "Suffix:";
         public static string Scene = "Scene:";
         public static string ConfigName = "ConfigName:";
-        public static string Thread_Accelerate = "ThreadAccelerate:";
         public static string Mz_Precision = "MzPrecision:";
         public static string Compressor = "Compressor:";
         public static string Cannot_Be_Deleted_When_Running = "Cannot be deleted when running";

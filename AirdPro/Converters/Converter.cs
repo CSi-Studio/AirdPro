@@ -31,8 +31,8 @@ namespace AirdPro.Converters
         protected void Start()
         {
             Stopwatch.Start();
-            JobInfo.log(Tag.Ready_To_Start, Status.Starting);
-            AppLogs.WriteInfo(Tag.BaseInfo + JobInfo.getJsonInfo(), true);
+            JobInfo.Log(Tag.Ready_To_Start, Status.Starting);
+            AppLogs.WriteInfo(Tag.BaseInfo + JobInfo.GetJsonInfo(), true);
         }
 
         /**

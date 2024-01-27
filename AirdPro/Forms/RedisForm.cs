@@ -54,7 +54,7 @@ namespace AirdPro.Forms
             if (RedisClient.GetInstance().Check())
             {
                 RedisClient.GetInstance().Disconnect();
-                updateRedisStatus(false);
+                UpdateRedisStatus(false);
             }
             else
             {
@@ -62,34 +62,42 @@ namespace AirdPro.Forms
             }
         }
 
-        private void updateRedisStatus(bool connected)
+        private void UpdateRedisStatus(bool connected)
         {
             if (connected)
             {
                 Program.conversionForm.btnRedisSetting.BackgroundImage = ResourceUtil.ReadImage("Menu.Redis.png");
-                this.btnConnect.Text = "Disconnect";
+                btnConnect.Text = "Disconnect";
                 lblStatus.BackColor = Color.Green;
             }
             else
             {
                 Program.conversionForm.btnRedisSetting.BackgroundImage = ResourceUtil.ReadImage("Menu.Redis_Disconnected.png");
-                this.btnConnect.Text = "Connect";
+                btnConnect.Text = "Connect";
                 lblStatus.BackColor = Color.Red;
             }
         }
 
-        private void redisConsumer_Tick(object sender, EventArgs e)
+        private void redisTimer_Tick(object sender, EventArgs e)
         {
-            redisConsumer.Stop();
+            //开始消费消息时停止时钟遍历
+            redisTimer.Stop();
+            HeartBeat();
             RedisClient.GetInstance().Consume();
-            redisConsumer.Start();
+            redisTimer.Start();
         }
 
+        private void HeartBeat()
+        {
+            UpdateRedisStatus(RedisClient.GetInstance().Check());
+            
+        }
+        
         private void ConnectToRedis()
         {
             if (tbRedisHost.Text == null || tbRedisHost.Text.IsEmpty())
             {
-                redisConsumer.Enabled = false;
+                redisTimer.Enabled = false;
                 MessageBox.Show(Constants.Tag.Redis_Host_Cannot_Be_Empty);
                 return;
             }
@@ -99,18 +107,19 @@ namespace AirdPro.Forms
                 tbRedisPort.Text = "6379";
             }
 
-            bool initResult = RedisClient.GetInstance().Connect(tbRedisHost.Text, int.Parse(tbRedisPort.Text), 
+            RedisClient.GetInstance().Connect(tbRedisHost.Text, int.Parse(tbRedisPort.Text), 
                 tbRedisUsername.Text, tbRedisPassword.Text);
-            if (initResult)
+            
+            if (RedisClient.GetInstance().Check())
             {
-                redisConsumer.Enabled = true;
-                updateRedisStatus(true);
+                redisTimer.Enabled = true;
+                UpdateRedisStatus(true);
             }
             else
             {
                 MessageBox.Show(Constants.Tag.Connect_Failed_Please_Check_The_Redis_Host_And_Port);
-                redisConsumer.Enabled = false;
-                updateRedisStatus(false);
+                redisTimer.Enabled = false;
+                UpdateRedisStatus(false);
             }
         }
     }

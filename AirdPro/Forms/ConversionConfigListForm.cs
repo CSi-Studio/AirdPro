@@ -112,7 +112,6 @@ namespace AirdPro.Forms
             config.mzPrecision = (int)Math.Pow(10, int.Parse(cbConfigMzPrecision.Text));
             config.ignoreZeroIntensity = cbConfigIsZeroIntensityIgnore.Checked;
             config.centroid = cbConfigIsCentroid.Checked;
-            config.threadAccelerate = cbConfigThreadAccelerate.Checked;
             config.scene = cbScene.Text;
             config.configName = tbNameConfig.Text;
             //如果不是自动决策的,则会使用配置的组合压缩器
@@ -179,7 +178,7 @@ namespace AirdPro.Forms
             }
             else
             {
-                jobInfo.refreshItem(item);
+                jobInfo.RefreshItem(item);
             }
 
             Hide();
@@ -202,7 +201,6 @@ namespace AirdPro.Forms
             tbConfigOperator.Text = config.creator;
             cbConfigIsZeroIntensityIgnore.Checked = config.ignoreZeroIntensity;
             cbConfigIsCentroid.Checked = config.centroid;
-            cbConfigThreadAccelerate.Checked = config.threadAccelerate;
             cbConfigMzPrecision.SelectedItem = ((int)Math.Log10(config.mzPrecision)).ToString();
             cbMzIntComp.SelectedItem = config.mzIntComp.ToString();
             cbMzByteComp.SelectedItem = config.mzByteComp.ToString();

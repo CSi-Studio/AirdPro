@@ -59,7 +59,7 @@ namespace AirdPro.Converters
             }
             catch (Exception ee)
             {
-                JobInfo.log(ee.Message);
+                JobInfo.Log(ee.Message);
             }
             finally
             {
@@ -91,7 +91,7 @@ namespace AirdPro.Converters
         {
             FileInfo info = new FileInfo(JobInfo.inputPath);
             int spectraCount = 0;
-            JobInfo.log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
+            JobInfo.Log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
 
             int totalCount = 1;
             foreach (Group group in tdms)
@@ -127,8 +127,8 @@ namespace AirdPro.Converters
             FileSize = info.Length;
             TotalSpectraCount = spectraCount;
 
-            JobInfo.log(Tag.Effective_MS1_List_Size + ms1List.Count);
-            JobInfo.log(Tag.Start_Processing_MS1_List);
+            JobInfo.Log(Tag.Effective_MS1_List_Size + ms1List.Count);
+            JobInfo.Log(Tag.Start_Processing_MS1_List);
         }
 
         public double ParseRt(Channel channel)
@@ -218,7 +218,7 @@ namespace AirdPro.Converters
 
         public void WriteToAirdInfoFile()
         {
-            JobInfo.log(Tag.Write_Index_File, Status.Writing_Index_File);
+            JobInfo.Log(Tag.Write_Index_File, Status.Writing_Index_File);
             AirdInfo airdInfo = buildAirdInfo();
 
             if (JobInfo.config.compressedIndex)
@@ -301,8 +301,8 @@ namespace AirdPro.Converters
         {
             Stopwatch.Stop();
             JobInfo.refreshReport = true;
-            JobInfo.log(Tag.Total_Time_Cost + Stopwatch.Elapsed.TotalSeconds, Status.Finished);
-            JobInfo.setStatus(ProcessingStatus.FINISHED);
+            JobInfo.Log(Tag.Total_Time_Cost + Stopwatch.Elapsed.TotalSeconds, Status.Finished);
+            JobInfo.SetStatus(ProcessingStatus.FINISHED);
         }
     }
 }

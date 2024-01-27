@@ -1869,37 +1869,34 @@
   <data name="splitContainer1.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 3</value>
   </data>
-  <data name="tbJobInfo.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="colKey.Text" xml:space="preserve">
+    <value>Key</value>
   </data>
-  <data name="tbJobInfo.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 9pt</value>
+  <data name="colValue.Text" xml:space="preserve">
+    <value>Value</value>
   </data>
-  <data name="tbJobInfo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-4, 3</value>
+  <data name="listViewJobInfo.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="tbJobInfo.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="listViewJobInfo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="tbJobInfo.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
-    <value>Vertical</value>
+  <data name="listViewJobInfo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>479, 312</value>
   </data>
-  <data name="tbJobInfo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>730, 306</value>
+  <data name="listViewJobInfo.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="tbJobInfo.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+  <data name="&gt;&gt;listViewJobInfo.Name" xml:space="preserve">
+    <value>listViewJobInfo</value>
   </data>
-  <data name="&gt;&gt;tbJobInfo.Name" xml:space="preserve">
-    <value>tbJobInfo</value>
+  <data name="&gt;&gt;listViewJobInfo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tbJobInfo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbJobInfo.Parent" xml:space="preserve">
+  <data name="&gt;&gt;listViewJobInfo.Parent" xml:space="preserve">
     <value>splitContainer1.Panel1</value>
   </data>
-  <data name="&gt;&gt;tbJobInfo.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;listViewJobInfo.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="&gt;&gt;splitContainer1.Panel1.Name" xml:space="preserve">
@@ -1927,7 +1924,7 @@
     <value>Vertical</value>
   </data>
   <data name="tbConsole.Size" type="System.Drawing.Size, System.Drawing">
-    <value>862, 309</value>
+    <value>1112, 309</value>
   </data>
   <data name="tbConsole.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1960,7 +1957,7 @@
     <value>1601, 312</value>
   </data>
   <data name="splitContainer1.SplitterDistance" type="System.Int32, mscorlib">
-    <value>729</value>
+    <value>479</value>
   </data>
   <data name="splitContainer1.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -5778,6 +5775,18 @@
   </data>
   <data name="&gt;&gt;timerTaskScan.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;colKey.Name" xml:space="preserve">
+    <value>colKey</value>
+  </data>
+  <data name="&gt;&gt;colKey.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;colValue.Name" xml:space="preserve">
+    <value>colValue</value>
+  </data>
+  <data name="&gt;&gt;colValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ConversionForm</value>

@@ -49,7 +49,7 @@ namespace AirdPro.Forms
             // 创建一个ListViewSorter对象
             FileListSorter sorter = new FileListSorter();
             lvFileList.ListViewItemSorter = sorter;
-            
+            listViewJobInfo.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
         private void initJobsFromStorage()
@@ -58,8 +58,8 @@ namespace AirdPro.Forms
             List<JobInfo> jobInfoList = JsonConvert.DeserializeObject<List<JobInfo>>(jobInfoListJson);
             foreach (var jobInfo in jobInfoList)
             {
-                jobInfo.reset();
-                ListViewItem item = jobInfo.buildItem();
+                jobInfo.Reset();
+                ListViewItem item = jobInfo.BuildItem();
                 if (!ConvertTaskManager.GetInstance().JobTable.Contains(jobInfo.jobId))
                 {
                     Program.conversionForm.lvFileList.Items.Add(item);
@@ -68,6 +68,22 @@ namespace AirdPro.Forms
             }
         }
 
+        private void PrintJobInfo(JobInfo jobInfo)
+        {
+            // 清空现有数据
+            listViewJobInfo.Items.Clear();
+            Dictionary<string, string> dict = jobInfo.GetJobDict();
+            // 添加新数据
+            foreach (var kvp in dict)
+            {
+                ListViewItem item = new ListViewItem(kvp.Key);
+                item.SubItems.Add(kvp.Value);
+                listViewJobInfo.Items.Add(item);
+            }
+
+            // 调整列宽以适应内容
+            listViewJobInfo.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+        }
         private void btnConvert_Click(object sender, EventArgs e)
         {
             if (lvFileList.Items.Count == 0)
@@ -116,7 +132,7 @@ namespace AirdPro.Forms
             if (!inputPath.IsNullOrEmpty())
             {
                 JobInfo jobInfo = new JobInfo(inputPath, outputPath, type, config);
-                ListViewItem item = jobInfo.buildItem();
+                ListViewItem item = jobInfo.BuildItem();
 
                 lvFileList.Items.Add(item);
                 jobIdList.Add(jobInfo.jobId);
@@ -183,7 +199,7 @@ namespace AirdPro.Forms
                     content = Constants.Tag.Not_Start_Converting;
                 }
 
-                tbJobInfo.Text = job.getJsonInfo();
+                PrintJobInfo(job);
                 tbConsole.Text = content;
             }
             else
@@ -237,7 +253,7 @@ namespace AirdPro.Forms
                 {
                     ConvertTaskManager.GetInstance().FinishedTable.Remove(jobInfo.jobId);
                     ConvertTaskManager.GetInstance().PushJob(jobInfo);
-                    jobInfo.refreshItem(item);
+                    jobInfo.RefreshItem(item);
                 }
                 else
                 {

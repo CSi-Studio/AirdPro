@@ -49,7 +49,7 @@ namespace AirdPro.Algorithms.Compressor
             Parallel.For(0, converter.Ms1List.Count, i =>
             {
                 Interlocked.Increment(ref process);
-                converter.JobInfo.log(null, Tag.progress(Tag.MS1, process, converter.Ms1List.Count));
+                converter.JobInfo.Log(null, Tag.progress(Tag.MS1, process, converter.Ms1List.Count));
                 MsIndex ms1Index = converter.Ms1List[i];
                 TempScan ts = new TempScan(ms1Index);
                 Spectrum spectrum = null;
@@ -344,7 +344,7 @@ namespace AirdPro.Algorithms.Compressor
         public ConcurrentDictionary<int, ByteColumn> CompressAsColumnMatrix(PwizConverter converter,
             ConcurrentBag<TempSpectrum> spectra, ColumnIndex columnIndex)
         {
-            converter.JobInfo.log(null, "Column Compressing");
+            converter.JobInfo.Log(null, "Column Compressing");
             //矩阵横坐标
             List<int> rtsInt = [];
             int totalPoints = 0;
@@ -362,9 +362,9 @@ namespace AirdPro.Algorithms.Compressor
 
             int[] totalMzs = mzsSet.ToArray();
 
-            converter.JobInfo.log("合计质谱图" + spectra.Count + "张,不同质荷比共:" + totalMzs.Length + "个");
-            converter.JobInfo.log("质荷比范围:" + totalMzs[0] + "-" + totalMzs[totalMzs.Length - 1]);
-            converter.JobInfo.log("总计包含有效点数:" + totalPoints);
+            converter.JobInfo.Log("合计质谱图" + spectra.Count + "张,不同质荷比共:" + totalMzs.Length + "个");
+            converter.JobInfo.Log("质荷比范围:" + totalMzs[0] + "-" + totalMzs[totalMzs.Length - 1]);
+            converter.JobInfo.Log("总计包含有效点数:" + totalPoints);
 
             int step = 1;
             ConcurrentDictionary<int, ByteColumn> treeColumnCompressed = new ConcurrentDictionary<int, ByteColumn>();
@@ -374,7 +374,7 @@ namespace AirdPro.Algorithms.Compressor
             foreach (var spectrum in spectra)
             {
                 int currentStep = Interlocked.Increment(ref step);
-                converter.JobInfo.log(null, Tag.percentage(Tag.Column_Trans, currentStep, spectra.Count));
+                converter.JobInfo.Log(null, Tag.percentage(Tag.Column_Trans, currentStep, spectra.Count));
                 for (var i = 0; i < spectrum.mzs.Length; i++)
                 {
                     treeColumn.GetOrAdd(spectrum.mzs[i], new Slice()).Add(spectrum.mzs[i], spectrum.intensities[i]);
@@ -389,7 +389,7 @@ namespace AirdPro.Algorithms.Compressor
 
                 if (currentStep % 100000 == 0)
                 {
-                    converter.JobInfo.log(null, Tag.percentage(Tag.Column_Compress, currentStep, totalMzs.Length));
+                    converter.JobInfo.Log(null, Tag.percentage(Tag.Column_Compress, currentStep, totalMzs.Length));
                 }
 
                 Slice slice = treeColumn[mz];

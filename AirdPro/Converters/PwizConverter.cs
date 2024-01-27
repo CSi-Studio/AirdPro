@@ -105,7 +105,7 @@ namespace AirdPro.Converters
                 {
                     if (msdList.Count == 0)
                     {
-                        JobInfo.logError("Msd List is Empty");
+                        JobInfo.LogError("Msd List is Empty");
                         return;
                     }
 
@@ -169,9 +169,9 @@ namespace AirdPro.Converters
         {
             Stopwatch.Stop();
             JobInfo.refreshReport = true;
-            JobInfo.log(Tag.Total_Time_Cost + Stopwatch.Elapsed.TotalSeconds, Status.Finished);
+            JobInfo.Log(Tag.Total_Time_Cost + Stopwatch.Elapsed.TotalSeconds, Status.Finished);
             ClearCache();
-            JobInfo.setStatus(ProcessingStatus.FINISHED);
+            JobInfo.SetStatus(ProcessingStatus.FINISHED);
             if (Msd != null)
             {
                 Msd.Dispose();
@@ -181,7 +181,7 @@ namespace AirdPro.Converters
 
         public void InitBrukerMobi()
         {
-            JobInfo.log(Tag.Init_Mobility_Array);
+            JobInfo.Log(Tag.Init_Mobility_Array);
             long handle = TdfUtil.tims_open(JobInfo.inputPath, 1);
             double[] scanNums = new double[2000];
             for (int i = 0; i < scanNums.Length; i++)
@@ -213,12 +213,12 @@ namespace AirdPro.Converters
         {
             if (!JobInfo.type.Equals(JobInfo.AutoType))
             {
-                JobInfo.setType(JobInfo.type);
+                JobInfo.SetType(JobInfo.type);
                 return;
             }
 
             bool mobi = false;
-            JobInfo.log(Tag.Predict_Acquisition_Method, Status.Init);
+            JobInfo.Log(Tag.Predict_Acquisition_Method, Status.Init);
 
             //如果有光谱图
             if (SpectrumList != null && SpectrumList.size() > 0)
@@ -273,22 +273,22 @@ namespace AirdPro.Converters
 
                 if (isDDA && mobi)
                 {
-                    JobInfo.setType(AcquisitionMethod.DDA_PASEF);
+                    JobInfo.SetType(AcquisitionMethod.DDA_PASEF);
                 }
 
                 if (isDDA && !mobi)
                 {
-                    JobInfo.setType(AcquisitionMethod.DDA);
+                    JobInfo.SetType(AcquisitionMethod.DDA);
                 }
 
                 if (isDIA && mobi)
                 {
-                    JobInfo.setType(AcquisitionMethod.DIA_PASEF);
+                    JobInfo.SetType(AcquisitionMethod.DIA_PASEF);
                 }
 
                 if (isDIA && !mobi)
                 {
-                    JobInfo.setType(AcquisitionMethod.DIA);
+                    JobInfo.SetType(AcquisitionMethod.DIA);
                 }
             }
 
@@ -307,7 +307,7 @@ namespace AirdPro.Converters
                         }
                     }
 
-                    JobInfo.setType(AcquisitionMethod.MRM);
+                    JobInfo.SetType(AcquisitionMethod.MRM);
                 }
             }
             catch (Exception e)
@@ -323,12 +323,12 @@ namespace AirdPro.Converters
                 return;
             }
 
-            JobInfo.log(Tag.Predict_For_Best_Combination + JobInfo.airdFileName, Status.Predicting);
+            JobInfo.Log(Tag.Predict_For_Best_Combination + JobInfo.airdFileName, Status.Predicting);
             Combination combination = RandomSampling(JobInfo.config.spectraToPredict, JobInfo.ionMobility);
             combination.enable(JobInfo.config, Compressor);
-            JobInfo.log(JobInfo.getCompressorStr());
+            JobInfo.Log(JobInfo.GetCompressorStr());
             JobInfo.config.autoDesicion = false;
-            JobInfo.setCombination(JobInfo.getCompressorStr());
+            JobInfo.SetCombination(JobInfo.GetCompressorStr());
         }
 
         /**
@@ -373,7 +373,7 @@ namespace AirdPro.Converters
             }
 
             Compressor.IntensityPrecision = IntensityPrecision;
-            JobInfo.log(Tag.Intensity_Precision + IntensityPrecision);
+            JobInfo.Log(Tag.Intensity_Precision + IntensityPrecision);
         }
 
         public void WriteToFile(Hashtable table, BlockIndex index)
@@ -505,7 +505,7 @@ namespace AirdPro.Converters
          */
         protected MSDataList ReadVendorFile()
         {
-            JobInfo.log(Tag.Prepare_To_Parse_Vendor_File, Status.Prepare);
+            JobInfo.Log(Tag.Prepare_To_Parse_Vendor_File, Status.Prepare);
             ReaderList readerList = ReaderList.FullReaderList;
             var readerConfig = new ReaderConfig
             {
@@ -519,13 +519,13 @@ namespace AirdPro.Converters
 
             if (msdList.Count == 0)
             {
-                JobInfo.logError(ResultCode.Reading_Vendor_File_Error_Run_Is_Null);
+                JobInfo.LogError(ResultCode.Reading_Vendor_File_Error_Run_Is_Null);
                 msdList.Dispose();
                 readerList.Dispose();
                 return null;
             }
 
-            JobInfo.log(Tag.Adapting_Vendor_File_API, Status.Adapting);
+            JobInfo.Log(Tag.Adapting_Vendor_File_API, Status.Adapting);
 
             switch (JobInfo.format)
             {
@@ -586,7 +586,7 @@ namespace AirdPro.Converters
             SpectrumList = msd.run.spectrumList;
             if (SpectrumList == null || SpectrumList.empty())
             {
-                JobInfo.log(ResultCode.No_Spectra_Found);
+                JobInfo.Log(ResultCode.No_Spectra_Found);
             }
             else
             {
@@ -596,22 +596,22 @@ namespace AirdPro.Converters
             ChromatogramList = msd.run.chromatogramList;
             if (ChromatogramList == null || ChromatogramList.empty())
             {
-                JobInfo.log(ResultCode.No_Chromatograms_Found);
+                JobInfo.Log(ResultCode.No_Chromatograms_Found);
             }
             else
             {
                 TotalChromaCount = ChromatogramList.size();
             }
 
-            JobInfo.log(Tag.Adapting_Finished);
-            JobInfo.log(Tag.Total_Spectra + TotalSpectraCount);
-            JobInfo.log(Tag.Total_Chromatograms + TotalChromaCount);
+            JobInfo.Log(Tag.Adapting_Finished);
+            JobInfo.Log(Tag.Total_Spectra + TotalSpectraCount);
+            JobInfo.Log(Tag.Total_Chromatograms + TotalChromaCount);
         }
 
         //将最终的数据写入文件中
         public void WriteToAirdInfoFile()
         {
-            JobInfo.log(Tag.Write_Index_File, Status.Writing_Index_File);
+            JobInfo.Log(Tag.Write_Index_File, Status.Writing_Index_File);
             AirdInfo airdInfo = buildAirdInfo();
 
             if (JobInfo.config.compressedIndex)
@@ -747,23 +747,23 @@ namespace AirdPro.Converters
                 }
                 catch (Exception e)
                 {
-                    JobInfo.log(ResultCode.Error).log(Tag.SpectrumIndex + spectrum.index)
-                        .log(Tag.SpectrumId + spectrum.id);
+                    JobInfo.Log(ResultCode.Error).Log(Tag.SpectrumIndex + spectrum.index)
+                        .Log(Tag.SpectrumId + spectrum.id);
                     using (IsolationWindow isolationWindow = precursor.isolationWindow)
                     {
                         using (var cv = isolationWindow.cvParamChild(CVID.MS_isolation_window_target_m_z))
                         {
-                            JobInfo.log(Tag.Key_MZ + cv.value);
+                            JobInfo.Log(Tag.Key_MZ + cv.value);
                         }
 
                         using (var cv = isolationWindow.cvParamChild(CVID.MS_isolation_window_lower_offset))
                         {
-                            JobInfo.log(Tag.LowerOffset + cv.value);
+                            JobInfo.Log(Tag.LowerOffset + cv.value);
                         }
 
                         using (var cv = isolationWindow.cvParamChild(CVID.MS_isolation_window_upper_offset))
                         {
-                            JobInfo.log(Tag.UpperOffset + cv.value);
+                            JobInfo.Log(Tag.UpperOffset + cv.value);
                         }
                     }
 
@@ -809,7 +809,7 @@ namespace AirdPro.Converters
 
         public void CompressMs2BlockForPrm()
         {
-            JobInfo.log("Start Processing MS2 List");
+            JobInfo.Log("Start Processing MS2 List");
             int progress = 0;
             foreach (double key in Ms2Table.Keys)
             {
@@ -822,12 +822,12 @@ namespace AirdPro.Converters
                 index.setWindowRange(range); //顺便创建一个WindowRanges,用以让Propro服务端快速获取全局的窗口数目和mz区间
                 Ranges.Add(range);
 
-                JobInfo.log(null, Tag.progress(Tag.MS2, progress, Ms2Table.Keys.Count));
+                JobInfo.Log(null, Tag.progress(Tag.MS2, progress, Ms2Table.Keys.Count));
                 progress++;
                 Compressor.CompressMS2(this, ms2List, index);
                 index.endPtr = StartPosition;
                 IndexList.Add(index);
-                JobInfo.log("MS2 Group Finished:" + progress + "/" + Ms2Table.Keys.Count);
+                JobInfo.Log("MS2 Group Finished:" + progress + "/" + Ms2Table.Keys.Count);
             }
         }
 
@@ -859,7 +859,7 @@ namespace AirdPro.Converters
 
         public void CompressMs2BlockForDia()
         {
-            JobInfo.log(Tag.Start_Processing_MS2_List);
+            JobInfo.Log(Tag.Start_Processing_MS2_List);
             int progress = 0;
             foreach (double precursorMz in Ms2Table.Keys)
             {
@@ -871,12 +871,12 @@ namespace AirdPro.Converters
                 index.startPtr = StartPosition;
                 index.setWindowRange(range);
 
-                JobInfo.log(null, Tag.progress(Tag.MS2, progress, Ms2Table.Keys.Count));
+                JobInfo.Log(null, Tag.progress(Tag.MS2, progress, Ms2Table.Keys.Count));
                 progress++;
                 Compressor.CompressMS2(this, ms2List, index);
                 index.endPtr = StartPosition;
                 IndexList.Add(index);
-                JobInfo.log(Tag.progress(Tag.MS2_Group_Finished, progress, Ms2Table.Keys.Count));
+                JobInfo.Log(Tag.progress(Tag.MS2_Group_Finished, progress, Ms2Table.Keys.Count));
             }
         }
 
@@ -884,7 +884,7 @@ namespace AirdPro.Converters
         public void compressMS2BlockForDDA()
         {
             int progress = 0;
-            JobInfo.log(Tag.Start_Processing_MS2_List);
+            JobInfo.Log(Tag.Start_Processing_MS2_List);
             ArrayList keys = new ArrayList(Ms2Table.Keys);
             keys.Sort();
             foreach (int key in keys)
@@ -897,7 +897,7 @@ namespace AirdPro.Converters
                 blockIndex.num = key;
                 //创建这一个block中每一个ms2的窗口序列
                 List<WindowRange> ms2Ranges = new List<WindowRange>();
-                JobInfo.log(null, Tag.progress(Tag.MS2, progress, Ms2Table.Keys.Count));
+                JobInfo.Log(null, Tag.progress(Tag.MS2, progress, Ms2Table.Keys.Count));
                 progress++;
 
                 foreach (MsIndex index in tempIndexList)
@@ -960,7 +960,7 @@ namespace AirdPro.Converters
 
             int totalSize = ChromatogramList.size();
             int progress = 0;
-            JobInfo.log(null, Tag.progress(Tag.Chroma, progress, totalSize));
+            JobInfo.Log(null, Tag.progress(Tag.Chroma, progress, totalSize));
             ChromatogramIndex.startPtr = StartPosition;
             for (int i = 0; i < ChromatogramList.size(); i++)
             {
@@ -1002,13 +1002,13 @@ namespace AirdPro.Converters
                 }
                 catch (Exception e)
                 {
-                    JobInfo.log(ResultCode.Error).log(Tag.SpectrumIndex + i)
-                        .log(Tag.SpectrumId + chromatogram.id)
-                        .log(Tag.Key_MZ + chromatogram.precursor.isolationWindow
+                    JobInfo.Log(ResultCode.Error).Log(Tag.SpectrumIndex + i)
+                        .Log(Tag.SpectrumId + chromatogram.id)
+                        .Log(Tag.Key_MZ + chromatogram.precursor.isolationWindow
                             .cvParamChild(CVID.MS_isolation_window_target_m_z).value)
-                        .log(Tag.LowerOffset + chromatogram.precursor.isolationWindow
+                        .Log(Tag.LowerOffset + chromatogram.precursor.isolationWindow
                             .cvParamChild(CVID.MS_isolation_window_lower_offset).value)
-                        .log(Tag.UpperOffset + chromatogram.precursor.isolationWindow
+                        .Log(Tag.UpperOffset + chromatogram.precursor.isolationWindow
                             .cvParamChild(CVID.MS_isolation_window_upper_offset).value);
                     throw e;
                 }
@@ -1021,7 +1021,7 @@ namespace AirdPro.Converters
                 AirdStream.Write(tempScan.intArrayBytes, 0, tempScan.intArrayBytes.Length);
 
                 progress++;
-                JobInfo.log(null, Tag.progress(Tag.Chroma, progress, totalSize));
+                JobInfo.Log(null, Tag.progress(Tag.Chroma, progress, totalSize));
             }
 
             ChromatogramIndex.totalCount = ChromatogramIndex.ids.Count;
@@ -1273,7 +1273,7 @@ namespace AirdPro.Converters
             FeaturesMap.Add(Features.ignore_zero_intensity, JobInfo.config.ignoreZeroIntensity);
             FeaturesMap.Add(Features.source_file_format, JobInfo.format);
             FeaturesMap.Add(Features.byte_order, ByteOrder.LITTLE_ENDIAN);
-            FeaturesMap.Add(Features.aird_algorithm, JobInfo.getCompressorStr());
+            FeaturesMap.Add(Features.aird_algorithm, JobInfo.GetCompressorStr());
             airdInfo.features = FeaturesUtil.toString(FeaturesMap);
             airdInfo.version = SoftwareInfo.VERSION;
             return airdInfo;
@@ -1454,7 +1454,7 @@ namespace AirdPro.Converters
             if (ionMobi)
             {
                 int bestIndex4Mobi = StatUtil.CalcBestIndex(mobiStatList, csWeight, ctWeight, dtWeight);
-                JobInfo.log(Tag.Best_Combo_Comp + mzStatList[bestIndex4Mz].key + Const.Left_Slash +
+                JobInfo.Log(Tag.Best_Combo_Comp + mzStatList[bestIndex4Mz].key + Const.Left_Slash +
                             intensityStatList[bestIndex4Intensity].key + Const.Left_Slash +
                             mobiStatList[bestIndex4Mobi].key);
                 bestCombination = new Combination(mzStatList[bestIndex4Mz].key,
@@ -1463,7 +1463,7 @@ namespace AirdPro.Converters
             }
             else
             {
-                JobInfo.log(Tag.Best_Combo_Comp + mzStatList[bestIndex4Mz].key + Const.Left_Slash +
+                JobInfo.Log(Tag.Best_Combo_Comp + mzStatList[bestIndex4Mz].key + Const.Left_Slash +
                             intensityStatList[bestIndex4Intensity].key);
                 bestCombination = new Combination(mzStatList[bestIndex4Mz].key,
                     intensityStatList[bestIndex4Intensity].key);
@@ -1480,13 +1480,13 @@ namespace AirdPro.Converters
         public void PretreatmentDda()
         {
             int parentNum = 0;
-            JobInfo.log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
+            JobInfo.Log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
             for (var i = 0; i < TotalSpectraCount; i++)
             {
                 using (Spectrum spectrum = SpectrumList.spectrum(i, false))
                 {
                     string msLevel = CVUtil.ParseMsLevel(spectrum);
-                    JobInfo.setStatus("Pre:" + i + "/" + TotalSpectraCount);
+                    JobInfo.SetStatus("Pre:" + i + "/" + TotalSpectraCount);
                     //最后一个谱图,单独判断
                     if (i == TotalSpectraCount - 1)
                     {
@@ -1525,21 +1525,21 @@ namespace AirdPro.Converters
                 }
             }
 
-            JobInfo.log(Tag.Effective_MS1_List_Size + Ms1List.Count);
-            JobInfo.log(Tag.MS2_Group_List_Size + Ms2Table.Count);
-            JobInfo.log(Tag.Start_Processing_MS1_List);
+            JobInfo.Log(Tag.Effective_MS1_List_Size + Ms1List.Count);
+            JobInfo.Log(Tag.MS2_Group_List_Size + Ms2Table.Count);
+            JobInfo.Log(Tag.Start_Processing_MS1_List);
         }
 
         public void PretreatmentDia()
         {
             int parentNum = 0;
-            JobInfo.log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
+            JobInfo.Log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
             int progress = 0;
             // 预处理所有的MS谱图,将MS1与MS2的信息扫描以后放入对应的内存对象中
             for (int i = 0; i < TotalSpectraCount; i++)
             {
                 progress++;
-                JobInfo.log(null, Tag.progress(Tag.Pre, progress, TotalSpectraCount));
+                JobInfo.Log(null, Tag.progress(Tag.Pre, progress, TotalSpectraCount));
                 using (Spectrum spectrum = SpectrumList.spectrum(i))
                 {
                     string msLevel = CVUtil.ParseMsLevel(spectrum);
@@ -1568,19 +1568,19 @@ namespace AirdPro.Converters
                 }
             }
 
-            JobInfo.log(Tag.Total_SWATH_WINDOWS + Ranges.Count);
-            JobInfo.log(Tag.Effective_MS1_List_Size + Ms1List.Count);
-            JobInfo.log(Tag.MS2_Group_List_Size + Ms2Table.Count);
-            JobInfo.log(Tag.Start_Processing_MS1_List);
+            JobInfo.Log(Tag.Total_SWATH_WINDOWS + Ranges.Count);
+            JobInfo.Log(Tag.Effective_MS1_List_Size + Ms1List.Count);
+            JobInfo.Log(Tag.MS2_Group_List_Size + Ms2Table.Count);
+            JobInfo.Log(Tag.Start_Processing_MS1_List);
         }
 
         public void PretreatmentDdaPasef()
         {
             int parentNum = 0;
-            JobInfo.log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
+            JobInfo.Log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
             for (var i = 0; i < TotalSpectraCount; i++)
             {
-                JobInfo.log(null, Tag.progress(Tag.Pre, i, TotalSpectraCount));
+                JobInfo.Log(null, Tag.progress(Tag.Pre, i, TotalSpectraCount));
                 using (Spectrum spectrum = SpectrumList.spectrum(i))
                 {
                     string msLevel = CVUtil.ParseMsLevel(spectrum);
@@ -1622,21 +1622,21 @@ namespace AirdPro.Converters
                 }
             }
 
-            JobInfo.log(Tag.Effective_MS1_List_Size + Ms1List.Count);
-            JobInfo.log(Tag.MS2_Group_List_Size + Ms2Table.Count);
-            JobInfo.log(Tag.Start_Processing_MS1_List);
+            JobInfo.Log(Tag.Effective_MS1_List_Size + Ms1List.Count);
+            JobInfo.Log(Tag.MS2_Group_List_Size + Ms2Table.Count);
+            JobInfo.Log(Tag.Start_Processing_MS1_List);
         }
 
         public void PretreatmentDiaPasef()
         {
             int parentNum = 0;
-            JobInfo.log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
+            JobInfo.Log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
             int progress = 0;
             // 预处理所有的MS谱图,将MS1与MS2的信息扫描以后放入对应的内存对象中
             for (int i = 0; i < TotalSpectraCount; i++)
             {
                 progress++;
-                JobInfo.log(null, Tag.progress(Tag.Pre, progress, TotalSpectraCount));
+                JobInfo.Log(null, Tag.progress(Tag.Pre, progress, TotalSpectraCount));
                 using (Spectrum spectrum = SpectrumList.spectrum(i))
                 {
                     string msLevel = CVUtil.ParseMsLevel(spectrum);
@@ -1665,19 +1665,19 @@ namespace AirdPro.Converters
                 }
             }
 
-            JobInfo.log(Tag.Total_SWATH_WINDOWS + Ranges.Count);
-            JobInfo.log(Tag.Effective_MS1_List_Size + Ms1List.Count);
-            JobInfo.log(Tag.MS2_Group_List_Size + Ms2Table.Count);
-            JobInfo.log(Tag.Start_Processing_MS1_List);
+            JobInfo.Log(Tag.Total_SWATH_WINDOWS + Ranges.Count);
+            JobInfo.Log(Tag.Effective_MS1_List_Size + Ms1List.Count);
+            JobInfo.Log(Tag.MS2_Group_List_Size + Ms2Table.Count);
+            JobInfo.Log(Tag.Start_Processing_MS1_List);
         }
 
         public void PretreatmentPrm()
         {
             int parentNum = 0;
-            JobInfo.log(Status.tag_preprocessing + TotalSpectraCount, Status.Preprocessing);
+            JobInfo.Log(Status.tag_preprocessing + TotalSpectraCount, Status.Preprocessing);
             for (int i = 0; i < TotalSpectraCount; i++)
             {
-                JobInfo.log(null, Tag.progress(Tag.Empty, (i + 1), TotalSpectraCount));
+                JobInfo.Log(null, Tag.progress(Tag.Empty, (i + 1), TotalSpectraCount));
                 using (Spectrum spectrum = SpectrumList.spectrum(i))
                 {
                     string msLevel = CVUtil.ParseMsLevel(spectrum);
@@ -1730,9 +1730,9 @@ namespace AirdPro.Converters
                 }
             }
 
-            JobInfo.log("Effective MS1 List Size:" + Ms1List.Count);
-            JobInfo.log("MS2 Group List Size:" + Ms2Table.Count);
-            JobInfo.log("Start Processing MS1 List");
+            JobInfo.Log("Effective MS1 List Size:" + Ms1List.Count);
+            JobInfo.Log("MS2 Group List Size:" + Ms2Table.Count);
+            JobInfo.Log("Start Processing MS1 List");
         }
     }
 }
