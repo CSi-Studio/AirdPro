@@ -1,6 +1,6 @@
 namespace AirdPro.Constants;
 
-public class Froms
+public static class Froms
 {
     
     //px datasets

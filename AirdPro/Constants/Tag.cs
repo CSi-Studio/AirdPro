@@ -10,7 +10,7 @@
 
 namespace AirdPro.Constants
 {
-    public class Tag
+    public static class Tag
     {
         public static string Empty = "";
         public static string MS1 = "MS1:";

@@ -10,20 +10,21 @@
 
 namespace AirdPro.Constants
 {
-    class SoftwareInfo
+    static class SoftwareInfo
     {
         public static string VERSION = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-        public static string CLIENT_VERSION_DESCRIPTION = "Support for Fudan MS File format";
+        public static string CLIENT_VERSION_DESCRIPTION = "1. Completely solve the problem of memory leaks\r\n" +
+                                                          "2. Increase the conversion speed of columns\r\n";
 
         public static string NAME = "AirdPro";
 
-        public static string getVersion()
+        public static string GetVersion()
         {
             return "Version " + VERSION;
         }
 
-        public static string getDescription()
+        public static string GetDescription()
         {
             return CLIENT_VERSION_DESCRIPTION;
         }

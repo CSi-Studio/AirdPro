@@ -1,6 +1,6 @@
 ﻿namespace AirdPro.Constants
 {
-    public class Manufacturer
+    public static class Manufacturer
     {
         public static string SCIEX = "SCIEX";
         public static string Thermo = "Thermo";

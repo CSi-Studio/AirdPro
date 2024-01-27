@@ -11,25 +11,24 @@ namespace AirdPro.Forms;
 
 public partial class DownloadLinksForm : Form
 {
-    public string web;
-    public string from;
-    public string identifier;
+    private string _web;
+    private string _from;
+    private string _identifier;
 
-    public WebBrowser pxdPage;
-    public WebBrowser massIVEPage;
+    private WebBrowser _pxdPage;
+    private WebBrowser _massIvePage;
 
-
-    public string getUniqueTag()
+    private string GetUniqueTag()
     {
-        return from + ":" + identifier;
+        return _from + ":" + _identifier;
     }
 
     public DownloadLinksForm(string web, string from, string identifier)
     {
         InitializeComponent();
-        this.web = web;
-        this.from = from;
-        this.identifier = identifier;
+        _web = web;
+        _from = from;
+        _identifier = identifier;
         tbFrom.Text = from;
         tbIdentifier.Text = identifier;
         Text = from + ":" + identifier;
@@ -37,37 +36,37 @@ public partial class DownloadLinksForm : Form
 
     private void DownloadLinksForm_Load(object sender, EventArgs e)
     {
-        if (web.Equals(Froms.WEB_ML))
+        if (_web.Equals(Froms.WEB_ML))
         {
-            tbHome.Text = UrlConst.pxDetailUrl + identifier;
-            tbFTP.Text = UrlConst.mlFtpUrl + identifier;
+            tbHome.Text = UrlConst.pxDetailUrl + _identifier;
+            tbFTP.Text = UrlConst.mlFtpUrl + _identifier;
         }
-        else if (web.Equals(Froms.WEB_PX))
+        else if (_web.Equals(Froms.WEB_PX))
         {
-            tbHome.Text = UrlConst.pxDetailUrl + identifier;
+            tbHome.Text = UrlConst.pxDetailUrl + _identifier;
         }
     }
 
     //所有的链接均从PXD页面开始路由
-    public void readPXDPage()
+    private void ReadPxdPage()
     {
-        Text = getUniqueTag() + " loading";
-        pxdPage.Navigate(UrlConst.pxDetailUrl + identifier);
+        Text = GetUniqueTag() + " loading";
+        _pxdPage.Navigate(UrlConst.pxDetailUrl + _identifier);
     }
 
-    public async void readPXDPage_Completed(object sender, WebBrowserDocumentCompletedEventArgs e)
+    private async void readPXDPage_Completed(object sender, WebBrowserDocumentCompletedEventArgs e)
     {
         WebBrowser web = (WebBrowser)sender;
         HtmlElementCollection elements = web.Document.GetElementsByTagName("table");
         if (elements.Count < 8)
         {
-            loading(false);
+            Loading(false);
             return;
         }
 
         tbFTP.Text = elements[6].Children[0].Children[0].Children[0].Children[0].GetAttribute("href");
         //路由，不同的源需要解码PXD详情页上不同的元素
-        switch (from.ToLower())
+        switch (_from.ToLower())
         {
             case "pride":
             case "iprox":
@@ -86,7 +85,7 @@ public partial class DownloadLinksForm : Form
                             {
                                 string responseData = await reader.ReadToEndAsync();
                                 List<string> downloadList = PRIDEParser.parse(responseData);
-                                renderList(downloadList);
+                                RenderList(downloadList);
                             }
                         }
                     }
@@ -102,36 +101,36 @@ public partial class DownloadLinksForm : Form
                 HtmlElement jpostElement = elements[6].Children[0].Children[1].Children[0].Children[0]; //直接定位到<a>标签
                 string jpostHref = jpostElement.GetAttribute("href");
                 string[] array = jpostHref.Split('/');
-                TabPage tab = buildOutput("1-1", jpostHref + array[array.Length - 2] + "_all.zip");
+                TabPage tab = BuildOutput("1-1", jpostHref + array[array.Length - 2] + "_all.zip");
                 tabControl.TabPages.Add(tab);
                 lblTips.Text = "Use FileZilla or other FTP tools to download the following files";
                 break;
             case "massive":
                 HtmlElement massIVEElement = elements[6].Children[0].Children[0].Children[0].Children[0]; //直接定位到<a>标签
                 string massIVEHref = massIVEElement.GetAttribute("href");
-                massIVEPage.Navigate(massIVEHref);
+                _massIvePage.Navigate(massIVEHref);
                 lblTips.Text = "Use FileZilla or other FTP tools to download the following files";
                 break;
         }
     }
 
-    public void readMassIVEPage_Completed(object sender, WebBrowserDocumentCompletedEventArgs e)
+    private void readMassIVEPage_Completed(object sender, WebBrowserDocumentCompletedEventArgs e)
     {
         WebBrowser web = (WebBrowser)sender;
         HtmlElement inputElement = web.Document.GetElementById("ftpLink");
         string ftpLink = inputElement.GetAttribute("value");
-        TabPage tab = buildOutput(identifier, ftpLink);
+        TabPage tab = BuildOutput(_identifier, ftpLink);
         tabControl.TabPages.Add(tab);
     }
 
-    public void renderList(List<string> downloadList)
+    private void RenderList(List<string> downloadList)
     {
         try
         {
             if (downloadList.Count == 0)
             {
                 MessageBox.Show("File list is empty");
-                loading(false);
+                Loading(false);
                 return;
             }
 
@@ -145,13 +144,13 @@ public partial class DownloadLinksForm : Form
                 downloadListStr += downloadList[i] + "\r\n";
                 if (count % 1000 == 0)
                 {
-                    TabPage tabPage = buildOutput((count - 999) + "-" + count, downloadListStr);
+                    TabPage tabPage = BuildOutput((count - 999) + "-" + count, downloadListStr);
                     tabControl.TabPages.Add(tabPage);
                     downloadListStr = "";
                 }
             }
 
-            TabPage tabPageLast = buildOutput((count - count % 1000 + 1) + "~" + count, downloadListStr);
+            TabPage tabPageLast = BuildOutput((count - count % 1000 + 1) + "~" + count, downloadListStr);
             tabControl.TabPages.Add(tabPageLast);
         }
         catch (Exception ee)
@@ -159,10 +158,10 @@ public partial class DownloadLinksForm : Form
             Console.WriteLine(ee.Message);
         }
 
-        loading(false);
+        Loading(false);
     }
 
-    public TabPage buildOutput(string name, string tasks)
+    private TabPage BuildOutput(string name, string tasks)
     {
         TabPage tabPage = new TabPage();
         tabPage.SuspendLayout();
@@ -181,53 +180,53 @@ public partial class DownloadLinksForm : Form
         return tabPage;
     }
 
-    public void loading(bool load)
+    private void Loading(bool load)
     {
-        Text = getUniqueTag() + (load ? " loading" : " loaded");
+        Text = GetUniqueTag() + (load ? " loading" : " loaded");
     }
 
     private void btnReload_Click(object sender, EventArgs e)
     {
-        loadData();
+        LoadData();
     }
 
-    public void loadData()
+    private void LoadData()
     {
-        loading(true);
+        Loading(true);
         tabControl.TabPages.Clear();
-        if (web.Equals(Froms.WEB_PX))
+        if (_web.Equals(Froms.WEB_PX))
         {
-            if (from.ToLower().Equals(Froms.MassIVE))
+            if (_from.ToLower().Equals(Froms.MassIVE))
             {
-                massIVEPage = new WebBrowser();
-                massIVEPage.ScriptErrorsSuppressed = true;
-                massIVEPage.DocumentCompleted += readMassIVEPage_Completed;
+                _massIvePage = new WebBrowser();
+                _massIvePage.ScriptErrorsSuppressed = true;
+                _massIvePage.DocumentCompleted += readMassIVEPage_Completed;
             }
 
-            pxdPage = new WebBrowser();
-            pxdPage.ScriptErrorsSuppressed = true;
-            pxdPage.DocumentCompleted += readPXDPage_Completed;
-            readPXDPage();
+            _pxdPage = new WebBrowser();
+            _pxdPage.ScriptErrorsSuppressed = true;
+            _pxdPage.DocumentCompleted += readPXDPage_Completed;
+            ReadPxdPage();
         }
-        else if (web.Equals(Froms.WEB_ML))
+        else if (_web.Equals(Froms.WEB_ML))
         {
-            readMLFileList();
+            ReadMlFileList();
         }
     }
 
-    public void readMLFileList()
+    private void ReadMlFileList()
     {
-        List<string> paths = HttpUtil.FetchFtpFilePaths(UrlConst.mlFtpUrl+identifier);
+        List<string> paths = HttpUtil.FetchFtpFilePaths(UrlConst.mlFtpUrl+_identifier);
         if (paths == null)
         {
             MessageBox.Show("Getting FTP files Error!");
         }
         else
         {
-            renderList(paths);
+            RenderList(paths);
         }
 
-        loading(false);
+        Loading(false);
     }
 
     private void btnListFtpFiles_Click(object sender, EventArgs e)
@@ -252,7 +251,7 @@ public partial class DownloadLinksForm : Form
         }
         else
         {
-            renderList(paths);
+            RenderList(paths);
         }
     }
 }

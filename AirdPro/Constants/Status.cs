@@ -10,7 +10,7 @@
 
 namespace AirdPro.Constants
 {
-    public class Status
+    public static class Status
     {
         public static string Prepare = "Prepare";
         public static string Init = "Init";

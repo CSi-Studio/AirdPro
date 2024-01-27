@@ -41,7 +41,7 @@ namespace AirdPro.Forms
         {
             // RegistryKey key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             // key.SetValue("AirdPro", Application.ExecutablePath);
-            this.Text = "AirdPro " + SoftwareInfo.getVersion() + Const.Dash + NetworkUtil.getHostIP();
+            this.Text = "AirdPro " + SoftwareInfo.GetVersion() + Const.Dash + NetworkUtil.getHostIP();
             updateFileTree();
         }
 

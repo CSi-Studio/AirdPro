@@ -10,7 +10,7 @@
 
 namespace AirdPro.Constants
 {
-    public class RedisConst
+    public static class RedisConst
     {
         public static string Redis_Queue_Convert = "ConvertTask";
     }

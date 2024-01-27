@@ -10,7 +10,7 @@
 
 namespace AirdPro.Constants
 {
-    public class ProcessingStatus
+    public static class ProcessingStatus
     {
         public static string WAITING = "Waiting";
         public static string RUNNING = "Running";

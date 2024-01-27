@@ -27,13 +27,13 @@ namespace AirdPro.Forms
         private void HelpAboutForm_Load(object sender, EventArgs e)
         {
             HardwareInfo hardwareInfo = new HardwareInfo();
-            lblSoftwareVersion.Text = SoftwareInfo.getVersion();
+            lblSoftwareVersion.Text = SoftwareInfo.GetVersion();
             lblCompanyInfo.Text =
                 "CopyRight © 2024 CSi (HangZhou) Biotechnology Corporation co.,ltd. All rights reserved.";
             lblCPUInfo.Text = hardwareInfo.cpuInfo;
             lblPhysicMemory.Text = hardwareInfo.physicMemory;
             lblOpVersion.Text = hardwareInfo.opVersion + " " + hardwareInfo.systemType;
-            lblDesc.Text = SoftwareInfo.getDescription();
+            lblDesc.Text = SoftwareInfo.GetDescription();
             tbPaperZDPD.Text =
                 "1. Lu, M., An, S., Wang, R. et al. Aird: a computation-oriented mass spectrometry data format enables a higher compression ratio and less decoding time. BMC Bioinformatics 23, 35 (2022).\r\n" +
                 "2. Wang,J. et al. StackZDPD: a novel encoding scheme for mass spectrometry data optimized for speed and compression ratio. Scientific Reports, 12, 5384.(2022).\r\n" +

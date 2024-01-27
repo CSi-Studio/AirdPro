@@ -41,7 +41,7 @@ namespace AirdPro.Forms
 
         private void ProproForm_Load(object sender, EventArgs e)
         {
-            this.Text = SoftwareInfo.getVersion() + Const.Dash + NetworkUtil.getHostIP();
+            this.Text = SoftwareInfo.GetVersion() + Const.Dash + NetworkUtil.getHostIP();
             initJobsFromStorage();
             bw = new BackgroundWorker();
             bw.DoWork += (sender, e) => ConvertTaskManager.GetInstance().Run();

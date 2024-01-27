@@ -10,7 +10,7 @@
 
 namespace AirdPro.Constants
 {
-    public class Const
+    public static class Const
     {
         public static string Change_Line = "\r\n";
         public static string Left_Slash = "/";

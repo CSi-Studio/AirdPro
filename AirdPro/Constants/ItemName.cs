@@ -10,7 +10,7 @@
 
 namespace AirdPro.Constants
 {
-    public class ItemName
+    public static class ItemName
     {
         public static int JOB_ID = 0;
         public static int INPUT_PATH = 1;

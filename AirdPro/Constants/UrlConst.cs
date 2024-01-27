@@ -10,7 +10,7 @@
 
 namespace AirdPro.Constants
 {
-    public class UrlConst
+    public static class UrlConst
     {
         public static string pxListUrl =
             "http://proteomecentral.proteomexchange.org/cgi/GetDataset?action=search&filterstr=";

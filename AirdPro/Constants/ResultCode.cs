@@ -10,7 +10,7 @@
 
 namespace AirdPro.Constants
 {
-    public class ResultCode
+    public static class ResultCode
     {
         public static string Error = "System Error";
         public static string Parse_Integer_Error = "Parse Integer Error";
