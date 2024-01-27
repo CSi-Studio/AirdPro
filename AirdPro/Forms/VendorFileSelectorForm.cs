@@ -16,6 +16,7 @@ using System.Windows.Forms;
 using Aga.Controls.Tree;
 using AirdPro.Constants;
 using AirdPro.Properties;
+using AirdPro.Redis;
 using AirdPro.Storage;
 using AirdPro.Storage.Config;
 using AirdPro.Utils;
@@ -306,6 +307,19 @@ namespace AirdPro.Forms
         {
             Settings.Default.LastSelectedConfig = cbConfig.SelectedItem.ToString();
             Settings.Default.Save();
+        }
+
+        private void imgBtnPublish_BtnClick(object sender, EventArgs e)
+        {
+            if (RedisClient.GetInstance().Check())
+            {
+                
+            }
+            else
+            {
+                MessageBox.Show("Redis is not connected");
+            }
+            
         }
     }
 }

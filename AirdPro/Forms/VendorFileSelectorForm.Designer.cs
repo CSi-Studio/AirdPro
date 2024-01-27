@@ -55,6 +55,7 @@ namespace AirdPro.Forms
             this.btnTooltip = new System.Windows.Forms.ToolTip(this.components);
             this.imgBtnAdd = new HZH_Controls.Controls.UCBtnImg();
             this.imgBtnClose = new HZH_Controls.Controls.UCBtnImg();
+            this.imgBtnPublish = new HZH_Controls.Controls.UCBtnImg();
             this.gBoxMode.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -260,7 +261,7 @@ namespace AirdPro.Forms
             this.msFileViews.Location = new System.Drawing.Point(6, 76);
             this.msFileViews.Margin = new System.Windows.Forms.Padding(4);
             this.msFileViews.Name = "msFileViews";
-            this.msFileViews.Size = new System.Drawing.Size(592, 354);
+            this.msFileViews.Size = new System.Drawing.Size(592, 408);
             this.msFileViews.TabIndex = 125;
             // 
             // btnPin
@@ -308,7 +309,7 @@ namespace AirdPro.Forms
             this.imgBtnAdd.IsRadius = true;
             this.imgBtnAdd.IsShowRect = true;
             this.imgBtnAdd.IsShowTips = false;
-            this.imgBtnAdd.Location = new System.Drawing.Point(603, 337);
+            this.imgBtnAdd.Location = new System.Drawing.Point(603, 387);
             this.imgBtnAdd.Margin = new System.Windows.Forms.Padding(0);
             this.imgBtnAdd.Name = "imgBtnAdd";
             this.imgBtnAdd.RectColor = System.Drawing.Color.Silver;
@@ -340,7 +341,7 @@ namespace AirdPro.Forms
             this.imgBtnClose.IsRadius = true;
             this.imgBtnClose.IsShowRect = true;
             this.imgBtnClose.IsShowTips = false;
-            this.imgBtnClose.Location = new System.Drawing.Point(603, 380);
+            this.imgBtnClose.Location = new System.Drawing.Point(604, 439);
             this.imgBtnClose.Margin = new System.Windows.Forms.Padding(0);
             this.imgBtnClose.Name = "imgBtnClose";
             this.imgBtnClose.RectColor = System.Drawing.Color.Silver;
@@ -353,11 +354,44 @@ namespace AirdPro.Forms
             this.imgBtnClose.TipsText = "";
             this.imgBtnClose.BtnClick += new System.EventHandler(this.imgBtnClose_BtnClick);
             // 
+            // imgBtnPublish
+            // 
+            this.imgBtnPublish.BackColor = System.Drawing.Color.White;
+            this.imgBtnPublish.BtnBackColor = System.Drawing.Color.White;
+            this.imgBtnPublish.BtnFont = new System.Drawing.Font("微软雅黑", 9F);
+            this.imgBtnPublish.BtnForeColor = System.Drawing.Color.Black;
+            this.imgBtnPublish.BtnText = "Publish";
+            this.imgBtnPublish.ConerRadius = 1;
+            this.imgBtnPublish.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.imgBtnPublish.EnabledMouseEffect = true;
+            this.imgBtnPublish.FillColor = System.Drawing.Color.White;
+            this.imgBtnPublish.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.imgBtnPublish.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
+            this.imgBtnPublish.Image = ((System.Drawing.Image)(resources.GetObject("imgBtnPublish.Image")));
+            this.imgBtnPublish.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.imgBtnPublish.ImageFontIcons = ((object)(resources.GetObject("imgBtnPublish.ImageFontIcons")));
+            this.imgBtnPublish.IsRadius = true;
+            this.imgBtnPublish.IsShowRect = true;
+            this.imgBtnPublish.IsShowTips = false;
+            this.imgBtnPublish.Location = new System.Drawing.Point(604, 337);
+            this.imgBtnPublish.Margin = new System.Windows.Forms.Padding(0);
+            this.imgBtnPublish.Name = "imgBtnPublish";
+            this.imgBtnPublish.RectColor = System.Drawing.Color.Silver;
+            this.imgBtnPublish.RectWidth = 1;
+            this.imgBtnPublish.Size = new System.Drawing.Size(142, 38);
+            this.imgBtnPublish.TabIndex = 137;
+            this.imgBtnPublish.TabStop = false;
+            this.imgBtnPublish.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.imgBtnPublish.TipsColor = System.Drawing.Color.Purple;
+            this.imgBtnPublish.TipsText = "Publish To Redis";
+            this.imgBtnPublish.BtnClick += new System.EventHandler(this.imgBtnPublish_BtnClick);
+            // 
             // VendorFileSelectorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(755, 432);
+            this.ClientSize = new System.Drawing.Size(755, 486);
+            this.Controls.Add(this.imgBtnPublish);
             this.Controls.Add(this.imgBtnClose);
             this.Controls.Add(this.imgBtnAdd);
             this.Controls.Add(this.btnUnpin);
@@ -383,6 +417,8 @@ namespace AirdPro.Forms
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private HZH_Controls.Controls.UCBtnImg imgBtnPublish;
 
         private System.Windows.Forms.Button btnPin;
 

@@ -31,7 +31,7 @@ namespace AirdPro.Redis
         private IDatabase _db;
         private readonly int _dbNum = 1;
         private static int _messageNum = 0;
-        public const int heartBeatTime = 5; //客户端心跳时间,单位:秒
+        public const int HeartBeatTime = 5; //客户端心跳时间,单位:秒
         private static string Increment()
         {
             return Interlocked.Increment(ref _messageNum) + "";
@@ -174,7 +174,7 @@ namespace AirdPro.Redis
             foreach (var entry in entries)
             {
                 DateTime dateTime = DateTime.FromOADate(Double.Parse(entry.Value));
-                if ((DateTime.Now - dateTime).TotalSeconds <= (heartBeatTime + 1)) //客户端心跳时间为5秒
+                if ((DateTime.Now - dateTime).TotalSeconds <= (HeartBeatTime + 1)) //客户端心跳时间为5秒
                 {
                     servers.Add(entry.Name);
                 }

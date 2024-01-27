@@ -26,7 +26,7 @@ namespace AirdPro.Forms
         public RedisForm()
         {
             InitializeComponent();
-            redisTimer.Interval = RedisClient.heartBeatTime * 1000;
+            redisTimer.Interval = RedisClient.HeartBeatTime * 1000;
         }
 
         private void btnSave_Click(object sender, EventArgs e)

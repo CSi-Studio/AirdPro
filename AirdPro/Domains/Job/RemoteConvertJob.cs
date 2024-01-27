@@ -24,5 +24,11 @@ namespace AirdPro.Domains
         public bool? centroid = false;
         public bool ignoreZeroIntensity = true;
         public bool? compressedIndex = false;
+        public string? mzIntComp;
+        public string? mzByteComp;
+        public string? intIntComp;
+        public string? intByteComp;
+        public string? mobiIntComp;
+        public string? mobiByteComp;
     }
 }
