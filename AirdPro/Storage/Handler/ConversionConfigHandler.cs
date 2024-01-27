@@ -93,19 +93,21 @@ namespace AirdPro.Storage.Handler
 
         public Dictionary<string, ConversionConfig> read()
         {
-            initConfig();
-            this.configMap =
+            InitConfig();
+            configMap =
                 JsonConvert.DeserializeObject<Dictionary<string, ConversionConfig>>(File.ReadAllText(CONFIG_PATH));
             notify();
             return configMap;
         }
 
-        public void initConfig()
+        public void InitConfig()
         {
             if (!File.Exists(CONFIG_PATH))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(CONFIG_PATH));
-                configMap.Add(DEFAULT, new ConversionConfig());
+                ConversionConfig defaultConfig = new ConversionConfig();
+                defaultConfig.configName = DEFAULT;
+                configMap.Add(DEFAULT, defaultConfig);
                 JsonSerializerSettings jsonSetting = new JsonSerializerSettings
                     { NullValueHandling = NullValueHandling.Ignore };
                 string defaultConfigStr = JsonConvert.SerializeObject(configMap, jsonSetting);

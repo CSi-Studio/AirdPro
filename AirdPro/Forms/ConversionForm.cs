@@ -68,21 +68,27 @@ namespace AirdPro.Forms
             }
         }
 
-        private void PrintJobInfo(JobInfo jobInfo)
+        private void PrintJobInfo()
         {
-            // 清空现有数据
-            listViewJobInfo.Items.Clear();
-            Dictionary<string, string> dict = jobInfo.GetJobDict();
-            // 添加新数据
-            foreach (var kvp in dict)
+            if (lvFileList.SelectedItems.Count != 0)
             {
-                ListViewItem item = new ListViewItem(kvp.Key);
-                item.SubItems.Add(kvp.Value);
-                listViewJobInfo.Items.Add(item);
+                ListViewItem selectedItem = lvFileList.SelectedItems[lvFileList.SelectedItems.Count - 1];
+                JobInfo jobInfo = (JobInfo)selectedItem.Tag;
+                // 清空现有数据
+                listViewJobInfo.Items.Clear();
+                Dictionary<string, string> dict = jobInfo.GetJobDict();
+                // 添加新数据
+                foreach (var kvp in dict)
+                {
+                    ListViewItem item = new ListViewItem(kvp.Key);
+                    item.SubItems.Add(kvp.Value);
+                    listViewJobInfo.Items.Add(item);
+                }
+                
+                // 调整列宽以适应内容
+                listViewJobInfo.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             }
-
-            // 调整列宽以适应内容
-            listViewJobInfo.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+           
         }
         private void btnConvert_Click(object sender, EventArgs e)
         {
@@ -155,6 +161,7 @@ namespace AirdPro.Forms
 
         private void lvFileList_SelectedIndexChanged(object sender, EventArgs e)
         {
+            PrintJobInfo();
             PrintLog();
         }
 
@@ -199,7 +206,6 @@ namespace AirdPro.Forms
                     content = Constants.Tag.Not_Start_Converting;
                 }
 
-                PrintJobInfo(job);
                 tbConsole.Text = content;
             }
             else
