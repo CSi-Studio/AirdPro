@@ -30,5 +30,6 @@ namespace AirdPro.Domains
         public string? intByteComp;
         public string? mobiIntComp;
         public string? mobiByteComp;
+        public bool? autoDesicion;
     }
 }

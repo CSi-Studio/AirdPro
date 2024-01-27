@@ -104,12 +104,15 @@ namespace AirdPro.Redis
                         // 目前远程任务不支持Stack-ZDPD
                         RemoteConvertJob job = JsonConvert.DeserializeObject<RemoteConvertJob>(valueStr);
                         ConversionConfig conversionConfig = new ConversionConfig();
-                        conversionConfig.ignoreZeroIntensity = true;
-                        conversionConfig.autoDesicion = false;
-                        conversionConfig.configName = "RedisDefault";
+                        conversionConfig.configName = "Redis";
                         conversionConfig.suffix = job.suffix;
                         conversionConfig.ignoreZeroIntensity = job.ignoreZeroIntensity;
                         conversionConfig.creator = job.creator;
+
+                        if (job.autoDesicion != null)
+                        {
+                            conversionConfig.autoDesicion = job.autoDesicion.Value;
+                        }
                         if (job.scene != null && job.scene == "Search")
                         {
                             conversionConfig.scene = Scene.Search;
@@ -128,6 +131,36 @@ namespace AirdPro.Redis
                         if (job.compressedIndex != null)
                         {
                             conversionConfig.compressedIndex = job.compressedIndex.Value;
+                        }
+
+                        if (job.mzIntComp != null)
+                        {
+                            conversionConfig.mzIntComp = (SortedIntCompType)Enum.Parse(typeof(SortedIntCompType), job.mzIntComp);
+                        }
+
+                        if (job.mzByteComp != null)
+                        {
+                            conversionConfig.mzByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), job.mzByteComp);
+                        }
+                        
+                        if (job.intIntComp != null)
+                        {
+                            conversionConfig.intIntComp = (IntCompType)Enum.Parse(typeof(IntCompType), job.intIntComp);
+                        }
+
+                        if (job.intByteComp != null)
+                        {
+                            conversionConfig.intByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), job.intByteComp);
+                        }
+                        
+                        if (job.mobiIntComp != null)
+                        {
+                            conversionConfig.mobiIntComp = (IntCompType)Enum.Parse(typeof(IntCompType), job.mobiIntComp);
+                        }
+
+                        if (job.mobiByteComp != null)
+                        {
+                            conversionConfig.mobiByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), job.mobiByteComp);
                         }
 
                         JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
