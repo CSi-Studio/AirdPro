@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using AirdPro.Constants;
+using Microsoft.VisualBasic.Devices;
+using pwiz.CLI.msdata;
 
 namespace AirdPro.Utils;
 
@@ -73,5 +76,10 @@ public class AirdProUtil
         }
 
         return sum;
+    }
+
+    public static string GetClientInfo()
+    {
+        return new ComputerInfo().OSFullName+":"+SoftwareInfo.GetVersion();
     }
 }

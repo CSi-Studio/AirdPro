@@ -10,11 +10,9 @@
 
 using AirdPro.Asyncs;
 using AirdPro.Constants;
-using AirdPro.Redis;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows.Forms;
 using AirdPro.Domains;
 using AirdPro.Properties;
@@ -23,7 +21,6 @@ using AirdSDK.Utils;
 using ThermoFisher.CommonCore.Data;
 using System.ComponentModel;
 using AirdPro.Repository;
-using AirdPro.Utils;
 using Newtonsoft.Json;
 
 namespace AirdPro.Forms
@@ -39,13 +36,12 @@ namespace AirdPro.Forms
             InitializeComponent();
         }
 
-        private void ProproForm_Load(object sender, EventArgs e)
+        private void ConversionForm_Load(object sender, EventArgs e)
         {
             this.Text = SoftwareInfo.GetVersion() + Const.Dash + NetworkUtil.getHostIP();
             initJobsFromStorage();
             bw = new BackgroundWorker();
             bw.DoWork += (sender, e) => ConvertTaskManager.GetInstance().Run();
-            // lvFileList.ListViewItemSorter = 
             // 创建一个ListViewSorter对象
             FileListSorter sorter = new FileListSorter();
             lvFileList.ListViewItemSorter = sorter;
@@ -177,35 +173,12 @@ namespace AirdPro.Forms
             {
                 ListViewItem item = lvFileList.SelectedItems[lvFileList.SelectedItems.Count - 1];
                 string content = Constants.Tag.Empty;
-                JobInfo job;
-                if (ConvertTaskManager.GetInstance().JobTable[item.Text] != null)
+                JobInfo job = (JobInfo)item.Tag;
+                for (int i = job.logs.Count - 1; i >= 0; i--)
                 {
-                    job = ConvertTaskManager.GetInstance().JobTable[item.Text] as JobInfo;
-
-                    for (int i = job.logs.Count - 1; i >= 0; i--)
-                    {
-                        content += job.logs[i].dateTime + " " + job.logs[i].content + Const.Change_Line;
-                    }
-
-                    content += Const.Change_Line;
+                    content += job.logs[i].dateTime + " " + job.logs[i].content + Const.Change_Line;
                 }
-                else if (ConvertTaskManager.GetInstance().FinishedTable[item.Text] != null)
-                {
-                    job = ConvertTaskManager.GetInstance().FinishedTable[item.Text] as JobInfo;
-
-                    for (int i = job.logs.Count - 1; i >= 0; i--)
-                    {
-                        content += job.logs[i].dateTime + " " + job.logs[i].content + Const.Change_Line;
-                    }
-
-                    content += Const.Change_Line;
-                }
-                else
-                {
-                    job = (JobInfo)item.Tag;
-                    content = Constants.Tag.Not_Start_Converting;
-                }
-
+                content += Const.Change_Line;
                 tbConsole.Text = content;
             }
             else

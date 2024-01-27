@@ -9,6 +9,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Timers;
 using System.Windows.Forms;
@@ -16,6 +17,7 @@ using AirdPro.Properties;
 using AirdPro.Redis;
 using AirdPro.Utils;
 using HZH_Controls;
+using StackExchange.Redis;
 
 namespace AirdPro.Forms
 {
@@ -24,6 +26,7 @@ namespace AirdPro.Forms
         public RedisForm()
         {
             InitializeComponent();
+            redisTimer.Interval = RedisClient.heartBeatTime * 1000;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -90,7 +93,17 @@ namespace AirdPro.Forms
         private void HeartBeat()
         {
             UpdateRedisStatus(RedisClient.GetInstance().Check());
-            
+            RedisClient.GetInstance().RegisterOrUpdate();
+            List<string> servers = RedisClient.GetInstance().GetServerList();
+            listViewServers.Items.Clear();
+            for (var i = 0; i < servers.Count; i++)
+            {
+                ListViewItem item = new ListViewItem();
+                item.ImageKey = "AirdPro";
+                item.Text = servers[i];
+                listViewServers.Items.Add(item);
+            }
+            listViewServers.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
         
         private void ConnectToRedis()
@@ -114,6 +127,7 @@ namespace AirdPro.Forms
             {
                 redisTimer.Enabled = true;
                 UpdateRedisStatus(true);
+                HeartBeat();
             }
             else
             {

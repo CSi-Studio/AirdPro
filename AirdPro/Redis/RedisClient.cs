@@ -9,13 +9,16 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
 using AirdPro.Asyncs;
 using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdPro.Storage.Config;
+using AirdPro.Utils;
 using AirdSDK.Enums;
+using AirdSDK.Utils;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 
@@ -28,7 +31,7 @@ namespace AirdPro.Redis
         private IDatabase _db;
         private readonly int _dbNum = 1;
         private static int _messageNum = 0;
-
+        public const int heartBeatTime = 5; //客户端心跳时间,单位:秒
         private static string Increment()
         {
             return Interlocked.Increment(ref _messageNum) + "";
@@ -83,81 +86,102 @@ namespace AirdPro.Redis
         //从Redis中读取相关的任务消息并转化为本地任务JobInfo
         public void Consume()
         {
-            bool check = Check();
-            if (check)
+            if (!Check()) return;
+            
+            int i = 10;
+            bool needToExecute = false;
+            while (i > 0)
             {
-                int i = 10;
-                bool needToExecute = false;
-                while (i > 0)
+                String valueStr = null;
+                try
                 {
-                    String valueStr = null;
-                    try
+                    RedisValue value = _db.SetPop(RedisConst.Redis_Queue_Convert);
+                    if (!value.IsNullOrEmpty)
                     {
-                        RedisValue value = _db.SetPop(RedisConst.Redis_Queue_Convert);
-                        if (!value.IsNullOrEmpty)
+                        Program.redisForm.lblMessageNum.Text = Increment();
+                        // 如果获取到转换队列中相关的任务,那么将消息队列中的转换任务加入到执行队列中
+                        valueStr = value.ToString();
+                        // 目前远程任务不支持Stack-ZDPD
+                        RemoteConvertJob job = JsonConvert.DeserializeObject<RemoteConvertJob>(valueStr);
+                        ConversionConfig conversionConfig = new ConversionConfig();
+                        conversionConfig.ignoreZeroIntensity = true;
+                        conversionConfig.autoDesicion = false;
+                        conversionConfig.configName = "RedisDefault";
+                        conversionConfig.suffix = job.suffix;
+                        conversionConfig.ignoreZeroIntensity = job.ignoreZeroIntensity;
+                        conversionConfig.creator = job.creator;
+                        if (job.scene != null && job.scene == "Search")
                         {
-                            Program.redisForm.lblMessageNum.Text = Increment();
-                            // 如果获取到转换队列中相关的任务,那么将消息队列中的转换任务加入到执行队列中
-                            valueStr = value.ToString();
-                            // 目前远程任务不支持Stack-ZDPD
-                            RemoteConvertJob job = JsonConvert.DeserializeObject<RemoteConvertJob>(valueStr);
-                            ConversionConfig conversionConfig = new ConversionConfig();
-                            conversionConfig.ignoreZeroIntensity = true;
-                            conversionConfig.autoDesicion = false;
-                            conversionConfig.configName = "RedisDefault";
-                            conversionConfig.suffix = job.suffix;
-                            conversionConfig.ignoreZeroIntensity = job.ignoreZeroIntensity;
-                            conversionConfig.creator = job.creator;
-                            if (job.scene != null && job.scene == "Search")
-                            {
-                                conversionConfig.scene = Scene.Search;
-                            }
+                            conversionConfig.scene = Scene.Search;
+                        }
 
-                            if (job.mzPrecision != null)
-                            {
-                                conversionConfig.mzPrecision = job.mzPrecision.Value;
-                            }
+                        if (job.mzPrecision != null)
+                        {
+                            conversionConfig.mzPrecision = job.mzPrecision.Value;
+                        }
 
-                            if (job.centroid != null)
-                            {
-                                conversionConfig.centroid = job.centroid.Value;
-                            }
+                        if (job.centroid != null)
+                        {
+                            conversionConfig.centroid = job.centroid.Value;
+                        }
 
-                            if (job.compressedIndex != null)
-                            {
-                                conversionConfig.compressedIndex = job.compressedIndex.Value;
-                            }
+                        if (job.compressedIndex != null)
+                        {
+                            conversionConfig.compressedIndex = job.compressedIndex.Value;
+                        }
 
-                            JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
-                            ListViewItem item = jobInfo.BuildItem();
-                            if (!ConvertTaskManager.GetInstance().JobTable.Contains(jobInfo.jobId))
-                            {
-                                Program.conversionForm.lvFileList.Items.Add(item);
-                                ConvertTaskManager.GetInstance().PushJob(jobInfo);
-                                needToExecute = true;
-                            }
+                        JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
+                        ListViewItem item = jobInfo.BuildItem();
+                        if (!ConvertTaskManager.GetInstance().JobTable.Contains(jobInfo.jobId))
+                        {
+                            Program.conversionForm.lvFileList.Items.Add(item);
+                            ConvertTaskManager.GetInstance().PushJob(jobInfo);
+                            needToExecute = true;
                         }
                     }
-                    catch (Exception)
-                    {
-                        //出现异常的情况下需要将消息会退给Redis,方便下一次重试
-                        if (valueStr != null)
-                        {
-                            _db.SetAdd(RedisConst.Redis_Queue_Convert, valueStr);
-                        }
-                    }
-
-                    i--;
                 }
-
-                //如果在Redis获取到了相关的转换任务
-                if (needToExecute)
+                catch (Exception)
                 {
-                    Program.conversionForm.DoConvert();
+                    //出现异常的情况下需要将消息会退给Redis,方便下一次重试
+                    if (valueStr != null)
+                    {
+                        _db.SetAdd(RedisConst.Redis_Queue_Convert, valueStr);
+                    }
                 }
+
+                i--;
+            }
+
+            //如果在Redis获取到了相关的转换任务
+            if (needToExecute)
+            {
+                Program.conversionForm.DoConvert();
             }
         }
 
+
+        public void RegisterOrUpdate()
+        {
+            if (!Check()) return;
+            _db.HashSet(RedisConst.Redis_Server_List, NetworkUtil.getHostIP(), DateTime.Now.ToOADate());
+        }
+
+        public List<string> GetServerList()
+        {
+            if (!Check()) return null;
+            HashEntry[] entries = _db.HashGetAll(RedisConst.Redis_Server_List);
+            List<string> servers = new List<string>();
+            foreach (var entry in entries)
+            {
+                DateTime dateTime = DateTime.FromOADate(Double.Parse(entry.Value));
+                if ((DateTime.Now - dateTime).TotalSeconds <= (heartBeatTime + 1)) //客户端心跳时间为5秒
+                {
+                    servers.Add(entry.Name);
+                }
+            }
+            return servers;
+        }
+        
         public void Disconnect()
         {
             if (_redis != null)

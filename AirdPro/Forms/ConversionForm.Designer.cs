@@ -484,7 +484,7 @@ namespace AirdPro.Forms
             this.DoubleBuffered = true;
             this.Name = "ConversionForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ConversionForm_FormClosing);
-            this.Load += new System.EventHandler(this.ProproForm_Load);
+            this.Load += new System.EventHandler(this.ConversionForm_Load);
             this.container.Panel1.ResumeLayout(false);
             this.container.Panel1.PerformLayout();
             this.container.Panel2.ResumeLayout(false);
