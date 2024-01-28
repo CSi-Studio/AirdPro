@@ -26,13 +26,12 @@ namespace AirdPro.Forms
 
         private void HelpAboutForm_Load(object sender, EventArgs e)
         {
-            HardwareInfo hardwareInfo = new HardwareInfo();
             lblSoftwareVersion.Text = SoftwareInfo.GetVersion();
             lblCompanyInfo.Text =
                 "CopyRight © 2024 CSi (HangZhou) Biotechnology Corporation co.,ltd. All rights reserved.";
-            lblCPUInfo.Text = hardwareInfo.cpuInfo;
-            lblPhysicMemory.Text = hardwareInfo.physicMemory;
-            lblOpVersion.Text = hardwareInfo.opVersion + " " + hardwareInfo.systemType;
+            lblCPUInfo.Text = ClientInfo.CpuInfo;
+            lblPhysicMemory.Text = ClientInfo.PhysicMemory;
+            lblOpVersion.Text = ClientInfo.OpVersion + " " + ClientInfo.SystemType;
             lblDesc.Text = SoftwareInfo.GetDescription();
             tbPaperZDPD.Text =
                 "1. Lu, M., An, S., Wang, R. et al. Aird: a computation-oriented mass spectrometry data format enables a higher compression ratio and less decoding time. BMC Bioinformatics 23, 35 (2022).\r\n" +

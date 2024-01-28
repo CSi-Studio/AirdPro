@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Timers;
 using System.Windows.Forms;
 using AirdPro.Properties;
 using AirdPro.Redis;
@@ -134,6 +133,20 @@ namespace AirdPro.Forms
                 MessageBox.Show(Constants.Tag.Connect_Failed_Please_Check_The_Redis_Host_And_Port);
                 redisTimer.Enabled = false;
                 UpdateRedisStatus(false);
+            }
+        }
+
+        private void listViewServers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listViewServers.SelectedItems.Count == 1)
+            {
+                string ip = listViewServers.SelectedItems[0].Text;
+                Dictionary<string, string> dict = RedisClient.GetInstance().GetServerInfo(ip);
+                tbServerInfo.Text = "";
+                foreach (var kv in dict)
+                {
+                    tbServerInfo.Text += kv.Key + ":" + kv.Value + "\r\n";
+                }
             }
         }
     }

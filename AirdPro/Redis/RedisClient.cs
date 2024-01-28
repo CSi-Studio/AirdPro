@@ -19,8 +19,10 @@ using AirdPro.Storage.Config;
 using AirdPro.Utils;
 using AirdSDK.Enums;
 using AirdSDK.Utils;
+using HZH_Controls;
 using Newtonsoft.Json;
 using StackExchange.Redis;
+using ClientInfo = AirdPro.Domains.ClientInfo;
 
 namespace AirdPro.Redis
 {
@@ -197,8 +199,13 @@ namespace AirdPro.Redis
         {
             if (!Check()) return;
             _db.HashSet(RedisConst.Redis_Server_List, NetworkUtil.getHostIP(), DateTime.Now.ToOADate());
+            string clientInfo = ClientInfo.toJSON();
+            _db.HashSet(RedisConst.Redis_Server_Info_List, NetworkUtil.getHostIP(), clientInfo);
         }
 
+        /**
+         * 获取局域网内所有的AirdPro客户端
+         */
         public List<string> GetServerList()
         {
             if (!Check()) return null;
@@ -224,5 +231,19 @@ namespace AirdPro.Redis
                 _db = null;
             }
         }
+
+        public Dictionary<string, string> GetServerInfo(string ip)
+        {
+            if (!Check()) return null;
+            string value = _db.HashGet(RedisConst.Redis_Server_Info_List, ip);
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            if (value != null && !value.IsEmpty())
+            {
+               dict = JsonConvert.DeserializeObject<Dictionary<string, String>>(value);
+            }
+
+            return dict;
+        }
+        
     }
 }

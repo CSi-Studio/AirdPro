@@ -46,6 +46,7 @@
             this.tbRedisPort = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listViewServers = new System.Windows.Forms.ListView();
             this.colIP = new System.Windows.Forms.ColumnHeader();
             this.colInfo = new System.Windows.Forms.ColumnHeader();
@@ -54,6 +55,7 @@
             this.colJobId = new System.Windows.Forms.ColumnHeader();
             this.colStatus = new System.Windows.Forms.ColumnHeader();
             this.colConsumeIP = new System.Windows.Forms.ColumnHeader();
+            this.tbServerInfo = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -62,6 +64,10 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // redisTimer
@@ -267,7 +273,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.listViewServers);
+            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
             // 
             // splitContainer1.Panel2
             // 
@@ -276,17 +282,38 @@
             this.splitContainer1.SplitterDistance = 326;
             this.splitContainer1.TabIndex = 0;
             // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.listViewServers);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.tbServerInfo);
+            this.splitContainer2.Size = new System.Drawing.Size(326, 545);
+            this.splitContainer2.SplitterDistance = 310;
+            this.splitContainer2.TabIndex = 0;
+            // 
             // listViewServers
             // 
             this.listViewServers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.colIP, this.colInfo });
             this.listViewServers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewServers.HideSelection = false;
+            this.listViewServers.LabelEdit = true;
             this.listViewServers.LargeImageList = this.imageList1;
             this.listViewServers.Location = new System.Drawing.Point(0, 0);
+            this.listViewServers.MultiSelect = false;
             this.listViewServers.Name = "listViewServers";
-            this.listViewServers.Size = new System.Drawing.Size(326, 545);
+            this.listViewServers.Size = new System.Drawing.Size(326, 310);
             this.listViewServers.TabIndex = 0;
             this.listViewServers.UseCompatibleStateImageBehavior = false;
+            this.listViewServers.SelectedIndexChanged += new System.EventHandler(this.listViewServers_SelectedIndexChanged);
             // 
             // colIP
             // 
@@ -309,6 +336,7 @@
             this.listViewJobs.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.colJobId, this.colStatus, this.colConsumeIP });
             this.listViewJobs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewJobs.HideSelection = false;
+            this.listViewJobs.LabelEdit = true;
             this.listViewJobs.Location = new System.Drawing.Point(0, 0);
             this.listViewJobs.Name = "listViewJobs";
             this.listViewJobs.Size = new System.Drawing.Size(648, 545);
@@ -326,6 +354,15 @@
             // colConsumeIP
             // 
             this.colConsumeIP.Text = "Consumer";
+            // 
+            // tbServerInfo
+            // 
+            this.tbServerInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbServerInfo.Location = new System.Drawing.Point(3, 3);
+            this.tbServerInfo.Multiline = true;
+            this.tbServerInfo.Name = "tbServerInfo";
+            this.tbServerInfo.Size = new System.Drawing.Size(320, 225);
+            this.tbServerInfo.TabIndex = 0;
             // 
             // RedisForm
             // 
@@ -354,8 +391,15 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
         }
+
+        private System.Windows.Forms.TextBox tbServerInfo;
 
         private System.Windows.Forms.ImageList imageList1;
 
@@ -384,5 +428,6 @@
         private System.Windows.Forms.ColumnHeader colJobId;
         private System.Windows.Forms.ColumnHeader colStatus;
         private System.Windows.Forms.ColumnHeader colConsumeIP;
+        private System.Windows.Forms.SplitContainer splitContainer2;
     }
 }

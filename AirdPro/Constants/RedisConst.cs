@@ -14,5 +14,6 @@ namespace AirdPro.Constants
     {
         public static string Redis_Queue_Convert = "ConvertTask";
         public static string Redis_Server_List = "ServerList";
+        public static string Redis_Server_Info_List = "ServerInfoList";
     }
 }

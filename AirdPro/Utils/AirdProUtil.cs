@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using AirdPro.Asyncs;
 using AirdPro.Constants;
 using Microsoft.VisualBasic.Devices;
+using Newtonsoft.Json;
 using pwiz.CLI.msdata;
 
 namespace AirdPro.Utils;
@@ -24,13 +26,13 @@ public class AirdProUtil
 
         return byteArray;
     }
-    
+
     public static int[] ByteToInt(byte[] src)
     {
         var intArray = MemoryMarshal.Cast<byte, int>(src);
         return intArray.ToArray();
     }
-    
+
     public static float SumValuesAtIndices(int[] arrA, float[] arrB, int target)
     {
         float sum = 0;
@@ -76,10 +78,5 @@ public class AirdProUtil
         }
 
         return sum;
-    }
-
-    public static string GetClientInfo()
-    {
-        return new ComputerInfo().OSFullName+":"+SoftwareInfo.GetVersion();
     }
 }

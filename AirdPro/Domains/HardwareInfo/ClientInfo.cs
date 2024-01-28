@@ -9,36 +9,44 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Management;
+using AirdPro.Constants;
 using Microsoft.VisualBasic.Devices;
+using Newtonsoft.Json;
 
 namespace AirdPro.Domains
 {
-    public class HardwareInfo
+    public class ClientInfo
     {
-        public string systemType;
-        public string cpuInfo;
-        public string physicMemory;
-        public string opVersion;
-        private static HardwareInfo instance;
+        public static string SystemType;
+        public static string CpuInfo;
+        public static string PhysicMemory;
+        public static string OpVersion;
+        public static string AirdProVersion;
 
-        public static HardwareInfo Instance()
+        static ClientInfo()
         {
-            if (instance == null)
-                instance = new HardwareInfo();
-            return instance;
+            SystemType = GetSystemType();
+            CpuInfo = GetCpuInfo();
+            PhysicMemory = GetPhysicMemory();
+            OpVersion = GetOpVersion();
+            AirdProVersion = SoftwareInfo.GetVersion();
         }
 
-        public HardwareInfo()
+        public static string toJSON()
         {
-            systemType = getSystemType();
-            cpuInfo = getCPUInfo();
-            physicMemory = getPhysicMemory();
-            opVersion = getOPVersion();
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            dict.Add("SystemType", SystemType);
+            dict.Add("CpuInfo", CpuInfo);
+            dict.Add("PhysicMemory",PhysicMemory);
+            dict.Add("OpVersion",OpVersion);
+            dict.Add("AirdProVersion",AirdProVersion);
+            string json = JsonConvert.SerializeObject(dict);
+            return json;
         }
-
         //获取系统类型
-        public string getSystemType()
+        public static string GetSystemType()
         {
             try
             {
@@ -50,48 +58,43 @@ namespace AirdPro.Domains
                     st = mo["SystemType"].ToString();
                 }
 
-                moc = null;
-                mc = null;
+                moc.Dispose();
+                mc.Dispose();
                 return st;
             }
             catch
             {
                 return "Unknown";
             }
-            finally
-            {
-            }
         }
 
         //获取操作系统型号
-        public string getOPVersion()
+        public static string GetOpVersion()
         {
-            string opVersion = "";
-            opVersion = new ComputerInfo().OSFullName;
-            return opVersion;
+            return new ComputerInfo().OSFullName;
         }
 
         //获取CPU信息
-        public string getCPUInfo()
+        public static string GetCpuInfo()
         {
-            string CPUName = "";
+            string cpuName = "";
             ManagementObjectSearcher mos = new ManagementObjectSearcher("Select * from Win32_Processor");
             foreach (ManagementObject mo in mos.Get())
             {
-                CPUName = mo["Name"].ToString();
+                cpuName = mo["Name"].ToString();
             }
 
             mos.Dispose();
-            return CPUName;
+            return cpuName;
         }
 
         //获取物理内存数目和大小
-        public string getPhysicMemory()
+        public static string GetPhysicMemory()
         {
             string physicMemoryInfo = "";
             ManagementClass mc = new ManagementClass("Win32_PhysicalMemory");
             ManagementObjectCollection moc = mc.GetInstances();
-            physicMemoryInfo = "Physical Memory Numbers : " + moc.Count.ToString() + "\r\n";
+            physicMemoryInfo = "Physical Memory Numbers : " + moc.Count + "\r\n";
             double capacity = 0.0;
             int count = 0;
             foreach (ManagementObject mo in moc)
@@ -99,8 +102,8 @@ namespace AirdPro.Domains
                 count++;
                 capacity = ((Math.Round(Int64.Parse(mo.Properties["Capacity"].Value.ToString()) / 1024 / 1024 / 1024.0,
                     1)));
-                physicMemoryInfo += "The Size of No." + count.ToString() + " Physical Memory is " +
-                                    capacity.ToString() + " G " + "\r\n";
+                physicMemoryInfo += "The Size of No." + count + " Physical Memory is " +
+                                    capacity + " G " + "\r\n";
             }
 
             moc.Dispose();
