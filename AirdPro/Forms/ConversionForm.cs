@@ -268,7 +268,7 @@ namespace AirdPro.Forms
 
             if (Program.fileSelector.Visible == false)
             {
-                Program.fileSelector.clearInfos();
+                Program.fileSelector.ClearInfos();
                 Program.fileSelector.Visible = true;
             }
        

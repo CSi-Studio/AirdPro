@@ -100,7 +100,6 @@ namespace AirdPro.Redis
                     RedisValue value = _db.SetPop(RedisConst.Redis_Queue_Convert);
                     if (!value.IsNullOrEmpty)
                     {
-                        Program.redisForm.lblMessageNum.Text = Increment();
                         // 如果获取到转换队列中相关的任务,那么将消息队列中的转换任务加入到执行队列中
                         valueStr = value.ToString();
                         // 目前远程任务不支持Stack-ZDPD
@@ -208,7 +207,7 @@ namespace AirdPro.Redis
          */
         public List<string> GetServerList()
         {
-            if (!Check()) return null;
+            if (!Check()) return new List<string>();
             HashEntry[] entries = _db.HashGetAll(RedisConst.Redis_Server_List);
             List<string> servers = new List<string>();
             foreach (var entry in entries)
@@ -250,6 +249,12 @@ namespace AirdPro.Redis
             if (!Check()) return;
             _db.KeyDelete(RedisConst.Redis_Server_List);
             _db.KeyDelete(RedisConst.Redis_Server_Info_List);
+        }
+
+        public void PublishJob(string jobStr)
+        {
+            if (!Check()) return;
+            _db.SetAdd(RedisConst.Redis_Queue_Convert, jobStr);
         }
         
     }

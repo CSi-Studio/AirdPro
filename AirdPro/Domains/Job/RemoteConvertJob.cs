@@ -8,6 +8,7 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using AirdPro.Storage.Config;
 using AirdSDK.Enums;
 
 namespace AirdPro.Domains
@@ -31,5 +32,30 @@ namespace AirdPro.Domains
         public string? mobiIntComp;
         public string? mobiByteComp;
         public bool? autoDesicion;
+
+        public RemoteConvertJob()
+        {
+        }
+
+        public RemoteConvertJob(string inputPath, string outputPath, string airdType, ConversionConfig config)
+        {
+            sourcePath = inputPath;
+            targetPath = outputPath;
+            type = airdType;
+            mzPrecision = config.mzPrecision;
+            creator = config.creator;
+            suffix = config.suffix;
+            scene = config.scene;
+            centroid = config.centroid;
+            ignoreZeroIntensity = config.ignoreZeroIntensity;
+            compressedIndex = config.compressedIndex;
+            autoDesicion = config.autoDesicion;
+            mzIntComp = config.mzIntComp.ToString();
+            mzByteComp = config.mzByteComp.ToString();
+            intIntComp = config.intIntComp.ToString();
+            intByteComp = config.intByteComp.ToString();
+            mobiIntComp = config.mobiIntComp.ToString();
+            mobiByteComp = config.mobiByteComp.ToString();
+        }
     }
 }

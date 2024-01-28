@@ -15,12 +15,15 @@ using System.Threading;
 using System.Windows.Forms;
 using Aga.Controls.Tree;
 using AirdPro.Constants;
+using AirdPro.Domains;
 using AirdPro.Properties;
 using AirdPro.Redis;
 using AirdPro.Storage;
 using AirdPro.Storage.Config;
 using AirdPro.Utils;
 using AirdSDK.Utils;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Forms
@@ -52,16 +55,12 @@ namespace AirdPro.Forms
             cbConfig.SelectedIndex = selectedIndex;
         }
 
-        public void clearInfos()
+        public void ClearInfos()
         {
             msFileViews.files.ClearSelection();
         }
 
-        /**
-         * mirrorConvert if use mirror conversion,
-         * if true,AirdPro will scan the selected files into target output file with same directory structure.
-         */
-        private bool addToList()
+        private string GetAirdType()
         {
             string airdType = null;
             for (int i = 0; i < gBoxMode.Controls.Count; i++)
@@ -73,6 +72,41 @@ namespace AirdPro.Forms
                 }
             }
 
+            return airdType;
+        }
+
+        private List<string> GetInputFilesPath()
+        {
+            List<string> paths = new List<string>();
+            var selectedNodes = msFileViews.files.SelectedNodes;
+            if (selectedNodes.IsNullOrEmpty())
+            {
+                return paths;
+            }
+            
+            foreach (TreeNodeAdv node in selectedNodes)
+            {
+                BaseItem item = node.Tag as BaseItem;
+                if (item.MSFile) //如果是质谱文件则直接导入
+                {
+                    paths.Add(item.ItemPath);
+                }
+                else //如果是文件夹并且不是质谱文件,则直接扫描该文件夹下第一层的所有质谱文件
+                {
+                    List<string> files = AirdProFileUtil.Scan(item.ItemPath);
+                    if (files != null)
+                    {
+                        paths.AddRange(files);
+                    }
+                }
+            }
+
+            return paths;
+        }
+        
+        private bool AddToList(bool local)
+        {
+            string airdType = GetAirdType();
             if (airdType == null)
             {
                 MessageBox.Show(MessageInfo.Choose_One_Acquisition_Mode_First);
@@ -101,36 +135,30 @@ namespace AirdPro.Forms
                 return false;
             }
 
-            var selectedNodes = msFileViews.files.SelectedNodes;
-            if (selectedNodes.IsNullOrEmpty())
+            List<string> filePathList = GetInputFilesPath();
+            if (filePathList.IsNullOrEmpty())
             {
                 MessageBox.Show(MessageInfo.Select_Files_First);
                 return false;
             }
 
-            List<string> filePathList = new List<string>();
-
-            foreach (TreeNodeAdv node in selectedNodes)
+            if (local)
             {
-                BaseItem item = node.Tag as BaseItem;
-                if (item.MSFile) //如果是质谱文件则直接导入
+                foreach (string path in filePathList)
                 {
-                    filePathList.Add(item.ItemPath);
-                }
-                else //如果是文件夹并且不是质谱文件,则直接扫描该文件夹下第一层的所有质谱文件
-                {
-                    List<string> files = AirdProFileUtil.Scan(item.ItemPath);
-                    if (files != null)
-                    {
-                        filePathList.AddRange(files);
-                    }
+                    Program.conversionForm.AddFile(path, outputPath, airdType, (ConversionConfig)config.Clone());
                 }
             }
-
-            foreach (string path in filePathList)
+            else
             {
-                Program.conversionForm.AddFile(path, outputPath, airdType, (ConversionConfig)config.Clone());
+                foreach (string path in filePathList)
+                {
+                    RemoteConvertJob remoteJob = new RemoteConvertJob(path, outputPath, airdType, config);
+                    string jobStr = JsonConvert.SerializeObject(remoteJob,new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                    RedisClient.GetInstance().PublishJob(jobStr);
+                }
             }
+           
 
             return true;
         }
@@ -290,16 +318,16 @@ namespace AirdPro.Forms
 
         private void imgBtnAdd_BtnClick(object sender, EventArgs e)
         {
-            bool addResult = addToList();
+            bool addResult = AddToList(true);
             if (addResult)
             {
-                clearInfos();
+                ClearInfos();
             }
         }
 
         private void imgBtnClose_BtnClick(object sender, EventArgs e)
         {
-            clearInfos();
+            ClearInfos();
             Hide();
         }
 
@@ -313,7 +341,7 @@ namespace AirdPro.Forms
         {
             if (RedisClient.GetInstance().Check())
             {
-                
+                AddToList(false);
             }
             else
             {

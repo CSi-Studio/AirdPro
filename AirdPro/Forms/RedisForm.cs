@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using AirdPro.Constants;
 using AirdPro.Properties;
 using AirdPro.Redis;
 using AirdPro.Utils;
@@ -102,6 +103,11 @@ namespace AirdPro.Forms
         {
             UpdateRedisStatus(RedisClient.GetInstance().Check());
             RedisClient.GetInstance().RegisterOrUpdate();
+            LoadServers();
+        }
+
+        private void LoadServers()
+        {
             List<string> servers = RedisClient.GetInstance().GetServerList();
             listViewServers.Items.Clear();
             for (var i = 0; i < servers.Count; i++)
@@ -112,6 +118,7 @@ namespace AirdPro.Forms
                 listViewServers.Items.Add(item);
             }
             listViewServers.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            tbServerInfo.Text = "";
         }
         
         private void ConnectToRedis()
@@ -169,6 +176,7 @@ namespace AirdPro.Forms
         private void btnClearServerCache_Click(object sender, EventArgs e)
         {
             RedisClient.GetInstance().ClearServerCache();
+            LoadServers();
         }
     }
 }

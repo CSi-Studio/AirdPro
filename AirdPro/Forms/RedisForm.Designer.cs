@@ -48,12 +48,12 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listViewServers = new System.Windows.Forms.ListView();
             this.colIP = new System.Windows.Forms.ColumnHeader();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tbServerInfo = new System.Windows.Forms.TextBox();
             this.listViewJobs = new System.Windows.Forms.ListView();
             this.colJobId = new System.Windows.Forms.ColumnHeader();
             this.colStatus = new System.Windows.Forms.ColumnHeader();
             this.colConsumeIP = new System.Windows.Forms.ColumnHeader();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -279,12 +279,19 @@
             this.colIP.Text = "IP";
             this.colIP.Width = 200;
             // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "AirdPro");
+            // 
             // tbServerInfo
             // 
             this.tbServerInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.tbServerInfo.Location = new System.Drawing.Point(3, 3);
             this.tbServerInfo.Multiline = true;
             this.tbServerInfo.Name = "tbServerInfo";
+            this.tbServerInfo.ReadOnly = true;
             this.tbServerInfo.Size = new System.Drawing.Size(320, 225);
             this.tbServerInfo.TabIndex = 0;
             // 
@@ -311,12 +318,6 @@
             // colConsumeIP
             // 
             this.colConsumeIP.Text = "Consumer";
-            // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "AirdPro");
             // 
             // RedisForm
             // 
@@ -362,7 +363,6 @@
 
         #endregion
         private System.Windows.Forms.SplitContainer container;
-        public System.Windows.Forms.Label lblMessageNum;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.TextBox tbRedisPassword;
