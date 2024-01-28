@@ -64,6 +64,9 @@ namespace AirdPro.Forms
             }
         }
 
+        /**
+         * 更新页面状态机
+         */
         private void UpdateRedisStatus(bool connected)
         {
             if (connected)
@@ -80,6 +83,9 @@ namespace AirdPro.Forms
             }
         }
 
+        /**
+         * Redis现调机,用于消费转换任务,完成心跳,保持链接状态
+         */
         private void redisTimer_Tick(object sender, EventArgs e)
         {
             //开始消费消息时停止时钟遍历
@@ -89,6 +95,9 @@ namespace AirdPro.Forms
             redisTimer.Start();
         }
 
+        /**
+         * 心跳功能,用于更新本节点在服务器端的活跃时间戳,同时也获取当前局域网内所有的AirdPro节点
+         */
         private void HeartBeat()
         {
             UpdateRedisStatus(RedisClient.GetInstance().Check());
@@ -136,6 +145,9 @@ namespace AirdPro.Forms
             }
         }
 
+        /**
+         * 查看各节点的服务器配置
+         */
         private void listViewServers_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listViewServers.SelectedItems.Count == 1)
@@ -148,6 +160,15 @@ namespace AirdPro.Forms
                     tbServerInfo.Text += kv.Key + ":" + kv.Value + "\r\n";
                 }
             }
+            else
+            {
+                tbServerInfo.Text = "";
+            }
+        }
+
+        private void btnClearServerCache_Click(object sender, EventArgs e)
+        {
+            RedisClient.GetInstance().ClearServerCache();
         }
     }
 }

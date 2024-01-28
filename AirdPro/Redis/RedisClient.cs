@@ -244,6 +244,13 @@ namespace AirdPro.Redis
 
             return dict;
         }
+
+        public void ClearServerCache()
+        {
+            if (!Check()) return;
+            _db.KeyDelete(RedisConst.Redis_Server_List);
+            _db.KeyDelete(RedisConst.Redis_Server_Info_List);
+        }
         
     }
 }

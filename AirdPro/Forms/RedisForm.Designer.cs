@@ -32,16 +32,15 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RedisForm));
             this.redisTimer = new System.Windows.Forms.Timer(this.components);
             this.container = new System.Windows.Forms.SplitContainer();
-            this.lblMessageNum = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.btnClearServerCache = new System.Windows.Forms.Button();
+            this.lblPassword = new System.Windows.Forms.Label();
+            this.lblUser = new System.Windows.Forms.Label();
+            this.lblPort = new System.Windows.Forms.Label();
+            this.lblIP = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
             this.btnConnect = new System.Windows.Forms.Button();
             this.tbRedisPassword = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.tbRedisUsername = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.lblIP = new System.Windows.Forms.Label();
             this.tbRedisHost = new System.Windows.Forms.TextBox();
             this.tbRedisPort = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
@@ -49,13 +48,12 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listViewServers = new System.Windows.Forms.ListView();
             this.colIP = new System.Windows.Forms.ColumnHeader();
-            this.colInfo = new System.Windows.Forms.ColumnHeader();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.tbServerInfo = new System.Windows.Forms.TextBox();
             this.listViewJobs = new System.Windows.Forms.ListView();
             this.colJobId = new System.Windows.Forms.ColumnHeader();
             this.colStatus = new System.Windows.Forms.ColumnHeader();
             this.colConsumeIP = new System.Windows.Forms.ColumnHeader();
-            this.tbServerInfo = new System.Windows.Forms.TextBox();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -84,16 +82,15 @@
             // 
             // container.Panel1
             // 
-            this.container.Panel1.Controls.Add(this.lblMessageNum);
-            this.container.Panel1.Controls.Add(this.label4);
+            this.container.Panel1.Controls.Add(this.btnClearServerCache);
+            this.container.Panel1.Controls.Add(this.lblPassword);
+            this.container.Panel1.Controls.Add(this.lblUser);
+            this.container.Panel1.Controls.Add(this.lblPort);
+            this.container.Panel1.Controls.Add(this.lblIP);
             this.container.Panel1.Controls.Add(this.lblStatus);
             this.container.Panel1.Controls.Add(this.btnConnect);
             this.container.Panel1.Controls.Add(this.tbRedisPassword);
-            this.container.Panel1.Controls.Add(this.label3);
             this.container.Panel1.Controls.Add(this.tbRedisUsername);
-            this.container.Panel1.Controls.Add(this.label2);
-            this.container.Panel1.Controls.Add(this.label1);
-            this.container.Panel1.Controls.Add(this.lblIP);
             this.container.Panel1.Controls.Add(this.tbRedisHost);
             this.container.Panel1.Controls.Add(this.tbRedisPort);
             this.container.Panel1.Controls.Add(this.btnSave);
@@ -105,39 +102,58 @@
             this.container.SplitterDistance = 72;
             this.container.TabIndex = 138;
             // 
-            // lblMessageNum
+            // btnClearServerCache
             // 
-            this.lblMessageNum.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblMessageNum.AutoSize = true;
-            this.lblMessageNum.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblMessageNum.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblMessageNum.Location = new System.Drawing.Point(125, 39);
-            this.lblMessageNum.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblMessageNum.Name = "lblMessageNum";
-            this.lblMessageNum.Size = new System.Drawing.Size(15, 17);
-            this.lblMessageNum.TabIndex = 149;
-            this.lblMessageNum.Text = "0";
-            this.lblMessageNum.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnClearServerCache.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnClearServerCache.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClearServerCache.FlatAppearance.BorderSize = 0;
+            this.btnClearServerCache.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.btnClearServerCache.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnClearServerCache.Location = new System.Drawing.Point(11, 43);
+            this.btnClearServerCache.Name = "btnClearServerCache";
+            this.btnClearServerCache.Size = new System.Drawing.Size(152, 26);
+            this.btnClearServerCache.TabIndex = 154;
+            this.btnClearServerCache.Text = "Clear Server Cache";
+            this.btnClearServerCache.UseVisualStyleBackColor = true;
+            this.btnClearServerCache.Click += new System.EventHandler(this.btnClearServerCache_Click);
             // 
-            // label4
+            // lblPassword
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label4.Location = new System.Drawing.Point(5, 39);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(104, 17);
-            this.label4.TabIndex = 148;
-            this.label4.Text = "Consumed Jobs:";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblPassword.Location = new System.Drawing.Point(532, 7);
+            this.lblPassword.Name = "lblPassword";
+            this.lblPassword.Size = new System.Drawing.Size(105, 20);
+            this.lblPassword.TabIndex = 153;
+            this.lblPassword.Text = "Password";
+            // 
+            // lblUser
+            // 
+            this.lblUser.Location = new System.Drawing.Point(352, 9);
+            this.lblUser.Name = "lblUser";
+            this.lblUser.Size = new System.Drawing.Size(44, 20);
+            this.lblUser.TabIndex = 152;
+            this.lblUser.Text = "User";
+            // 
+            // lblPort
+            // 
+            this.lblPort.Location = new System.Drawing.Point(221, 9);
+            this.lblPort.Name = "lblPort";
+            this.lblPort.Size = new System.Drawing.Size(44, 20);
+            this.lblPort.TabIndex = 151;
+            this.lblPort.Text = "Port";
+            // 
+            // lblIP
+            // 
+            this.lblIP.Location = new System.Drawing.Point(12, 9);
+            this.lblIP.Name = "lblIP";
+            this.lblIP.Size = new System.Drawing.Size(55, 20);
+            this.lblIP.TabIndex = 150;
+            this.lblIP.Text = "Host IP";
             // 
             // lblStatus
             // 
             this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStatus.BackColor = System.Drawing.Color.Red;
-            this.lblStatus.Location = new System.Drawing.Point(5, 59);
+            this.lblStatus.Location = new System.Drawing.Point(8, 33);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(970, 5);
             this.lblStatus.TabIndex = 147;
@@ -166,91 +182,33 @@
             this.tbRedisPassword.Size = new System.Drawing.Size(130, 23);
             this.tbRedisPassword.TabIndex = 145;
             // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label3.Location = new System.Drawing.Point(575, 9);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(64, 17);
-            this.label3.TabIndex = 144;
-            this.label3.Text = "Password";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // tbRedisUsername
             // 
             this.tbRedisUsername.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbRedisUsername.Location = new System.Drawing.Point(449, 6);
+            this.tbRedisUsername.Location = new System.Drawing.Point(403, 6);
             this.tbRedisUsername.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisUsername.Name = "tbRedisUsername";
             this.tbRedisUsername.Size = new System.Drawing.Size(122, 23);
             this.tbRedisUsername.TabIndex = 143;
             // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label2.Location = new System.Drawing.Point(378, 9);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(67, 17);
-            this.label2.TabIndex = 142;
-            this.label2.Text = "Username";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label1.Location = new System.Drawing.Point(240, 10);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 17);
-            this.label1.TabIndex = 141;
-            this.label1.Text = "Redis Port";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblIP
-            // 
-            this.lblIP.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblIP.AutoSize = true;
-            this.lblIP.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblIP.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblIP.Location = new System.Drawing.Point(13, 10);
-            this.lblIP.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblIP.Name = "lblIP";
-            this.lblIP.Size = new System.Drawing.Size(71, 17);
-            this.lblIP.TabIndex = 138;
-            this.lblIP.Text = "Redis Host";
-            this.lblIP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // tbRedisHost
             // 
             this.tbRedisHost.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left)));
             this.tbRedisHost.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbRedisHost.Location = new System.Drawing.Point(92, 7);
+            this.tbRedisHost.Location = new System.Drawing.Point(74, 7);
             this.tbRedisHost.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisHost.Name = "tbRedisHost";
             this.tbRedisHost.Size = new System.Drawing.Size(140, 23);
             this.tbRedisHost.TabIndex = 137;
-            this.tbRedisHost.Text = "127.0.0.1";
             // 
             // tbRedisPort
             // 
             this.tbRedisPort.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbRedisPort.Location = new System.Drawing.Point(316, 7);
+            this.tbRedisPort.Location = new System.Drawing.Point(272, 6);
             this.tbRedisPort.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisPort.Name = "tbRedisPort";
             this.tbRedisPort.Size = new System.Drawing.Size(58, 23);
             this.tbRedisPort.TabIndex = 139;
-            this.tbRedisPort.Text = "6379";
             // 
             // btnSave
             // 
@@ -302,7 +260,7 @@
             // 
             // listViewServers
             // 
-            this.listViewServers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.colIP, this.colInfo });
+            this.listViewServers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.colIP });
             this.listViewServers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewServers.HideSelection = false;
             this.listViewServers.LabelEdit = true;
@@ -311,6 +269,7 @@
             this.listViewServers.MultiSelect = false;
             this.listViewServers.Name = "listViewServers";
             this.listViewServers.Size = new System.Drawing.Size(326, 310);
+            this.listViewServers.SmallImageList = this.imageList1;
             this.listViewServers.TabIndex = 0;
             this.listViewServers.UseCompatibleStateImageBehavior = false;
             this.listViewServers.SelectedIndexChanged += new System.EventHandler(this.listViewServers_SelectedIndexChanged);
@@ -320,16 +279,14 @@
             this.colIP.Text = "IP";
             this.colIP.Width = 200;
             // 
-            // colInfo
+            // tbServerInfo
             // 
-            this.colInfo.Text = "Info";
-            this.colInfo.Width = 200;
-            // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "AirdPro");
+            this.tbServerInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbServerInfo.Location = new System.Drawing.Point(3, 3);
+            this.tbServerInfo.Multiline = true;
+            this.tbServerInfo.Name = "tbServerInfo";
+            this.tbServerInfo.Size = new System.Drawing.Size(320, 225);
+            this.tbServerInfo.TabIndex = 0;
             // 
             // listViewJobs
             // 
@@ -355,31 +312,29 @@
             // 
             this.colConsumeIP.Text = "Consumer";
             // 
-            // tbServerInfo
+            // imageList1
             // 
-            this.tbServerInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbServerInfo.Location = new System.Drawing.Point(3, 3);
-            this.tbServerInfo.Multiline = true;
-            this.tbServerInfo.Name = "tbServerInfo";
-            this.tbServerInfo.Size = new System.Drawing.Size(320, 225);
-            this.tbServerInfo.TabIndex = 0;
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "AirdPro");
             // 
             // RedisForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(978, 621);
             this.Controls.Add(this.container);
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Location = new System.Drawing.Point(15, 15);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "RedisForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Redis";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RedisForm_FormClosing);
             this.Load += new System.EventHandler(this.RedisForm_Load);
             this.container.Panel1.ResumeLayout(false);
@@ -408,14 +363,10 @@
         #endregion
         private System.Windows.Forms.SplitContainer container;
         public System.Windows.Forms.Label lblMessageNum;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.TextBox tbRedisPassword;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox tbRedisUsername;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblIP;
         private System.Windows.Forms.TextBox tbRedisHost;
         private System.Windows.Forms.TextBox tbRedisPort;
@@ -423,11 +374,14 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ListView listViewServers;
         private System.Windows.Forms.ColumnHeader colIP;
-        private System.Windows.Forms.ColumnHeader colInfo;
         private System.Windows.Forms.ListView listViewJobs;
         private System.Windows.Forms.ColumnHeader colJobId;
         private System.Windows.Forms.ColumnHeader colStatus;
         private System.Windows.Forms.ColumnHeader colConsumeIP;
         private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.Label lblPort;
+        private System.Windows.Forms.Label lblUser;
+        private System.Windows.Forms.Label lblPassword;
+        private System.Windows.Forms.Button btnClearServerCache;
     }
 }
