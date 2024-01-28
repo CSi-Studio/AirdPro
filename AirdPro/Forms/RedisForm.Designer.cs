@@ -30,8 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RedisForm));
-            this.redisTimer = new System.Windows.Forms.Timer(this.components);
+            this.heartBeatTimer = new System.Windows.Forms.Timer(this.components);
             this.container = new System.Windows.Forms.SplitContainer();
+            this.btnConsume = new System.Windows.Forms.Button();
             this.btnClearServerCache = new System.Windows.Forms.Button();
             this.lblPassword = new System.Windows.Forms.Label();
             this.lblUser = new System.Windows.Forms.Label();
@@ -46,13 +47,14 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.listViewServers = new System.Windows.Forms.ListView();
+            this.lvServers = new System.Windows.Forms.ListView();
             this.colIP = new System.Windows.Forms.ColumnHeader();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tbServerInfo = new System.Windows.Forms.TextBox();
-            this.listViewJobs = new System.Windows.Forms.ListView();
+            this.lvJobs = new System.Windows.Forms.ListView();
             this.colJobId = new System.Windows.Forms.ColumnHeader();
-            this.colStatus = new System.Windows.Forms.ColumnHeader();
+            this.colType = new System.Windows.Forms.ColumnHeader();
+            this.colInput = new System.Windows.Forms.ColumnHeader();
+            this.colOutput = new System.Windows.Forms.ColumnHeader();
             this.colConsumeIP = new System.Windows.Forms.ColumnHeader();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
@@ -68,10 +70,10 @@
             this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // redisTimer
+            // heartBeatTimer
             // 
-            this.redisTimer.Interval = 5000;
-            this.redisTimer.Tick += new System.EventHandler(this.redisTimer_Tick);
+            this.heartBeatTimer.Interval = 3000;
+            this.heartBeatTimer.Tick += new System.EventHandler(this.redisTimer_Tick);
             // 
             // container
             // 
@@ -82,6 +84,7 @@
             // 
             // container.Panel1
             // 
+            this.container.Panel1.Controls.Add(this.btnConsume);
             this.container.Panel1.Controls.Add(this.btnClearServerCache);
             this.container.Panel1.Controls.Add(this.lblPassword);
             this.container.Panel1.Controls.Add(this.lblUser);
@@ -99,8 +102,22 @@
             // 
             this.container.Panel2.Controls.Add(this.splitContainer1);
             this.container.Size = new System.Drawing.Size(978, 621);
-            this.container.SplitterDistance = 72;
+            this.container.SplitterDistance = 68;
             this.container.TabIndex = 138;
+            // 
+            // btnConsume
+            // 
+            this.btnConsume.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnConsume.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnConsume.FlatAppearance.BorderSize = 0;
+            this.btnConsume.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.btnConsume.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnConsume.Location = new System.Drawing.Point(744, 40);
+            this.btnConsume.Name = "btnConsume";
+            this.btnConsume.Size = new System.Drawing.Size(231, 26);
+            this.btnConsume.TabIndex = 155;
+            this.btnConsume.Text = "Start Consuming Task";
+            this.btnConsume.UseVisualStyleBackColor = true;
             // 
             // btnClearServerCache
             // 
@@ -109,7 +126,7 @@
             this.btnClearServerCache.FlatAppearance.BorderSize = 0;
             this.btnClearServerCache.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.btnClearServerCache.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnClearServerCache.Location = new System.Drawing.Point(11, 43);
+            this.btnClearServerCache.Location = new System.Drawing.Point(8, 40);
             this.btnClearServerCache.Name = "btnClearServerCache";
             this.btnClearServerCache.Size = new System.Drawing.Size(152, 26);
             this.btnClearServerCache.TabIndex = 154;
@@ -235,9 +252,9 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.listViewJobs);
-            this.splitContainer1.Size = new System.Drawing.Size(978, 545);
-            this.splitContainer1.SplitterDistance = 326;
+            this.splitContainer1.Panel2.Controls.Add(this.lvJobs);
+            this.splitContainer1.Size = new System.Drawing.Size(978, 549);
+            this.splitContainer1.SplitterDistance = 205;
             this.splitContainer1.TabIndex = 0;
             // 
             // splitContainer2
@@ -249,41 +266,34 @@
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.listViewServers);
+            this.splitContainer2.Panel1.Controls.Add(this.lvServers);
             // 
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.tbServerInfo);
-            this.splitContainer2.Size = new System.Drawing.Size(326, 545);
-            this.splitContainer2.SplitterDistance = 310;
+            this.splitContainer2.Size = new System.Drawing.Size(205, 549);
+            this.splitContainer2.SplitterDistance = 312;
             this.splitContainer2.TabIndex = 0;
             // 
-            // listViewServers
+            // lvServers
             // 
-            this.listViewServers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.colIP });
-            this.listViewServers.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listViewServers.HideSelection = false;
-            this.listViewServers.LabelEdit = true;
-            this.listViewServers.LargeImageList = this.imageList1;
-            this.listViewServers.Location = new System.Drawing.Point(0, 0);
-            this.listViewServers.MultiSelect = false;
-            this.listViewServers.Name = "listViewServers";
-            this.listViewServers.Size = new System.Drawing.Size(326, 310);
-            this.listViewServers.SmallImageList = this.imageList1;
-            this.listViewServers.TabIndex = 0;
-            this.listViewServers.UseCompatibleStateImageBehavior = false;
-            this.listViewServers.SelectedIndexChanged += new System.EventHandler(this.listViewServers_SelectedIndexChanged);
+            this.lvServers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.colIP });
+            this.lvServers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvServers.HideSelection = false;
+            this.lvServers.LabelEdit = true;
+            this.lvServers.Location = new System.Drawing.Point(0, 0);
+            this.lvServers.MultiSelect = false;
+            this.lvServers.Name = "lvServers";
+            this.lvServers.Size = new System.Drawing.Size(205, 312);
+            this.lvServers.TabIndex = 0;
+            this.lvServers.UseCompatibleStateImageBehavior = false;
+            this.lvServers.View = System.Windows.Forms.View.Details;
+            this.lvServers.SelectedIndexChanged += new System.EventHandler(this.listViewServers_SelectedIndexChanged);
             // 
             // colIP
             // 
             this.colIP.Text = "IP";
             this.colIP.Width = 200;
-            // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "AirdPro");
             // 
             // tbServerInfo
             // 
@@ -292,32 +302,47 @@
             this.tbServerInfo.Multiline = true;
             this.tbServerInfo.Name = "tbServerInfo";
             this.tbServerInfo.ReadOnly = true;
-            this.tbServerInfo.Size = new System.Drawing.Size(320, 225);
+            this.tbServerInfo.Size = new System.Drawing.Size(199, 227);
             this.tbServerInfo.TabIndex = 0;
             // 
-            // listViewJobs
+            // lvJobs
             // 
-            this.listViewJobs.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.colJobId, this.colStatus, this.colConsumeIP });
-            this.listViewJobs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listViewJobs.HideSelection = false;
-            this.listViewJobs.LabelEdit = true;
-            this.listViewJobs.Location = new System.Drawing.Point(0, 0);
-            this.listViewJobs.Name = "listViewJobs";
-            this.listViewJobs.Size = new System.Drawing.Size(648, 545);
-            this.listViewJobs.TabIndex = 0;
-            this.listViewJobs.UseCompatibleStateImageBehavior = false;
+            this.lvJobs.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.colJobId, this.colType, this.colInput, this.colOutput, this.colConsumeIP });
+            this.lvJobs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvJobs.FullRowSelect = true;
+            this.lvJobs.HideSelection = false;
+            this.lvJobs.LabelEdit = true;
+            this.lvJobs.Location = new System.Drawing.Point(0, 0);
+            this.lvJobs.Name = "lvJobs";
+            this.lvJobs.Size = new System.Drawing.Size(769, 549);
+            this.lvJobs.TabIndex = 0;
+            this.lvJobs.UseCompatibleStateImageBehavior = false;
+            this.lvJobs.View = System.Windows.Forms.View.Details;
             // 
             // colJobId
             // 
             this.colJobId.Text = "JobId";
+            this.colJobId.Width = 112;
             // 
-            // colStatus
+            // colType
             // 
-            this.colStatus.Text = "Status";
+            this.colType.Text = "Type";
+            this.colType.Width = 89;
+            // 
+            // colInput
+            // 
+            this.colInput.Text = "Input Path";
+            this.colInput.Width = 129;
+            // 
+            // colOutput
+            // 
+            this.colOutput.Text = "Output Path";
+            this.colOutput.Width = 161;
             // 
             // colConsumeIP
             // 
-            this.colConsumeIP.Text = "Consumer";
+            this.colConsumeIP.Text = "Consumer IP";
+            this.colConsumeIP.Width = 154;
             // 
             // RedisForm
             // 
@@ -355,11 +380,15 @@
             this.ResumeLayout(false);
         }
 
+        private System.Windows.Forms.ColumnHeader colType;
+
+        private System.Windows.Forms.ColumnHeader colOutput;
+
+        private System.Windows.Forms.Button btnConsume;
+
         private System.Windows.Forms.TextBox tbServerInfo;
 
-        private System.Windows.Forms.ImageList imageList1;
-
-        private System.Windows.Forms.Timer redisTimer;
+        private System.Windows.Forms.Timer heartBeatTimer;
 
         #endregion
         private System.Windows.Forms.SplitContainer container;
@@ -372,11 +401,11 @@
         private System.Windows.Forms.TextBox tbRedisPort;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ListView listViewServers;
+        private System.Windows.Forms.ListView lvServers;
         private System.Windows.Forms.ColumnHeader colIP;
-        private System.Windows.Forms.ListView listViewJobs;
+        private System.Windows.Forms.ListView lvJobs;
         private System.Windows.Forms.ColumnHeader colJobId;
-        private System.Windows.Forms.ColumnHeader colStatus;
+        private System.Windows.Forms.ColumnHeader colInput;
         private System.Windows.Forms.ColumnHeader colConsumeIP;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.Label lblPort;

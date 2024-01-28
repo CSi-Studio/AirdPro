@@ -326,7 +326,7 @@
     <Compile Include="Domains\Common\Slice.cs" />
     <Compile Include="Domains\Common\StrKV.cs" />
     <Compile Include="Domains\Common\TempSpectrum.cs" />
-    <Compile Include="Domains\HardwareInfo\ClientInfo.cs" />
+    <Compile Include="Domains\ClientInfo\ClientInfo.cs" />
     <Compile Include="Domains\Logs\AppLogs.cs" />
     <Compile Include="Domains\Logs\Log.cs" />
     <Compile Include="Domains\Scan\Combination.cs" />

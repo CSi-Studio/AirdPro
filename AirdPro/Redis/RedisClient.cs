@@ -16,7 +16,6 @@ using AirdPro.Asyncs;
 using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdPro.Storage.Config;
-using AirdPro.Utils;
 using AirdSDK.Enums;
 using AirdSDK.Utils;
 using HZH_Controls;
@@ -33,11 +32,7 @@ namespace AirdPro.Redis
         private IDatabase _db;
         private readonly int _dbNum = 1;
         private static int _messageNum = 0;
-        public const int HeartBeatTime = 5; //客户端心跳时间,单位:秒
-        private static string Increment()
-        {
-            return Interlocked.Increment(ref _messageNum) + "";
-        }
+        public const int HeartBeatTime = 3; //客户端心跳时间,单位:秒
 
         private RedisClient()
         {
@@ -89,101 +84,99 @@ namespace AirdPro.Redis
         public void Consume()
         {
             if (!Check()) return;
-            
-            int i = 10;
             bool needToExecute = false;
-            while (i > 0)
+            string valueStr = null;
+            try
             {
-                String valueStr = null;
-                try
+                RedisValue value = _db.SetPop(RedisConst.Redis_Queue_Convert);
+                if (!value.IsNullOrEmpty)
                 {
-                    RedisValue value = _db.SetPop(RedisConst.Redis_Queue_Convert);
-                    if (!value.IsNullOrEmpty)
+                    // 如果获取到转换队列中相关的任务,那么将消息队列中的转换任务加入到执行队列中
+                    valueStr = value.ToString();
+                    // 目前远程任务不支持Stack-ZDPD
+                    RemoteConvertJob job = JsonConvert.DeserializeObject<RemoteConvertJob>(valueStr);
+                    ConversionConfig conversionConfig = new ConversionConfig
                     {
-                        // 如果获取到转换队列中相关的任务,那么将消息队列中的转换任务加入到执行队列中
-                        valueStr = value.ToString();
-                        // 目前远程任务不支持Stack-ZDPD
-                        RemoteConvertJob job = JsonConvert.DeserializeObject<RemoteConvertJob>(valueStr);
-                        ConversionConfig conversionConfig = new ConversionConfig();
-                        conversionConfig.configName = "Redis";
-                        conversionConfig.suffix = job.suffix;
-                        conversionConfig.ignoreZeroIntensity = job.ignoreZeroIntensity;
-                        conversionConfig.creator = job.creator;
+                        configName = "Redis",
+                        suffix = job.suffix,
+                        ignoreZeroIntensity = job.ignoreZeroIntensity,
+                        creator = job.creator
+                    };
 
-                        if (job.autoDesicion != null)
-                        {
-                            conversionConfig.autoDesicion = job.autoDesicion.Value;
-                        }
-                        if (job.scene != null && job.scene == "Search")
-                        {
-                            conversionConfig.scene = Scene.Search;
-                        }
+                    if (job.autoDesicion != null)
+                    {
+                        conversionConfig.autoDesicion = job.autoDesicion.Value;
+                    }
 
-                        if (job.mzPrecision != null)
-                        {
-                            conversionConfig.mzPrecision = job.mzPrecision.Value;
-                        }
+                    if (job.scene != null && job.scene == "Search")
+                    {
+                        conversionConfig.scene = Scene.Search;
+                    }
 
-                        if (job.centroid != null)
-                        {
-                            conversionConfig.centroid = job.centroid.Value;
-                        }
+                    if (job.mzPrecision != null)
+                    {
+                        conversionConfig.mzPrecision = job.mzPrecision.Value;
+                    }
 
-                        if (job.compressedIndex != null)
-                        {
-                            conversionConfig.compressedIndex = job.compressedIndex.Value;
-                        }
+                    if (job.centroid != null)
+                    {
+                        conversionConfig.centroid = job.centroid.Value;
+                    }
 
-                        if (job.mzIntComp != null)
-                        {
-                            conversionConfig.mzIntComp = (SortedIntCompType)Enum.Parse(typeof(SortedIntCompType), job.mzIntComp);
-                        }
+                    if (job.compressedIndex != null)
+                    {
+                        conversionConfig.compressedIndex = job.compressedIndex.Value;
+                    }
 
-                        if (job.mzByteComp != null)
-                        {
-                            conversionConfig.mzByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), job.mzByteComp);
-                        }
-                        
-                        if (job.intIntComp != null)
-                        {
-                            conversionConfig.intIntComp = (IntCompType)Enum.Parse(typeof(IntCompType), job.intIntComp);
-                        }
+                    if (job.mzIntComp != null)
+                    {
+                        conversionConfig.mzIntComp =
+                            (SortedIntCompType)Enum.Parse(typeof(SortedIntCompType), job.mzIntComp);
+                    }
 
-                        if (job.intByteComp != null)
-                        {
-                            conversionConfig.intByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), job.intByteComp);
-                        }
-                        
-                        if (job.mobiIntComp != null)
-                        {
-                            conversionConfig.mobiIntComp = (IntCompType)Enum.Parse(typeof(IntCompType), job.mobiIntComp);
-                        }
+                    if (job.mzByteComp != null)
+                    {
+                        conversionConfig.mzByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), job.mzByteComp);
+                    }
 
-                        if (job.mobiByteComp != null)
-                        {
-                            conversionConfig.mobiByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), job.mobiByteComp);
-                        }
+                    if (job.intIntComp != null)
+                    {
+                        conversionConfig.intIntComp = (IntCompType)Enum.Parse(typeof(IntCompType), job.intIntComp);
+                    }
 
-                        JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
-                        ListViewItem item = jobInfo.BuildItem();
-                        if (!ConvertTaskManager.GetInstance().JobTable.Contains(jobInfo.jobId))
-                        {
-                            Program.conversionForm.lvFileList.Items.Add(item);
-                            ConvertTaskManager.GetInstance().PushJob(jobInfo);
-                            needToExecute = true;
-                        }
+                    if (job.intByteComp != null)
+                    {
+                        conversionConfig.intByteComp = (ByteCompType)Enum.Parse(typeof(ByteCompType), job.intByteComp);
+                    }
+
+                    if (job.mobiIntComp != null)
+                    {
+                        conversionConfig.mobiIntComp = (IntCompType)Enum.Parse(typeof(IntCompType), job.mobiIntComp);
+                    }
+
+                    if (job.mobiByteComp != null)
+                    {
+                        conversionConfig.mobiByteComp =
+                            (ByteCompType)Enum.Parse(typeof(ByteCompType), job.mobiByteComp);
+                    }
+
+                    JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
+                    ListViewItem item = jobInfo.BuildItem();
+                    if (!ConvertTaskManager.GetInstance().JobTable.Contains(jobInfo.jobId))
+                    {
+                        Program.conversionForm.lvFileList.Items.Add(item);
+                        ConvertTaskManager.GetInstance().PushJob(jobInfo);
+                        needToExecute = true;
                     }
                 }
-                catch (Exception)
+            }
+            catch (Exception)
+            {
+                //出现异常的情况下需要将消息会退给Redis,方便下一次重试
+                if (valueStr != null)
                 {
-                    //出现异常的情况下需要将消息会退给Redis,方便下一次重试
-                    if (valueStr != null)
-                    {
-                        _db.SetAdd(RedisConst.Redis_Queue_Convert, valueStr);
-                    }
+                    _db.SetAdd(RedisConst.Redis_Queue_Convert, valueStr);
                 }
-
-                i--;
             }
 
             //如果在Redis获取到了相关的转换任务
@@ -192,8 +185,7 @@ namespace AirdPro.Redis
                 Program.conversionForm.DoConvert();
             }
         }
-
-
+        
         public void RegisterOrUpdate()
         {
             if (!Check()) return;
@@ -202,25 +194,6 @@ namespace AirdPro.Redis
             _db.HashSet(RedisConst.Redis_Server_Info_List, NetworkUtil.getHostIP(), clientInfo);
         }
 
-        /**
-         * 获取局域网内所有的AirdPro客户端
-         */
-        public List<string> GetServerList()
-        {
-            if (!Check()) return new List<string>();
-            HashEntry[] entries = _db.HashGetAll(RedisConst.Redis_Server_List);
-            List<string> servers = new List<string>();
-            foreach (var entry in entries)
-            {
-                DateTime dateTime = DateTime.FromOADate(Double.Parse(entry.Value));
-                if ((DateTime.Now - dateTime).TotalSeconds <= (HeartBeatTime + 1)) //客户端心跳时间为5秒
-                {
-                    servers.Add(entry.Name);
-                }
-            }
-            return servers;
-        }
-        
         public void Disconnect()
         {
             if (_redis != null)
@@ -238,7 +211,7 @@ namespace AirdPro.Redis
             Dictionary<string, string> dict = new Dictionary<string, string>();
             if (value != null && !value.IsEmpty())
             {
-               dict = JsonConvert.DeserializeObject<Dictionary<string, String>>(value);
+                dict = JsonConvert.DeserializeObject<Dictionary<string, String>>(value);
             }
 
             return dict;
@@ -256,6 +229,43 @@ namespace AirdPro.Redis
             if (!Check()) return;
             _db.SetAdd(RedisConst.Redis_Queue_Convert, jobStr);
         }
+
+        /**
+        * 获取局域网内所有的AirdPro客户端信息
+        */
+        public List<string> GetServerList()
+        {
+            if (!Check()) return new List<string>();
+            HashEntry[] entries = _db.HashGetAll(RedisConst.Redis_Server_List);
+            List<string> servers = new List<string>();
+            foreach (var entry in entries)
+            {
+                DateTime dateTime = DateTime.FromOADate(Double.Parse(entry.Value));
+                if ((DateTime.Now - dateTime).TotalSeconds <= (HeartBeatTime + 1)) //客户端心跳时间为5秒
+                {
+                    servers.Add(entry.Name);
+                }
+            }
+
+            return servers;
+        }
         
+        /**
+         * 获取局域网内所有已经发布的任务列表
+         */
+        public List<RemoteConvertJob> GetJobList()
+        {
+            List<RemoteConvertJob> jobStrList = new List<RemoteConvertJob>();
+            if (!Check()) return jobStrList;
+            RedisValue[] jobs = _db.SetMembers(RedisConst.Redis_Queue_Convert);
+            foreach (RedisValue jobValue in jobs)
+            {
+                string jobStr = jobValue.ToString();
+                RemoteConvertJob job = JsonConvert.DeserializeObject<RemoteConvertJob>(jobStr);
+                jobStrList.Add(job);
+            }
+
+            return jobStrList;
+        }
     }
 }

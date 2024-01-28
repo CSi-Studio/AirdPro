@@ -15,6 +15,7 @@ namespace AirdPro.Domains
 {
     public class RemoteConvertJob
     {
+        public string jobId;
         public string sourcePath;
         public string targetPath;
         public string? type = JobInfo.AutoType;
@@ -32,6 +33,7 @@ namespace AirdPro.Domains
         public string? mobiIntComp;
         public string? mobiByteComp;
         public bool? autoDesicion;
+        public string consumeIP;
 
         public RemoteConvertJob()
         {

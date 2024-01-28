@@ -10,8 +10,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Management;
 using AirdPro.Constants;
+using AirdPro.Utils;
 using Microsoft.VisualBasic.Devices;
 using Newtonsoft.Json;
 
@@ -91,24 +93,17 @@ namespace AirdPro.Domains
         //获取物理内存数目和大小
         public static string GetPhysicMemory()
         {
-            string physicMemoryInfo = "";
-            ManagementClass mc = new ManagementClass("Win32_PhysicalMemory");
+            // 创建ManagementClass对象并设置查询条件
+            ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
             ManagementObjectCollection moc = mc.GetInstances();
-            physicMemoryInfo = "Physical Memory Numbers : " + moc.Count + "\r\n";
-            double capacity = 0.0;
-            int count = 0;
-            foreach (ManagementObject mo in moc)
+            long totalMemory = 0L;
+            foreach (var mo in moc)
             {
-                count++;
-                capacity = ((Math.Round(Int64.Parse(mo.Properties["Capacity"].Value.ToString()) / 1024 / 1024 / 1024.0,
-                    1)));
-                physicMemoryInfo += "The Size of No." + count + " Physical Memory is " +
-                                    capacity + " G " + "\r\n";
+                ulong oneMem = (ulong)mo["TotalPhysicalMemory"];
+                totalMemory += (long)oneMem;
             }
-
-            moc.Dispose();
-            mc.Dispose();
-            return physicMemoryInfo;
+            // 将字节数转换为更友好的格式
+            return AirdProFileUtil.GetSizeLabel(totalMemory);
         }
     }
 }

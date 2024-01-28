@@ -154,12 +154,13 @@ namespace AirdPro.Forms
                 foreach (string path in filePathList)
                 {
                     RemoteConvertJob remoteJob = new RemoteConvertJob(path, outputPath, airdType, config);
+                    Guid uuid = Guid.NewGuid();
+                    remoteJob.jobId = uuid.ToString();
                     string jobStr = JsonConvert.SerializeObject(remoteJob,new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                     RedisClient.GetInstance().PublishJob(jobStr);
                 }
             }
-           
-
+            
             return true;
         }
 
@@ -246,7 +247,7 @@ namespace AirdPro.Forms
                 if (path != null)
                 {
                     addedPaths.Add(path);
-                    addToSettingStorage(addedPaths);
+                    AddToSettingStorage(addedPaths);
                 }
             }
 
@@ -283,12 +284,12 @@ namespace AirdPro.Forms
 
             if (removedPaths.Count > 0)
             {
-                removeFromSettingStorage(removedPaths);
+                RemoveFromSettingStorage(removedPaths);
                 innerModel.OnStructureChanged(null);
             }
         }
 
-        public void addToSettingStorage(List<string> addedPaths)
+        public void AddToSettingStorage(List<string> addedPaths)
         {
             string pinPathStr = Settings.Default.PinPathList;
             string[] pinPathArray = pinPathStr.Split(',');
@@ -302,7 +303,7 @@ namespace AirdPro.Forms
             Settings.Default.Save();
         }
 
-        public void removeFromSettingStorage(List<string> removedPaths)
+        public void RemoveFromSettingStorage(List<string> removedPaths)
         {
             string pinPathStr = Settings.Default.PinPathList;
             string[] pinPathArray = pinPathStr.Split(',');
@@ -341,13 +342,16 @@ namespace AirdPro.Forms
         {
             if (RedisClient.GetInstance().Check())
             {
-                AddToList(false);
+                bool addResult = AddToList(false);
+                if (addResult)
+                {
+                    ClearInfos();
+                }
             }
             else
             {
                 MessageBox.Show("Redis is not connected");
             }
-            
         }
     }
 }

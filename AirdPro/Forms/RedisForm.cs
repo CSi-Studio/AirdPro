@@ -11,13 +11,16 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 using AirdPro.Constants;
+using AirdPro.Domains;
 using AirdPro.Properties;
 using AirdPro.Redis;
 using AirdPro.Utils;
 using HZH_Controls;
 using StackExchange.Redis;
+using ListViewItem = System.Windows.Forms.ListViewItem;
 
 namespace AirdPro.Forms
 {
@@ -26,7 +29,7 @@ namespace AirdPro.Forms
         public RedisForm()
         {
             InitializeComponent();
-            redisTimer.Interval = RedisClient.HeartBeatTime * 1000;
+            heartBeatTimer.Interval = RedisClient.HeartBeatTime * 1000;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -58,6 +61,7 @@ namespace AirdPro.Forms
             {
                 RedisClient.GetInstance().Disconnect();
                 UpdateRedisStatus(false);
+                HeartBeat();
             }
             else
             {
@@ -90,10 +94,7 @@ namespace AirdPro.Forms
         private void redisTimer_Tick(object sender, EventArgs e)
         {
             //开始消费消息时停止时钟遍历
-            redisTimer.Stop();
             HeartBeat();
-            RedisClient.GetInstance().Consume();
-            redisTimer.Start();
         }
 
         /**
@@ -104,28 +105,43 @@ namespace AirdPro.Forms
             UpdateRedisStatus(RedisClient.GetInstance().Check());
             RedisClient.GetInstance().RegisterOrUpdate();
             LoadServers();
+            LoadJobs();
         }
 
         private void LoadServers()
         {
             List<string> servers = RedisClient.GetInstance().GetServerList();
-            listViewServers.Items.Clear();
+            lvServers.Items.Clear();
             for (var i = 0; i < servers.Count; i++)
             {
                 ListViewItem item = new ListViewItem();
                 item.ImageKey = "AirdPro";
                 item.Text = servers[i];
-                listViewServers.Items.Add(item);
+                lvServers.Items.Add(item);
             }
-            listViewServers.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            lvServers.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             tbServerInfo.Text = "";
+        }
+
+        private void LoadJobs()
+        {
+            List<RemoteConvertJob> jobList = RedisClient.GetInstance().GetJobList();
+            lvJobs.Items.Clear();
+            foreach (RemoteConvertJob remoteJob in jobList)
+            {
+                ListViewItem item = new ListViewItem(remoteJob.jobId);
+                item.SubItems.Add(remoteJob.type);
+                item.SubItems.Add(remoteJob.sourcePath);
+                item.SubItems.Add(remoteJob.targetPath);
+                item.SubItems.Add(remoteJob.consumeIP);
+                lvJobs.Items.Add(item);
+            }
         }
         
         private void ConnectToRedis()
         {
             if (tbRedisHost.Text == null || tbRedisHost.Text.IsEmpty())
             {
-                redisTimer.Enabled = false;
                 MessageBox.Show(Constants.Tag.Redis_Host_Cannot_Be_Empty);
                 return;
             }
@@ -140,14 +156,13 @@ namespace AirdPro.Forms
             
             if (RedisClient.GetInstance().Check())
             {
-                redisTimer.Enabled = true;
                 UpdateRedisStatus(true);
                 HeartBeat();
+               
             }
             else
             {
                 MessageBox.Show(Constants.Tag.Connect_Failed_Please_Check_The_Redis_Host_And_Port);
-                redisTimer.Enabled = false;
                 UpdateRedisStatus(false);
             }
         }
@@ -157,9 +172,9 @@ namespace AirdPro.Forms
          */
         private void listViewServers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listViewServers.SelectedItems.Count == 1)
+            if (lvServers.SelectedItems.Count == 1)
             {
-                string ip = listViewServers.SelectedItems[0].Text;
+                string ip = lvServers.SelectedItems[0].Text;
                 Dictionary<string, string> dict = RedisClient.GetInstance().GetServerInfo(ip);
                 tbServerInfo.Text = "";
                 foreach (var kv in dict)
