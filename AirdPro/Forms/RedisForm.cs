@@ -19,6 +19,7 @@ using AirdPro.Properties;
 using AirdPro.Redis;
 using AirdPro.Utils;
 using HZH_Controls;
+using Newtonsoft.Json;
 using StackExchange.Redis;
 using ListViewItem = System.Windows.Forms.ListViewItem;
 
@@ -60,8 +61,6 @@ namespace AirdPro.Forms
             if (RedisClient.GetInstance().Check())
             {
                 RedisClient.GetInstance().Disconnect();
-                UpdateRedisStatus(false);
-                HeartBeat();
             }
             else
             {
@@ -103,9 +102,9 @@ namespace AirdPro.Forms
         private void HeartBeat()
         {
             UpdateRedisStatus(RedisClient.GetInstance().Check());
+            if (!RedisClient.GetInstance().Check()) return;
             RedisClient.GetInstance().RegisterOrUpdate();
             LoadServers();
-            LoadJobs();
         }
 
         private void LoadServers()
@@ -119,21 +118,24 @@ namespace AirdPro.Forms
                 item.Text = servers[i];
                 lvServers.Items.Add(item);
             }
-            lvServers.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            tbServerInfo.Text = "";
         }
 
         private void LoadJobs()
         {
-            List<RemoteConvertJob> jobList = RedisClient.GetInstance().GetJobList();
+            List<RemoteConvertJob> jobList = RedisClient.GetInstance().GetJobList(RedisConst.Redis_Queue_Convert);
+            List<RemoteConvertJob> jobListUnderConverting = RedisClient.GetInstance().GetJobList(RedisConst.Redis_Queue_Converting);
+            jobList.AddRange(jobListUnderConverting);
             lvJobs.Items.Clear();
             foreach (RemoteConvertJob remoteJob in jobList)
             {
                 ListViewItem item = new ListViewItem(remoteJob.jobId);
                 item.SubItems.Add(remoteJob.type);
+                item.SubItems.Add(remoteJob.scene);
                 item.SubItems.Add(remoteJob.sourcePath);
                 item.SubItems.Add(remoteJob.targetPath);
                 item.SubItems.Add(remoteJob.consumeIP);
+                item.SubItems.Add(remoteJob.consumeTime);
+                item.Tag = remoteJob;
                 lvJobs.Items.Add(item);
             }
         }
@@ -156,9 +158,8 @@ namespace AirdPro.Forms
             
             if (RedisClient.GetInstance().Check())
             {
-                UpdateRedisStatus(true);
                 HeartBeat();
-               
+                LoadJobs();
             }
             else
             {
@@ -176,15 +177,15 @@ namespace AirdPro.Forms
             {
                 string ip = lvServers.SelectedItems[0].Text;
                 Dictionary<string, string> dict = RedisClient.GetInstance().GetServerInfo(ip);
-                tbServerInfo.Text = "";
+                tbConsole.Text = "IP:"+ ip + "\r\n";
                 foreach (var kv in dict)
                 {
-                    tbServerInfo.Text += kv.Key + ":" + kv.Value + "\r\n";
+                    tbConsole.Text += kv.Key + ":" + kv.Value + "\r\n";
                 }
             }
             else
             {
-                tbServerInfo.Text = "";
+                tbConsole.Text = "";
             }
         }
 
@@ -192,6 +193,26 @@ namespace AirdPro.Forms
         {
             RedisClient.GetInstance().ClearServerCache();
             LoadServers();
+        }
+
+        private void btnConsume_Click(object sender, EventArgs e)
+        {
+            RedisClient.GetInstance().Consume();
+        }
+
+        private void btnRefreshJobList_Click(object sender, EventArgs e)
+        {
+            LoadJobs();
+        }
+
+        private void lvJobs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lvJobs.SelectedItems.Count == 1)
+            {
+                RemoteConvertJob job = (RemoteConvertJob)lvJobs.SelectedItems[0].Tag;
+                tbConsole.Text = JsonConvert.SerializeObject(job);
+            }
+            
         }
     }
 }

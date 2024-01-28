@@ -157,7 +157,7 @@ namespace AirdPro.Forms
                     Guid uuid = Guid.NewGuid();
                     remoteJob.jobId = uuid.ToString();
                     string jobStr = JsonConvert.SerializeObject(remoteJob,new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                    RedisClient.GetInstance().PublishJob(jobStr);
+                    RedisClient.GetInstance().PublishJob(RedisConst.Redis_Queue_Convert, jobStr);
                 }
             }
             

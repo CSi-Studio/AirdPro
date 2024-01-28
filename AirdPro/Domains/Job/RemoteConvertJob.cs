@@ -34,6 +34,7 @@ namespace AirdPro.Domains
         public string? mobiByteComp;
         public bool? autoDesicion;
         public string consumeIP;
+        public string consumeTime;
 
         public RemoteConvertJob()
         {

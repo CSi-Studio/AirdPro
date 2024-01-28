@@ -93,7 +93,6 @@ namespace AirdPro.Redis
                 {
                     // 如果获取到转换队列中相关的任务,那么将消息队列中的转换任务加入到执行队列中
                     valueStr = value.ToString();
-                    // 目前远程任务不支持Stack-ZDPD
                     RemoteConvertJob job = JsonConvert.DeserializeObject<RemoteConvertJob>(valueStr);
                     ConversionConfig conversionConfig = new ConversionConfig
                     {
@@ -168,6 +167,10 @@ namespace AirdPro.Redis
                         ConvertTaskManager.GetInstance().PushJob(jobInfo);
                         needToExecute = true;
                     }
+                    job.consumeIP = NetworkUtil.getHostIP();
+                    job.consumeTime = DateTime.Now.ToString();
+                    string jobStr = JsonConvert.SerializeObject(job);
+                    PublishJob(RedisConst.Redis_Queue_Converting, jobStr);
                 }
             }
             catch (Exception)
@@ -224,10 +227,10 @@ namespace AirdPro.Redis
             _db.KeyDelete(RedisConst.Redis_Server_Info_List);
         }
 
-        public void PublishJob(string jobStr)
+        public void PublishJob(string key, string jobStr)
         {
             if (!Check()) return;
-            _db.SetAdd(RedisConst.Redis_Queue_Convert, jobStr);
+            _db.SetAdd(key, jobStr);
         }
 
         /**
@@ -253,11 +256,11 @@ namespace AirdPro.Redis
         /**
          * 获取局域网内所有已经发布的任务列表
          */
-        public List<RemoteConvertJob> GetJobList()
+        public List<RemoteConvertJob> GetJobList(string key)
         {
             List<RemoteConvertJob> jobStrList = new List<RemoteConvertJob>();
             if (!Check()) return jobStrList;
-            RedisValue[] jobs = _db.SetMembers(RedisConst.Redis_Queue_Convert);
+            RedisValue[] jobs = _db.SetMembers(key);
             foreach (RedisValue jobValue in jobs)
             {
                 string jobStr = jobValue.ToString();
