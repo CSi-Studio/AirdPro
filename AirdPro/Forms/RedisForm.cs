@@ -58,9 +58,10 @@ namespace AirdPro.Forms
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            if (RedisClient.GetInstance().Check())
+            if (RedisClient.Instance.Check())
             {
-                RedisClient.GetInstance().Disconnect();
+                RedisClient.Instance.Disconnect();
+                consumeTimer.Stop();
             }
             else
             {
@@ -101,15 +102,16 @@ namespace AirdPro.Forms
          */
         private void HeartBeat()
         {
-            UpdateRedisStatus(RedisClient.GetInstance().Check());
-            if (!RedisClient.GetInstance().Check()) return;
-            RedisClient.GetInstance().RegisterOrUpdate();
+            UpdateRedisStatus(RedisClient.Instance.Check());
+            if (!RedisClient.Instance.Check()) return;
+            RedisClient.Instance.RegisterOrUpdate();
             LoadServers();
+            LoadJobs();
         }
 
         private void LoadServers()
         {
-            List<string> servers = RedisClient.GetInstance().GetServerList();
+            List<string> servers = RedisClient.Instance.GetServerList();
             lvServers.Items.Clear();
             for (var i = 0; i < servers.Count; i++)
             {
@@ -122,13 +124,13 @@ namespace AirdPro.Forms
 
         private void LoadJobs()
         {
-            List<RemoteConvertJob> jobList = RedisClient.GetInstance().GetJobList(RedisConst.Redis_Queue_Convert);
-            List<RemoteConvertJob> jobListUnderConverting = RedisClient.GetInstance().GetJobList(RedisConst.Redis_Queue_Converting);
+            List<RemoteConvertJob> jobList = RedisClient.Instance.GetTodoJobs();
+            List<RemoteConvertJob> jobListUnderConverting = RedisClient.Instance.GetConvertingJobs();
             jobList.AddRange(jobListUnderConverting);
             lvJobs.Items.Clear();
             foreach (RemoteConvertJob remoteJob in jobList)
             {
-                ListViewItem item = new ListViewItem(remoteJob.jobId);
+                ListViewItem item = new ListViewItem(remoteJob.remoteId);
                 item.SubItems.Add(remoteJob.type);
                 item.SubItems.Add(remoteJob.scene);
                 item.SubItems.Add(remoteJob.sourcePath);
@@ -153,10 +155,10 @@ namespace AirdPro.Forms
                 tbRedisPort.Text = "6379";
             }
 
-            RedisClient.GetInstance().Connect(tbRedisHost.Text, int.Parse(tbRedisPort.Text), 
+            RedisClient.Instance.Connect(tbRedisHost.Text, int.Parse(tbRedisPort.Text), 
                 tbRedisUsername.Text, tbRedisPassword.Text);
             
-            if (RedisClient.GetInstance().Check())
+            if (RedisClient.Instance.Check())
             {
                 HeartBeat();
                 LoadJobs();
@@ -176,7 +178,7 @@ namespace AirdPro.Forms
             if (lvServers.SelectedItems.Count == 1)
             {
                 string ip = lvServers.SelectedItems[0].Text;
-                Dictionary<string, string> dict = RedisClient.GetInstance().GetServerInfo(ip);
+                Dictionary<string, string> dict = RedisClient.Instance.GetServerInfo(ip);
                 tbConsole.Text = "IP:"+ ip + "\r\n";
                 foreach (var kv in dict)
                 {
@@ -191,13 +193,13 @@ namespace AirdPro.Forms
 
         private void btnClearServerCache_Click(object sender, EventArgs e)
         {
-            RedisClient.GetInstance().ClearServerCache();
+            RedisClient.Instance.ClearServerCache();
             LoadServers();
         }
 
         private void btnConsume_Click(object sender, EventArgs e)
         {
-            RedisClient.GetInstance().Consume();
+            RedisClient.Instance.Consume();
         }
 
         private void btnRefreshJobList_Click(object sender, EventArgs e)
@@ -212,7 +214,11 @@ namespace AirdPro.Forms
                 RemoteConvertJob job = (RemoteConvertJob)lvJobs.SelectedItems[0].Tag;
                 tbConsole.Text = JsonConvert.SerializeObject(job);
             }
-            
+        }
+
+        private void consumeTimer_Tick(object sender, EventArgs e)
+        {
+            RedisClient.Instance.Consume();
         }
     }
 }

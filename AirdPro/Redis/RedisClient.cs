@@ -25,7 +25,7 @@ using ClientInfo = AirdPro.Domains.ClientInfo;
 
 namespace AirdPro.Redis
 {
-    class RedisClient
+    public sealed class RedisClient
     {
         private static RedisClient _instance;
         private ConnectionMultiplexer _redis;
@@ -33,19 +33,27 @@ namespace AirdPro.Redis
         private readonly int _dbNum = 1;
         private static int _messageNum = 0;
         public const int HeartBeatTime = 3; //客户端心跳时间,单位:秒
-
+        private static readonly object locker = new object();
         private RedisClient()
         {
         }
 
-        public static RedisClient GetInstance()
+        public static RedisClient Instance
         {
-            if (_instance == null)
+            get
             {
-                _instance = new RedisClient();
+                if (_instance == null)
+                {
+                    lock (locker)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new RedisClient();
+                        }
+                    }
+                }
+                return _instance;
             }
-
-            return _instance;
         }
 
         public void Connect(string host, int port, string user, string password)
@@ -86,14 +94,15 @@ namespace AirdPro.Redis
             if (!Check()) return;
             bool needToExecute = false;
             string valueStr = null;
+            RemoteConvertJob job = null;
             try
             {
                 RedisValue value = _db.SetPop(RedisConst.Redis_Queue_Convert);
                 if (!value.IsNullOrEmpty)
                 {
                     // 如果获取到转换队列中相关的任务,那么将消息队列中的转换任务加入到执行队列中
-                    valueStr = value.ToString();
-                    RemoteConvertJob job = JsonConvert.DeserializeObject<RemoteConvertJob>(valueStr);
+                    valueStr = value.ToString(); 
+                    job = JsonConvert.DeserializeObject<RemoteConvertJob>(valueStr);
                     ConversionConfig conversionConfig = new ConversionConfig
                     {
                         configName = "Redis",
@@ -160,17 +169,12 @@ namespace AirdPro.Redis
                     }
 
                     JobInfo jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
+                    jobInfo.fromRedis = true;
+                    jobInfo.remoteId = job.remoteId;
                     ListViewItem item = jobInfo.BuildItem();
-                    if (!ConvertTaskManager.GetInstance().JobTable.Contains(jobInfo.jobId))
-                    {
-                        Program.conversionForm.lvFileList.Items.Add(item);
-                        ConvertTaskManager.GetInstance().PushJob(jobInfo);
-                        needToExecute = true;
-                    }
-                    job.consumeIP = NetworkUtil.getHostIP();
-                    job.consumeTime = DateTime.Now.ToString();
-                    string jobStr = JsonConvert.SerializeObject(job);
-                    PublishJob(RedisConst.Redis_Queue_Converting, jobStr);
+                    Program.conversionForm.lvFileList.Items.Add(item);
+                    ConvertTaskManager.GetInstance().PushJob(jobInfo);
+                    needToExecute = true;
                 }
             }
             catch (Exception)
@@ -178,13 +182,18 @@ namespace AirdPro.Redis
                 //出现异常的情况下需要将消息会退给Redis,方便下一次重试
                 if (valueStr != null)
                 {
-                    _db.SetAdd(RedisConst.Redis_Queue_Convert, valueStr);
+                    PublishJob(job);
+                    RemoveConvertingJob(job.remoteId);
                 }
             }
 
-            //如果在Redis获取到了相关的转换任务
+            //如果顺利从Redis获取分布式任务,则需暂停本地的任务获取,直至该任务转换完毕,每次仅从Redis获取一个转换任务
             if (needToExecute)
             {
+                Program.redisForm.consumeTimer.Stop();
+                
+                //开始本地转换任务前,需要将本任务的执行信息同步到Redis
+                AddConvertingJob(job);
                 Program.conversionForm.DoConvert();
             }
         }
@@ -227,10 +236,38 @@ namespace AirdPro.Redis
             _db.KeyDelete(RedisConst.Redis_Server_Info_List);
         }
 
-        public void PublishJob(string key, string jobStr)
+        public void PublishJob(RemoteConvertJob job)
         {
             if (!Check()) return;
-            _db.SetAdd(key, jobStr);
+            Guid uuid = Guid.NewGuid();
+            job.remoteId = uuid.ToString();
+            string jobStr = JsonConvert.SerializeObject(job, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            _db.SetAdd(RedisConst.Redis_Queue_Convert, jobStr);
+        }
+
+        public void AddConvertingJob(RemoteConvertJob job)
+        {
+            if (!Check()) return;
+            job.consumeIP = NetworkUtil.getHostIP();
+            job.consumeTime = DateTime.Now.ToString();
+            string jobStr = JsonConvert.SerializeObject(job);
+            _db.HashSet(RedisConst.Redis_Queue_Converting, job.remoteId, jobStr);
+        }
+
+        public void RemoveConvertingJob(string jobId)
+        {
+            if (!Check()) return;
+            try
+            {
+                bool result = _db.HashDelete(RedisConst.Redis_Queue_Converting, jobId);
+                Console.WriteLine("删除"+result+".JobId:"+jobId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("删除异常："+e.Message);
+            }
+           
+           
         }
 
         /**
@@ -256,14 +293,32 @@ namespace AirdPro.Redis
         /**
          * 获取局域网内所有已经发布的任务列表
          */
-        public List<RemoteConvertJob> GetJobList(string key)
+        public List<RemoteConvertJob> GetTodoJobs()
         {
             List<RemoteConvertJob> jobStrList = new List<RemoteConvertJob>();
             if (!Check()) return jobStrList;
-            RedisValue[] jobs = _db.SetMembers(key);
+            RedisValue[] jobs = _db.SetMembers(RedisConst.Redis_Queue_Convert);
             foreach (RedisValue jobValue in jobs)
             {
                 string jobStr = jobValue.ToString();
+                RemoteConvertJob job = JsonConvert.DeserializeObject<RemoteConvertJob>(jobStr);
+                jobStrList.Add(job);
+            }
+
+            return jobStrList;
+        }
+        
+        /**
+         * 获取局域网内所有已经发布的任务列表
+         */
+        public List<RemoteConvertJob> GetConvertingJobs()
+        {
+            List<RemoteConvertJob> jobStrList = new List<RemoteConvertJob>();
+            if (!Check()) return jobStrList;
+            var jobs = _db.HashGetAll(RedisConst.Redis_Queue_Converting);
+            foreach (var entry in jobs)
+            {
+                string jobStr = entry.Value.ToString();
                 RemoteConvertJob job = JsonConvert.DeserializeObject<RemoteConvertJob>(jobStr);
                 jobStrList.Add(job);
             }

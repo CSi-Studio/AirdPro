@@ -1,14 +1,7 @@
-﻿using AirdPro.Domains;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AirdPro.Algorithms;
 using AirdPro.Constants;
-using AirdSDK.Compressor;
+using AirdPro.Domains;
 
 namespace AirdPro.Converters
 {

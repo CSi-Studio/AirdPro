@@ -142,6 +142,7 @@ namespace AirdPro.Forms
                 return false;
             }
 
+            //
             if (local)
             {
                 foreach (string path in filePathList)
@@ -154,10 +155,7 @@ namespace AirdPro.Forms
                 foreach (string path in filePathList)
                 {
                     RemoteConvertJob remoteJob = new RemoteConvertJob(path, outputPath, airdType, config);
-                    Guid uuid = Guid.NewGuid();
-                    remoteJob.jobId = uuid.ToString();
-                    string jobStr = JsonConvert.SerializeObject(remoteJob,new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                    RedisClient.GetInstance().PublishJob(RedisConst.Redis_Queue_Convert, jobStr);
+                    RedisClient.Instance.PublishJob(remoteJob);
                 }
             }
             
@@ -340,7 +338,7 @@ namespace AirdPro.Forms
 
         private void imgBtnPublish_BtnClick(object sender, EventArgs e)
         {
-            if (RedisClient.GetInstance().Check())
+            if (RedisClient.Instance.Check())
             {
                 bool addResult = AddToList(false);
                 if (addResult)

@@ -15,7 +15,7 @@ namespace AirdPro.Domains
 {
     public class RemoteConvertJob
     {
-        public string jobId;
+        public string remoteId;
         public string sourcePath;
         public string targetPath;
         public string? type = JobInfo.AutoType;

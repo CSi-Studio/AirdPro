@@ -27,8 +27,10 @@ namespace AirdPro.Domains
     {
         public const string AutoType = "Auto";
 
-        //以C:/data/plasma.wiff为例
+        public bool fromRedis = false;
 
+        public string remoteId;
+        
         //使用NextId作为自增函数
         public string jobId;
 

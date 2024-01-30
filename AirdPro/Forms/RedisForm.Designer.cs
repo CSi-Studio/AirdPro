@@ -49,16 +49,17 @@
             this.mainOperation = new System.Windows.Forms.SplitContainer();
             this.mainList = new System.Windows.Forms.SplitContainer();
             this.lvServers = new System.Windows.Forms.ListView();
-            this.colIP = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.tbConsole = new System.Windows.Forms.TextBox();
+            this.colIP = new System.Windows.Forms.ColumnHeader();
             this.lvJobs = new System.Windows.Forms.ListView();
-            this.colJobId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colScene = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colInput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colOutput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colConsumeIP = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colJobId = new System.Windows.Forms.ColumnHeader();
+            this.colType = new System.Windows.Forms.ColumnHeader();
+            this.colScene = new System.Windows.Forms.ColumnHeader();
+            this.colInput = new System.Windows.Forms.ColumnHeader();
+            this.colOutput = new System.Windows.Forms.ColumnHeader();
+            this.colConsumeIP = new System.Windows.Forms.ColumnHeader();
+            this.colTime = new System.Windows.Forms.ColumnHeader();
+            this.tbConsole = new System.Windows.Forms.TextBox();
+            this.consumeTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.mainView)).BeginInit();
             this.mainView.Panel1.SuspendLayout();
             this.mainView.Panel2.SuspendLayout();
@@ -136,7 +137,7 @@
             this.btnConsume.Name = "btnConsume";
             this.btnConsume.Size = new System.Drawing.Size(157, 26);
             this.btnConsume.TabIndex = 155;
-            this.btnConsume.Text = "Start Consuming Task";
+            this.btnConsume.Text = "Start Consume Jobs";
             this.btnConsume.UseVisualStyleBackColor = true;
             this.btnConsume.Click += new System.EventHandler(this.btnConsume_Click);
             // 
@@ -189,8 +190,7 @@
             // 
             // lblStatus
             // 
-            this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStatus.BackColor = System.Drawing.Color.Red;
             this.lblStatus.Location = new System.Drawing.Point(8, 33);
             this.lblStatus.Name = "lblStatus";
@@ -232,8 +232,7 @@
             // 
             // tbRedisHost
             // 
-            this.tbRedisHost.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.tbRedisHost.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left)));
             this.tbRedisHost.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tbRedisHost.Location = new System.Drawing.Point(74, 7);
             this.tbRedisHost.Margin = new System.Windows.Forms.Padding(4);
@@ -300,8 +299,7 @@
             // 
             // lvServers
             // 
-            this.lvServers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.colIP});
+            this.lvServers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.colIP });
             this.lvServers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvServers.HideSelection = false;
             this.lvServers.Location = new System.Drawing.Point(0, 0);
@@ -318,28 +316,9 @@
             this.colIP.Text = "IP";
             this.colIP.Width = 400;
             // 
-            // tbConsole
-            // 
-            this.tbConsole.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbConsole.Location = new System.Drawing.Point(3, 3);
-            this.tbConsole.Multiline = true;
-            this.tbConsole.Name = "tbConsole";
-            this.tbConsole.ReadOnly = true;
-            this.tbConsole.Size = new System.Drawing.Size(972, 172);
-            this.tbConsole.TabIndex = 0;
-            // 
             // lvJobs
             // 
-            this.lvJobs.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.colJobId,
-            this.colType,
-            this.colScene,
-            this.colInput,
-            this.colOutput,
-            this.colConsumeIP,
-            this.colTime});
+            this.lvJobs.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.colJobId, this.colType, this.colScene, this.colInput, this.colOutput, this.colConsumeIP, this.colTime });
             this.lvJobs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvJobs.FullRowSelect = true;
             this.lvJobs.HideSelection = false;
@@ -386,6 +365,21 @@
             this.colTime.Text = "Time";
             this.colTime.Width = 150;
             // 
+            // tbConsole
+            // 
+            this.tbConsole.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbConsole.Location = new System.Drawing.Point(3, 3);
+            this.tbConsole.Multiline = true;
+            this.tbConsole.Name = "tbConsole";
+            this.tbConsole.ReadOnly = true;
+            this.tbConsole.Size = new System.Drawing.Size(972, 172);
+            this.tbConsole.TabIndex = 0;
+            // 
+            // consumeTimer
+            // 
+            this.consumeTimer.Interval = 3000;
+            this.consumeTimer.Tick += new System.EventHandler(this.consumeTimer_Tick);
+            // 
             // RedisForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -420,8 +414,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.mainList)).EndInit();
             this.mainList.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
+
+        public System.Windows.Forms.Timer consumeTimer;
 
         private System.Windows.Forms.ColumnHeader colTime;
 
