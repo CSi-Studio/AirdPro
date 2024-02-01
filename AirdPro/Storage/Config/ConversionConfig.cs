@@ -69,6 +69,11 @@ namespace AirdPro.Storage.Config
         public string scene = Scene.Computation;
 
         /**
+         * 在进行转换前将文件拷贝至节点本地
+         */
+        public bool copyToLocal = false;
+        
+        /**
          * 用于mz压缩的int数组压缩方法
          */
         public SortedIntCompType mzIntComp = SortedIntCompType.IVB;

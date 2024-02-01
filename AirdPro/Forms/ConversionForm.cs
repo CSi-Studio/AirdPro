@@ -219,7 +219,7 @@ namespace AirdPro.Forms
 
             //以下代码的顺序不能换,必须先Show,再执行showConfig操作
             Program.configListForm.Show();
-            Program.configListForm.showConfig(Constants.Tag.Empty, config);
+            Program.configListForm.ShowConfig(Constants.Tag.Empty, config);
             Program.configListForm.BringToFront();
         }
 

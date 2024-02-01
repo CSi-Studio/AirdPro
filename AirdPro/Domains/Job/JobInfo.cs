@@ -27,7 +27,11 @@ namespace AirdPro.Domains
     {
         public const string AutoType = "Auto";
 
+        //这个任务是否来自于Redis
         public bool fromRedis = false;
+
+        //源文件是否需要拷贝到本地后再进行转换,默认不拷贝
+        public bool copyToLocal = false;
 
         public string remoteId;
         

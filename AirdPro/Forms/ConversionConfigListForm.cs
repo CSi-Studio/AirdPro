@@ -63,7 +63,7 @@ namespace AirdPro.Forms
                 cbMobiByteComp.Items.Add(byteCompType);
             }
 
-            showConfig("", new ConversionConfig());
+            ShowConfig("", new ConversionConfig());
             numMaxTasks.Text = Settings.Default.MaxConversionTasks.ToString();
         }
 
@@ -106,12 +106,13 @@ namespace AirdPro.Forms
         }
 
         //设置所有参数
-        private ConversionConfig buildConfigInfo()
+        private ConversionConfig BuildConfigInfo()
         {
             ConversionConfig config = new ConversionConfig();
             config.mzPrecision = (int)Math.Pow(10, int.Parse(cbConfigMzPrecision.Text));
             config.ignoreZeroIntensity = cbConfigIsZeroIntensityIgnore.Checked;
             config.centroid = cbConfigIsCentroid.Checked;
+            config.copyToLocal = cbCopyToLocal.Checked;
             config.scene = cbScene.Text;
             config.configName = tbNameConfig.Text;
             //如果不是自动决策的,则会使用配置的组合压缩器
@@ -160,7 +161,7 @@ namespace AirdPro.Forms
                 return;
             }
 
-            ConversionConfig config = buildConfigInfo();
+            ConversionConfig config = BuildConfigInfo();
             Program.conversionConfigHandler.saveConfig(tbNameConfig.Text, config);
             Settings.Default.MaxConversionTasks = (int)numMaxTasks.Value;
         }
@@ -169,7 +170,7 @@ namespace AirdPro.Forms
         //不存储进内存，直接应用于当前文件
         private void btnApply_Click(object sender, EventArgs e)
         {
-            ConversionConfig config = buildConfigInfo();
+            ConversionConfig config = BuildConfigInfo();
             JobInfo jobInfo = (JobInfo)(item.Tag);
             jobInfo.config = config;
             if (jobInfo.status.Equals(ProcessingStatus.RUNNING))
@@ -189,11 +190,11 @@ namespace AirdPro.Forms
             if (lvConfigList.SelectedItems.Count == 1)
             {
                 string configName = lvConfigList.SelectedItems[0].Text;
-                showConfig(configName, Program.conversionConfigHandler.configMap[configName]);
+                ShowConfig(configName, Program.conversionConfigHandler.configMap[configName]);
             }
         }
 
-        public void showConfig(string name, ConversionConfig config)
+        public void ShowConfig(string name, ConversionConfig config)
         {
             tbNameConfig.Text = name;
             cbScene.Text = config.scene;
@@ -208,7 +209,7 @@ namespace AirdPro.Forms
             cbIntByteComp.SelectedItem = config.intByteComp.ToString();
             cbMobiIntComp.SelectedItem = config.mobiIntComp.ToString();
             cbMobiByteComp.SelectedItem = config.mobiByteComp.ToString();
-
+            cbCopyToLocal.Checked = config.copyToLocal;
             tableAutoDecision.Enabled = !config.autoDesicion;
             cbAutoDecision.Checked = config.autoDesicion;
             cbCompressedIndex.Checked = config.compressedIndex;

@@ -20,6 +20,7 @@ namespace AirdPro.Domains
         public string targetPath;
         public string? type = JobInfo.AutoType;
         public int? mzPrecision;
+        public bool copyToLocal = false;
         public string creator;
         public string suffix;
         public string? scene = Scene.Computation;
@@ -59,6 +60,7 @@ namespace AirdPro.Domains
             intByteComp = config.intByteComp.ToString();
             mobiIntComp = config.mobiIntComp.ToString();
             mobiByteComp = config.mobiByteComp.ToString();
+            copyToLocal = config.copyToLocal;
         }
     }
 }

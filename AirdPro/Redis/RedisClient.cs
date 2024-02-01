@@ -10,12 +10,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Windows.Forms;
 using AirdPro.Asyncs;
 using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdPro.Storage.Config;
+using AirdPro.Utils;
 using AirdSDK.Enums;
 using AirdSDK.Utils;
 using HZH_Controls;
@@ -34,6 +34,7 @@ namespace AirdPro.Redis
         private static int _messageNum = 0;
         public const int HeartBeatTime = 3; //客户端心跳时间,单位:秒
         private static readonly object locker = new object();
+
         private RedisClient()
         {
         }
@@ -52,6 +53,7 @@ namespace AirdPro.Redis
                         }
                     }
                 }
+
                 return _instance;
             }
         }
@@ -87,7 +89,7 @@ namespace AirdPro.Redis
 
             return false;
         }
-        
+
         //从Redis中读取相关的任务消息并转化为本地任务JobInfo
         public void Consume()
         {
@@ -101,14 +103,15 @@ namespace AirdPro.Redis
                 if (!value.IsNullOrEmpty)
                 {
                     // 如果获取到转换队列中相关的任务,那么将消息队列中的转换任务加入到执行队列中
-                    valueStr = value.ToString(); 
+                    valueStr = value.ToString();
                     job = JsonConvert.DeserializeObject<RemoteConvertJob>(valueStr);
                     ConversionConfig conversionConfig = new ConversionConfig
                     {
                         configName = "Redis",
                         suffix = job.suffix,
                         ignoreZeroIntensity = job.ignoreZeroIntensity,
-                        creator = job.creator
+                        creator = job.creator,
+                        copyToLocal = job.copyToLocal
                     };
 
                     if (job.autoDesicion != null)
@@ -191,19 +194,21 @@ namespace AirdPro.Redis
             if (needToExecute)
             {
                 Program.redisForm.consumeTimer.Stop();
-                
+
                 //开始本地转换任务前,需要将本任务的执行信息同步到Redis
                 AddConvertingJob(job);
                 Program.conversionForm.DoConvert();
             }
         }
-        
+
         public void RegisterOrUpdate()
         {
             if (!Check()) return;
-            _db.HashSet(RedisConst.Redis_Server_List, NetworkUtil.getHostIP(), DateTime.Now.ToOADate());
+            _db.HashSet(RedisConst.Redis_Server_List, HttpUtil.GetMachineName() + "-" + HttpUtil.GetIPV4List(),
+                DateTime.Now.ToOADate());
             string clientInfo = ClientInfo.toJSON();
-            _db.HashSet(RedisConst.Redis_Server_Info_List, NetworkUtil.getHostIP(), clientInfo);
+            _db.HashSet(RedisConst.Redis_Server_Info_List, HttpUtil.GetMachineName() + "-" + HttpUtil.GetIPV4List(),
+                clientInfo);
         }
 
         public void Disconnect()
@@ -241,7 +246,8 @@ namespace AirdPro.Redis
             if (!Check()) return;
             Guid uuid = Guid.NewGuid();
             job.remoteId = uuid.ToString();
-            string jobStr = JsonConvert.SerializeObject(job, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            string jobStr = JsonConvert.SerializeObject(job,
+                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             _db.SetAdd(RedisConst.Redis_Queue_Convert, jobStr);
         }
 
@@ -260,14 +266,12 @@ namespace AirdPro.Redis
             try
             {
                 bool result = _db.HashDelete(RedisConst.Redis_Queue_Converting, jobId);
-                Console.WriteLine("删除"+result+".JobId:"+jobId);
+                Console.WriteLine("删除" + result + ".JobId:" + jobId);
             }
             catch (Exception e)
             {
-                Console.WriteLine("删除异常："+e.Message);
+                Console.WriteLine("删除异常：" + e.Message);
             }
-           
-           
         }
 
         /**
@@ -289,7 +293,7 @@ namespace AirdPro.Redis
 
             return servers;
         }
-        
+
         /**
          * 获取局域网内所有已经发布的任务列表
          */
@@ -307,7 +311,7 @@ namespace AirdPro.Redis
 
             return jobStrList;
         }
-        
+
         /**
          * 获取局域网内所有已经发布的任务列表
          */

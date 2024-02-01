@@ -1,10 +1,10 @@
 ﻿/*
  * Copyright (c) 2020 CSi Studio
  * AirdSDK and AirdPro are licensed under Mulan PSL v2.
- * You can use this software according to the terms and conditions of the Mulan PSL v2. 
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
- *          http://license.coscl.org.cn/MulanPSL2 
- * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.  
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
  * See the Mulan PSL v2 for more details.
  */
 
@@ -12,11 +12,14 @@ using System.Net;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AirdPro.Repository.ProteomeXchange;
 using FluentFTP;
+using HZH_Controls;
 
 namespace AirdPro.Utils
 {
@@ -45,7 +48,7 @@ namespace AirdPro.Utils
 
         public static List<FtpListItem> ListAllFtpFiles(FtpClient client, string remoteDir, int deep)
         {
-            List<FtpListItem> files = new List<FtpListItem> ();
+            List<FtpListItem> files = new List<FtpListItem>();
             try
             {
                 FtpListItem[] items = client.GetListing(remoteDir);
@@ -58,7 +61,6 @@ namespace AirdPro.Utils
                         {
                             //files.AddRange(listAllFtpFiles(client, item.FullName, deep - 1));
                         }
-                        
                     }
                     else if (item.Type.ToString().Equals("File"))
                     {
@@ -70,6 +72,7 @@ namespace AirdPro.Utils
             {
                 MessageBox.Show("FTP Connect Failed:" + e.Message);
             }
+
             return files;
         }
 
@@ -82,7 +85,7 @@ namespace AirdPro.Utils
                 ftpRequest.Timeout = 5000;
                 WebResponse ftpResponse = ftpRequest.GetResponse();
                 StreamReader reader = new StreamReader(ftpResponse.GetResponseStream()!);
-                
+
                 List<string> paths = new List<string>();
                 while (true)
                 {
@@ -93,7 +96,7 @@ namespace AirdPro.Utils
                     }
 
                     string[] fileNamePath = fileName.Split('/');
-                    paths.Add(ftp+"/"+fileNamePath[fileNamePath.Length-1]);
+                    paths.Add(ftp + "/" + fileNamePath[fileNamePath.Length - 1]);
                 }
 
                 return paths;
@@ -186,6 +189,30 @@ namespace AirdPro.Utils
             }
 
             return null;
+        }
+
+        public static string GetIPV4List()
+        {
+            List<string> ipList = new List<string>();
+            foreach (IPAddress address in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
+            {
+                if (address.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    string ip = Convert.ToString(address);
+                    if (ip.IsEmpty())
+                    {
+                        continue;
+                    }
+                    ipList.Add(ip + ";");
+                }
+            }
+
+            return string.Join(";", ipList);
+        }
+
+        public static string GetMachineName()
+        {
+            return Environment.MachineName;
         }
     }
 }
