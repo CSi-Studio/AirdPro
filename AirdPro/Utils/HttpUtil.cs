@@ -10,6 +10,7 @@
 
 using System.Net;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -203,9 +204,10 @@ namespace AirdPro.Utils
                     {
                         continue;
                     }
-                    ipList.Add(ip + ";");
+                    ipList.Add(ip);
                 }
             }
+            ipList.Sort();
 
             return string.Join(";", ipList);
         }
@@ -213,6 +215,11 @@ namespace AirdPro.Utils
         public static string GetMachineName()
         {
             return Environment.MachineName;
+        }
+
+        public static string GetServerName()
+        {
+            return Environment.MachineName + "(" + GetIPV4List()+")";
         }
     }
 }

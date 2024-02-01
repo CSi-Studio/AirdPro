@@ -204,10 +204,10 @@ namespace AirdPro.Redis
         public void RegisterOrUpdate()
         {
             if (!Check()) return;
-            _db.HashSet(RedisConst.Redis_Server_List, HttpUtil.GetMachineName() + "-" + HttpUtil.GetIPV4List(),
+            _db.HashSet(RedisConst.Redis_Server_List, HttpUtil.GetServerName(),
                 DateTime.Now.ToOADate());
             string clientInfo = ClientInfo.toJSON();
-            _db.HashSet(RedisConst.Redis_Server_Info_List, HttpUtil.GetMachineName() + "-" + HttpUtil.GetIPV4List(),
+            _db.HashSet(RedisConst.Redis_Server_Info_List, HttpUtil.GetServerName(),
                 clientInfo);
         }
 
