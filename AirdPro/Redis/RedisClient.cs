@@ -111,7 +111,6 @@ namespace AirdPro.Redis
                         suffix = job.suffix,
                         ignoreZeroIntensity = job.ignoreZeroIntensity,
                         creator = job.creator,
-                        copyToLocal = job.copyToLocal
                     };
 
                     if (job.autoDesicion != null)

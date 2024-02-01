@@ -84,7 +84,6 @@
             this.lblMaxTasks = new System.Windows.Forms.Label();
             this.numMaxTasks = new System.Windows.Forms.NumericUpDown();
             this.btnGlobalSettingSave = new System.Windows.Forms.Button();
-            this.cbCopyToLocal = new System.Windows.Forms.CheckBox();
             this.contextMenu.SuspendLayout();
             this.tableAutoDecision.SuspendLayout();
             this.tableDeciderWeight.SuspendLayout();
@@ -737,24 +736,11 @@
             this.btnGlobalSettingSave.UseVisualStyleBackColor = true;
             this.btnGlobalSettingSave.Click += new System.EventHandler(this.btnGlobalSettingSave_Click);
             // 
-            // cbCopyToLocal
-            // 
-            this.cbCopyToLocal.AutoSize = true;
-            this.cbCopyToLocal.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cbCopyToLocal.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cbCopyToLocal.Location = new System.Drawing.Point(787, 70);
-            this.cbCopyToLocal.Name = "cbCopyToLocal";
-            this.cbCopyToLocal.Size = new System.Drawing.Size(110, 21);
-            this.cbCopyToLocal.TabIndex = 162;
-            this.cbCopyToLocal.Text = "Copy To Local";
-            this.cbCopyToLocal.UseVisualStyleBackColor = true;
-            // 
             // ConversionConfigListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(972, 600);
-            this.Controls.Add(this.cbCopyToLocal);
             this.Controls.Add(this.btnGlobalSettingSave);
             this.Controls.Add(this.lblMaxTasks);
             this.Controls.Add(this.numMaxTasks);
@@ -794,8 +780,6 @@
             this.ResumeLayout(false);
             this.PerformLayout();
         }
-
-        public System.Windows.Forms.CheckBox cbCopyToLocal;
 
         private System.Windows.Forms.Button btnGlobalSettingSave;
 

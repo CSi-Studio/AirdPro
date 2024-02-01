@@ -31,6 +31,7 @@ using pwiz.CLI.cv;
 using pwiz.CLI.data;
 using pwiz.CLI.msdata;
 using Activator = AirdPro.Constants.Activator;
+using FileUtil = AirdPro.Utils.FileUtil;
 using Software = AirdSDK.Beans.Software;
 using Spectrum = pwiz.CLI.msdata.Spectrum;
 
@@ -68,6 +69,8 @@ namespace AirdPro.Converters
         public Dictionary<string, AcqCompound>
             MrmCompoundDict = new(); //用于MRM采集模式下,预存储化合物名称与离子对的词典,当前仅适用于Agilent的.d文件夹类型的质谱文件
 
+        public bool copyToLocal = false; //是否拷贝到本地
+
         public override void Init(JobInfo jobInfo)
         {
             JobInfo = jobInfo;
@@ -99,6 +102,7 @@ namespace AirdPro.Converters
         public override void DoConvert()
         {
             Start();
+            CopyFile();
             using (MSDataList msdList = ReadVendorFile())
             {
                 try
@@ -497,6 +501,107 @@ namespace AirdPro.Converters
                 index.mobilities.Add(ts.mobilityArrayBytes.Length);
                 StartPosition += ts.mobilityArrayBytes.Length;
                 AirdStream.Write(ts.mobilityArrayBytes, 0, ts.mobilityArrayBytes.Length);
+            }
+        }
+
+        protected void CopyFile()
+        {
+            JobInfo.Log(Tag.Copy_File_To_Local, Status.Copying);
+            string driveLetter = Path.GetPathRoot(JobInfo.inputPath);
+            DriveInfo driveInfo = new DriveInfo(driveLetter);
+            if (driveInfo.DriveType == DriveType.Fixed)
+            {
+                return;
+            }
+
+            copyToLocal = true;
+            switch (JobInfo.format)
+            {
+                case FileFormat.WIFF:
+                case FileFormat.WIFF2:
+                    FileInfo wiff = new FileInfo(JobInfo.inputPath);
+                    if (wiff.Exists)
+                    {
+                        File.Copy(wiff.FullName, Path.GetTempPath() + wiff.Name);
+                    }
+
+                    if (JobInfo.inputPath.ToLower().EndsWith(".wiff"))
+                    {
+                        FileInfo wiff2 = new FileInfo(JobInfo.inputPath.Replace("wiff", "wiff2"));
+                        if (wiff2.Exists)
+                        {
+                            File.Copy(wiff2.FullName, Path.GetTempPath() + wiff2.Name);
+                        }
+                    }
+                    else
+                    {
+                        FileInfo wiff1 = new FileInfo(JobInfo.inputPath.Replace("wiff2", "wiff"));
+                        if (wiff1.Exists)
+                        {
+                            File.Copy(wiff1.FullName, Path.GetTempPath() + wiff1.Name);
+                        }
+                    }
+
+                    FileInfo mtd = new FileInfo(JobInfo.inputPath + ".mtd");
+                    if (mtd.Exists)
+                    {
+                        File.Copy(mtd.FullName, Path.GetTempPath() + mtd.Name);
+                    }
+
+                    ;
+                    FileInfo scan = new FileInfo(JobInfo.inputPath + ".scan");
+                    if (scan.Exists)
+                    {
+                        File.Copy(scan.FullName, Path.GetTempPath() + scan.Name);
+                    }
+
+                    FileInfo timeseries = new FileInfo(JobInfo.inputPath + ".timeseries.data");
+                    if (timeseries.Exists)
+                    {
+                        File.Copy(timeseries.FullName, Path.GetTempPath() + timeseries.Name);
+                    }
+
+                    break;
+                case FileFormat.RAW:
+                    FileInfo raw = new FileInfo(JobInfo.inputPath);
+                    if (raw.Exists)
+                    {
+                        File.Copy(raw.FullName, Path.GetTempPath() + raw.Name);
+                    }
+
+                    break;
+                case FileFormat.mzML:
+                    FileInfo mzML = new FileInfo(JobInfo.inputPath);
+                    if (mzML.Exists)
+                    {
+                        File.Copy(mzML.FullName, Path.GetTempPath() + mzML.Name);
+                    }
+
+                    break;
+                case FileFormat.mzXML:
+                    FileInfo mzXML = new FileInfo(JobInfo.inputPath);
+                    if (mzXML.Exists)
+                    {
+                        File.Copy(mzXML.FullName, Path.GetTempPath() + mzXML.Name);
+                    }
+
+                    break;
+                case FileFormat.D:
+                    DirectoryInfo di = new DirectoryInfo(JobInfo.inputPath);
+                    if (di.Exists)
+                    {
+                        FileUtil.CopyFolder(di.FullName, Path.GetTempPath() + di.Name);
+                    }
+
+                    break;
+                default:
+                    FileInfo file = new FileInfo(JobInfo.inputPath);
+                    if (file.Exists)
+                    {
+                        File.Copy(file.FullName, Path.GetTempPath() + file.Name);
+                    }
+
+                    break;
             }
         }
 
@@ -1113,7 +1218,7 @@ namespace AirdPro.Converters
                     index.filterStrings = null;
                 }
             }
-            
+
             airdInfo.mobiInfo = MobiInfo;
             //Scan index and window range info
             airdInfo.rangeList = Ranges;

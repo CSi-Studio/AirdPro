@@ -12,6 +12,7 @@ namespace AirdPro.Constants
 {
     public static class Status
     {
+        public static string Copying = "Copying";
         public static string Prepare = "Prepare";
         public static string Init = "Init";
         public static string Waiting = "Waiting";

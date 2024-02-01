@@ -112,7 +112,6 @@ namespace AirdPro.Forms
             config.mzPrecision = (int)Math.Pow(10, int.Parse(cbConfigMzPrecision.Text));
             config.ignoreZeroIntensity = cbConfigIsZeroIntensityIgnore.Checked;
             config.centroid = cbConfigIsCentroid.Checked;
-            config.copyToLocal = cbCopyToLocal.Checked;
             config.scene = cbScene.Text;
             config.configName = tbNameConfig.Text;
             //如果不是自动决策的,则会使用配置的组合压缩器
@@ -209,7 +208,6 @@ namespace AirdPro.Forms
             cbIntByteComp.SelectedItem = config.intByteComp.ToString();
             cbMobiIntComp.SelectedItem = config.mobiIntComp.ToString();
             cbMobiByteComp.SelectedItem = config.mobiByteComp.ToString();
-            cbCopyToLocal.Checked = config.copyToLocal;
             tableAutoDecision.Enabled = !config.autoDesicion;
             cbAutoDecision.Checked = config.autoDesicion;
             cbCompressedIndex.Checked = config.compressedIndex;
