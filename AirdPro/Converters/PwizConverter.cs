@@ -70,7 +70,7 @@ namespace AirdPro.Converters
             MrmCompoundDict = new(); //用于MRM采集模式下,预存储化合物名称与离子对的词典,当前仅适用于Agilent的.d文件夹类型的质谱文件
 
         public bool copyToLocal = false; //是否拷贝到本地
-        public string tempPath = ""; //本地的临时文件
+        public List<string> tempFiles = []; //本地的临时文件路径
 
         public override void Init(JobInfo jobInfo)
         {
@@ -103,7 +103,7 @@ namespace AirdPro.Converters
         public override void DoConvert()
         {
             Start();
-            CopyFile();
+            CopyFile(); //如果检测到是网络挂在磁盘,则首先拷贝到本地以后再进行转换
             using (MSDataList msdList = ReadVendorFile())
             {
                 try
@@ -513,9 +513,11 @@ namespace AirdPro.Converters
             {
                 return;
             }
+
             JobInfo.refreshReport = true;
             JobInfo.Log(Tag.Copy_File_To_Local, Status.Copying);
             copyToLocal = true;
+            string tempPath = Path.GetTempPath();
             switch (JobInfo.format)
             {
                 case FileFormat.WIFF:
@@ -523,7 +525,8 @@ namespace AirdPro.Converters
                     FileInfo wiff = new FileInfo(JobInfo.inputPath);
                     if (wiff.Exists)
                     {
-                        File.Copy(wiff.FullName, Path.GetTempPath() + wiff.Name);
+                        File.Copy(wiff.FullName, tempPath + wiff.Name);
+                        tempFiles.Add(tempPath + wiff.Name);
                     }
 
                     if (JobInfo.inputPath.ToLower().EndsWith(".wiff"))
@@ -531,7 +534,8 @@ namespace AirdPro.Converters
                         FileInfo wiff2 = new FileInfo(JobInfo.inputPath.Replace("wiff", "wiff2"));
                         if (wiff2.Exists)
                         {
-                            File.Copy(wiff2.FullName, Path.GetTempPath() + wiff2.Name);
+                            File.Copy(wiff2.FullName, tempPath + wiff2.Name);
+                            tempFiles.Add(tempPath + wiff2.Name);
                         }
                     }
                     else
@@ -539,58 +543,66 @@ namespace AirdPro.Converters
                         FileInfo wiff1 = new FileInfo(JobInfo.inputPath.Replace("wiff2", "wiff"));
                         if (wiff1.Exists)
                         {
-                            File.Copy(wiff1.FullName, Path.GetTempPath() + wiff1.Name);
+                            File.Copy(wiff1.FullName, tempPath + wiff1.Name);
+                            tempFiles.Add(tempPath + wiff1.Name);
                         }
                     }
 
                     FileInfo mtd = new FileInfo(JobInfo.inputPath + ".mtd");
                     if (mtd.Exists)
                     {
-                        File.Copy(mtd.FullName, Path.GetTempPath() + mtd.Name);
+                        File.Copy(mtd.FullName, tempPath + mtd.Name);
+                        tempFiles.Add(tempPath + mtd.Name);
                     }
 
                     FileInfo scan = new FileInfo(JobInfo.inputPath + ".scan");
                     if (scan.Exists)
                     {
-                        File.Copy(scan.FullName, Path.GetTempPath() + scan.Name);
+                        File.Copy(scan.FullName, tempPath + scan.Name);
+                        tempFiles.Add(tempPath + scan.Name);
                     }
 
                     FileInfo timeseries = new FileInfo(JobInfo.inputPath + ".timeseries.data");
                     if (timeseries.Exists)
                     {
-                        File.Copy(timeseries.FullName, Path.GetTempPath() + timeseries.Name);
+                        File.Copy(timeseries.FullName, tempPath + timeseries.Name);
+                        tempFiles.Add(tempPath + timeseries.Name);
                     }
-                    
+
                     break;
                 case FileFormat.RAW:
                     FileInfo raw = new FileInfo(JobInfo.inputPath);
                     if (raw.Exists)
                     {
-                        File.Copy(raw.FullName, Path.GetTempPath() + raw.Name);
+                        File.Copy(raw.FullName, tempPath + raw.Name);
+                        tempFiles.Add(tempPath + raw.Name);
                     }
-                    
+
                     break;
                 case FileFormat.mzML:
                     FileInfo mzML = new FileInfo(JobInfo.inputPath);
                     if (mzML.Exists)
                     {
                         File.Copy(mzML.FullName, Path.GetTempPath() + mzML.Name);
+                        tempFiles.Add(tempPath + mzML.Name);
                     }
-                    
+
                     break;
                 case FileFormat.mzXML:
                     FileInfo mzXML = new FileInfo(JobInfo.inputPath);
                     if (mzXML.Exists)
                     {
                         File.Copy(mzXML.FullName, Path.GetTempPath() + mzXML.Name);
+                        tempFiles.Add(tempPath + mzXML.Name);
                     }
-                    
+
                     break;
                 case FileFormat.D:
                     DirectoryInfo directory = new DirectoryInfo(JobInfo.inputPath);
                     if (directory.Exists)
                     {
                         FileUtil.CopyFolder(directory.FullName, Path.GetTempPath() + directory.Name);
+                        tempFiles.Add(tempPath + directory.Name);
                     }
 
                     break;
@@ -599,8 +611,9 @@ namespace AirdPro.Converters
                     if (file.Exists)
                     {
                         File.Copy(file.FullName, Path.GetTempPath() + file.Name);
+                        tempFiles.Add(tempPath + file.Name);
                     }
-                    
+
                     break;
             }
         }
@@ -623,7 +636,7 @@ namespace AirdPro.Converters
             if (copyToLocal)
             {
                 FileInfo file = new FileInfo(JobInfo.inputPath);
-                readerList.read(Path.GetTempPath()+file.Name, msdList, readerConfig);
+                readerList.read(Path.GetTempPath() + file.Name, msdList, readerConfig);
             }
             else
             {
