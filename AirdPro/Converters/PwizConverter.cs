@@ -70,6 +70,7 @@ namespace AirdPro.Converters
             MrmCompoundDict = new(); //用于MRM采集模式下,预存储化合物名称与离子对的词典,当前仅适用于Agilent的.d文件夹类型的质谱文件
 
         public bool copyToLocal = false; //是否拷贝到本地
+        public string tempPath = ""; //本地的临时文件
 
         public override void Init(JobInfo jobInfo)
         {
@@ -506,14 +507,14 @@ namespace AirdPro.Converters
 
         protected void CopyFile()
         {
-            JobInfo.Log(Tag.Copy_File_To_Local, Status.Copying);
             string driveLetter = Path.GetPathRoot(JobInfo.inputPath);
             DriveInfo driveInfo = new DriveInfo(driveLetter);
             if (driveInfo.DriveType == DriveType.Fixed)
             {
                 return;
             }
-
+            JobInfo.refreshReport = true;
+            JobInfo.Log(Tag.Copy_File_To_Local, Status.Copying);
             copyToLocal = true;
             switch (JobInfo.format)
             {
@@ -548,7 +549,6 @@ namespace AirdPro.Converters
                         File.Copy(mtd.FullName, Path.GetTempPath() + mtd.Name);
                     }
 
-                    ;
                     FileInfo scan = new FileInfo(JobInfo.inputPath + ".scan");
                     if (scan.Exists)
                     {
@@ -560,7 +560,7 @@ namespace AirdPro.Converters
                     {
                         File.Copy(timeseries.FullName, Path.GetTempPath() + timeseries.Name);
                     }
-
+                    
                     break;
                 case FileFormat.RAW:
                     FileInfo raw = new FileInfo(JobInfo.inputPath);
@@ -568,7 +568,7 @@ namespace AirdPro.Converters
                     {
                         File.Copy(raw.FullName, Path.GetTempPath() + raw.Name);
                     }
-
+                    
                     break;
                 case FileFormat.mzML:
                     FileInfo mzML = new FileInfo(JobInfo.inputPath);
@@ -576,7 +576,7 @@ namespace AirdPro.Converters
                     {
                         File.Copy(mzML.FullName, Path.GetTempPath() + mzML.Name);
                     }
-
+                    
                     break;
                 case FileFormat.mzXML:
                     FileInfo mzXML = new FileInfo(JobInfo.inputPath);
@@ -584,13 +584,13 @@ namespace AirdPro.Converters
                     {
                         File.Copy(mzXML.FullName, Path.GetTempPath() + mzXML.Name);
                     }
-
+                    
                     break;
                 case FileFormat.D:
-                    DirectoryInfo di = new DirectoryInfo(JobInfo.inputPath);
-                    if (di.Exists)
+                    DirectoryInfo directory = new DirectoryInfo(JobInfo.inputPath);
+                    if (directory.Exists)
                     {
-                        FileUtil.CopyFolder(di.FullName, Path.GetTempPath() + di.Name);
+                        FileUtil.CopyFolder(directory.FullName, Path.GetTempPath() + directory.Name);
                     }
 
                     break;
@@ -600,7 +600,7 @@ namespace AirdPro.Converters
                     {
                         File.Copy(file.FullName, Path.GetTempPath() + file.Name);
                     }
-
+                    
                     break;
             }
         }
@@ -620,7 +620,15 @@ namespace AirdPro.Converters
             };
 
             MSDataList msdList = new MSDataList();
-            readerList.read(JobInfo.inputPath, msdList, readerConfig);
+            if (copyToLocal)
+            {
+                FileInfo file = new FileInfo(JobInfo.inputPath);
+                readerList.read(Path.GetTempPath()+file.Name, msdList, readerConfig);
+            }
+            else
+            {
+                readerList.read(JobInfo.inputPath, msdList, readerConfig);
+            }
 
             if (msdList.Count == 0)
             {

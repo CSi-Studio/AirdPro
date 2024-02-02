@@ -59,7 +59,7 @@ namespace AirdPro.Domains
         //C:/data/plasma.wiff
         public string inputPath;
 
-        //文件本名 plasma
+        //文件本名
         public string airdFileName;
 
         //例如: D://aird
@@ -73,7 +73,7 @@ namespace AirdPro.Domains
 
         //任务运行时产生的日志
         [JsonIgnore]
-        public List<Log> logs = new List<Log>();
+        public List<Log> logs = new();
 
         //任务运行时产生的进度信息
         [JsonIgnore]
@@ -88,15 +88,18 @@ namespace AirdPro.Domains
 
         //分配一个线程终止用的token
         [JsonIgnore]
-        public CancellationTokenSource tokenSource = new CancellationTokenSource();
+        public CancellationTokenSource tokenSource = new ();
 
         //出现异常错误的时候进行重试的次数,每一个job会被自动重试2次
         public int retryTimes = 3;
 
+        //用于表示是否刷新日志界面的字段
         public bool refreshReport = true;
 
+        //用于全局自增的id字段
         public static int id = 0;
         
+        //产生全局唯一且自增的jobId
         public static string NextId()
         {
             return Interlocked.Increment(ref id)+"";

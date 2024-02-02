@@ -15,7 +15,7 @@ namespace AirdPro
     {
         private BackgroundWorker worker;
         private List<BaseItem> itemsToRead;
-        private Dictionary<string, List<BaseItem>> cache = new Dictionary<string, List<BaseItem>>();
+        private Dictionary<string, List<BaseItem>> cache = new();
         private HashSet<string> criticalPathList = null;
         public FolderFileBrowserModel()
         {
@@ -33,7 +33,7 @@ namespace AirdPro
             criticalPathList.Add(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
         }
         
-        public RootItem buildRoot(string path)
+        public RootItem BuildRoot(string path)
         {
             DirectoryInfo dir = new DirectoryInfo(path);
             RootItem item = new RootItem(path, this);
@@ -150,7 +150,7 @@ namespace AirdPro
                     items = new List<BaseItem>();
                     cache.Add("ROOT", items);
                     
-                    RootItem desktop = buildRoot(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+                    RootItem desktop = BuildRoot(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
                     items.Add(desktop);
 
                     string pinPaths = Settings.Default.PinPathList;
@@ -161,7 +161,7 @@ namespace AirdPro
                         {
                             continue;
                         }
-                        RootItem pinItem = buildRoot(pinPathArray[i]);
+                        RootItem pinItem = BuildRoot(pinPathArray[i]);
                         items.Add(pinItem);
                     }
                     
@@ -169,7 +169,7 @@ namespace AirdPro
                     {
                         try
                         {
-                            RootItem item = buildRoot(str);
+                            RootItem item = BuildRoot(str);
                             items.Add(item);
                         }
                         catch (Exception e)
@@ -239,7 +239,7 @@ namespace AirdPro
             return treePath.LastNode is FileItem;
         }
 
-        public void clearCache(TreePath treePath = null)
+        public void ClearCache(TreePath treePath = null)
         {
             if (treePath == null)
             {
@@ -247,11 +247,11 @@ namespace AirdPro
             }
             else
             {
-                BaseItem item = treePath.FirstNode as BaseItem;
+                BaseItem item = treePath.LastNode as BaseItem;
                 cache.Remove(item.ItemPath);
             }
             
-            this.OnStructureChanged(treePath);
+            OnStructureChanged(treePath);
         }
 
         public event EventHandler<TreeModelEventArgs> NodesChanged;

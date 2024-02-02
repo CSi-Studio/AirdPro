@@ -208,13 +208,13 @@ namespace AirdPro.Forms
             FolderFileBrowserModel innerModel = model.InnerModel as FolderFileBrowserModel;
             if (treeViewAdv.SelectedNodes.IsNullOrEmpty())
             {
-                innerModel.clearCache();
+                innerModel.ClearCache();
             }
             else
             {
                 for (var i = 0; i < treeViewAdv.SelectedNodes.Count; i++)
                 {
-                    innerModel.clearCache(treeViewAdv.GetPath(treeViewAdv.SelectedNodes[i]));
+                    innerModel.ClearCache(treeViewAdv.GetPath(treeViewAdv.SelectedNodes[i]));
                 }
             }
         }
@@ -240,7 +240,7 @@ namespace AirdPro.Forms
                 }
 
                 FolderItem folderItem = node.Tag as FolderItem;
-                RootItem rootItem = msFileViews.getInnerModel().buildRoot(folderItem.ItemPath);
+                RootItem rootItem = msFileViews.getInnerModel().BuildRoot(folderItem.ItemPath);
                 string path = innerModel.AddRootItemToCache(rootItem);
                 if (path != null)
                 {

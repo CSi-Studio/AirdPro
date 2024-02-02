@@ -46,7 +46,7 @@ namespace AirdPro.Constants
         public static string Thread_Id = "ThreadId:";
         public static string Intensity_Precision = "Intensity Precision:";
         public static string Prepare_To_Parse_Vendor_File = "Prepare to Parse Vendor File";
-        public static string Copy_File_To_Local = "Copy_File_To_Local";
+        public static string Copy_File_To_Local = "Copy File to Local";
         public static string Adapting_Vendor_File_API = "Adapting Vendor File API";
         public static string Adapting_Finished = "Adapting Finished";
         public static string Total_Spectra = "Total Spectra:";
