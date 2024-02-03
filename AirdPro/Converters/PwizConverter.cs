@@ -70,7 +70,6 @@ namespace AirdPro.Converters
             MrmCompoundDict = new(); //用于MRM采集模式下,预存储化合物名称与离子对的词典,当前仅适用于Agilent的.d文件夹类型的质谱文件
 
         public bool copyToLocal = false; //是否拷贝到本地
-        public List<string> tempFiles = []; //本地的临时文件路径
 
         public override void Init(JobInfo jobInfo)
         {
@@ -166,6 +165,10 @@ namespace AirdPro.Converters
                 finally
                 {
                     Finish();
+                    if (copyToLocal)
+                    {
+                        FileUtil.ClearLocalTempFiles();
+                    }
                 }
             }
         }
@@ -517,56 +520,54 @@ namespace AirdPro.Converters
             JobInfo.refreshReport = true;
             JobInfo.Log(Tag.Copy_File_To_Local, Status.Copying);
             copyToLocal = true;
-            string tempPath = Path.GetTempPath();
+            string tempPath = FileUtil.GetAirdProTempPath();
+            if (!Directory.Exists(tempPath))
+            {
+                Directory.CreateDirectory(tempPath);
+            }
             switch (JobInfo.format)
             {
                 case FileFormat.WIFF:
                 case FileFormat.WIFF2:
-                    FileInfo wiff = new FileInfo(JobInfo.inputPath);
+                    string directoryPath = Path.GetDirectoryName(JobInfo.inputPath);
+                    string fileName = Path.GetFileNameWithoutExtension(JobInfo.inputPath);
+                    if (directoryPath == null)
+                    {
+                        return;
+                    }
+                    FileInfo wiff = new FileInfo(Path.Combine(directoryPath, fileName + ".wiff"));
                     if (wiff.Exists)
                     {
-                        File.Copy(wiff.FullName, tempPath + wiff.Name);
-                        tempFiles.Add(tempPath + wiff.Name);
+                        string path = Path.Combine(tempPath, wiff.Name);
+                        File.Copy(wiff.FullName, path, true);
                     }
-
-                    if (JobInfo.inputPath.ToLower().EndsWith(".wiff"))
+                    
+                    FileInfo wiff2 = new FileInfo(Path.Combine(directoryPath, fileName + ".wiff2"));
+                    if (wiff2.Exists)
                     {
-                        FileInfo wiff2 = new FileInfo(JobInfo.inputPath.Replace("wiff", "wiff2"));
-                        if (wiff2.Exists)
-                        {
-                            File.Copy(wiff2.FullName, tempPath + wiff2.Name);
-                            tempFiles.Add(tempPath + wiff2.Name);
-                        }
+                        string path = Path.Combine(tempPath, wiff2.Name);
+                        File.Copy(wiff2.FullName, path, true);
                     }
-                    else
-                    {
-                        FileInfo wiff1 = new FileInfo(JobInfo.inputPath.Replace("wiff2", "wiff"));
-                        if (wiff1.Exists)
-                        {
-                            File.Copy(wiff1.FullName, tempPath + wiff1.Name);
-                            tempFiles.Add(tempPath + wiff1.Name);
-                        }
-                    }
-
-                    FileInfo mtd = new FileInfo(JobInfo.inputPath + ".mtd");
+                    
+                    FileInfo mtd = new FileInfo(Path.Combine(directoryPath, fileName + ".wiff.mtd"));
                     if (mtd.Exists)
                     {
-                        File.Copy(mtd.FullName, tempPath + mtd.Name);
-                        tempFiles.Add(tempPath + mtd.Name);
+                        string path = Path.Combine(tempPath, mtd.Name);
+                        File.Copy(mtd.FullName, path, true);
                     }
-
-                    FileInfo scan = new FileInfo(JobInfo.inputPath + ".scan");
+                    
+                    FileInfo scan = new FileInfo(Path.Combine(directoryPath, fileName + ".wiff.scan"));
                     if (scan.Exists)
                     {
-                        File.Copy(scan.FullName, tempPath + scan.Name);
-                        tempFiles.Add(tempPath + scan.Name);
+                        string path = Path.Combine(tempPath, scan.Name);
+                        File.Copy(scan.FullName, path, true);
                     }
-
-                    FileInfo timeseries = new FileInfo(JobInfo.inputPath + ".timeseries.data");
+                   
+                    FileInfo timeseries = new FileInfo(Path.Combine(directoryPath, fileName + ".timeseries.data"));
                     if (timeseries.Exists)
                     {
-                        File.Copy(timeseries.FullName, tempPath + timeseries.Name);
-                        tempFiles.Add(tempPath + timeseries.Name);
+                        string path = Path.Combine(tempPath, timeseries.Name);
+                        File.Copy(timeseries.FullName, path, true);
                     }
 
                     break;
@@ -574,8 +575,8 @@ namespace AirdPro.Converters
                     FileInfo raw = new FileInfo(JobInfo.inputPath);
                     if (raw.Exists)
                     {
-                        File.Copy(raw.FullName, tempPath + raw.Name);
-                        tempFiles.Add(tempPath + raw.Name);
+                        string path = Path.Combine(tempPath, raw.Name);
+                        File.Copy(raw.FullName, path, true);
                     }
 
                     break;
@@ -583,8 +584,8 @@ namespace AirdPro.Converters
                     FileInfo mzML = new FileInfo(JobInfo.inputPath);
                     if (mzML.Exists)
                     {
-                        File.Copy(mzML.FullName, Path.GetTempPath() + mzML.Name);
-                        tempFiles.Add(tempPath + mzML.Name);
+                        string path = Path.Combine(tempPath, mzML.Name);
+                        File.Copy(mzML.FullName, path, true);
                     }
 
                     break;
@@ -592,8 +593,8 @@ namespace AirdPro.Converters
                     FileInfo mzXML = new FileInfo(JobInfo.inputPath);
                     if (mzXML.Exists)
                     {
-                        File.Copy(mzXML.FullName, Path.GetTempPath() + mzXML.Name);
-                        tempFiles.Add(tempPath + mzXML.Name);
+                        string path = Path.Combine(tempPath, mzXML.Name);
+                        File.Copy(mzXML.FullName, path, true);
                     }
 
                     break;
@@ -601,8 +602,8 @@ namespace AirdPro.Converters
                     DirectoryInfo directory = new DirectoryInfo(JobInfo.inputPath);
                     if (directory.Exists)
                     {
-                        FileUtil.CopyFolder(directory.FullName, Path.GetTempPath() + directory.Name);
-                        tempFiles.Add(tempPath + directory.Name);
+                        string path = Path.Combine(tempPath, directory.Name);
+                        FileUtil.CopyFolder(directory.FullName, path);
                     }
 
                     break;
@@ -610,8 +611,8 @@ namespace AirdPro.Converters
                     FileInfo file = new FileInfo(JobInfo.inputPath);
                     if (file.Exists)
                     {
-                        File.Copy(file.FullName, Path.GetTempPath() + file.Name);
-                        tempFiles.Add(tempPath + file.Name);
+                        string path = Path.Combine(tempPath, file.Name);
+                        File.Copy(file.FullName, path, true);
                     }
 
                     break;
@@ -636,7 +637,7 @@ namespace AirdPro.Converters
             if (copyToLocal)
             {
                 FileInfo file = new FileInfo(JobInfo.inputPath);
-                readerList.read(Path.GetTempPath() + file.Name, msdList, readerConfig);
+                readerList.read(Path.Combine(FileUtil.GetAirdProTempPath(), file.Name), msdList, readerConfig);
             }
             else
             {

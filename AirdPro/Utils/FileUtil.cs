@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace AirdPro.Utils;
 
@@ -33,6 +34,27 @@ public class FileUtil
         {
             string destinationSubFolderPath = Path.Combine(destinationFolderPath, subDirectory.Name);
             CopyFolder(subDirectory.FullName, destinationSubFolderPath);
+        }
+    }
+
+    public static string GetAirdProTempPath()
+    {
+        return Path.Combine(Path.GetTempPath(),"AirdPro");
+    }
+
+    public static void ClearLocalTempFiles()
+    {
+        try
+        {
+            string directory = GetAirdProTempPath();
+            if (Directory.Exists(directory))
+            {
+                Directory.Delete(directory, true);
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("An error occurred while deleting the folder: " + e.Message);
         }
     }
 }

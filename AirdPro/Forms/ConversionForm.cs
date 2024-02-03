@@ -144,7 +144,10 @@ namespace AirdPro.Forms
         private void RemoveFile(ListViewItem fileItem)
         {
             JobInfo jobInfo = (JobInfo)fileItem.Tag;
-            if (jobInfo.threadId != -1 && !jobInfo.status.Equals(Status.Finished) && !jobInfo.status.Equals(Status.Waiting))
+            if (jobInfo.threadId != -1 
+                && !jobInfo.status.Equals(Status.Finished) 
+                && !jobInfo.status.Equals(Status.Waiting)
+                && !jobInfo.status.Equals(Status.Error))
             {
                 MessageBox.Show(Constants.Tag.Cannot_Be_Deleted_When_Running);
                 return;
