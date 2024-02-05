@@ -172,7 +172,7 @@
             // 
             // lblPassword
             // 
-            this.lblPassword.Location = new System.Drawing.Point(482, 7);
+            this.lblPassword.Location = new System.Drawing.Point(492, 7);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(67, 20);
             this.lblPassword.TabIndex = 153;
@@ -180,7 +180,7 @@
             // 
             // lblUser
             // 
-            this.lblUser.Location = new System.Drawing.Point(302, 7);
+            this.lblUser.Location = new System.Drawing.Point(312, 7);
             this.lblUser.Name = "lblUser";
             this.lblUser.Size = new System.Drawing.Size(44, 20);
             this.lblUser.TabIndex = 152;
@@ -229,7 +229,7 @@
             // tbRedisPassword
             // 
             this.tbRedisPassword.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbRedisPassword.Location = new System.Drawing.Point(556, 6);
+            this.tbRedisPassword.Location = new System.Drawing.Point(566, 6);
             this.tbRedisPassword.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisPassword.Name = "tbRedisPassword";
             this.tbRedisPassword.Size = new System.Drawing.Size(130, 23);
@@ -238,7 +238,7 @@
             // tbRedisUsername
             // 
             this.tbRedisUsername.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbRedisUsername.Location = new System.Drawing.Point(353, 6);
+            this.tbRedisUsername.Location = new System.Drawing.Point(363, 6);
             this.tbRedisUsername.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisUsername.Name = "tbRedisUsername";
             this.tbRedisUsername.Size = new System.Drawing.Size(122, 23);
@@ -257,7 +257,7 @@
             // tbRedisPort
             // 
             this.tbRedisPort.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbRedisPort.Location = new System.Drawing.Point(237, 6);
+            this.tbRedisPort.Location = new System.Drawing.Point(247, 6);
             this.tbRedisPort.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisPort.Name = "tbRedisPort";
             this.tbRedisPort.Size = new System.Drawing.Size(58, 23);
@@ -302,7 +302,6 @@
             this.lvServers.FullRowSelect = true;
             this.lvServers.HideSelection = false;
             this.lvServers.Location = new System.Drawing.Point(0, 0);
-            this.lvServers.MultiSelect = false;
             this.lvServers.Name = "lvServers";
             this.lvServers.Size = new System.Drawing.Size(978, 189);
             this.lvServers.TabIndex = 0;
