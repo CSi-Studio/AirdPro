@@ -34,15 +34,6 @@ namespace AirdPro.Forms
             HeartBeatTimer = new System.Threading.Timer(HeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(RedisManager.HeartBeatInterval));
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            Settings.Default.RedisHost = tbRedisHost.Text;
-            Settings.Default.RedisPort = tbRedisPort.Text;
-            Settings.Default.RedisUsername = tbRedisUsername.Text;
-            Settings.Default.RedisPassword = tbRedisPassword.Text;
-            Settings.Default.Save();
-        }
-
         private void RedisForm_Load(object sender, EventArgs e)
         {
             tbRedisHost.Text = Settings.Default.RedisHost;
@@ -57,6 +48,16 @@ namespace AirdPro.Forms
             Visible = false;
         }
 
+        //保存Redis配置项字段
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            Settings.Default.RedisHost = tbRedisHost.Text;
+            Settings.Default.RedisPort = tbRedisPort.Text;
+            Settings.Default.RedisUsername = tbRedisUsername.Text;
+            Settings.Default.RedisPassword = tbRedisPassword.Text;
+            Settings.Default.Save();
+        }
+        
         //当重新连接Redis时,会启动Redis任务消费功能
         private void btnConnect_Click(object sender, EventArgs e)
         {
@@ -70,10 +71,8 @@ namespace AirdPro.Forms
                 ConnectToRedis();
             }
         }
-
-        /**
-         * 更新页面状态机
-         */
+        
+        //更新页面状态机
         private void UpdateRedisStatus(bool connected)
         {
             if (connected)
@@ -96,12 +95,12 @@ namespace AirdPro.Forms
          */
         private void HeartBeat(object state)
         {
-            Console.WriteLine("Heart Beat");
             UpdateRedisStatus(RedisManager.Instance.Check());
             if (!RedisManager.Instance.Check()) return;
             RedisManager.Instance.RegisterOrUpdate();
         }
 
+        //更新服务节点列表
         private void LoadServers()
         {
             Dictionary<string, ClientInfo> serverMap = RedisManager.Instance.GetServerMap();
@@ -121,6 +120,7 @@ namespace AirdPro.Forms
             }
         }
 
+        //更新远程任务列表
         private void LoadJobs()
         {
             List<RemoteConvertJob> jobList = RedisManager.Instance.GetTodoJobs();
@@ -203,6 +203,28 @@ namespace AirdPro.Forms
         private void consumeTimer_Tick(object sender, EventArgs e)
         {
             Consume();
+        }
+
+        private void openConsumeSwitchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<string> serverIps = new List<string>();
+            foreach (ListViewItem selectedItem in lvServers.SelectedItems)
+            {
+                serverIps.Add(selectedItem.SubItems[0].Text);
+            }
+
+            RedisManager.Instance.OpenConsume(serverIps);
+        }
+
+        private void closeConsumeSwitchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<string> serverIps = new List<string>();
+            foreach (ListViewItem selectedItem in lvServers.SelectedItems)
+            {
+                serverIps.Add(selectedItem.SubItems[0].Text);
+            }
+
+            RedisManager.Instance.CloseConsume(serverIps);
         }
     }
 }

@@ -161,6 +161,7 @@
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\DatasetFile.cs" />
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\PRIDEParser.cs" />
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\ProteomeXchangeDataset.cs" />
+    <Compile Include="Domains\Redis\ConsumeSwitchCommand.cs" />
     <Compile Include="Manager\ConvertTaskManager.cs" />
     <Compile Include="Constants\Activator.cs" />
     <Compile Include="Constants\Froms.cs" />

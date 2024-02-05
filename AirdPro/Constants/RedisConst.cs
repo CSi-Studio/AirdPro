@@ -15,5 +15,7 @@ namespace AirdPro.Constants
         public const string ConvertTask = "ConvertTask";
         public const string ConvertingTask = "ConvertingTask";
         public const string ServerInfoList = "ServerInfoList";
+        
+        public const string SubscriberConsumeSwitch = "ConsumeSwitch";
     }
 }

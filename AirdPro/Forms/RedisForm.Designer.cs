@@ -56,6 +56,9 @@
             this.colMemory = new System.Windows.Forms.ColumnHeader();
             this.colVersion = new System.Windows.Forms.ColumnHeader();
             this.colConsumingJob = new System.Windows.Forms.ColumnHeader();
+            this.listMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.openConsumeSwitchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeConsumeSwitchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lvJobs = new System.Windows.Forms.ListView();
             this.colJobId = new System.Windows.Forms.ColumnHeader();
             this.colType = new System.Windows.Forms.ColumnHeader();
@@ -73,6 +76,7 @@
             this.mainOperation.Panel1.SuspendLayout();
             this.mainOperation.Panel2.SuspendLayout();
             this.mainOperation.SuspendLayout();
+            this.listMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainView
@@ -164,15 +168,15 @@
             // 
             // lblPassword
             // 
-            this.lblPassword.Location = new System.Drawing.Point(532, 7);
+            this.lblPassword.Location = new System.Drawing.Point(482, 7);
             this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(105, 20);
+            this.lblPassword.Size = new System.Drawing.Size(67, 20);
             this.lblPassword.TabIndex = 153;
             this.lblPassword.Text = "Password";
             // 
             // lblUser
             // 
-            this.lblUser.Location = new System.Drawing.Point(352, 9);
+            this.lblUser.Location = new System.Drawing.Point(302, 7);
             this.lblUser.Name = "lblUser";
             this.lblUser.Size = new System.Drawing.Size(44, 20);
             this.lblUser.TabIndex = 152;
@@ -180,7 +184,7 @@
             // 
             // lblPort
             // 
-            this.lblPort.Location = new System.Drawing.Point(221, 9);
+            this.lblPort.Location = new System.Drawing.Point(196, 9);
             this.lblPort.Name = "lblPort";
             this.lblPort.Size = new System.Drawing.Size(44, 20);
             this.lblPort.TabIndex = 151;
@@ -190,9 +194,9 @@
             // 
             this.lblIP.Location = new System.Drawing.Point(12, 9);
             this.lblIP.Name = "lblIP";
-            this.lblIP.Size = new System.Drawing.Size(55, 20);
+            this.lblIP.Size = new System.Drawing.Size(30, 20);
             this.lblIP.TabIndex = 150;
-            this.lblIP.Text = "Host IP";
+            this.lblIP.Text = "IP";
             // 
             // lblStatus
             // 
@@ -221,7 +225,7 @@
             // tbRedisPassword
             // 
             this.tbRedisPassword.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbRedisPassword.Location = new System.Drawing.Point(644, 6);
+            this.tbRedisPassword.Location = new System.Drawing.Point(556, 6);
             this.tbRedisPassword.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisPassword.Name = "tbRedisPassword";
             this.tbRedisPassword.Size = new System.Drawing.Size(130, 23);
@@ -230,7 +234,7 @@
             // tbRedisUsername
             // 
             this.tbRedisUsername.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbRedisUsername.Location = new System.Drawing.Point(403, 6);
+            this.tbRedisUsername.Location = new System.Drawing.Point(353, 6);
             this.tbRedisUsername.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisUsername.Name = "tbRedisUsername";
             this.tbRedisUsername.Size = new System.Drawing.Size(122, 23);
@@ -240,7 +244,7 @@
             // 
             this.tbRedisHost.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left)));
             this.tbRedisHost.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbRedisHost.Location = new System.Drawing.Point(74, 7);
+            this.tbRedisHost.Location = new System.Drawing.Point(49, 6);
             this.tbRedisHost.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisHost.Name = "tbRedisHost";
             this.tbRedisHost.Size = new System.Drawing.Size(140, 23);
@@ -249,7 +253,7 @@
             // tbRedisPort
             // 
             this.tbRedisPort.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbRedisPort.Location = new System.Drawing.Point(272, 6);
+            this.tbRedisPort.Location = new System.Drawing.Point(237, 6);
             this.tbRedisPort.Margin = new System.Windows.Forms.Padding(4);
             this.tbRedisPort.Name = "tbRedisPort";
             this.tbRedisPort.Size = new System.Drawing.Size(58, 23);
@@ -289,6 +293,7 @@
             // lvServers
             // 
             this.lvServers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.colId, this.colIP, this.colServerName, this.colOSVersion, this.colCPU, this.colMemory, this.colVersion, this.colConsumingJob });
+            this.lvServers.ContextMenuStrip = this.listMenu;
             this.lvServers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvServers.FullRowSelect = true;
             this.lvServers.HideSelection = false;
@@ -322,7 +327,7 @@
             // colCPU
             // 
             this.colCPU.Text = "CPU";
-            this.colCPU.Width = 228;
+            this.colCPU.Width = 229;
             // 
             // colMemory
             // 
@@ -338,6 +343,26 @@
             // 
             this.colConsumingJob.Text = "Consuming Job";
             this.colConsumingJob.Width = 102;
+            // 
+            // listMenu
+            // 
+            this.listMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.openConsumeSwitchToolStripMenuItem, this.closeConsumeSwitchToolStripMenuItem });
+            this.listMenu.Name = "listMenu";
+            this.listMenu.Size = new System.Drawing.Size(207, 48);
+            // 
+            // openConsumeSwitchToolStripMenuItem
+            // 
+            this.openConsumeSwitchToolStripMenuItem.Name = "openConsumeSwitchToolStripMenuItem";
+            this.openConsumeSwitchToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.openConsumeSwitchToolStripMenuItem.Text = "Open Consume Switch";
+            this.openConsumeSwitchToolStripMenuItem.Click += new System.EventHandler(this.openConsumeSwitchToolStripMenuItem_Click);
+            // 
+            // closeConsumeSwitchToolStripMenuItem
+            // 
+            this.closeConsumeSwitchToolStripMenuItem.Name = "closeConsumeSwitchToolStripMenuItem";
+            this.closeConsumeSwitchToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.closeConsumeSwitchToolStripMenuItem.Text = "Close Consume Switch";
+            this.closeConsumeSwitchToolStripMenuItem.Click += new System.EventHandler(this.closeConsumeSwitchToolStripMenuItem_Click);
             // 
             // lvJobs
             // 
@@ -389,8 +414,6 @@
             // 
             // consumeTimer
             // 
-            this.consumeTimer.Enabled = true;
-            this.consumeTimer.Interval = 3000;
             this.consumeTimer.Tick += new System.EventHandler(this.consumeTimer_Tick);
             // 
             // RedisForm
@@ -421,8 +444,14 @@
             this.mainOperation.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.mainOperation)).EndInit();
             this.mainOperation.ResumeLayout(false);
+            this.listMenu.ResumeLayout(false);
             this.ResumeLayout(false);
         }
+
+        private System.Windows.Forms.ToolStripMenuItem openConsumeSwitchToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem closeConsumeSwitchToolStripMenuItem;
+
+        private System.Windows.Forms.ContextMenuStrip listMenu;
 
         private System.Windows.Forms.Timer consumeTimer;
 
@@ -468,7 +497,7 @@
         private System.Windows.Forms.Label lblUser;
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.Button btnClearServerCache;
-        private HZH_Controls.Controls.UCSwitch switchConsumeJob;
+        public HZH_Controls.Controls.UCSwitch switchConsumeJob;
         private System.Windows.Forms.Label lblSwitch;
     }
 }

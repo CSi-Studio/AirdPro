@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using AirdPro.Asyncs;
 using AirdPro.Constants;
 using AirdPro.Domains;
+using AirdPro.Domains.Redis;
 using AirdPro.Forms;
 using AirdPro.Storage.Config;
 using AirdPro.Utils;
@@ -75,6 +76,7 @@ namespace AirdPro.Redis
             {
                 _redis = ConnectionMultiplexer.Connect(options);
                 _db = _redis.GetDatabase(_dbNum);
+                _redis.GetSubscriber().Subscribe(RedisConst.SubscriberConsumeSwitch, ConsumeSwitchSubscriber);
             }
             catch (Exception e)
             {
@@ -82,6 +84,18 @@ namespace AirdPro.Redis
             }
         }
 
+        public void ConsumeSwitchSubscriber(RedisChannel channel, RedisValue message)
+        {
+            ConsumeSwitchCommand command = JsonConvert.DeserializeObject<ConsumeSwitchCommand>(message.ToString());
+            if (command.serverIps.Contains(ClientInfo.GetUniqueID()))
+            {
+                Program.redisForm.Invoke((Action)(() =>
+                {
+                    Program.redisForm.switchConsumeJob.Checked = command.switcher;
+                }));
+             
+            }
+        }
         public bool Check()
         {
             if (_redis != null && _redis.IsConnected)
@@ -101,7 +115,7 @@ namespace AirdPro.Redis
             string valueStr = null;
             RemoteConvertJob job = null;
             JobInfo jobInfo = null;
-            
+
             try
             {
                 RedisValue value = _db.SetPop(RedisConst.ConvertTask);
@@ -174,6 +188,7 @@ namespace AirdPro.Redis
                         conversionConfig.mobiByteComp =
                             (ByteCompType)Enum.Parse(typeof(ByteCompType), job.mobiByteComp);
                     }
+
                     jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
                     jobInfo.fromRedis = true;
                     jobInfo.remoteId = job.remoteId;
@@ -195,7 +210,7 @@ namespace AirdPro.Redis
             {
                 Console.WriteLine("Consume Job:" + job.remoteId);
                 RedisForm.JobUnderConsuming = true;
-                
+
                 //开始本地转换任务前,需要将本任务的执行信息同步到Redis
                 AddConvertingJob(job);
                 ListViewItem item = jobInfo.BuildItem();
@@ -340,6 +355,24 @@ namespace AirdPro.Redis
             }
 
             return jobStrList;
+        }
+
+        public void OpenConsume(List<string> serverIps)
+        {
+            ConsumeSwitchCommand command = new ConsumeSwitchCommand();
+            command.serverIps = serverIps;
+            command.switcher = true;
+            string com = JsonConvert.SerializeObject(command);
+            _db.Publish(RedisConst.SubscriberConsumeSwitch, com);
+        } 
+        
+        public void CloseConsume(List<string> serverIps)
+        {
+            ConsumeSwitchCommand command = new ConsumeSwitchCommand();
+            command.serverIps = serverIps;
+            command.switcher = false;
+            string com = JsonConvert.SerializeObject(command);
+            _db.Publish(RedisConst.SubscriberConsumeSwitch, com);
         }
     }
 }
