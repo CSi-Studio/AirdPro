@@ -78,7 +78,6 @@
             this.tabs = new HZH_Controls.Controls.TabControlExt();
             this.pageComputation = new System.Windows.Forms.TabPage();
             this.cbCompressedIndex = new System.Windows.Forms.CheckBox();
-            this.pageSearchEngine = new System.Windows.Forms.TabPage();
             this.lblSceneConfig = new System.Windows.Forms.Label();
             this.cbConfigIsCentroid = new System.Windows.Forms.CheckBox();
             this.lblMaxTasks = new System.Windows.Forms.Label();
@@ -620,7 +619,6 @@
             // 
             this.tabs.CloseBtnColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(51)))));
             this.tabs.Controls.Add(this.pageComputation);
-            this.tabs.Controls.Add(this.pageSearchEngine);
             this.tabs.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tabs.HeadSelectedBackColor = System.Drawing.Color.Blue;
             this.tabs.IsShowCloseBtn = false;
@@ -663,16 +661,6 @@
             this.cbCompressedIndex.TabIndex = 154;
             this.cbCompressedIndex.Text = "Compressed Index";
             this.cbCompressedIndex.UseVisualStyleBackColor = true;
-            // 
-            // pageSearchEngine
-            // 
-            this.pageSearchEngine.Location = new System.Drawing.Point(4, 54);
-            this.pageSearchEngine.Name = "pageSearchEngine";
-            this.pageSearchEngine.Padding = new System.Windows.Forms.Padding(3);
-            this.pageSearchEngine.Size = new System.Drawing.Size(603, 346);
-            this.pageSearchEngine.TabIndex = 1;
-            this.pageSearchEngine.Text = "Search";
-            this.pageSearchEngine.UseVisualStyleBackColor = true;
             // 
             // lblSceneConfig
             // 
@@ -833,7 +821,6 @@
         private System.Windows.Forms.ImageList imgsForList;
         private HZH_Controls.Controls.TabControlExt tabs;
         private System.Windows.Forms.TabPage pageComputation;
-        private System.Windows.Forms.TabPage pageSearchEngine;
         private System.Windows.Forms.ColumnHeader mzPrecision;
         private System.Windows.Forms.ColumnHeader headerAuto;
         private System.Windows.Forms.Label lblSceneConfig;

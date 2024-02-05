@@ -34,7 +34,7 @@
             this.lblSwitch = new System.Windows.Forms.Label();
             this.switchConsumeJob = new HZH_Controls.Controls.UCSwitch();
             this.btnRefreshJobList = new System.Windows.Forms.Button();
-            this.btnClearServerCache = new System.Windows.Forms.Button();
+            this.btnClearRedisCache = new System.Windows.Forms.Button();
             this.lblPassword = new System.Windows.Forms.Label();
             this.lblUser = new System.Windows.Forms.Label();
             this.lblPort = new System.Windows.Forms.Label();
@@ -63,11 +63,14 @@
             this.colJobId = new System.Windows.Forms.ColumnHeader();
             this.colType = new System.Windows.Forms.ColumnHeader();
             this.colScene = new System.Windows.Forms.ColumnHeader();
+            this.colFile = new System.Windows.Forms.ColumnHeader();
             this.colInput = new System.Windows.Forms.ColumnHeader();
             this.colOutput = new System.Windows.Forms.ColumnHeader();
             this.colConsumeIP = new System.Windows.Forms.ColumnHeader();
             this.colTime = new System.Windows.Forms.ColumnHeader();
             this.consumeTimer = new System.Windows.Forms.Timer(this.components);
+            this.heartBeatTimer = new System.Windows.Forms.Timer(this.components);
+            this.btnClearTempFiles = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.mainView)).BeginInit();
             this.mainView.Panel1.SuspendLayout();
             this.mainView.Panel2.SuspendLayout();
@@ -88,10 +91,11 @@
             // 
             // mainView.Panel1
             // 
+            this.mainView.Panel1.Controls.Add(this.btnClearTempFiles);
             this.mainView.Panel1.Controls.Add(this.lblSwitch);
             this.mainView.Panel1.Controls.Add(this.switchConsumeJob);
             this.mainView.Panel1.Controls.Add(this.btnRefreshJobList);
-            this.mainView.Panel1.Controls.Add(this.btnClearServerCache);
+            this.mainView.Panel1.Controls.Add(this.btnClearRedisCache);
             this.mainView.Panel1.Controls.Add(this.lblPassword);
             this.mainView.Panel1.Controls.Add(this.lblUser);
             this.mainView.Panel1.Controls.Add(this.lblPort);
@@ -151,20 +155,20 @@
             this.btnRefreshJobList.UseVisualStyleBackColor = true;
             this.btnRefreshJobList.Click += new System.EventHandler(this.btnRefreshJobList_Click);
             // 
-            // btnClearServerCache
+            // btnClearRedisCache
             // 
-            this.btnClearServerCache.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnClearServerCache.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClearServerCache.FlatAppearance.BorderSize = 0;
-            this.btnClearServerCache.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.btnClearServerCache.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnClearServerCache.Location = new System.Drawing.Point(8, 40);
-            this.btnClearServerCache.Name = "btnClearServerCache";
-            this.btnClearServerCache.Size = new System.Drawing.Size(152, 26);
-            this.btnClearServerCache.TabIndex = 154;
-            this.btnClearServerCache.Text = "Clear Server Cache";
-            this.btnClearServerCache.UseVisualStyleBackColor = true;
-            this.btnClearServerCache.Click += new System.EventHandler(this.btnClearServerCache_Click);
+            this.btnClearRedisCache.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnClearRedisCache.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClearRedisCache.FlatAppearance.BorderSize = 0;
+            this.btnClearRedisCache.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.btnClearRedisCache.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnClearRedisCache.Location = new System.Drawing.Point(8, 40);
+            this.btnClearRedisCache.Name = "btnClearRedisCache";
+            this.btnClearRedisCache.Size = new System.Drawing.Size(152, 26);
+            this.btnClearRedisCache.TabIndex = 154;
+            this.btnClearRedisCache.Text = "Clear Redis Cache";
+            this.btnClearRedisCache.UseVisualStyleBackColor = true;
+            this.btnClearRedisCache.Click += new System.EventHandler(this.btnClearRedisCache_Click);
             // 
             // lblPassword
             // 
@@ -322,12 +326,12 @@
             // colOSVersion
             // 
             this.colOSVersion.Text = "OS";
-            this.colOSVersion.Width = 213;
+            this.colOSVersion.Width = 185;
             // 
             // colCPU
             // 
             this.colCPU.Text = "CPU";
-            this.colCPU.Width = 229;
+            this.colCPU.Width = 256;
             // 
             // colMemory
             // 
@@ -366,7 +370,7 @@
             // 
             // lvJobs
             // 
-            this.lvJobs.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.colJobId, this.colType, this.colScene, this.colInput, this.colOutput, this.colConsumeIP, this.colTime });
+            this.lvJobs.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.colJobId, this.colType, this.colScene, this.colFile, this.colInput, this.colOutput, this.colConsumeIP, this.colTime });
             this.lvJobs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvJobs.FullRowSelect = true;
             this.lvJobs.HideSelection = false;
@@ -392,15 +396,20 @@
             this.colScene.Text = "Scene";
             this.colScene.Width = 80;
             // 
+            // colFile
+            // 
+            this.colFile.Text = "File";
+            this.colFile.Width = 278;
+            // 
             // colInput
             // 
             this.colInput.Text = "Input Path";
-            this.colInput.Width = 238;
+            this.colInput.Width = 149;
             // 
             // colOutput
             // 
             this.colOutput.Text = "Output Path";
-            this.colOutput.Width = 285;
+            this.colOutput.Width = 142;
             // 
             // colConsumeIP
             // 
@@ -414,7 +423,29 @@
             // 
             // consumeTimer
             // 
+            this.consumeTimer.Enabled = true;
             this.consumeTimer.Tick += new System.EventHandler(this.consumeTimer_Tick);
+            // 
+            // heartBeatTimer
+            // 
+            this.heartBeatTimer.Enabled = true;
+            this.heartBeatTimer.Interval = 5000;
+            this.heartBeatTimer.Tick += new System.EventHandler(this.heartBeatTimer_Tick);
+            // 
+            // btnClearTempFiles
+            // 
+            this.btnClearTempFiles.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnClearTempFiles.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClearTempFiles.FlatAppearance.BorderSize = 0;
+            this.btnClearTempFiles.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.btnClearTempFiles.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnClearTempFiles.Location = new System.Drawing.Point(166, 40);
+            this.btnClearTempFiles.Name = "btnClearTempFiles";
+            this.btnClearTempFiles.Size = new System.Drawing.Size(152, 26);
+            this.btnClearTempFiles.TabIndex = 160;
+            this.btnClearTempFiles.Text = "Clear Temp Files";
+            this.btnClearTempFiles.UseVisualStyleBackColor = true;
+            this.btnClearTempFiles.Click += new System.EventHandler(this.btnClearTempFiles_Click);
             // 
             // RedisForm
             // 
@@ -447,6 +478,12 @@
             this.listMenu.ResumeLayout(false);
             this.ResumeLayout(false);
         }
+
+        private System.Windows.Forms.Button btnClearTempFiles;
+
+        private System.Windows.Forms.Timer heartBeatTimer;
+
+        private System.Windows.Forms.ColumnHeader colFile;
 
         private System.Windows.Forms.ToolStripMenuItem openConsumeSwitchToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeConsumeSwitchToolStripMenuItem;
@@ -496,7 +533,7 @@
         private System.Windows.Forms.Label lblPort;
         private System.Windows.Forms.Label lblUser;
         private System.Windows.Forms.Label lblPassword;
-        private System.Windows.Forms.Button btnClearServerCache;
+        private System.Windows.Forms.Button btnClearRedisCache;
         public HZH_Controls.Controls.UCSwitch switchConsumeJob;
         private System.Windows.Forms.Label lblSwitch;
     }

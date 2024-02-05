@@ -47,14 +47,33 @@ public class FileUtil
         try
         {
             string directory = GetAirdProTempPath();
-            if (Directory.Exists(directory))
-            {
-                Directory.Delete(directory, true);
-            }
+            DeleteAllFilesInFolder(directory);
         }
         catch (Exception e)
         {
-            Console.WriteLine("An error occurred while deleting the folder: " + e.Message);
+            Console.WriteLine(e.Message);
+        }
+    }
+
+    static void DeleteAllFilesInFolder(string folderPath)
+    {
+        // 获取文件夹中的所有文件
+        string[] files = Directory.GetFiles(folderPath);
+
+        // 删除每个文件
+        foreach (string file in files)
+        {
+            File.Delete(file);
+            Console.WriteLine("File-"+file+"删除成功");
+        }
+
+        // 获取文件夹中的所有子文件夹
+        string[] subfolders = Directory.GetDirectories(folderPath);
+
+        // 递归删除子文件夹中的所有文件
+        foreach (string subfolder in subfolders)
+        {
+            Directory.Delete(subfolder, true);
         }
     }
 }

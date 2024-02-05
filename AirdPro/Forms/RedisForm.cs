@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using AirdPro.Domains;
 using AirdPro.Properties;
@@ -24,14 +25,13 @@ namespace AirdPro.Forms
 {
     public partial class RedisForm : Form
     {
-        public System.Threading.Timer HeartBeatTimer;
         public static bool JobUnderConsuming = false; //当前是否有远程任务正在执行
-        
+
         public RedisForm()
         {
             InitializeComponent();
             consumeTimer.Interval = RedisManager.ConsumeInterval;
-            HeartBeatTimer = new System.Threading.Timer(HeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(RedisManager.HeartBeatInterval));
+            heartBeatTimer.Interval = RedisManager.HeartBeatInterval;
         }
 
         private void RedisForm_Load(object sender, EventArgs e)
@@ -57,7 +57,7 @@ namespace AirdPro.Forms
             Settings.Default.RedisPassword = tbRedisPassword.Text;
             Settings.Default.Save();
         }
-        
+
         //当重新连接Redis时,会启动Redis任务消费功能
         private void btnConnect_Click(object sender, EventArgs e)
         {
@@ -71,7 +71,7 @@ namespace AirdPro.Forms
                 ConnectToRedis();
             }
         }
-        
+
         //更新页面状态机
         private void UpdateRedisStatus(bool connected)
         {
@@ -93,7 +93,7 @@ namespace AirdPro.Forms
         /**
          * 心跳功能,用于更新本节点在服务器端的活跃时间戳,同时也获取当前局域网内所有的AirdPro节点
          */
-        private void HeartBeat(object state)
+        private void HeartBeat()
         {
             UpdateRedisStatus(RedisManager.Instance.Check());
             if (!RedisManager.Instance.Check()) return;
@@ -101,7 +101,7 @@ namespace AirdPro.Forms
         }
 
         //更新服务节点列表
-        private void LoadServers()
+        public void LoadServers()
         {
             Dictionary<string, ClientInfo> serverMap = RedisManager.Instance.GetServerMap();
             lvServers.Items.Clear();
@@ -115,7 +115,7 @@ namespace AirdPro.Forms
                 item.SubItems.Add(info.CpuInfo);
                 item.SubItems.Add(info.PhysicMemory);
                 item.SubItems.Add(info.AirdProVersion);
-                item.SubItems.Add(info.ConsumingJob + "");
+                item.SubItems.Add(info.ConsumingJob ? "ON" : "OFF");
                 lvServers.Items.Add(item);
             }
         }
@@ -132,6 +132,8 @@ namespace AirdPro.Forms
                 ListViewItem item = new ListViewItem(remoteJob.remoteId);
                 item.SubItems.Add(remoteJob.type);
                 item.SubItems.Add(remoteJob.scene);
+                FileInfo info = new FileInfo(remoteJob.sourcePath);
+                item.SubItems.Add(info.Name);
                 item.SubItems.Add(remoteJob.sourcePath);
                 item.SubItems.Add(remoteJob.targetPath);
                 item.SubItems.Add(remoteJob.consumeIP);
@@ -169,12 +171,6 @@ namespace AirdPro.Forms
                 MessageBox.Show(Constants.Tag.Connect_Failed_Please_Check_The_Redis_Host_And_Port);
                 UpdateRedisStatus(false);
             }
-        }
-
-        private void btnClearServerCache_Click(object sender, EventArgs e)
-        {
-            RedisManager.Instance.ClearServerCache();
-            LoadServers();
         }
 
         private void btnRefreshJobList_Click(object sender, EventArgs e)
@@ -225,6 +221,22 @@ namespace AirdPro.Forms
             }
 
             RedisManager.Instance.CloseConsume(serverIps);
+        }
+
+        private void heartBeatTimer_Tick(object sender, EventArgs e)
+        {
+            HeartBeat();
+        }
+
+        private void btnClearRedisCache_Click(object sender, EventArgs e)
+        {
+            RedisManager.Instance.ClearServerCache();
+            LoadServers();
+        }
+
+        private void btnClearTempFiles_Click(object sender, EventArgs e)
+        {
+            FileUtil.ClearLocalTempFiles();
         }
     }
 }

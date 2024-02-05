@@ -92,8 +92,8 @@ namespace AirdPro.Redis
                 Program.redisForm.Invoke((Action)(() =>
                 {
                     Program.redisForm.switchConsumeJob.Checked = command.switcher;
+                    Program.redisForm.LoadServers();
                 }));
-             
             }
         }
         public bool Check()
