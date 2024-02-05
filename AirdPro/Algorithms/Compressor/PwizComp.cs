@@ -354,7 +354,7 @@ namespace AirdPro.Algorithms.Compressor
                 totalPoints += spectrum.mzs.Length;
             }
 
-            HashSet<int> mzsSet = new HashSet<int>(totalPoints);
+            HashSet<int> mzsSet = new HashSet<int>();
             foreach (TempSpectrum spectrum in spectra)
             {
                 mzsSet.UnionWith(spectrum.mzs);
@@ -362,9 +362,9 @@ namespace AirdPro.Algorithms.Compressor
 
             int[] totalMzs = mzsSet.ToArray();
 
-            converter.JobInfo.Log("合计质谱图" + spectra.Count + "张,不同质荷比共:" + totalMzs.Length + "个");
-            converter.JobInfo.Log("质荷比范围:" + totalMzs[0] + "-" + totalMzs[totalMzs.Length - 1]);
-            converter.JobInfo.Log("总计包含有效点数:" + totalPoints);
+            converter.JobInfo.Log("Total Spectra:" + spectra.Count + ",Diff m/z:" + totalMzs.Length);
+            converter.JobInfo.Log("m/z range:" + totalMzs[0] + "-" + totalMzs[totalMzs.Length - 1]);
+            converter.JobInfo.Log("Total effective points:" + totalPoints);
 
             int step = 1;
             ConcurrentDictionary<int, ByteColumn> treeColumnCompressed = new ConcurrentDictionary<int, ByteColumn>();

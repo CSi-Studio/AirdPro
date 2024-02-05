@@ -15,6 +15,7 @@ using System.Threading;
 using AirdPro.Constants;
 using AirdPro.Converters;
 using AirdPro.Domains;
+using AirdPro.Forms;
 using AirdPro.Redis;
 using Microsoft.SqlServer.Server;
 using static AirdPro.Constants.ProcessingStatus;
@@ -158,9 +159,8 @@ namespace AirdPro.Asyncs
             {
                 Program.redisForm.Invoke((Action)(() =>
                 {
-                    Console.WriteLine("触发函数");
-                    RedisClient.Instance.RemoveConvertingJob(jobInfo.remoteId);
-                    Program.redisForm.consumeTimer.Start();
+                    RedisManager.Instance.RemoveConvertingJob(jobInfo.remoteId);
+                    RedisForm.JobUnderConsuming = false;
                 }));
             }
         }

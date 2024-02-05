@@ -30,10 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RedisForm));
-            this.heartBeatTimer = new System.Windows.Forms.Timer(this.components);
             this.mainView = new System.Windows.Forms.SplitContainer();
+            this.lblSwitch = new System.Windows.Forms.Label();
+            this.switchConsumeJob = new HZH_Controls.Controls.UCSwitch();
             this.btnRefreshJobList = new System.Windows.Forms.Button();
-            this.btnConsume = new System.Windows.Forms.Button();
             this.btnClearServerCache = new System.Windows.Forms.Button();
             this.lblPassword = new System.Windows.Forms.Label();
             this.lblUser = new System.Windows.Forms.Label();
@@ -47,9 +47,15 @@
             this.tbRedisPort = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.mainOperation = new System.Windows.Forms.SplitContainer();
-            this.mainList = new System.Windows.Forms.SplitContainer();
             this.lvServers = new System.Windows.Forms.ListView();
+            this.colId = new System.Windows.Forms.ColumnHeader();
             this.colIP = new System.Windows.Forms.ColumnHeader();
+            this.colServerName = new System.Windows.Forms.ColumnHeader();
+            this.colOSVersion = new System.Windows.Forms.ColumnHeader();
+            this.colCPU = new System.Windows.Forms.ColumnHeader();
+            this.colMemory = new System.Windows.Forms.ColumnHeader();
+            this.colVersion = new System.Windows.Forms.ColumnHeader();
+            this.colConsumingJob = new System.Windows.Forms.ColumnHeader();
             this.lvJobs = new System.Windows.Forms.ListView();
             this.colJobId = new System.Windows.Forms.ColumnHeader();
             this.colType = new System.Windows.Forms.ColumnHeader();
@@ -58,7 +64,6 @@
             this.colOutput = new System.Windows.Forms.ColumnHeader();
             this.colConsumeIP = new System.Windows.Forms.ColumnHeader();
             this.colTime = new System.Windows.Forms.ColumnHeader();
-            this.tbConsole = new System.Windows.Forms.TextBox();
             this.consumeTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.mainView)).BeginInit();
             this.mainView.Panel1.SuspendLayout();
@@ -68,17 +73,7 @@
             this.mainOperation.Panel1.SuspendLayout();
             this.mainOperation.Panel2.SuspendLayout();
             this.mainOperation.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.mainList)).BeginInit();
-            this.mainList.Panel1.SuspendLayout();
-            this.mainList.Panel2.SuspendLayout();
-            this.mainList.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // heartBeatTimer
-            // 
-            this.heartBeatTimer.Enabled = true;
-            this.heartBeatTimer.Interval = 3000;
-            this.heartBeatTimer.Tick += new System.EventHandler(this.redisTimer_Tick);
             // 
             // mainView
             // 
@@ -89,8 +84,9 @@
             // 
             // mainView.Panel1
             // 
+            this.mainView.Panel1.Controls.Add(this.lblSwitch);
+            this.mainView.Panel1.Controls.Add(this.switchConsumeJob);
             this.mainView.Panel1.Controls.Add(this.btnRefreshJobList);
-            this.mainView.Panel1.Controls.Add(this.btnConsume);
             this.mainView.Panel1.Controls.Add(this.btnClearServerCache);
             this.mainView.Panel1.Controls.Add(this.lblPassword);
             this.mainView.Panel1.Controls.Add(this.lblUser);
@@ -111,6 +107,31 @@
             this.mainView.SplitterDistance = 68;
             this.mainView.TabIndex = 138;
             // 
+            // lblSwitch
+            // 
+            this.lblSwitch.AutoSize = true;
+            this.lblSwitch.Location = new System.Drawing.Point(864, 45);
+            this.lblSwitch.Name = "lblSwitch";
+            this.lblSwitch.Size = new System.Drawing.Size(84, 17);
+            this.lblSwitch.TabIndex = 159;
+            this.lblSwitch.Text = "Consume Off";
+            // 
+            // switchConsumeJob
+            // 
+            this.switchConsumeJob.BackColor = System.Drawing.Color.Transparent;
+            this.switchConsumeJob.Checked = false;
+            this.switchConsumeJob.FalseColor = System.Drawing.Color.FromArgb(((int)(((byte)(189)))), ((int)(((byte)(189)))), ((int)(((byte)(189)))));
+            this.switchConsumeJob.FalseTextColr = System.Drawing.Color.White;
+            this.switchConsumeJob.Location = new System.Drawing.Point(804, 41);
+            this.switchConsumeJob.Name = "switchConsumeJob";
+            this.switchConsumeJob.Size = new System.Drawing.Size(54, 23);
+            this.switchConsumeJob.SwitchType = HZH_Controls.Controls.SwitchType.Ellipse;
+            this.switchConsumeJob.TabIndex = 158;
+            this.switchConsumeJob.Texts = new string[] { "Consume Job Switch" };
+            this.switchConsumeJob.TrueColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(59)))));
+            this.switchConsumeJob.TrueTextColr = System.Drawing.Color.White;
+            this.switchConsumeJob.CheckedChanged += new System.EventHandler(this.switchConsumeJob_CheckedChanged);
+            // 
             // btnRefreshJobList
             // 
             this.btnRefreshJobList.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -118,28 +139,13 @@
             this.btnRefreshJobList.FlatAppearance.BorderSize = 0;
             this.btnRefreshJobList.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.btnRefreshJobList.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnRefreshJobList.Location = new System.Drawing.Point(732, 40);
+            this.btnRefreshJobList.Location = new System.Drawing.Point(718, 40);
             this.btnRefreshJobList.Name = "btnRefreshJobList";
             this.btnRefreshJobList.Size = new System.Drawing.Size(80, 26);
             this.btnRefreshJobList.TabIndex = 156;
             this.btnRefreshJobList.Text = "Refresh";
             this.btnRefreshJobList.UseVisualStyleBackColor = true;
             this.btnRefreshJobList.Click += new System.EventHandler(this.btnRefreshJobList_Click);
-            // 
-            // btnConsume
-            // 
-            this.btnConsume.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnConsume.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnConsume.FlatAppearance.BorderSize = 0;
-            this.btnConsume.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.btnConsume.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnConsume.Location = new System.Drawing.Point(818, 40);
-            this.btnConsume.Name = "btnConsume";
-            this.btnConsume.Size = new System.Drawing.Size(157, 26);
-            this.btnConsume.TabIndex = 155;
-            this.btnConsume.Text = "Start Consume Jobs";
-            this.btnConsume.UseVisualStyleBackColor = true;
-            this.btnConsume.Click += new System.EventHandler(this.btnConsume_Click);
             // 
             // btnClearServerCache
             // 
@@ -271,50 +277,67 @@
             // 
             // mainOperation.Panel1
             // 
-            this.mainOperation.Panel1.Controls.Add(this.mainList);
+            this.mainOperation.Panel1.Controls.Add(this.lvServers);
             // 
             // mainOperation.Panel2
             // 
-            this.mainOperation.Panel2.Controls.Add(this.tbConsole);
+            this.mainOperation.Panel2.Controls.Add(this.lvJobs);
             this.mainOperation.Size = new System.Drawing.Size(978, 549);
-            this.mainOperation.SplitterDistance = 367;
+            this.mainOperation.SplitterDistance = 189;
             this.mainOperation.TabIndex = 0;
-            // 
-            // mainList
-            // 
-            this.mainList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainList.Location = new System.Drawing.Point(0, 0);
-            this.mainList.Name = "mainList";
-            // 
-            // mainList.Panel1
-            // 
-            this.mainList.Panel1.Controls.Add(this.lvServers);
-            // 
-            // mainList.Panel2
-            // 
-            this.mainList.Panel2.Controls.Add(this.lvJobs);
-            this.mainList.Size = new System.Drawing.Size(978, 367);
-            this.mainList.SplitterDistance = 154;
-            this.mainList.TabIndex = 0;
             // 
             // lvServers
             // 
-            this.lvServers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.colIP });
+            this.lvServers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.colId, this.colIP, this.colServerName, this.colOSVersion, this.colCPU, this.colMemory, this.colVersion, this.colConsumingJob });
             this.lvServers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvServers.FullRowSelect = true;
             this.lvServers.HideSelection = false;
             this.lvServers.Location = new System.Drawing.Point(0, 0);
             this.lvServers.MultiSelect = false;
             this.lvServers.Name = "lvServers";
-            this.lvServers.Size = new System.Drawing.Size(154, 367);
+            this.lvServers.Size = new System.Drawing.Size(978, 189);
             this.lvServers.TabIndex = 0;
             this.lvServers.UseCompatibleStateImageBehavior = false;
             this.lvServers.View = System.Windows.Forms.View.Details;
-            this.lvServers.SelectedIndexChanged += new System.EventHandler(this.listViewServers_SelectedIndexChanged);
+            // 
+            // colId
+            // 
+            this.colId.Text = "ID";
             // 
             // colIP
             // 
             this.colIP.Text = "IP";
-            this.colIP.Width = 400;
+            this.colIP.Width = 101;
+            // 
+            // colServerName
+            // 
+            this.colServerName.Text = "Server Name";
+            this.colServerName.Width = 123;
+            // 
+            // colOSVersion
+            // 
+            this.colOSVersion.Text = "OS";
+            this.colOSVersion.Width = 213;
+            // 
+            // colCPU
+            // 
+            this.colCPU.Text = "CPU";
+            this.colCPU.Width = 228;
+            // 
+            // colMemory
+            // 
+            this.colMemory.Text = "Memory";
+            this.colMemory.Width = 69;
+            // 
+            // colVersion
+            // 
+            this.colVersion.Text = "AirdPro";
+            this.colVersion.Width = 78;
+            // 
+            // colConsumingJob
+            // 
+            this.colConsumingJob.Text = "Consuming Job";
+            this.colConsumingJob.Width = 102;
             // 
             // lvJobs
             // 
@@ -324,11 +347,10 @@
             this.lvJobs.HideSelection = false;
             this.lvJobs.Location = new System.Drawing.Point(0, 0);
             this.lvJobs.Name = "lvJobs";
-            this.lvJobs.Size = new System.Drawing.Size(820, 367);
+            this.lvJobs.Size = new System.Drawing.Size(978, 356);
             this.lvJobs.TabIndex = 0;
             this.lvJobs.UseCompatibleStateImageBehavior = false;
             this.lvJobs.View = System.Windows.Forms.View.Details;
-            this.lvJobs.SelectedIndexChanged += new System.EventHandler(this.lvJobs_SelectedIndexChanged);
             // 
             // colJobId
             // 
@@ -348,12 +370,12 @@
             // colInput
             // 
             this.colInput.Text = "Input Path";
-            this.colInput.Width = 200;
+            this.colInput.Width = 238;
             // 
             // colOutput
             // 
             this.colOutput.Text = "Output Path";
-            this.colOutput.Width = 120;
+            this.colOutput.Width = 285;
             // 
             // colConsumeIP
             // 
@@ -365,18 +387,9 @@
             this.colTime.Text = "Time";
             this.colTime.Width = 150;
             // 
-            // tbConsole
-            // 
-            this.tbConsole.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbConsole.Location = new System.Drawing.Point(3, 3);
-            this.tbConsole.Multiline = true;
-            this.tbConsole.Name = "tbConsole";
-            this.tbConsole.ReadOnly = true;
-            this.tbConsole.Size = new System.Drawing.Size(972, 172);
-            this.tbConsole.TabIndex = 0;
-            // 
             // consumeTimer
             // 
+            this.consumeTimer.Enabled = true;
             this.consumeTimer.Interval = 3000;
             this.consumeTimer.Tick += new System.EventHandler(this.consumeTimer_Tick);
             // 
@@ -406,17 +419,23 @@
             this.mainView.ResumeLayout(false);
             this.mainOperation.Panel1.ResumeLayout(false);
             this.mainOperation.Panel2.ResumeLayout(false);
-            this.mainOperation.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainOperation)).EndInit();
             this.mainOperation.ResumeLayout(false);
-            this.mainList.Panel1.ResumeLayout(false);
-            this.mainList.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.mainList)).EndInit();
-            this.mainList.ResumeLayout(false);
             this.ResumeLayout(false);
         }
 
-        public System.Windows.Forms.Timer consumeTimer;
+        private System.Windows.Forms.Timer consumeTimer;
+
+        private System.Windows.Forms.ColumnHeader colId;
+        private System.Windows.Forms.ColumnHeader colOSVersion;
+
+        private System.Windows.Forms.ColumnHeader colConsumingJob;
+
+        private System.Windows.Forms.ColumnHeader colCPU;
+        private System.Windows.Forms.ColumnHeader colMemory;
+
+        private System.Windows.Forms.ColumnHeader colServerName;
+        private System.Windows.Forms.ColumnHeader colVersion;
 
         private System.Windows.Forms.ColumnHeader colTime;
 
@@ -427,12 +446,6 @@
         private System.Windows.Forms.ColumnHeader colType;
 
         private System.Windows.Forms.ColumnHeader colOutput;
-
-        private System.Windows.Forms.Button btnConsume;
-
-        private System.Windows.Forms.TextBox tbConsole;
-
-        private System.Windows.Forms.Timer heartBeatTimer;
 
         #endregion
         private System.Windows.Forms.SplitContainer mainView;
@@ -451,10 +464,11 @@
         private System.Windows.Forms.ColumnHeader colJobId;
         private System.Windows.Forms.ColumnHeader colInput;
         private System.Windows.Forms.ColumnHeader colConsumeIP;
-        private System.Windows.Forms.SplitContainer mainList;
         private System.Windows.Forms.Label lblPort;
         private System.Windows.Forms.Label lblUser;
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.Button btnClearServerCache;
+        private HZH_Controls.Controls.UCSwitch switchConsumeJob;
+        private System.Windows.Forms.Label lblSwitch;
     }
 }

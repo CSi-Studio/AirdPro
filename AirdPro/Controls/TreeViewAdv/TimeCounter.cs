@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Aga.Controls
 {
 	/// <summary>
-	/// High resolution timer, used to test performance
+	/// High resolution ConsumeTimer, used to test performance
 	/// </summary>
 	public static class TimeCounter
 	{

@@ -161,8 +161,7 @@
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\DatasetFile.cs" />
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\PRIDEParser.cs" />
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\ProteomeXchangeDataset.cs" />
-    <Compile Include="Asyncs\ConvertTaskManager.cs" />
-    <Compile Include="Asyncs\LimitedConcurrencyLevelTaskScheduler.cs" />
+    <Compile Include="Manager\ConvertTaskManager.cs" />
     <Compile Include="Constants\Activator.cs" />
     <Compile Include="Constants\Froms.cs" />
     <Compile Include="Constants\Manufacturer.cs" />
@@ -411,6 +410,7 @@
     <Compile Include="Domains\Repository\ProteomeXchange\RootProject.cs" />
     <Compile Include="Domains\Repository\ProteomeXchange\TermNode.cs" />
     <Compile Include="Domains\Job\JobInfo.cs" />
+    <Compile Include="Manager\RedisManager.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -436,7 +436,6 @@
     <Compile Include="Forms\VendorFileSelectorForm.Designer.cs">
       <DependentUpon>VendorFileSelectorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Redis\RedisClient.cs" />
     <Compile Include="Forms\ConversionForm.cs">
       <SubType>Form</SubType>
     </Compile>

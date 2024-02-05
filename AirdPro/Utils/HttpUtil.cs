@@ -192,7 +192,7 @@ namespace AirdPro.Utils
             return null;
         }
 
-        public static string GetIPV4List()
+        public static List<string> GetIPV4List()
         {
             List<string> ipList = new List<string>();
             foreach (IPAddress address in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
@@ -209,17 +209,12 @@ namespace AirdPro.Utils
             }
             ipList.Sort();
 
-            return string.Join(";", ipList);
+            return ipList;
         }
 
-        public static string GetMachineName()
+        public static string GetIPV4ListAsString()
         {
-            return Environment.MachineName;
-        }
-
-        public static string GetServerName()
-        {
-            return Environment.MachineName + "(" + GetIPV4List()+")";
+            return string.Join(";", GetIPV4List());
         }
     }
 }

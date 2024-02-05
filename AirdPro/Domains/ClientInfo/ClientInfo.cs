@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Management;
 using AirdPro.Constants;
+using AirdPro.Redis;
 using AirdPro.Utils;
 using Microsoft.VisualBasic.Devices;
 using Newtonsoft.Json;
@@ -21,53 +22,32 @@ namespace AirdPro.Domains
 {
     public class ClientInfo
     {
-        public static string SystemType;
-        public static string CpuInfo;
-        public static string PhysicMemory;
-        public static string OpVersion;
-        public static string AirdProVersion;
-
-        static ClientInfo()
+        public string ClientID;
+        public string CpuInfo;
+        public string PhysicMemory;
+        public string OpVersion;
+        public string AirdProVersion;
+        public double LastUpdateTime;
+        public string ServerName;
+        public List<string> IPList;
+        public bool ConsumingJob;
+        
+        public ClientInfo()
         {
-            SystemType = GetSystemType();
             CpuInfo = GetCpuInfo();
+            ServerName = GetMachineName();
             PhysicMemory = GetPhysicMemory();
             OpVersion = GetOpVersion();
-            AirdProVersion = SoftwareInfo.GetVersion();
+            AirdProVersion = SoftwareInfo.VERSION;
+            ClientID = GetUniqueID();
         }
 
-        public static string toJSON()
+        public string ToJson()
         {
-            Dictionary<string, string> dict = new Dictionary<string, string>();
-            dict.Add("SystemType", SystemType);
-            dict.Add("CpuInfo", CpuInfo);
-            dict.Add("PhysicMemory",PhysicMemory);
-            dict.Add("OpVersion",OpVersion);
-            dict.Add("AirdProVersion",AirdProVersion);
-            string json = JsonConvert.SerializeObject(dict);
-            return json;
-        }
-        //获取系统类型
-        public static string GetSystemType()
-        {
-            try
-            {
-                string st = "";
-                ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
-                ManagementObjectCollection moc = mc.GetInstances();
-                foreach (ManagementObject mo in moc)
-                {
-                    st = mo["SystemType"].ToString();
-                }
-
-                moc.Dispose();
-                mc.Dispose();
-                return st;
-            }
-            catch
-            {
-                return "Unknown";
-            }
+            LastUpdateTime = DateTime.Now.ToOADate();
+            IPList = HttpUtil.GetIPV4List();
+            ConsumingJob = RedisManager.GlobalConsumeJobSwitch;
+            return JsonConvert.SerializeObject(this);
         }
 
         //获取操作系统型号
@@ -104,6 +84,29 @@ namespace AirdPro.Domains
             }
             // 将字节数转换为更友好的格式
             return AirdProFileUtil.GetSizeLabel(totalMemory);
+        }
+        
+        public static string GetMachineName()
+        {
+            return Environment.MachineName;
+        }
+
+        public static string GetUniqueID()
+        {
+            // 创建 ManagementClass 对象
+            ManagementClass mc = new ManagementClass("Win32_ComputerSystemProduct");
+
+            // 获取计算机硬件信息
+            ManagementObjectCollection moc = mc.GetInstances();
+
+            // 遍历计算机硬件信息并生成唯一标识符
+            foreach (ManagementObject mo in moc)
+            {
+                string identifier = mo.Properties["UUID"].Value.ToString();
+                return identifier;
+            }
+
+            return Environment.MachineName;
         }
     }
 }

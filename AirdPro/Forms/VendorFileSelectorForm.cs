@@ -155,7 +155,7 @@ namespace AirdPro.Forms
                 foreach (string path in filePathList)
                 {
                     RemoteConvertJob remoteJob = new RemoteConvertJob(path, outputPath, airdType, config);
-                    RedisClient.Instance.PublishJob(remoteJob);
+                    RedisManager.Instance.PublishJob(remoteJob);
                 }
             }
             
@@ -338,7 +338,7 @@ namespace AirdPro.Forms
 
         private void imgBtnPublish_BtnClick(object sender, EventArgs e)
         {
-            if (RedisClient.Instance.Check())
+            if (RedisManager.Instance.Check())
             {
                 bool addResult = AddToList(false);
                 if (addResult)
