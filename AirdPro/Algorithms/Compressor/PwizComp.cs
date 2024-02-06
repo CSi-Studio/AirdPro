@@ -76,7 +76,9 @@ namespace AirdPro.Algorithms.Compressor
                             break;
 
                         case "Search":
-                            spectra.Add(ReadSpectrum(spectrum)); //面向搜索场景下暂时还不支持离子淌度文件
+                            TempSpectrum tempSpectrum = ReadSpectrum(spectrum);
+                            tempSpectrum.rt = ts.rt;
+                            spectra.Add(tempSpectrum); //面向搜索场景下暂时还不支持离子淌度文件
                             break;
                     }
 
@@ -342,16 +344,19 @@ namespace AirdPro.Algorithms.Compressor
          * 第一代野鸡算法，转换速度慢
          */
         public ConcurrentDictionary<int, ByteColumn> CompressAsColumnMatrix(PwizConverter converter,
-            ConcurrentBag<TempSpectrum> spectra, ColumnIndex columnIndex)
+            ConcurrentBag<TempSpectrum> tempSpectra, ColumnIndex columnIndex)
         {
             converter.JobInfo.Log(null, "Column Compressing");
             //矩阵横坐标
             List<int> rtsInt = [];
             int totalPoints = 0;
-            foreach (var spectrum in spectra)
+            List<TempSpectrum> spectra = tempSpectra.ToList();
+            spectra = spectra.OrderBy(obj => obj.rt).ToList();
+            for (var i = 0; i < spectra.Count; i++)
             {
-                rtsInt.Add((int)Math.Round(spectrum.rt * 1000));
-                totalPoints += spectrum.mzs.Length;
+                spectra[i].indexId = i;
+                rtsInt.Add((int)Math.Round(spectra[i].rt * 1000));
+                totalPoints += spectra[i].mzs.Length;
             }
 
             HashSet<int> mzsSet = new HashSet<int>();
@@ -359,8 +364,9 @@ namespace AirdPro.Algorithms.Compressor
             {
                 mzsSet.UnionWith(spectrum.mzs);
             }
-
-            int[] totalMzs = mzsSet.ToArray();
+            List<int> mzList = mzsSet.ToList();
+            mzList.Sort();
+            int[] totalMzs = mzList.ToArray();
 
             converter.JobInfo.Log("Total Spectra:" + spectra.Count + ",Diff m/z:" + totalMzs.Length);
             converter.JobInfo.Log("m/z range:" + totalMzs[0] + "-" + totalMzs[totalMzs.Length - 1]);
@@ -377,7 +383,7 @@ namespace AirdPro.Algorithms.Compressor
                 converter.JobInfo.Log(null, Tag.percentage(Tag.Column_Trans, currentStep, spectra.Count));
                 for (var i = 0; i < spectrum.mzs.Length; i++)
                 {
-                    treeColumn.GetOrAdd(spectrum.mzs[i], new Slice()).Add(spectrum.mzs[i], spectrum.intensities[i]);
+                    treeColumn.GetOrAdd(spectrum.mzs[i], new Slice()).Add(spectrum.indexId, spectrum.intensities[i]);
                 }
             }
 
@@ -399,10 +405,10 @@ namespace AirdPro.Algorithms.Compressor
                 if (length > 4)
                 {
                     compressedIndexIds =
-                        AirdProUtil.IntToByte(
+                        ByteTrans.intToByte(
                             new IntegratedVarByteWrapper().encode(ArrayUtil.toIntArray(slice.indexIdList)));
                     compressedInts =
-                        AirdProUtil.IntToByte(
+                        ByteTrans.intToByte(
                             new VarByteWrapper().encode(ArrayUtil.toIntArray(slice.intensityList)));
                 }
                 else

@@ -2,6 +2,7 @@
 
 public class TempSpectrum
 {
+    public int indexId;
     public double rt;
     public int[] mzs;
     public int[] intensities;
