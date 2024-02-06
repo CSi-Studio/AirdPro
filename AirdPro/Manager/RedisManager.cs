@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
 using AirdPro.Asyncs;
 using AirdPro.Constants;
@@ -87,7 +88,7 @@ namespace AirdPro.Redis
         public void ConsumeSwitchSubscriber(RedisChannel channel, RedisValue message)
         {
             ConsumeSwitchCommand command = JsonConvert.DeserializeObject<ConsumeSwitchCommand>(message.ToString());
-            if (command.serverIps.Contains(ClientInfo.GetUniqueID()))
+            if (command.serverIps.Contains(ClientInfo.BuildUniqueID()))
             {
                 Program.redisForm.Invoke((Action)(() =>
                 {
@@ -224,6 +225,7 @@ namespace AirdPro.Redis
         {
             if (!Check()) return;
             ClientInfo info = new ClientInfo();
+            info.init();
             string clientInfo = info.ToJson();
             _db.HashSet(RedisConst.ServerInfoList, info.ClientID, clientInfo);
         }
@@ -301,7 +303,6 @@ namespace AirdPro.Redis
                     serverMap.Add(entry.Name, clientInfo);
                 }
             }
-
             return serverMap;
         }
 

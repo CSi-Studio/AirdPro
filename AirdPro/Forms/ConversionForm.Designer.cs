@@ -348,6 +348,8 @@ namespace AirdPro.Forms
             // cbAutoExe
             // 
             resources.ApplyResources(this.cbAutoExe, "cbAutoExe");
+            this.cbAutoExe.Checked = true;
+            this.cbAutoExe.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbAutoExe.Name = "cbAutoExe";
             this.cbAutoExe.UseVisualStyleBackColor = true;
             this.cbAutoExe.CheckedChanged += new System.EventHandler(this.cbAutoExe_CheckedChanged);
@@ -457,6 +459,7 @@ namespace AirdPro.Forms
             // 
             // timerTaskScan
             // 
+            this.timerTaskScan.Enabled = true;
             this.timerTaskScan.Interval = 2000;
             this.timerTaskScan.Tick += new System.EventHandler(this.timerTaskScan_Tick);
             // 

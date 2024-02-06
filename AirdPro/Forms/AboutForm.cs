@@ -27,6 +27,7 @@ namespace AirdPro.Forms
         private void HelpAboutForm_Load(object sender, EventArgs e)
         {
             ClientInfo info = new ClientInfo();
+            info.init();
             lblSoftwareVersion.Text = SoftwareInfo.GetVersion();
             lblCompanyInfo.Text = "CopyRight © 2024 CSi (HangZhou) Biotechnology Corporation co.,ltd. All rights reserved.";
             lblCPUInfo.Text = info.CpuInfo;

@@ -22,24 +22,24 @@ namespace AirdPro.Domains
 {
     public class ClientInfo
     {
-        public string ClientID;
-        public string CpuInfo;
-        public string PhysicMemory;
-        public string OpVersion;
-        public string AirdProVersion;
-        public double LastUpdateTime;
-        public string ServerName;
-        public List<string> IPList;
-        public bool ConsumingJob;
-        
-        public ClientInfo()
+        public string ClientID { get; set; }
+        public string CpuInfo { get; set; }
+        public string PhysicMemory { get; set; }
+        public string OpVersion { get; set; }
+        public string AirdProVersion { get; set; }
+        public double LastUpdateTime { get; set; }
+        public string ServerName { get; set; }
+        public List<string> IPList { get; set; }
+        public bool ConsumingJob { get; set; }
+
+        public void init()
         {
-            CpuInfo = GetCpuInfo();
-            ServerName = GetMachineName();
-            PhysicMemory = GetPhysicMemory();
-            OpVersion = GetOpVersion();
+            CpuInfo = BuildCpuInfo();
+            ServerName = Environment.MachineName;
+            PhysicMemory = BuildPhysicMemory();
+            OpVersion = BuildOpVersion();
             AirdProVersion = SoftwareInfo.VERSION;
-            ClientID = GetUniqueID();
+            ClientID = BuildUniqueID();
         }
 
         public string ToJson()
@@ -51,13 +51,13 @@ namespace AirdPro.Domains
         }
 
         //获取操作系统型号
-        public static string GetOpVersion()
+        public static string BuildOpVersion()
         {
             return new ComputerInfo().OSFullName;
         }
 
         //获取CPU信息
-        public static string GetCpuInfo()
+        public static string BuildCpuInfo()
         {
             string cpuName = "";
             ManagementObjectSearcher mos = new ManagementObjectSearcher("Select * from Win32_Processor");
@@ -71,7 +71,7 @@ namespace AirdPro.Domains
         }
 
         //获取物理内存数目和大小
-        public static string GetPhysicMemory()
+        public static string BuildPhysicMemory()
         {
             // 创建ManagementClass对象并设置查询条件
             ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
@@ -85,13 +85,8 @@ namespace AirdPro.Domains
             // 将字节数转换为更友好的格式
             return AirdProFileUtil.GetSizeLabel(totalMemory);
         }
-        
-        public static string GetMachineName()
-        {
-            return Environment.MachineName;
-        }
 
-        public static string GetUniqueID()
+        public static string BuildUniqueID()
         {
             // 创建 ManagementClass 对象
             ManagementClass mc = new ManagementClass("Win32_ComputerSystemProduct");
