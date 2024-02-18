@@ -93,6 +93,7 @@ namespace AirdPro.Forms
         {
             Settings.Default.JobInfoList = "[]";
             Settings.Default.Save();
+            AirdProFileUtil.ClearLocalTempFiles();
             MessageBox.Show("Clear Cache Successful");
         }
     }

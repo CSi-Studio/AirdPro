@@ -233,8 +233,14 @@ namespace AirdPro.Utils
             // 删除每个文件
             foreach (string file in files)
             {
-                File.Delete(file);
-                Console.WriteLine("File-" + file + "删除成功");
+                try
+                {
+                    File.Delete(file);
+                }
+                catch (Exception e)
+                {
+                    //ignore
+                }
             }
 
             // 获取文件夹中的所有子文件夹
@@ -243,7 +249,15 @@ namespace AirdPro.Utils
             // 递归删除子文件夹中的所有文件
             foreach (string subfolder in subfolders)
             {
-                Directory.Delete(subfolder, true);
+                try
+                {
+                    Directory.Delete(subfolder, true);
+                }
+                catch (Exception e)
+                {
+                    //ignore
+                }
+                
             }
         }
     }
