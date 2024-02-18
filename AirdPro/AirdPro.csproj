@@ -705,7 +705,7 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AirdSDK" Version="2.4.1.4" />
+    <PackageReference Include="AirdSDK" Version="2.4.2" />
     <PackageReference Include="FluentFTP" Version="48.0.3" />
   </ItemGroup>
   <!-- <ItemGroup> -->
@@ -772,7 +772,7 @@
     <PackageReference Include="log4net" Version="2.0.15" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="protobuf-net" Version="3.2.30" />
-    <PackageReference Include="StackExchange.Redis" Version="2.7.4" />
+    <PackageReference Include="StackExchange.Redis" Version="2.7.17" />
     <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
     <PackageReference Include="ZstdNet" Version="1.4.5" />
   </ItemGroup>

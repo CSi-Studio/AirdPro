@@ -21,6 +21,7 @@ using AirdSDK.Utils;
 using ThermoFisher.CommonCore.Data;
 using System.ComponentModel;
 using AirdPro.Repository;
+using AirdSDK.Constants;
 using Newtonsoft.Json;
 
 namespace AirdPro.Forms
@@ -37,7 +38,7 @@ namespace AirdPro.Forms
 
         private void ConversionForm_Load(object sender, EventArgs e)
         {
-            this.Text = SoftwareInfo.GetVersion() + Const.Dash + NetworkUtil.getHostIP();
+            this.Text = SoftwareInfo.GetVersion() + Const.Dash + string.Join(SymbolConst.COMMA ,NetworkUtil.GetHostIpList());
             initJobsFromStorage();
             bw = new BackgroundWorker();
             bw.DoWork += (sender, e) => ConvertTaskManager.GetInstance().Run();

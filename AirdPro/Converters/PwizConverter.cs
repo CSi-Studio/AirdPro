@@ -422,17 +422,27 @@ namespace AirdPro.Converters
             columnIndex.spectraIds = new int[columnIndex.mzs.Length];
             columnIndex.intensities = new int[columnIndex.mzs.Length];
             columnIndex.startPtr = StartPosition;
+
+            int step = 100000;
+            long[] anchors = new long[columnIndex.mzs.Length / step + 1];
+           
             for (var i = 0; i < columnIndex.mzs.Length; i++)
             {
+                //每隔10W个数差一帧
+                if (i % step == 0)
+                {
+                    anchors[i / step] = StartPosition;
+                }
+
                 int mz = columnIndex.mzs[i];
                 ByteColumn byteColumn = compressedColumns[mz];
-                if (byteColumn.indexIds != null && byteColumn.intensities != null)
+                if (byteColumn.spectraIds != null && byteColumn.intensities != null)
                 {
-                    columnIndex.spectraIds[i] = byteColumn.indexIds.Length;
+                    columnIndex.spectraIds[i] = byteColumn.spectraIds.Length;
                     columnIndex.intensities[i] = byteColumn.intensities.Length;
-                    
-                    StartPosition = StartPosition + byteColumn.indexIds.Length + byteColumn.intensities.Length;
-                    AirdStream.Write(byteColumn.indexIds, 0, byteColumn.indexIds.Length);
+                    StartPosition = StartPosition + byteColumn.spectraIds.Length + byteColumn.intensities.Length;
+
+                    AirdStream.Write(byteColumn.spectraIds, 0, byteColumn.spectraIds.Length);
                     AirdStream.Write(byteColumn.intensities, 0, byteColumn.intensities.Length);
                 }
                 else
@@ -443,15 +453,12 @@ namespace AirdPro.Converters
             }
 
             columnIndex.endPtr = StartPosition;
-
+            columnIndex.anchors = anchors;
             byte[] compressedSpectraIds =
-                new ZstdWrapper().encode(
-                    ByteTrans.intToByte(
-                        new VarByteWrapper().encode(columnIndex.spectraIds)));
+                new ZstdWrapper().encode(ByteTrans.intToByte(new VarByteWrapper().encode(columnIndex.spectraIds)));
             byte[] compressedInts =
-                new ZstdWrapper().encode(
-                    ByteTrans.intToByte(
-                        new VarByteWrapper().encode(columnIndex.intensities)));
+                new ZstdWrapper().encode(ByteTrans.intToByte(new VarByteWrapper().encode(columnIndex.intensities)));
+
             //写入矩阵的横坐标实际值
             columnIndex.startSpecrtaIdListPtr = StartPosition;
             StartPosition += compressedSpectraIds.Length;
@@ -525,6 +532,7 @@ namespace AirdPro.Converters
             {
                 Directory.CreateDirectory(tempPath);
             }
+
             switch (JobInfo.format)
             {
                 case FileFormat.WIFF:
@@ -535,34 +543,35 @@ namespace AirdPro.Converters
                     {
                         return;
                     }
+
                     FileInfo wiff = new FileInfo(Path.Combine(directoryPath, fileName + ".wiff"));
                     if (wiff.Exists)
                     {
                         string path = Path.Combine(tempPath, wiff.Name);
                         File.Copy(wiff.FullName, path, true);
                     }
-                    
+
                     FileInfo wiff2 = new FileInfo(Path.Combine(directoryPath, fileName + ".wiff2"));
                     if (wiff2.Exists)
                     {
                         string path = Path.Combine(tempPath, wiff2.Name);
                         File.Copy(wiff2.FullName, path, true);
                     }
-                    
+
                     FileInfo mtd = new FileInfo(Path.Combine(directoryPath, fileName + ".wiff.mtd"));
                     if (mtd.Exists)
                     {
                         string path = Path.Combine(tempPath, mtd.Name);
                         File.Copy(mtd.FullName, path, true);
                     }
-                    
+
                     FileInfo scan = new FileInfo(Path.Combine(directoryPath, fileName + ".wiff.scan"));
                     if (scan.Exists)
                     {
                         string path = Path.Combine(tempPath, scan.Name);
                         File.Copy(scan.FullName, path, true);
                     }
-                   
+
                     FileInfo timeseries = new FileInfo(Path.Combine(directoryPath, fileName + ".timeseries.data"));
                     if (timeseries.Exists)
                     {
