@@ -430,6 +430,7 @@ namespace AirdPro.Converters
                 {
                     columnIndex.spectraIds[i] = byteColumn.indexIds.Length;
                     columnIndex.intensities[i] = byteColumn.intensities.Length;
+                    
                     StartPosition = StartPosition + byteColumn.indexIds.Length + byteColumn.intensities.Length;
                     AirdStream.Write(byteColumn.indexIds, 0, byteColumn.indexIds.Length);
                     AirdStream.Write(byteColumn.intensities, 0, byteColumn.intensities.Length);

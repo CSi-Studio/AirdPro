@@ -399,24 +399,8 @@ namespace AirdPro.Algorithms.Compressor
                 }
 
                 Slice slice = treeColumn[mz];
-                int length = slice.indexIdList.Count;
-                byte[] compressedIndexIds = null;
-                byte[] compressedInts = null;
-                if (length > 4)
-                {
-                    compressedIndexIds =
-                        ByteTrans.intToByte(
-                            new IntegratedVarByteWrapper().encode(ArrayUtil.toIntArray(slice.indexIdList)));
-                    compressedInts =
-                        ByteTrans.intToByte(
-                            new VarByteWrapper().encode(ArrayUtil.toIntArray(slice.intensityList)));
-                }
-                else
-                {
-                    compressedIndexIds = ByteTrans.intToByte(ArrayUtil.toIntArray(slice.indexIdList));
-                    compressedInts = ByteTrans.intToByte(ArrayUtil.toIntArray(slice.intensityList));
-                }
-
+                byte[] compressedIndexIds = ByteTrans.intToByte(new IntegratedVarByteWrapper().encode(ArrayUtil.toIntArray(slice.indexIdList)));
+                byte[] compressedInts = ByteTrans.intToByte(new VarByteWrapper().encode(ArrayUtil.toIntArray(slice.intensityList)));
                 treeColumnCompressed[mz] = new ByteColumn(compressedIndexIds, compressedInts);
             });
 
