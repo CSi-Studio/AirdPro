@@ -14,6 +14,8 @@ using System.Windows.Forms;
 using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdPro.Properties;
+using AirdPro.Utils;
+using AirdSDK.Utils;
 
 namespace AirdPro.Forms
 {
@@ -34,6 +36,7 @@ namespace AirdPro.Forms
             lblPhysicMemory.Text = info.PhysicMemory;
             lblOpVersion.Text = info.OpVersion;
             lblDesc.Text = SoftwareInfo.GetDescription();
+            tbTempPath.Text = AirdProFileUtil.GetAirdProTempPath();
             tbPaperZDPD.Text =
                 "1. Lu, M., An, S., Wang, R. et al. Aird: a computation-oriented mass spectrometry data format enables a higher compression ratio and less decoding time. BMC Bioinformatics 23, 35 (2022).\r\n" +
                 "2. Wang,J. et al. StackZDPD: a novel encoding scheme for mass spectrometry data optimized for speed and compression ratio. Scientific Reports, 12, 5384.(2022).\r\n" +

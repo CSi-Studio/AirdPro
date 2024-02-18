@@ -49,6 +49,8 @@
             this.tbPaperZDPD = new System.Windows.Forms.TextBox();
             this.pbCheckUpdate = new System.Windows.Forms.PictureBox();
             this.btnClearCache = new System.Windows.Forms.Button();
+            this.lbl3 = new System.Windows.Forms.Label();
+            this.tbTempPath = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbCheckUpdate)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,7 +69,7 @@
             // 
             this.lblCPUInfo.AutoSize = true;
             this.lblCPUInfo.Font = new System.Drawing.Font("微软雅黑", 10F);
-            this.lblCPUInfo.Location = new System.Drawing.Point(165, 197);
+            this.lblCPUInfo.Location = new System.Drawing.Point(105, 201);
             this.lblCPUInfo.Name = "lblCPUInfo";
             this.lblCPUInfo.Size = new System.Drawing.Size(68, 20);
             this.lblCPUInfo.TabIndex = 4;
@@ -77,7 +79,7 @@
             // 
             this.lblPhysicMemory.AutoSize = true;
             this.lblPhysicMemory.Font = new System.Drawing.Font("微软雅黑", 10F);
-            this.lblPhysicMemory.Location = new System.Drawing.Point(165, 220);
+            this.lblPhysicMemory.Location = new System.Drawing.Point(105, 227);
             this.lblPhysicMemory.Name = "lblPhysicMemory";
             this.lblPhysicMemory.Size = new System.Drawing.Size(123, 20);
             this.lblPhysicMemory.TabIndex = 5;
@@ -87,7 +89,7 @@
             // 
             this.lblOpVersion.AutoSize = true;
             this.lblOpVersion.Font = new System.Drawing.Font("微软雅黑", 10F);
-            this.lblOpVersion.Location = new System.Drawing.Point(165, 172);
+            this.lblOpVersion.Location = new System.Drawing.Point(105, 172);
             this.lblOpVersion.Name = "lblOpVersion";
             this.lblOpVersion.Size = new System.Drawing.Size(83, 20);
             this.lblOpVersion.TabIndex = 6;
@@ -169,15 +171,15 @@
             this.lblOPName.Font = new System.Drawing.Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblOPName.Location = new System.Drawing.Point(7, 172);
             this.lblOPName.Name = "lblOPName";
-            this.lblOPName.Size = new System.Drawing.Size(151, 20);
+            this.lblOPName.Size = new System.Drawing.Size(51, 20);
             this.lblOPName.TabIndex = 14;
-            this.lblOPName.Text = "Operation System :    ";
+            this.lblOPName.Text = "OS :    ";
             // 
             // lblCPUName
             // 
             this.lblCPUName.AutoSize = true;
             this.lblCPUName.Font = new System.Drawing.Font("微软雅黑", 10F);
-            this.lblCPUName.Location = new System.Drawing.Point(7, 197);
+            this.lblCPUName.Location = new System.Drawing.Point(7, 201);
             this.lblCPUName.Name = "lblCPUName";
             this.lblCPUName.Size = new System.Drawing.Size(60, 20);
             this.lblCPUName.TabIndex = 15;
@@ -187,11 +189,11 @@
             // 
             this.lblPhysicMemoryName.AutoSize = true;
             this.lblPhysicMemoryName.Font = new System.Drawing.Font("微软雅黑", 10F);
-            this.lblPhysicMemoryName.Location = new System.Drawing.Point(7, 220);
+            this.lblPhysicMemoryName.Location = new System.Drawing.Point(7, 227);
             this.lblPhysicMemoryName.Name = "lblPhysicMemoryName";
-            this.lblPhysicMemoryName.Size = new System.Drawing.Size(146, 20);
+            this.lblPhysicMemoryName.Size = new System.Drawing.Size(88, 20);
             this.lblPhysicMemoryName.TabIndex = 16;
-            this.lblPhysicMemoryName.Text = "Physical Memory :    ";
+            this.lblPhysicMemoryName.Text = "Memory :    ";
             // 
             // lbl1
             // 
@@ -219,9 +221,9 @@
             this.label2.Font = new System.Drawing.Font("微软雅黑", 10F);
             this.label2.Location = new System.Drawing.Point(9, 391);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(133, 20);
+            this.label2.Size = new System.Drawing.Size(110, 20);
             this.label2.TabIndex = 20;
-            this.label2.Text = "Cite AirdPro Paper";
+            this.label2.Text = "Cite Aird Paper";
             // 
             // lblDesc
             // 
@@ -259,6 +261,7 @@
             // 
             // btnClearCache
             // 
+            this.btnClearCache.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnClearCache.Location = new System.Drawing.Point(15, 12);
             this.btnClearCache.Name = "btnClearCache";
             this.btnClearCache.Size = new System.Drawing.Size(145, 35);
@@ -267,12 +270,35 @@
             this.btnClearCache.UseVisualStyleBackColor = true;
             this.btnClearCache.Click += new System.EventHandler(this.btnClearCache_Click);
             // 
+            // lbl3
+            // 
+            this.lbl3.AutoSize = true;
+            this.lbl3.Font = new System.Drawing.Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl3.Location = new System.Drawing.Point(7, 143);
+            this.lbl3.Name = "lbl3";
+            this.lbl3.Size = new System.Drawing.Size(105, 20);
+            this.lbl3.TabIndex = 25;
+            this.lbl3.Text = "Temp Path :    ";
+            // 
+            // tbTempPath
+            // 
+            this.tbTempPath.BackColor = System.Drawing.Color.White;
+            this.tbTempPath.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbTempPath.Font = new System.Drawing.Font("微软雅黑", 10F);
+            this.tbTempPath.Location = new System.Drawing.Point(109, 144);
+            this.tbTempPath.Name = "tbTempPath";
+            this.tbTempPath.ReadOnly = true;
+            this.tbTempPath.Size = new System.Drawing.Size(651, 18);
+            this.tbTempPath.TabIndex = 27;
+            // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(772, 585);
+            this.Controls.Add(this.tbTempPath);
+            this.Controls.Add(this.lbl3);
             this.Controls.Add(this.btnClearCache);
             this.Controls.Add(this.tbPaperZDPD);
             this.Controls.Add(this.lblDesc);
@@ -303,7 +329,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbCheckUpdate)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
+
+        private System.Windows.Forms.Label lbl3;
 
         private System.Windows.Forms.Button btnClearCache;
 
@@ -328,5 +357,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblDesc;
         private System.Windows.Forms.TextBox tbPaperZDPD;
+        private System.Windows.Forms.TextBox tbTempPath;
     }
 }

@@ -31,7 +31,6 @@ using pwiz.CLI.cv;
 using pwiz.CLI.data;
 using pwiz.CLI.msdata;
 using Activator = AirdPro.Constants.Activator;
-using FileUtil = AirdPro.Utils.FileUtil;
 using Software = AirdSDK.Beans.Software;
 using Spectrum = pwiz.CLI.msdata.Spectrum;
 
@@ -167,7 +166,7 @@ namespace AirdPro.Converters
                     Finish();
                     if (copyToLocal)
                     {
-                        FileUtil.ClearLocalTempFiles();
+                        AirdProFileUtil.ClearLocalTempFiles();
                     }
                 }
             }
@@ -520,7 +519,7 @@ namespace AirdPro.Converters
             JobInfo.refreshReport = true;
             JobInfo.Log(Tag.Copy_File_To_Local, Status.Copying);
             copyToLocal = true;
-            string tempPath = FileUtil.GetAirdProTempPath();
+            string tempPath = AirdProFileUtil.GetAirdProTempPath();
             if (!Directory.Exists(tempPath))
             {
                 Directory.CreateDirectory(tempPath);
@@ -603,7 +602,7 @@ namespace AirdPro.Converters
                     if (directory.Exists)
                     {
                         string path = Path.Combine(tempPath, directory.Name);
-                        FileUtil.CopyFolder(directory.FullName, path);
+                        AirdProFileUtil.CopyFolder(directory.FullName, path);
                     }
 
                     break;
@@ -637,7 +636,7 @@ namespace AirdPro.Converters
             if (copyToLocal)
             {
                 FileInfo file = new FileInfo(JobInfo.inputPath);
-                readerList.read(Path.Combine(FileUtil.GetAirdProTempPath(), file.Name), msdList, readerConfig);
+                readerList.read(Path.Combine(AirdProFileUtil.GetAirdProTempPath(), file.Name), msdList, readerConfig);
             }
             else
             {

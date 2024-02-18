@@ -1,10 +1,10 @@
 ﻿/*
  * Copyright (c) 2020 CSi Studio
  * AirdSDK and AirdPro are licensed under Mulan PSL v2.
- * You can use this software according to the terms and conditions of the Mulan PSL v2. 
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
- *          http://license.coscl.org.cn/MulanPSL2 
- * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.  
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
  * See the Mulan PSL v2 for more details.
  */
 
@@ -108,7 +108,7 @@ namespace AirdPro.Utils
 
             return directorySize;
         }
-        
+
         /**
          * 循环遍历指定文件夹下的所有质谱文件
          */
@@ -145,7 +145,7 @@ namespace AirdPro.Utils
                     }
                 }
             }
-            
+
             foreach (string str in Directory.GetFiles(folderPath))
             {
                 string extension = Path.GetExtension(str);
@@ -163,14 +163,88 @@ namespace AirdPro.Utils
 
         public static string ReplaceLast(string input, string pattern, string replacement)
         {
-            string output = Regex.Replace(input, pattern, match => {  
-                if (match.Index == input.LastIndexOf(pattern, StringComparison.Ordinal)) {  
-                    return replacement;  
-                }  
-                return match.Value;  
+            string output = Regex.Replace(input, pattern, match =>
+            {
+                if (match.Index == input.LastIndexOf(pattern, StringComparison.Ordinal))
+                {
+                    return replacement;
+                }
+
+                return match.Value;
             }, RegexOptions.IgnoreCase);
             return output;
         }
-        
+
+        public static void CopyFolder(string sourceFolderPath, string destinationFolderPath)
+        {
+            DirectoryInfo sourceDirectory = new DirectoryInfo(sourceFolderPath);
+            DirectoryInfo destinationDirectory = new DirectoryInfo(destinationFolderPath);
+
+            if (!sourceDirectory.Exists)
+            {
+                throw new DirectoryNotFoundException("Source directory does not exist or could not be found.");
+            }
+
+            if (!destinationDirectory.Exists)
+            {
+                destinationDirectory.Create();
+            }
+
+            FileInfo[] files = sourceDirectory.GetFiles();
+
+            foreach (FileInfo file in files)
+            {
+                string destinationFilePath = Path.Combine(destinationFolderPath, file.Name);
+                file.CopyTo(destinationFilePath, true);
+            }
+
+            DirectoryInfo[] subDirectories = sourceDirectory.GetDirectories();
+
+            foreach (DirectoryInfo subDirectory in subDirectories)
+            {
+                string destinationSubFolderPath = Path.Combine(destinationFolderPath, subDirectory.Name);
+                CopyFolder(subDirectory.FullName, destinationSubFolderPath);
+            }
+        }
+
+        public static string GetAirdProTempPath()
+        {
+            return Path.Combine(Path.GetTempPath(), "AirdPro");
+        }
+
+        public static void ClearLocalTempFiles()
+        {
+            try
+            {
+                string directory = GetAirdProTempPath();
+                DeleteAllFilesInFolder(directory);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public static void DeleteAllFilesInFolder(string folderPath)
+        {
+            // 获取文件夹中的所有文件
+            string[] files = Directory.GetFiles(folderPath);
+
+            // 删除每个文件
+            foreach (string file in files)
+            {
+                File.Delete(file);
+                Console.WriteLine("File-" + file + "删除成功");
+            }
+
+            // 获取文件夹中的所有子文件夹
+            string[] subfolders = Directory.GetDirectories(folderPath);
+
+            // 递归删除子文件夹中的所有文件
+            foreach (string subfolder in subfolders)
+            {
+                Directory.Delete(subfolder, true);
+            }
+        }
     }
 }

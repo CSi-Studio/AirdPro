@@ -237,7 +237,7 @@ namespace AirdPro.Forms
 
         private void btnClearTempFiles_Click(object sender, EventArgs e)
         {
-            FileUtil.ClearLocalTempFiles();
+            AirdProFileUtil.ClearLocalTempFiles();
         }
     }
 }
