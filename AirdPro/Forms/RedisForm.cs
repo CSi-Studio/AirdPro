@@ -98,7 +98,15 @@ namespace AirdPro.Forms
         {
             UpdateRedisStatus(RedisManager.Instance.Check());
             if (!RedisManager.Instance.Check()) return;
-            RedisManager.Instance.RegisterOrUpdate();
+            try
+            {
+                RedisManager.Instance.RegisterOrUpdate();
+            }
+            catch (Exception e)
+            {
+
+            }
+            
         }
 
         //更新服务节点列表

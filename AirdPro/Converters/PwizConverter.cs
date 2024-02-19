@@ -400,14 +400,10 @@ namespace AirdPro.Converters
          */
         public void WriteColumnData(ConcurrentDictionary<int, ByteColumn> compressedColumns, ColumnIndex columnIndex)
         {
-            byte[] compressedMzs =
-                new ZstdWrapper().encode(
-                    ByteTrans.intToByte(
-                        new IntegratedVarByteWrapper().encode(columnIndex.mzs)));
-            byte[] compressedRts =
-                new ZstdWrapper().encode(
-                    ByteTrans.intToByte(
-                        new IntegratedVarByteWrapper().encode(columnIndex.rts)));
+            byte[] compressedMzs = ByteTrans.intToByte(
+                        new IntegratedVarByteWrapper().encode(columnIndex.mzs));
+            byte[] compressedRts = ByteTrans.intToByte(
+                        new IntegratedVarByteWrapper().encode(columnIndex.rts));
             //写入矩阵的横坐标实际值
             columnIndex.startMzListPtr = StartPosition;
             StartPosition += compressedMzs.Length;
@@ -426,7 +422,7 @@ namespace AirdPro.Converters
 
             int step = 100000;
             long[] anchors = new long[columnIndex.mzs.Length / step + 1];
-           
+            
             for (var i = 0; i < columnIndex.mzs.Length; i++)
             {
                 //每隔10W个数差一帧
@@ -455,10 +451,8 @@ namespace AirdPro.Converters
 
             columnIndex.endPtr = StartPosition;
             columnIndex.anchors = anchors;
-            byte[] compressedSpectraIds =
-                new ZstdWrapper().encode(ByteTrans.intToByte(new VarByteWrapper().encode(columnIndex.spectraIds)));
-            byte[] compressedInts =
-                new ZstdWrapper().encode(ByteTrans.intToByte(new VarByteWrapper().encode(columnIndex.intensities)));
+            byte[] compressedSpectraIds = ByteTrans.intToByte(new VarByteWrapper().encode(columnIndex.spectraIds));
+            byte[] compressedInts = ByteTrans.intToByte(new VarByteWrapper().encode(columnIndex.intensities));
 
             //写入矩阵的横坐标实际值
             columnIndex.startSpectraIdListPtr = StartPosition;
