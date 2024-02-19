@@ -71,6 +71,9 @@ namespace AirdPro.Domains
         //例如： D://aird/plasma.cjson
         public string airdColumnJsonFilePath;
 
+        //例如:  D://aird/plasma.proto
+        public string airdColumnProtoFilePath;
+
         //任务运行时产生的日志
         [JsonIgnore]
         public List<Log> logs = new();
@@ -122,6 +125,7 @@ namespace AirdPro.Domains
             airdFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".aird");
             airdJsonFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".json");
             airdColumnJsonFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".cjson");
+            airdColumnProtoFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".index");
             status = ProcessingStatus.WAITING;
         }
 

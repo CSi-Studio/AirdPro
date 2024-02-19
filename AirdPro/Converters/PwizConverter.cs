@@ -25,6 +25,7 @@ using AirdSDK.Beans.Common;
 using AirdSDK.Compressor;
 using AirdSDK.Enums;
 using AirdSDK.Utils;
+using Google.Protobuf;
 using Newtonsoft.Json;
 using pwiz.CLI.analysis;
 using pwiz.CLI.cv;
@@ -460,9 +461,9 @@ namespace AirdPro.Converters
                 new ZstdWrapper().encode(ByteTrans.intToByte(new VarByteWrapper().encode(columnIndex.intensities)));
 
             //写入矩阵的横坐标实际值
-            columnIndex.startSpecrtaIdListPtr = StartPosition;
+            columnIndex.startSpectraIdListPtr = StartPosition;
             StartPosition += compressedSpectraIds.Length;
-            columnIndex.endSpecrtaIdListPtr = StartPosition;
+            columnIndex.endSpectraIdListPtr = StartPosition;
             AirdStream.Write(compressedSpectraIds, 0, compressedSpectraIds.Length);
 
             //写入矩阵的横坐标实际值
@@ -778,6 +779,13 @@ namespace AirdPro.Converters
                 using (AirdColumnJsonStream = new FileStream(JobInfo.airdColumnJsonFilePath, FileMode.Create))
                 {
                     AirdColumnJsonStream.Write(columnInfoBytes, 0, columnInfoBytes.Length);
+                }
+
+                ColumnInfoProto proto = columnInfo.ToProto();
+                byte[] protoBytes = proto.ToByteArray();
+                using (AirdColumnProtoStream = new FileStream(JobInfo.airdColumnProtoFilePath, FileMode.Create))
+                {
+                    AirdColumnProtoStream.Write(protoBytes, 0, protoBytes.Length);
                 }
             }
         }
