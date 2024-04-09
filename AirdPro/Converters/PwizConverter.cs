@@ -69,40 +69,38 @@ namespace AirdPro.Converters
         public Dictionary<string, AcqCompound>
             MrmCompoundDict = new(); //用于MRM采集模式下,预存储化合物名称与离子对的词典,当前仅适用于Agilent的.d文件夹类型的质谱文件
 
-        public bool copyToLocal = false; //是否拷贝到本地
+        public bool CopyToLocal = false; //是否拷贝到本地
 
         public override void Init(JobInfo jobInfo)
         {
             JobInfo = jobInfo;
-            InitCompressor();
+            Compressor = new PwizComp(this);
+            // InitCompressor();
         }
 
-        private void InitCompressor()
+        public override void InitCompressor()
         {
-            ICompressor comp = new PwizComp(this);
             //探索模式和非自动决策模式,会在此处初始化指定的压缩内核
             if (!JobInfo.config.autoDesicion)
             {
                 if (JobInfo.ionMobility)
                 {
-                    comp.MobiIntComp = IntComp.build(JobInfo.config.mobiIntComp);
-                    comp.MobiByteComp = ByteComp.build(JobInfo.config.mobiByteComp);
+                    Compressor.MobiIntComp = IntComp.build(JobInfo.config.mobiIntComp);
+                    Compressor.MobiByteComp = ByteComp.build(JobInfo.config.mobiByteComp);
                 }
 
-                comp.MzIntComp = SortedIntComp.build(JobInfo.config.mzIntComp);
-                comp.MzByteComp = ByteComp.build(JobInfo.config.mzByteComp);
+                Compressor.MzIntComp = SortedIntComp.build(JobInfo.config.mzIntComp);
+                Compressor.MzByteComp = ByteComp.build(JobInfo.config.mzByteComp);
 
-                comp.IntIntComp = IntComp.build(JobInfo.config.intIntComp);
-                comp.IntByteComp = ByteComp.build(JobInfo.config.intByteComp);
+                Compressor.IntIntComp = IntComp.build(JobInfo.config.intIntComp);
+                Compressor.IntByteComp = ByteComp.build(JobInfo.config.intByteComp);
             }
-
-            Compressor = comp;
         }
 
         public override void DoConvert()
         {
             Start();
-            CopyFile(); //如果检测到是网络挂在磁盘,则首先拷贝到本地以后再进行转换
+            CopyFile(); //如果检测到是网络挂载磁盘,则首先拷贝到本地以后再进行转换,以提升转换速度
             using (MSDataList msdList = ReadVendorFile())
             {
                 try
@@ -116,7 +114,10 @@ namespace AirdPro.Converters
                     foreach (var msd in msdList)
                     {
                         StartPosition = 0;
-                        if (msdList.Count > 1) //如果msdList中包含多个msd，那么每一个msd会被单独导出为一个文件，导出的文件名按照msd的ID进行命名
+                        
+                        //如果msdList中包含多个msd，那么每一个msd会被单独导出为一个文件，导出的文件名按照msd的ID进行命名
+                        //如果仅有一个msd，则直接按照该原始文件的名称导出为aird文件
+                        if (msdList.Count > 1) 
                         {
                             String id = msd.id;
                             id = id.Trim();
@@ -125,13 +126,14 @@ namespace AirdPro.Converters
                             JobInfo.airdFileName = id;
                         }
 
+                        InitDirectory(); //创建文件夹,首先创建文件夹的目的在于确保对指定目录拥有写权限,如果无法正常创建,则在本步骤就中断
                         ReadMsd(msd);
-                        InitDirectory(); //创建文件夹
                         using (AirdStream = new FileStream(JobInfo.airdFilePath, FileMode.Create))
                         {
                             using (AirdJsonStream = new FileStream(JobInfo.airdJsonFilePath, FileMode.Create))
                             {
                                 PredictAcquisitionMethod();
+                                InitCompressor();
                                 switch (JobInfo.type)
                                 {
                                     case AcquisitionMethod.DIA:
@@ -165,7 +167,7 @@ namespace AirdPro.Converters
                 finally
                 {
                     Finish();
-                    if (copyToLocal)
+                    if (CopyToLocal)
                     {
                         AirdProFileUtil.ClearLocalTempFiles();
                     }
@@ -222,6 +224,10 @@ namespace AirdPro.Converters
             if (!JobInfo.type.Equals(JobInfo.AutoType))
             {
                 JobInfo.SetType(JobInfo.type);
+                if (JobInfo.type.Equals(AcquisitionMethod.DIA_PASEF) || JobInfo.type.Equals(AcquisitionMethod.DDA_PASEF))
+                {
+                    JobInfo.ionMobility = true;
+                }
                 return;
             }
 
@@ -320,7 +326,7 @@ namespace AirdPro.Converters
             }
             catch (Exception e)
             {
-                Console.WriteLine("Hello");
+                Console.WriteLine("Chromatogram Reading Failed:"+e.Message);
             }
         }
 
@@ -425,7 +431,7 @@ namespace AirdPro.Converters
             
             for (var i = 0; i < columnIndex.mzs.Length; i++)
             {
-                //每隔10W个数差一帧
+                //每隔10W个数插入一帧
                 if (i % step == 0)
                 {
                     anchors[i / step] = StartPosition;
@@ -521,7 +527,7 @@ namespace AirdPro.Converters
 
             JobInfo.refreshReport = true;
             JobInfo.Log(Tag.Copy_File_To_Local, Status.Copying);
-            copyToLocal = true;
+            CopyToLocal = true;
             string tempPath = AirdProFileUtil.GetAirdProTempPath();
             if (!Directory.Exists(tempPath))
             {
@@ -638,7 +644,7 @@ namespace AirdPro.Converters
             };
 
             MSDataList msdList = new MSDataList();
-            if (copyToLocal)
+            if (CopyToLocal)
             {
                 FileInfo file = new FileInfo(JobInfo.inputPath);
                 readerList.read(Path.Combine(AirdProFileUtil.GetAirdProTempPath(), file.Name), msdList, readerConfig);
@@ -860,7 +866,6 @@ namespace AirdPro.Converters
                 {
                     CVUtil.ParseMobility(scan, MobiInfo);
                 }
-
                 ms1.msType = CVUtil.ParseMsType(spectrum);
                 ms1.polarity = CVUtil.ParsePolarity(spectrum);
                 ms1.activator = Activator.UNKNOWN;

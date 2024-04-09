@@ -2,6 +2,7 @@
 using System.IO;
 using AirdPro.Constants;
 using AirdPro.Domains;
+using AirdSDK.Beans;
 
 namespace AirdPro.Converters
 {
@@ -39,6 +40,8 @@ namespace AirdPro.Converters
         }
         
         public abstract void Init(JobInfo jobInfo);
+        
+        public abstract void InitCompressor();
         
         public abstract void DoConvert();
     }

@@ -33,6 +33,11 @@ namespace AirdPro.Converters
             TdmsComp = new TdmsComp(jobInfo);
         }
 
+        public override void InitCompressor()
+        {
+            throw new NotImplementedException();
+        }
+
         public override void DoConvert()
         {
             try

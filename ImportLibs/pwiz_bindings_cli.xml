@@ -1162,46 +1162,78 @@ Reader may filter based on filename and/or head of the file
         <member name="T:pwiz.CLI.msdata.Reader">
 interface for file readers
 </member>
+        <member name="F:pwiz.CLI.msdata.ReaderConfig.ddaProcessing">
+            <summary />
+        </member>
         <member name="F:pwiz.CLI.msdata.ReaderConfig.globalChromatogramsAreMs1Only">
+            <summary>
 when true, global TIC and BPC chromatograms consist of only MS1 spectra (thus the number of time points cannot be assumed to be equal to the number of spectra)
-</member>
+</summary>
+        </member>
         <member name="F:pwiz.CLI.msdata.ReaderConfig.isolationMzAndMobilityFilter">
+            <summary>
 when non-empty, only scans from precursors matching one of the included m/z and/or mobility windows will be enumerated; MS1 scans are affected only by the mobility filter
-</member>
+</summary>
+        </member>
         <member name="F:pwiz.CLI.msdata.ReaderConfig.sortAndJitter">
+            <summary>
 temporary(?) variable to avoid needing to regenerate Bruker test data
-</member>
+</summary>
+        </member>
         <member name="F:pwiz.CLI.msdata.ReaderConfig.allowMsMsWithoutPrecursor">
+            <summary>
 when true, MS2 spectra without precursor/isolation information will be included in the output (currently only affects Bruker PASEF data)
-</member>
+</summary>
+        </member>
         <member name="F:pwiz.CLI.msdata.ReaderConfig.preferOnlyMsLevel">
+            <summary>
 when nonzero, if reader can enumerate only spectra of ms level, it will (currently only supported by Bruker TDF)
-</member>
+</summary>
+        </member>
         <member name="F:pwiz.CLI.msdata.ReaderConfig.adjustUnknownTimeZonesToHostTimeZone">
+            <summary>
 when true, if a reader does not know what time zone was used to record a time, it will assume the time refers to the host's local time;
 when false, the reader will treat times with unknown time zone as UTC
-</member>
+</summary>
+        </member>
         <member name="F:pwiz.CLI.msdata.ReaderConfig.unknownInstrumentIsError">
+            <summary>
 when true, if a reader cannot identify an instrument, an exception will be thrown asking users to report it
-</member>
+</summary>
+        </member>
         <member name="F:pwiz.CLI.msdata.ReaderConfig.reportSonarBins">
+            <summary>
 when true, Waters SONAR data populates "drift" information with bin number instead of pseudo ion mobility values
-</member>
+</summary>
+        </member>
+        <member name="F:pwiz.CLI.msdata.ReaderConfig.ignoreCalibrationScans">
+            <summary />
+        </member>
         <member name="F:pwiz.CLI.msdata.ReaderConfig.combineIonMobilitySpectra">
+            <summary>
 when true, all drift bins/scans in a frame/block are written in combined form instead of as individual spectra
-</member>
+</summary>
+        </member>
         <member name="F:pwiz.CLI.msdata.ReaderConfig.ignoreZeroIntensityPoints">
+            <summary>
 when true, allows certain vendor readers to produce profile data without zero intensity samples flanking each peak profile
-</member>
+</summary>
+        </member>
         <member name="F:pwiz.CLI.msdata.ReaderConfig.acceptZeroLengthSpectra">
+            <summary>
 when true, allows for skipping 0 length checks (and thus skip re-reading data for ABI)
-</member>
+</summary>
+        </member>
         <member name="F:pwiz.CLI.msdata.ReaderConfig.srmAsSpectra">
+            <summary>
 return Selected Reaction Monitoring as spectra
-</member>
+</summary>
+        </member>
         <member name="F:pwiz.CLI.msdata.ReaderConfig.simAsSpectra">
+            <summary>
 return Selected Ion Monitoring as spectra
-</member>
+</summary>
+        </member>
         <member name="T:pwiz.CLI.msdata.ReaderConfig">
             <summary>
 configuration struct for readers
@@ -1460,6 +1492,9 @@ on Windows, closes all file handles and memory mapped sections relating to the g
         <member name="M:pwiz.util.running_on_wine">
 returns true iff process is Windows executable running under Wine
 </member>
+        <member name="M:pwiz.util.toString(System.UInt64)">
+uses boost::spirit::karma to do faster conversion (relative to lexical_cast) of size_t to string
+</member>
         <member name="M:pwiz.util.toString(System.Int32)">
 uses boost::spirit::karma to do faster conversion (relative to lexical_cast) of int to string
 </member>
@@ -1507,6 +1542,9 @@ accepts any tandem mass spectrum
 </member>
         <member name="T:pwiz.analysis.SpectrumList_ChargeStateCalculator">
 SpectrumList implementation that assigns (probable) charge states to tandem mass spectra
+</member>
+        <member name="M:pwiz.analysis.SpectrumList_LockmassRefiner.spectrum(System.UInt64,pwiz.msdata.DetailLevel,pwiz.util.IntegerSet!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+overload used by SpectrumList_PeakPicker
 </member>
         <member name="T:pwiz.analysis.SpectrumList_LockmassRefiner">
 SpectrumList implementation to replace peak profiles with picked peaks
@@ -3180,6 +3218,9 @@ this is useful for formats like mzML that can delay loading of binary data
 retrieve a spectrum by index
 - binary data arrays will be provided if (getBinaryData == true);
 - client may assume the underlying Spectrum* is valid 
+</member>
+        <member name="M:pwiz.msdata.SpectrumList.checkNativeIdMatch(std.basic_string&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte&gt;&gt;!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced,std.basic_string&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte&gt;&gt;!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+if find() fails to find a spectrum id, can use this to check whether the id fields of the input id and the spectrum list are matching
 </member>
         <member name="M:pwiz.msdata.SpectrumList.findSpotID(std.basic_string&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte&gt;&gt;!System.Runtime.CompilerServices.IsConst*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
 find all spectrum indexes with spotID (returns empty vector on failure)
@@ -5802,6 +5843,33 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
         </member>
         <member name="F:pwiz.CLI.cv.CVID.UO_unit">
             <summary>unit: A unit of measurement is a standardized quantity of a physical quality.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_DVFQQQTGG">
+            <summary>DVFQQQTGG: SUMOylation by Endogenous SUMO2/3 following Lys C and Asp-N serial digestion.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_NQTGG">
+            <summary>NQTGG: SUMOylation leaving NQTGG.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_Pyro_QQTGG">
+            <summary>Pyro-QQTGG: SUMOylation leaving Pyro-QQTGG.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_QQTGG">
+            <summary>QQTGG: SUMOylation leaving QQTGG.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_Ethynyl">
+            <summary>Ethynyl: Ethynlation of cysteine residues.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_DCP">
+            <summary>DCP: Dimedone-Based Chemical Probes.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_NBF">
+            <summary>NBF: Thiol blocking reagent.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_DABCYL_C2_maleimide">
+            <summary>DABCYL-C2-maleimide: DABCYL-C2-maleimide Thiol-reactive dye for fluorescence labelling of proteins.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.UNIMOD_N6pAMP">
+            <summary>N6pAMP: Plain N6-Propargyl-AMP modified proteins without any clicked enrichment tag.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.UNIMOD_Glyceroyl">
             <summary>Glyceroyl: Glyceroylation.</summary>
@@ -10303,11 +10371,95 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
         <member name="F:pwiz.CLI.cv.CVID.UNIMOD_unimod_root_node">
             <summary>unimod root node: The root node of the unimod modifications ontology.</summary>
         </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_median_MS2_precursor_charge_in_identified_spectra">
+            <summary>median MS2 precursor charge in identified spectra: Median MS2 precursor charge in identified spectra. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_median_MS2_precursor_charge_in_all_spectra">
+            <summary>median MS2 precursor charge in all spectra: Median MS2 precursor charge in all spectra</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_mean_MS2_precursor_charge_in_identified_spectra">
+            <summary>mean MS2 precursor charge in identified spectra: Mean MS2 precursor charge in identified spectra. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_mean_MS2_precursor_charge_in_all_spectra">
+            <summary>mean MS2 precursor charge in all spectra: Mean MS2 precursor charge in all spectra</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_ratio_of_4__over_2__of_identified_MS2_known_precursor_charges">
+            <summary>ratio of 4+ over 2+ of identified MS2 known precursor charges: The ratio of 4+ over 2+ MS2 precursor charge count of identified spectra. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_ratio_of_4__over_2__of_all_MS2_known_precursor_charges">
+            <summary>ratio of 4+ over 2+ of all MS2 known precursor charges: The ratio of 4+ over 2+ MS2 precursor charge count of all spectra.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_ratio_of_3__over_2__of_identified_MS2_known_precursor_charges">
+            <summary>ratio of 3+ over 2+ of identified MS2 known precursor charges: The ratio of 3+ over 2+ MS2 precursor charge count of identified spectra. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_ratio_of_3__over_2__of_all_MS2_known_precursor_charges">
+            <summary>ratio of 3+ over 2+ of all MS2 known precursor charges: The ratio of 3+ over 2+ MS2 precursor charge count of all spectra.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_ratio_of_1__over_2__of_identified_MS2_known_precursor_charges">
+            <summary>ratio of 1+ over 2+ of identified MS2 known precursor charges: The ratio of 1+ over 2+ MS2 precursor charge count of identified spectra. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_ratio_of_1__over_2__of_all_MS2_known_precursor_charges">
+            <summary>ratio of 1+ over 2+ of all MS2 known precursor charges: The ratio of 1+ over 2+ MS2 precursor charge count of all spectra.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_unidentified_MS2_precursor_intensity_distribution_sigma">
+            <summary>unidentified MS2 precursor intensity distribution sigma: From the distribution of unidentified MS2 precursor intensities, the sigma value. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_identified_MS2_precursor_intensity_distribution_sigma">
+            <summary>identified MS2 precursor intensity distribution sigma: From the distribution of identified MS2 precursor intensities, the sigma value. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_unidentified_MS2_precursor_intensity_distribution_mean">
+            <summary>unidentified MS2 precursor intensity distribution mean: From the distribution of unidentified MS2 precursor intensities, the mean. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_identified_MS2_precursor_intensity_distribution_mean">
+            <summary>identified MS2 precursor intensity distribution mean: From the distribution of identified MS2 precursor intensities, the mean. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_unidentified_MS2_precursor_intensity_distribution">
+            <summary>unidentified MS2 precursor intensity distribution: From the distribution of unidentified MS2 precursor intensities, the quantiles. E.g. a value triplet represents the quartiles Q1, Q2, Q3. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_identified_MS2_precursor_intensity_distribution">
+            <summary>identified MS2 precursor intensity distribution: From the distribution of identified MS2 precursor intensities, the quantiles. E.g. a value triplet represents the quartiles Q1, Q2, Q3. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_MS2_precursor_intensity_range">
+            <summary>MS2 precursor intensity range: Minimum and maximum MS2 precursor intensity recorded.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_median_of_TIC_values_in_the_shortest_RT_range_in_which_half_of_the_quantification_data_points_are_identified">
+            <summary>median of TIC values in the shortest RT range in which half of the quantification data points are identified: Median of TIC values in the shortest RT range in which half of the quantification data points are identified. These data points may be for example XIC profiles, isotopic pattern areas, or reporter ions (see MS:1001805). The used type should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_median_of_TIC_values_in_the_RT_range_in_which_the_middle_half_of_quantification_data_points_are_identified">
+            <summary>median of TIC values in the RT range in which the middle half of quantification data points are identified: Median of TIC values in the RT range in which half of quantification data points are identified (RT values of Q1 to Q3 of identifications). These data points may be for example XIC profiles, isotopic pattern areas, or reporter ions (see MS:1001805). The used type should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_extent_of_identified_MS2_precursor_intensity">
+            <summary>extent of identified MS2 precursor intensity: Ratio of 95th over 5th percentile of MS2 precursor intensity for all quantification data points after user-defined acceptance criteria are applied. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_area_under_TIC_RT_quantiles">
+            <summary>area under TIC RT quantiles: The area under the total ion chromatogram of the retention time quantiles. Number of quantiles are given by the n-tuple.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_area_under_TIC">
+            <summary>area under TIC: The area under the total ion chromatogram.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_rate_of_the_interquartile_RT_period_for_identified_quantification_data_points">
+            <summary>rate of the interquartile RT period for identified quantification data points: The rate of identified quantification data points for the interquartile retention time period, in identified quantification data points per second. These data points may be for example XIC profiles, isotopic pattern areas, or reporter ions (see MS:1001805). The used type should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_interquartile_RT_period_for_identified_quantification_data_points">
+            <summary>interquartile RT period for identified quantification data points: The interquartile retention time period, in seconds, for all quantification data points after user-defined acceptance criteria are applied over the complete run. These data points may be for example XIC profiles, isotopic pattern areas, or reporter ions (see MS:1001805). The used type should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_MS2_precursor_median_m_z_of_identified_quantification_data_points">
+            <summary>MS2 precursor median m/z of identified quantification data points: Median m/z value for MS2 precursors of all quantification data points after user-defined acceptance criteria are applied. These data points may be for example XIC profiles, isotopic pattern areas, or reporter ions (see MS:1001805). The used type should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_MsQuality">
+            <summary>MsQuality: MsQuality â€“ an interoperable open-source package for the calculation of standardized quality metrics of mass spectrometry data.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_iRT_calibration_adjusted_r_squared">
+            <summary>iRT calibration adjusted r-squared: The goodness of fit statistic between observed retention times and iRT calibrated retention times.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_iRT_calibration_formula">
+            <summary>iRT calibration formula: A polynomial formula to calibrate retention time based on iRT reference peptides. The order of the values corresponds to polynomial terms. I.e. a linear equation is represented by a two-tuple consisting of (slope, intercept). More general, the position in the n_tuple indicates the power of `x`: position `n â†’ x^0`, position `n - 1 â†’ x^1`, position `n - 2 â†’ x^2`, etc.</summary>
+        </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_algorithmical_threshold">
-            <summary>algorithmical threshold: Defines outliers algorithmically, where a single value threshold might not be applicable or p.r.n. multivariate decision making is applied. The value of the term should name the algorithmical method used</summary>
+            <summary>algorithmical threshold: Defines outliers algorithmically, where a single value threshold might not be applicable or p.r.n. multivariate decision making is applied. The value of the term should name the algorithmical method used.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_high_outliers">
-            <summary>Tukey's fence high outliers: Defines high outliers with Tukey's fence as &gt;(Q3+x*IQR) for high outliers, where x is defined by the term's value. The default is x=1.5</summary>
+            <summary>Tukey's fence high outliers: Defines high outliers with Tukey's fence as &gt;(Q3+x*IQR) for high outliers, where x is defined by the term's value. The default is x=1.5.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_outlier_threshold_criterion">
             <summary>outlier threshold criterion: The definition of the outlier criteria applied.</summary>
@@ -10372,20 +10524,20 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
         <member name="F:pwiz.CLI.cv.CVID.MS_MS1_signal_to_noise_ratio_quantiles">
             <summary>MS1 signal-to-noise ratio quantiles: From the distribution of signal-to-noise ratio in MS1, the quantiles. I.e. a value triplet represents the quartiles Q1, Q2, Q3</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.MS_precursor_intensity_distribution_high_outliers">
-            <summary>precursor intensity distribution high outliers: From the distribution of precursor intensities, the list of outliers above a in-file defined threshold</summary>
+        <member name="F:pwiz.CLI.cv.CVID.MS_MS2_precursor_intensity_distribution_high_outliers">
+            <summary>MS2 precursor intensity distribution high outliers: From the distribution of precursor intensities, the list of outliers above a in-file defined threshold</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.MS_precursor_intensity_distribution_low_outliers">
-            <summary>precursor intensity distribution low outliers: From the distribution of precursor intensities, the list of outliers below a in-file defined threshold</summary>
+        <member name="F:pwiz.CLI.cv.CVID.MS_MS2_precursor_intensity_distribution_low_outliers">
+            <summary>MS2 precursor intensity distribution low outliers: From the distribution of precursor intensities, the list of outliers below a in-file defined threshold</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.MS_precursor_intensity_distribution_sigma">
-            <summary>precursor intensity distribution sigma: From the distribution of precursor intensities, the sigma value</summary>
+        <member name="F:pwiz.CLI.cv.CVID.MS_MS2_precursor_intensity_distribution_sigma">
+            <summary>MS2 precursor intensity distribution sigma: From the distribution of MS2 precursor intensities, the sigma value</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.MS_precursor_intensity_distribution_mean">
-            <summary>precursor intensity distribution mean: From the distribution of precursor intensities, the mean</summary>
+        <member name="F:pwiz.CLI.cv.CVID.MS_MS2_precursor_intensity_distribution_mean">
+            <summary>MS2 precursor intensity distribution mean: From the distribution of MS2 precursor intensities, the mean</summary>
         </member>
-        <member name="F:pwiz.CLI.cv.CVID.MS_precursor_intensity_distribution_quantiles">
-            <summary>precursor intensity distribution quantiles: From the distribution of precursor intensities, the quantiles. I.e. a value triplet represents the quartiles Q1, Q2, Q3</summary>
+        <member name="F:pwiz.CLI.cv.CVID.MS_MS2_precursor_intensity_distribution">
+            <summary>MS2 precursor intensity distribution: From the distribution of MS2 precursor intensities, the quantiles. E.g. a value triplet represents the quartiles Q1, Q2, Q3.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_MS2_peak_density_distribution_high_outliers">
             <summary>MS2 peak density distribution high outliers: From the distribution of peak densities in MS2, the list of outliers above a in-file defined threshold</summary>
@@ -10439,10 +10591,10 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
             <summary>number of empty MS1 scans: Number of MS1 scans where the scans' peaks intensity sums to 0 (i.e. no peaks or only 0-intensity peaks).</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_MS1_signal_fall__10x__count">
-            <summary>MS1 signal fall (10x) count: The number of times where MS1 TIC decreased more than 10-fold between adjacent MS1 scans. An unusual high count of signal jumps or falls can indicate ESI stability issues.</summary>
+            <summary>MS1 signal fall (10x) count: The number of times where MS1 TIC decreased more than 10-fold between adjacent MS1 scans.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_MS1_signal_jump__10x__count">
-            <summary>MS1 signal jump (10x) count: The number of times where MS1 TIC increased more than 10-fold between adjacent MS1 scans. An unusual high count of signal jumps or falls can indicate ESI stability issues.</summary>
+            <summary>MS1 signal jump (10x) count: The number of times where MS1 TIC increased more than 10-fold between adjacent MS1 scans.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_slowest_frequency_for_MS_level_2_collection">
             <summary>slowest frequency for MS level 2 collection: The slowest acquisition speed with which product MS scans were collected. Scan acquisition frequency can be used to gauge the suitability of used instrument settings for the sample content used.</summary>
@@ -10693,6 +10845,147 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
         <member name="F:pwiz.CLI.cv.CVID.MS_PSI_MS_CV_Quality_Control_Vocabulary">
             <summary>PSI-MS CV Quality Control Vocabulary: PSI Quality Control controlled vocabulary term.</summary>
         </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_pymzqc">
+            <summary>pymzqc: A Python package for reading, validating, and writing mzQC files.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_jmzqc">
+            <summary>jmzqc: A Java package for reading, validating, and writing mzQC files.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_rmzqc">
+            <summary>rmzqc: An R package for reading, validating, and writing mzQC files.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_quality_control_software">
+            <summary>quality control software: Software that creates or manipulates QC-related data.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_deconvoluted_data">
+            <summary>deconvoluted data: The data contained in this file have been processed to remove, collapse, or label one or more dimensions of the original dataset, such as charge deconvolution or ion mobility deconvolution. To determine the type of deconvolution done, the reader should consult the appropriate section of the file, such as the data processing methods in an mzML file.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_timsTOF_fleX_MALDI_2">
+            <summary>timsTOF fleX MALDI-2: Bruker Daltonics' timsTOF fleX MALDI-2.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_8890_GC_MS">
+            <summary>8890 GC/MS: Agilent 8890 Gas Chromatograph System.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_Q_Exactive_GC_Orbitrap">
+            <summary>Q Exactive GC Orbitrap: Q Exactive GC Orbitrap GC-MS/MS hybrid quadrupole Orbitrap mass spectrometer.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_SelexION_separation_voltage">
+            <summary>SelexION separation voltage: RF voltage applied in the SelexION device to separate ions in trajectory based on the difference in their mobility between the high field and low field portions of the applied RF.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_search_modification_id_ref">
+            <summary>search modification id ref: A reference to a `search modification id` in the current mzIdentML document that defines the properties of this modification instance.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_search_modification_id">
+            <summary>search modification id: A unique identifier within an in mzIdentML document denoting a search modification rule. The same modification may be present multiple times with different id values to reflect different specificities or neutral losses.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_mzTab_M">
+            <summary>mzTab-M: Expanded tabular result format for metabolomics experiments reporting quantitative summary data, MS features and identification evidence.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_CompoundDb">
+            <summary>CompoundDb: Bioconductor package CompoundDb for creation, usage and maintenance of public or library-specific annotation databases and spectra libraries.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_MetaboAnnotation">
+            <summary>MetaboAnnotation: Bioconductor package MetaboAnnotation for annotation of untargeted metabolomics data.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_Spectra">
+            <summary>Spectra: Bioconductor package Spectra for mass spectrometry data representation and processing.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_mzIdentML_crosslinking_extension_document_version">
+            <summary>mzIdentML crosslinking extension document version: The versioning of the crosslinking mzIdentML extension document.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_semantic_version_regexp">
+            <summary>semantic version regexp: v?(\d+)\.(\d+)\.(\d+)(?:-(\S+))?</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_timsTOF_Ultra">
+            <summary>timsTOF Ultra: Bruker Daltonics' timsTOF Ultra.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_waters_connect">
+            <summary>waters_connect: Waters Corporation waters_connect software for liquid chromatography and mass spectrometry acquisition and processing.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_ACQUITY_RDa_Detector">
+            <summary>ACQUITY RDa Detector: Waters Corporation RDa time-of-flight mass detector.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_Xevo_G3_QTof">
+            <summary>Xevo G3 QTof: Waters Corporation Xevo G3 QTof quadrupole time-of-flight mass spectrometer.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_Astral">
+            <summary>Astral: A TOF-like mass analyzer with asymmetric ion mirrors to direct ions into transversal asymmetric oscillations and ion foil shapes and maintains ion packet for transmission and resolution.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_asymmetric_track_lossless_time_of_flight_analyzer">
+            <summary>asymmetric track lossless time-of-flight analyzer: A TOF-like mass analyzer with asymmetric ion mirrors to direct ions into transversal asymmetric oscillations and ion foil shapes and maintains ion packet for transmission and resolution.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_Orbitrap_Astral">
+            <summary>Orbitrap Astral: Thermo Scientific Orbitrap Astral mass spectrometer contains three mass analyzers: a quadrupole analyzer, an Orbitrap analyzer, and the Astral analyzer.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_openchrom">
+            <summary>openchrom: OpenChrom is an Open Source software for data processing and analysis. Based upon Eclipse ChemClipse.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_OpenChrom">
+            <summary>OpenChrom: OpenChrom is an Open Source software for data processing and analysis. Based upon Eclipse ChemClipse.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_chemclipse">
+            <summary>chemclipse: ChemClipse is part of the Eclipse Science project. Primarily developed by Lablicate GmbH.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_ChemClipse">
+            <summary>ChemClipse: ChemClipse is part of the Eclipse Science project. Primarily developed by Lablicate GmbH.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_Conversion_to_OCB">
+            <summary>Conversion to OCB: Conversion of a file format to Open Chromatography Binary OCB file format.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_Open_Chromatography_Binary_OCB_format">
+            <summary>Open Chromatography Binary OCB format: ChemClipse/OpenChrom file format.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_mzIdentML_extension_version">
+            <summary>mzIdentML extension version: The versioning of an mzIdentML extension document.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_specification_document_extension_version">
+            <summary>specification document extension version: The versioning of a an extension to a specification document that the current file requires to be read correctly. The version should encode the name of the extension, and some ordinal expression of its revision, preferably in semantic versioning notation. Signals that readers that do not know this extension should return an appropriately informative error if they do not think they can or should try to interpret the file.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_SelexION_compensation_voltage">
+            <summary>SelexION compensation voltage: The voltage applied in the SelexION device to allow certain ions to transmit through to the mass spectrometer.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_reduction_to_summed_singly_charged_peak_list">
+            <summary>reduction to summed singly charged peak list: The summing of peaks corresponding to the same mass at multiple charge states and presented as singly charged m/z.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_average_mass_deisotoping">
+            <summary>average mass deisotoping: The removal of isotope peaks to represent each ion as one data point corresponding to the ion's average mass. It is done in conjunction with the charge state deconvolution.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_most_abundant_mass_deisotoping">
+            <summary>most abundant mass deisotoping: The removal of isotope peaks to represent each ion as one data point corresponding to the ion's most abundant isotopic mass. It is done in conjunction with the charge state deconvolution.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_monoisotopic_mass_deisotoping">
+            <summary>monoisotopic mass deisotoping: The removal of isotope peaks to represent each ion as one data point corresponding to the ion's monoisotopic mass. It is done in conjunction with the charge state deconvolution.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_tailor_score">
+            <summary>tailor score: A calibrated version of the XCorr score, computed by dividing the XCorr by the 99th percentile of the distribution of all scores for a particular spectrum.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_combined_p_value_rank">
+            <summary>combined p-value rank: The rank of this PSM relative to all other PSMs involving this spectrum, when sorting by the combined p-value.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_combined_p_value">
+            <summary>combined p-value: A p-value that is computed by taking the product of the exact p-value and the res-ev p-value and then adjusting for dependencies between them.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_res_ev_p_value">
+            <summary>res-ev p-value: The residue-evidence p-value is computed from the residue-evidence score using a dynamic programming procedure.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_res_ev_rank">
+            <summary>res-ev rank: The rank of this PSM relative to all other PSMs involving this spectrum, when sorting by the res-ev score.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_res_ev_score">
+            <summary>res-ev score: The residue-evidence (res-ev) score measures the quality of a match between a peptide and observed spectrum using a method similar to XCorr, but considering all pairs of observed peaks.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_refactored_XCorr">
+            <summary>refactored XCorr: A modified version of the XCorr score that is made amenable to dynamic programming calculation of p-values by changing a max operation to a sum.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_exact_p_value">
+            <summary>exact p-value: A p-value for the XCorr score, calculated using dynamic programming.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_XCorr_rank">
+            <summary>XCorr rank: The rank of this PSM relative to all other PSMs involving this spectrum, when sorting by the XCorr score.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_ANN_SoLo">
+            <summary>ANN-SoLo: ANN-SoLo (Approximate Nearest Neighbor Spectral Library) is a spectral library search engine for fast and accurate open modification searching. ANN-SoLo uses approximate nearest neighbor indexing to speed up open modification searching by selecting only a limited number of the most relevant library spectra to compare to an unknown query spectrum. This is combined with a cascade search strategy to maximize the number of identified unmodified and modified spectra while strictly controlling the false discovery rate and the shifted dot product score to sensitively match modified spectra to their unmodified counterpart.</summary>
+        </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_Orbitrap_Ascend">
             <summary>Orbitrap Ascend: Thermo Scientific Orbitrap Ascend mass spectrometer with Tribrid architecture consisting of quadrupole mass filter, linear ion trap and Orbitrap mass analyzers.</summary>
         </member>
@@ -10766,7 +11059,10 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
             <summary>noncovalently associated peptides search: Noncovalently associated peptides search performed. Noncovalently associated peptides are two different peptides which were not crosslinked but stayed associated with each other throughout the workflow, due to noncovalent interactions.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_loop_link_spectrum_identification_item">
-            <summary>loop-link spectrum identification item: Identification of an internally linked peptide (a peptide that contains both ends of a crosslink), also known as a loop-link.</summary>
+            <summary>loop-link spectrum identification item: Identification of an internally linked peptide (a peptide that contains both ends of a crosslink), also known as a looplink.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_looplink_spectrum_identification_item">
+            <summary>looplink spectrum identification item: Identification of an internally linked peptide (a peptide that contains both ends of a crosslink), also known as a looplink.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_number_of_identified_proteoforms">
             <summary>number of identified proteoforms: The number of proteoforms that pass the threshold to be considered identified with sufficient confidence.</summary>
@@ -11475,6 +11771,9 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_peptide_ion_annotation_format">
             <summary>peptide ion annotation format: Annotation format designed primarily for peptides, with allowances for generic chemical formulas and other miscellaneous named ions.</summary>
+        </member>
+        <member name="F:pwiz.CLI.cv.CVID.MS_mzPAF_peptide_ion_annotation_format">
+            <summary>mzPAF peptide ion annotation format: Annotation format designed primarily for peptides, with allowances for generic chemical formulas and other miscellaneous named ions.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_ion_annotation_format">
             <summary>ion annotation format: Annotation format used for annotating individual spectrum ion peaks.</summary>
@@ -19625,7 +19924,7 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
             <summary>nth generation product ion: Serial product ions from dissociation of selected precursor ions where n refers to the number of stages of dissociation. The term granddaughter ion is deprecated.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_neutral_loss">
-            <summary>neutral loss: The loss of an uncharged species during a rearrangement process. The value slot holds the molecular formula in Hill notation of the neutral loss molecule, see PMID: 21182243. This term must be used in conjunction with a child of the term MS:1002307 (fragmentation ion type).</summary>
+            <summary>neutral loss: The loss of an uncharged species during a rearrangement process. The value slot holds the molecular formula in Hill notation of the neutral loss molecule, see PMID:21182243. This term must be used in conjunction with a child of the term MS:1002307 (fragmentation ion type).</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_MS_MS_in_Space_OBSOLETE">
             <summary>MS/MS in Space: A tandem mass spectrometry method in which product ion spectra are recorded in m/z analyzers separated in space. Specific m/z separation functions are designed such that in one section of the instrument ions are selected, dissociated in an intermediate region, and the product ions are then transmitted to another analyser for m/z separation and data acquisition.</summary>
@@ -20840,7 +21139,7 @@ A list of enumerated CVIDs (CV terms); implements IList&lt;CVID&gt;
             <summary>charge deconvolution: The determination of the mass of an ion based on the mass spectral peaks that represent multiple-charge ions.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_deisotoping">
-            <summary>deisotoping: The removal of isotope peaks to represent the fragment ion as one data point and is commonly done to reduce complexity. It is done in conjunction with the charge state deconvolution.</summary>
+            <summary>deisotoping: The removal of isotope peaks to represent the ion as one data point and is commonly done to reduce complexity. It is done in conjunction with the charge state deconvolution.</summary>
         </member>
         <member name="F:pwiz.CLI.cv.CVID.MS_customization">
             <summary>customization: Free text description of a single customization made to the instrument; for several modifications, use several entries.</summary>
@@ -22472,6 +22771,33 @@ length unit: A unit which is a standard measure of the distance between two poin
 </member>
         <member name="F:UO_unit">
 unit: A unit of measurement is a standardized quantity of a physical quality.
+</member>
+        <member name="F:UNIMOD_DVFQQQTGG">
+DVFQQQTGG: SUMOylation by Endogenous SUMO2/3 following Lys C and Asp-N serial digestion.
+</member>
+        <member name="F:UNIMOD_NQTGG">
+NQTGG: SUMOylation leaving NQTGG.
+</member>
+        <member name="F:UNIMOD_Pyro_QQTGG">
+Pyro-QQTGG: SUMOylation leaving Pyro-QQTGG.
+</member>
+        <member name="F:UNIMOD_QQTGG">
+QQTGG: SUMOylation leaving QQTGG.
+</member>
+        <member name="F:UNIMOD_Ethynyl">
+Ethynyl: Ethynlation of cysteine residues.
+</member>
+        <member name="F:UNIMOD_DCP">
+DCP: Dimedone-Based Chemical Probes.
+</member>
+        <member name="F:UNIMOD_NBF">
+NBF: Thiol blocking reagent.
+</member>
+        <member name="F:UNIMOD_DABCYL_C2_maleimide">
+DABCYL-C2-maleimide: DABCYL-C2-maleimide Thiol-reactive dye for fluorescence labelling of proteins.
+</member>
+        <member name="F:UNIMOD_N6pAMP">
+N6pAMP: Plain N6-Propargyl-AMP modified proteins without any clicked enrichment tag.
 </member>
         <member name="F:UNIMOD_Glyceroyl">
 Glyceroyl: Glyceroylation.
@@ -26973,11 +27299,95 @@ Acetyl: Acetylation.
         <member name="F:UNIMOD_unimod_root_node">
 unimod root node: The root node of the unimod modifications ontology.
 </member>
+        <member name="F:MS_median_MS2_precursor_charge_in_identified_spectra">
+median MS2 precursor charge in identified spectra: Median MS2 precursor charge in identified spectra. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.
+</member>
+        <member name="F:MS_median_MS2_precursor_charge_in_all_spectra">
+median MS2 precursor charge in all spectra: Median MS2 precursor charge in all spectra
+</member>
+        <member name="F:MS_mean_MS2_precursor_charge_in_identified_spectra">
+mean MS2 precursor charge in identified spectra: Mean MS2 precursor charge in identified spectra. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.
+</member>
+        <member name="F:MS_mean_MS2_precursor_charge_in_all_spectra">
+mean MS2 precursor charge in all spectra: Mean MS2 precursor charge in all spectra
+</member>
+        <member name="F:MS_ratio_of_4__over_2__of_identified_MS2_known_precursor_charges">
+ratio of 4+ over 2+ of identified MS2 known precursor charges: The ratio of 4+ over 2+ MS2 precursor charge count of identified spectra. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.
+</member>
+        <member name="F:MS_ratio_of_4__over_2__of_all_MS2_known_precursor_charges">
+ratio of 4+ over 2+ of all MS2 known precursor charges: The ratio of 4+ over 2+ MS2 precursor charge count of all spectra.
+</member>
+        <member name="F:MS_ratio_of_3__over_2__of_identified_MS2_known_precursor_charges">
+ratio of 3+ over 2+ of identified MS2 known precursor charges: The ratio of 3+ over 2+ MS2 precursor charge count of identified spectra. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.
+</member>
+        <member name="F:MS_ratio_of_3__over_2__of_all_MS2_known_precursor_charges">
+ratio of 3+ over 2+ of all MS2 known precursor charges: The ratio of 3+ over 2+ MS2 precursor charge count of all spectra.
+</member>
+        <member name="F:MS_ratio_of_1__over_2__of_identified_MS2_known_precursor_charges">
+ratio of 1+ over 2+ of identified MS2 known precursor charges: The ratio of 1+ over 2+ MS2 precursor charge count of identified spectra. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.
+</member>
+        <member name="F:MS_ratio_of_1__over_2__of_all_MS2_known_precursor_charges">
+ratio of 1+ over 2+ of all MS2 known precursor charges: The ratio of 1+ over 2+ MS2 precursor charge count of all spectra.
+</member>
+        <member name="F:MS_unidentified_MS2_precursor_intensity_distribution_sigma">
+unidentified MS2 precursor intensity distribution sigma: From the distribution of unidentified MS2 precursor intensities, the sigma value. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.
+</member>
+        <member name="F:MS_identified_MS2_precursor_intensity_distribution_sigma">
+identified MS2 precursor intensity distribution sigma: From the distribution of identified MS2 precursor intensities, the sigma value. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.
+</member>
+        <member name="F:MS_unidentified_MS2_precursor_intensity_distribution_mean">
+unidentified MS2 precursor intensity distribution mean: From the distribution of unidentified MS2 precursor intensities, the mean. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.
+</member>
+        <member name="F:MS_identified_MS2_precursor_intensity_distribution_mean">
+identified MS2 precursor intensity distribution mean: From the distribution of identified MS2 precursor intensities, the mean. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.
+</member>
+        <member name="F:MS_unidentified_MS2_precursor_intensity_distribution">
+unidentified MS2 precursor intensity distribution: From the distribution of unidentified MS2 precursor intensities, the quantiles. E.g. a value triplet represents the quartiles Q1, Q2, Q3. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.
+</member>
+        <member name="F:MS_identified_MS2_precursor_intensity_distribution">
+identified MS2 precursor intensity distribution: From the distribution of identified MS2 precursor intensities, the quantiles. E.g. a value triplet represents the quartiles Q1, Q2, Q3. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.
+</member>
+        <member name="F:MS_MS2_precursor_intensity_range">
+MS2 precursor intensity range: Minimum and maximum MS2 precursor intensity recorded.
+</member>
+        <member name="F:MS_median_of_TIC_values_in_the_shortest_RT_range_in_which_half_of_the_quantification_data_points_are_identified">
+median of TIC values in the shortest RT range in which half of the quantification data points are identified: Median of TIC values in the shortest RT range in which half of the quantification data points are identified. These data points may be for example XIC profiles, isotopic pattern areas, or reporter ions (see MS:1001805). The used type should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.
+</member>
+        <member name="F:MS_median_of_TIC_values_in_the_RT_range_in_which_the_middle_half_of_quantification_data_points_are_identified">
+median of TIC values in the RT range in which the middle half of quantification data points are identified: Median of TIC values in the RT range in which half of quantification data points are identified (RT values of Q1 to Q3 of identifications). These data points may be for example XIC profiles, isotopic pattern areas, or reporter ions (see MS:1001805). The used type should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.
+</member>
+        <member name="F:MS_extent_of_identified_MS2_precursor_intensity">
+extent of identified MS2 precursor intensity: Ratio of 95th over 5th percentile of MS2 precursor intensity for all quantification data points after user-defined acceptance criteria are applied. The used type of identification should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.
+</member>
+        <member name="F:MS_area_under_TIC_RT_quantiles">
+area under TIC RT quantiles: The area under the total ion chromatogram of the retention time quantiles. Number of quantiles are given by the n-tuple.
+</member>
+        <member name="F:MS_area_under_TIC">
+area under TIC: The area under the total ion chromatogram.
+</member>
+        <member name="F:MS_rate_of_the_interquartile_RT_period_for_identified_quantification_data_points">
+rate of the interquartile RT period for identified quantification data points: The rate of identified quantification data points for the interquartile retention time period, in identified quantification data points per second. These data points may be for example XIC profiles, isotopic pattern areas, or reporter ions (see MS:1001805). The used type should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.
+</member>
+        <member name="F:MS_interquartile_RT_period_for_identified_quantification_data_points">
+interquartile RT period for identified quantification data points: The interquartile retention time period, in seconds, for all quantification data points after user-defined acceptance criteria are applied over the complete run. These data points may be for example XIC profiles, isotopic pattern areas, or reporter ions (see MS:1001805). The used type should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.
+</member>
+        <member name="F:MS_MS2_precursor_median_m_z_of_identified_quantification_data_points">
+MS2 precursor median m/z of identified quantification data points: Median m/z value for MS2 precursors of all quantification data points after user-defined acceptance criteria are applied. These data points may be for example XIC profiles, isotopic pattern areas, or reporter ions (see MS:1001805). The used type should be noted in the metadata or analysis methods section of the recording file for the respective run. In case of multiple acceptance criteria (FDR) available in proteomics, PSM-level FDR should be used for better comparability.
+</member>
+        <member name="F:MS_MsQuality">
+MsQuality: MsQuality â€“ an interoperable open-source package for the calculation of standardized quality metrics of mass spectrometry data.
+</member>
+        <member name="F:MS_iRT_calibration_adjusted_r_squared">
+iRT calibration adjusted r-squared: The goodness of fit statistic between observed retention times and iRT calibrated retention times.
+</member>
+        <member name="F:MS_iRT_calibration_formula">
+iRT calibration formula: A polynomial formula to calibrate retention time based on iRT reference peptides. The order of the values corresponds to polynomial terms. I.e. a linear equation is represented by a two-tuple consisting of (slope, intercept). More general, the position in the n_tuple indicates the power of `x`: position `n â†’ x^0`, position `n - 1 â†’ x^1`, position `n - 2 â†’ x^2`, etc.
+</member>
         <member name="F:MS_algorithmical_threshold">
-algorithmical threshold: Defines outliers algorithmically, where a single value threshold might not be applicable or p.r.n. multivariate decision making is applied. The value of the term should name the algorithmical method used
+algorithmical threshold: Defines outliers algorithmically, where a single value threshold might not be applicable or p.r.n. multivariate decision making is applied. The value of the term should name the algorithmical method used.
 </member>
         <member name="F:MS_Tukey_s_fence_high_outliers">
-Tukey's fence high outliers: Defines high outliers with Tukey's fence as &gt;(Q3+x*IQR) for high outliers, where x is defined by the term's value. The default is x=1.5
+Tukey's fence high outliers: Defines high outliers with Tukey's fence as &gt;(Q3+x*IQR) for high outliers, where x is defined by the term's value. The default is x=1.5.
 </member>
         <member name="F:MS_outlier_threshold_criterion">
 outlier threshold criterion: The definition of the outlier criteria applied.
@@ -27042,20 +27452,20 @@ MS1 signal-to-noise ratio mean: From the distribution of signal-to-noise ratio i
         <member name="F:MS_MS1_signal_to_noise_ratio_quantiles">
 MS1 signal-to-noise ratio quantiles: From the distribution of signal-to-noise ratio in MS1, the quantiles. I.e. a value triplet represents the quartiles Q1, Q2, Q3
 </member>
-        <member name="F:MS_precursor_intensity_distribution_high_outliers">
-precursor intensity distribution high outliers: From the distribution of precursor intensities, the list of outliers above a in-file defined threshold
+        <member name="F:MS_MS2_precursor_intensity_distribution_high_outliers">
+MS2 precursor intensity distribution high outliers: From the distribution of precursor intensities, the list of outliers above a in-file defined threshold
 </member>
-        <member name="F:MS_precursor_intensity_distribution_low_outliers">
-precursor intensity distribution low outliers: From the distribution of precursor intensities, the list of outliers below a in-file defined threshold
+        <member name="F:MS_MS2_precursor_intensity_distribution_low_outliers">
+MS2 precursor intensity distribution low outliers: From the distribution of precursor intensities, the list of outliers below a in-file defined threshold
 </member>
-        <member name="F:MS_precursor_intensity_distribution_sigma">
-precursor intensity distribution sigma: From the distribution of precursor intensities, the sigma value
+        <member name="F:MS_MS2_precursor_intensity_distribution_sigma">
+MS2 precursor intensity distribution sigma: From the distribution of MS2 precursor intensities, the sigma value
 </member>
-        <member name="F:MS_precursor_intensity_distribution_mean">
-precursor intensity distribution mean: From the distribution of precursor intensities, the mean
+        <member name="F:MS_MS2_precursor_intensity_distribution_mean">
+MS2 precursor intensity distribution mean: From the distribution of MS2 precursor intensities, the mean
 </member>
-        <member name="F:MS_precursor_intensity_distribution_quantiles">
-precursor intensity distribution quantiles: From the distribution of precursor intensities, the quantiles. I.e. a value triplet represents the quartiles Q1, Q2, Q3
+        <member name="F:MS_MS2_precursor_intensity_distribution">
+MS2 precursor intensity distribution: From the distribution of MS2 precursor intensities, the quantiles. E.g. a value triplet represents the quartiles Q1, Q2, Q3.
 </member>
         <member name="F:MS_MS2_peak_density_distribution_high_outliers">
 MS2 peak density distribution high outliers: From the distribution of peak densities in MS2, the list of outliers above a in-file defined threshold
@@ -27109,10 +27519,10 @@ number of empty MS2 scans: Number of MS2 scans where the scans' peaks intensity 
 number of empty MS1 scans: Number of MS1 scans where the scans' peaks intensity sums to 0 (i.e. no peaks or only 0-intensity peaks).
 </member>
         <member name="F:MS_MS1_signal_fall__10x__count">
-MS1 signal fall (10x) count: The number of times where MS1 TIC decreased more than 10-fold between adjacent MS1 scans. An unusual high count of signal jumps or falls can indicate ESI stability issues.
+MS1 signal fall (10x) count: The number of times where MS1 TIC decreased more than 10-fold between adjacent MS1 scans.
 </member>
         <member name="F:MS_MS1_signal_jump__10x__count">
-MS1 signal jump (10x) count: The number of times where MS1 TIC increased more than 10-fold between adjacent MS1 scans. An unusual high count of signal jumps or falls can indicate ESI stability issues.
+MS1 signal jump (10x) count: The number of times where MS1 TIC increased more than 10-fold between adjacent MS1 scans.
 </member>
         <member name="F:MS_slowest_frequency_for_MS_level_2_collection">
 slowest frequency for MS level 2 collection: The slowest acquisition speed with which product MS scans were collected. Scan acquisition frequency can be used to gauge the suitability of used instrument settings for the sample content used.
@@ -27363,6 +27773,147 @@ QC metric: Parent term for QC metrics, each metric MUST have this as an ancestor
         <member name="F:MS_PSI_MS_CV_Quality_Control_Vocabulary">
 PSI-MS CV Quality Control Vocabulary: PSI Quality Control controlled vocabulary term.
 </member>
+        <member name="F:MS_pymzqc">
+pymzqc: A Python package for reading, validating, and writing mzQC files.
+</member>
+        <member name="F:MS_jmzqc">
+jmzqc: A Java package for reading, validating, and writing mzQC files.
+</member>
+        <member name="F:MS_rmzqc">
+rmzqc: An R package for reading, validating, and writing mzQC files.
+</member>
+        <member name="F:MS_quality_control_software">
+quality control software: Software that creates or manipulates QC-related data.
+</member>
+        <member name="F:MS_deconvoluted_data">
+deconvoluted data: The data contained in this file have been processed to remove, collapse, or label one or more dimensions of the original dataset, such as charge deconvolution or ion mobility deconvolution. To determine the type of deconvolution done, the reader should consult the appropriate section of the file, such as the data processing methods in an mzML file.
+</member>
+        <member name="F:MS_timsTOF_fleX_MALDI_2">
+timsTOF fleX MALDI-2: Bruker Daltonics' timsTOF fleX MALDI-2.
+</member>
+        <member name="F:MS_8890_GC_MS">
+8890 GC/MS: Agilent 8890 Gas Chromatograph System.
+</member>
+        <member name="F:MS_Q_Exactive_GC_Orbitrap">
+Q Exactive GC Orbitrap: Q Exactive GC Orbitrap GC-MS/MS hybrid quadrupole Orbitrap mass spectrometer.
+</member>
+        <member name="F:MS_SelexION_separation_voltage">
+SelexION separation voltage: RF voltage applied in the SelexION device to separate ions in trajectory based on the difference in their mobility between the high field and low field portions of the applied RF.
+</member>
+        <member name="F:MS_search_modification_id_ref">
+search modification id ref: A reference to a `search modification id` in the current mzIdentML document that defines the properties of this modification instance.
+</member>
+        <member name="F:MS_search_modification_id">
+search modification id: A unique identifier within an in mzIdentML document denoting a search modification rule. The same modification may be present multiple times with different id values to reflect different specificities or neutral losses.
+</member>
+        <member name="F:MS_mzTab_M">
+mzTab-M: Expanded tabular result format for metabolomics experiments reporting quantitative summary data, MS features and identification evidence.
+</member>
+        <member name="F:MS_CompoundDb">
+CompoundDb: Bioconductor package CompoundDb for creation, usage and maintenance of public or library-specific annotation databases and spectra libraries.
+</member>
+        <member name="F:MS_MetaboAnnotation">
+MetaboAnnotation: Bioconductor package MetaboAnnotation for annotation of untargeted metabolomics data.
+</member>
+        <member name="F:MS_Spectra">
+Spectra: Bioconductor package Spectra for mass spectrometry data representation and processing.
+</member>
+        <member name="F:MS_mzIdentML_crosslinking_extension_document_version">
+mzIdentML crosslinking extension document version: The versioning of the crosslinking mzIdentML extension document.
+</member>
+        <member name="F:MS_semantic_version_regexp">
+semantic version regexp: v?(\d+)\.(\d+)\.(\d+)(?:-(\S+))?
+</member>
+        <member name="F:MS_timsTOF_Ultra">
+timsTOF Ultra: Bruker Daltonics' timsTOF Ultra.
+</member>
+        <member name="F:MS_waters_connect">
+waters_connect: Waters Corporation waters_connect software for liquid chromatography and mass spectrometry acquisition and processing.
+</member>
+        <member name="F:MS_ACQUITY_RDa_Detector">
+ACQUITY RDa Detector: Waters Corporation RDa time-of-flight mass detector.
+</member>
+        <member name="F:MS_Xevo_G3_QTof">
+Xevo G3 QTof: Waters Corporation Xevo G3 QTof quadrupole time-of-flight mass spectrometer.
+</member>
+        <member name="F:MS_Astral">
+Astral (asymmetric track lossless time-of-flight analyzer): A TOF-like mass analyzer with asymmetric ion mirrors to direct ions into transversal asymmetric oscillations and ion foil shapes and maintains ion packet for transmission and resolution.
+</member>
+        <member name="F:MS_asymmetric_track_lossless_time_of_flight_analyzer">
+asymmetric track lossless time-of-flight analyzer: A TOF-like mass analyzer with asymmetric ion mirrors to direct ions into transversal asymmetric oscillations and ion foil shapes and maintains ion packet for transmission and resolution.
+</member>
+        <member name="F:MS_Orbitrap_Astral">
+Orbitrap Astral: Thermo Scientific Orbitrap Astral mass spectrometer contains three mass analyzers: a quadrupole analyzer, an Orbitrap analyzer, and the Astral analyzer.
+</member>
+        <member name="F:MS_openchrom">
+openchrom (OpenChrom): OpenChrom is an Open Source software for data processing and analysis. Based upon Eclipse ChemClipse.
+</member>
+        <member name="F:MS_OpenChrom">
+OpenChrom: OpenChrom is an Open Source software for data processing and analysis. Based upon Eclipse ChemClipse.
+</member>
+        <member name="F:MS_chemclipse">
+chemclipse (ChemClipse): ChemClipse is part of the Eclipse Science project. Primarily developed by Lablicate GmbH.
+</member>
+        <member name="F:MS_ChemClipse">
+ChemClipse: ChemClipse is part of the Eclipse Science project. Primarily developed by Lablicate GmbH.
+</member>
+        <member name="F:MS_Conversion_to_OCB">
+Conversion to OCB: Conversion of a file format to Open Chromatography Binary OCB file format.
+</member>
+        <member name="F:MS_Open_Chromatography_Binary_OCB_format">
+Open Chromatography Binary OCB format: ChemClipse/OpenChrom file format.
+</member>
+        <member name="F:MS_mzIdentML_extension_version">
+mzIdentML extension version: The versioning of an mzIdentML extension document.
+</member>
+        <member name="F:MS_specification_document_extension_version">
+specification document extension version: The versioning of a an extension to a specification document that the current file requires to be read correctly. The version should encode the name of the extension, and some ordinal expression of its revision, preferably in semantic versioning notation. Signals that readers that do not know this extension should return an appropriately informative error if they do not think they can or should try to interpret the file.
+</member>
+        <member name="F:MS_SelexION_compensation_voltage">
+SelexION compensation voltage: The voltage applied in the SelexION device to allow certain ions to transmit through to the mass spectrometer.
+</member>
+        <member name="F:MS_reduction_to_summed_singly_charged_peak_list">
+reduction to summed singly charged peak list: The summing of peaks corresponding to the same mass at multiple charge states and presented as singly charged m/z.
+</member>
+        <member name="F:MS_average_mass_deisotoping">
+average mass deisotoping: The removal of isotope peaks to represent each ion as one data point corresponding to the ion's average mass. It is done in conjunction with the charge state deconvolution.
+</member>
+        <member name="F:MS_most_abundant_mass_deisotoping">
+most abundant mass deisotoping: The removal of isotope peaks to represent each ion as one data point corresponding to the ion's most abundant isotopic mass. It is done in conjunction with the charge state deconvolution.
+</member>
+        <member name="F:MS_monoisotopic_mass_deisotoping">
+monoisotopic mass deisotoping: The removal of isotope peaks to represent each ion as one data point corresponding to the ion's monoisotopic mass. It is done in conjunction with the charge state deconvolution.
+</member>
+        <member name="F:MS_tailor_score">
+tailor score: A calibrated version of the XCorr score, computed by dividing the XCorr by the 99th percentile of the distribution of all scores for a particular spectrum.
+</member>
+        <member name="F:MS_combined_p_value_rank">
+combined p-value rank: The rank of this PSM relative to all other PSMs involving this spectrum, when sorting by the combined p-value.
+</member>
+        <member name="F:MS_combined_p_value">
+combined p-value: A p-value that is computed by taking the product of the exact p-value and the res-ev p-value and then adjusting for dependencies between them.
+</member>
+        <member name="F:MS_res_ev_p_value">
+res-ev p-value: The residue-evidence p-value is computed from the residue-evidence score using a dynamic programming procedure.
+</member>
+        <member name="F:MS_res_ev_rank">
+res-ev rank: The rank of this PSM relative to all other PSMs involving this spectrum, when sorting by the res-ev score.
+</member>
+        <member name="F:MS_res_ev_score">
+res-ev score: The residue-evidence (res-ev) score measures the quality of a match between a peptide and observed spectrum using a method similar to XCorr, but considering all pairs of observed peaks.
+</member>
+        <member name="F:MS_refactored_XCorr">
+refactored XCorr: A modified version of the XCorr score that is made amenable to dynamic programming calculation of p-values by changing a max operation to a sum.
+</member>
+        <member name="F:MS_exact_p_value">
+exact p-value: A p-value for the XCorr score, calculated using dynamic programming.
+</member>
+        <member name="F:MS_XCorr_rank">
+XCorr rank: The rank of this PSM relative to all other PSMs involving this spectrum, when sorting by the XCorr score.
+</member>
+        <member name="F:MS_ANN_SoLo">
+ANN-SoLo: ANN-SoLo (Approximate Nearest Neighbor Spectral Library) is a spectral library search engine for fast and accurate open modification searching. ANN-SoLo uses approximate nearest neighbor indexing to speed up open modification searching by selecting only a limited number of the most relevant library spectra to compare to an unknown query spectrum. This is combined with a cascade search strategy to maximize the number of identified unmodified and modified spectra while strictly controlling the false discovery rate and the shifted dot product score to sensitively match modified spectra to their unmodified counterpart.
+</member>
         <member name="F:MS_Orbitrap_Ascend">
 Orbitrap Ascend: Thermo Scientific Orbitrap Ascend mass spectrometer with Tribrid architecture consisting of quadrupole mass filter, linear ion trap and Orbitrap mass analyzers.
 </member>
@@ -27436,7 +27987,10 @@ noncovalently associated peptides spectrum identification item: Noncovalently as
 noncovalently associated peptides search: Noncovalently associated peptides search performed. Noncovalently associated peptides are two different peptides which were not crosslinked but stayed associated with each other throughout the workflow, due to noncovalent interactions.
 </member>
         <member name="F:MS_loop_link_spectrum_identification_item">
-loop-link spectrum identification item: Identification of an internally linked peptide (a peptide that contains both ends of a crosslink), also known as a loop-link.
+loop-link spectrum identification item (looplink spectrum identification item): Identification of an internally linked peptide (a peptide that contains both ends of a crosslink), also known as a looplink.
+</member>
+        <member name="F:MS_looplink_spectrum_identification_item">
+looplink spectrum identification item: Identification of an internally linked peptide (a peptide that contains both ends of a crosslink), also known as a looplink.
 </member>
         <member name="F:MS_number_of_identified_proteoforms">
 number of identified proteoforms: The number of proteoforms that pass the threshold to be considered identified with sufficient confidence.
@@ -28144,7 +28698,10 @@ cross-linked peptide ion annotation format (crosslinked peptide ion annotation f
 crosslinked peptide ion annotation format: Annotation format designed specifically for crosslinked peptide ion peaks.
 </member>
         <member name="F:MS_peptide_ion_annotation_format">
-peptide ion annotation format: Annotation format designed primarily for peptides, with allowances for generic chemical formulas and other miscellaneous named ions.
+peptide ion annotation format (mzPAF peptide ion annotation format): Annotation format designed primarily for peptides, with allowances for generic chemical formulas and other miscellaneous named ions.
+</member>
+        <member name="F:MS_mzPAF_peptide_ion_annotation_format">
+mzPAF peptide ion annotation format: Annotation format designed primarily for peptides, with allowances for generic chemical formulas and other miscellaneous named ions.
 </member>
         <member name="F:MS_ion_annotation_format">
 ion annotation format: Annotation format used for annotating individual spectrum ion peaks.
@@ -36295,7 +36852,7 @@ nth generation product ion scan: The specific scan functions or processes that r
 nth generation product ion: Serial product ions from dissociation of selected precursor ions where n refers to the number of stages of dissociation. The term granddaughter ion is deprecated.
 </member>
         <member name="F:MS_neutral_loss">
-neutral loss: The loss of an uncharged species during a rearrangement process. The value slot holds the molecular formula in Hill notation of the neutral loss molecule, see PMID: 21182243. This term must be used in conjunction with a child of the term MS:1002307 (fragmentation ion type).
+neutral loss: The loss of an uncharged species during a rearrangement process. The value slot holds the molecular formula in Hill notation of the neutral loss molecule, see PMID:21182243. This term must be used in conjunction with a child of the term MS:1002307 (fragmentation ion type).
 </member>
         <member name="F:MS_MS_MS_in_Space_OBSOLETE">
 MS/MS in Space: A tandem mass spectrometry method in which product ion spectra are recorded in m/z analyzers separated in space. Specific m/z separation functions are designed such that in one section of the instrument ions are selected, dissociated in an intermediate region, and the product ions are then transmitted to another analyser for m/z separation and data acquisition.
@@ -37510,7 +38067,7 @@ peak picking: Spectral peak processing conducted on the acquired data to convert
 charge deconvolution: The determination of the mass of an ion based on the mass spectral peaks that represent multiple-charge ions.
 </member>
         <member name="F:MS_deisotoping">
-deisotoping: The removal of isotope peaks to represent the fragment ion as one data point and is commonly done to reduce complexity. It is done in conjunction with the charge state deconvolution.
+deisotoping: The removal of isotope peaks to represent the ion as one data point and is commonly done to reduce complexity. It is done in conjunction with the charge state deconvolution.
 </member>
         <member name="F:MS_customization">
 customization: Free text description of a single customization made to the instrument; for several modifications, use several entries.
@@ -38031,6 +38588,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -38079,6 +38638,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -38128,6 +38689,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -38174,6 +38737,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -38234,6 +38799,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -38280,6 +38847,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -38341,6 +38910,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -38387,6 +38958,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -38457,6 +39030,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -38503,6 +39078,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -38564,6 +39141,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -38610,6 +39189,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -38661,6 +39242,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -38707,6 +39290,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -38757,6 +39342,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -38803,6 +39390,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -38852,6 +39441,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -38898,6 +39489,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -38958,6 +39551,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -39004,6 +39599,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -39061,6 +39658,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -39109,6 +39708,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -39158,6 +39759,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -39204,6 +39807,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -39251,6 +39856,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -39297,6 +39904,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -39354,6 +39963,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -39402,6 +40013,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -39451,6 +40064,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -39506,6 +40121,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -39555,6 +40172,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -39601,6 +40220,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -39678,6 +40299,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -39726,6 +40349,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -39776,6 +40401,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -39822,6 +40449,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -39892,6 +40521,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -39938,6 +40569,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->
@@ -39996,6 +40629,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:MS_Z_score_threshold'. -->
@@ -40044,6 +40679,8 @@ struct for holding isotope information
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_encoding_identifications_based_on_multiple_spectra_'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_PSM_level_scores_for_identifications_based_on_multiple_spectra'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_regular_expression_for_whether_interaction_score_derived_from_crosslinking_passes_threshold'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_characteristics'. -->
+        <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_crosslinker_cleavage_regular_expression'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Tukey_s_fence_low_outliers'. -->
         <!-- Discarding badly formed XML document comment for member 'F:pwiz.CLI.cv.CVID.MS_Z_score_threshold'. -->

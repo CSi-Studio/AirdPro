@@ -17,7 +17,6 @@ using AirdPro.Converters;
 using AirdPro.Domains;
 using AirdPro.Forms;
 using AirdPro.Redis;
-using Microsoft.SqlServer.Server;
 using static AirdPro.Constants.ProcessingStatus;
 
 namespace AirdPro.Asyncs

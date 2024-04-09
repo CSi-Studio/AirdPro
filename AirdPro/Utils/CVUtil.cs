@@ -170,6 +170,10 @@ public class CVUtil
         try
         {
             using var cv = spectrum.cvParamChild(CVID.MS_base_peak_m_z);
+            if (cv.cvid.Equals(CVID.CVID_Unknown))
+            {
+                return 0;
+            }
             return double.Parse(cv.value.ToString());
         }
         catch (Exception)

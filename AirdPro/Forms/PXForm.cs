@@ -218,7 +218,7 @@ namespace AirdPro.Repository
 
         private void search()
         {
-            if (projectsTable.Rows == null)
+            if (projectsTable!= null || projectsTable.Rows == null)
             {
                 return;
             }

@@ -2,7 +2,7 @@
 <!-- edited with XMLSpy v2007 sp2 (http://www.altova.com) by John S Cottrell (Matrix Science Ltd) -->
 <!--
   @(#)$Source: parser/xml/schema/unimod_2.xsd $
-  @(#)$Revision: 1b450440f9c97e1e41d0fc6016a27d68951d4532 | MSPARSER_REL_2_8_0-20210727-0-gc32e976769 $
+  @(#)$Revision: 1b450440f9c97e1e41d0fc6016a27d68951d4532 | MSPARSER_REL_2_8_1-0-gea32989045 $
   @(#)$Name$
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:umod="http://www.unimod.org/xmlns/schema/unimod_2" targetNamespace="http://www.unimod.org/xmlns/schema/unimod_2" elementFormDefault="qualified" attributeFormDefault="unqualified">
