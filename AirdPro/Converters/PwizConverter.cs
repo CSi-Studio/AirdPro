@@ -707,8 +707,16 @@ namespace AirdPro.Converters
                     if (timeseries.Exists) FileSize += timeseries.Length;
                     break;
                 case FileFormat.RAW:
-                    FileInfo raw = new FileInfo(JobInfo.inputPath);
-                    if (raw.Exists) FileSize += raw.Length;
+                    if (JobInfo.isDir)
+                    {
+                        long totalSize1 = AirdProFileUtil.GetDirectorySize(JobInfo.inputPath);
+                        FileSize += totalSize1;
+                    }
+                    else
+                    {
+                        FileInfo raw = new FileInfo(JobInfo.inputPath);
+                        if (raw.Exists) FileSize += raw.Length;
+                    }
                     break;
                 case FileFormat.mzML:
                     FileInfo mzML = new FileInfo(JobInfo.inputPath);
