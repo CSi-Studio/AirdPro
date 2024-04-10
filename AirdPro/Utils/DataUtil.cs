@@ -50,12 +50,12 @@ namespace AirdPro.Utils
         }
 
         //yongy
-        public static int FetchRt(double target)
+        public static int FetchRt(double target, int rtPrecision)
         {
             int result = -1;
             try
             {
-                result = Convert.ToInt32(target * 100000);
+                result = Convert.ToInt32(target * rtPrecision);
             }
             catch (Exception e)
             {

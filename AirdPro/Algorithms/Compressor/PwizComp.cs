@@ -192,13 +192,12 @@ namespace AirdPro.Algorithms.Compressor
             int[] intensityArray = new int[size];
             for (int t = 0; t < size; t++)
             {
-                rtArray[t] = DataUtil.FetchRt(rtData[t]);
-                intensityArray[t] = DataUtil.FetchIntensity(intData[t], 1);
+                rtArray[t] = DataUtil.FetchRt(rtData[t], RtPrecision);
+                intensityArray[t] = DataUtil.FetchIntensity(intData[t], IntensityPrecision);
             }
 
             byte[] compressedRtArray = RtByteComp4Chroma.encode(ByteTrans.intToByte(RtIntComp4Chroma.encode(rtArray)));
-            byte[] compressedIntArray =
-                IntByteComp4Chroma.encode(ByteTrans.intToByte(IntIntComp4Chroma.encode(intensityArray)));
+            byte[] compressedIntArray = IntByteComp.encode(ByteTrans.intToByte(IntIntComp.encode(intensityArray)));
 
             ts.rtArrayBytes = compressedRtArray;
             ts.intArrayBytes = compressedIntArray;

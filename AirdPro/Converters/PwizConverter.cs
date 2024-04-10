@@ -58,8 +58,9 @@ namespace AirdPro.Converters
         public double[] MobiArray;
         public Dictionary<double, int> MobiDict;
         public MobiInfo MobiInfo = new();
+        
+        // protected int MzPrecision
         protected int MobiPrecision = 10000000; //mobility默认精确到小数点后7位
-
         protected int IntensityPrecision = 1; //Intensity默认精确到个位数
 
         protected int SpectraNumForIntensityPrecisionPredict = 5; //用于ComboComp预测Intensity精度时的采样光谱数
@@ -93,6 +94,9 @@ namespace AirdPro.Converters
 
                 Compressor.IntIntComp = IntComp.build(JobInfo.config.intIntComp);
                 Compressor.IntByteComp = ByteComp.build(JobInfo.config.intByteComp);
+
+                Compressor.RtIntComp4Chroma = SortedIntComp.build(JobInfo.config.rtIntComp);
+                Compressor.RtByteComp4Chroma = ByteComp.build(JobInfo.config.rtByteComp);
             }
         }
 
@@ -1096,7 +1100,6 @@ namespace AirdPro.Converters
             }
 
             ChromatogramIndex = new ChromatogramIndex();
-            Compressor.InitForChromatogram();
             //如果是.d的文件夹类型的质谱文件,可以直接解析AcqMethod.xml文件,用于读取设定的化合物名称
             readMRMCompounds();
 
@@ -1274,6 +1277,7 @@ namespace AirdPro.Converters
                 switch (JobInfo.format)
                 {
                     //仪器设备信息
+                    //TODO 这里的判断逻辑不全面
                     case FileFormat.WIFF:
                     case FileFormat.WIFF2:
                         instrument.manufacturer = Manufacturer.SCIEX;
@@ -1391,6 +1395,7 @@ namespace AirdPro.Converters
             Compressor mzCompressor = new Compressor(AirdSDK.Beans.Compressor.TARGET_MZ);
             Compressor intCompressor = new Compressor(AirdSDK.Beans.Compressor.TARGET_INTENSITY);
             Compressor mobiCompressor = new Compressor(AirdSDK.Beans.Compressor.TARGET_MOBILITY);
+            Compressor rtCompressor = new Compressor(AirdSDK.Beans.Compressor.TARGET_RT);
 
             mzCompressor.addMethod(JobInfo.config.mzIntComp.ToString());
             mzCompressor.addMethod(JobInfo.config.mzByteComp.ToString());
@@ -1404,9 +1409,14 @@ namespace AirdPro.Converters
             mobiCompressor.addMethod(JobInfo.config.mobiByteComp.ToString());
             mobiCompressor.precision = MobiPrecision;
 
+            rtCompressor.addMethod(JobInfo.config.rtIntComp.ToString());
+            rtCompressor.addMethod(JobInfo.config.rtByteComp.ToString());
+            rtCompressor.precision = 100000;
+            
             comps.Add(mzCompressor);
             comps.Add(intCompressor);
             comps.Add(mobiCompressor);
+            comps.Add(rtCompressor);
             airdInfo.compressors = comps;
 
             airdInfo.ignoreZeroIntensityPoint = JobInfo.config.ignoreZeroIntensity;

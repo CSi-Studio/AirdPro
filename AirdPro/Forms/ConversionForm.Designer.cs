@@ -60,7 +60,7 @@ namespace AirdPro.Forms
             this.headerFilePath = new System.Windows.Forms.ColumnHeader();
             this.headerType = new System.Windows.Forms.ColumnHeader();
             this.headerConfigName = new System.Windows.Forms.ColumnHeader();
-            this.headerScene = new System.Windows.Forms.ColumnHeader();
+            this.headerEngine = new System.Windows.Forms.ColumnHeader();
             this.headerCentroid = new System.Windows.Forms.ColumnHeader();
             this.headerProgress = new System.Windows.Forms.ColumnHeader();
             this.headerPrecision = new System.Windows.Forms.ColumnHeader();
@@ -252,7 +252,7 @@ namespace AirdPro.Forms
             this.lvFileList.AllowColumnReorder = true;
             resources.ApplyResources(this.lvFileList, "lvFileList");
             this.lvFileList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.headerJobId, this.headerFilePath, this.headerType, this.headerConfigName, this.headerScene, this.headerCentroid, this.headerProgress, this.headerPrecision, this.headerCompressor, this.headerIgnoreZero, this.headerSuffix, this.headerOutput });
+            this.lvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.headerJobId, this.headerFilePath, this.headerType, this.headerConfigName, this.headerEngine, this.headerCentroid, this.headerProgress, this.headerPrecision, this.headerCompressor, this.headerIgnoreZero, this.headerSuffix, this.headerOutput });
             this.lvFileList.ContextMenuStrip = this.contentMenu;
             this.lvFileList.FullRowSelect = true;
             this.lvFileList.GridLines = true;
@@ -283,9 +283,9 @@ namespace AirdPro.Forms
             // 
             resources.ApplyResources(this.headerConfigName, "headerConfigName");
             // 
-            // headerScene
+            // headerEngine
             // 
-            resources.ApplyResources(this.headerScene, "headerScene");
+            resources.ApplyResources(this.headerEngine, "headerEngine");
             // 
             // headerCentroid
             // 
@@ -532,7 +532,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Timer timerTaskScan;
         private System.Windows.Forms.CheckBox cbAutoExe;
-        private System.Windows.Forms.ColumnHeader headerScene;
+        private System.Windows.Forms.ColumnHeader headerEngine;
         private System.Windows.Forms.ColumnHeader headerConfigName;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label112;

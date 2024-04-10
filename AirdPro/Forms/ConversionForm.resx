@@ -1173,10 +1173,10 @@
   <data name="headerConfigName.Width" type="System.Int32, mscorlib">
     <value>100</value>
   </data>
-  <data name="headerScene.Text" xml:space="preserve">
-    <value>Scene</value>
+  <data name="headerEngine.Text" xml:space="preserve">
+    <value>Engine</value>
   </data>
-  <data name="headerScene.Width" type="System.Int32, mscorlib">
+  <data name="headerEngine.Width" type="System.Int32, mscorlib">
     <value>120</value>
   </data>
   <data name="headerCentroid.Text" xml:space="preserve">
@@ -5689,10 +5689,10 @@
   <data name="&gt;&gt;headerConfigName.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;headerScene.Name" xml:space="preserve">
-    <value>headerScene</value>
+  <data name="&gt;&gt;headerEngine.Name" xml:space="preserve">
+    <value>headerEngine</value>
   </data>
-  <data name="&gt;&gt;headerScene.Type" xml:space="preserve">
+  <data name="&gt;&gt;headerEngine.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;headerCentroid.Name" xml:space="preserve">

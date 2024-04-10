@@ -29,31 +29,18 @@ namespace AirdPro.Algorithms
         public ByteComp IntByteComp;
         public IntComp MobiIntComp;
         public ByteComp MobiByteComp;
-
         public SortedIntComp RtIntComp4Chroma;
         public ByteComp RtByteComp4Chroma;
-        public IntComp IntIntComp4Chroma;
-        public ByteComp IntByteComp4Chroma;
 
         public Dictionary<double, int> MobiDict;
         public int IntensityPrecision;
+        public int RtPrecision = 100000;
 
         public ICompressor(Converter converter)
         {
             MzPrecision = converter.JobInfo.config.mzPrecision;
             IgnoreZero = converter.JobInfo.config.ignoreZeroIntensity;
             IsCentroid = converter.JobInfo.config.centroid;
-        }
-
-        /**
-         * 由于色谱图数据量小, 使用固定IBP+Zstd的固定组合压缩器进行压缩
-         */
-        public void InitForChromatogram()
-        {
-            RtIntComp4Chroma = new IntegratedVarByteWrapper();
-            RtByteComp4Chroma = new ZstdWrapper();
-            IntIntComp4Chroma = new VarByteWrapper();
-            IntByteComp4Chroma = new ZstdWrapper();
         }
 
         public abstract void CompressMS1(PwizConverter converter, BlockIndex index);
