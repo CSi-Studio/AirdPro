@@ -585,12 +585,25 @@ namespace AirdPro.Converters
 
                     break;
                 case FileFormat.RAW:
-                    FileInfo raw = new FileInfo(JobInfo.inputPath);
-                    if (raw.Exists)
+                    if (JobInfo.isDir)
                     {
-                        string path = Path.Combine(tempPath, raw.Name);
-                        File.Copy(raw.FullName, path, true);
+                        DirectoryInfo rawDir = new DirectoryInfo(JobInfo.inputPath);
+                        if (rawDir.Exists)
+                        {
+                            string path = Path.Combine(tempPath, rawDir.Name);
+                            AirdProFileUtil.CopyFolder(rawDir.FullName, path);
+                        }
                     }
+                    else
+                    {
+                        FileInfo raw = new FileInfo(JobInfo.inputPath);
+                        if (raw.Exists)
+                        {
+                            string path = Path.Combine(tempPath, raw.Name);
+                            File.Copy(raw.FullName, path, true);
+                        }
+                    }
+                    
 
                     break;
                 case FileFormat.mzML:
@@ -1113,7 +1126,7 @@ namespace AirdPro.Converters
                 TempScanChroma tempScan = new TempScanChroma();
                 ChromatogramIndex.nums.Add(i);
                 ChromatogramIndex.ids.Add(chromatogram.id);
-                ChromatogramIndex.cvs.Add(CVUtil.Trans(chromatogram.cvParams));
+                // ChromatogramIndex.cvs.Add(CVUtil.Trans(chromatogram.cvParams));
 
                 var result = CVUtil.ParseActivator(chromatogram.precursor);
                 ChromatogramIndex.activators.Add(result.activator);
@@ -1274,6 +1287,7 @@ namespace AirdPro.Converters
             foreach (InstrumentConfiguration ic in Msd.instrumentConfigurationList)
             {
                 Instrument instrument = new Instrument();
+                
                 switch (JobInfo.format)
                 {
                     //仪器设备信息
@@ -1283,10 +1297,21 @@ namespace AirdPro.Converters
                         instrument.manufacturer = Manufacturer.SCIEX;
                         break;
                     case FileFormat.RAW:
-                        instrument.manufacturer = Manufacturer.Thermo;
+                        if (!JobInfo.isDir)
+                        {
+                            instrument.manufacturer = Manufacturer.Thermo;
+                        }
+                        break;
+                    case FileFormat.D:
+                        instrument.manufacturer = Manufacturer.Bruker;
                         break;
                 }
-
+                
+                if (!ic.cvParamChild(CVID.MS_Waters_instrument_model).cvid.Equals(CVID.CVID_Unknown))
+                {
+                    instrument.manufacturer = Manufacturer.Waters;
+                }
+                
                 //设备信息在不同的源文件格式中取法不同,有些是在instrumentConfigurationList中获取,有些是在paramGroups获取,因此出现了以下比较丑陋的写法
                 if (ic.cvParams.Count != 0)
                 {
@@ -1304,6 +1329,11 @@ namespace AirdPro.Converters
                 {
                     foreach (ParamGroup pg in Msd.paramGroups)
                     {
+                        if (!pg.cvParamChild(CVID.MS_Agilent_instrument_model).cvid.Equals(CVID.CVID_Unknown))
+                        {
+                            instrument.manufacturer = Manufacturer.Agilent;
+                        }
+                        
                         if (pg.cvParams.Count != 0)
                         {
                             foreach (CVParam cv in pg.cvParams)

@@ -55,6 +55,8 @@ namespace AirdPro.Domains
 
         //文件的格式,全部大写: WIFF, RAW. See FileFormat.cs
         public string format;
+
+        public bool isDir;
         
         //C:/data/plasma.wiff
         public string inputPath;
@@ -121,6 +123,7 @@ namespace AirdPro.Domains
             this.outputPath = outputPath;
             this.config = config;
             format = Path.GetExtension(inputPath).Replace(".", "").ToUpper();
+            isDir = Directory.Exists(inputPath);
             airdFileName = FileNameUtil.parseFileName(inputPath);
             airdFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".aird");
             airdJsonFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".json");

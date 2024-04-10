@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using Aga.Controls.Tree.NodeControls;
 using Aga.Controls.Tree;
-using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro
 {

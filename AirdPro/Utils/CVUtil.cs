@@ -52,6 +52,9 @@ public class CVUtil
         CVID.MS_SRM_chromatogram
     ];
 
+    /**
+     * 本函数会直接导致内存溢出
+     */
     public static List<CV> Trans(CVParamList paramList)
     {
         if (paramList == null)
