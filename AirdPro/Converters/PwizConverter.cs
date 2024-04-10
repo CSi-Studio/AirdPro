@@ -183,6 +183,8 @@ namespace AirdPro.Converters
             Stopwatch.Stop();
             JobInfo.refreshReport = true;
             JobInfo.Log(Tag.Total_Time_Cost + Stopwatch.Elapsed.TotalSeconds, Status.Finished);
+            //todo: temp console
+            Console.WriteLine(Stopwatch.Elapsed.TotalSeconds);
             ClearCache();
             JobInfo.SetStatus(ProcessingStatus.FINISHED);
             if (Msd != null)
@@ -766,12 +768,20 @@ namespace AirdPro.Converters
                 airdInfo.indexList = null;
                 AirdStream.Write(indexListByte, 0, indexListByte.Length);
             }
+            
+            //todo: temp console
+            string briefInfo = JobInfo.airdFileName +"," + airdInfo.type + "," + airdInfo.instruments[0].manufacturer + "," + airdInfo.fileSize + "," ;
+            Console.Write(briefInfo);
 
             string airdInfoStr = JsonConvert.SerializeObject(airdInfo,
                 new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             byte[] airdBytes = Encoding.Default.GetBytes(airdInfoStr);
             StartPosition += airdBytes.Length;
             AirdJsonStream.Write(airdBytes, 0, airdBytes.Length);
+            
+            //todo: temp console
+            Console.Write((AirdJsonStream.Length + AirdStream.Length) + "," );
+
 
             if (JobInfo.config.ColumnCompression())
             {
