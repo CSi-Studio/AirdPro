@@ -25,6 +25,9 @@ namespace AirdPro.Constants
         public static string mlDetailUrl = "https://www.ebi.ac.uk/metabolights/";
 
         public static string mlFtpUrl = "ftp://ftp.ebi.ac.uk/pub/databases/metabolights/studies/public/";
+
+        //用于记录metabolights所有study信息的xml文件链接
+        public static string mlCompleteInfoUrl = "https://ftp.ebi.ac.uk/pub/databases/metabolights/eb-eye/eb-eye_metabolights_complete.xml";
         
         public static string ebi = "ftp://ftp.ebi.ac.uk/";
         

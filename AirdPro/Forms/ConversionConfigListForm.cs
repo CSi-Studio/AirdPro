@@ -48,6 +48,7 @@ namespace AirdPro.Forms
             foreach (string sortedIntCompType in Enum.GetNames(typeof(SortedIntCompType)))
             {
                 cbMzIntComp.Items.Add(sortedIntCompType);
+                cbRtIntComp.Items.Add(sortedIntCompType);
             }
 
             foreach (string intCompType in Enum.GetNames(typeof(IntCompType)))
@@ -61,6 +62,7 @@ namespace AirdPro.Forms
                 cbMzByteComp.Items.Add(byteCompType);
                 cbIntByteComp.Items.Add(byteCompType);
                 cbMobiByteComp.Items.Add(byteCompType);
+                cbRtByteComp.Items.Add(byteCompType);
             }
 
             ShowConfig("", new ConversionConfig());
@@ -76,11 +78,11 @@ namespace AirdPro.Forms
                 {
                     configEntry.Key, configEntry.Value.GetMzPrecisionStr(), configEntry.Value.autoDesicion + ""
                 });
-                if (configEntry.Value.scene.Equals(Scene.Computation))
+                if (configEntry.Value.engine.Equals(AirdEngine.RowCompression))
                 {
                     item.ImageIndex = 0;
                 }
-                else if (configEntry.Value.scene.Equals(Scene.Search))
+                else if (configEntry.Value.engine.Equals(AirdEngine.ColumnCompression))
                 {
                     item.ImageIndex = 1;
                 }
@@ -112,7 +114,7 @@ namespace AirdPro.Forms
             config.mzPrecision = (int)Math.Pow(10, int.Parse(cbConfigMzPrecision.Text));
             config.ignoreZeroIntensity = cbConfigIsZeroIntensityIgnore.Checked;
             config.centroid = cbConfigIsCentroid.Checked;
-            config.scene = cbScene.Text;
+            config.engine = int.Parse(cbScene.Text);
             config.configName = tbNameConfig.Text;
             //如果不是自动决策的,则会使用配置的组合压缩器
             if (!cbAutoDecision.Checked)
@@ -128,6 +130,9 @@ namespace AirdPro.Forms
                     (IntCompType)Enum.Parse(typeof(IntCompType), cbMobiIntComp.SelectedItem.ToString());
                 config.mobiByteComp =
                     (ByteCompType)Enum.Parse(typeof(ByteCompType), cbMobiByteComp.SelectedItem.ToString());
+                config.rtIntComp =  (SortedIntCompType)Enum.Parse(typeof(SortedIntCompType), cbRtIntComp.SelectedItem.ToString());
+                config.rtByteComp =
+                    (ByteCompType)Enum.Parse(typeof(ByteCompType), cbRtByteComp.SelectedItem.ToString());
             }
             
             config.compressedIndex = cbCompressedIndex.Checked;
@@ -196,7 +201,7 @@ namespace AirdPro.Forms
         public void ShowConfig(string name, ConversionConfig config)
         {
             tbNameConfig.Text = name;
-            cbScene.Text = config.scene;
+            cbScene.Text = config.engine + "";
             tbConfigFileNameSuffix.Text = config.suffix;
             tbConfigOperator.Text = config.creator;
             cbConfigIsZeroIntensityIgnore.Checked = config.ignoreZeroIntensity;
@@ -208,6 +213,9 @@ namespace AirdPro.Forms
             cbIntByteComp.SelectedItem = config.intByteComp.ToString();
             cbMobiIntComp.SelectedItem = config.mobiIntComp.ToString();
             cbMobiByteComp.SelectedItem = config.mobiByteComp.ToString();
+            cbRtIntComp.SelectedItem = config.rtIntComp.ToString();
+            cbRtByteComp.SelectedItem = config.rtByteComp.ToString();
+            
             tableAutoDecision.Enabled = !config.autoDesicion;
             cbAutoDecision.Checked = config.autoDesicion;
             cbCompressedIndex.Checked = config.compressedIndex;

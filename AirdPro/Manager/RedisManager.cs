@@ -138,9 +138,9 @@ namespace AirdPro.Redis
                         conversionConfig.autoDesicion = job.autoDesicion.Value;
                     }
 
-                    if (job.scene != null && job.scene == "Search")
+                    if (job.engine != null && job.engine == 1)
                     {
-                        conversionConfig.scene = Scene.Search;
+                        conversionConfig.engine = (int)AirdEngine.ColumnCompression;
                     }
 
                     if (job.mzPrecision != null)

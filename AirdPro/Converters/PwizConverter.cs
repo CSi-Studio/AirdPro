@@ -75,7 +75,6 @@ namespace AirdPro.Converters
         {
             JobInfo = jobInfo;
             Compressor = new PwizComp(this);
-            // InitCompressor();
         }
 
         public override void InitCompressor()
@@ -520,7 +519,7 @@ namespace AirdPro.Converters
         {
             string driveLetter = Path.GetPathRoot(JobInfo.inputPath);
             DriveInfo driveInfo = new DriveInfo(driveLetter);
-            if (driveInfo.DriveType == DriveType.Fixed)
+            if (driveInfo.DriveType != DriveType.Network)
             {
                 return;
             }
@@ -770,7 +769,7 @@ namespace AirdPro.Converters
             StartPosition += airdBytes.Length;
             AirdJsonStream.Write(airdBytes, 0, airdBytes.Length);
 
-            if (JobInfo.config.IsSearch())
+            if (JobInfo.config.ColumnCompression())
             {
                 ColumnInfo columnInfo = BuildColumnInfo();
                 string columnInfoStr = JsonConvert.SerializeObject(columnInfo,
@@ -1189,7 +1188,7 @@ namespace AirdPro.Converters
             List<ParentFile> parentFiles = new List<ParentFile>();
 
             //Basic Job Info
-            airdInfo.scene = JobInfo.config.scene;
+            airdInfo.engine = JobInfo.config.engine;
             airdInfo.airdPath = JobInfo.airdFilePath;
             airdInfo.fileSize = FileSize;
             airdInfo.createDate = DateTime.Now.ToString();

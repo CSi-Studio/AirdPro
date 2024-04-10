@@ -61,7 +61,7 @@ namespace AirdPro.Constants
         public static string Aird_Column_Json_File_Path = "AirdColumnJsonFilePath:";
         public static string Ignore_Zero_Intensity = "IgnoreZeroIntensity:";
         public static string Suffix = "Suffix:";
-        public static string Scene = "Scene:";
+        public static string Engine = "Engine:";
         public static string ConfigName = "ConfigName:";
         public static string Mz_Precision = "MzPrecision:";
         public static string Compressor = "Compressor:";

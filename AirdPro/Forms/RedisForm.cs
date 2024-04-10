@@ -140,7 +140,7 @@ namespace AirdPro.Forms
             {
                 ListViewItem item = new ListViewItem(remoteJob.remoteId);
                 item.SubItems.Add(remoteJob.type);
-                item.SubItems.Add(remoteJob.scene);
+                item.SubItems.Add(remoteJob.engine + "");
                 FileInfo info = new FileInfo(remoteJob.sourcePath);
                 item.SubItems.Add(info.Name);
                 item.SubItems.Add(remoteJob.sourcePath);

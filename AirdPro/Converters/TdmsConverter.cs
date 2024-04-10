@@ -253,7 +253,7 @@ namespace AirdPro.Converters
             List<ParentFile> parentFiles = new List<ParentFile>();
             
             //Basic Job Info
-            airdInfo.scene = JobInfo.config.scene;
+            airdInfo.engine = JobInfo.config.engine;
             airdInfo.airdPath = JobInfo.airdFilePath;
             airdInfo.fileSize = FileSize;
             airdInfo.createDate = DateTime.Now.ToString();

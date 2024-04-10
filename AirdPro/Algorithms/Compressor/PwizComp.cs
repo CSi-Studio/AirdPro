@@ -61,9 +61,9 @@ namespace AirdPro.Algorithms.Compressor
                         spectrum = converter.SpectrumList.spectrum(ts.num, true);
                     }
 
-                    switch (converter.JobInfo.config.scene)
+                    switch (converter.JobInfo.config.engine)
                     {
-                        case "Computation":
+                        case (int)AirdEngine.RowCompression:
                             if (converter.JobInfo.ionMobility)
                             {
                                 CompressMobility(spectrum, ts);
@@ -75,7 +75,7 @@ namespace AirdPro.Algorithms.Compressor
 
                             break;
 
-                        case "Search":
+                        case (int)AirdEngine.ColumnCompression:
                             TempSpectrum tempSpectrum = ReadSpectrum(spectrum);
                             tempSpectrum.rt = ts.rt;
                             spectra.Add(tempSpectrum); //面向搜索场景下暂时还不支持离子淌度文件
@@ -92,7 +92,7 @@ namespace AirdPro.Algorithms.Compressor
             converter.WriteToFile(ms1Table, index);
 
             //如果是面向搜索的格式转换，则msRowTable不为空，准备启动行矩阵向列矩阵转换的过程
-            if (converter.JobInfo.config.IsSearch())
+            if (converter.JobInfo.config.ColumnCompression())
             {
                 ColumnIndex columnIndex = new ColumnIndex();
                 columnIndex.level = 1;
@@ -124,9 +124,9 @@ namespace AirdPro.Algorithms.Compressor
                         spectrum = converter.SpectrumList.spectrum(ts.num, true);
                     }
 
-                    switch (converter.JobInfo.config.scene)
+                    switch (converter.JobInfo.config.engine)
                     {
-                        case "Computation":
+                        case (int)AirdEngine.RowCompression:
                             if (converter.JobInfo.ionMobility)
                             {
                                 CompressMobility(spectrum, ts);
@@ -138,7 +138,7 @@ namespace AirdPro.Algorithms.Compressor
 
                             break;
 
-                        case "Search":
+                        case (int)AirdEngine.ColumnCompression:
                             switch (converter.JobInfo.type)
                             {
                                 case AcquisitionMethod.DIA:
@@ -163,7 +163,7 @@ namespace AirdPro.Algorithms.Compressor
             converter.WriteToFile(table, index);
 
             //如果是面向搜索引擎的格式转换，则msRowTable不为空，准备启动行矩阵向列矩阵转换的过程
-            if (converter.JobInfo.config.IsSearch() &&
+            if (converter.JobInfo.config.ColumnCompression() &&
                 converter.JobInfo.type.Equals(AcquisitionMethod.DIA))
             {
                 ColumnIndex columnIndex = new ColumnIndex();

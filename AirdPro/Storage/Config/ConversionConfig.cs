@@ -66,7 +66,7 @@ namespace AirdPro.Storage.Config
          * 面向的场景,默认为Aird-ComboComp面向计算的场景，主要使用行存储的方式进行排列与压缩
          * Aird-Search为面向搜索的场景，主要使用列存储的方式进行存储与压缩
          */
-        public string scene = Scene.Computation;
+        public int engine = (int)AirdEngine.RowCompression;
         
         /**
          * 用于mz压缩的int数组压缩方法
@@ -91,7 +91,7 @@ namespace AirdPro.Storage.Config
         /**
          * 用于mobility压缩的int数组压缩方法
          */
-        public IntCompType mobiIntComp = IntCompType.VB;
+        public IntCompType mobiIntComp = IntCompType.DZVB;
 
         /**
          * 用于mobility压缩的byte数组压缩方法
@@ -99,8 +99,8 @@ namespace AirdPro.Storage.Config
         public ByteCompType mobiByteComp = ByteCompType.Zstd;
 
         /**
-        * 用于rt压缩的int数组压缩方法
-       */
+         * 用于rt压缩的int数组压缩方法
+         */
         public SortedIntCompType rtIntComp = SortedIntCompType.IVB;
 
         /**
@@ -122,14 +122,10 @@ namespace AirdPro.Storage.Config
             return ((int)Math.Log10(mzPrecision)) + "dp";
         }
 
-        public bool IsComputation()
+   
+        public bool ColumnCompression()
         {
-            return scene == Scene.Computation;
-        }
-
-        public bool IsSearch()
-        {
-            return scene == Scene.Search;
+            return engine == (int)AirdEngine.ColumnCompression;
         }
 
         /**
@@ -210,5 +206,6 @@ namespace AirdPro.Storage.Config
         {
             return MemberwiseClone();
         }
+       
     }
 }

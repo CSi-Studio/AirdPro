@@ -137,7 +137,7 @@ namespace AirdPro.Domains
                 inputPath,
                 type,
                 config.configName,
-                config.scene,
+                config.engine + "",
                 config.centroid.ToString(),
                 status,
                 config.GetMzPrecisionStr(),
@@ -219,7 +219,7 @@ namespace AirdPro.Domains
         {
             string jobInfo = Tag.Empty;
             jobInfo += Tag.ConfigName + config.configName + Const.Change_Line;
-            jobInfo += Tag.Scene + config.scene + Const.Change_Line;
+            jobInfo += Tag.Engine + config.engine + Const.Change_Line;
             jobInfo += Tag.Input_Path + inputPath + Const.Change_Line;
             jobInfo += Tag.Output_Path + outputPath + Const.Change_Line;
             jobInfo += Tag.Aird_File_Name + airdFileName + Const.Change_Line;
@@ -245,13 +245,13 @@ namespace AirdPro.Domains
         {
             Dictionary<string, string> dict = new();
             dict.Add(Tag.ConfigName, config.configName);
-            dict.Add(Tag.Scene, config.scene);
+            dict.Add(Tag.Engine, config.engine+"");
             dict.Add(Tag.Input_Path, inputPath);
             dict.Add(Tag.Output_Path, outputPath);
             dict.Add(Tag.Aird_File_Name, airdFileName);
             dict.Add(Tag.Aird_File_Path, airdFilePath);
             dict.Add(Tag.Aird_Json_File_Path, airdJsonFilePath);
-            if (config.scene.Equals(Scene.Search))
+            if (config.engine.Equals(AirdEngine.ColumnCompression))
             {
                 dict.Add(Tag.Aird_Column_Json_File_Path, airdColumnJsonFilePath);
             }

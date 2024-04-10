@@ -22,7 +22,8 @@ namespace AirdPro.Domains
         public int? mzPrecision;
         public string creator;
         public string suffix;
-        public string? scene = Scene.Computation;
+        // public string? scene = Scene.Computation;
+        public int? engine = (int)AirdEngine.RowCompression;
         public bool? centroid = false;
         public bool ignoreZeroIntensity = true;
         public bool? compressedIndex = false;
@@ -48,7 +49,7 @@ namespace AirdPro.Domains
             mzPrecision = config.mzPrecision;
             creator = config.creator;
             suffix = config.suffix;
-            scene = config.scene;
+            engine = config.engine;
             centroid = config.centroid;
             ignoreZeroIntensity = config.ignoreZeroIntensity;
             compressedIndex = config.compressedIndex;
