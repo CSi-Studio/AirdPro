@@ -33,7 +33,7 @@ namespace AirdPro.Algorithms
         public ByteComp RtByteComp4Chroma;
 
         public Dictionary<double, int> MobiDict;
-        public int IntensityPrecision;
+        public int IntensityPrecision = 1;
         public int RtPrecision = 100000;
 
         public ICompressor(Converter converter)

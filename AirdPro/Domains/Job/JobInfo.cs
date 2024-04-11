@@ -140,11 +140,10 @@ namespace AirdPro.Domains
                 inputPath,
                 type,
                 config.configName,
-                config.engine + "",
+                config.EngineName(),
                 config.centroid.ToString(),
                 status,
                 config.GetMzPrecisionStr(),
-                GetCompressorStr(),
                 config.ignoreZeroIntensity.ToString(),
                 config.suffix,
                 outputPath

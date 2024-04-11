@@ -128,6 +128,19 @@ namespace AirdPro.Storage.Config
             return engine == (int)AirdEngine.ColumnCompression;
         }
 
+        public string EngineName()
+        {
+            switch (engine)
+            {
+                case (int)AirdEngine.RowCompression:
+                    return "Row Compression";
+                case (int)AirdEngine.ColumnCompression:
+                    return "Column Compression";
+                default:
+                    return "Unknown";
+            }
+        }
+
         /**
          * 自由探索模式下自动组装所有压缩组合，面向计算场景下的函数
          */

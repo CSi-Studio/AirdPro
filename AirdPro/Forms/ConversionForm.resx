@@ -1159,7 +1159,7 @@
     <value>FilePath</value>
   </data>
   <data name="headerFilePath.Width" type="System.Int32, mscorlib">
-    <value>200</value>
+    <value>400</value>
   </data>
   <data name="headerType.Text" xml:space="preserve">
     <value>Type</value>
@@ -1193,12 +1193,6 @@
   </data>
   <data name="headerPrecision.Width" type="System.Int32, mscorlib">
     <value>76</value>
-  </data>
-  <data name="headerCompressor.Text" xml:space="preserve">
-    <value>Compressor</value>
-  </data>
-  <data name="headerCompressor.Width" type="System.Int32, mscorlib">
-    <value>130</value>
   </data>
   <data name="headerIgnoreZero.Text" xml:space="preserve">
     <value>IgnoreZero</value>
@@ -5711,12 +5705,6 @@
     <value>headerPrecision</value>
   </data>
   <data name="&gt;&gt;headerPrecision.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;headerCompressor.Name" xml:space="preserve">
-    <value>headerCompressor</value>
-  </data>
-  <data name="&gt;&gt;headerCompressor.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;headerIgnoreZero.Name" xml:space="preserve">

@@ -56,18 +56,17 @@ namespace AirdPro.Forms
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.lvFileList = new System.Windows.Forms.ListView();
-            this.headerJobId = new System.Windows.Forms.ColumnHeader();
-            this.headerFilePath = new System.Windows.Forms.ColumnHeader();
-            this.headerType = new System.Windows.Forms.ColumnHeader();
-            this.headerConfigName = new System.Windows.Forms.ColumnHeader();
-            this.headerEngine = new System.Windows.Forms.ColumnHeader();
-            this.headerCentroid = new System.Windows.Forms.ColumnHeader();
-            this.headerProgress = new System.Windows.Forms.ColumnHeader();
-            this.headerPrecision = new System.Windows.Forms.ColumnHeader();
-            this.headerCompressor = new System.Windows.Forms.ColumnHeader();
-            this.headerIgnoreZero = new System.Windows.Forms.ColumnHeader();
-            this.headerSuffix = new System.Windows.Forms.ColumnHeader();
-            this.headerOutput = new System.Windows.Forms.ColumnHeader();
+            this.headerJobId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerFilePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerConfigName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerEngine = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerCentroid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerProgress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerPrecision = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerIgnoreZero = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerSuffix = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerOutput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contentMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.rerun = new System.Windows.Forms.ToolStripMenuItem();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -82,8 +81,8 @@ namespace AirdPro.Forms
             this.label1 = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.listViewJobInfo = new System.Windows.Forms.ListView();
-            this.colKey = new System.Windows.Forms.ColumnHeader();
-            this.colValue = new System.Windows.Forms.ColumnHeader();
+            this.colKey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tbConsole = new System.Windows.Forms.TextBox();
             this.logTimer = new System.Windows.Forms.Timer(this.components);
             this.ofd = new System.Windows.Forms.OpenFileDialog();
@@ -252,7 +251,18 @@ namespace AirdPro.Forms
             this.lvFileList.AllowColumnReorder = true;
             resources.ApplyResources(this.lvFileList, "lvFileList");
             this.lvFileList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.headerJobId, this.headerFilePath, this.headerType, this.headerConfigName, this.headerEngine, this.headerCentroid, this.headerProgress, this.headerPrecision, this.headerCompressor, this.headerIgnoreZero, this.headerSuffix, this.headerOutput });
+            this.lvFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.headerJobId,
+            this.headerFilePath,
+            this.headerType,
+            this.headerConfigName,
+            this.headerEngine,
+            this.headerCentroid,
+            this.headerProgress,
+            this.headerPrecision,
+            this.headerIgnoreZero,
+            this.headerSuffix,
+            this.headerOutput});
             this.lvFileList.ContextMenuStrip = this.contentMenu;
             this.lvFileList.FullRowSelect = true;
             this.lvFileList.GridLines = true;
@@ -299,10 +309,6 @@ namespace AirdPro.Forms
             // 
             resources.ApplyResources(this.headerPrecision, "headerPrecision");
             // 
-            // headerCompressor
-            // 
-            resources.ApplyResources(this.headerCompressor, "headerCompressor");
-            // 
             // headerIgnoreZero
             // 
             resources.ApplyResources(this.headerIgnoreZero, "headerIgnoreZero");
@@ -318,7 +324,9 @@ namespace AirdPro.Forms
             // contentMenu
             // 
             this.contentMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contentMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.rerun, this.removeToolStripMenuItem });
+            this.contentMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.rerun,
+            this.removeToolStripMenuItem});
             this.contentMenu.Name = "contentMenu";
             this.contentMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             resources.ApplyResources(this.contentMenu, "contentMenu");
@@ -423,7 +431,9 @@ namespace AirdPro.Forms
             // 
             // listViewJobInfo
             // 
-            this.listViewJobInfo.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.colKey, this.colValue });
+            this.listViewJobInfo.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colKey,
+            this.colValue});
             resources.ApplyResources(this.listViewJobInfo, "listViewJobInfo");
             this.listViewJobInfo.FullRowSelect = true;
             this.listViewJobInfo.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -485,6 +495,7 @@ namespace AirdPro.Forms
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         private System.Windows.Forms.SplitContainer splitContainer1;
@@ -514,7 +525,6 @@ namespace AirdPro.Forms
         public System.Windows.Forms.ListView lvFileList;
         private System.Windows.Forms.ColumnHeader headerOutput;
         private System.Windows.Forms.OpenFileDialog ofd;
-        private System.Windows.Forms.ColumnHeader headerCompressor;
         private System.Windows.Forms.ToolTip tooltip;
         private System.Windows.Forms.ColumnHeader headerPrecision;
         private System.Windows.Forms.ContextMenuStrip contentMenu;
