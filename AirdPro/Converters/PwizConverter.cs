@@ -185,6 +185,7 @@ namespace AirdPro.Converters
             JobInfo.Log(Tag.Total_Time_Cost + Stopwatch.Elapsed.TotalSeconds, Status.Finished);
             //todo: temp console
             Console.WriteLine(Stopwatch.Elapsed.TotalSeconds);
+            JobInfo.SetConversionTime(Stopwatch.Elapsed.TotalMilliseconds);
             ClearCache();
             JobInfo.SetStatus(ProcessingStatus.FINISHED);
             if (Msd != null)
@@ -747,7 +748,7 @@ namespace AirdPro.Converters
             
             //todo: temp console
             Console.Write((AirdJsonStream.Length + AirdStream.Length) + "," );
-
+            JobInfo.SetAirdFileSize(AirdJsonStream.Length + AirdStream.Length);
 
             if (JobInfo.config.ColumnCompression())
             {

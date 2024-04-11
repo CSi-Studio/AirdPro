@@ -45,6 +45,19 @@ namespace AirdPro.Utils
             return (size / 1024d / 1024 / 1024).ToString("0.00") + "GB";
         }
 
+        /**
+         * 将毫秒进行人性化转换
+         */
+        public static string GetTimeLabel(double time)
+        {
+            if (time < 3000)
+            {
+                return (int)time + "ms";
+            }
+            TimeSpan timeSpan = TimeSpan.FromMilliseconds(time);
+            return timeSpan.ToString(@"hh\:mm\:ss");
+        }
+
         public static string ReadFromFile(string filePath)
         {
             if (!File.Exists(filePath)) return null;

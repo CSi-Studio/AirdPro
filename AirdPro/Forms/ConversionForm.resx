@@ -1200,16 +1200,16 @@
   <data name="headerSize.Width" type="System.Int32, mscorlib">
     <value>80</value>
   </data>
-  <data name="headerIgnoreZero.Text" xml:space="preserve">
-    <value>IgnoreZero</value>
+  <data name="headerAirdSize.Text" xml:space="preserve">
+    <value>AirdSize</value>
   </data>
-  <data name="headerIgnoreZero.Width" type="System.Int32, mscorlib">
-    <value>99</value>
+  <data name="headerAirdSize.Width" type="System.Int32, mscorlib">
+    <value>90</value>
   </data>
-  <data name="headerSuffix.Text" xml:space="preserve">
-    <value>Suffix</value>
+  <data name="headerCTimer.Text" xml:space="preserve">
+    <value>Time</value>
   </data>
-  <data name="headerSuffix.Width" type="System.Int32, mscorlib">
+  <data name="headerCTimer.Width" type="System.Int32, mscorlib">
     <value>105</value>
   </data>
   <data name="headerOutput.Text" xml:space="preserve">
@@ -5713,16 +5713,16 @@
   <data name="&gt;&gt;headerPrecision.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;headerIgnoreZero.Name" xml:space="preserve">
-    <value>headerIgnoreZero</value>
+  <data name="&gt;&gt;headerAirdSize.Name" xml:space="preserve">
+    <value>headerAirdSize</value>
   </data>
-  <data name="&gt;&gt;headerIgnoreZero.Type" xml:space="preserve">
+  <data name="&gt;&gt;headerAirdSize.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;headerSuffix.Name" xml:space="preserve">
-    <value>headerSuffix</value>
+  <data name="&gt;&gt;headerCTimer.Name" xml:space="preserve">
+    <value>headerCTimer</value>
   </data>
-  <data name="&gt;&gt;headerSuffix.Type" xml:space="preserve">
+  <data name="&gt;&gt;headerCTimer.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;headerOutput.Name" xml:space="preserve">

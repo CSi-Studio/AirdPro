@@ -64,8 +64,8 @@ namespace AirdPro.Forms
             this.headerCentroid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerProgress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerPrecision = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.headerIgnoreZero = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.headerSuffix = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerAirdSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerCTimer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerOutput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contentMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.rerun = new System.Windows.Forms.ToolStripMenuItem();
@@ -262,8 +262,8 @@ namespace AirdPro.Forms
             this.headerProgress,
             this.headerPrecision,
             this.headerSize,
-            this.headerIgnoreZero,
-            this.headerSuffix,
+            this.headerAirdSize,
+            this.headerCTimer,
             this.headerOutput});
             this.lvFileList.ContextMenuStrip = this.contentMenu;
             this.lvFileList.FullRowSelect = true;
@@ -311,13 +311,13 @@ namespace AirdPro.Forms
             // 
             resources.ApplyResources(this.headerPrecision, "headerPrecision");
             // 
-            // headerIgnoreZero
+            // headerAirdSize
             // 
-            resources.ApplyResources(this.headerIgnoreZero, "headerIgnoreZero");
+            resources.ApplyResources(this.headerAirdSize, "headerAirdSize");
             // 
-            // headerSuffix
+            // headerCTimer
             // 
-            resources.ApplyResources(this.headerSuffix, "headerSuffix");
+            resources.ApplyResources(this.headerCTimer, "headerCTimer");
             // 
             // headerOutput
             // 
@@ -537,8 +537,8 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ToolStripMenuItem rerun;
         private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
         private System.Windows.Forms.ColumnHeader headerJobId;
-        private System.Windows.Forms.ColumnHeader headerIgnoreZero;
-        private System.Windows.Forms.ColumnHeader headerSuffix;
+        private System.Windows.Forms.ColumnHeader headerAirdSize;
+        private System.Windows.Forms.ColumnHeader headerCTimer;
         private System.Windows.Forms.Button btnImport;
         private System.Windows.Forms.Button btnCleanFinished;
         private System.Windows.Forms.Button btnSetting;

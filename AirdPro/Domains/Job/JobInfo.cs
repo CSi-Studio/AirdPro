@@ -104,12 +104,17 @@ namespace AirdPro.Domains
         //厂商文件大小
         public long vendorFileSize;
 
-        //Aird文件大小
         public long airdFileSize;
+        //Aird文件大小
+        [JsonIgnore]
+        public IProgress<long> airdFileSizeLabel;
 
         //转换时间
-        public long conversionTime;
-        
+        public double conversionTime;
+
+        [JsonIgnore]
+        public IProgress<double> conversionTimeLabel;
+
         //产生全局唯一且自增的jobId
         public static string NextId()
         {
@@ -152,8 +157,8 @@ namespace AirdPro.Domains
                 status,
                 config.GetMzPrecisionStr(),
                 AirdProFileUtil.GetSizeLabel(vendorFileSize),
-                config.ignoreZeroIntensity.ToString(),
-                config.suffix,
+                AirdProFileUtil.GetSizeLabel(airdFileSize),
+                AirdProFileUtil.GetTimeLabel(conversionTime),
                 outputPath
             };
             ListViewItem item = new ListViewItem(itemInfo);
@@ -161,6 +166,14 @@ namespace AirdPro.Domains
             progress = new Progress<string>((progressValue) =>
             {
                 item.SubItems[ItemName.PROGRESS].Text = progressValue;
+            });
+            airdFileSizeLabel = new Progress<long>((progressValue) =>
+            {
+                item.SubItems[ItemName.AIRD_SIZE].Text = AirdProFileUtil.GetSizeLabel(progressValue);
+            });
+            conversionTimeLabel = new Progress<double>((progressValue) =>
+            {
+                item.SubItems[ItemName.CONVERSION_TIME].Text = AirdProFileUtil.GetTimeLabel(progressValue);
             });
 
             item.ToolTipText = outputPath;
@@ -186,6 +199,18 @@ namespace AirdPro.Domains
         {
             this.type = type;
             typeLabel.Report(type);
+        }
+
+        public void SetAirdFileSize(long size)
+        {
+            this.airdFileSize = size;
+            this.airdFileSizeLabel.Report(size);
+        }   
+        
+        public void SetConversionTime(double time)
+        {
+            this.conversionTime = time;
+            this.conversionTimeLabel.Report(time);
         }
 
         public JobInfo Log(string content, string status)
@@ -233,6 +258,8 @@ namespace AirdPro.Domains
             jobInfo += Tag.Mz_Precision + config.GetMzPrecisionStr() + Const.Change_Line;
             jobInfo += Tag.Compressor + GetCompressorStr() + Const.Change_Line;
             jobInfo += Tag.Vendor_File_Size + AirdProFileUtil.GetSizeLabel(vendorFileSize) + Const.Change_Line;
+            jobInfo += Tag.Aird_File_Size + AirdProFileUtil.GetSizeLabel(airdFileSize) + Const.Change_Line;
+            jobInfo += Tag.Conversion_Time + AirdProFileUtil.GetTimeLabel(conversionTime) + Const.Change_Line;
             if (config.autoDesicion)
             {
                 jobInfo += config.spectraToPredict + " spectra for prediction" + Const.Change_Line;
@@ -263,6 +290,8 @@ namespace AirdPro.Domains
             dict.Add(Tag.Mz_Precision, config.GetMzPrecisionStr());
             dict.Add(Tag.Compressor, GetCompressorStr());
             dict.Add(Tag.Vendor_File_Size, AirdProFileUtil.GetSizeLabel(vendorFileSize));
+            dict.Add(Tag.Aird_File_Size, AirdProFileUtil.GetSizeLabel(airdFileSize));
+            dict.Add(Tag.Conversion_Time, AirdProFileUtil.GetTimeLabel(conversionTime));
 
             return dict;
         }
@@ -301,8 +330,8 @@ namespace AirdPro.Domains
             item.SubItems[ItemName.TYPE].Text = type;
             item.SubItems[ItemName.PRECISION].Text = config.GetMzPrecisionStr();
             item.SubItems[ItemName.VENDOR_SIZE].Text = AirdProFileUtil.GetSizeLabel(vendorFileSize);
-            item.SubItems[ItemName.IGNORE_ZERO].Text = config.ignoreZeroIntensity.ToString();
-            item.SubItems[ItemName.SUFFIX].Text = config.suffix;
+            item.SubItems[ItemName.AIRD_SIZE].Text = AirdProFileUtil.GetSizeLabel(airdFileSize);
+            item.SubItems[ItemName.CONVERSION_TIME].Text = AirdProFileUtil.GetTimeLabel(conversionTime);
             item.SubItems[ItemName.OUTPUT_PATH].Text = outputPath;
         }
 

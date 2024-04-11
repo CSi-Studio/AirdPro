@@ -9,7 +9,7 @@ namespace AirdPro.Converters
     public abstract class Converter
     {
         public JobInfo JobInfo; //转换任务的基本信息
-        protected readonly Stopwatch Stopwatch = new(); //全局的计时器
+        public readonly Stopwatch Stopwatch = new(); //全局的计时器
         protected FileStream AirdStream; //最终输出的Aird文件
         protected FileStream AirdJsonStream; //最终输出的Aird索引文件
         protected FileStream AirdColumnJsonStream; //最终输出的Aird-Slice索引文件
