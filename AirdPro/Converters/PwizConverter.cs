@@ -347,7 +347,6 @@ namespace AirdPro.Converters
             combination.enable(JobInfo.config, Compressor);
             JobInfo.Log(JobInfo.GetCompressorStr());
             JobInfo.config.autoDesicion = false;
-            JobInfo.SetCombination(JobInfo.GetCompressorStr());
         }
 
         /**
@@ -681,60 +680,6 @@ namespace AirdPro.Converters
             }
 
             JobInfo.Log(Tag.Adapting_Vendor_File_API, Status.Adapting);
-
-            switch (JobInfo.format)
-            {
-                case FileFormat.WIFF:
-                case FileFormat.WIFF2:
-                    FileInfo wiff = new FileInfo(JobInfo.inputPath);
-                    if (wiff.Exists) FileSize += wiff.Length;
-                    if (JobInfo.inputPath.ToLower().EndsWith(".wiff"))
-                    {
-                        FileInfo wiff2 = new FileInfo(JobInfo.inputPath.Replace("wiff", "wiff2"));
-                        if (wiff2.Exists) FileSize += wiff2.Length;
-                    }
-                    else
-                    {
-                        FileInfo wiff1 = new FileInfo(JobInfo.inputPath.Replace("wiff2", "wiff"));
-                        if (wiff1.Exists) FileSize += wiff1.Length;
-                    }
-
-                    FileInfo mtd = new FileInfo(JobInfo.inputPath + ".mtd");
-                    if (mtd.Exists) FileSize += mtd.Length;
-                    FileInfo scan = new FileInfo(JobInfo.inputPath + ".scan");
-                    if (scan.Exists) FileSize += scan.Length;
-                    FileInfo timeseries = new FileInfo(JobInfo.inputPath + ".timeseries.data");
-                    if (timeseries.Exists) FileSize += timeseries.Length;
-                    break;
-                case FileFormat.RAW:
-                    if (JobInfo.isDir)
-                    {
-                        long totalSize1 = AirdProFileUtil.GetDirectorySize(JobInfo.inputPath);
-                        FileSize += totalSize1;
-                    }
-                    else
-                    {
-                        FileInfo raw = new FileInfo(JobInfo.inputPath);
-                        if (raw.Exists) FileSize += raw.Length;
-                    }
-                    break;
-                case FileFormat.mzML:
-                    FileInfo mzML = new FileInfo(JobInfo.inputPath);
-                    if (mzML.Exists) FileSize += mzML.Length;
-                    break;
-                case FileFormat.mzXML:
-                    FileInfo mzXML = new FileInfo(JobInfo.inputPath);
-                    if (mzXML.Exists) FileSize += mzXML.Length;
-                    break;
-                case FileFormat.D:
-                    long totalSize = AirdProFileUtil.GetDirectorySize(JobInfo.inputPath);
-                    FileSize += totalSize;
-                    break;
-                default:
-                    FileInfo file = new FileInfo(JobInfo.inputPath);
-                    if (file.Exists) FileSize += file.Length;
-                    break;
-            }
 
             readerList.Dispose();
             return msdList;
@@ -1309,7 +1254,6 @@ namespace AirdPro.Converters
                 switch (JobInfo.format)
                 {
                     //仪器设备信息
-                    //TODO 这里的判断逻辑不全面
                     case FileFormat.WIFF:
                     case FileFormat.WIFF2:
                         instrument.manufacturer = Manufacturer.SCIEX;

@@ -65,6 +65,7 @@ namespace AirdPro.Constants
         public static string ConfigName = "ConfigName:";
         public static string Mz_Precision = "MzPrecision:";
         public static string Compressor = "Compressor:";
+        public static string Vendor_File_Size = "VendorFileSize:";
         public static string Cannot_Be_Deleted_When_Running = "Cannot be deleted when running";
         public static string Select_Item_To_Watch_Logs = "select item to watch logs";
         public static string Not_Start_Converting = "Not start converting!";

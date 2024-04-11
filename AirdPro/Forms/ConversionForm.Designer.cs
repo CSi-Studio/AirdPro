@@ -88,6 +88,7 @@ namespace AirdPro.Forms
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.timerTaskScan = new System.Windows.Forms.Timer(this.components);
+            this.headerSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -260,6 +261,7 @@ namespace AirdPro.Forms
             this.headerCentroid,
             this.headerProgress,
             this.headerPrecision,
+            this.headerSize,
             this.headerIgnoreZero,
             this.headerSuffix,
             this.headerOutput});
@@ -473,6 +475,10 @@ namespace AirdPro.Forms
             this.timerTaskScan.Interval = 2000;
             this.timerTaskScan.Tick += new System.EventHandler(this.timerTaskScan_Tick);
             // 
+            // headerSize
+            // 
+            resources.ApplyResources(this.headerSize, "headerSize");
+            // 
             // ConversionForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -554,6 +560,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ListView listViewJobInfo;
         private System.Windows.Forms.ColumnHeader colKey;
         private System.Windows.Forms.ColumnHeader colValue;
+        private System.Windows.Forms.ColumnHeader headerSize;
     }
 }
 

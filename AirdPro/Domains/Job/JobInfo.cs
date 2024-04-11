@@ -15,10 +15,10 @@ using System.IO;
 using System.Threading;
 using AirdPro.Constants;
 using AirdPro.Storage.Config;
+using AirdPro.Utils;
 using AirdSDK.Enums;
 using AirdSDK.Utils;
 using Newtonsoft.Json;
-using ThermoFisher.CommonCore.Data;
 using ListViewItem = System.Windows.Forms.ListViewItem;
 
 namespace AirdPro.Domains
@@ -56,6 +56,7 @@ namespace AirdPro.Domains
         //文件的格式,全部大写: WIFF, RAW. See FileFormat.cs
         public string format;
 
+        //是否为文件夹类型的原始文件
         public bool isDir;
         
         //C:/data/plasma.wiff
@@ -84,10 +85,6 @@ namespace AirdPro.Domains
         [JsonIgnore]
         private IProgress<string> progress;
 
-        //任务运行时产生的组合压缩,在使用动态决策器时有效
-        [JsonIgnore]
-        private IProgress<string> compressor;
-
         //任务的线程ID,当未分配线程ID时为-1
         public int threadId = -1;
 
@@ -103,11 +100,20 @@ namespace AirdPro.Domains
 
         //用于全局自增的id字段
         public static int id = 0;
+
+        //厂商文件大小
+        public long vendorFileSize;
+
+        //Aird文件大小
+        public long airdFileSize;
+
+        //转换时间
+        public long conversionTime;
         
         //产生全局唯一且自增的jobId
         public static string NextId()
         {
-            return Interlocked.Increment(ref id)+"";
+            return Interlocked.Increment(ref id) + "";
         }
 
         //本构造函数不能删除,可以避免在JSON反序列化的时候调用下面的有参构造函数,从而提前调用NextId()的自增函数
@@ -130,6 +136,7 @@ namespace AirdPro.Domains
             airdColumnJsonFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".cjson");
             airdColumnProtoFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".index");
             status = ProcessingStatus.WAITING;
+            vendorFileSize = GetVendorFileSize();
         }
 
         public ListViewItem BuildItem()
@@ -144,6 +151,7 @@ namespace AirdPro.Domains
                 config.centroid.ToString(),
                 status,
                 config.GetMzPrecisionStr(),
+                AirdProFileUtil.GetSizeLabel(vendorFileSize),
                 config.ignoreZeroIntensity.ToString(),
                 config.suffix,
                 outputPath
@@ -153,10 +161,6 @@ namespace AirdPro.Domains
             progress = new Progress<string>((progressValue) =>
             {
                 item.SubItems[ItemName.PROGRESS].Text = progressValue;
-            });
-            compressor = new Progress<string>((compressor) =>
-            {
-                item.SubItems[ItemName.COMPRESSOR].Text = compressor;
             });
 
             item.ToolTipText = outputPath;
@@ -182,11 +186,6 @@ namespace AirdPro.Domains
         {
             this.type = type;
             typeLabel.Report(type);
-        }
-
-        public void SetCombination(string combination)
-        {
-            compressor.Report(combination);
         }
 
         public JobInfo Log(string content, string status)
@@ -221,7 +220,7 @@ namespace AirdPro.Domains
         {
             string jobInfo = Tag.Empty;
             jobInfo += Tag.ConfigName + config.configName + Const.Change_Line;
-            jobInfo += Tag.Engine + config.engine + Const.Change_Line;
+            jobInfo += Tag.Engine + config.EngineName() + Const.Change_Line;
             jobInfo += Tag.Input_Path + inputPath + Const.Change_Line;
             jobInfo += Tag.Output_Path + outputPath + Const.Change_Line;
             jobInfo += Tag.Aird_File_Name + airdFileName + Const.Change_Line;
@@ -233,6 +232,7 @@ namespace AirdPro.Domains
             jobInfo += Tag.Thread_Id + threadId + Const.Change_Line;
             jobInfo += Tag.Mz_Precision + config.GetMzPrecisionStr() + Const.Change_Line;
             jobInfo += Tag.Compressor + GetCompressorStr() + Const.Change_Line;
+            jobInfo += Tag.Vendor_File_Size + AirdProFileUtil.GetSizeLabel(vendorFileSize) + Const.Change_Line;
             if (config.autoDesicion)
             {
                 jobInfo += config.spectraToPredict + " spectra for prediction" + Const.Change_Line;
@@ -247,7 +247,7 @@ namespace AirdPro.Domains
         {
             Dictionary<string, string> dict = new();
             dict.Add(Tag.ConfigName, config.configName);
-            dict.Add(Tag.Engine, config.engine+"");
+            dict.Add(Tag.Engine, config.EngineName());
             dict.Add(Tag.Input_Path, inputPath);
             dict.Add(Tag.Output_Path, outputPath);
             dict.Add(Tag.Aird_File_Name, airdFileName);
@@ -262,6 +262,7 @@ namespace AirdPro.Domains
             dict.Add(Tag.Thread_Id, threadId+"");
             dict.Add(Tag.Mz_Precision, config.GetMzPrecisionStr());
             dict.Add(Tag.Compressor, GetCompressorStr());
+            dict.Add(Tag.Vendor_File_Size, AirdProFileUtil.GetSizeLabel(vendorFileSize));
 
             return dict;
         }
@@ -299,7 +300,7 @@ namespace AirdPro.Domains
             item.SubItems[ItemName.INPUT_PATH].Text = inputPath;
             item.SubItems[ItemName.TYPE].Text = type;
             item.SubItems[ItemName.PRECISION].Text = config.GetMzPrecisionStr();
-            item.SubItems[ItemName.COMPRESSOR].Text = GetCompressorStr();
+            item.SubItems[ItemName.VENDOR_SIZE].Text = AirdProFileUtil.GetSizeLabel(vendorFileSize);
             item.SubItems[ItemName.IGNORE_ZERO].Text = config.ignoreZeroIntensity.ToString();
             item.SubItems[ItemName.SUFFIX].Text = config.suffix;
             item.SubItems[ItemName.OUTPUT_PATH].Text = outputPath;
@@ -310,6 +311,66 @@ namespace AirdPro.Domains
             jobId = NextId();
             status = ProcessingStatus.WAITING;
             logs = new List<Log>();
+        }
+
+        public long GetVendorFileSize()
+        {
+            long FileSize = 0;
+            switch (format)
+            {
+                case FileFormat.WIFF:
+                case FileFormat.WIFF2:
+                    FileInfo wiff = new FileInfo(inputPath);
+                    if (wiff.Exists) FileSize += wiff.Length;
+                    if (inputPath.ToLower().EndsWith(".wiff"))
+                    {
+                        FileInfo wiff2 = new FileInfo(inputPath.Replace("wiff", "wiff2"));
+                        if (wiff2.Exists) FileSize += wiff2.Length;
+                    }
+                    else
+                    {
+                        FileInfo wiff1 = new FileInfo(inputPath.Replace("wiff2", "wiff"));
+                        if (wiff1.Exists) FileSize += wiff1.Length;
+                    }
+
+                    FileInfo mtd = new FileInfo(inputPath + ".mtd");
+                    if (mtd.Exists) FileSize += mtd.Length;
+                    FileInfo scan = new FileInfo(inputPath + ".scan");
+                    if (scan.Exists) FileSize += scan.Length;
+                    FileInfo timeseries = new FileInfo(inputPath + ".timeseries.data");
+                    if (timeseries.Exists) FileSize += timeseries.Length;
+                    break;
+                case FileFormat.RAW:
+                    if (isDir)
+                    {
+                        long totalSize1 = AirdProFileUtil.GetDirectorySize(inputPath);
+                        FileSize += totalSize1;
+                    }
+                    else
+                    {
+                        FileInfo raw = new FileInfo(inputPath);
+                        if (raw.Exists) FileSize += raw.Length;
+                    }
+                    break;
+                case FileFormat.mzML:
+                    FileInfo mzML = new FileInfo(inputPath);
+                    if (mzML.Exists) FileSize += mzML.Length;
+                    break;
+                case FileFormat.mzXML:
+                    FileInfo mzXML = new FileInfo(inputPath);
+                    if (mzXML.Exists) FileSize += mzXML.Length;
+                    break;
+                case FileFormat.D:
+                    long totalSize = AirdProFileUtil.GetDirectorySize(inputPath);
+                    FileSize += totalSize;
+                    break;
+                default:
+                    FileInfo file = new FileInfo(inputPath);
+                    if (file.Exists) FileSize += file.Length;
+                    break;
+            }
+
+            return FileSize;
         }
     }
 }

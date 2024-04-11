@@ -1186,13 +1186,19 @@
     <value>Progress</value>
   </data>
   <data name="headerProgress.Width" type="System.Int32, mscorlib">
-    <value>250</value>
+    <value>220</value>
   </data>
   <data name="headerPrecision.Text" xml:space="preserve">
     <value>Precision</value>
   </data>
   <data name="headerPrecision.Width" type="System.Int32, mscorlib">
     <value>76</value>
+  </data>
+  <data name="headerSize.Text" xml:space="preserve">
+    <value>VendorSize</value>
+  </data>
+  <data name="headerSize.Width" type="System.Int32, mscorlib">
+    <value>80</value>
   </data>
   <data name="headerIgnoreZero.Text" xml:space="preserve">
     <value>IgnoreZero</value>
@@ -5772,6 +5778,12 @@
   </data>
   <data name="&gt;&gt;timerTaskScan.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;headerSize.Name" xml:space="preserve">
+    <value>headerSize</value>
+  </data>
+  <data name="&gt;&gt;headerSize.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ConversionForm</value>

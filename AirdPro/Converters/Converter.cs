@@ -29,7 +29,7 @@ namespace AirdPro.Converters
             JobInfo.Log(Tag.Ready_To_Start, Status.Starting);
             AppLogs.WriteInfo(Tag.BaseInfo + JobInfo.GetJsonInfo(), true);
         }
-
+        
         /**
          * 初始化Aird文件对应的文件
          */
