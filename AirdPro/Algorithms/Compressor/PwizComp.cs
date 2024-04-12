@@ -311,21 +311,22 @@ namespace AirdPro.Algorithms.Compressor
                 return;
             }
 
-            TimsData[] dataArray = new TimsData[size];
+            List<TimsData> dataList = new List<TimsData>();
             for (int t = 0; t < size; t++)
             {
-                dataArray[t] = new TimsData(MobiDict[mobiData[t]], mzData[t], intData[t]);
+                dataList.Add(new TimsData(MobiDict[mobiData[t]], mzData[t], intData[t]));
             }
 
-            Array.Sort(dataArray, (p1, p2) => p1.mz.CompareTo(p2.mz));
+            List<TimsData> sortedDataList = dataList.OrderBy(d => d.mz).ThenBy(d => d.mobilityNo).ToList();
+
             int[] mzArray = new int[size];
             int[] intensityArray = new int[size];
             int[] mobilityNoArray = new int[size];
             for (int i = 0; i < size; i++)
             {
-                mzArray[i] = DataUtil.FetchMz(dataArray[i].mz, MzPrecision);
-                intensityArray[i] = DataUtil.FetchIntensity(dataArray[i].intensity, IntensityPrecision);
-                mobilityNoArray[i] = dataArray[i].mobilityNo;
+                mzArray[i] = DataUtil.FetchMz(sortedDataList[i].mz, MzPrecision);
+                intensityArray[i] = DataUtil.FetchIntensity(sortedDataList[i].intensity, IntensityPrecision);
+                mobilityNoArray[i] = sortedDataList[i].mobilityNo;
             }
 
             byte[] compressedMzArray = ComboComp.encode(MzIntComp, MzByteComp, mzArray);

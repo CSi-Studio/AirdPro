@@ -332,7 +332,7 @@ namespace AirdPro.Converters
             }
             catch (Exception e)
             {
-                Console.WriteLine("Chromatogram Reading Failed:"+e.Message);
+                Console.WriteLine("Chromatogram Reading Failed:" + e.Message);
             }
         }
 
@@ -829,13 +829,6 @@ namespace AirdPro.Converters
 
             using (Scan scan = spectrum.scanList.scans[0])
             {
-                // ms1.cvs = CVUtil.trans(spectrum.cvParams);
-                //将对应scan的cvParams也冗余到ms1上来
-                // if (scan.cvParams != null)
-                // {
-                //     ms1.cvs.AddRange(CVUtil.trans(scan.cvParams));
-                // }
-
                 ms1.filterString = CVUtil.ParseFilterString(scan, JobInfo);
                 ms1.rt = CVUtil.ParseRt(scan, JobInfo);
                 ms1.tic = CVUtil.ParseTic(spectrum);
