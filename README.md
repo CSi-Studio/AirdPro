@@ -5,6 +5,13 @@ AirdPro is a GUI client for conversion from vendor files to Aird files. AirdPro 
 AirdPro is opensource under the MulanPSL2 license
 
 ## Version Description
+### V6.0.0
+- [New Feature] New Conversion List Viewer
+- [New Feature] 20% higher compression rate for ion mobility raw files
+- [New Feature] New distributed system by deploying multiple AirdPro nodes for multiple task conversion
+- [Stability improvement] Update to the latest tripartite dependency library
+- [Stability improvement] Resolves memory overflow issues during large-scale conversions
+
 ### V5.1.0
 - [New Feature] New File Selection UI
 - [New Feature] Supporting MRM acquisition method
