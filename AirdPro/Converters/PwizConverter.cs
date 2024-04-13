@@ -1163,7 +1163,7 @@ namespace AirdPro.Converters
             //Basic Job Info
             airdInfo.engine = JobInfo.config.engine;
             airdInfo.airdPath = JobInfo.airdFilePath;
-            airdInfo.fileSize = FileSize;
+            airdInfo.fileSize = JobInfo.vendorFileSize;
             airdInfo.createDate = DateTime.Now.ToString();
             airdInfo.type = JobInfo.type;
             airdInfo.totalCount = Msd.run.spectrumList.size();

@@ -15,7 +15,7 @@ namespace AirdPro.Converters
         protected FileStream AirdColumnJsonStream; //最终输出的Aird-Slice索引文件
         protected FileStream AirdColumnProtoStream; //最终输出的Aird-Slice索引文件
 
-        protected long FileSize; //厂商文件大小
+        // protected long FileSize; //厂商文件大小
         protected long StartPosition = 0; //文件指针
         protected int TotalSpectraCount = 0; //总计的谱图数目
         protected int TotalChromaCount = 0; //总计的色谱数目

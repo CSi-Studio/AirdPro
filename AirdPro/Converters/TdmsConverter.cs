@@ -129,7 +129,7 @@ namespace AirdPro.Converters
                 }
             }
 
-            FileSize = info.Length;
+            JobInfo.vendorFileSize = info.Length;
             TotalSpectraCount = spectraCount;
 
             JobInfo.Log(Tag.Effective_MS1_List_Size + ms1List.Count);
@@ -255,7 +255,7 @@ namespace AirdPro.Converters
             //Basic Job Info
             airdInfo.engine = JobInfo.config.engine;
             airdInfo.airdPath = JobInfo.airdFilePath;
-            airdInfo.fileSize = FileSize;
+            airdInfo.fileSize = JobInfo.vendorFileSize;
             airdInfo.createDate = DateTime.Now.ToString();
             airdInfo.type = JobInfo.type;
             // airdInfo.totalCount = msd.run.spectrumList.size();
