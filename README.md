@@ -1,4 +1,5 @@
 AirdPro V5 is now available at 2023.7
+AirdPro V6 is now available at 2024.4
 
 # AirdPro
 AirdPro is a GUI client for conversion from vendor files to Aird files. AirdPro is written in C# and is based on pwiz_bindings_cli.dll from the ProteoWizard project.
