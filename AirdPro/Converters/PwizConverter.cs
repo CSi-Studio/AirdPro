@@ -887,7 +887,7 @@ namespace AirdPro.Converters
                 }
             }
 
-            if (spectrum.scanList.scans.Count != 1) return ms2;
+            if (spectrum.scanList.scans.Count < 1) return ms2;
 
             var result = CVUtil.ParseActivator(spectrum.precursors[0]);
             ms2.activator = result.activator;
@@ -897,11 +897,6 @@ namespace AirdPro.Converters
             ms2.tic = CVUtil.ParseTic(spectrum);
             ms2.basePeakIntensity = CVUtil.ParseBasePeakIntensity(spectrum);
             ms2.basePeakMz = CVUtil.ParseBasePeakMz(spectrum);
-
-            // using (CVParamList cvParams = spectrum.cvParams)
-            // {
-            // ms2.cvs = CVUtil.trans(cvParams);
-            // }
 
             using (Scan scan = spectrum.scanList.scans[0])
             {
@@ -913,11 +908,6 @@ namespace AirdPro.Converters
                 }
 
                 ms2.filterString = CVUtil.ParseFilterString(scan, JobInfo);
-
-                // using (CVParamList cvParams = scan.cvParams)
-                // {
-                //     if (cvParams != null) ms2.cvs.AddRange(CVUtil.trans(cvParams));
-                // }
             }
 
             return ms2;

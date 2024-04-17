@@ -5,9 +5,17 @@ namespace AirdProTests
     [TestClass]
     public class CompetitorPerformanceTest
     {
+
+        [TestMethod]
+        public void TestConsoleWriteLine()
+        {
+            Console.WriteLine("开搞");
+        }
+        
         [TestMethod]
         public void BatchConvertFiles_ValidSourceFolder_ReturnsSuccessfulConversion()
         {
+            
             // 设置要转换的源文件夹路径
             string sourceFolder = @"E:\msfile";
 
