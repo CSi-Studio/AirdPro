@@ -9,12 +9,24 @@
  */
 
 using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Security.Permissions;
 using System.Threading;
 using System.Windows.Forms;
+using AirdPro.Asyncs;
+using AirdPro.CommandLine;
+using AirdPro.Domains;
 using AirdPro.Forms;
 using AirdPro.Repository;
+using AirdPro.Storage.Config;
 using AirdPro.Storage.Handler;
+using AirdSDK.Enums;
+using AirdSDK.Utils;
+using CommandLine;
+using HZH_Controls;
+using Newtonsoft.Json;
 
 namespace AirdPro
 {
@@ -30,8 +42,6 @@ namespace AirdPro
         public static MLForm mlForm { get; set; }
         public static PXForm pxForm { get; set; }
         
-        
-        
         /// <summary>
         ///     The main entry point for the application.
         /// </summary>
@@ -39,16 +49,64 @@ namespace AirdPro
         [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.ControlAppDomain)]
         public static void Main(string[] args)
         {
-            Application.ThreadException += UIThread_UnhandledException;
+            if (args.Length == 0)
+            {
+                Application.ThreadException += UIThread_UnhandledException;
 
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            
-            conversionForm = new ConversionForm();
-            conversionConfigHandler = new ConversionConfigHandler();
-            Application.Run(conversionForm);
+                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+                conversionForm = new ConversionForm();
+                conversionConfigHandler = new ConversionConfigHandler();
+                Application.Run(conversionForm);
+            }
+            else
+            {
+                Parser.Default.ParseArguments<Options>(args).WithParsed<Options>(options =>
+                    {
+                        // 这里可以访问options对象的属性来获取命令行参数的值
+                        string inputFilePath = options.InputFilePath;
+                        string outputFilePath = options.OutputFilePath;
+                        if (outputFilePath.IsEmpty())
+                        {
+                            outputFilePath = Path.GetDirectoryName(inputFilePath);
+                        }
+
+                        string acquisitionMethod = options.AcquisitionMethod;
+                        if (acquisitionMethod.IsEmpty())
+                        {
+                            acquisitionMethod = JobInfo.AutoType;
+                        }
+
+                        string configName = options.ConfigName;
+                        if (configName.IsEmpty())
+                        {
+                            configName = "Default";
+                        }
+                        conversionConfigHandler = new ConversionConfigHandler();
+                        ConversionConfig config = Program.conversionConfigHandler.configMap[configName];
+                        if (config == null)
+                        {
+                            config = Program.conversionConfigHandler.configMap.First().Value;
+                        }
+
+                        JobInfo jobInfo = new JobInfo(inputFilePath, outputFilePath, acquisitionMethod, config);
+                        ConvertTaskManager.GetInstance().RunJob(jobInfo);
+                        Console.WriteLine("JobInfo:"+jobInfo.GetJsonInfo());
+                    }
+                ).WithNotParsed<Options>(errs =>
+                {
+                    System.Diagnostics.Debug.WriteLine("Error Info：");
+                    foreach (var error in errs)
+                    {
+                        Console.WriteLine(error);
+                    }
+                });
+
+            }
+           
         }
 
         #region Exception handling

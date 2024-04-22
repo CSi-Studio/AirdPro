@@ -192,33 +192,60 @@ namespace AirdPro.Domains
         public void SetStatus(string status)
         {
             this.status = status;
-            progress.Report(status);
+            if (progress != null)
+            {
+                progress.Report(status);
+            }
+            else
+            {
+                Console.WriteLine(status);
+            }
+            
         }
 
         public void SetType(string type)
         {
             this.type = type;
-            typeLabel.Report(type);
+            if (typeLabel != null)
+            {
+                typeLabel.Report(type);
+            }
         }
 
         public void SetAirdFileSize(long size)
         {
             this.airdFileSize = size;
-            this.airdFileSizeLabel.Report(size);
+            if (airdFileSizeLabel != null)
+            {
+                airdFileSizeLabel.Report(size);
+            }
+       
         }   
         
         public void SetConversionTime(double time)
         {
             this.conversionTime = time;
-            this.conversionTimeLabel.Report(time);
+            if (conversionTimeLabel != null)
+            {
+                conversionTimeLabel.Report(time);
+            }
+          
         }
 
         public JobInfo Log(string content, string status)
         {
             if (refreshReport)
             {
-                progress.Report(status);
-                refreshReport = false;
+                if (progress != null)
+                {
+                    progress.Report(status);
+                    refreshReport = false;
+                }
+                else
+                {
+                    Console.WriteLine(status);
+                }
+              
             }
 
             if (content != null)
@@ -233,11 +260,18 @@ namespace AirdPro.Domains
 
         public void LogError(string content)
         {
-            progress.Report(Status.Error);
+            if (progress != null)
+            {
+                progress.Report(Status.Error);
+            }
+            else
+            {
+                Console.Write(status);
+            }
+           
             Log log = new Log(DateTime.Now, content);
             logs.Add(log);
             AppLogs.WriteError(content, true);
-            Debug.WriteLine(content);
             throw new Exception(content);
         }
 

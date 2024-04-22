@@ -206,7 +206,7 @@ namespace AirdPro.Converters
             }
 
             double[] mobility = new double[2000];
-            TdfUtil.tims_scannum_to_oneoverk0(handle, 1, scanNums, mobility, scanNums.Length);
+            TdfUtil.tims_scannum_to_oneoverk0(handle, 10000, scanNums, mobility, scanNums.Length);
             TdfUtil.tims_close(handle);
             MobiDict = new Dictionary<double, int>();
             for (short i = 0; i < mobility.Length; i++)
