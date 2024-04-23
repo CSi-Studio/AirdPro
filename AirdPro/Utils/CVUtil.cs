@@ -13,12 +13,10 @@ using System.Collections.Generic;
 using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdSDK.Beans;
-using CSharpFastPFOR;
 using pwiz.CLI.cv;
 using pwiz.CLI.data;
 using pwiz.CLI.msdata;
 using Activator = AirdPro.Constants.Activator;
-using CV = AirdSDK.Beans.CV;
 
 namespace AirdPro.Utils;
 
@@ -55,40 +53,40 @@ public class CVUtil
     /**
      * 本函数会直接导致内存溢出
      */
-    public static List<CV> Trans(CVParamList paramList)
-    {
-        if (paramList == null)
-        {
-            return null;
-        }
+    // public static List<CV> Trans(CVParamList paramList)
+    // {
+    //     if (paramList == null)
+    //     {
+    //         return null;
+    //     }
+    //
+    //     var cvList = new List<CV>();
+    //     for (var i = 0; i < paramList.Count; i++)
+    //     {
+    //         CVParam cv = paramList[i];
+    //         CVID id = cv.cvid;
+    //         if (SkipList.Contains(id)) continue;
+    //         // cvList.Add(Build(cv));
+    //         cv.Dispose();
+    //     }
+    //     
+    //     paramList.Dispose();
+    //     return cvList;
+    // }
 
-        var cvList = new List<CV>();
-        for (var i = 0; i < paramList.Count; i++)
-        {
-            CVParam cv = paramList[i];
-            CVID id = cv.cvid;
-            if (SkipList.Contains(id)) continue;
-            cvList.Add(Build(cv));
-            cv.Dispose();
-        }
-        
-        paramList.Dispose();
-        return cvList;
-    }
-
-    public static CV Build(CVParam param)
-    {
-        var cv = new CV();
-        cv.cvid = (int)param.cvid + ":" + param.name;
-        using (var value = param.value)
-        {
-            cv.value = (String)value;
-        }
-        
-        var unitsId = (int)param.units;
-        if (unitsId != -1) cv.units = (int)param.units + ":" + param.unitsName;
-        return cv;
-    }
+    // public static CV Build(CVParam param)
+    // {
+    //     var cv = new CV();
+    //     cv.cvid = (int)param.cvid + ":" + param.name;
+    //     using (var value = param.value)
+    //     {
+    //         cv.value = (String)value;
+    //     }
+    //     
+    //     var unitsId = (int)param.units;
+    //     if (unitsId != -1) cv.units = (int)param.units + ":" + param.unitsName;
+    //     return cv;
+    // }
 
     public static string ParseMsLevel(Spectrum spectrum)
     {

@@ -706,7 +706,7 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AirdSDK" Version="2.4.5.1" />
+    <PackageReference Include="AirdSDK" Version="2.4.6" />
     <PackageReference Include="CommandLineParser">
       <Version>2.9.1</Version>
     </PackageReference>

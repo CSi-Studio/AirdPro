@@ -116,6 +116,7 @@ namespace AirdPro.Forms
             config.centroid = cbConfigIsCentroid.Checked;
             config.engine = cbCompEngine.SelectedIndex;
             config.configName = tbNameConfig.Text;
+            config.indexFormat = cbIndexFormat.SelectedIndex;
             //如果不是自动决策的,则会使用配置的组合压缩器
             if (!cbAutoDecision.Checked)
             {
@@ -223,6 +224,7 @@ namespace AirdPro.Forms
             cbCSWeight.Text = config.compressionSizeWeight + "";
             cbCTWeight.Text = config.compressionTimeWeight + "";
             cbDTWeight.Text = config.decompressionTimeWeight + "";
+            cbIndexFormat.SelectedIndex = config.indexFormat;
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)

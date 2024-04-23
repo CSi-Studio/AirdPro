@@ -51,8 +51,5 @@ namespace AirdPro.Domains
         public int num;
 
         public WindowRange precursor;
-
-        //PSI CV PSI可控词汇表
-        public List<CV> cvs;
     }
 }

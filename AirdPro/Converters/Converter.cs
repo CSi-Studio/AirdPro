@@ -12,6 +12,7 @@ namespace AirdPro.Converters
         public readonly Stopwatch Stopwatch = new(); //全局的计时器
         protected FileStream AirdStream; //最终输出的Aird文件
         protected FileStream AirdJsonStream; //最终输出的Aird索引文件
+        protected FileStream AirdProtoStream; //最终输出的Aird索引文件
         protected FileStream AirdColumnJsonStream; //最终输出的Aird-Slice索引文件
         protected FileStream AirdColumnProtoStream; //最终输出的Aird-Slice索引文件
 
@@ -36,7 +37,7 @@ namespace AirdPro.Converters
         protected void InitDirectory()
         {
             Directory.CreateDirectory(Path.GetDirectoryName(JobInfo.airdFilePath) ?? string.Empty);
-            Directory.CreateDirectory(Path.GetDirectoryName(JobInfo.airdJsonFilePath) ?? string.Empty);
+            // Directory.CreateDirectory(Path.GetDirectoryName(JobInfo.airdJsonFilePath) ?? string.Empty);
         }
         
         public abstract void Init(JobInfo jobInfo);

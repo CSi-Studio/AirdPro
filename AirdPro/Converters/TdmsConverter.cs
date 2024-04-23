@@ -202,7 +202,6 @@ namespace AirdPro.Converters
             index.activators.Add(ts.activator);
             index.filterStrings.Add(ts.filterString);
             index.msTypes.Add(ts.msType);
-            index.cvList.Add(ts.cvs);
 
             if (ts.mzArrayBytes != null && ts.intArrayBytes != null)
             {

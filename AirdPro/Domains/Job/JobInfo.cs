@@ -71,10 +71,13 @@ namespace AirdPro.Domains
         //例如: D://aird/plasma.json
         public string airdJsonFilePath;
 
+        //例如: D://aird/plasma.index
+        public string airdIndexFilePath;
+
         //例如： D://aird/plasma.cjson
         public string airdColumnJsonFilePath;
 
-        //例如:  D://aird/plasma.proto
+        //例如:  D://aird/plasma.cindex
         public string airdColumnProtoFilePath;
 
         //任务运行时产生的日志
@@ -138,8 +141,9 @@ namespace AirdPro.Domains
             airdFileName = FileNameUtil.parseFileName(inputPath);
             airdFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".aird");
             airdJsonFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".json");
+            airdIndexFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".index");
             airdColumnJsonFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".cjson");
-            airdColumnProtoFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".index");
+            airdColumnProtoFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".cindex");
             status = ProcessingStatus.WAITING;
             vendorFileSize = GetVendorFileSize();
         }
@@ -285,6 +289,7 @@ namespace AirdPro.Domains
             jobInfo += Tag.Aird_File_Name + airdFileName + Const.Change_Line;
             jobInfo += Tag.Aird_File_Path + airdFilePath + Const.Change_Line;
             jobInfo += Tag.Aird_Json_File_Path + airdJsonFilePath + Const.Change_Line;
+            jobInfo += Tag.Aird_Index_File_Path + airdIndexFilePath + Const.Change_Line;
             jobInfo += Tag.Aird_Column_Json_File_Path + airdColumnJsonFilePath + Const.Change_Line;
             jobInfo += Tag.Ignore_Zero_Intensity + config.ignoreZeroIntensity + Const.Change_Line;
             jobInfo += Tag.Suffix + config.suffix + Const.Change_Line;
@@ -314,6 +319,7 @@ namespace AirdPro.Domains
             dict.Add(Tag.Aird_File_Name, airdFileName);
             dict.Add(Tag.Aird_File_Path, airdFilePath);
             dict.Add(Tag.Aird_Json_File_Path, airdJsonFilePath);
+            dict.Add(Tag.Aird_Index_File_Path, airdIndexFilePath);
             if (config.engine.Equals(AirdEngine.ColumnCompression))
             {
                 dict.Add(Tag.Aird_Column_Json_File_Path, airdColumnJsonFilePath);
@@ -328,12 +334,6 @@ namespace AirdPro.Domains
             dict.Add(Tag.Conversion_Time, AirdProFileUtil.GetTimeLabel(conversionTime));
 
             return dict;
-        }
-
-        public string GetUniqueId()
-        {
-            return inputPath + outputPath + GetCompressorStr() + config.GetMzPrecisionStr() +
-                   config.ignoreZeroIntensity;
         }
 
         public string GetCompressorStr()

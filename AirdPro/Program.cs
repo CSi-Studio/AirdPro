@@ -89,7 +89,7 @@ namespace AirdPro
                         }
                         conversionConfigHandler = new ConversionConfigHandler();
                         ConversionConfig config = Program.conversionConfigHandler.configMap[configName];
-                        if (config == null)
+                        if (config == null && Program.conversionConfigHandler.configMap != null && Program.conversionConfigHandler.configMap.Count > 0)
                         {
                             config = Program.conversionConfigHandler.configMap.First().Value;
                         }

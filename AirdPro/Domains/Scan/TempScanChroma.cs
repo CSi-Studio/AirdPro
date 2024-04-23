@@ -8,7 +8,6 @@
  * See the Mulan PSL v2 for more details.
  */
 
-using System.Collections.Generic;
 using AirdSDK.Beans;
 
 namespace AirdPro.Domains
@@ -24,7 +23,6 @@ namespace AirdPro.Domains
         public string msType;
         public WindowRange precursor;
         public WindowRange product;
-        public List<CV> cvs;
 
         public byte[] rtArrayBytes;
         public byte[] intArrayBytes;
@@ -34,7 +32,7 @@ namespace AirdPro.Domains
         }
 
         public TempScanChroma(int num, WindowRange precursor, WindowRange product, string activator, float energy,
-            string polarity, string msType, List<CV> cvs)
+            string polarity, string msType)
         {
             this.num = num;
             this.precursor = precursor;
@@ -43,7 +41,6 @@ namespace AirdPro.Domains
             this.energy = energy;
             this.polarity = polarity;
             this.msType = msType;
-            this.cvs = cvs;
         }
     }
 }

@@ -58,6 +58,7 @@ namespace AirdPro.Constants
         public static string Aird_File_Name = "AirdFileName:";
         public static string Aird_File_Path = "AirdFilePath:";
         public static string Aird_Json_File_Path = "AirdJsonFilePath:";
+        public static string Aird_Index_File_Path = "AirdIndexFilePath:";
         public static string Aird_Column_Json_File_Path = "AirdColumnJsonFilePath:";
         public static string Ignore_Zero_Intensity = "IgnoreZeroIntensity:";
         public static string Suffix = "Suffix:";

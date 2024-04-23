@@ -83,6 +83,8 @@
             this.lblMaxTasks = new System.Windows.Forms.Label();
             this.numMaxTasks = new System.Windows.Forms.NumericUpDown();
             this.btnGlobalSettingSave = new System.Windows.Forms.Button();
+            this.lblIndexFormat = new System.Windows.Forms.Label();
+            this.cbIndexFormat = new System.Windows.Forms.ComboBox();
             this.contextMenu.SuspendLayout();
             this.tableAutoDecision.SuspendLayout();
             this.tableDeciderWeight.SuspendLayout();
@@ -760,11 +762,38 @@
             this.btnGlobalSettingSave.UseVisualStyleBackColor = true;
             this.btnGlobalSettingSave.Click += new System.EventHandler(this.btnGlobalSettingSave_Click);
             // 
+            // lblIndexFormat
+            // 
+            this.lblIndexFormat.AutoSize = true;
+            this.lblIndexFormat.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblIndexFormat.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.lblIndexFormat.Location = new System.Drawing.Point(337, 131);
+            this.lblIndexFormat.Name = "lblIndexFormat";
+            this.lblIndexFormat.Size = new System.Drawing.Size(85, 17);
+            this.lblIndexFormat.TabIndex = 163;
+            this.lblIndexFormat.Text = "Index Format";
+            // 
+            // cbIndexFormat
+            // 
+            this.cbIndexFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbIndexFormat.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbIndexFormat.FormattingEnabled = true;
+            this.cbIndexFormat.Items.AddRange(new object[] {
+            "Json",
+            "Protobuf",
+            "Both"});
+            this.cbIndexFormat.Location = new System.Drawing.Point(428, 127);
+            this.cbIndexFormat.Name = "cbIndexFormat";
+            this.cbIndexFormat.Size = new System.Drawing.Size(137, 25);
+            this.cbIndexFormat.TabIndex = 162;
+            // 
             // ConversionConfigListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(932, 515);
+            this.Controls.Add(this.lblIndexFormat);
+            this.Controls.Add(this.cbIndexFormat);
             this.Controls.Add(this.cbCompressedIndex);
             this.Controls.Add(this.cbAutoDecision);
             this.Controls.Add(this.btnGlobalSettingSave);
@@ -865,5 +894,7 @@
         private System.Windows.Forms.ColumnHeader headerAuto;
         public System.Windows.Forms.CheckBox cbCompressedIndex;
         public System.Windows.Forms.CheckBox cbConfigIsCentroid;
+        private System.Windows.Forms.Label lblIndexFormat;
+        public System.Windows.Forms.ComboBox cbIndexFormat;
     }
 }

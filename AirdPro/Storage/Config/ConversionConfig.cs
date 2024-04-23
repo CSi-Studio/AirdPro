@@ -63,6 +63,14 @@ namespace AirdPro.Storage.Config
         public bool autoDesicion = false;
 
         /**
+         * 转换后的索引格式，支持输出JSON，Protobuf或者两者均输出的形式
+         * 0. JSON
+         * 1. Protobuf
+         * 2. Both
+         */
+        public int indexFormat = 0;
+
+        /**
          * 面向的场景,默认为Aird-ComboComp面向计算的场景，主要使用行存储的方式进行排列与压缩
          * Aird-Search为面向搜索的场景，主要使用列存储的方式进行存储与压缩
          */

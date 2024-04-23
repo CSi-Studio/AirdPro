@@ -157,6 +157,11 @@ namespace AirdPro.Redis
                         conversionConfig.compressedIndex = job.compressedIndex.Value;
                     }
 
+                    if (job.indexFormat != null)
+                    {
+                        conversionConfig.indexFormat = job.indexFormat.Value;
+                    }
+
                     if (job.mzIntComp != null)
                     {
                         conversionConfig.mzIntComp =

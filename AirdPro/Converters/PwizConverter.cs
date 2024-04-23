@@ -126,6 +126,7 @@ namespace AirdPro.Converters
                             id = id.Trim();
                             JobInfo.airdFilePath = Path.Combine(JobInfo.outputPath, id + ".aird");
                             JobInfo.airdJsonFilePath = Path.Combine(JobInfo.outputPath, id + ".json");
+                            JobInfo.airdIndexFilePath = Path.Combine(JobInfo.outputPath, id + ".index");
                             JobInfo.airdFileName = id;
                         }
 
@@ -133,33 +134,30 @@ namespace AirdPro.Converters
                         ReadMsd(msd);
                         using (AirdStream = new FileStream(JobInfo.airdFilePath, FileMode.Create))
                         {
-                            using (AirdJsonStream = new FileStream(JobInfo.airdJsonFilePath, FileMode.Create))
+                            PredictAcquisitionMethod();
+                            InitCompressor();
+                            switch (JobInfo.type)
                             {
-                                PredictAcquisitionMethod();
-                                InitCompressor();
-                                switch (JobInfo.type)
-                                {
-                                    case AcquisitionMethod.DIA:
-                                        ConverterWorkFlow.DIA(this);
-                                        break;
-                                    case AcquisitionMethod.DDA:
-                                        ConverterWorkFlow.DDA(this);
-                                        break;
-                                    case AcquisitionMethod.PRM:
-                                        ConverterWorkFlow.PRM(this);
-                                        break;
-                                    case AcquisitionMethod.MRM:
-                                        ConverterWorkFlow.MRM(this);
-                                        break;
-                                    case AcquisitionMethod.DDA_PASEF:
-                                        JobInfo.ionMobility = true;
-                                        ConverterWorkFlow.DDAPasef(this);
-                                        break;
-                                    case AcquisitionMethod.DIA_PASEF:
-                                        JobInfo.ionMobility = true;
-                                        ConverterWorkFlow.DIAPasef(this);
-                                        break;
-                                }
+                                case AcquisitionMethod.DIA:
+                                    ConverterWorkFlow.DIA(this);
+                                    break;
+                                case AcquisitionMethod.DDA:
+                                    ConverterWorkFlow.DDA(this);
+                                    break;
+                                case AcquisitionMethod.PRM:
+                                    ConverterWorkFlow.PRM(this);
+                                    break;
+                                case AcquisitionMethod.MRM:
+                                    ConverterWorkFlow.MRM(this);
+                                    break;
+                                case AcquisitionMethod.DDA_PASEF:
+                                    JobInfo.ionMobility = true;
+                                    ConverterWorkFlow.DDAPasef(this);
+                                    break;
+                                case AcquisitionMethod.DIA_PASEF:
+                                    JobInfo.ionMobility = true;
+                                    ConverterWorkFlow.DIAPasef(this);
+                                    break;
                             }
                         }
 
@@ -502,7 +500,6 @@ namespace AirdPro.Converters
             index.activators.Add(ts.activator);
             index.filterStrings.Add(ts.filterString);
             index.msTypes.Add(ts.msType);
-            index.cvList.Add(ts.cvs);
 
             if (ts.mzArrayBytes != null && ts.intArrayBytes != null)
             {
@@ -736,9 +733,8 @@ namespace AirdPro.Converters
                 AirdStream.Write(indexListByte, 0, indexListByte.Length);
             }
             
-            //todo: temp console
             string briefInfo = JobInfo.airdFileName +"," + airdInfo.type + "," + airdInfo.instruments[0].manufacturer + "," + airdInfo.fileSize + "," ;
-            Console.Write(briefInfo);
+            Console.WriteLine(briefInfo);
 
             string airdInfoStr = JsonConvert.SerializeObject(airdInfo,
                 new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
@@ -746,26 +742,33 @@ namespace AirdPro.Converters
             StartPosition += airdBytes.Length;
             AirdJsonStream.Write(airdBytes, 0, airdBytes.Length);
             
-            //todo: temp console
-            Console.Write((AirdJsonStream.Length + AirdStream.Length) + "," );
+            Console.WriteLine((AirdJsonStream.Length + AirdStream.Length) + ",");
             JobInfo.SetAirdFileSize(AirdJsonStream.Length + AirdStream.Length);
 
+            //列式存储引擎需要额外存储一个cjson的文件
             if (JobInfo.config.ColumnCompression())
             {
                 ColumnInfo columnInfo = BuildColumnInfo();
-                string columnInfoStr = JsonConvert.SerializeObject(columnInfo,
-                    new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                byte[] columnInfoBytes = Encoding.Default.GetBytes(columnInfoStr);
-                using (AirdColumnJsonStream = new FileStream(JobInfo.airdColumnJsonFilePath, FileMode.Create))
-                {
-                    AirdColumnJsonStream.Write(columnInfoBytes, 0, columnInfoBytes.Length);
-                }
 
-                ColumnInfoProto proto = columnInfo.ToProto();
-                byte[] protoBytes = proto.ToByteArray();
-                using (AirdColumnProtoStream = new FileStream(JobInfo.airdColumnProtoFilePath, FileMode.Create))
+                if (JobInfo.config.indexFormat == 0 || JobInfo.config.indexFormat == 2)
                 {
-                    AirdColumnProtoStream.Write(protoBytes, 0, protoBytes.Length);
+                    string columnInfoStr = JsonConvert.SerializeObject(columnInfo,
+                        new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                    byte[] columnInfoBytes = Encoding.Default.GetBytes(columnInfoStr);
+                    using (AirdColumnJsonStream = new FileStream(JobInfo.airdColumnJsonFilePath, FileMode.Create))
+                    {
+                        AirdColumnJsonStream.Write(columnInfoBytes, 0, columnInfoBytes.Length);
+                    }
+                }
+                
+                if (JobInfo.config.indexFormat == 1 || JobInfo.config.indexFormat == 2)
+                {
+                    ColumnInfoProto proto = columnInfo.ToProto();
+                    byte[] protoBytes = proto.ToByteArray();
+                    using (AirdColumnProtoStream = new FileStream(JobInfo.airdColumnProtoFilePath, FileMode.Create))
+                    {
+                        AirdColumnProtoStream.Write(protoBytes, 0, protoBytes.Length);
+                    }
                 }
             }
         }
@@ -1032,7 +1035,6 @@ namespace AirdPro.Converters
 
                     blockIndex.basePeakIntensities.Add(ts.basePeakIntensity);
                     blockIndex.basePeakMzs.Add(ts.basePeakMz);
-                    blockIndex.cvList.Add(ts.cvs);
                     blockIndex.mzs.Add(ts.mzArrayBytes.Length);
                     blockIndex.ints.Add(ts.intArrayBytes.Length);
                     StartPosition = StartPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;
