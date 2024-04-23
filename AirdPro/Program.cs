@@ -9,9 +9,9 @@
  */
 
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Threading;
 using System.Windows.Forms;
@@ -22,11 +22,8 @@ using AirdPro.Forms;
 using AirdPro.Repository;
 using AirdPro.Storage.Config;
 using AirdPro.Storage.Handler;
-using AirdSDK.Enums;
-using AirdSDK.Utils;
 using CommandLine;
 using HZH_Controls;
-using Newtonsoft.Json;
 
 namespace AirdPro
 {
@@ -41,7 +38,10 @@ namespace AirdPro
         public static VendorFileSelectorForm fileSelector { get; set; }
         public static MLForm mlForm { get; set; }
         public static PXForm pxForm { get; set; }
-        
+
+        [DllImport("kernel32.dll")]
+        private static extern bool AllocConsole();
+
         /// <summary>
         ///     The main entry point for the application.
         /// </summary>
@@ -64,6 +64,8 @@ namespace AirdPro
             }
             else
             {
+                AllocConsole();
+                Console.WriteLine("This is AirdPro Command Line");
                 Parser.Default.ParseArguments<Options>(args).WithParsed<Options>(options =>
                     {
                         // 这里可以访问options对象的属性来获取命令行参数的值
@@ -98,13 +100,14 @@ namespace AirdPro
                     }
                 ).WithNotParsed<Options>(errs =>
                 {
-                    System.Diagnostics.Debug.WriteLine("Error Info：");
+                    Console.WriteLine("Error Info：");
                     foreach (var error in errs)
                     {
                         Console.WriteLine(error);
                     }
                 });
-
+                Console.WriteLine("Conversion Complete");
+                Console.ReadLine();
             }
            
         }
