@@ -735,15 +735,29 @@ namespace AirdPro.Converters
             
             string briefInfo = JobInfo.airdFileName +"," + airdInfo.type + "," + airdInfo.instruments[0].manufacturer + "," + airdInfo.fileSize + "," ;
             Console.WriteLine(briefInfo);
+            long totalSize = AirdStream.Length;
+            if (JobInfo.config.indexFormat == 0 || JobInfo.config.indexFormat == 2)
+            {
+                string airdInfoStr = JsonConvert.SerializeObject(airdInfo,
+                    new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                byte[] airdBytes = Encoding.Default.GetBytes(airdInfoStr);
+                using (AirdJsonStream = new FileStream(JobInfo.airdJsonFilePath, FileMode.Create))
+                {
+                    AirdJsonStream.Write(airdBytes, 0, airdBytes.Length);
+                    totalSize+= airdBytes.Length;
+                }
+            }
 
-            string airdInfoStr = JsonConvert.SerializeObject(airdInfo,
-                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-            byte[] airdBytes = Encoding.Default.GetBytes(airdInfoStr);
-            StartPosition += airdBytes.Length;
-            AirdJsonStream.Write(airdBytes, 0, airdBytes.Length);
-            
-            Console.WriteLine((AirdJsonStream.Length + AirdStream.Length) + ",");
-            JobInfo.SetAirdFileSize(AirdJsonStream.Length + AirdStream.Length);
+            if (JobInfo.config.indexFormat == 1 || JobInfo.config.indexFormat == 2)
+            {
+                AirdInfoProto proto = airdInfo.ToProto();
+                byte[] protoBytes = proto.ToByteArray();
+                using (AirdProtoStream = new FileStream(JobInfo.airdIndexFilePath, FileMode.Create))
+                {
+                    AirdProtoStream.Write(protoBytes, 0, protoBytes.Length);
+                    totalSize += protoBytes.Length;
+                }
+            }
 
             //列式存储引擎需要额外存储一个cjson的文件
             if (JobInfo.config.ColumnCompression())
@@ -758,6 +772,7 @@ namespace AirdPro.Converters
                     using (AirdColumnJsonStream = new FileStream(JobInfo.airdColumnJsonFilePath, FileMode.Create))
                     {
                         AirdColumnJsonStream.Write(columnInfoBytes, 0, columnInfoBytes.Length);
+                        totalSize += columnInfoBytes.Length;
                     }
                 }
                 
@@ -768,9 +783,12 @@ namespace AirdPro.Converters
                     using (AirdColumnProtoStream = new FileStream(JobInfo.airdColumnProtoFilePath, FileMode.Create))
                     {
                         AirdColumnProtoStream.Write(protoBytes, 0, protoBytes.Length);
+                        totalSize += protoBytes.Length;
                     }
                 }
             }
+
+            JobInfo.SetAirdFileSize(totalSize);
         }
 
         public void ClearCache()
