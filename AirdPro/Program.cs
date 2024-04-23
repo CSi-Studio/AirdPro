@@ -94,6 +94,11 @@ namespace AirdPro
                             config = Program.conversionConfigHandler.configMap.First().Value;
                         }
 
+                        string suffix = options.Suffix;
+                        if (suffix.IsEmpty())
+                        {
+                            config.suffix = suffix;
+                        }
                         JobInfo jobInfo = new JobInfo(inputFilePath, outputFilePath, acquisitionMethod, config);
                         ConvertTaskManager.GetInstance().RunJob(jobInfo);
                         Console.WriteLine("JobInfo:"+jobInfo.GetJsonInfo());
@@ -109,7 +114,6 @@ namespace AirdPro
                 Console.WriteLine("Conversion Complete");
                 Console.ReadLine();
             }
-           
         }
 
         #region Exception handling

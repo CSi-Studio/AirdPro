@@ -50,7 +50,7 @@ namespace AirdPro.Forms
                 cbMzIntComp.Items.Add(sortedIntCompType);
                 cbRtIntComp.Items.Add(sortedIntCompType);
             }
-
+            
             foreach (string intCompType in Enum.GetNames(typeof(IntCompType)))
             {
                 cbIntIntComp.Items.Add(intCompType);
@@ -114,7 +114,7 @@ namespace AirdPro.Forms
             config.mzPrecision = (int)Math.Pow(10, int.Parse(cbConfigMzPrecision.Text));
             config.ignoreZeroIntensity = cbConfigIsZeroIntensityIgnore.Checked;
             config.centroid = cbConfigIsCentroid.Checked;
-            config.engine = int.Parse(cbScene.Text);
+            config.engine = cbCompEngine.SelectedIndex;
             config.configName = tbNameConfig.Text;
             //如果不是自动决策的,则会使用配置的组合压缩器
             if (!cbAutoDecision.Checked)
@@ -201,7 +201,7 @@ namespace AirdPro.Forms
         public void ShowConfig(string name, ConversionConfig config)
         {
             tbNameConfig.Text = name;
-            cbScene.Text = config.engine + "";
+            cbCompEngine.SelectedIndex = config.engine;
             tbConfigFileNameSuffix.Text = config.suffix;
             tbConfigOperator.Text = config.creator;
             cbConfigIsZeroIntensityIgnore.Checked = config.ignoreZeroIntensity;

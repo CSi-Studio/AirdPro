@@ -17,4 +17,7 @@ public class Options
     [Option('c', "configName", Required = false, HelpText = "The Config Name")]
     public string ConfigName { get; set; }
 
+    [Option('s', "suffix", Required = false, HelpText = "Suffix for each converted file")]
+    public string Suffix { get; set; }
+
 }
