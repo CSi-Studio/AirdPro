@@ -147,11 +147,6 @@ namespace AirdPro.Redis
                         conversionConfig.mzPrecision = job.mzPrecision.Value;
                     }
 
-                    if (job.centroid != null)
-                    {
-                        conversionConfig.centroid = job.centroid.Value;
-                    }
-
                     if (job.compressedIndex != null)
                     {
                         conversionConfig.compressedIndex = job.compressedIndex.Value;

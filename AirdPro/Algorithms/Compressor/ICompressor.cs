@@ -21,7 +21,6 @@ namespace AirdPro.Algorithms
     {
         public int MzPrecision = 100000;
         public bool IgnoreZero = true;
-        public bool IsCentroid = false;
 
         public SortedIntComp MzIntComp;
         public ByteComp MzByteComp;
@@ -40,7 +39,6 @@ namespace AirdPro.Algorithms
         {
             MzPrecision = converter.JobInfo.config.mzPrecision;
             IgnoreZero = converter.JobInfo.config.ignoreZeroIntensity;
-            IsCentroid = converter.JobInfo.config.centroid;
         }
 
         public abstract void CompressMS1(PwizConverter converter, BlockIndex index);

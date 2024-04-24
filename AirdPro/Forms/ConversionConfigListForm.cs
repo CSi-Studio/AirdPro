@@ -113,7 +113,6 @@ namespace AirdPro.Forms
             ConversionConfig config = new ConversionConfig();
             config.mzPrecision = (int)Math.Pow(10, int.Parse(cbConfigMzPrecision.Text));
             config.ignoreZeroIntensity = cbConfigIsZeroIntensityIgnore.Checked;
-            config.centroid = cbConfigIsCentroid.Checked;
             config.engine = cbCompEngine.SelectedIndex;
             config.configName = tbNameConfig.Text;
             config.indexFormat = cbIndexFormat.SelectedIndex;
@@ -154,6 +153,9 @@ namespace AirdPro.Forms
             config.compressionTimeWeight = int.Parse(cbCTWeight.Text);
             config.decompressionTimeWeight = int.Parse(cbDTWeight.Text);
            
+            //Filter字段
+            config.noMS1 = cbNoMS1.Checked;
+            config.noMS2 = cbNoMS2.Checked;
             return config;
         }
 
@@ -206,7 +208,6 @@ namespace AirdPro.Forms
             tbConfigFileNameSuffix.Text = config.suffix;
             tbConfigOperator.Text = config.creator;
             cbConfigIsZeroIntensityIgnore.Checked = config.ignoreZeroIntensity;
-            cbConfigIsCentroid.Checked = config.centroid;
             cbConfigMzPrecision.SelectedItem = ((int)Math.Log10(config.mzPrecision)).ToString();
             cbMzIntComp.SelectedItem = config.mzIntComp.ToString();
             cbMzByteComp.SelectedItem = config.mzByteComp.ToString();
@@ -225,6 +226,8 @@ namespace AirdPro.Forms
             cbCTWeight.Text = config.compressionTimeWeight + "";
             cbDTWeight.Text = config.decompressionTimeWeight + "";
             cbIndexFormat.SelectedIndex = config.indexFormat;
+            cbNoMS1.Checked = config.noMS1;
+            cbNoMS2.Checked = config.noMS2;
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)

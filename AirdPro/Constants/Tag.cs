@@ -75,6 +75,8 @@ namespace AirdPro.Constants
         public static string Only_Finished_Job_Can_Rerun = "Only finished job can rerun";
         public static string Redis_Host_Cannot_Be_Empty = "Redis Host Cannot Be Empty";
         public static string Predict_Acquisition_Method = "Predict Acquisition Method";
+        public static string FILTER_NO_MS1 = "FILTER: NO MS1";
+        public static string FILTER_NO_MS2 = "FILTER: NO MS2";
 
         public static string Connect_Failed_Please_Check_The_Redis_Host_And_Port =
             "Connect failed, please check the redis host and port.";

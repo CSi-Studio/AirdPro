@@ -79,12 +79,14 @@
             this.lblEngine = new System.Windows.Forms.Label();
             this.cbCompEngine = new System.Windows.Forms.ComboBox();
             this.cbCompressedIndex = new System.Windows.Forms.CheckBox();
-            this.cbConfigIsCentroid = new System.Windows.Forms.CheckBox();
             this.lblMaxTasks = new System.Windows.Forms.Label();
             this.numMaxTasks = new System.Windows.Forms.NumericUpDown();
             this.btnGlobalSettingSave = new System.Windows.Forms.Button();
             this.lblIndexFormat = new System.Windows.Forms.Label();
             this.cbIndexFormat = new System.Windows.Forms.ComboBox();
+            this.cbNoMS2 = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cbNoMS1 = new System.Windows.Forms.CheckBox();
             this.contextMenu.SuspendLayout();
             this.tableAutoDecision.SuspendLayout();
             this.tableDeciderWeight.SuspendLayout();
@@ -169,7 +171,7 @@
             // tbNameConfig
             // 
             this.tbNameConfig.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.tbNameConfig.Location = new System.Drawing.Point(424, 36);
+            this.tbNameConfig.Location = new System.Drawing.Point(421, 6);
             this.tbNameConfig.Name = "tbNameConfig";
             this.tbNameConfig.Size = new System.Drawing.Size(168, 23);
             this.tbNameConfig.TabIndex = 137;
@@ -182,7 +184,7 @@
             this.lblNameConfig.Font = new System.Drawing.Font("微软雅黑", 8F);
             this.lblNameConfig.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblNameConfig.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblNameConfig.Location = new System.Drawing.Point(342, 40);
+            this.lblNameConfig.Location = new System.Drawing.Point(339, 10);
             this.lblNameConfig.Name = "lblNameConfig";
             this.lblNameConfig.Size = new System.Drawing.Size(76, 16);
             this.lblNameConfig.TabIndex = 136;
@@ -251,7 +253,7 @@
             this.lblConfigOperator.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.lblConfigOperator.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblConfigOperator.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblConfigOperator.Location = new System.Drawing.Point(746, 95);
+            this.lblConfigOperator.Location = new System.Drawing.Point(595, 71);
             this.lblConfigOperator.Name = "lblConfigOperator";
             this.lblConfigOperator.Size = new System.Drawing.Size(62, 17);
             this.lblConfigOperator.TabIndex = 126;
@@ -260,7 +262,7 @@
             // tbConfigOperator
             // 
             this.tbConfigOperator.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.tbConfigOperator.Location = new System.Drawing.Point(814, 92);
+            this.tbConfigOperator.Location = new System.Drawing.Point(663, 68);
             this.tbConfigOperator.Name = "tbConfigOperator";
             this.tbConfigOperator.Size = new System.Drawing.Size(101, 23);
             this.tbConfigOperator.TabIndex = 125;
@@ -271,7 +273,7 @@
             this.lblConfigFileNameTag.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.lblConfigFileNameTag.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblConfigFileNameTag.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblConfigFileNameTag.Location = new System.Drawing.Point(342, 101);
+            this.lblConfigFileNameTag.Location = new System.Drawing.Point(339, 71);
             this.lblConfigFileNameTag.Name = "lblConfigFileNameTag";
             this.lblConfigFileNameTag.Size = new System.Drawing.Size(62, 17);
             this.lblConfigFileNameTag.TabIndex = 124;
@@ -280,7 +282,7 @@
             // tbConfigFileNameSuffix
             // 
             this.tbConfigFileNameSuffix.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.tbConfigFileNameSuffix.Location = new System.Drawing.Point(410, 98);
+            this.tbConfigFileNameSuffix.Location = new System.Drawing.Point(407, 68);
             this.tbConfigFileNameSuffix.Name = "tbConfigFileNameSuffix";
             this.tbConfigFileNameSuffix.Size = new System.Drawing.Size(155, 23);
             this.tbConfigFileNameSuffix.TabIndex = 123;
@@ -290,7 +292,7 @@
             this.lblMzPrecision.AutoSize = true;
             this.lblMzPrecision.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblMzPrecision.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblMzPrecision.Location = new System.Drawing.Point(345, 71);
+            this.lblMzPrecision.Location = new System.Drawing.Point(339, 41);
             this.lblMzPrecision.Name = "lblMzPrecision";
             this.lblMzPrecision.Size = new System.Drawing.Size(111, 17);
             this.lblMzPrecision.TabIndex = 121;
@@ -306,7 +308,7 @@
             "4",
             "5",
             "6"});
-            this.cbConfigMzPrecision.Location = new System.Drawing.Point(468, 68);
+            this.cbConfigMzPrecision.Location = new System.Drawing.Point(465, 38);
             this.cbConfigMzPrecision.Name = "cbConfigMzPrecision";
             this.cbConfigMzPrecision.Size = new System.Drawing.Size(97, 25);
             this.cbConfigMzPrecision.TabIndex = 120;
@@ -318,7 +320,7 @@
             this.cbConfigIsZeroIntensityIgnore.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbConfigIsZeroIntensityIgnore.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbConfigIsZeroIntensityIgnore.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cbConfigIsZeroIntensityIgnore.Location = new System.Drawing.Point(647, 70);
+            this.cbConfigIsZeroIntensityIgnore.Location = new System.Drawing.Point(339, 97);
             this.cbConfigIsZeroIntensityIgnore.Name = "cbConfigIsZeroIntensityIgnore";
             this.cbConfigIsZeroIntensityIgnore.Size = new System.Drawing.Size(149, 21);
             this.cbConfigIsZeroIntensityIgnore.TabIndex = 118;
@@ -662,7 +664,7 @@
             this.lblEngine.AutoSize = true;
             this.lblEngine.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblEngine.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblEngine.Location = new System.Drawing.Point(598, 40);
+            this.lblEngine.Location = new System.Drawing.Point(595, 10);
             this.lblEngine.Name = "lblEngine";
             this.lblEngine.Size = new System.Drawing.Size(128, 17);
             this.lblEngine.TabIndex = 155;
@@ -676,7 +678,7 @@
             this.cbCompEngine.Items.AddRange(new object[] {
             "Row Compression",
             "Column Compression"});
-            this.cbCompEngine.Location = new System.Drawing.Point(732, 36);
+            this.cbCompEngine.Location = new System.Drawing.Point(729, 6);
             this.cbCompEngine.Name = "cbCompEngine";
             this.cbCompEngine.Size = new System.Drawing.Size(183, 25);
             this.cbCompEngine.TabIndex = 154;
@@ -690,25 +692,12 @@
             this.cbCompressedIndex.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbCompressedIndex.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cbCompressedIndex.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cbCompressedIndex.Location = new System.Drawing.Point(342, 189);
+            this.cbCompressedIndex.Location = new System.Drawing.Point(497, 97);
             this.cbCompressedIndex.Name = "cbCompressedIndex";
             this.cbCompressedIndex.Size = new System.Drawing.Size(137, 21);
             this.cbCompressedIndex.TabIndex = 154;
             this.cbCompressedIndex.Text = "Compressed Index";
             this.cbCompressedIndex.UseVisualStyleBackColor = true;
-            // 
-            // cbConfigIsCentroid
-            // 
-            this.cbConfigIsCentroid.AutoSize = true;
-            this.cbConfigIsCentroid.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cbConfigIsCentroid.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cbConfigIsCentroid.Location = new System.Drawing.Point(835, 70);
-            this.cbConfigIsCentroid.Name = "cbConfigIsCentroid";
-            this.cbConfigIsCentroid.Size = new System.Drawing.Size(77, 21);
-            this.cbConfigIsCentroid.TabIndex = 158;
-            this.cbConfigIsCentroid.Text = "Centroid";
-            this.cbConfigIsCentroid.UseVisualStyleBackColor = true;
-            this.cbConfigIsCentroid.CheckedChanged += new System.EventHandler(this.cbConfigIsCentroid_CheckedChanged);
             // 
             // lblMaxTasks
             // 
@@ -767,7 +756,7 @@
             this.lblIndexFormat.AutoSize = true;
             this.lblIndexFormat.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblIndexFormat.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblIndexFormat.Location = new System.Drawing.Point(337, 131);
+            this.lblIndexFormat.Location = new System.Drawing.Point(597, 41);
             this.lblIndexFormat.Name = "lblIndexFormat";
             this.lblIndexFormat.Size = new System.Drawing.Size(85, 17);
             this.lblIndexFormat.TabIndex = 163;
@@ -782,16 +771,59 @@
             "Json",
             "Protobuf",
             "Both"});
-            this.cbIndexFormat.Location = new System.Drawing.Point(428, 127);
+            this.cbIndexFormat.Location = new System.Drawing.Point(688, 37);
             this.cbIndexFormat.Name = "cbIndexFormat";
             this.cbIndexFormat.Size = new System.Drawing.Size(137, 25);
             this.cbIndexFormat.TabIndex = 162;
+            // 
+            // cbNoMS2
+            // 
+            this.cbNoMS2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbNoMS2.AutoSize = true;
+            this.cbNoMS2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbNoMS2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.cbNoMS2.Location = new System.Drawing.Point(423, 154);
+            this.cbNoMS2.Name = "cbNoMS2";
+            this.cbNoMS2.Size = new System.Drawing.Size(75, 21);
+            this.cbNoMS2.TabIndex = 164;
+            this.cbNoMS2.Text = "No MS2";
+            this.cbNoMS2.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.label2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label2.Location = new System.Drawing.Point(339, 134);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(36, 17);
+            this.label2.TabIndex = 165;
+            this.label2.Text = "Filter";
+            // 
+            // cbNoMS1
+            // 
+            this.cbNoMS1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbNoMS1.AutoSize = true;
+            this.cbNoMS1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbNoMS1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.cbNoMS1.Location = new System.Drawing.Point(342, 154);
+            this.cbNoMS1.Name = "cbNoMS1";
+            this.cbNoMS1.Size = new System.Drawing.Size(75, 21);
+            this.cbNoMS1.TabIndex = 166;
+            this.cbNoMS1.Text = "No MS1";
+            this.cbNoMS1.UseVisualStyleBackColor = true;
             // 
             // ConversionConfigListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(932, 515);
+            this.Controls.Add(this.cbNoMS1);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.cbNoMS2);
             this.Controls.Add(this.lblIndexFormat);
             this.Controls.Add(this.cbIndexFormat);
             this.Controls.Add(this.cbCompressedIndex);
@@ -802,7 +834,6 @@
             this.Controls.Add(this.tableDeciderWeight);
             this.Controls.Add(this.numMaxTasks);
             this.Controls.Add(this.tbSpectraToPredict);
-            this.Controls.Add(this.cbConfigIsCentroid);
             this.Controls.Add(this.lblSelectSpectraCount);
             this.Controls.Add(this.lblEngine);
             this.Controls.Add(this.cbCompEngine);
@@ -893,8 +924,10 @@
         private System.Windows.Forms.ColumnHeader mzPrecision;
         private System.Windows.Forms.ColumnHeader headerAuto;
         public System.Windows.Forms.CheckBox cbCompressedIndex;
-        public System.Windows.Forms.CheckBox cbConfigIsCentroid;
         private System.Windows.Forms.Label lblIndexFormat;
         public System.Windows.Forms.ComboBox cbIndexFormat;
+        public System.Windows.Forms.CheckBox cbNoMS2;
+        private System.Windows.Forms.Label label2;
+        public System.Windows.Forms.CheckBox cbNoMS1;
     }
 }

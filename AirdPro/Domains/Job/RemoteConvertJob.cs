@@ -25,7 +25,6 @@ namespace AirdPro.Domains
         // public string? scene = Scene.Computation;
         public int? engine = (int)AirdEngine.RowCompression;
         public int? indexFormat = 0;
-        public bool? centroid = false;
         public bool ignoreZeroIntensity = true;
         public bool? compressedIndex = false;
         public string? mzIntComp;
@@ -51,7 +50,6 @@ namespace AirdPro.Domains
             creator = config.creator;
             suffix = config.suffix;
             engine = config.engine;
-            centroid = config.centroid;
             indexFormat = config.indexFormat;
             ignoreZeroIntensity = config.ignoreZeroIntensity;
             compressedIndex = config.compressedIndex;

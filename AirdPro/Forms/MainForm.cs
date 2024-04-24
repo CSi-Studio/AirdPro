@@ -29,7 +29,7 @@ namespace AirdPro.Forms
     {
         private HashSet<string> airdFiles = new HashSet<string>();
         private FileInfo airdFile;
-        private FileInfo indexFile;
+        private string indexPath;
         private AirdInfo airdInfo;
 
         public MainForm()
@@ -205,9 +205,8 @@ namespace AirdPro.Forms
                     return;
                 }
 
-                string indexFilePath = AirdScanUtil.getIndexPathByAirdPath(path);
-                indexFile = new FileInfo(indexFilePath);
-                airdInfo = AirdScanUtil.loadAirdInfo(indexFile);
+                indexPath = AirdScanUtil.GetIndexPathByAirdPath(path);
+                airdInfo = AirdScanUtil.LoadAirdInfo(indexPath);
                 if (airdInfo == null)
                 {
                     MessageBox.Show("AirdInfo解码错误,请检查Aird文件是否异常");
@@ -296,26 +295,26 @@ namespace AirdPro.Forms
             switch (airdInfo.type)
             {
                 case AcquisitionMethod.DDA:
-                    parser = new DDAParser(indexFile.FullName, airdInfo);
+                    parser = new DDAParser(indexPath, airdInfo);
                     break;
                 case AcquisitionMethod.DIA:
-                    parser = new DIAParser(indexFile.FullName, airdInfo);
+                    parser = new DIAParser(indexPath, airdInfo);
                     break;
                 case AcquisitionMethod.PRM:
-                    parser = new PRMParser(indexFile.FullName, airdInfo);
+                    parser = new PRMParser(indexPath, airdInfo);
                     break;
                 case AcquisitionMethod.DDA_PASEF:
-                    parser = new DDAParser(indexFile.FullName, airdInfo);
+                    parser = new DDAParser(indexPath, airdInfo);
                     break;
                 case AcquisitionMethod.DIA_PASEF:
-                    parser = new DIAParser(indexFile.FullName, airdInfo);
+                    parser = new DIAParser(indexPath, airdInfo);
                     break;
                 case AcquisitionMethod.MRM:
-                    parser = new MRMParser(indexFile.FullName, airdInfo);
+                    parser = new MRMParser(indexPath, airdInfo);
                     break;
             }
 
-            Spectrum spectrum = parser.getSpectrumByNum(row.Scan - 1);
+            Spectrum spectrum = parser.GetSpectrumByNum(row.Scan - 1);
 
             IList<double> mzArray = spectrum.mzs;
             IList<double> intensityArray = spectrum.ints;

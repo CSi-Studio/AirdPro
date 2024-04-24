@@ -9,8 +9,6 @@
  */
 
 using System.Collections.Generic;
-using AirdPro.Domains.Common;
-using AirdSDK.Beans.Common;
 
 public class CentroidUtil
 {

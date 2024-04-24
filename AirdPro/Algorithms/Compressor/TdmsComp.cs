@@ -27,7 +27,6 @@ public class TdmsComp
     {
        MzPrecision = jobInfo.config.mzPrecision;
        IgnoreZero = jobInfo.config.ignoreZeroIntensity;
-       IsCentroid = jobInfo.config.centroid;
         
        MzIntComp = SortedIntComp.build(jobInfo.config.mzIntComp);
        MzByteComp = ByteComp.build(jobInfo.config.mzByteComp);

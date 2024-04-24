@@ -138,7 +138,7 @@ namespace AirdPro.Domains
             this.config = config;
             format = Path.GetExtension(inputPath).Replace(".", "").ToUpper();
             isDir = Directory.Exists(inputPath);
-            airdFileName = FileNameUtil.parseFileName(inputPath);
+            airdFileName = FileNameUtil.ParseFileName(inputPath);
             airdFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".aird");
             airdJsonFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".json");
             airdIndexFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".index");
@@ -157,7 +157,7 @@ namespace AirdPro.Domains
                 type,
                 config.configName,
                 config.EngineName(),
-                config.centroid.ToString(),
+                config.indexFormat+"",
                 status,
                 config.GetMzPrecisionStr(),
                 AirdProFileUtil.GetSizeLabel(vendorFileSize),

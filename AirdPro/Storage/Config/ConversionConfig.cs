@@ -29,12 +29,6 @@ namespace AirdPro.Storage.Config
         public bool ignoreZeroIntensity = true;
 
         /**
-         * Generate centroided data.
-         * 生成centroid数据
-         */
-        public bool centroid = false;
-
-        /**
          * the decimal point of the MZ. The default value is 5dp
          * mz精度,默认保留到小数点后第5位
          */
@@ -124,6 +118,14 @@ namespace AirdPro.Storage.Config
         public double compressionTimeWeight = 1;
         public double decompressionTimeWeight = 1;
         public int spectraToPredict = 50;
+
+        /**
+         * Filter 字段
+         */
+        public bool noMS1 = false;
+        public bool noMS2 = false;
+        public double rtStart = 0;
+        public double rtEnd = Double.MaxValue;
 
         public string GetMzPrecisionStr()
         {

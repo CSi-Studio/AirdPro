@@ -976,6 +976,11 @@ namespace AirdPro.Converters
 
         public void CompressMs1Block()
         {
+            if (JobInfo.config.noMS1)
+            {
+                JobInfo.Log(Tag.FILTER_NO_MS1);
+                return;
+            }
             BlockIndex index = new BlockIndex();
             index.level = 1;
             index.startPtr = StartPosition;
@@ -986,6 +991,11 @@ namespace AirdPro.Converters
 
         public void CompressMs2BlockForDia()
         {
+            if (JobInfo.config.noMS2)
+            {
+                JobInfo.Log(Tag.FILTER_NO_MS2);
+                return;
+            }
             JobInfo.Log(Tag.Start_Processing_MS2_List);
             int progress = 0;
             foreach (double precursorMz in Ms2Table.Keys)
