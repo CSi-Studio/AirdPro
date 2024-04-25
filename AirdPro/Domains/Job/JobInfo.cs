@@ -362,6 +362,9 @@ namespace AirdPro.Domains
             item.SubItems[ItemName.JOB_ID].Text = jobId;
             item.SubItems[ItemName.INPUT_PATH].Text = inputPath;
             item.SubItems[ItemName.TYPE].Text = type;
+            item.SubItems[ItemName.CONFIG_NAME].Text = config.configName;
+            item.SubItems[ItemName.ENGINE].Text = config.EngineName();
+            //5号位置空着
             item.SubItems[ItemName.PRECISION].Text = config.GetMzPrecisionStr();
             item.SubItems[ItemName.VENDOR_SIZE].Text = AirdProFileUtil.GetSizeLabel(vendorFileSize);
             item.SubItems[ItemName.AIRD_SIZE].Text = AirdProFileUtil.GetSizeLabel(airdFileSize);

@@ -204,10 +204,10 @@ namespace AirdPro.Converters
             }
 
             double[] mobility = new double[2000];
-            TdfUtil.tims_scannum_to_oneoverk0(handle, 10000, scanNums, mobility, scanNums.Length);
+            TdfUtil.tims_scannum_to_oneoverk0(handle, 1, scanNums, mobility, scanNums.Length);
             TdfUtil.tims_close(handle);
             MobiDict = new Dictionary<double, int>();
-            for (short i = 0; i < mobility.Length; i++)
+            for (var i = 0; i < mobility.Length; i++)
             {
                 MobiDict.Add(mobility[i], i);
             }
@@ -1103,8 +1103,6 @@ namespace AirdPro.Converters
                 TempScanChroma tempScan = new TempScanChroma();
                 ChromatogramIndex.nums.Add(i);
                 ChromatogramIndex.ids.Add(chromatogram.id);
-                // ChromatogramIndex.cvs.Add(CVUtil.Trans(chromatogram.cvParams));
-
                 var result = CVUtil.ParseActivator(chromatogram.precursor);
                 ChromatogramIndex.activators.Add(result.activator);
                 ChromatogramIndex.energies.Add(result.energy);
@@ -1126,7 +1124,7 @@ namespace AirdPro.Converters
                             }
                             else
                             {
-                                ChromatogramIndex.compounds.Add(null);
+                                ChromatogramIndex.compounds.Add("");
                             }
 
                             ChromatogramIndex.products.Add(productMz);
