@@ -299,7 +299,7 @@ namespace AirdPro.Domains
             jobInfo += Tag.Vendor_File_Size + AirdProFileUtil.GetSizeLabel(vendorFileSize) + Const.Change_Line;
             jobInfo += Tag.Aird_File_Size + AirdProFileUtil.GetSizeLabel(airdFileSize) + Const.Change_Line;
             jobInfo += Tag.Conversion_Time + AirdProFileUtil.GetTimeLabel(conversionTime) + Const.Change_Line;
-            if (config.autoDesicion)
+            if (config.autoDecision)
             {
                 jobInfo += config.spectraToPredict + " spectra for prediction" + Const.Change_Line;
                 jobInfo += "size:ct:dt=" + config.compressionSizeWeight + ":" + config.compressionTimeWeight + ":" +
@@ -338,7 +338,7 @@ namespace AirdPro.Domains
 
         public string GetCompressorStr()
         {
-            if (config.autoDesicion)
+            if (config.autoDecision)
             {
                 return Tag.Auto_Decision;
             }

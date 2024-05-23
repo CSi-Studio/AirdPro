@@ -54,7 +54,7 @@ namespace AirdPro.Storage.Config
         /**
          * 是否使用动态参数决策
          */
-        public bool autoDesicion = false;
+        public bool autoDecision = false;
 
         /**
          * 转换后的索引格式，支持输出JSON，Protobuf或者两者均输出的形式

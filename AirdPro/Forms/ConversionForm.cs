@@ -161,8 +161,11 @@ namespace AirdPro.Forms
 
         private void lvFileList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            PrintJobInfo();
-            PrintLog();
+            if (((ListView)sender).SelectedItems.Count == 1)
+            {
+                PrintJobInfo();
+                PrintLog();
+            }
         }
 
         private void logTimer_Tick(object sender, EventArgs e)

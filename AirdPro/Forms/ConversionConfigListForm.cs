@@ -76,7 +76,7 @@ namespace AirdPro.Forms
             {
                 ListViewItem item = new ListViewItem(new string[]
                 {
-                    configEntry.Key, configEntry.Value.GetMzPrecisionStr(), configEntry.Value.autoDesicion + ""
+                    configEntry.Key, configEntry.Value.GetMzPrecisionStr(), configEntry.Value.autoDecision + ""
                 });
                 if (configEntry.Value.engine.Equals(AirdEngine.RowCompression))
                 {
@@ -138,7 +138,7 @@ namespace AirdPro.Forms
             config.compressedIndex = cbCompressedIndex.Checked;
             config.suffix = tbConfigFileNameSuffix.Text;
             config.creator = tbConfigOperator.Text;
-            config.autoDesicion = cbAutoDecision.Checked;
+            config.autoDecision = cbAutoDecision.Checked;
             try
             {
                 config.spectraToPredict = int.Parse(tbSpectraToPredict.Text);
@@ -218,8 +218,8 @@ namespace AirdPro.Forms
             cbRtIntComp.SelectedItem = config.rtIntComp.ToString();
             cbRtByteComp.SelectedItem = config.rtByteComp.ToString();
             
-            tableAutoDecision.Enabled = !config.autoDesicion;
-            cbAutoDecision.Checked = config.autoDesicion;
+            tableAutoDecision.Enabled = !config.autoDecision;
+            cbAutoDecision.Checked = config.autoDecision;
             cbCompressedIndex.Checked = config.compressedIndex;
             tbSpectraToPredict.Text = config.spectraToPredict + "";
             cbCSWeight.Text = config.compressionSizeWeight + "";

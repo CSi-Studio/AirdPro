@@ -81,23 +81,21 @@ namespace AirdPro.Converters
         public override void InitCompressor()
         {
             //探索模式和非自动决策模式,会在此处初始化指定的压缩内核
-            if (!JobInfo.config.autoDesicion)
+            if (JobInfo.ionMobility)
             {
-                if (JobInfo.ionMobility)
-                {
-                    Compressor.MobiIntComp = IntComp.build(JobInfo.config.mobiIntComp);
-                    Compressor.MobiByteComp = ByteComp.build(JobInfo.config.mobiByteComp);
-                }
-
-                Compressor.MzIntComp = SortedIntComp.build(JobInfo.config.mzIntComp);
-                Compressor.MzByteComp = ByteComp.build(JobInfo.config.mzByteComp);
-
-                Compressor.IntIntComp = IntComp.build(JobInfo.config.intIntComp);
-                Compressor.IntByteComp = ByteComp.build(JobInfo.config.intByteComp);
-
-                Compressor.RtIntComp4Chroma = SortedIntComp.build(JobInfo.config.rtIntComp);
-                Compressor.RtByteComp4Chroma = ByteComp.build(JobInfo.config.rtByteComp);
+                Compressor.MobiIntComp = IntComp.build(JobInfo.config.mobiIntComp);
+                Compressor.MobiByteComp = ByteComp.build(JobInfo.config.mobiByteComp);
             }
+
+            Compressor.MzIntComp = SortedIntComp.build(JobInfo.config.mzIntComp);
+            Compressor.MzByteComp = ByteComp.build(JobInfo.config.mzByteComp);
+
+            Compressor.IntIntComp = IntComp.build(JobInfo.config.intIntComp);
+            Compressor.IntByteComp = ByteComp.build(JobInfo.config.intByteComp);
+            
+
+            Compressor.RtIntComp4Chroma = SortedIntComp.build(JobInfo.config.rtIntComp);
+            Compressor.RtByteComp4Chroma = ByteComp.build(JobInfo.config.rtByteComp);
         }
 
         public override void DoConvert()
@@ -336,7 +334,7 @@ namespace AirdPro.Converters
 
         public void PredictForBestCombination()
         {
-            if (!JobInfo.config.autoDesicion)
+            if (!JobInfo.config.autoDecision)
             {
                 return;
             }
@@ -345,7 +343,7 @@ namespace AirdPro.Converters
             Combination combination = RandomSampling(JobInfo.config.spectraToPredict, JobInfo.ionMobility);
             combination.enable(JobInfo.config, Compressor);
             JobInfo.Log(JobInfo.GetCompressorStr());
-            JobInfo.config.autoDesicion = false;
+            JobInfo.config.autoDecision = false;
         }
 
         /**

@@ -132,9 +132,9 @@ namespace AirdPro.Redis
                         creator = job.creator,
                     };
 
-                    if (job.autoDesicion != null)
+                    if (job.autoDecision != null)
                     {
-                        conversionConfig.autoDesicion = job.autoDesicion.Value;
+                        conversionConfig.autoDecision = job.autoDecision.Value;
                     }
 
                     if (job.engine != null && job.engine == 1)

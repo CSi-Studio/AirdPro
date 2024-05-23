@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using Aga.Controls.Tree;
@@ -37,8 +38,12 @@ namespace AirdPro
         {
             DirectoryInfo dir = new DirectoryInfo(path);
             RootItem item = new RootItem(path, this);
-            item.Date = dir.CreationTime;
-            item.Exist = dir.Exists;
+            // if (dir.Exists)
+            // {
+            //     item.Date = dir.CreationTime;
+            // }
+            // item.Exist = dir.Exists;
+
             return item;
         }
 
@@ -164,7 +169,7 @@ namespace AirdPro
                         RootItem pinItem = BuildRoot(pinPathArray[i]);
                         items.Add(pinItem);
                     }
-                    
+                
                     foreach (string str in Environment.GetLogicalDrives())
                     {
                         try
@@ -174,6 +179,7 @@ namespace AirdPro
                         }
                         catch (Exception e)
                         {
+                            Console.WriteLine(e.Message);
                         }
                     }
                 }

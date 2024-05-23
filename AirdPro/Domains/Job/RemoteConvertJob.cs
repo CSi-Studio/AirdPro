@@ -33,7 +33,7 @@ namespace AirdPro.Domains
         public string? intByteComp;
         public string? mobiIntComp;
         public string? mobiByteComp;
-        public bool? autoDesicion;
+        public bool? autoDecision;
         public string consumeIP;
         public string consumeTime;
 
@@ -53,7 +53,7 @@ namespace AirdPro.Domains
             indexFormat = config.indexFormat;
             ignoreZeroIntensity = config.ignoreZeroIntensity;
             compressedIndex = config.compressedIndex;
-            autoDesicion = config.autoDesicion;
+            autoDecision = config.autoDecision;
             mzIntComp = config.mzIntComp.ToString();
             mzByteComp = config.mzByteComp.ToString();
             intIntComp = config.intIntComp.ToString();
