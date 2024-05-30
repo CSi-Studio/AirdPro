@@ -432,5 +432,21 @@ namespace AirdPro.Forms
             lvFileList.Sort();
             FileListSorter.isAscending = !FileListSorter.isAscending;
         }
+
+        private void btnDownloadJobList_Click(object sender, EventArgs e)
+        {
+            List<Dictionary<string, string>> jobList = new List<Dictionary<string, string>>();
+            foreach (ListViewItem item in lvFileList.Items)
+            {
+                JobInfo jobInfo = item.Tag as JobInfo;
+                jobList.Add(jobInfo.GetJobDict());
+            }
+
+            string result = JsonConvert.SerializeObject(jobList);
+            var popup = new CustomPopup();
+            popup.Text = "Job Info List";
+            popup.content.Text = result;
+            popup.ShowDialog();
+        }
     }
 }

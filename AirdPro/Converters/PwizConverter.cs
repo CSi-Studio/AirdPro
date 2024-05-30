@@ -12,6 +12,7 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using AirdPro.Algorithms;
@@ -179,7 +180,6 @@ namespace AirdPro.Converters
             Stopwatch.Stop();
             JobInfo.refreshReport = true;
             JobInfo.Log(Tag.Total_Time_Cost + Stopwatch.Elapsed.TotalSeconds, Status.Finished);
-            //todo: temp console
             Console.WriteLine(Stopwatch.Elapsed.TotalSeconds);
             JobInfo.SetConversionTime(Stopwatch.Elapsed.TotalMilliseconds);
             ClearCache();
@@ -339,11 +339,15 @@ namespace AirdPro.Converters
                 return;
             }
 
+            Stopwatch sw = new();
+            sw.Start();
             JobInfo.Log(Tag.Predict_For_Best_Combination + JobInfo.airdFileName, Status.Predicting);
             Combination combination = RandomSampling(JobInfo.config.spectraToPredict, JobInfo.ionMobility);
             combination.enable(JobInfo.config, Compressor);
             JobInfo.Log(JobInfo.GetCompressorStr());
             JobInfo.config.autoDecision = false;
+            sw.Stop();
+            JobInfo.predictionTime = sw.Elapsed.TotalMilliseconds;
         }
 
         /**

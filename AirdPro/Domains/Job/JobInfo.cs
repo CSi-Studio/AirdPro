@@ -115,6 +115,9 @@ namespace AirdPro.Domains
         //转换时间
         public double conversionTime;
 
+        //预测时间
+        public double predictionTime;
+
         [JsonIgnore]
         public IProgress<double> conversionTimeLabel;
 
@@ -233,7 +236,6 @@ namespace AirdPro.Domains
             {
                 conversionTimeLabel.Report(time);
             }
-          
         }
 
         public JobInfo Log(string content, string status)
@@ -332,6 +334,7 @@ namespace AirdPro.Domains
             dict.Add(Tag.Vendor_File_Size, AirdProFileUtil.GetSizeLabel(vendorFileSize));
             dict.Add(Tag.Aird_File_Size, AirdProFileUtil.GetSizeLabel(airdFileSize));
             dict.Add(Tag.Conversion_Time, AirdProFileUtil.GetTimeLabel(conversionTime));
+            dict.Add(Tag.Prediction_Time, predictionTime+"");
 
             return dict;
         }

@@ -1,5 +1,4 @@
 ﻿using CommandLine;
-using CommandLine.Text;
 
 namespace AirdPro.CommandLine;
 

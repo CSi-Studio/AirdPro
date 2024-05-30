@@ -37,7 +37,6 @@ namespace AirdPro.Converters
         protected void InitDirectory()
         {
             Directory.CreateDirectory(Path.GetDirectoryName(JobInfo.airdFilePath) ?? string.Empty);
-            // Directory.CreateDirectory(Path.GetDirectoryName(JobInfo.airdJsonFilePath) ?? string.Empty);
         }
         
         public abstract void Init(JobInfo jobInfo);

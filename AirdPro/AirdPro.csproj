@@ -163,6 +163,12 @@
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\ProteomeXchangeDataset.cs" />
     <Compile Include="CommandLine\Options.cs" />
     <Compile Include="Domains\Redis\ConsumeSwitchCommand.cs" />
+    <Compile Include="Forms\CustomPopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CustomPopup.Designer.cs">
+      <DependentUpon>CustomPopup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Manager\ConvertTaskManager.cs" />
     <Compile Include="Constants\Activator.cs" />
     <Compile Include="Constants\Froms.cs" />
@@ -474,6 +480,9 @@
       <DependentUpon>MirrorBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TreeViewAdv\Tree\TreeViewAdv.resx" />
+    <EmbeddedResource Include="Forms\CustomPopup.resx">
+      <DependentUpon>CustomPopup.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\DownloadLinksForm.resx">
       <DependentUpon>DownloadLinksForm.cs</DependentUpon>
     </EmbeddedResource>

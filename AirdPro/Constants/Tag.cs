@@ -69,6 +69,7 @@ namespace AirdPro.Constants
         public static string Vendor_File_Size = "VendorFileSize:";
         public static string Aird_File_Size = "AirdFileSize:";
         public static string Conversion_Time = "ConversionTime:";
+        public static string Prediction_Time = "PredictionTime:";
         public static string Cannot_Be_Deleted_When_Running = "Cannot be deleted when running";
         public static string Select_Item_To_Watch_Logs = "select item to watch logs";
         public static string Not_Start_Converting = "Not start converting!";

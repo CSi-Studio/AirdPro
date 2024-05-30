@@ -41,6 +41,7 @@ namespace AirdPro.Forms
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConversionForm));
             this.container = new System.Windows.Forms.SplitContainer();
+            this.btnDownloadJobList = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnPX = new System.Windows.Forms.Button();
@@ -64,6 +65,7 @@ namespace AirdPro.Forms
             this.headerCentroid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerProgress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerPrecision = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerAirdSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerCTimer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerOutput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -88,7 +90,6 @@ namespace AirdPro.Forms
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.timerTaskScan = new System.Windows.Forms.Timer(this.components);
-            this.headerSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -107,6 +108,7 @@ namespace AirdPro.Forms
             // 
             // container.Panel1
             // 
+            this.container.Panel1.Controls.Add(this.btnDownloadJobList);
             this.container.Panel1.Controls.Add(this.label9);
             this.container.Panel1.Controls.Add(this.btnDelete);
             this.container.Panel1.Controls.Add(this.btnPX);
@@ -136,6 +138,13 @@ namespace AirdPro.Forms
             // 
             this.container.Panel2.Controls.Add(this.splitContainer1);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
+            // 
+            // btnDownloadJobList
+            // 
+            resources.ApplyResources(this.btnDownloadJobList, "btnDownloadJobList");
+            this.btnDownloadJobList.Name = "btnDownloadJobList";
+            this.btnDownloadJobList.UseVisualStyleBackColor = true;
+            this.btnDownloadJobList.Click += new System.EventHandler(this.btnDownloadJobList_Click);
             // 
             // label9
             // 
@@ -311,6 +320,10 @@ namespace AirdPro.Forms
             // 
             resources.ApplyResources(this.headerPrecision, "headerPrecision");
             // 
+            // headerSize
+            // 
+            resources.ApplyResources(this.headerSize, "headerSize");
+            // 
             // headerAirdSize
             // 
             resources.ApplyResources(this.headerAirdSize, "headerAirdSize");
@@ -472,12 +485,8 @@ namespace AirdPro.Forms
             // timerTaskScan
             // 
             this.timerTaskScan.Enabled = true;
-            this.timerTaskScan.Interval = 2000;
+            this.timerTaskScan.Interval = 5000;
             this.timerTaskScan.Tick += new System.EventHandler(this.timerTaskScan_Tick);
-            // 
-            // headerSize
-            // 
-            resources.ApplyResources(this.headerSize, "headerSize");
             // 
             // ConversionForm
             // 
@@ -561,6 +570,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ColumnHeader colKey;
         private System.Windows.Forms.ColumnHeader colValue;
         private System.Windows.Forms.ColumnHeader headerSize;
+        private System.Windows.Forms.Button btnDownloadJobList;
     }
 }
 
