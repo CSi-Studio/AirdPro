@@ -743,7 +743,6 @@
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(SolutionDir)ImportLibs\*.*" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
