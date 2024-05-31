@@ -1,0 +1,9 @@
+﻿syntax = "proto3";
+
+message WindowRangeProto {
+  double start = 1;   // 窗口开始位置
+  double end = 2;     // 窗口结束位置
+  double mz = 3;      // 荷质比
+  int32 charge = 4;   // 带电量，使用默认值 -1 表示未知
+  string features = 5; // 特征信息
+}

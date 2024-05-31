@@ -1,0 +1,117 @@
+﻿syntax = "proto3";
+import "WindowRange.proto";
+
+message AirdInfoProto {
+  string version = 1;
+  int32 versionCode = 2;
+  int32 engine = 3;
+  repeated CompressorProto compressors = 4;
+  repeated InstrumentProto instruments = 5;
+  repeated DataProcessingProto dataProcessings = 6;
+  repeated SoftwareProto softwares = 7;
+  repeated ParentFileProto parentFiles = 8;
+  repeated WindowRangeProto rangeList = 9;
+  repeated BlockIndexProto indexList = 10;
+  int64 indexStartPtr = 11; // BlockIndex二进制数据开始位置
+  int64 indexEndPtr = 12; // BlockIndex二进制数据结束位置
+  ChromatogramIndexProto chromatogramIndex = 13; // 色谱信息
+  string type = 14; // 采集模式
+  int64 fileSize = 15; // 原始文件大小
+  int64 totalCount = 16; // 光谱总数
+  string airdPath = 17; // Aird文件路径
+  string activator = 18; // 碎裂方法
+  float energy = 19; // 轰击能量
+  string msType = 20; // Profile或Centroid
+  string rtUnit = 21; // rt时间单位
+  string polarity = 22; // 极性
+  string filterString = 23; // 过滤字符串
+  bool ignoreZeroIntensityPoint = 24; // 是否忽略intensity为0的点
+  MobiInfoProto mobiInfo = 25; // 离子迁移率信息
+  string creator = 26; // 实验创建者
+  string features = 27; // 特征键值对
+  string startTimeStamp = 28; // 采集日期
+  string createDate = 29; // 文件创建日期
+}
+
+message CompressorProto {
+  string target = 1;
+  repeated string methods = 2;
+  int32 precision = 3;
+  string byteOrder = 4;
+}
+
+message InstrumentProto {
+  string manufacturer = 1; // 设备仪器厂商
+  string ionisation = 2;   // 电离方式
+  string resolution = 3;   // 仪器分辨率
+  string model = 4;        // 设备类型
+  repeated string source = 5; // 来源
+  repeated string analyzer = 6; // 分析方式
+  repeated string detector = 7; // 探测器
+}
+
+message DataProcessingProto {
+  repeated string processingOperations = 1;
+}
+
+message SoftwareProto {
+  string name = 1;   // 软件名称
+  string type = 2;   // 软件类型，默认值为 "acquisition"
+  string version = 3; // 软件版本号
+}
+
+message ParentFileProto {
+  string name = 1;      
+  string location = 2;  
+  string formatType = 3;
+}
+
+message BlockIndexProto {
+  int32 level = 1; // 前体的MS级别
+  repeated WindowRangeProto rangeList = 2; // 每一个MS2对应的前体窗口列表
+  int32 num = 3; // 每一个MS2对应的MS1序号
+  int64 startPtr = 4; // 在文件中的开始位置
+  int64 endPtr = 5; // 在文件中的结束位置
+  repeated int32 nums = 6; // 当msLevel=1时,本字段为每一个MS1谱图的序号
+  repeated double rts = 7; // 所有该块中的rt时间列表
+  repeated int64 tics = 8; // 所有该块中的tic列表
+  repeated double basePeakIntensities = 9; // 所有该块中的基峰强度列表
+  repeated float injectionTimes = 10; // 该光谱的注入时间列表
+  repeated double basePeakMzs = 11; // 所有该块中的基峰m/z列表
+  repeated string filterStrings = 12; // 所有该块中的filterString列表
+  repeated string activators = 13; // 所有该块中的activator列表
+  repeated float energies = 14; // 所有该块中的能量列表
+  repeated string polarities = 15; // 所有该块中的polarity列表
+  repeated string msTypes = 16; // 所有该块中的msType列表
+  repeated int32 mzs = 17; // 一个块中所有子谱图的mz的压缩后的大小列表
+  repeated int32 tags = 18; // 一个块中所有子谱图的mz原层码的压缩后的数组大小列表
+  repeated int32 ints = 19; // 一个块中所有子谱图的intensity的压缩后的大小列表
+  repeated int32 mobilities = 20; // 一个块中所有子谱图的mobility的压缩后的大小列表
+  string features = 21; // 用于存储KV键值对
+}
+
+message ChromatogramIndexProto {
+  int64 totalCount = 1; // 总色谱图数量
+  string type = 2; // 采集方法
+  repeated string ids = 3; // MS级别列表
+  repeated string compounds = 4; // 化合物名称列表
+  int64 startPtr = 5; // 文件中的开始位置
+  int64 endPtr = 6; // 文件中的结束位置
+  repeated string activators = 7; // 所有该块中的activator列表
+  repeated float energies = 8; // 所有该块中的energy列表
+  repeated string polarities = 9; // 所有该块中的polarity列表
+  repeated WindowRangeProto precursors = 10; // 前体离子列表
+  repeated WindowRangeProto products = 11; // 产物离子列表
+  repeated int32 nums = 12; // 谱图序列号列表
+  repeated int32 rts = 13; // 一个块中所有子图的rt的压缩后的大小列表
+  repeated int32 ints = 14; // 一个块中所有子图的intensity的压缩后的大小列表
+  string features = 15; // 用于存储KV键值对
+}
+
+message MobiInfoProto {
+  int64 dictStart = 1; // 使用 int64 代替 long
+  int64 dictEnd = 2;   // 使用 int64 代替 long
+  string unit = 3;     // 离子迁移率单位
+  double value = 4;    // 离子迁移率值
+  string type = 5;     // 离子迁移率类型
+}

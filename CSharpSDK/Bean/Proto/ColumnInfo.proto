@@ -1,0 +1,30 @@
+﻿syntax = "proto3";
+import "WindowRange.proto";
+
+message ColumnInfoProto {
+  repeated ColumnIndexProto indexList = 1;
+  string type = 2;
+  string airdPath = 3;
+  int32 mzPrecision = 4;
+  int32 intPrecision = 5;
+}
+
+message ColumnIndexProto {
+  int32 level = 1;
+  int64 startPtr = 2;
+  int64 endPtr = 3;
+  WindowRangeProto range = 4;
+  int64 startMzListPtr = 5;
+  int64 endMzListPtr = 6;
+  int64 startRtListPtr = 7;
+  int64 endRtListPtr = 8;
+  int64 startSpectraIdListPtr = 9;
+  int64 endSpectraIdListPtr = 10;
+  int64 startIntensityListPtr = 11;
+  int64 endIntensityListPtr = 12;
+  repeated int32 mzs = 13;
+  repeated int32 rts = 14;
+  repeated int32 spectraIds = 15;
+  repeated int32 intensities = 16;
+  repeated int64 anchors = 17;
+}
