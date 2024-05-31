@@ -21,9 +21,9 @@ using AirdSDK.Utils;
 using ThermoFisher.CommonCore.Data;
 using System.ComponentModel;
 using AirdPro.Repository;
+using AirdPro.Utils;
 using AirdSDK.Constants;
 using Newtonsoft.Json;
-using AirdSDK.Beans;
 
 namespace AirdPro.Forms
 {
@@ -447,6 +447,35 @@ namespace AirdPro.Forms
             popup.Text = "Job Info List";
             popup.content.Text = result;
             popup.ShowDialog();
+        }
+
+        private void Test_Click(object sender, EventArgs e)
+        {
+            int totalSpectra = 139054;
+            Dictionary<int, List<int>> dict = new Dictionary<int, List<int>>();
+            dict.Add(10, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 10));
+            dict.Add(20, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 20));
+            dict.Add(50, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 50));
+            dict.Add(100, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 100));
+            dict.Add(200, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 200));
+            dict.Add(500, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 500));
+            dict.Add(1000, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 1000));
+            dict.Add(2000, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 2000));
+            dict.Add(5000, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 5000));
+            dict.Add(10000, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 10000));
+            dict.Add(20000, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 20000));
+            dict.Add(50000, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 50000));
+            Console.WriteLine("10,20,50,100,200,500,1000,2000,5000,10000,20000,50000");
+            SpeedTestUtil.Test("D:\\Aird2.0\\numpress\\18.mzML", dict);
+            Console.WriteLine();
+            SpeedTestUtil.Test("D:\\Aird2.0\\numpress\\18.mzMLb", dict);
+            Console.WriteLine();
+            SpeedTestUtil.Test("D:\\Aird2.0\\18.mzMLb", dict);
+            Console.WriteLine();
+            SpeedTestUtil.Test("D:\\Aird2.0\\18.mzML", dict);
+            Console.WriteLine();
+            SpeedTestUtil.Test("D:\\Aird2.0\\Vendor\\18.raw", dict);
+            Console.WriteLine();
         }
     }
 }

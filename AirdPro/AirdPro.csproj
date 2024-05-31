@@ -472,6 +472,7 @@
     <Compile Include="Utils\HttpUtil.cs" />
     <Compile Include="Utils\DataUtil.cs" />
     <Compile Include="Utils\ResourceUtil.cs" />
+    <Compile Include="Utils\SpeedTestUtil.cs" />
     <Compile Include="Utils\StatUtil.cs" />
     <EmbeddedResource Include="Controls\EditableMessageBox\XMessageBox.resx">
       <DependentUpon>XMessageBox.cs</DependentUpon>
