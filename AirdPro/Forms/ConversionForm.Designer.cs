@@ -41,6 +41,7 @@ namespace AirdPro.Forms
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConversionForm));
             this.container = new System.Windows.Forms.SplitContainer();
+            this.Test = new System.Windows.Forms.Button();
             this.btnDownloadJobList = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -108,6 +109,7 @@ namespace AirdPro.Forms
             // 
             // container.Panel1
             // 
+            this.container.Panel1.Controls.Add(this.Test);
             this.container.Panel1.Controls.Add(this.btnDownloadJobList);
             this.container.Panel1.Controls.Add(this.label9);
             this.container.Panel1.Controls.Add(this.btnDelete);
@@ -138,6 +140,13 @@ namespace AirdPro.Forms
             // 
             this.container.Panel2.Controls.Add(this.splitContainer1);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
+            // 
+            // Test
+            // 
+            resources.ApplyResources(this.Test, "Test");
+            this.Test.Name = "Test";
+            this.Test.UseVisualStyleBackColor = true;
+            this.Test.Click += new System.EventHandler(this.Test_Click);
             // 
             // btnDownloadJobList
             // 
@@ -571,6 +580,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ColumnHeader colValue;
         private System.Windows.Forms.ColumnHeader headerSize;
         private System.Windows.Forms.Button btnDownloadJobList;
+        private System.Windows.Forms.Button Test;
     }
 }
 

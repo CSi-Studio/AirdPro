@@ -649,7 +649,7 @@ namespace AirdPro.Converters
         /**
          * 引用本函数的时候需要注意在使用完MSDataList对象以后需要手动释放
          */
-        protected MSDataList ReadVendorFile()
+        public MSDataList ReadVendorFile()
         {
             JobInfo.Log(Tag.Prepare_To_Parse_Vendor_File, Status.Prepare);
             ReaderList readerList = ReaderList.FullReaderList;
