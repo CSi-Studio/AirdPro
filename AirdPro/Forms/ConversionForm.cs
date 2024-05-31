@@ -20,17 +20,10 @@ using AirdPro.Storage.Config;
 using AirdSDK.Utils;
 using ThermoFisher.CommonCore.Data;
 using System.ComponentModel;
-using System.Diagnostics;
 using AirdPro.Repository;
 using AirdPro.Utils;
 using AirdSDK.Constants;
 using Newtonsoft.Json;
-using AirdSDK.Beans;
-using AirdPro.Converters;
-using pwiz.CLI.msdata;
-using pwiz.CLI.analysis;
-using static pwiz.CLI.data.unimod;
-using System.Reflection;
 
 namespace AirdPro.Forms
 {
