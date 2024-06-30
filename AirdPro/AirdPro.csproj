@@ -718,9 +718,6 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AirdSDK">
-      <Version>2.4.7.3</Version>
-    </PackageReference>
     <PackageReference Include="CommandLineParser">
       <Version>2.9.1</Version>
     </PackageReference>
@@ -738,13 +735,17 @@
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
     <PackageReference Include="ZstdNet" Version="1.4.5" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\CSharpSDK\AirdSDK.csproj">
+      <Project>{24808e77-426e-4585-a3ac-4505d2c2d4f3}</Project>
+      <Name>AirdSDK</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(SolutionDir)ImportLibs\*.*" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
