@@ -41,7 +41,6 @@ AirdPro is opensource under the MulanPSL2 license
 - [New Feature] New Conversion Config Panel
 - [New Feature] New Software Config Panel
 
-
 ### V2.1.0
 - [New Feature] A new compression algorithm ZDVB is released, which has 10%-20% compression performance improvement compared with ZDPD kernel.Furthermore, ZDVB provides faster decoding speed than ZDPD.
 - [New Feature] PASEF mode support for both DDA and DIA
@@ -73,7 +72,7 @@ You can read the data using AirdSDK for secondary development.
 Visit AirdSDK project for more detail: https://github.com/CSi-Studio/Aird-SDK
 AirdSDK supports for Java, C#, Python
 
-# Technology of Aird
+# Papers related to Aird
 Key papers: <br/>
 **Aird: a computation‑oriented mass spectrometry data format enables a higher compression ratio and less decoding time**
 [Aird, 2022](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-021-04490-0)<br/>
@@ -82,6 +81,16 @@ Here we first introduced "Aird", an opensource and computation-oriented format w
 **StackZDPD: a novel encoding scheme for mass spectrometry data optimized for speed and compression ratio**
 [StackZDPD, 2022](https://www.nature.com/articles/s41598-022-09432-1#:~:text=StackZDPD%3A%20a%20novel%20encoding%20scheme%20for%20mass%20spectrometry,optimized%20for%20speed%20and%20compression%20ratio%20Jinyin%20Wang%2C?msclkid=f8f65fe2cfa311ec90e805c6152deb6a)<br/>
 On the basis of ZDPD from Aird, we further developed a novel encoding strategy, named Stack-ZDPD, for multiple m/z arrays compression. The m/z arrays from more than one spectrum are integrated together for compression as a whole, where each m/z value is containing a tag for remapping it to the corresponding spectrum. This approach is able to show higher compression rate than ZDPD by about 30% in Time of Flight-generated (TOF) data. 
+
+**Column storage enables edge computation of biological big data on 5G networks**
+[Aird-Slice, 2023](https://www.aimspress.com/article/doi/10.3934/mbe.2023766)
+Here we propose a column storage scheme for MS data, which greatly improves the calculation process based on XIC.
+
+**How Much Storage Precision Can Be Lost: Guidance for Near-Lossless Compression of Untargeted Metabolomics Mass Spectrometry Data**
+[Precision Control, 2024](https://pubs.acs.org/doi/10.1021/acs.jproteome.3c00851)
+We provide a comprehensive analysis of the correlation between precision values of mass-charge ratio and strength values, 
+and their impact on the final identification results. 
+Additionally, we propose a scientifically grounded recommendation for precision truncation, which has been successfully implemented in AirdPro as an optimal approach.
 
 # Batch Conversion Task with Redis
 After install the Redis Server. You should input your custom Redis Server IP and Port in the Message Center InputBox and Click Connect button to see if the AirdPro has connnected to the Redis Server.

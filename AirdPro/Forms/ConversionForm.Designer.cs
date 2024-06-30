@@ -91,6 +91,7 @@ namespace AirdPro.Forms
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.timerTaskScan = new System.Windows.Forms.Timer(this.components);
+            this.btnTest = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -109,6 +110,7 @@ namespace AirdPro.Forms
             // 
             // container.Panel1
             // 
+            this.container.Panel1.Controls.Add(this.btnTest);
             this.container.Panel1.Controls.Add(this.Test);
             this.container.Panel1.Controls.Add(this.btnDownloadJobList);
             this.container.Panel1.Controls.Add(this.label9);
@@ -497,6 +499,13 @@ namespace AirdPro.Forms
             this.timerTaskScan.Interval = 5000;
             this.timerTaskScan.Tick += new System.EventHandler(this.timerTaskScan_Tick);
             // 
+            // btnTest
+            // 
+            resources.ApplyResources(this.btnTest, "btnTest");
+            this.btnTest.Name = "btnTest";
+            this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            // 
             // ConversionForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -581,6 +590,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ColumnHeader headerSize;
         private System.Windows.Forms.Button btnDownloadJobList;
         private System.Windows.Forms.Button Test;
+        private System.Windows.Forms.Button btnTest;
     }
 }
 

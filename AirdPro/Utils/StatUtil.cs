@@ -131,24 +131,22 @@ namespace AirdPro.Utils
             List<double> normSize = MinMaxNorm(sizeList);
             List<double> normCt = MinMaxNorm(ctList);
             List<double> normDt = MinMaxNorm(dtList);
-            Stat sizeStat = new Stat(normSize);
-            // Stat ctStat = new Stat(normCt);
-            // Stat dtStat = new Stat(normDt);
-            int endIndex = -1;
-            for (int i = 0; i < sizeStat.size; i++)
-            {
-                if (sizeStat.dataList[i] < sizeStat.mean)
-                {
-                    endIndex = i;
-                }
-            }
+            // Stat sizeStat = new Stat(normSize);
+            int endIndex = sizeList.Count - 1;
+            // for (int i = 0; i < sizeStat.size; i++)
+            // {
+            //     if (sizeStat.dataList[i] < sizeStat.mean)
+            //     {
+            //         endIndex = i;
+            //     }
+            // }
 
             double bestValue = 3;
             int bestIndex = -1;
             List<double> totalList = new List<double>();
             for (int i = 0; i <= endIndex; i++)
             {
-                double total = csWeight * normSize[i] + ctWeight * normCt[i] + dtWeight * normDt[i];
+                double total = normSize[i] / csWeight + normCt[i] / ctWeight + normDt[i] / dtWeight;
                 totalList.Add(total);
                 if (total < bestValue)
                 {

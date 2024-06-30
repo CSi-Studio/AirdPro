@@ -151,6 +151,7 @@
     <Compile Include="Algorithms\Compressor\ICompressor.cs" />
     <Compile Include="Algorithms\Compressor\PwizComp.cs" />
     <Compile Include="Algorithms\Compressor\TdmsComp.cs" />
+    <Compile Include="Algorithms\Maths\GaussianRandomGenerator.cs" />
     <Compile Include="Algorithms\Parser\AcqMethod\AcqCompound.cs" />
     <Compile Include="Algorithms\Parser\AcqMethod\NewDataSet.cs" />
     <Compile Include="Algorithms\Parser\AcqMethod\AcqMethodParser.cs" />
@@ -471,6 +472,7 @@
     <Compile Include="Utils\AirdProFileUtil.cs" />
     <Compile Include="Utils\HttpUtil.cs" />
     <Compile Include="Utils\DataUtil.cs" />
+    <Compile Include="Utils\RandomUtil.cs" />
     <Compile Include="Utils\ResourceUtil.cs" />
     <Compile Include="Utils\SpeedTestUtil.cs" />
     <Compile Include="Utils\StatUtil.cs" />

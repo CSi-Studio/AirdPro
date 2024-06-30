@@ -539,7 +539,11 @@
             "2",
             "3",
             "4",
-            "5"});
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"});
             this.cbCSWeight.Location = new System.Drawing.Point(154, 33);
             this.cbCSWeight.Name = "cbCSWeight";
             this.cbCSWeight.Size = new System.Drawing.Size(82, 25);
@@ -580,7 +584,11 @@
             "2",
             "3",
             "4",
-            "5"});
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"});
             this.cbDTWeight.Location = new System.Drawing.Point(154, 97);
             this.cbDTWeight.Name = "cbDTWeight";
             this.cbDTWeight.Size = new System.Drawing.Size(82, 25);
@@ -597,7 +605,11 @@
             "2",
             "3",
             "4",
-            "5"});
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"});
             this.cbCTWeight.Location = new System.Drawing.Point(154, 64);
             this.cbCTWeight.Name = "cbCTWeight";
             this.cbCTWeight.Size = new System.Drawing.Size(82, 25);

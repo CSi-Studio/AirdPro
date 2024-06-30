@@ -17,6 +17,7 @@ using System.IO;
 using System.Text;
 using AirdPro.Algorithms;
 using AirdPro.Algorithms.Compressor;
+using AirdPro.Algorithms.Maths;
 using AirdPro.Algorithms.Parser;
 using AirdPro.Constants;
 using AirdPro.Domains;
@@ -1465,12 +1466,12 @@ namespace AirdPro.Converters
             List<int[]> intensityArrays = [];
             List<int[]> mobiNoArrays = [];
             Random rn = new Random();
-            List<int> logIndexes = [];
+            GaussianRandomGenerator generator = new GaussianRandomGenerator(TotalSpectraCount / 2, 10000);
+            int[] indexes = generator.GenerateRandomNumbers(randomNum, 1, TotalSpectraCount);
+
             for (var i = 0; i < randomNum; i++)
             {
-                int index = rn.Next(0, TotalSpectraCount);
-                logIndexes.Add(index);
-                List<int[]> dataList = FetchSpectrum(index, ionMobi);
+                List<int[]> dataList = FetchSpectrum(indexes[i], ionMobi);
                 if (dataList[0].Length > 0)
                 {
                     mzArrays.Add(dataList[0]);
