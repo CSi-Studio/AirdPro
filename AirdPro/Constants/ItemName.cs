@@ -22,7 +22,8 @@ namespace AirdPro.Constants
         public static int PRECISION = 7;
         public static int VENDOR_SIZE = 8;
         public static int AIRD_SIZE = 9;
-        public static int CONVERSION_TIME = 10;
-        public static int OUTPUT_PATH = 11;
+        public static int FILE_RATE = 10;
+        public static int CONVERSION_TIME = 11;
+        public static int OUTPUT_PATH = 12;
     }
 }

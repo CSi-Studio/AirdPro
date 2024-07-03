@@ -223,7 +223,7 @@
     <value>176, 58</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 16</value>
+    <value>53, 20</value>
   </data>
   <data name="label9.TabIndex" type="System.Int32, mscorlib">
     <value>40</value>
@@ -675,7 +675,7 @@
     <value>1395, 58</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>32, 16</value>
+    <value>44, 20</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>36</value>
@@ -797,7 +797,7 @@
     <value>1563, 59</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 16</value>
+    <value>41, 20</value>
   </data>
   <data name="label12.TabIndex" type="System.Int32, mscorlib">
     <value>34</value>
@@ -956,7 +956,7 @@
     <value>1506, 59</value>
   </data>
   <data name="label112.Size" type="System.Drawing.Size, System.Drawing">
-    <value>34, 16</value>
+    <value>45, 20</value>
   </data>
   <data name="label112.TabIndex" type="System.Int32, mscorlib">
     <value>32</value>
@@ -1096,7 +1096,7 @@
     <value>1444, 59</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>42, 16</value>
+    <value>57, 20</value>
   </data>
   <data name="label11.TabIndex" type="System.Int32, mscorlib">
     <value>30</value>
@@ -1132,7 +1132,7 @@
     <value>120, 58</value>
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>35, 16</value>
+    <value>47, 20</value>
   </data>
   <data name="label8.TabIndex" type="System.Int32, mscorlib">
     <value>29</value>
@@ -1168,7 +1168,7 @@
     <value>70, 58</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>31, 16</value>
+    <value>40, 20</value>
   </data>
   <data name="label7.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
@@ -1204,7 +1204,7 @@
     <value>11, 58</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>39, 16</value>
+    <value>54, 20</value>
   </data>
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -1260,8 +1260,8 @@
   <data name="headerEngine.Width" type="System.Int32, mscorlib">
     <value>120</value>
   </data>
-  <data name="headerCentroid.Text" xml:space="preserve">
-    <value>Centroid</value>
+  <data name="headerFormat.Text" xml:space="preserve">
+    <value>Format</value>
   </data>
   <data name="headerProgress.Text" xml:space="preserve">
     <value>Progress</value>
@@ -1287,6 +1287,9 @@
   <data name="headerAirdSize.Width" type="System.Int32, mscorlib">
     <value>90</value>
   </data>
+  <data name="headerRate.Text" xml:space="preserve">
+    <value>Rate</value>
+  </data>
   <data name="headerCTimer.Text" xml:space="preserve">
     <value>Time</value>
   </data>
@@ -1303,19 +1306,19 @@
     <value>403, 18</value>
   </metadata>
   <data name="rerun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>123, 22</value>
+    <value>149, 30</value>
   </data>
   <data name="rerun.Text" xml:space="preserve">
     <value>Rerun</value>
   </data>
   <data name="removeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>123, 22</value>
+    <value>149, 30</value>
   </data>
   <data name="removeToolStripMenuItem.Text" xml:space="preserve">
     <value>Remove</value>
   </data>
   <data name="contentMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 48</value>
+    <value>150, 64</value>
   </data>
   <data name="&gt;&gt;contentMenu.Name" xml:space="preserve">
     <value>contentMenu</value>
@@ -1461,7 +1464,7 @@
     <value>1282, 58</value>
   </data>
   <data name="cbAutoExe.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 16</value>
+    <value>142, 22</value>
   </data>
   <data name="cbAutoExe.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
@@ -1598,7 +1601,7 @@
     <value>172, 59</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 16</value>
+    <value>0, 20</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -1704,7 +1707,7 @@
     <value>123, 59</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 16</value>
+    <value>0, 20</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -1882,7 +1885,7 @@
     <value>73, 59</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 16</value>
+    <value>0, 20</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -1912,7 +1915,7 @@
     <value>13, 59</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 16</value>
+    <value>0, 20</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -5776,10 +5779,10 @@
   <data name="&gt;&gt;headerEngine.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;headerCentroid.Name" xml:space="preserve">
-    <value>headerCentroid</value>
+  <data name="&gt;&gt;headerFormat.Name" xml:space="preserve">
+    <value>headerFormat</value>
   </data>
-  <data name="&gt;&gt;headerCentroid.Type" xml:space="preserve">
+  <data name="&gt;&gt;headerFormat.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;headerProgress.Name" xml:space="preserve">
@@ -5865,6 +5868,12 @@
   </data>
   <data name="&gt;&gt;timerTaskScan.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;headerRate.Name" xml:space="preserve">
+    <value>headerRate</value>
+  </data>
+  <data name="&gt;&gt;headerRate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ConversionForm</value>

@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Management;
 using System.Threading;
 using AirdPro.Constants;
 using AirdPro.Storage.Config;
@@ -160,11 +161,12 @@ namespace AirdPro.Domains
                 type,
                 config.configName,
                 config.EngineName(),
-                config.indexFormat+"",
+                config.getFormat(config.indexFormat),
                 status,
                 config.GetMzPrecisionStr(),
                 AirdProFileUtil.GetSizeLabel(vendorFileSize),
                 AirdProFileUtil.GetSizeLabel(airdFileSize),
+                AirdProFileUtil.GetRate(airdFileSize,vendorFileSize),
                 AirdProFileUtil.GetTimeLabel(conversionTime),
                 outputPath
             };
@@ -177,6 +179,7 @@ namespace AirdPro.Domains
             airdFileSizeLabel = new Progress<long>((progressValue) =>
             {
                 item.SubItems[ItemName.AIRD_SIZE].Text = AirdProFileUtil.GetSizeLabel(progressValue);
+                item.SubItems[ItemName.FILE_RATE].Text = AirdProFileUtil.GetRate(progressValue, vendorFileSize);
             });
             conversionTimeLabel = new Progress<double>((progressValue) =>
             {

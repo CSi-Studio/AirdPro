@@ -41,6 +41,7 @@ namespace AirdPro.Forms
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConversionForm));
             this.container = new System.Windows.Forms.SplitContainer();
+            this.btnTest = new System.Windows.Forms.Button();
             this.Test = new System.Windows.Forms.Button();
             this.btnDownloadJobList = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
@@ -63,7 +64,7 @@ namespace AirdPro.Forms
             this.headerType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerConfigName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerEngine = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.headerCentroid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerFormat = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerProgress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerPrecision = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -91,7 +92,7 @@ namespace AirdPro.Forms
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.timerTaskScan = new System.Windows.Forms.Timer(this.components);
-            this.btnTest = new System.Windows.Forms.Button();
+            this.headerRate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -142,6 +143,13 @@ namespace AirdPro.Forms
             // 
             this.container.Panel2.Controls.Add(this.splitContainer1);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
+            // 
+            // btnTest
+            // 
+            resources.ApplyResources(this.btnTest, "btnTest");
+            this.btnTest.Name = "btnTest";
+            this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
             // Test
             // 
@@ -278,11 +286,12 @@ namespace AirdPro.Forms
             this.headerType,
             this.headerConfigName,
             this.headerEngine,
-            this.headerCentroid,
+            this.headerFormat,
             this.headerProgress,
             this.headerPrecision,
             this.headerSize,
             this.headerAirdSize,
+            this.headerRate,
             this.headerCTimer,
             this.headerOutput});
             this.lvFileList.ContextMenuStrip = this.contentMenu;
@@ -319,9 +328,9 @@ namespace AirdPro.Forms
             // 
             resources.ApplyResources(this.headerEngine, "headerEngine");
             // 
-            // headerCentroid
+            // headerFormat
             // 
-            resources.ApplyResources(this.headerCentroid, "headerCentroid");
+            resources.ApplyResources(this.headerFormat, "headerFormat");
             // 
             // headerProgress
             // 
@@ -499,12 +508,9 @@ namespace AirdPro.Forms
             this.timerTaskScan.Interval = 5000;
             this.timerTaskScan.Tick += new System.EventHandler(this.timerTaskScan_Tick);
             // 
-            // btnTest
+            // headerRate
             // 
-            resources.ApplyResources(this.btnTest, "btnTest");
-            this.btnTest.Name = "btnTest";
-            this.btnTest.UseVisualStyleBackColor = true;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            resources.ApplyResources(this.headerRate, "headerRate");
             // 
             // ConversionForm
             // 
@@ -545,7 +551,7 @@ namespace AirdPro.Forms
 
         private System.Windows.Forms.Label label6;
 
-        private System.Windows.Forms.ColumnHeader headerCentroid;
+        private System.Windows.Forms.ColumnHeader headerFormat;
 
         #endregion
         private System.Windows.Forms.Button btnConvert;
@@ -591,6 +597,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.Button btnDownloadJobList;
         private System.Windows.Forms.Button Test;
         private System.Windows.Forms.Button btnTest;
+        private System.Windows.Forms.ColumnHeader headerRate;
     }
 }
 
