@@ -1460,6 +1460,8 @@ namespace AirdPro.Converters
 
         List<IntComp> intCompList = [new VarByteWrapper(), new BinPackingWrapper(), new Empty()];
 
+        List<IntComp> intIonCompList = [new VarByteWrapper(), new BinPackingWrapper(), new DeltaZigzagVBWrapper(), new Empty()];
+
         public Combination RandomSampling(int randomNum, bool ionMobi)
         {
             List<int[]> mzArrays = [];
@@ -1565,7 +1567,7 @@ namespace AirdPro.Converters
 
             if (ionMobi)
             {
-                foreach (IntComp intComp in intCompList)
+                foreach (IntComp intComp in intIonCompList)
                 {
                     foreach (ByteComp byteComp in byteCompList)
                     {

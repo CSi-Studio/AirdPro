@@ -141,20 +141,18 @@ namespace AirdPro.Utils
             //     }
             // }
 
-            double bestValue = 3;
+            double bestValue = 0;
             int bestIndex = -1;
-            List<double> totalList = new List<double>();
             for (int i = 0; i <= endIndex; i++)
             {
-                double total = normSize[i] / csWeight + normCt[i] / ctWeight + normDt[i] / dtWeight;
-                totalList.Add(total);
-                if (total < bestValue)
+                double total = (1 - normSize[i]) * csWeight + ( 1 - normCt[i]) * ctWeight + (1 - normDt[i]) * dtWeight;
+                if (total > bestValue)
                 {
                     bestIndex = i;
                     bestValue = total;
                 }
             }
-
+            
             return bestIndex;
         }
 
