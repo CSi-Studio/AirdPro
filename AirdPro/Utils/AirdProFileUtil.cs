@@ -273,5 +273,14 @@ namespace AirdPro.Utils
                 
             }
         }
+        public static string GetRate(long value,long total)
+        {
+            if (value == 0 || total == 0)
+            {
+                return "0";
+            }
+            double rate = (value / (double)total) * 100.0;
+            return string.Format("{0:F2}%", rate);
+        }
     }
 }

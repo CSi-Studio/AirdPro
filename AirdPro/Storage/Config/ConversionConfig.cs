@@ -63,6 +63,19 @@ namespace AirdPro.Storage.Config
          * 2. Both
          */
         public int indexFormat = 0;
+        public string getFormat(int index)
+        {
+            switch (index)
+            {
+                case 0:
+                    return "JSON";
+                case 1:
+                    return "Protobuf";
+                case 2:
+                    return "Both";
+            }
+            return "JSON";
+        }
 
         /**
          * 面向的场景,默认为Aird-ComboComp面向计算的场景，主要使用行存储的方式进行排列与压缩
@@ -230,5 +243,6 @@ namespace AirdPro.Storage.Config
             return MemberwiseClone();
         }
        
+
     }
 }
