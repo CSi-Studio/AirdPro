@@ -128,32 +128,35 @@
   <data name="container.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
     <value>Horizontal</value>
   </data>
-  <data name="btnTest.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="btnImportMSData.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Times New Roman, 9pt</value>
+  </data>
+  <data name="btnImportMSData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="btnTest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>821, 12</value>
+  <data name="btnImportMSData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>227, 11</value>
   </data>
-  <data name="btnTest.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+  <data name="btnImportMSData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>282, 48</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="btnTest.TabIndex" type="System.Int32, mscorlib">
+  <data name="btnImportMSData.TabIndex" type="System.Int32, mscorlib">
     <value>45</value>
   </data>
-  <data name="btnTest.Text" xml:space="preserve">
-    <value>Test</value>
+  <data name="btnImportMSData.Text" xml:space="preserve">
+    <value>Bruker Ion Mobility MS Research</value>
   </data>
-  <data name="&gt;&gt;btnTest.Name" xml:space="preserve">
-    <value>btnTest</value>
+  <data name="&gt;&gt;btnImportMSData.Name" xml:space="preserve">
+    <value>btnImportMSData</value>
   </data>
-  <data name="&gt;&gt;btnTest.Type" xml:space="preserve">
+  <data name="&gt;&gt;btnImportMSData.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;btnTest.Parent" xml:space="preserve">
+  <data name="&gt;&gt;btnImportMSData.Parent" xml:space="preserve">
     <value>container.Panel1</value>
   </data>
-  <data name="&gt;&gt;btnTest.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;btnImportMSData.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="Test.Location" type="System.Drawing.Point, System.Drawing">
@@ -1260,8 +1263,8 @@
   <data name="headerEngine.Width" type="System.Int32, mscorlib">
     <value>120</value>
   </data>
-  <data name="headerFormat.Text" xml:space="preserve">
-    <value>Format</value>
+  <data name="headerCentroid.Text" xml:space="preserve">
+    <value>Centroid</value>
   </data>
   <data name="headerProgress.Text" xml:space="preserve">
     <value>Progress</value>
@@ -1286,9 +1289,6 @@
   </data>
   <data name="headerAirdSize.Width" type="System.Int32, mscorlib">
     <value>90</value>
-  </data>
-  <data name="headerRate.Text" xml:space="preserve">
-    <value>Rate</value>
   </data>
   <data name="headerCTimer.Text" xml:space="preserve">
     <value>Time</value>
@@ -1330,7 +1330,7 @@
     <value>微软雅黑, 8pt</value>
   </data>
   <data name="lvFileList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 82</value>
+    <value>8, 87</value>
   </data>
   <data name="lvFileList.Size" type="System.Drawing.Size, System.Drawing">
     <value>1594, 394</value>
@@ -2102,6 +2102,9 @@
   </data>
   <metadata name="timerTaskScan.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>514, 19</value>
+  </metadata>
+  <metadata name="errorProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>703, 19</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -5779,10 +5782,10 @@
   <data name="&gt;&gt;headerEngine.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;headerFormat.Name" xml:space="preserve">
-    <value>headerFormat</value>
+  <data name="&gt;&gt;headerCentroid.Name" xml:space="preserve">
+    <value>headerCentroid</value>
   </data>
-  <data name="&gt;&gt;headerFormat.Type" xml:space="preserve">
+  <data name="&gt;&gt;headerCentroid.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;headerProgress.Name" xml:space="preserve">
@@ -5869,11 +5872,11 @@
   <data name="&gt;&gt;timerTaskScan.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;headerRate.Name" xml:space="preserve">
-    <value>headerRate</value>
+  <data name="&gt;&gt;errorProvider1.Name" xml:space="preserve">
+    <value>errorProvider1</value>
   </data>
-  <data name="&gt;&gt;headerRate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;errorProvider1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ErrorProvider, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ConversionForm</value>

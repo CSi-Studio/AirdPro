@@ -41,7 +41,7 @@ namespace AirdPro.Forms
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConversionForm));
             this.container = new System.Windows.Forms.SplitContainer();
-            this.btnTest = new System.Windows.Forms.Button();
+            this.btnImportMSData = new System.Windows.Forms.Button();
             this.Test = new System.Windows.Forms.Button();
             this.btnDownloadJobList = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
@@ -64,7 +64,7 @@ namespace AirdPro.Forms
             this.headerType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerConfigName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerEngine = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.headerFormat = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.headerCentroid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerProgress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerPrecision = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -92,7 +92,7 @@ namespace AirdPro.Forms
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.timerTaskScan = new System.Windows.Forms.Timer(this.components);
-            this.headerRate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -102,6 +102,7 @@ namespace AirdPro.Forms
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // container
@@ -111,7 +112,7 @@ namespace AirdPro.Forms
             // 
             // container.Panel1
             // 
-            this.container.Panel1.Controls.Add(this.btnTest);
+            this.container.Panel1.Controls.Add(this.btnImportMSData);
             this.container.Panel1.Controls.Add(this.Test);
             this.container.Panel1.Controls.Add(this.btnDownloadJobList);
             this.container.Panel1.Controls.Add(this.label9);
@@ -144,12 +145,13 @@ namespace AirdPro.Forms
             this.container.Panel2.Controls.Add(this.splitContainer1);
             resources.ApplyResources(this.container.Panel2, "container.Panel2");
             // 
-            // btnTest
+            // btnImportMSData
             // 
-            resources.ApplyResources(this.btnTest, "btnTest");
-            this.btnTest.Name = "btnTest";
-            this.btnTest.UseVisualStyleBackColor = true;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            this.btnImportMSData.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            resources.ApplyResources(this.btnImportMSData, "btnImportMSData");
+            this.btnImportMSData.Name = "btnImportMSData";
+            this.btnImportMSData.UseVisualStyleBackColor = false;
+            this.btnImportMSData.Click += new System.EventHandler(this.btnImportMSData_Click);
             // 
             // Test
             // 
@@ -286,12 +288,11 @@ namespace AirdPro.Forms
             this.headerType,
             this.headerConfigName,
             this.headerEngine,
-            this.headerFormat,
+            this.headerCentroid,
             this.headerProgress,
             this.headerPrecision,
             this.headerSize,
             this.headerAirdSize,
-            this.headerRate,
             this.headerCTimer,
             this.headerOutput});
             this.lvFileList.ContextMenuStrip = this.contentMenu;
@@ -328,9 +329,9 @@ namespace AirdPro.Forms
             // 
             resources.ApplyResources(this.headerEngine, "headerEngine");
             // 
-            // headerFormat
+            // headerCentroid
             // 
-            resources.ApplyResources(this.headerFormat, "headerFormat");
+            resources.ApplyResources(this.headerCentroid, "headerCentroid");
             // 
             // headerProgress
             // 
@@ -508,9 +509,9 @@ namespace AirdPro.Forms
             this.timerTaskScan.Interval = 5000;
             this.timerTaskScan.Tick += new System.EventHandler(this.timerTaskScan_Tick);
             // 
-            // headerRate
+            // errorProvider1
             // 
-            resources.ApplyResources(this.headerRate, "headerRate");
+            this.errorProvider1.ContainerControl = this;
             // 
             // ConversionForm
             // 
@@ -533,6 +534,7 @@ namespace AirdPro.Forms
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -551,7 +553,7 @@ namespace AirdPro.Forms
 
         private System.Windows.Forms.Label label6;
 
-        private System.Windows.Forms.ColumnHeader headerFormat;
+        private System.Windows.Forms.ColumnHeader headerCentroid;
 
         #endregion
         private System.Windows.Forms.Button btnConvert;
@@ -596,8 +598,8 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ColumnHeader headerSize;
         private System.Windows.Forms.Button btnDownloadJobList;
         private System.Windows.Forms.Button Test;
-        private System.Windows.Forms.Button btnTest;
-        private System.Windows.Forms.ColumnHeader headerRate;
+        private System.Windows.Forms.Button btnImportMSData;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }
 

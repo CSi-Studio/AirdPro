@@ -20,7 +20,6 @@ using AirdPro.Storage.Config;
 using AirdSDK.Utils;
 using ThermoFisher.CommonCore.Data;
 using System.ComponentModel;
-using AirdPro.Algorithms.Maths;
 using AirdPro.Repository;
 using AirdPro.Utils;
 using AirdSDK.Constants;
@@ -479,20 +478,9 @@ namespace AirdPro.Forms
             Console.WriteLine();
         }
 
-        private void btnTest_Click(object sender, EventArgs e)
+        private void btnImportMSData_Click(object sender, EventArgs e)
         {
-            GaussianRandomGenerator generator = new GaussianRandomGenerator(10000, 10000);
-            int[] numbers = generator.GenerateRandomNumbers(200, 1, 10000);
-            Array.Sort(numbers);
-            for (var i = 0; i < numbers.Length; i++)
-            {
-                Console.Write(numbers[i]+",");
-            }
-            Console.WriteLine("");
-            for (int i = 0; i < numbers.Length; i++)
-            {
-                Console.Write(1 + ",");
-            }
+            new BrukerIMMainForm().ShowDialog();
         }
     }
 }

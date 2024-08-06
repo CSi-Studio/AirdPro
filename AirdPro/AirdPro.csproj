@@ -164,11 +164,30 @@
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\ProteomeXchangeDataset.cs" />
     <Compile Include="CommandLine\Options.cs" />
     <Compile Include="Domains\Redis\ConsumeSwitchCommand.cs" />
+    <Compile Include="Domains\SQLite\SQLiteHelper.cs" />
+    <Compile Include="Forms\BrukerIMMainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BrukerIMMainForm.Designer.cs">
+      <DependentUpon>BrukerIMMainForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\CustomPopup.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\CustomPopup.Designer.cs">
       <DependentUpon>CustomPopup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DataOverviewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DataOverviewForm.Designer.cs">
+      <DependentUpon>DataOverviewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\IonMoblityDataOverviewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\IonMoblityDataOverviewForm.Designer.cs">
+      <DependentUpon>IonMoblityDataOverviewForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Manager\ConvertTaskManager.cs" />
     <Compile Include="Constants\Activator.cs" />
@@ -483,11 +502,20 @@
       <DependentUpon>MirrorBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TreeViewAdv\Tree\TreeViewAdv.resx" />
+    <EmbeddedResource Include="Forms\BrukerIMMainForm.resx">
+      <DependentUpon>BrukerIMMainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\CustomPopup.resx">
       <DependentUpon>CustomPopup.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DataOverviewForm.resx">
+      <DependentUpon>DataOverviewForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\DownloadLinksForm.resx">
       <DependentUpon>DownloadLinksForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\IonMoblityDataOverviewForm.resx">
+      <DependentUpon>IonMoblityDataOverviewForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MirrorTransForm.resx">
       <DependentUpon>MirrorTransForm.cs</DependentUpon>
@@ -731,6 +759,9 @@
     <PackageReference Include="log4net" Version="2.0.17" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="StackExchange.Redis" Version="2.7.33" />
+    <PackageReference Include="System.Data.SQLite">
+      <Version>1.0.118</Version>
+    </PackageReference>
     <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
     <PackageReference Include="ZstdNet" Version="1.4.5" />
