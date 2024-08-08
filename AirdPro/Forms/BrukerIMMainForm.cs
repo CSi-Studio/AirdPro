@@ -16,7 +16,7 @@ namespace AirdPro.Forms
 
         private void btnAllBrukerFiles_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+            FolderBrowserDialog folderBrowserDialog = new ();
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 string selectedFolderPath = folderBrowserDialog.SelectedPath;
@@ -115,22 +115,21 @@ namespace AirdPro.Forms
                 throw new FileNotFoundException("Could not find both .tdf and .tdf_bin files in the specified directory.");
             }
 
-            // 返回文件信息
-            Tuple<FileInfo, FileInfo> tupleTDF = Tuple.Create(tdfFile, tdfBinFile);
-
             // 读取元数据
-            readMetadata(tupleTDF.Item1);
+            readMetadata(tdfFile);
+            // 读取帧数据
+            readFrameData(tdfBinFile);
 
         }
 
-        private void readMetadata(FileInfo tdf)
+        private void readFrameData(FileInfo tdfBinFile)
         {
             setDescription("Initializing SQL...");
             try
             {
-                using (var connection = new SQLiteConnection($"Data Source={tdf.FullName}"))
+                using (var connection = new SQLiteConnection($"Data Source={tdfBinFile.FullName}"))
                 {
-                    setDescription($"Establishing SQL connection to {tdf.Name}");
+                    setDescription($"Establishing SQL connection to {tdfBinFile.Name}");
 
                     lock (typeof(SQLiteConnection))
                     {
@@ -138,29 +137,41 @@ namespace AirdPro.Forms
                         {
                             connection.Open();
 
-                            setDescription($"Reading metadata for {tdf.Name}");
-                            /*TDFDataTable.ExecuteQuery(connection);
+                            setDescription($"Reading metadata for {tdfBinFile.Name}");
 
-                            setDescription($"Reading frame data for {tdf.Name}");
-                            FrameTable.ExecuteQuery(connection);
-                            IsMaldi = FrameTable.GetScanModeColumn().Contains((ulong)BrukerScanMode.MALDI.GetNum());
 
-                            setDescription($"Reading precursor info for {tdf.Name}");
-                            PrecursorTable.ExecuteQuery(connection);
+                            connection.Close();
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.ToString());
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
 
-                            setDescription($"Reading MS/MS-Precursor info for {tdf.Name}");
-                            FramePrecursorTable.ExecuteQuery(connection);
+        private void readMetadata(FileInfo tdfFile)
+        {
+            setDescription("Initializing SQL...");
+            try
+            {
+                using (var connection = new SQLiteConnection($"Data Source={tdfFile.FullName}"))
+                {
+                    setDescription($"Establishing SQL connection to {tdfFile.Name}");
 
-                            setDescription($"Reading PRM Target info for {tdf.Name}");
-                            PrmFrameTargetTable.ExecuteQuery(connection);
+                    lock (typeof(SQLiteConnection))
+                    {
+                        try
+                        {
+                            connection.Open();
 
-                            if (IsMaldi)
-                            {
-                                setDescription($"MALDI info for {tdf.Name}");
-                                MaldiFrameInfoTable.ExecuteQuery(connection);
-                                MaldiFrameInfoTable.Process();
-                                MaldiFrameLaserInfoTable.ExecuteQuery(connection);
-                            }*/
+                            setDescription($"Reading metadata for {tdfFile.Name}");
+                            
 
                             connection.Close();
                         }
