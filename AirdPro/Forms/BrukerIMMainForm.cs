@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AirdPro.IMSRawDataCompress.datamodel.sql;
+using System;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
@@ -21,34 +22,38 @@ namespace AirdPro.Forms
             {
                 string selectedFolderPath = folderBrowserDialog.SelectedPath;
                 lbFileNames.Items.Clear(); // 清空ListBox
-                // 查找所有 .d 后缀的文件夹
-                string[] dFiles = Directory.GetDirectories(selectedFolderPath, "*.d", SearchOption.AllDirectories);
-                if (dFiles.Length == 0)
+                                           // 选中的文件就是 .d 文件夹
+                if (selectedFolderPath.EndsWith(".d"))
                 {
-                    MessageBox.Show("No Bruker vendor files were found in the selected folder.", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    lbFileNames.Items.Add(selectedFolderPath);
+                }
+                // 继续查找当前文件夹下的所有 .d 后缀的子文件夹
+                string[] dFiles = Directory.GetDirectories(selectedFolderPath, "*.d", SearchOption.AllDirectories);
+                if (dFiles.Length != 0)
+                {
+                    foreach (string filePath in dFiles)
+                    {
+                        lbFileNames.Items.Add(filePath); // 将文件夹名添加到ListBox中
+                    }
+                }
+                if (lbFileNames.Items.Count == 0)
+                {
+                    MessageBox.Show("No Bruker vendor file exists in the current folder.", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
-                foreach (string filePath in dFiles)
-                {
-                    lbFileNames.Items.Add(filePath); // 将文件夹名添加到ListBox中
-                }
-                lbFileNames.SelectedIndex = 0;
+                lbFileNames.SelectedIndex = 0; //默认选第一个
             }
         }        
 
         private void btnClear_Click(object sender, EventArgs e)
         {
             lbFileNames.Items.Clear();
-            //关闭sqlite
-
         }
 
         private void btnImportData_Click(object sender, EventArgs e)
         {
             string fileName = lbFileNames.SelectedItem.ToString();
             importData(fileName);
-            
-
         }
 
         private void btnDataView_Click(object sender, EventArgs e)
@@ -59,7 +64,6 @@ namespace AirdPro.Forms
                 return;
             }
             new DataOverviewForm().ShowDialog();
-
         }
 
         private void btnIMDataView_Click(object sender, EventArgs e)
@@ -70,8 +74,6 @@ namespace AirdPro.Forms
                 return;
             }
             new IonMoblityDataOverviewForm().ShowDialog();
-
-
         }
 
 
@@ -88,10 +90,7 @@ namespace AirdPro.Forms
         private void lbFileNames_SelectedIndexChanged(object sender, EventArgs e)
         {
             String fileName = lbFileNames.SelectedItem.ToString();
-            importData(fileName);
         }  
-
-     
 
         private void importData(String fileName)
         {
@@ -117,9 +116,9 @@ namespace AirdPro.Forms
 
             // 读取元数据
             readMetadata(tdfFile);
+
             // 读取帧数据
             readFrameData(tdfBinFile);
-
         }
 
         private void readFrameData(FileInfo tdfBinFile)
@@ -160,7 +159,7 @@ namespace AirdPro.Forms
             setDescription("Initializing SQL...");
             try
             {
-                using (var connection = new SQLiteConnection($"Data Source={tdfFile.FullName}"))
+                using (var connection = new SQLiteConnection($"Data Source={tdfFile.FullName};Version=3;"))
                 {
                     setDescription($"Establishing SQL connection to {tdfFile.Name}");
 
@@ -171,8 +170,30 @@ namespace AirdPro.Forms
                             connection.Open();
 
                             setDescription($"Reading metadata for {tdfFile.Name}");
-                            
+                            TDFMetaDataTable metaDataTable = new TDFMetaDataTable();
+                            metaDataTable.ExecuteQuery(connection);
 
+                            //测试代码：用于在界面上显示已经从表中读取到的数据
+                            int colCount = metaDataTable.getColumns().Count;
+                            int rowCount = metaDataTable.getColumns()[0].Count;
+                            lbFileNames.Items.Add("table name: " + metaDataTable.getTable() + ", record count:" + rowCount + ", entry header: " + metaDataTable.getEntryHeader());
+                            String colNames = "rownum";
+                            for (int j = 0; j < colCount; j++)
+                            {
+                                colNames += "\t" + metaDataTable.getColumns()[j].GetColumnName();
+                            }
+                            lbFileNames.Items.Add(colNames);
+                            String oneRow = "";
+                            for (int i = 0; i < rowCount; i++)
+                            {
+                                oneRow = (i+1) + "";
+                                for (int j = 0; j < colCount; j++)
+                                {
+                                    oneRow += "\t" + metaDataTable.getColumns()[j][i];
+                                }
+                                lbFileNames.Items.Add(oneRow);
+                            }
+                            
                             connection.Close();
                         }
                         catch (Exception ex)

@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>AirdPro</RootNamespace>
     <AssemblyName>AirdPro</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -200,6 +200,7 @@
     <Compile Include="IMSRawDataCompress\datamodel\callbacks\IProfileCallback.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\callbacks\ProfileData.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\DataPoint.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\sql\Range.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\sql\TDFDataColumn.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\sql\TDFDataTable.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\sql\TDFFrameMsMsInfoTable.cs" />
