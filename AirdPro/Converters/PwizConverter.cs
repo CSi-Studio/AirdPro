@@ -13,7 +13,10 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Text;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using AirdPro.Algorithms;
 using AirdPro.Algorithms.Compressor;
@@ -21,6 +24,7 @@ using AirdPro.Algorithms.Maths;
 using AirdPro.Algorithms.Parser;
 using AirdPro.Constants;
 using AirdPro.Domains;
+using AirdPro.Forms;
 using AirdPro.Utils;
 using AirdSDK.Beans;
 using AirdSDK.Beans.Common;
@@ -1894,6 +1898,29 @@ namespace AirdPro.Converters
             JobInfo.Log("Effective MS1 List Size:" + Ms1List.Count);
             JobInfo.Log("MS2 Group List Size:" + Ms2Table.Count);
             JobInfo.Log("Start Processing MS1 List");
+        }
+
+        public override void showFrames()
+        {
+            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Clear();
+            Spectrum spectrum = SpectrumList.spectrum(0, true);
+            double[] mzData = spectrum.getMZArray().data.Storage();
+            double[] intData = spectrum.getIntensityArray().data.Storage();
+            double[] mobiData = DataUtil.GetMobilityData(spectrum); 
+            var size = mzData.Length;
+            TimsData[] dataArray = new TimsData[size];
+            for (int t = 0; t < size; t++)
+            {
+                dataArray[t] = new TimsData(MobiDict[mobiData[t]], mzData[t], intData[t]);
+            }
+            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("TimsData[] size: " + dataArray.Length);
+            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("\nmz[]: ");
+            for(int i = 0; i < 9; i++)
+            {
+                ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add(mzData[i]+",");
+            }
+            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("mzData[9] ");
+
         }
     }
 }

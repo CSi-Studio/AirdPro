@@ -31,6 +31,7 @@ namespace AirdPro.Forms
     {
         ArrayList jobIdList = new();
         BackgroundWorker bw;
+        public static BrukerIMMainForm brukerIMMainForm = new BrukerIMMainForm();  // add by Ariel
 
         public ConversionForm()
         {
@@ -480,7 +481,8 @@ namespace AirdPro.Forms
 
         private void btnImportMSData_Click(object sender, EventArgs e)
         {
-            new BrukerIMMainForm().ShowDialog();
+            //new BrukerIMMainForm().ShowDialog();
+            brukerIMMainForm.ShowDialog();
         }
     }
 }

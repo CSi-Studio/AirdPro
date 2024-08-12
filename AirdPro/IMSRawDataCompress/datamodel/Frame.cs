@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AirdPro.Domains.parseTDF
+namespace AirdPro.IMSRawDataCompress.datamodel
 {
-    public class IMSRawDataFile : RawDataFile
+    public class Frame
     {
-        // 特定于IMS的属性和方法...
+        public double Mobility { get; }
+
     }
 }

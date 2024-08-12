@@ -308,5 +308,10 @@ namespace AirdPro.Converters
             JobInfo.Log(Tag.Total_Time_Cost + Stopwatch.Elapsed.TotalSeconds, Status.Finished);
             JobInfo.SetStatus(ProcessingStatus.FINISHED);
         }
+
+        public override void showFrames()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

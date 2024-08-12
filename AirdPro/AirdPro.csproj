@@ -163,16 +163,12 @@
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\PRIDEParser.cs" />
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\ProteomeXchangeDataset.cs" />
     <Compile Include="CommandLine\Options.cs" />
-    <Compile Include="Domains\parseTDF\IMSRawDataFile.cs" />
-    <Compile Include="Domains\parseTDF\RawDataFile.cs" />
-    <Compile Include="Domains\parseTDF\Feature.cs" />
-    <Compile Include="Domains\parseTDF\MobilityType.cs" />
     <Compile Include="Domains\Redis\ConsumeSwitchCommand.cs" />
-    <Compile Include="Domains\parseTDF\SQLiteHelper.cs" />
-    <Compile Include="Forms\BrukerIMMainForm.cs">
+    <Compile Include="IMSRawDataCompress\datamodel\sql\SQLiteHelper.cs" />
+    <Compile Include="IMSRawDataCompress\Forms\BrukerIMMainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\BrukerIMMainForm.Designer.cs">
+    <Compile Include="IMSRawDataCompress\Forms\BrukerIMMainForm.Designer.cs">
       <DependentUpon>BrukerIMMainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\CustomPopup.cs">
@@ -181,18 +177,7 @@
     <Compile Include="Forms\CustomPopup.Designer.cs">
       <DependentUpon>CustomPopup.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DataOverviewForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\DataOverviewForm.Designer.cs">
-      <DependentUpon>DataOverviewForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\IonMoblityDataOverviewForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\IonMoblityDataOverviewForm.Designer.cs">
-      <DependentUpon>IonMoblityDataOverviewForm.cs</DependentUpon>
-    </Compile>
+    <Compile Include="IMSRawDataCompress\Converters\IMSConverter.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\callbacks\ICentroidCallback.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\callbacks\CentroidData.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\callbacks\MultipleCentroidData.cs" />
@@ -200,6 +185,7 @@
     <Compile Include="IMSRawDataCompress\datamodel\callbacks\IProfileCallback.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\callbacks\ProfileData.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\DataPoint.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\Frame.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\sql\Range.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\sql\TDFDataColumn.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\sql\TDFDataTable.cs" />
@@ -207,9 +193,6 @@
     <Compile Include="IMSRawDataCompress\datamodel\sql\TDFFrameTable.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\sql\TDFMetaDataTable.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\sql\TDFPrecursorTable.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\TDFLibrary.cs" />
-    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\TDFUtils.cs" />
-    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\TDFImportTask.cs" />
     <Compile Include="Manager\ConvertTaskManager.cs" />
     <Compile Include="Constants\Activator.cs" />
     <Compile Include="Constants\Froms.cs" />
@@ -523,20 +506,14 @@
       <DependentUpon>MirrorBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TreeViewAdv\Tree\TreeViewAdv.resx" />
-    <EmbeddedResource Include="Forms\BrukerIMMainForm.resx">
+    <EmbeddedResource Include="IMSRawDataCompress\Forms\BrukerIMMainForm.resx">
       <DependentUpon>BrukerIMMainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CustomPopup.resx">
       <DependentUpon>CustomPopup.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DataOverviewForm.resx">
-      <DependentUpon>DataOverviewForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\DownloadLinksForm.resx">
       <DependentUpon>DownloadLinksForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\IonMoblityDataOverviewForm.resx">
-      <DependentUpon>IonMoblityDataOverviewForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MirrorTransForm.resx">
       <DependentUpon>MirrorTransForm.cs</DependentUpon>
@@ -799,9 +776,7 @@
       <Name>AirdSDK</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="IMSRawDataCompress\compressToAird\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
