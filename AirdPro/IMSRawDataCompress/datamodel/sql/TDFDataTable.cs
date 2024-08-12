@@ -9,38 +9,58 @@ using System.Threading.Tasks;
 
 namespace AirdPro.IMSRawDataCompress.datamodel.sql
 {
-    public abstract class TDFDataTable<Object>
+    public abstract class TDFDataTable
     {
-        protected readonly string Table;
-        protected readonly string EntryHeader;
-        protected readonly List<TDFDataColumn<Object>> Columns;
-        protected readonly TDFDataColumn<Object> KeyList;
+        protected  string _tableName;
+        protected  string _keyColumnName;
+        protected  List<IColumnVariant<Object>> _columns;
+        protected IColumnVariant<Object> _keyColumn;
 
-        public String getTable() { return Table; }
-        public String getEntryHeader() { return EntryHeader; }
-        public TDFDataTable(string table, string entryHeader)
+        public String GetTableName() { return _tableName; }
+        public String GetEntryHeader() { return _keyColumnName; }
+        public String GetKeyColumnName() { return _keyColumnName; }
+        public TDFDataTable(string table)
         {
-            this.Table = table ?? throw new ArgumentNullException(nameof(table));
-            this.EntryHeader = entryHeader ?? throw new ArgumentNullException(nameof(entryHeader));
-            Columns = new List<TDFDataColumn<Object>>();
-            KeyList = new TDFDataColumn<Object>(entryHeader);
-            Columns.Add(KeyList);
+            this._tableName = table ?? throw new ArgumentNullException(nameof(table));
+            this._columns = new List<IColumnVariant<Object>>();
         }
 
-        public void AddColumn(TDFDataColumn<Object> column)
+        public List<IColumnVariant<Object>> GetColumns()
+        {
+            return _columns;
+        }
+
+        public IColumnVariant<Object> GetKeyColumn()
+        {
+            return _keyColumn;
+        }
+
+        public void AddKeyColumn(IColumnVariant<Object> column)
         {
             if (column == null)
                 throw new ArgumentNullException(nameof(column));
 
-            Columns.Add(column);
+            //Attention: put KeyColumn to first position of List!!!
+            _columns.Insert(0, column);
+            this._keyColumn = column;
+            this._keyColumnName = column.ColumnName;
         }
 
-        public TDFDataColumn<Object> GetColumn(string columnName)
+        public void AddColumn(IColumnVariant<Object> column)
         {
-            foreach (var column in Columns)
+            if (column == null)
+                throw new ArgumentNullException(nameof(column));
+
+            //put Column to last position of List
+            _columns.Add(column);
+        }
+
+        public IColumnVariant<Object> GetColumnByName(string columnName)
+        {
+            foreach (var column in _columns)
             {
-                if (column.GetColumnName() == columnName)
-                    return column;
+                if (column.ColumnName.Equals(columnName))
+                    return column as TDFDataColumn<Object>;
             }
             return null;
         }
@@ -48,9 +68,9 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
         protected string GetColumnHeadersForQuery()
         {
             var headers = new StringBuilder();
-            foreach (var col in Columns)
+            foreach (var col in _columns)
             {
-                headers.Append(col.GetColumnName() + ", ");
+                headers.Append(col.ColumnName + ", ");
             }
             if (headers.Length > 0)
                 headers.Remove(headers.Length - 2, 2);
@@ -60,10 +80,10 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
 
         public bool IsValid()
         {
-            long numKeys = KeyList.Count;
-            foreach (var col in Columns)
+            long numKeys = _keyColumn.Values.Count();
+            foreach (var col in _columns)
             {
-                if (numKeys != col.Count)
+                if (numKeys != col.Values.Count())
                     return false;
             }
             return true;
@@ -151,7 +171,7 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
                 using (IDataReader reader = command.ExecuteReader())
                 {
                     SqlDbType[] types = new SqlDbType[reader.FieldCount];
-                    if (types.Length != Columns.Count)
+                    if (types.Length != _columns.Count)
                     {
                         //Logger.LogInformation($"Number of retrieved columns does not match number of queried columns for table {Table}.");
                         return false;
@@ -166,8 +186,7 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
                     while (reader.Read())
                     {
                         count++;
-                        Console.WriteLine("第" + count + "行:");
-                        for (int i = 0; i < Columns.Count; i++)
+                        for (int i = 0; i < _columns.Count; i++)
                         {
                             switch (types[i])
                             {
@@ -176,18 +195,19 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
                                 case SqlDbType.Text:
                                 case SqlDbType.NChar:
                                 case SqlDbType.Char:
-                                    (Columns[i] as TDFDataColumn<String>).Add(reader.GetString(i)); 
+                                    (_columns[i] as TDFDataColumn<string>).GetValueList().Add(reader.GetString(i));
                                     break;
                                 case SqlDbType.Int:
                                 case SqlDbType.BigInt:
                                 case SqlDbType.TinyInt:
                                 case SqlDbType.SmallInt:
-                                    (Columns[i] as TDFDataColumn<long>).Add(reader.GetInt64(i));
+                                    (_columns[i] as TDFDataColumn<long>).GetValueList().Add(reader.GetInt64(i));
                                     break;
                                 case SqlDbType.Float:
                                 case SqlDbType.Real:
                                 case SqlDbType.Decimal:
-                                    (Columns[i] as TDFDataColumn<double>).Add(reader.GetDouble(i));
+                                    (_columns[i] as TDFDataColumn<double>).GetValueList().Add(reader.GetDouble(i));
+                                    //_columns[i].GetValueList().Add(reader.GetDouble(i));
                                     break;
                                 default:
                                     //Logger.LogInformation($"Unsupported type loaded in {Table} {i} {types[i]}");
@@ -208,7 +228,7 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
 
         protected string GetQueryText(string columnHeadersForQuery)
         {
-            return $"SELECT {columnHeadersForQuery} FROM {Table}";
+            return $"SELECT {columnHeadersForQuery} FROM {_tableName}";
         }
 
         public void Print()
@@ -216,22 +236,17 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
             //Logger.LogInformation($"Printing {Table}\t{Columns.Count} * {KeyList.Count} entries.");
         }
 
-        public List<TDFDataColumn<Object>> getColumns()
-        {
-            return Columns;
-        }
-
-        public bool Equals(Object obj)
+        public override bool Equals(Object obj)
         {
             if (ReferenceEquals(this, obj))
                 return true;
             if (obj == null || GetType() != obj.GetType())
                 return false;
-            TDFDataTable<Object> that = obj as TDFDataTable<Object>;
-            return Table == that.Table &&
-                   EntryHeader == that.EntryHeader &&
-                   Columns.SequenceEqual(that.Columns) &&
-                   KeyList.SequenceEqual(that.KeyList);
+            TDFDataTable that = obj as TDFDataTable;
+            return _tableName.Equals(that._tableName) &&
+                   _keyColumnName.Equals(that._keyColumnName) &&
+                   _columns.SequenceEqual(that._columns) &&
+                   _keyColumn.Values.SequenceEqual(that._keyColumn.Values);
         }
     }
 }

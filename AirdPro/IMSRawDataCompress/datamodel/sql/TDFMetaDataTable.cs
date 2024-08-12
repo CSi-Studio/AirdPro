@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AirdPro.IMSRawDataCompress.datamodel.sql
 {
-    public class TDFMetaDataTable : TDFDataTable<string>
+    public class TDFMetaDataTable : TDFDataTable
     {
         private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -16,11 +16,13 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
         private readonly TDFDataColumn<string> valueCol;
         private readonly TDFDataColumn<string> keyCol;
 
-        public TDFMetaDataTable(): base(METADATA_TABLE, KEY_COLUMN)
+        public TDFMetaDataTable(): base(METADATA_TABLE)
         {
-            keyCol = (TDFDataColumn<string>)base.Columns[0];
+            keyCol = new TDFDataColumn<string>(KEY_COLUMN)  ;
+            base.AddKeyColumn(keyCol);
+            //keyCol = (TDFDataColumn<string>)base.Columns[0];
             valueCol = new TDFDataColumn<string>(VALUE_COLUMN);
-            base.Columns.Add(valueCol);
+            base.AddColumn(valueCol);
         }
 
         private Range<double> mzRange;
@@ -28,8 +30,8 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
 
         public bool HasLineSpectra()
         {
-            int index = keyCol.IndexOf(Keys.HasLineSpectra.ToString());
-            return index != -1 && int.Parse(valueCol[index]) == 1;
+            int index = keyCol.GetValueList().IndexOf(Keys.HasLineSpectra.ToString());
+            return index != -1 && int.Parse(valueCol.GetValueList()[index]) == 1;
         }
 
         public bool IsFileVersionValid()
@@ -38,8 +40,8 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
             {
                 return false;
             }
-            string version = valueCol[keyCol.IndexOf(Keys.SchemaVersionMajor.ToString())]
-                                 + "." + valueCol[keyCol.IndexOf(Keys.SchemaVersionMinor.ToString())];
+            string version = valueCol.GetValueList()[keyCol.GetValueList().IndexOf(Keys.SchemaVersionMajor.ToString())]
+                                 + "." + valueCol.GetValueList()[keyCol.GetValueList().IndexOf(Keys.SchemaVersionMinor.ToString())];
 
             if (!AllowedFileVersions.Contains(version))
             {
@@ -83,19 +85,19 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
         {
             if (mzRange == null)
             {
-                if (keyCol.Count == 0)
+                if (keyCol.GetValueList().Count == 0)
                 {
                     logger.Info("Cannot determine mz range. Metadata not loaded yet.");
                     return Range<double>.Closed(0d, 0d);
                 }
-                int lowerIndex = keyCol.IndexOf(Keys.MzAcqRangeLower.ToString());
-                int upperIndex = keyCol.IndexOf(Keys.MzAcqRangeUpper.ToString());
+                int lowerIndex = keyCol.GetValueList().IndexOf(Keys.MzAcqRangeLower.ToString());
+                int upperIndex = keyCol.GetValueList().IndexOf(Keys.MzAcqRangeUpper.ToString());
                 if (lowerIndex == -1 || upperIndex == -1)
                 {
                     logger.Info("Cannot determine mz range. Metadata did not contain required information.");
                     return Range<double>.Closed(0d, 0d);
                 }
-                mzRange = Range<double>.Closed(double.Parse(valueCol[lowerIndex]), double.Parse(valueCol[upperIndex]));
+                mzRange = Range<double>.Closed(double.Parse(valueCol.GetValueList()[lowerIndex]), double.Parse(valueCol.GetValueList()[upperIndex]));
             }
             return mzRange;
         }
@@ -104,22 +106,22 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
         {
             if (instrumentType == null)
             {
-                int row = keyCol.IndexOf(Keys.InstrumentName.ToString());
-                instrumentType = valueCol[row];
+                int row = keyCol.GetValueList().IndexOf(Keys.InstrumentName.ToString());
+                instrumentType = valueCol.GetValueList()[row];
             }
             return instrumentType;
         }
 
         public bool HasProfileSpectra()
         {
-            int index = keyCol.IndexOf(Keys.HasProfileSpectra.ToString());
-            return index != -1 && int.Parse(valueCol[index]) == 1;
+            int index = keyCol.GetValueList().IndexOf(Keys.HasProfileSpectra.ToString());
+            return index != -1 && int.Parse(valueCol.GetValueList()[index]) == 1;
         }
 
         public Nullable<DateTime> GetAcquisitionDateTime()
         {
-            int index = keyCol.IndexOf(Keys.AcquisitionDateTime.ToString());
-            string date = index != -1 ? valueCol[index]: null;
+            int index = keyCol.GetValueList().IndexOf(Keys.AcquisitionDateTime.ToString());
+            string date = index != -1 ? valueCol.GetValueList()[index]: null;
 
             if (date == null)
             {
@@ -131,7 +133,7 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
             }
             catch (FormatException)
             {
-                var sampleName = valueCol[keyCol.IndexOf(Keys.SampleName.ToString())];
+                var sampleName = valueCol.GetValueList()[keyCol.GetValueList().IndexOf(Keys.SampleName.ToString())];
                 //logger.LogWarning($"Cannot parse acquisition date of sample {sampleName}");
                 return null;
             }
@@ -148,8 +150,8 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
 
         public string GetValueForKey(Keys key)
         {
-            int index = keyCol.IndexOf(key.ToString());
-            return index != -1 ? valueCol[index] : "";
+            int index = keyCol.GetValueList().IndexOf(key.ToString());
+            return index != -1 ? valueCol.GetValueList()[index] : "";
         }
     }
 }

@@ -1,15 +1,18 @@
 ﻿using AirdPro.IMSRawDataCompress.datamodel.sql;
+using AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf;
 using System;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace AirdPro.Forms
 {
     public partial class BrukerIMMainForm : Form
     {
-        private String description;
+        private bool isImportRunning;
+        TDFImportTask tdfImportTask;
         public BrukerIMMainForm()
         {
             InitializeComponent();
@@ -66,6 +69,7 @@ namespace AirdPro.Forms
         {
             string fileName = LbFileNames.SelectedItem.ToString();
             ImportData(fileName);
+
         }
 
         private void BtnConvertToAird_Click(object sender, EventArgs e)
@@ -75,126 +79,45 @@ namespace AirdPro.Forms
 
         private void ImportData(String fileName)
         {
-            // 检查文件夹是否存在
-            if (!Directory.Exists(fileName))
-            {
-                throw new DirectoryNotFoundException($"The directory '{fileName}' does not exist.");
-            }
+            LbTdfImport.Items.Clear();
 
-            // 定义文件过滤器
-            string tdfFilter = Path.Combine(fileName, "*.tdf");
-            string tdfBinFilter = Path.Combine(fileName, "*.tdf_bin");
+            isImportRunning = true;
+            Thread updateThread = new Thread(ShowDetail);
+            updateThread.Start();
 
-            // 获取匹配的文件
-            FileInfo tdfFile = Directory.EnumerateFiles(fileName, "*.tdf").Select(f => new FileInfo(f)).FirstOrDefault();
-            FileInfo tdfBinFile = Directory.EnumerateFiles(fileName, "*.tdf_bin").Select(f => new FileInfo(f)).FirstOrDefault();
-
-            // 检查是否找到了文件
-            if (tdfFile == null || tdfBinFile == null)
-            {
-                throw new FileNotFoundException("Could not find both .tdf and .tdf_bin files in the specified directory.");
-            }
-
-            // 读取元数据
-            ReadMetadata(tdfFile);
-
-            // 读取帧数据
-            ReadFrameData(tdfBinFile);
+            tdfImportTask = new TDFImportTask();
+            tdfImportTask.Run(fileName);
+            isImportRunning = false;
         }
 
-        private void ReadMetadata(FileInfo tdfFile)
+        void ShowDetail()
         {
-            SetDescription("Initializing SQL...");
-            try
+            while (isImportRunning)
             {
-                using (var connection = new SQLiteConnection($"Data Source={tdfFile.FullName};Version=3;"))
+                if (tdfImportTask.Messages != null)
                 {
-                    SetDescription($"Establishing SQL connection to {tdfFile.Name}");
-
-                    lock (typeof(SQLiteConnection))
+                    while (tdfImportTask.Messages.Count > 0)
                     {
-                        try
+                        if (LbTdfImport.InvokeRequired)
                         {
-                            connection.Open();
-
-                            SetDescription($"Reading metadata for {tdfFile.Name}");
-                            TDFMetaDataTable metaDataTable = new TDFMetaDataTable();
-                            metaDataTable.ExecuteQuery(connection);
-
-                            //测试代码：用于在界面上显示已经从表中读取到的数据
-                            int colCount = metaDataTable.getColumns().Count;
-                            int rowCount = metaDataTable.getColumns()[0].Count;
-                            LbFileNames.Items.Add("table name: " + metaDataTable.getTable() + ", record count:" + rowCount + ", entry header: " + metaDataTable.getEntryHeader());
-                            String colNames = "rownum";
-                            for (int j = 0; j < colCount; j++)
+                            LbTdfImport.Invoke(new Action(() =>
                             {
-                                colNames += "\t" + metaDataTable.getColumns()[j].GetColumnName();
-                            }
-                            LbFileNames.Items.Add(colNames);
-                            String oneRow = "";
-                            for (int i = 0; i < rowCount; i++)
-                            {
-                                oneRow = (i + 1) + "";
-                                for (int j = 0; j < colCount; j++)
-                                {
-                                    oneRow += "\t" + metaDataTable.getColumns()[j][i];
-                                }
-                                LbFileNames.Items.Add(oneRow);
-                            }
-
-                            connection.Close();
+                                // 更新ListBox
+                                LbTdfImport.Items.Add(tdfImportTask.Messages[0]);
+                            }));
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            Console.WriteLine(ex.ToString());
+                            // 更新ListBox
+                            LbTdfImport.Items.Add(tdfImportTask.Messages[0]);
                         }
+                        tdfImportTask.Messages.RemoveAt(0);
                     }
+                    Thread.Sleep(10);
                 }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
         }
 
-        private void ReadFrameData(FileInfo tdfBinFile)
-        {
-            SetDescription("Initializing SQL...");
-            try
-            {
-                using (var connection = new SQLiteConnection($"Data Source={tdfBinFile.FullName}"))
-                {
-                    SetDescription($"Establishing SQL connection to {tdfBinFile.Name}");
 
-                    lock (typeof(SQLiteConnection))
-                    {
-                        try
-                        {
-                            connection.Open();
-
-                            SetDescription($"Reading metadata for {tdfBinFile.Name}");
-
-
-                            connection.Close();
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.ToString());
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-        }
-
-        private void SetDescription(String desc)
-        {
-            description = desc;
-        }
-
-  
     }
 }

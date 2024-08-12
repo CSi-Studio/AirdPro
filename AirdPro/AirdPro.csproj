@@ -193,6 +193,7 @@
     <Compile Include="IMSRawDataCompress\datamodel\sql\TDFFrameTable.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\sql\TDFMetaDataTable.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\sql\TDFPrecursorTable.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\TDFImportTask.cs" />
     <Compile Include="Manager\ConvertTaskManager.cs" />
     <Compile Include="Constants\Activator.cs" />
     <Compile Include="Constants\Froms.cs" />
