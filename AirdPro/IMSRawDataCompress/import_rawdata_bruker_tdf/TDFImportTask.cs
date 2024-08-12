@@ -214,7 +214,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
         {
             string message = "";
             //long handle = TDFLibrary.tims_open(this.tdfDir, 2);
-            long handle = TDFLibrary.tims_open_v2(this.tdfDir, 1, 2);
+            long handle = TDFLibrary.tims_open_v2(this.tdfDir, 1, 0);
 
             if (handle == 0)
             {

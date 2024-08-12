@@ -19,12 +19,24 @@ namespace AirdPro.IMSRawDataCompress.datamodel.callbacks
             PrecursorId = precursorId;
             NumPeaks = numPeaks;
 
+            if (pMz == IntPtr.Zero || pIntensities == IntPtr.Zero)
+            {
+                throw new InvalidOperationException("Pointer (pMz or pIntensities) is invalid.");
+            }
+
             if (numPeaks != 0)
             {
                 // 为mz数组分配内存
                 Mzs = new double[numPeaks];
                 // 从非托管内存复制数据到托管数组
-                Marshal.Copy(pMz, Mzs, 0, numPeaks);
+                //Marshal.Copy(pMz, Mzs, 0, numPeaks);
+                for (int i = 0; i < numPeaks; i++)
+                {
+                    // 计算每个元素的起始地址
+                    IntPtr elementPtr = new IntPtr(pMz.ToInt64() + i * sizeof(double));
+                    // 将指针指向的数据结构化为double类型并存储到数组中
+                    Mzs[i] = (double)Marshal.PtrToStructure(elementPtr, typeof(double));
+                }
 
                 // 为强度数组分配内存
                 Intensities = new float[numPeaks];
