@@ -35,7 +35,7 @@ namespace AirdPro.IMSRawDataCompress.Converters
             throw new NotImplementedException();
         }
 
-        public override void showFrames()
+        public override void pwizImportData()
         {
             throw new NotImplementedException();
         }

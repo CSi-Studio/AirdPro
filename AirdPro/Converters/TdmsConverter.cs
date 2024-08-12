@@ -309,7 +309,7 @@ namespace AirdPro.Converters
             JobInfo.SetStatus(ProcessingStatus.FINISHED);
         }
 
-        public override void showFrames()
+        public override void pwizImportData()
         {
             throw new NotImplementedException();
         }

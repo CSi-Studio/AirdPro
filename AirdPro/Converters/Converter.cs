@@ -45,6 +45,6 @@ namespace AirdPro.Converters
         
         public abstract void DoConvert();
 
-        public abstract void showFrames();  // add by Ariel
+        public abstract void pwizImportData();  // add by Ariel
     }
 }
