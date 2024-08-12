@@ -67,6 +67,11 @@ namespace AirdPro.Forms
 
         private void BtnTDFImport_Click(object sender, EventArgs e)
         {
+            if (LbFileNames.SelectedItem == null)
+            {
+                MessageBox.Show("Please select a Bruker vendor file.", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
             string fileName = LbFileNames.SelectedItem.ToString();
             ImportData(fileName);
 

@@ -94,6 +94,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
 
             //import data from db(tdf) file
             ReadMetadata();
+
         }
 
         private void ReadMetadata()

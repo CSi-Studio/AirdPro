@@ -19,9 +19,9 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
         public String GetTableName() { return _tableName; }
         public String GetEntryHeader() { return _keyColumnName; }
         public String GetKeyColumnName() { return _keyColumnName; }
-        public TDFDataTable(string table)
+        public TDFDataTable(string tableName)
         {
-            this._tableName = table ?? throw new ArgumentNullException(nameof(table));
+            this._tableName = tableName ?? throw new ArgumentNullException(nameof(tableName));
             this._columns = new List<IColumnVariant<Object>>();
         }
 
@@ -207,7 +207,6 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
                                 case SqlDbType.Real:
                                 case SqlDbType.Decimal:
                                     (_columns[i] as TDFDataColumn<double>).GetValueList().Add(reader.GetDouble(i));
-                                    //_columns[i].GetValueList().Add(reader.GetDouble(i));
                                     break;
                                 default:
                                     //Logger.LogInformation($"Unsupported type loaded in {Table} {i} {types[i]}");
