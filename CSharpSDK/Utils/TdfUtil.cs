@@ -8,6 +8,7 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace AirdSDK.Utils;
@@ -76,4 +77,7 @@ public class TdfUtil
      **/
     [DllImport("timsdata.dll")]
     public static extern double tims_ccs_to_oneoverk0_for_mz(double ccs, long charge, double mz);
+
+    [DllImport("timsdata.dll")]
+
 }
