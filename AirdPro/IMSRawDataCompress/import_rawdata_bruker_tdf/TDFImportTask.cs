@@ -1,6 +1,7 @@
 ﻿using AirdPro.Domains;
 using AirdPro.Forms;
 using AirdPro.IMSRawDataCompress.datamodel;
+using AirdPro.IMSRawDataCompress.datamodel.callbacks;
 using AirdPro.IMSRawDataCompress.datamodel.sql;
 using AirdSDK.Utils;
 using System;
@@ -8,9 +9,26 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Xml;
 
 namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
 {
+    public class Frame
+    {
+        private int frameId;
+        private CentroidData centroidData;
+
+        public Frame(int frameId, CentroidData centroidData)
+        {
+            this.frameId = frameId;
+            this.centroidData = centroidData;
+        }
+
+        public int FrameId { get => frameId;  }
+        public CentroidData CentroidData { get => centroidData; }
+    }
+
     public class TDFImportTask
     {
         private String tdfDir;
@@ -18,6 +36,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
         private FileInfo tdfBinFile;
         private TDFMetaDataTable metaDataTable;
         private TDFFrameTable tdfFrameTable;
+        private List<Frame> frameList = new List<Frame>();
         private List<String> messages = new List<String>();
         public List<string> Messages
         {
@@ -29,6 +48,8 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             get { return showDetail; }
             set { showDetail = value; }
         }
+
+        public List<Frame> GetFrameList() { return frameList; }
 
         /*private readonly MZmineProject _project;
             private readonly ScanImportProcessorConfig _scanProcessorConfig;
@@ -192,9 +213,9 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
         private void readBinData()
         {
             string message = "";
-            //long handle = TDFLibrary.tims_open_v2(this.tdfDir, 1, 2);
-            long handle = TDFLibrary.tims_open(this.tdfDir, 2);
-            //long handle = AirdSDK.Utils.TdfUtil.tims_open(this.tdfDir, 2);
+            //long handle = TDFLibrary.tims_open(this.tdfDir, 2);
+            long handle = TDFLibrary.tims_open_v2(this.tdfDir, 1, 2);
+
             if (handle == 0)
             {
                 message = $"tims_open with file {this.tdfDir} failed!";
@@ -208,7 +229,35 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
 
             try
             {
-                //
+                frameList.Clear();
+                int numFrames = tdfFrameTable.GetFrameIdColumn().GetValueList().Count;
+                for (int i = 0; i < numFrames; i++)
+                {
+                    int frameId = (int)tdfFrameTable.GetFrameIdColumn().GetValueList()[i];
+                    int numScans = (int)tdfFrameTable.GetNumScansColumn().GetValueList()[i];
+                    float rt = (float)(tdfFrameTable.GetTimeColumn().GetValueList()[i] / 60); // to minutes
+                    //PolarityType polarity = 
+                    //int msLevel = 
+                    //String scanDefinition =
+                    //float accumulationTime = 
+                    Range<Double> mzRange = metaDataTable.GetMzRange();
+
+                    CentroidData data = new CentroidData();
+                    long error = TDFLibrary.tims_extract_centroided_spectrum_for_frame_v2(handle, frameId, 0, numScans, data, null);
+                    if (error == 0)
+                    {
+                        message = $"Could not extract centroid scan for frame {frameId} for scans 0 to {numScans}";
+                        messages.Add(message);
+                        throw new Exception(message);
+                    }
+                    else
+                    {
+                        messages.Add($"Successfully extract centroid scan for frame {frameId} for scans 0 to {numScans}");
+                    }
+
+                    Frame frame = new Frame(frameId, data);
+                    frameList.Add(frame);
+                }
             }
             catch (Exception e)
             {
@@ -218,7 +267,6 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             finally
             {
                 TDFLibrary.tims_close(handle);
-                //AirdSDK.Utils.TdfUtil.tims_close(handle);
             }
         }
     }

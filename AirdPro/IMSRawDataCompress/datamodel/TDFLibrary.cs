@@ -62,7 +62,9 @@ namespace AirdPro.IMSRawDataCompress.datamodel
         [DllImport("timsdata.dll")]
         public static extern long tims_extract_centroided_spectrum_for_frame_v2(long handle, long frame_id, long scan_begin,
       long scan_end, ICentroidCallback callback, Pointer user_data);
-       
+        //public static extern long tims_extract_centroided_spectrum_for_frame_v2(long handle, long frame_id, long scan_begin,
+      //long scan_end, ICentroidCallback callback, IntPtr user_data);
+
         [DllImport("timsdata.dll")]
         public static extern long tims_extract_profile_for_frame(long handle, long frame_id, long scan_begin, long scan_end,
       IProfileCallback callback, Pointer userData);
