@@ -1,5 +1,8 @@
-﻿using AirdPro.Forms;
+﻿using AirdPro.Domains;
+using AirdPro.Forms;
+using AirdPro.IMSRawDataCompress.datamodel;
 using AirdPro.IMSRawDataCompress.datamodel.sql;
+using AirdSDK.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -95,6 +98,8 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             //import data from db(tdf) file
             ReadMetadata();
 
+            //import data from tdb_bin file
+            readBinData();
         }
 
         private void ReadMetadata()
@@ -181,6 +186,39 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                     }
                     messages.Add(oneRow);
                 }
+            }
+        }
+
+        private void readBinData()
+        {
+            string message = "";
+            //long handle = TDFLibrary.tims_open_v2(this.tdfDir, 1, 2);
+            long handle = TDFLibrary.tims_open(this.tdfDir, 2);
+            //long handle = AirdSDK.Utils.TdfUtil.tims_open(this.tdfDir, 2);
+            if (handle == 0)
+            {
+                message = $"tims_open with file {this.tdfDir} failed!";
+                messages.Add(message);
+                throw new Exception(message);
+            }
+            else
+            {
+                messages.Add($"tims_open with file {this.tdfDir} successfully!");
+            }
+
+            try
+            {
+                //
+            }
+            catch (Exception e)
+            {
+                messages.Add(e.Message);
+                throw e;
+            }
+            finally
+            {
+                TDFLibrary.tims_close(handle);
+                //AirdSDK.Utils.TdfUtil.tims_close(handle);
             }
         }
     }
