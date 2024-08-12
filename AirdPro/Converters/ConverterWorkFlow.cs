@@ -8,6 +8,8 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using AirdPro.IMSRawDataCompress.Converters;
+
 namespace AirdPro.Converters
 {
     public abstract class ConverterWorkFlow
@@ -47,7 +49,7 @@ namespace AirdPro.Converters
         public static void DIAPasef(PwizConverter converter)
         {
             converter.InitBrukerMobi();
-            converter.showFrames();     //add by Ariel on 2024/08/011
+            converter.pwizImportData();     //add by Ariel on 2024/08/011
             converter.PredictForIntensityPrecision(); //预测intensity需要保留的精度
             converter.PredictForBestCombination(); //预测最佳压缩组合
             converter.PretreatmentDiaPasef(); //预处理谱图,将MS1和MS2谱图分开存储

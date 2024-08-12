@@ -44,7 +44,6 @@ namespace AirdPro.Converters
         public abstract void InitCompressor();
         
         public abstract void DoConvert();
-
-        public abstract void showFrames();  // add by Ariel
+       
     }
 }

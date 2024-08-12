@@ -31,6 +31,7 @@ using AirdSDK.Beans.Common;
 using AirdSDK.Compressor;
 using AirdSDK.Enums;
 using AirdSDK.Utils;
+using FluentFTP.Helpers;
 using Google.Protobuf;
 using Newtonsoft.Json;
 using pwiz.CLI.analysis;
@@ -1900,27 +1901,34 @@ namespace AirdPro.Converters
             JobInfo.Log("Start Processing MS1 List");
         }
 
-        public override void showFrames()
+        public void pwizImportData()
         {
             ConversionForm.brukerIMMainForm.LbPwizImport.Items.Clear();
             Spectrum spectrum = SpectrumList.spectrum(0, true);
             double[] mzData = spectrum.getMZArray().data.Storage();
             double[] intData = spectrum.getIntensityArray().data.Storage();
-            double[] mobiData = DataUtil.GetMobilityData(spectrum); 
-            var size = mzData.Length;
-            TimsData[] dataArray = new TimsData[size];
-            for (int t = 0; t < size; t++)
-            {
-                dataArray[t] = new TimsData(MobiDict[mobiData[t]], mzData[t], intData[t]);
-            }
-            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("TimsData[] size: " + dataArray.Length);
-            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("\nmz[]: ");
-            for(int i = 0; i < 9; i++)
-            {
-                ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add(mzData[i]+",");
-            }
-            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("mzData[9] ");
+            double[] mobiData = DataUtil.GetMobilityData(spectrum);
+            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("Pwiz  import");
+            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("SpectrumList size: " + SpectrumList.size());
+            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("the first tims data: ");
 
+            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("mzData[" + mzData.Length + "]: ");            
+            for(int i = 0; i < 10; i++)
+            {
+                ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add(mzData[i]);
+            }
+
+            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("intData[" + intData.Length + "]: ");
+            for (int i = 0; i < 10; i++)
+            {
+                ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add(intData[i]);
+            }            
+            
+            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("mobiData[" + mobiData.Length + "]: ");           
+            for (int i = 0; i < 10; i++)
+            {
+                ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add(mobiData[i]);
+            }
         }
     }
 }

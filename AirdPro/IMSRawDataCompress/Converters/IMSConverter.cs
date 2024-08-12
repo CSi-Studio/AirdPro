@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AirdPro.IMSRawDataCompress.Converters
 {
-    internal class IMSConverter : Converter
+    public class IMSConverter : Converter
     {
         public override void DoConvert()
         {
@@ -35,14 +35,14 @@ namespace AirdPro.IMSRawDataCompress.Converters
             throw new NotImplementedException();
         }
 
-        public override void showFrames()
-        {
-            throw new NotImplementedException();
-        }
-
         public override string ToString()
         {
             return base.ToString();
+        }
+
+        public void imsImportData()
+        {
+            throw new NotImplementedException();
         }
 
     }

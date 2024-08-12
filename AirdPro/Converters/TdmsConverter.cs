@@ -12,6 +12,9 @@ using AirdSDK.Compressor;
 using NationalInstruments.Tdms;
 using Newtonsoft.Json;
 using Activator = AirdPro.Constants.Activator;
+using AirdPro.Forms;
+using pwiz.CLI.msdata;
+using Software = AirdSDK.Beans.Software;
 
 namespace AirdPro.Converters
 {
@@ -308,10 +311,6 @@ namespace AirdPro.Converters
             JobInfo.Log(Tag.Total_Time_Cost + Stopwatch.Elapsed.TotalSeconds, Status.Finished);
             JobInfo.SetStatus(ProcessingStatus.FINISHED);
         }
-
-        public override void showFrames()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
