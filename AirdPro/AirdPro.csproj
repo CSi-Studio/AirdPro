@@ -164,7 +164,10 @@
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\ProteomeXchangeDataset.cs" />
     <Compile Include="CommandLine\Options.cs" />
     <Compile Include="Domains\Redis\ConsumeSwitchCommand.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\sql\SQLiteHelper.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\sql\FramePrecursorTable.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\sql\PrmFrameTargetTable.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\sql\TDFMaldiFrameInfoTable.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\sql\TDFPasefFrameMsMsInfoTable.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\TDFLibrary.cs" />
     <Compile Include="IMSRawDataCompress\Forms\BrukerIMMainForm.cs">
       <SubType>Form</SubType>
@@ -179,11 +182,11 @@
       <DependentUpon>CustomPopup.cs</DependentUpon>
     </Compile>
     <Compile Include="IMSRawDataCompress\Converters\IMSConverter.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\callbacks\ICentroidCallback.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\callbacks\CentroidCallback.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\callbacks\CentroidData.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\callbacks\MultipleCentroidData.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\callbacks\MultipleProfileData.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\callbacks\IProfileCallback.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\callbacks\ProfileCallback.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\callbacks\ProfileData.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\DataPoint.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\Frame.cs" />

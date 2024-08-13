@@ -85,12 +85,11 @@ namespace AirdPro.Forms
         private void ImportData(String fileName)
         {
             LbTdfImport.Items.Clear();
+            tdfImportTask = new TDFImportTask();
 
             isImportRunning = true;
             Thread updateThread = new Thread(ShowDetail);
-            updateThread.Start();
-
-            tdfImportTask = new TDFImportTask();
+            updateThread.Start();           
             tdfImportTask.Run(fileName);
             isImportRunning = false;
         }

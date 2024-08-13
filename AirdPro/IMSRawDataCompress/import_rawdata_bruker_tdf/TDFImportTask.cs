@@ -4,9 +4,11 @@ using AirdPro.IMSRawDataCompress.datamodel;
 using AirdPro.IMSRawDataCompress.datamodel.callbacks;
 using AirdPro.IMSRawDataCompress.datamodel.sql;
 using AirdSDK.Utils;
+using CSharpFastPFOR.Port;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -14,26 +16,13 @@ using System.Xml;
 
 namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
 {
-    public class Frame
-    {
-        private int frameId;
-        private CentroidData centroidData;
-
-        public Frame(int frameId, CentroidData centroidData)
-        {
-            this.frameId = frameId;
-            this.centroidData = centroidData;
-        }
-
-        public int FrameId { get => frameId;  }
-        public CentroidData CentroidData { get => centroidData; }
-    }
-
     public class TDFImportTask
     {
-        private String tdfDir;
+        private String fileName;
         private FileInfo tdfFile;
         private FileInfo tdfBinFile;
+        long error;
+        string message;
         private TDFMetaDataTable metaDataTable;
         private TDFFrameTable tdfFrameTable;
         private List<Frame> frameList = new List<Frame>();
@@ -75,42 +64,39 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             private double _lastFinishedPercentage;
             private int _loadedFrames;*/
 
-        public void Run(String tdfDir)
+        public void Run(String fileName)
         {
-            this.messages.Clear();
+            this.fileName = fileName;
+            messages.Clear();
             String message = "";
             // 检查文件夹是否存在
-            if (!Directory.Exists(tdfDir)) 
+            if (!Directory.Exists(fileName)) 
             {
-                message = $"The directory '{tdfDir}' does not exist.";
+                message = $"The directory '{fileName}' does not exist.";
                 this.messages.Add(message);
                 throw new DirectoryNotFoundException(message);
             }
 
             // 定义文件过滤器
-            string tdfFilter = Path.Combine(tdfDir, "*.tdf");
-            string tdfBinFilter = Path.Combine(tdfDir, "*.tdf_bin");
+            string tdfFilter = Path.Combine(fileName, "*.tdf");
+            string tdfBinFilter = Path.Combine(fileName, "*.tdf_bin");
 
             // 获取匹配的文件
-            FileInfo tdfFile = Directory.EnumerateFiles(tdfDir, "*.tdf").Select(f => new FileInfo(f)).FirstOrDefault();
-            FileInfo tdfBinFile = Directory.EnumerateFiles(tdfDir, "*.tdf_bin").Select(f => new FileInfo(f)).FirstOrDefault();
+            tdfFile = Directory.EnumerateFiles(fileName, "*.tdf").Select(f => new FileInfo(f)).FirstOrDefault();
+            tdfBinFile = Directory.EnumerateFiles(fileName, "*.tdf_bin").Select(f => new FileInfo(f)).FirstOrDefault();
 
             // 检查是否找到了文件
             if (tdfFile == null || tdfBinFile == null)
             {
                 message = "Could not find both .tdf and .tdf_bin files in the specified directory.";
-                this.messages.Add(message);
+                messages.Add(message);
                 throw new FileNotFoundException(message);
-            }
-
-            this.tdfDir = tdfDir;
-            this.tdfFile = tdfFile;
-            this.tdfBinFile = tdfBinFile;
+            }            
 
             message = "Selected tdf file: " + tdfFile.FullName;
-            this.messages.Add(message);
+            messages.Add(message);
             message = "Selected tdf_bin file: " + tdfBinFile.FullName;
-            this.messages.Add(message);
+            messages.Add(message);
 
             //init all tables
             metaDataTable = new TDFMetaDataTable();
@@ -212,19 +198,17 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
 
         private void readBinData()
         {
-            string message = "";
-            //long handle = TDFLibrary.tims_open(this.tdfDir, 2);
-            long handle = TDFLibrary.tims_open_v2(this.tdfDir, 1, 0);
-
+            TDFUtils tdfUtils = new TDFUtils();
+            long handle = tdfUtils.openFile(fileName);
             if (handle == 0)
             {
-                message = $"tims_open with file {this.tdfDir} failed!";
+                message = $"open the file {fileName} failed!";
                 messages.Add(message);
                 throw new Exception(message);
             }
             else
             {
-                messages.Add($"tims_open with file {this.tdfDir} successfully!");
+                messages.Add($"open the file {fileName} successfully!");
             }
 
             try
@@ -243,17 +227,36 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                     Range<Double> mzRange = metaDataTable.GetMzRange();
 
                     CentroidData data = new CentroidData();
-                    long error = TDFLibrary.tims_extract_centroided_spectrum_for_frame_v2(handle, frameId, 0, numScans, data, null);
-                    if (error == 0)
+                    int startScanNum = 0;
+                    int endScanNum = numScans;
+                    data = tdfUtils.extractCentroidsForFrame(handle, 2, startScanNum, endScanNum);
+                    if (data == null)
                     {
                         message = $"Could not extract centroid scan for frame {frameId} for scans 0 to {numScans}";
                         messages.Add(message);
                         throw new Exception(message);
                     }
-                    else
+                    double[] mzArray = data.Mzs;
+                    float[] intensityArray = data.Intensities;
+                    //double[] mobilities = tdfUtils.convertScanNumsToMobilities(handle, frameId, scanNums);
+
+                   /* //
+                    double[] mobilities = new double[numScans.Length];
+                    double[] scanNum;
+                    fixed (double* pBuffer = mobilities)
                     {
-                        messages.Add($"Successfully extract centroid scan for frame {frameId} for scans 0 to {numScans}");
-                    }
+                        long error = TDFLibrary.tims_scannum_to_oneoverk0(handle, frameId, scanNum, mobilities, scanNum.Length);
+                        if (error == 0)
+                        {
+                            message = $"Could not convert scan nums to 1/K0 for frame {frameId}";
+                            messages.Add(message);
+                            throw new Exception(message);
+                        }
+                        else
+                        {
+                            messages.Add($"Successfully extract mobilities for frame {frameId} for scans 0 to {numScans}");
+                        }
+                    }               */
 
                     Frame frame = new Frame(frameId, data);
                     frameList.Add(frame);
@@ -266,7 +269,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             }
             finally
             {
-                TDFLibrary.tims_close(handle);
+                tdfUtils.close();
             }
         }
     }

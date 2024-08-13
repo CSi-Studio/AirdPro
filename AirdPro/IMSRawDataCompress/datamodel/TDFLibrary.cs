@@ -32,7 +32,7 @@ namespace AirdPro.IMSRawDataCompress.datamodel
 
         [DllImport("timsdata_x64.dll")]
         public static extern long tims_read_pasef_msms(long handle, long[] precursors, long num_precursors,
-      ICentroidCallback callback);
+      CentroidCallback callback);
 
         [DllImport("timsdata_x64.dll")]
         public static extern long tims_read_pasef_msms_v2(long handle, long[] precursors, long num_precursors,
@@ -60,13 +60,14 @@ namespace AirdPro.IMSRawDataCompress.datamodel
         public static extern double tims_ccs_to_oneoverk0_for_mz(double ccs, long charge, double mz);
         
         [DllImport("timsdata_x64.dll")]
-        public static extern long tims_extract_centroided_spectrum_for_frame_v2(long handle, long frame_id, long scan_begin,long scan_end, ICentroidCallback callback, Pointer user_data);
+        public static extern long tims_extract_centroided_spectrum_for_frame_v2(long handle, long frame_id, long scan_begin,long scan_end, CentroidCallback callback, IntPtr user_data);
         //public static extern long tims_extract_centroided_spectrum_for_frame_v2(long handle, long frame_id, long scan_begin,
-      //long scan_end, ICentroidCallback callback, IntPtr user_data);
+        //long scan_end, CentroidCallback callback, IntPtr user_data);
+     
 
         [DllImport("timsdata_x64.dll")]
         public static extern long tims_extract_profile_for_frame(long handle, long frame_id, long scan_begin, long scan_end,
-      IProfileCallback callback, Pointer userData);
+      ProfileCallback callback, IntPtr user_data);
 
         [DllImport("timsdata_x64.dll")] 
         public static extern void tims_set_num_threads(int numThreads);

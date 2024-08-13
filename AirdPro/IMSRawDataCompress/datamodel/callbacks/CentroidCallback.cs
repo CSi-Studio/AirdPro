@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AirdPro.IMSRawDataCompress.datamodel.callbacks
 {
-    public interface ICentroidCallback
+    public interface CentroidCallback
     {
         void Invoke(long precursorId, int numPeaks, IntPtr pMz, IntPtr pIntensities, IntPtr userData);
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AirdPro.IMSRawDataCompress.datamodel.callbacks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,16 @@ namespace AirdPro.IMSRawDataCompress.datamodel
 {
     public class Frame
     {
-        public double Mobility { get; }
+        private int frameId;
+        private CentroidData centroidData;
 
+        public Frame(int frameId, CentroidData centroidData)
+        {
+            this.frameId = frameId;
+            this.centroidData = centroidData;
+        }
+
+        public int FrameId { get => frameId; }
+        public CentroidData CentroidData { get => centroidData; }
     }
 }

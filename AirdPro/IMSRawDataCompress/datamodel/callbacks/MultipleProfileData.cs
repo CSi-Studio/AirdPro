@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace AirdPro.IMSRawDataCompress.datamodel.callbacks
 {
-    public class MultipleProfileData : IProfileCallback
+    public class MultipleProfileData : ProfileCallback
     {
         // 使用Dictionary来存储谱图数据
         public Dictionary<long, ProfileDataPoints> Spectra { get; private set; }

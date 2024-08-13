@@ -9,7 +9,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace AirdPro.IMSRawDataCompress.datamodel.callbacks
 {
-    public class MultipleCentroidData : ICentroidCallback
+    public class MultipleCentroidData : CentroidCallback
     {
         // 存储质谱数据点的内部类
         public class CentroidDataPoints
