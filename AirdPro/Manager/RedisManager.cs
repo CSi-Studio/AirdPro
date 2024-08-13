@@ -191,6 +191,11 @@ namespace AirdPro.Redis
 
                     jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
                     jobInfo.fromRedis = true;
+                    if (job.remoteId == null || job.remoteId.IsEmpty())
+                    {
+                        Guid uuid = Guid.NewGuid();
+                        job.remoteId = uuid.ToString();
+                    }
                     jobInfo.remoteId = job.remoteId;
                     needToExecute = true;
                 }
