@@ -11,28 +11,28 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
 {
     public abstract class TDFDataTable
     {
-        protected  string _tableName;
-        protected  string _keyColumnName;
-        protected  List<IColumnVariant<Object>> _columns;
-        protected IColumnVariant<Object> _keyColumn;
+        protected  string tableName;
+        protected  string keyColumnName;
+        protected  List<IColumnVariant<Object>> columns;
+        protected IColumnVariant<Object> keyColumn;
 
-        public String GetTableName() { return _tableName; }
-        public String GetEntryHeader() { return _keyColumnName; }
-        public String GetKeyColumnName() { return _keyColumnName; }
+        public String GetTableName() { return tableName; }
+        public String GetEntryHeader() { return keyColumnName; }
+        public String GetKeyColumnName() { return keyColumnName; }
         public TDFDataTable(string tableName)
         {
-            this._tableName = tableName ?? throw new ArgumentNullException(nameof(tableName));
-            this._columns = new List<IColumnVariant<Object>>();
+            this.tableName = tableName ?? throw new ArgumentNullException(nameof(tableName));
+            this.columns = new List<IColumnVariant<Object>>();
         }
 
         public List<IColumnVariant<Object>> GetColumns()
         {
-            return _columns;
+            return columns;
         }
 
         public IColumnVariant<Object> GetKeyColumn()
         {
-            return _keyColumn;
+            return keyColumn;
         }
 
         public void AddKeyColumn(IColumnVariant<Object> column)
@@ -41,9 +41,9 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
                 throw new ArgumentNullException(nameof(column));
 
             //Attention: put KeyColumn to first position of List!!!
-            _columns.Insert(0, column);
-            this._keyColumn = column;
-            this._keyColumnName = column.ColumnName;
+            columns.Insert(0, column);
+            this.keyColumn = column;
+            this.keyColumnName = column.ColumnName;
         }
 
         public void AddColumn(IColumnVariant<Object> column)
@@ -52,12 +52,12 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
                 throw new ArgumentNullException(nameof(column));
 
             //put Column to last position of List
-            _columns.Add(column);
+            columns.Add(column);
         }
 
         public IColumnVariant<Object> GetColumnByName(string columnName)
         {
-            foreach (var column in _columns)
+            foreach (var column in columns)
             {
                 if (column.ColumnName.Equals(columnName))
                     return column as TDFDataColumn<Object>;
@@ -68,7 +68,7 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
         protected string GetColumnHeadersForQuery()
         {
             var headers = new StringBuilder();
-            foreach (var col in _columns)
+            foreach (var col in columns)
             {
                 headers.Append(col.ColumnName + ", ");
             }
@@ -80,8 +80,8 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
 
         public bool IsValid()
         {
-            long numKeys = _keyColumn.Values.Count();
-            foreach (var col in _columns)
+            long numKeys = keyColumn.Values.Count();
+            foreach (var col in columns)
             {
                 if (numKeys != col.Values.Count())
                     return false;
@@ -171,7 +171,7 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
                 using (IDataReader reader = command.ExecuteReader())
                 {
                     SqlDbType[] types = new SqlDbType[reader.FieldCount];
-                    if (types.Length != _columns.Count)
+                    if (types.Length != columns.Count)
                     {
                         //Logger.LogInformation($"Number of retrieved columns does not match number of queried columns for table {Table}.");
                         return false;
@@ -186,7 +186,7 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
                     while (reader.Read())
                     {
                         count++;
-                        for (int i = 0; i < _columns.Count; i++)
+                        for (int i = 0; i < columns.Count; i++)
                         {
                             switch (types[i])
                             {
@@ -195,18 +195,18 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
                                 case SqlDbType.Text:
                                 case SqlDbType.NChar:
                                 case SqlDbType.Char:
-                                    (_columns[i] as TDFDataColumn<string>).GetValueList().Add(reader.GetString(i));
+                                    (columns[i] as TDFDataColumn<string>).GetValueList().Add(reader.GetString(i));
                                     break;
                                 case SqlDbType.Int:
                                 case SqlDbType.BigInt:
                                 case SqlDbType.TinyInt:
                                 case SqlDbType.SmallInt:
-                                    (_columns[i] as TDFDataColumn<long>).GetValueList().Add(reader.GetInt64(i));
+                                    (columns[i] as TDFDataColumn<long>).GetValueList().Add(reader.GetInt64(i));
                                     break;
                                 case SqlDbType.Float:
                                 case SqlDbType.Real:
                                 case SqlDbType.Decimal:
-                                    (_columns[i] as TDFDataColumn<double>).GetValueList().Add(reader.GetDouble(i));
+                                    (columns[i] as TDFDataColumn<double>).GetValueList().Add(reader.GetDouble(i));
                                     break;
                                 default:
                                     //Logger.LogInformation($"Unsupported type loaded in {Table} {i} {types[i]}");
@@ -227,7 +227,7 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
 
         protected string GetQueryText(string columnHeadersForQuery)
         {
-            return $"SELECT {columnHeadersForQuery} FROM {_tableName}";
+            return $"SELECT {columnHeadersForQuery} FROM {tableName}";
         }
 
         public void Print()
@@ -242,10 +242,10 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
             if (obj == null || GetType() != obj.GetType())
                 return false;
             TDFDataTable that = obj as TDFDataTable;
-            return _tableName.Equals(that._tableName) &&
-                   _keyColumnName.Equals(that._keyColumnName) &&
-                   _columns.SequenceEqual(that._columns) &&
-                   _keyColumn.Values.SequenceEqual(that._keyColumn.Values);
+            return tableName.Equals(that.tableName) &&
+                   keyColumnName.Equals(that.keyColumnName) &&
+                   columns.SequenceEqual(that.columns) &&
+                   keyColumn.Values.SequenceEqual(that.keyColumn.Values);
         }
     }
 }

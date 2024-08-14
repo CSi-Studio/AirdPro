@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AirdPro.IMSRawDataCompress.datamodel.sql
+namespace AirdPro.IMSRawDataCompress.datamodel
 {
-    internal class TDFPrecursorTable
+    public interface IMSRawDataFile : RawDataFile
     {
+
     }
 }

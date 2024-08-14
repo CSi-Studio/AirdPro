@@ -164,11 +164,20 @@
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\ProteomeXchangeDataset.cs" />
     <Compile Include="CommandLine\Options.cs" />
     <Compile Include="Domains\Redis\ConsumeSwitchCommand.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\sql\FramePrecursorTable.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\sql\PrmFrameTargetTable.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\sql\TDFMaldiFrameInfoTable.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\sql\TDFPasefFrameMsMsInfoTable.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\TDFLibrary.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\IMSRawDataFile.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\IMSRawDataFileImpl.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\MobilityDataPoint.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\MobilityType.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\RawDataFile.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\Scan.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\BrukerScanMode.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\EnumUtils.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\FramePrecursorTable.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\PrmFrameTargetTable.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFMaldiFrameInfoTable.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFMaldiFrameLaserInfoTable.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFPasefFrameMsMsInfoTable.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\TDFLibrary.cs" />
     <Compile Include="IMSRawDataCompress\Forms\BrukerIMMainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -182,21 +191,21 @@
       <DependentUpon>CustomPopup.cs</DependentUpon>
     </Compile>
     <Compile Include="IMSRawDataCompress\Converters\IMSConverter.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\callbacks\CentroidCallback.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\callbacks\CentroidData.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\callbacks\MultipleCentroidData.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\callbacks\MultipleProfileData.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\callbacks\ProfileCallback.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\callbacks\ProfileData.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\callbacks\CentroidCallback.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\callbacks\CentroidData.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\callbacks\MultipleCentroidData.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\callbacks\MultipleProfileData.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\callbacks\ProfileCallback.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\callbacks\ProfileData.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\DataPoint.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\Frame.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\sql\Range.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\sql\TDFDataColumn.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\sql\TDFDataTable.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\sql\TDFFrameMsMsInfoTable.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\sql\TDFFrameTable.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\sql\TDFMetaDataTable.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\sql\TDFPrecursorTable.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\Range.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFDataColumn.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFDataTable.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFFrameMsMsInfoTable.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFFrameTable.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFMetaDataTable.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFPrecursorTable.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\TDFImportTask.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\TDFUtils.cs" />
     <Compile Include="Manager\ConvertTaskManager.cs" />

@@ -1,18 +1,11 @@
-﻿using AirdPro.Domains;
-using AirdPro.Forms;
-using AirdPro.IMSRawDataCompress.datamodel;
+﻿using AirdPro.IMSRawDataCompress.datamodel;
 using AirdPro.IMSRawDataCompress.datamodel.callbacks;
 using AirdPro.IMSRawDataCompress.datamodel.sql;
-using AirdSDK.Utils;
-using CSharpFastPFOR.Port;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Xml;
 
 namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
 {
@@ -39,30 +32,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
         }
 
         public List<Frame> GetFrameList() { return frameList; }
-
-        /*private readonly MZmineProject _project;
-            private readonly ScanImportProcessorConfig _scanProcessorConfig;
-            private readonly Type _module;
-            private readonly ParameterSet _parameters;
-            //private FileInfo? _fileNameToOpen;
-            //private FileInfo? _tdf;
-            //private FileInfo? _tdfBin;
-            private string _rawDataFileName;
-            //private TDFMetaDataTable _metaDataTable;
-            private TDFFrameTable _frameTable;
-            private TDFPrecursorTable _precursorTable;
-            private TDFPasefFrameMsMsInfoTable _pasefFrameMsMsInfoTable;
-            private TDFFrameMsMsInfoTable _frameMsMsInfoTable;
-            private FramePrecursorTable _framePrecursorTable;
-            private PrmFrameTargetTable _prmFrameTargetTable;
-            private TDFMaldiFrameInfoTable _maldiFrameInfoTable;
-            private TDFMaldiFrameLaserInfoTable _maldiFrameLaserInfoTable;
-            private IMSRawDataFile _newMZmineFile;
-            private bool _isMaldi;
-            //private string _description;
-            private double _finishedPercentage;
-            private double _lastFinishedPercentage;
-            private int _loadedFrames;*/
+        
 
         public void Run(String fileName)
         {
@@ -106,7 +76,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             ReadMetadata();
 
             //import data from tdb_bin file
-            readBinData();
+           // readBinData();
         }
 
         private void ReadMetadata()

@@ -9,9 +9,14 @@ namespace AirdPro.IMSRawDataCompress.datamodel
     public class DataPoint
     {
         public double Mz { get; }
-        public float Intensity { get; }
+        public double Intensity { get; }
 
-        public DataPoint(double mz, float intensity)
+        public DataPoint()
+        {
+            
+        }
+
+        public DataPoint(double mz, double intensity)
         {
             Mz = mz;
             Intensity = intensity;

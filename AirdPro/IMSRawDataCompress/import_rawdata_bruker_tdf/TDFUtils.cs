@@ -1,19 +1,10 @@
-﻿using AirdPro.Constants;
-using AirdPro.IMSRawDataCompress.datamodel.callbacks;
-using AirdPro.IMSRawDataCompress.datamodel.sql;
-using CSharpFastPFOR.Port;
-using log4net.Repository.Hierarchy;
+﻿using AirdPro.IMSRawDataCompress.datamodel.callbacks;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using ThermoFisher.CommonCore.Data.Business;
 
 namespace AirdPro.IMSRawDataCompress.datamodel
 {

@@ -25,7 +25,7 @@ namespace AirdPro.Forms
             {
                 string selectedFolderPath = folderBrowserDialog.SelectedPath;
                 LbFileNames.Items.Clear(); // 清空ListBox
-                                           // 选中的文件就是 .d 文件夹
+                // 选中的文件就是 .d 文件夹
                 if (selectedFolderPath.EndsWith(".d"))
                 {
                     LbFileNames.Items.Add(selectedFolderPath);

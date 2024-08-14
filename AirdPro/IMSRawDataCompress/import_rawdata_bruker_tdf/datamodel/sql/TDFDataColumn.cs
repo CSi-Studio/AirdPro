@@ -12,28 +12,28 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
 
     public class TDFDataColumn<T>  : IColumnVariant<Object> 
     {
-        private string _columnName;
-        private List<T> _valueList;
+        private string columnName;
+        private List<T> valueList;
 
-        public string ColumnName => _columnName;
+        public string ColumnName => columnName;
 
         //Attention: cast保证TDFDataColumn<long>等值类型泛型参数可以正确转换为IEnumerable<Object>!!!
-        public IEnumerable<Object> Values => _valueList.Cast<object>(); 
+        public IEnumerable<Object> Values => valueList.Cast<object>(); 
 
         public TDFDataColumn(string columnName)
         {
-            this._columnName = columnName ?? throw new ArgumentNullException(nameof(columnName));
-            this._valueList = new List<T>();
+            this.columnName = columnName ?? throw new ArgumentNullException(nameof(columnName));
+            this.valueList = new List<T>();
         }
 
         public string GetColumnName()
         {
-            return _columnName;
+            return columnName;
         }
 
         public List<T> GetValueList()
         {
-            return _valueList;
+            return valueList;
         }
     }
 }
