@@ -242,9 +242,11 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                             throw new Exception(message);
                         }
                         //mobility
-                        int[] scanNums = createPopulatedArrayFrom1(numScans);
+                        double[] scanNums = createPopulatedArrayFrom1(numScans);
+                        mobilities = new double[scanNums.Length];
                         messages.Add($"scanNums size{scanNums.Length}");
-                        error = TDFLibrary.tims_scannum_to_oneoverk0(handle, frameId, scanNums.Select(x => (double)x).ToArray(), mobilities, scanNums.Length);
+                        //error = TDFLibrary.tims_scannum_to_oneoverk0(handle, frameId, scanNums.Select(x => (double)x).ToArray(), mobilities, scanNums.Length);
+                        error = TDFLibrary.tims_scannum_to_oneoverk0(handle, frameId, scanNums, mobilities, scanNums.Length);
                         if (error == 0)
                         {
                             messages.Add($"Could not convert scan nums to 1/K0 for frame {frameId}");
@@ -252,12 +254,14 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                     }
 
                     Frame frame = new Frame(frameId);
+                    frame.centroidData = centroidData;
                     frame.mzArray = centroidData.Mzs;
                     frame.intensityArray = centroidData.Intensities;
                     frame.mobilityArray = mobilities;
                     frameList.Add(frame);
-                    messages.Add($"frameId: {frameId}, rt: {rt}, numScans: {numScans}");
-                    messages.Add($"mzArray size: {centroidData.Mzs.Length}, intensityArray size: {centroidData.Intensities.Length}, mobilityArray size: {mobilities.Length}");
+
+                    //for test: 输出内容太多，后续要注释掉
+                    messages.Add($"frameId: {frameId}, rt: {rt}, numScans: {numScans}, mzArray size: {centroidData.Mzs.Length}, intensityArray size: {centroidData.Intensities.Length}, mobilityArray size: {mobilities.Length}");
 
                     if (i > 0 && i % 1000 == 0)
                     {
@@ -282,9 +286,9 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             ShowSomeFrames();
         }
 
-        private int[] createPopulatedArrayFrom1(long numScans)
+        private double[] createPopulatedArrayFrom1(long numScans)
         {
-            int[] scanNums = new int[numScans];
+            double[] scanNums = new double[numScans];
             for (int i = 0; i < numScans; i++)
             {
                 scanNums[i] = i + 1;
@@ -310,7 +314,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                 Messages.Add($"mz array: {strMzs}");
                 string strIntensities = string.Join(", ", frameList[i].CentroidData.Intensities);
                 Messages.Add($"intensity array: {strIntensities}");
-                string strMobilities = string.Join(", ", frameList[i].CentroidData.Intensities);
+                string strMobilities = string.Join(", ", frameList[i].mobilityArray);
                 Messages.Add($"moblility array: {strMobilities}");
                 Messages.Add("-------------------------------------------------");
 
