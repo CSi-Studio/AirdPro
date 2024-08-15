@@ -16,4 +16,5 @@ namespace AirdPro.IMSRawDataCompress.datamodel
         public int FrameId { get => frameId; }
         public CentroidData CentroidData { get => centroidData; }
     }
+
 }

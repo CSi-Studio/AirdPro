@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace AirdPro.IMSRawDataCompress.datamodel
 {
-    public class IMSRawDataFileImpl : IMSRawDataFile
+    public class IMSRawDataFileImpl : IIMSRawData
     {
         // 记录日志
         public static readonly ILogger Logger = LoggerFactory.Create(builder =>

@@ -164,7 +164,9 @@
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\ProteomeXchangeDataset.cs" />
     <Compile Include="CommandLine\Options.cs" />
     <Compile Include="Domains\Redis\ConsumeSwitchCommand.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\IMSRawDataFile.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\IIMSRawDataFile.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\IMSRawData.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\IIMSRawData.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\IMSRawDataFileImpl.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\MassSpectrum.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\MobilityDataPoint.cs" />
@@ -173,9 +175,10 @@
     <Compile Include="IMSRawDataCompress\datamodel\msms\DDAMsMsInfo.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\msms\IDDAMsMsInfo.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\msms\IMsMsInfo.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\RawDataFile.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\IRawData.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\Scan.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\BrukerScanMode.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\callbacks\CentroidData.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\EnumUtils.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\BuildingPASEFMsMSInfo.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\FramePrecursorTable.cs" />
@@ -200,11 +203,10 @@
       <DependentUpon>CustomPopup.cs</DependentUpon>
     </Compile>
     <Compile Include="IMSRawDataCompress\Converters\IMSConverter.cs" />
-    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\callbacks\CentroidCallback.cs" />
-    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\callbacks\CentroidData.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\callbacks\ICentroidCallback.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\callbacks\MultipleCentroidData.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\callbacks\MultipleProfileData.cs" />
-    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\callbacks\ProfileCallback.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\callbacks\IProfileCallback.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\callbacks\ProfileData.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\DataPoint.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\Frame.cs" />

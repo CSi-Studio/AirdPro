@@ -141,7 +141,6 @@
             this.LbFileNames.Name = "LbFileNames";
             this.LbFileNames.Size = new System.Drawing.Size(1259, 264);
             this.LbFileNames.TabIndex = 6;
-            this.LbFileNames.SelectedIndexChanged += new System.EventHandler(this.LBFileNames_SelectedIndexChanged);
             // 
             // panel3
             // 

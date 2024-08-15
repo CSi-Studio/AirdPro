@@ -1,25 +1,38 @@
-﻿using AirdPro.IMSRawDataCompress.datamodel;
-using AirdPro.IMSRawDataCompress.datamodel.callbacks;
-using AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
+using AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql;
+using AirdPro.IMSRawDataCompress.datamodel;
+using AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel;
+using AirdPro.IMSRawDataCompress.datamodel.callbacks;
+using static AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.TDFLibrary;
 
 namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
 {
     public class TDFImportTask
     {
-        private String fileName;
+        private string fileName;
         private FileInfo tdfFile;
-        private FileInfo tdfBinFile;
-        long error;
-        string message;
+        private FileInfo tdfBinFile;        
         private TDFMetaDataTable metaDataTable;
-        private TDFFrameTable tdfFrameTable;
-        private List<Frame> frameList = new List<Frame>();
-        private List<String> messages = new List<String>();
+        private TDFFrameTable frameTable;
+        private TDFPrecursorTable precursorTable;
+        private TDFPasefFrameMsMsInfoTable pasefFrameMsMsInfoTable;
+        private TDFFrameMsMsInfoTable frameMsMsInfoTable;
+        private FramePrecursorTable framePrecursorTable;
+        private PrmFrameTargetTable prmFrameTargetTable;
+        private TDFMaldiFrameInfoTable maldiFrameInfoTable;
+        private TDFMaldiFrameLaserInfoTable maldiFrameLaserInfoTable;
+        private IIMSRawData iMSRawDataFile;
+        private bool isMaldi;
+        private readonly int loadedFrames;
+        private static readonly object LockObject = new();
+        private readonly List<Frame> frameList = new();
+        private readonly List<string> messages = new();
+        
         public List<string> Messages
         {
             get { return messages; }
@@ -30,20 +43,22 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             get { return showDetail; }
             set { showDetail = value; }
         }
-
         public List<Frame> GetFrameList() { return frameList; }
-        
 
-        public void Run(String fileName)
+        long error;
+        string message;
+
+
+        public void Run(string fileName)
         {
             this.fileName = fileName;
             messages.Clear();
-            String message = "";
+            //String message = "";
             // 检查文件夹是否存在
             if (!Directory.Exists(fileName)) 
             {
                 message = $"The directory '{fileName}' does not exist.";
-                this.messages.Add(message);
+                messages.Add(message);
                 throw new DirectoryNotFoundException(message);
             }
 
@@ -70,13 +85,25 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
 
             //init all tables
             metaDataTable = new TDFMetaDataTable();
-            tdfFrameTable = new TDFFrameTable();
+            frameTable = new TDFFrameTable();
+            precursorTable = new TDFPrecursorTable();
+            pasefFrameMsMsInfoTable = new TDFPasefFrameMsMsInfoTable();
+            prmFrameTargetTable = new PrmFrameTargetTable();
+            frameMsMsInfoTable = new TDFFrameMsMsInfoTable();
+            framePrecursorTable = new FramePrecursorTable();
+
+            maldiFrameInfoTable = new TDFMaldiFrameInfoTable();
+            maldiFrameLaserInfoTable = new TDFMaldiFrameLaserInfoTable();
+            isMaldi = false;
 
             //import data from db(tdf) file
             ReadMetadata();
 
+            //
+            //iMSRawDataFile.setStartTimeStamp(metaDataTable.getAcquisitionDateTime());
+
             //import data from tdb_bin file
-           // readBinData();
+            ReadBinData();
         }
 
         private void ReadMetadata()
@@ -102,15 +129,15 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                             metaDataTable.ExecuteQuery(connection);
                             message = "fetched records: " + (metaDataTable.GetKeyColumn().Values.Count());
                             messages.Add(message);
-                            showTableData(metaDataTable);
+                            ShowTableData(metaDataTable);
 
                             //import frames
-                            message = $"Reading metadata from " + tdfFrameTable.GetTableName() + " ...";
+                            message = $"Reading metadata from " + frameTable.GetTableName() + " ...";
                             messages.Add(message);
-                            tdfFrameTable.ExecuteQuery(connection);
-                            message = "fetched records: " + (tdfFrameTable.GetKeyColumn().Values.Count());
+                            frameTable.ExecuteQuery(connection);
+                            message = "fetched records: " + (frameTable.GetKeyColumn().Values.Count());
                             messages.Add(message);
-                            showTableData(tdfFrameTable);
+                            ShowTableData(frameTable);
 
                             connection.Close();
                         }
@@ -132,7 +159,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
         }
 
         //用于测试或调试
-        private void showTableData(TDFDataTable dataTable, int countLimit = 30)
+        private void ShowTableData(TDFDataTable dataTable, int countLimit = 30)
         {
             if (showDetail)
             {
@@ -166,10 +193,11 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             }
         }
 
-        private void readBinData()
+        private void ReadBinData()
         {
             TDFUtils tdfUtils = new TDFUtils();
-            long handle = tdfUtils.openFile(fileName);
+            //long handle = tdfUtils.openFile(fileName);
+            long handle = TDFLibrary.tims_open_v2(this.fileName, 1, 0);
             if (handle == 0)
             {
                 message = $"open the file {fileName} failed!";
@@ -184,53 +212,81 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             try
             {
                 frameList.Clear();
-                int numFrames = tdfFrameTable.GetFrameIdColumn().GetValueList().Count;
+                int numFrames = frameTable.GetFrameIdColumn().GetValueList().Count;
+                //for test: 最多取100条
+                numFrames = numFrames > 100 ? 100 : numFrames;
                 for (int i = 0; i < numFrames; i++)
                 {
-                    int frameId = (int)tdfFrameTable.GetFrameIdColumn().GetValueList()[i];
-                    int numScans = (int)tdfFrameTable.GetNumScansColumn().GetValueList()[i];
-                    float rt = (float)(tdfFrameTable.GetTimeColumn().GetValueList()[i] / 60); // to minutes
+                    int frameId = (int)frameTable.GetFrameIdColumn().GetValueList()[i];
+                    int numScans = (int)frameTable.GetNumScansColumn().GetValueList()[i];
+                    float rt = (float)(frameTable.GetTimeColumn().GetValueList()[i] / 60); // to minutes
                     //PolarityType polarity = 
                     //int msLevel = 
                     //String scanDefinition =
                     //float accumulationTime = 
                     Range<Double> mzRange = metaDataTable.GetMzRange();
 
-                    CentroidData data = new CentroidData();
-                    int startScanNum = 0;
-                    int endScanNum = numScans;
-                    data = tdfUtils.extractCentroidsForFrame(handle, 2, startScanNum, endScanNum);
-                    if (data == null)
+                    CentroidData centroidData = null;
+                    //Give a callback impl, which will be called by DLL function and DLL function will pass values to the first 4 parameters
+                    CentroidCallback centroidCallbackImpl = new CentroidCallback((precursorId, numPeaks, pMz, pIntensities, userData) =>
                     {
-                        message = $"Could not extract centroid scan for frame {frameId} for scans 0 to {numScans}";
-                        messages.Add(message);
-                        throw new Exception(message);
-                    }
-                    double[] mzArray = data.Mzs;
-                    float[] intensityArray = data.Intensities;
-                    //double[] mobilities = tdfUtils.convertScanNumsToMobilities(handle, frameId, scanNums);
+                        //方案1：可以仅仅写下面一行代码来实现，将具体逻辑放到CentroidData的构造方法中，但可读性差一些
+                        //centroidData = new CentroidData(precursorId, numPeaks, pMz, pIntensities);
 
-                   /* //
-                    double[] mobilities = new double[numScans.Length];
-                    double[] scanNum;
-                    fixed (double* pBuffer = mobilities)
-                    {
-                        long error = TDFLibrary.tims_scannum_to_oneoverk0(handle, frameId, scanNum, mobilities, scanNum.Length);
-                        if (error == 0)
+                        //方案2：将具体实现放在这里，可读性强一些，更容易理解
+                        if (numPeaks != 0)
                         {
-                            message = $"Could not convert scan nums to 1/K0 for frame {frameId}";
-                            messages.Add(message);
-                            throw new Exception(message);
+                            if (pMz == IntPtr.Zero || pIntensities == IntPtr.Zero)
+                            {
+                                throw new InvalidOperationException("Construct CentroidData failed for Pointer (pMz or pIntensities) is invalid.");
+                            }
+
+                            // 为mz数组分配内存
+                            double[] Mzs = new double[numPeaks];
+                            // 从非托管内存复制数据到托管数组 (double和float不同，不能使用相同的代码）
+                            for (int i = 0; i < numPeaks; i++)
+                            {
+                                // 计算每个元素的起始地址
+                                IntPtr elementPtr = new IntPtr(pMz.ToInt64() + i * sizeof(double));
+                                // 将指针指向的数据结构化为double类型并存储到数组中
+                                Mzs[i] = (double)Marshal.PtrToStructure(elementPtr, typeof(double));
+                            }
+
+                            // 为强度数组分配内存
+                            float[] Intensities = new float[numPeaks];
+                            // 从非托管内存复制数据到托管数组（float数组的操作比较简单一些）
+                            Marshal.Copy(pIntensities, Intensities, 0, numPeaks);
+
+                            // 创建 CentroidData 对象并填充数据
+                            centroidData = new CentroidData(precursorId, numPeaks, Mzs, Intensities);
                         }
                         else
                         {
-                            messages.Add($"Successfully extract mobilities for frame {frameId} for scans 0 to {numScans}");
+                            // 如果没有峰值，则使用空数组
+                            centroidData = new CentroidData(precursorId, numPeaks, Array.Empty<double>(), Array.Empty<float>());
                         }
-                    }               */
+                    });
+                    lock (LockObject)
+                    {
+                        long error = TDFLibrary.tims_extract_centroided_spectrum_for_frame_v2(handle, frameId, 0, numScans, centroidCallbackImpl, IntPtr.Zero);
+                        if (error == 0)
+                        {
+                            message = $"Could not extract centroid scan from frame {frameId} for scans 0 to {numScans}";
+                            messages.Add(message);
+                            throw new Exception(message);
+                        }
+                    }
 
-                    Frame frame = new Frame(frameId, data);
+                    Frame frame = new Frame(frameId, centroidData);
                     frameList.Add(frame);
+
+                    if (i > 0 && i % 1000 == 0)
+                    {
+                        messages.Add($"{DateTime.Now:yyyyMMdd HH:mm:ss}: loaded {i} frames, percentage {((float)i / (float)numFrames):P2}");
+                    }
                 }
+
+                messages.Add($"{DateTime.Now:yyyyMMdd HH:mm:ss}: successfully loaded all {frameList.Count} frames!");
             }
             catch (Exception e)
             {
@@ -239,7 +295,33 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             }
             finally
             {
-                tdfUtils.close();
+                TDFLibrary.tims_close(handle);
+            }
+
+            //show first 5 frame
+            ShowSomeFrames();
+        }
+
+        void ShowSomeFrames(int showNum = 5)
+        {
+            int showCount = frameList.Count > showNum ? showNum : frameList.Count;
+            if (showCount > 0)
+            {
+                Messages.Add($"Show first {showCount} frames' detail information below:");
+                Messages.Add("-------------------------------------------------");
+            }
+
+            for (int i = 0; i < showCount; i++)
+            {
+                Messages.Add($"frameid: {frameList[i].FrameId}");
+                Messages.Add($"CentroidData.PrecursorId: {frameList[i].CentroidData.PrecursorId}");
+                Messages.Add($"CentroidData.NumPeaks: {frameList[i].CentroidData.NumPeaks}");
+                string strMzs = string.Join(", ", frameList[i].CentroidData.Mzs);
+                Messages.Add($"CentroidData.Mzs: {strMzs}");
+                string strIntensities = string.Join(", ", frameList[i].CentroidData.Intensities);
+                Messages.Add($"CentroidData.Intensities: {strIntensities}");
+                Messages.Add("-------------------------------------------------");
+
             }
         }
     }

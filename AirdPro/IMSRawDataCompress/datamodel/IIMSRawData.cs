@@ -1,9 +1,7 @@
 ﻿namespace AirdPro.IMSRawDataCompress.datamodel
 {
-    public interface RawDataFile
+    public interface IIMSRawData : IRawData
     {
-        
-        
 
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AirdPro.Forms
@@ -10,6 +11,7 @@ namespace AirdPro.Forms
     {
         private bool isImportRunning;
         TDFImportTask tdfImportTask;
+        TaskCompletionSource<bool> taskCompletionSource;
         public BrukerIMMainForm()
         {
             InitializeComponent();
@@ -56,12 +58,6 @@ namespace AirdPro.Forms
             LbPwizImport.Items.Clear();
             LbTdfImport.Items.Clear();
         }
-
-        private void BtnPwizImport_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void BtnTDFImport_Click(object sender, EventArgs e)
         {
             if (LbFileNames.SelectedItem == null)
@@ -86,9 +82,31 @@ namespace AirdPro.Forms
 
             isImportRunning = true;
             Thread updateThread = new Thread(ShowDetail);
-            updateThread.Start();           
-            tdfImportTask.Run(fileName);
-            isImportRunning = false;
+            updateThread.Start();
+            //下面两行代码会阻塞updateThread，导致界面上长时间没有显示
+            //tdfImportTask.Run(fileName);
+            //isImportRunning = false;
+
+            //改进方案： 使用 Task.Run 来异步执行 Run 方法
+            taskCompletionSource = new TaskCompletionSource<bool>();
+            Task.Run(() =>
+            {
+                try
+                {
+                    tdfImportTask.Run(fileName);
+                    taskCompletionSource.SetResult(true); // 表示任务已完成
+                }
+                catch (Exception ex)
+                {
+                    taskCompletionSource.SetException(ex); // 表示任务出现异常
+                }
+            });
+
+            // 等待 Task 完成后设置 isImportRunning 为 false
+            taskCompletionSource.Task.ContinueWith(t =>
+            {
+                isImportRunning = false;
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         void ShowDetail()
@@ -105,12 +123,22 @@ namespace AirdPro.Forms
                             {
                                 // 更新ListBox
                                 LbTdfImport.Items.Add(tdfImportTask.Messages[0]);
+                                if (LbTdfImport.Items.Count > 0)
+                                {
+                                    LbTdfImport.SelectedIndex = LbTdfImport.Items.Count - 1;
+                                    LbTdfImport.SelectedIndex = -1;
+                                }
                             }));
                         }
                         else
                         {
                             // 更新ListBox
                             LbTdfImport.Items.Add(tdfImportTask.Messages[0]);
+                            if (LbTdfImport.Items.Count > 0)
+                            {
+                                LbTdfImport.SelectedIndex = LbTdfImport.Items.Count - 1;
+                                LbTdfImport.SelectedIndex = -1;
+                            }
                         }
                         tdfImportTask.Messages.RemoveAt(0);
                     }
@@ -118,7 +146,5 @@ namespace AirdPro.Forms
                 }
             }
         }
-
-
     }
 }

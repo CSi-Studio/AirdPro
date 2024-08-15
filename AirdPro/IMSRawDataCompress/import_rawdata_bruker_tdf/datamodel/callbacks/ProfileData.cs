@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace AirdPro.IMSRawDataCompress.datamodel.callbacks
 {
-    public class ProfileData : ProfileCallback
+    public class ProfileData : IProfileCallback
     {
         public long id;
         public long num_points;

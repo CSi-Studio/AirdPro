@@ -70,14 +70,14 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             return handle;
         }
 
-        public CentroidData extractCentroidsForFrame(long handle, long frameId, int startScanNum, int endScanNum)
+       /* public CentroidData extractCentroidsForFrame(long handle, long frameId, int startScanNum, int endScanNum)
         {
-            if (handle == 0L)
+            *//*if (handle == 0L)
             {
                 throw new InvalidOperationException("No TDF data file opened yet.");
             }
 
-            CentroidData data = new CentroidData();
+            CentroidData data = new ();
 
             lock (tdfLibLock)
             {
@@ -92,8 +92,8 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                     return data;
                 }
 
-            }
-        }
+            }*//*
+        }*/
 
         public double[] convertScanNumsToMobilities(long handle, long frameId, int[] scanNums)
         {
