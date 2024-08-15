@@ -35,9 +35,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
             base.AddColumn(chargeColumn);
             ceColumn = new TDFDataColumn<double>(COLLISION_ENERGY);
             base.AddColumn(ceColumn);
-        }
-
-        
+        }        
 
         public IDDAMsMsInfo GetDDAMsMsInfo(int index, int msLevel, Scan msmsScan, Scan parentScan)
         {

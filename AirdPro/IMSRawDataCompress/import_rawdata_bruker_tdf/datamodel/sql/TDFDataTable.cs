@@ -63,7 +63,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
             return null;
         }
 
-        protected string GetColumnNamesForQuery()
+        public virtual string GetColumnNamesForQuery()
         {
             var headers = new StringBuilder();
             foreach (var col in columns)
@@ -153,7 +153,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
                 throw new ArgumentException("Unsupported type: " + type.FullName);
         }
 
-        virtual public bool ExecuteQuery(IDbConnection connection)
+        public virtual bool ExecuteQuery(IDbConnection connection)
         {
             try
             {
@@ -223,7 +223,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
             }
         }
 
-        protected string GetQueryText(string columnHeadersForQuery)
+        public virtual string GetQueryText(string columnHeadersForQuery)
         {
             return $"SELECT {columnHeadersForQuery} FROM {tableName}";
         }

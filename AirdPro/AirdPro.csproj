@@ -184,6 +184,8 @@
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFMaldiFrameInfoTable.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFMaldiFrameLaserInfoTable.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFPasefFrameMsMsInfoTable.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFPrmFrameMsMsInfoTable.cs" />
+    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFPrmTargetsTable.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\TDFLibrary.cs" />
     <Compile Include="IMSRawDataCompress\Forms\BrukerIMMainForm.cs">
       <SubType>Form</SubType>
