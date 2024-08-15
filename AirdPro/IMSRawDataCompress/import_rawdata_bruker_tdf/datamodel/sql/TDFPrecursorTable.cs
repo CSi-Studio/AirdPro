@@ -1,11 +1,4 @@
-﻿using AirdPro.Constants;
-using Google.Protobuf.WellKnownTypes;
-using StackExchange.Redis;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
-using System;
-using CSharpFastPFOR.Port;
-using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
 {

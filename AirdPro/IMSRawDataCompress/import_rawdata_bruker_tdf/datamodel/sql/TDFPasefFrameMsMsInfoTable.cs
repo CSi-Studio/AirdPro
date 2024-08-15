@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
 {
@@ -25,10 +21,8 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
 
         public TDFPasefFrameMsMsInfoTable() : base(PASEF_FRAME_MSMS_TABLE_NAME)
         {
-            // added by constructor
-            frameIdColumn = (TDFDataColumn<long>)GetColumn(TDFPasefFrameMsMsInfoTable.FRAME_ID);
-
-            // add manually
+            frameIdColumn = new TDFDataColumn<long>(FRAME_ID);
+            base.AddKeyColumn(frameIdColumn);
             precursorIdColumn = new TDFDataColumn<long>(PRECURSOR_ID);
             base.AddColumn(precursorIdColumn);
             scanNumBeginColumn = new TDFDataColumn<long>(SCAN_NUM_BEGIN);
