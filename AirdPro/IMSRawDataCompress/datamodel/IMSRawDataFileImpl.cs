@@ -1,13 +1,7 @@
-﻿using AirdPro.Constants;
-using AirdPro.IMSRawDataCompress.datamodel.sql;
-using AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AirdPro.IMSRawDataCompress.datamodel
 {

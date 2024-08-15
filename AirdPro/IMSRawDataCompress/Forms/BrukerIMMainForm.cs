@@ -1,9 +1,6 @@
-﻿using AirdPro.IMSRawDataCompress.datamodel.sql;
-using AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf;
+﻿using AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf;
 using System;
-using System.Data.SQLite;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 

@@ -1,6 +1,6 @@
 ﻿using AirdPro.IMSRawDataCompress.datamodel;
 using AirdPro.IMSRawDataCompress.datamodel.callbacks;
-using AirdPro.IMSRawDataCompress.datamodel.sql;
+using AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AirdPro.IMSRawDataCompress.datamodel.sql
+namespace AirdPro.IMSRawDataCompress.datamodel
 {
     public class Range<T> where T : IComparable<T>
     {

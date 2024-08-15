@@ -1,4 +1,5 @@
 ﻿using AirdPro.IMSRawDataCompress.datamodel.callbacks;
+using AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 
-namespace AirdPro.IMSRawDataCompress.datamodel
+namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
 {
     public class TDFUtils
     {

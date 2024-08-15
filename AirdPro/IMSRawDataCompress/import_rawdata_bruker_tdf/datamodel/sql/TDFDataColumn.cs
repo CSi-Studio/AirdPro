@@ -2,18 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AirdPro.IMSRawDataCompress.datamodel.sql
+namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
 {
-    public interface IColumnVariant<out T>
+    public class TDFDataColumn<T>  : IDataColumn<Object> 
     {
-        string ColumnName { get; }
-        IEnumerable<T> Values { get; } // 使用IEnumerable<T>来提供协变性
-    }
-
-    public class TDFDataColumn<T>  : IColumnVariant<Object> 
-    {
-        private string columnName;
-        private List<T> valueList;
+        private readonly string columnName;
+        private readonly List<T> valueList;
 
         public string ColumnName => columnName;
 

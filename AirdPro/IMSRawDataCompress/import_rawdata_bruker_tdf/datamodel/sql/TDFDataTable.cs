@@ -2,40 +2,41 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AirdPro.IMSRawDataCompress.datamodel.sql
+namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
 {
     public abstract class TDFDataTable
     {
         protected  string tableName;
         protected  string keyColumnName;
-        protected  List<IColumnVariant<Object>> columns;
-        protected IColumnVariant<Object> keyColumn;
+        protected  List<IDataColumn<Object>> columns;
+        protected IDataColumn<Object> keyColumn;
 
         public String GetTableName() { return tableName; }
-        public String GetEntryHeader() { return keyColumnName; }
+        //public String GetEntryHeader() { return keyColumnName; }
         public String GetKeyColumnName() { return keyColumnName; }
         public TDFDataTable(string tableName)
         {
             this.tableName = tableName ?? throw new ArgumentNullException(nameof(tableName));
-            this.columns = new List<IColumnVariant<Object>>();
+            this.columns = new List<IDataColumn<Object>>();
         }
 
-        public List<IColumnVariant<Object>> GetColumns()
+        public List<IDataColumn<Object>> GetColumns()
         {
             return columns;
         }
 
-        public IColumnVariant<Object> GetKeyColumn()
+        public IDataColumn<Object> GetKeyColumn()
         {
             return keyColumn;
         }
 
-        public void AddKeyColumn(IColumnVariant<Object> column)
+        public void AddKeyColumn(IDataColumn<Object> column)
         {
             if (column == null)
                 throw new ArgumentNullException(nameof(column));
@@ -46,7 +47,7 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
             this.keyColumnName = column.ColumnName;
         }
 
-        public void AddColumn(IColumnVariant<Object> column)
+        public void AddColumn(IDataColumn<Object> column)
         {
             if (column == null)
                 throw new ArgumentNullException(nameof(column));
@@ -55,7 +56,7 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
             columns.Add(column);
         }
 
-        public IColumnVariant<Object> GetColumnByName(string columnName)
+        public IDataColumn<Object> GetColumn(string columnName)
         {
             foreach (var column in columns)
             {
@@ -65,7 +66,7 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
             return null;
         }
 
-        protected string GetColumnHeadersForQuery()
+        protected string GetColumnNamesForQuery()
         {
             var headers = new StringBuilder();
             foreach (var col in columns)
@@ -162,7 +163,7 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
                 IDbCommand command = connection.CreateCommand();
                 command.CommandTimeout = 30;
 
-                string headers = GetColumnHeadersForQuery();
+                string headers = GetColumnNamesForQuery();
                 if (string.IsNullOrEmpty(headers))
                     return false;
 
@@ -246,6 +247,16 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
                    keyColumnName.Equals(that.keyColumnName) &&
                    columns.SequenceEqual(that.columns) &&
                    keyColumn.Values.SequenceEqual(that.keyColumn.Values);
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

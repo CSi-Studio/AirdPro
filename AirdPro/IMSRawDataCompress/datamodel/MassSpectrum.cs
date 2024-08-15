@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AirdPro.IMSRawDataCompress.datamodel
 {
-    public class Scan
+    internal class MassSpectrum
     {
     }
 }

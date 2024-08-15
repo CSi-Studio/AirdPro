@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace AirdPro.IMSRawDataCompress.datamodel
+namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel
 {
     public class TDFLibrary
     {

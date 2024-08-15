@@ -1,26 +1,26 @@
-﻿using System;
+﻿using AirdPro.IMSRawDataCompress.datamodel;
+using System;
 using System.Collections.Generic;
 
-namespace AirdPro.IMSRawDataCompress.datamodel.sql
+namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
 {
     public class TDFMetaDataTable : TDFDataTable
     {
         private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public const string METADATA_TABLE = "GlobalMetadata";
-        public const string VALUE_COLUMN = "Value";
         public const string KEY_COLUMN = "Key";
+        public const string VALUE_COLUMN = "Value";        
 
-        private static readonly List<string> AllowedFileVersions = new List<string> { "3.1", "3.2" };
+        //private static readonly List<string> AllowedFileVersions = new List<string> { "3.1", "3.2" };
 
-        private readonly TDFDataColumn<string> valueCol;
         private readonly TDFDataColumn<string> keyCol;
+        private readonly TDFDataColumn<string> valueCol;        
 
         public TDFMetaDataTable(): base(METADATA_TABLE)
         {
             keyCol = new TDFDataColumn<string>(KEY_COLUMN)  ;
             base.AddKeyColumn(keyCol);
-            //keyCol = (TDFDataColumn<string>)base.Columns[0];
             valueCol = new TDFDataColumn<string>(VALUE_COLUMN);
             base.AddColumn(valueCol);
         }
@@ -28,13 +28,13 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
         private Range<double> mzRange;
         private string instrumentType;
 
-        public bool HasLineSpectra()
+       /* public bool HasLineSpectra()
         {
             int index = keyCol.GetValueList().IndexOf(Keys.HasLineSpectra.ToString());
             return index != -1 && int.Parse(valueCol.GetValueList()[index]) == 1;
-        }
+        }*/
 
-        public bool IsFileVersionValid()
+        /*public bool IsFileVersionValid()
         {
             if (valueCol == null)
             {
@@ -50,7 +50,7 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
             }
 
             return true;
-        }
+        }*/
 
         public override bool ExecuteQuery(System.Data.IDbConnection connection)
         {

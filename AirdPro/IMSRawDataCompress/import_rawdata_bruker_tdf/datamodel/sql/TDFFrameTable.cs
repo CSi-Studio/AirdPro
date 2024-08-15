@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
 
-namespace AirdPro.IMSRawDataCompress.datamodel.sql
+namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
 {
     public class TDFFrameTable : TDFDataTable
     {
         public const string FRAME_TABLE_NAME = "Frames";
+
         public const string FRAME_ID = "Id";
         public const string TIME = "Time";
         public const string POLARITY = "Polarity";
@@ -46,57 +47,41 @@ namespace AirdPro.IMSRawDataCompress.datamodel.sql
         {
             frameIdColumn = new TDFDataColumn<long>(FRAME_ID);
             base.AddKeyColumn(frameIdColumn);
-
             timeColumn = new TDFDataColumn<double>(TIME);
             base.AddColumn(timeColumn);
-
             polarityColumn = new TDFDataColumn<string>(POLARITY);
             base.AddColumn(polarityColumn);
-
             scanModeColumn = new TDFDataColumn<long>(SCAN_MODE);
             base.AddColumn(scanModeColumn);
-
             msMsTypeColumn = new TDFDataColumn<long>(MSMS_TYPE);
             base.AddColumn(msMsTypeColumn);
-
             timsIdColumn = new TDFDataColumn<long>(TIMS_ID);
             base.AddColumn(timsIdColumn);
-
             maxIntensityColumn = new TDFDataColumn<long>(MAX_INTENSITY);
             base.AddColumn(maxIntensityColumn);
-
             summedIntensityColumn = new TDFDataColumn<long>(SUMMED_INTENSITIES);
             base.AddColumn(summedIntensityColumn);
-
             numScansColumn = new TDFDataColumn<long>(NUM_SCANS);
             base.AddColumn(numScansColumn);
-
             numPeaksColumn = new TDFDataColumn<long>(NUM_PEAKS);
             base.AddColumn(numPeaksColumn);
-
             mzCalibrationColumn = new TDFDataColumn<long>(MZ_CALIBRATION);
             base.AddColumn(mzCalibrationColumn);
-
             t1Column = new TDFDataColumn<double>(T1);
             base.AddColumn(t1Column);
-
             t2Column = new TDFDataColumn<double>(T2);
             base.AddColumn(t2Column);
-
             timsCalibrationColumn = new TDFDataColumn<long>(TIMS_CALIBRATION);
             base.AddColumn(timsCalibrationColumn);
-
             propertyGroupColumn = new TDFDataColumn<long>(PROPERTY_GROUP);
             base.AddColumn(propertyGroupColumn);
-
             accumulationTimeColumn = new TDFDataColumn<double>(ACCUMULATION_TIME);
             base.AddColumn(accumulationTimeColumn);
-
             rampTimeColumn = new TDFDataColumn<double>(RAMP_TIME);
             base.AddColumn(rampTimeColumn);
         }
 
-        public long GetFirstFrameNumber()
+        public long FirstFrameId()
         {
             return GetFrameIdColumn().GetValueList().First();
         }
