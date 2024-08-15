@@ -1,7 +1,6 @@
 ﻿using AirdPro.IMSRawDataCompress.datamodel;
 using AirdPro.IMSRawDataCompress.datamodel.msms;
 
-
 namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
 {
     public class TDFFrameMsMsInfoTable : TDFDataTable

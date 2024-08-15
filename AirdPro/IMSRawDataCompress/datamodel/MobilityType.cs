@@ -1,14 +1,4 @@
-﻿using AirdPro.Constants;
-using Google.Protobuf.WellKnownTypes;
-using StackExchange.Redis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
-
-namespace AirdPro.IMSRawDataCompress.datamodel
+﻿namespace AirdPro.IMSRawDataCompress.datamodel
 {
     public class MobilityType
     {

@@ -1,6 +1,5 @@
 ﻿using AirdPro.IMSRawDataCompress.datamodel;
 using System;
-using System.Collections.Generic;
 
 namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
 {
