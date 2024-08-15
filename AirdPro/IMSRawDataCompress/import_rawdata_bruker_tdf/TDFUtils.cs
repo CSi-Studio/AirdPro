@@ -12,8 +12,8 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
     public class TDFUtils
     {
         // 定义常量
-        public const int SCAN_PACKAGE_SIZE = 5_000;
-        public const int BUFFER_SIZE_INCREMENT = 100_000; // 每次失败时增加100KB
+        //public const int SCAN_PACKAGE_SIZE = 5_000;
+        //public const int BUFFER_SIZE_INCREMENT = 100_000; // 每次失败时增加100KB
 
         // 日志记录器
         private static readonly ILogger Logger = LoggerFactory.Create(builder =>
@@ -22,26 +22,26 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
         }).CreateLogger<TDFUtils>();
 
         // 保留RT格式的NumberFormatInfo实例（C#中用于格式化数字）
-        private readonly NumberFormatInfo rtFormat = CultureInfo.InvariantCulture.NumberFormat;
+        //private readonly NumberFormatInfo rtFormat = CultureInfo.InvariantCulture.NumberFormat;
 
         // 用于缓存索引到m/z值的字典
-        private readonly Dictionary<int, double> indexToMzBuffer = new Dictionary<int, double>();
+        //private readonly Dictionary<int, double> indexToMzBuffer = new();
 
         // 用于缓存索引映射的字典
-        private readonly Dictionary<int, int> indicesToIndexMap = new Dictionary<int, int>();
+        //private readonly Dictionary<int, int> indicesToIndexMap = new();
 
         // 初始缓冲区大小
-        public int BUFFER_SIZE { get; } = 300000; // 初始大小300KB
+        //public int BUFFER_SIZE { get; } = 300000; // 初始大小300KB
 
-        // TDF库的实例（假设TDFLibrary是一个定义了与原生TDF库交互的类）
+        // TDF库的实例
         private TDFLibrary tdfLib = null;
 
         // 用于存储文件路径的字段
-        private FileInfo file;
+        //private FileInfo file;
 
         private long handle = 0L;
 
-        private object tdfLibLock = new object();
+        private object tdfLibLock = new();
 
         public IntPtr Handle { get; set; }
 
@@ -60,40 +60,15 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                 TDFLibrary.tims_close(handle);
             }
             handle = 0L;
-            file = null;
+            //file = null;
         }
 
         public long openFile(String fileName)
         {
-            //long handle = TDFLibrary.tims_open(fileName, 2);
-            long handle = TDFLibrary.tims_open_v2(fileName, 1, 0);
-            return handle;
+            return TDFLibrary.tims_open_v2(fileName, 1, 0);
         }
 
-       /* public CentroidData extractCentroidsForFrame(long handle, long frameId, int startScanNum, int endScanNum)
-        {
-            *//*if (handle == 0L)
-            {
-                throw new InvalidOperationException("No TDF data file opened yet.");
-            }
 
-            CentroidData data = new ();
-
-            lock (tdfLibLock)
-            {
-                long error = TDFLibrary.tims_extract_centroided_spectrum_for_frame_v2(handle, 2, 1, 667, data, IntPtr.Zero);
-                if (error == 0L)
-                {
-                    Logger.LogError($"Error extracting centroided spectrum for frame: {error}");
-                    return null;
-                }
-                else
-                {
-                    return data;
-                }
-
-            }*//*
-        }*/
 
         public double[] convertScanNumsToMobilities(long handle, long frameId, int[] scanNums)
         {

@@ -4,16 +4,25 @@ namespace AirdPro.IMSRawDataCompress.datamodel
 {
     public class Frame
     {
-        private int frameId;
-        private CentroidData centroidData;
+        public long frameId;
+        public double[] mzArray { get; set; }
+        public float[] intensityArray { get; set; }
+        public double[] mobilityArray { get; set; }
+        public CentroidData centroidData;
 
-        public Frame(int frameId, CentroidData centroidData)
+        public Frame(long frameId)
+        {
+            this.frameId = frameId;
+        }
+
+        public Frame(long frameId, CentroidData centroidData)
         {
             this.frameId = frameId;
             this.centroidData = centroidData;
         }
 
-        public int FrameId { get => frameId; }
+        public long FrameId { get => frameId; }        
+
         public CentroidData CentroidData { get => centroidData; }
     }
 

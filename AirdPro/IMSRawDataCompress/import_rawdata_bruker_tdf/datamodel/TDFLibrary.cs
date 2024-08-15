@@ -9,7 +9,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel
     {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void CentroidCallback(long precursorId, int numPeaks, IntPtr pMz, IntPtr pIntensities, IntPtr userData);
-
+        
         [DllImport("timsdata_x64.dll")]
         public static extern long tims_open(string analysis_dir, long use_recalib);
 
@@ -48,6 +48,17 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel
         [DllImport("timsdata_x64.dll")] 
         public static extern long tims_index_to_mz(long handle, long frameId, double[] index, double[] mz, long len);
 
+        /**
+     * mobility transformation: convert back and forth between (possibly non-integer) scan numbers and
+     * 1/K0 values.
+     *
+     * @param handle    see {@link TDFLibrary#tims_open(String, long)}.
+     * @param frameId   from .tdf SQLite: Frames.Id
+     * @param scannum   in: array of values
+     * @param oneOverK0 out: array of values
+     * @param len       number of values to convert (arrays must have corresponding size)
+     * @return 1 on success, 0 on failure
+     */
         [DllImport("timsdata_x64.dll")]
         public static extern long tims_scannum_to_oneoverk0(long handle, long frameId, double[] scannum, double[] oneOverK0, long len);
 
