@@ -8,7 +8,7 @@ namespace AirdPro.IMSRawDataCompress.datamodel
         public double[] mzArray { get; set; }
         public float[] intensityArray { get; set; }
         public double[] mobilityArray { get; set; }
-        public CentroidData centroidData;
+        public CentroidData centroidData { get; set; }
 
         public Frame(long frameId)
         {

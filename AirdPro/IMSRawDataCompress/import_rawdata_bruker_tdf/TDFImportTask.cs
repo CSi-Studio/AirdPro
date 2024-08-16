@@ -253,12 +253,14 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                     }
 
                     Frame frame = new Frame(frameId);
+                    frame.centroidData = centroidData;
                     frame.mzArray = centroidData.Mzs;
                     frame.intensityArray = centroidData.Intensities;
                     frame.mobilityArray = mobilities;
                     frameList.Add(frame);
-                    messages.Add($"frameId: {frameId}, rt: {rt}, numScans: {numScans}");
-                    messages.Add($"mzArray size: {centroidData.Mzs.Length}, intensityArray size: {centroidData.Intensities.Length}, mobilityArray size: {mobilities.Length}");
+
+                    //for test: 输出内容太多，后续要注释掉
+                    messages.Add($"frameId: {frameId}, rt: {rt}, numScans: {numScans}, mzArray size: {centroidData.Mzs.Length}, intensityArray size: {centroidData.Intensities.Length}, mobilityArray size: {mobilities.Length}");
 
                     if (i > 0 && i % 1000 == 0)
                     {
@@ -283,9 +285,9 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             ShowSomeFrames();
         }
 
-        private int[] createPopulatedArrayFrom1(long numScans)
+        private double[] createPopulatedArrayFrom1(long numScans)
         {
-            int[] scanNums = new int[numScans];
+            double[] scanNums = new double[numScans];
             for (int i = 0; i < numScans; i++)
             {
                 scanNums[i] = i + 1;
