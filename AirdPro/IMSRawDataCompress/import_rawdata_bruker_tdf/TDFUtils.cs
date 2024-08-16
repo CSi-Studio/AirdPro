@@ -70,7 +70,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
 
 
 
-        public double[] convertScanNumsToMobilities(long handle, long frameId, int[] scanNums)
+        public double[] convertScanNumsToMobilities(long handle, long frameId, long[] scanNums)
         {
             double[] mobilities = new double[scanNums.Length];
             // 将int数组转换为double数组

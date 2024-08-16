@@ -242,7 +242,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                             throw new Exception(message);
                         }
                         //mobility
-                        int[] scanNums = createPopulatedArrayFrom1(numScans);
+                        long[] scanNums = createPopulatedArrayFrom1(numScans);
                         messages.Add($"scanNums size{scanNums.Length}");
                         mobilities = tdfUtils.convertScanNumsToMobilities(handle, frameId, scanNums);
                         /*error = TDFLibrary.tims_scannum_to_oneoverk0(handle, frameId, scanNums.Select(x => (double)x).ToArray(), mobilities, scanNums.Length);
@@ -285,9 +285,9 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             ShowSomeFrames();
         }
 
-        private double[] createPopulatedArrayFrom1(long numScans)
+        private long[] createPopulatedArrayFrom1(long numScans)
         {
-            double[] scanNums = new double[numScans];
+            long[] scanNums = new long[numScans];
             for (int i = 0; i < numScans; i++)
             {
                 scanNums[i] = i + 1;

@@ -158,6 +158,7 @@
             this.LbTdfImport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LbTdfImport.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LbTdfImport.FormattingEnabled = true;
+            this.LbTdfImport.HorizontalScrollbar = true;
             this.LbTdfImport.ItemHeight = 20;
             this.LbTdfImport.Location = new System.Drawing.Point(621, 264);
             this.LbTdfImport.Name = "LbTdfImport";
