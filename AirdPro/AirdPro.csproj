@@ -177,6 +177,7 @@
     <Compile Include="IMSRawDataCompress\datamodel\msms\IMsMsInfo.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\IRawData.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\Scan.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\SpectrumData.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\BrukerScanMode.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\callbacks\CentroidData.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\EnumUtils.cs" />

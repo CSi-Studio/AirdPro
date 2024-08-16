@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Text;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using AirdPro.Algorithms;
@@ -1907,17 +1908,25 @@ namespace AirdPro.Converters
             ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("Pwiz  import");
             ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("SpectrumList size: " + SpectrumList.size());
 
-            //read spectrum index: 0,1,32,33,34
-            int[] testIndexArray = [0, 1, 32, 33, 34];
+            //read spectrum index: 33,34
+            int[] testIndexArray = [33, 34];
             string message = "";
+            List<double[]> mzArrays = new();
+            List<double[]> intArrays = new();
+            List<double[]> mobiArrays = new();
             for (int i = 0; i < testIndexArray.Length; i++)
             {
                 int index = testIndexArray[i];
-                ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("spectrum index: " + index + "---------------");
+                ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("spectrum index: " + index + "---------------");  
                 Spectrum spectrum = SpectrumList.spectrum(index, true);
+                double rt = spectrum.scanList.scans[0].cvParams[0].value / 60;
+                ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("rt: " + rt);
                 double[] mzData = spectrum.getMZArray().data.Storage();
+                mzArrays.Add(mzData);
                 double[] intData = spectrum.getIntensityArray().data.Storage();
+                intArrays.Add(intData);
                 double[] mobiData = DataUtil.GetMobilityData(spectrum);
+                mobiArrays.Add(mobiData);
                 message = "mzData[" + mzData.Length + "]: " + string.Join(", ", mzData);
                 ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add(message);
                 message = "intData[" + intData.Length + "]: " + string.Join(", ", intData);
@@ -1926,7 +1935,57 @@ namespace AirdPro.Converters
                 ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add(message);
                 ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("-------------------------------------------------");
             }
-            
+
+            // 合并所有mz数组
+            var mzArray = mzArrays.SelectMany(mz => mz).ToArray();
+            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("mz Array merge size: " + mzArray.Length);
+
+            // 创建数据结构集合
+            var spectrumDataList = new List<SpectrumData>();
+
+            // 确保所有数组具有相同的长度
+            //int maxLength = mzArrays.Max(mz => mz.Length);
+            for (int i = 0; i < mzArray.Length; i++)
+            {
+                // 从每个数组获取mz, intensity和mobility值
+                double mz = (i < mzArray.Length) ? mzArray[i] : 0;
+                double intensity = (i < intArrays[0].Length) ? intArrays[0][i % intArrays[0].Length] : 0;
+                double mobility = (i < mobiArrays[0].Length) ? mobiArrays[0][i % mobiArrays[0].Length] : 0;
+
+                // 添加到数据结构集合
+                spectrumDataList.Add(new SpectrumData(mz, intensity, mobility));
+            }
+
+            // 按mz值排序
+            spectrumDataList.Sort((data1, data2) => data1.Mz.CompareTo(data2.Mz));
+
+            // 提取排序后的intensity和mobility数组
+            var sortedIntensityArray = spectrumDataList.Select(data => data.Intensity).ToArray();
+            var sortedMobilityArray = spectrumDataList.Select(data => data.Mobility).ToArray();
+
+            // show
+            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("merge Spectrum 33 and 34:");
+            message = "sortedMzArray[" + spectrumDataList.Count + "]: " + string.Join(", ", spectrumDataList.Select(data => data.Mz));
+            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add(message);
+            message = "sortedIntensityArray[" + sortedIntensityArray.Length + "]: " + string.Join(", ", sortedIntensityArray);
+            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add(message);
+            message = "sortedMobilityArray[" + sortedMobilityArray.Length + "]: " + string.Join(", ", sortedMobilityArray);
+            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add(message);
+
+        }
+
+        public class SpectrumData
+        {
+            public double Mz { get; set; }
+            public double Intensity { get; set; }
+            public double Mobility { get; set; }
+
+            public SpectrumData(double mz, double intensity, double mobility)
+            {
+                Mz = mz;
+                Intensity = intensity;
+                Mobility = mobility;
+            }
         }
     }
 }

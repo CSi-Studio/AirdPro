@@ -34,8 +34,8 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
         private readonly List<Frame> frameList = new();
         long error;
         string message;
-       
-        private readonly List<string> messages = new();        
+
+        private List<string> messages = new();
         public List<string> Messages
         {
             get { return messages; }
@@ -213,14 +213,14 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             try
             {
                 frameList.Clear();
-                int numFrames = frameTable.GetFrameIdColumn().GetValueList().Count;
-                messages.Add($"Total {numFrames} frames in the file");
-                //for test: 读frameId为2,18,19的数据
-                //int readFrameCount = numFrames > 100 ? 100 : numFrames;
-                long[] testFrameIds = [2,18,19];
+                List<long> frameIdList = frameTable.GetFrameIdColumn().GetValueList();
+                messages.Add($"Total {frameIdList.Count} frames in the file");
+                //for test: 读frameId为19的数据
+                //int readFrameCount = numFrames > 100 ? 100 : numFrames;               
+                //long[] testFrameIds = [2,18,19];
+                long[] testFrameIds = [19];
                 for (int i = 0; i < testFrameIds.Length; i++)
-                {
-                    List<long> frameIdList = frameTable.GetFrameIdColumn().GetValueList();
+                {                    
                     int index = frameIdList.IndexOf(testFrameIds[i]);
                     long frameId = frameTable.GetFrameIdColumn().GetValueList()[index];
                     double rt = frameTable.GetTimeColumn().GetValueList()[index] / 60; // rt，单位：分
@@ -294,9 +294,9 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
 
         private void ShowTestFrames()
         {
+            messages.Add($"test frame count: {frameList.Count}");
             for (int i = 0; i < frameList.Count; i++)
-            {                
-                messages.Add($"test frame count: {frameList.Count}");
+            {                                
                 messages.Add($"frameId: {frameList[i].FrameId}" + "--------------");
                 message = string.Join(", ", frameList[i].mzArray);
                 messages.Add($"mz array: {message}");
@@ -323,20 +323,20 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             int showCount = frameList.Count > showNum ? showNum : frameList.Count;
             if (showCount > 0)
             {
-                Messages.Add($"Show first {showCount} frames' detail information below:");
-                Messages.Add("-------------------------------------------------");
+                messages.Add($"Show first {showCount} frames' detail information below:");
+                messages.Add("-------------------------------------------------");
             }
 
             for (int i = 0; i < showCount; i++)
             {
-                Messages.Add($"frameId: {frameList[i].FrameId}");                
+                messages.Add($"frameId: {frameList[i].FrameId}");                
                 string strMzs = string.Join(", ", frameList[i].mzArray);
-                Messages.Add($"mz array: {strMzs}");
+                messages.Add($"mz array: {strMzs}");
                 string strIntensities = string.Join(", ", frameList[i].intensityArray);
-                Messages.Add($"intensity array: {strIntensities}");
+                messages.Add($"intensity array: {strIntensities}");
                 string strMobilities = string.Join(", ", frameList[i].mobilityArray);
-                Messages.Add($"moblility array: {strMobilities}");
-                Messages.Add("-------------------------------------------------");
+                messages.Add($"moblility array: {strMobilities}");
+                messages.Add("-------------------------------------------------");
 
             }
         }

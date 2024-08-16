@@ -53,9 +53,9 @@
             this.panel1.Controls.Add(this.BtnClear);
             this.panel1.Controls.Add(this.BtnConvertToAird);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(1259, 0);
+            this.panel1.Location = new System.Drawing.Point(1816, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(294, 899);
+            this.panel1.Size = new System.Drawing.Size(294, 1177);
             this.panel1.TabIndex = 12;
             // 
             // BtnTDFImport
@@ -118,7 +118,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1259, 37);
+            this.panel2.Size = new System.Drawing.Size(1816, 37);
             this.panel2.TabIndex = 13;
             // 
             // label1
@@ -139,7 +139,7 @@
             this.LbFileNames.ItemHeight = 20;
             this.LbFileNames.Location = new System.Drawing.Point(0, 0);
             this.LbFileNames.Name = "LbFileNames";
-            this.LbFileNames.Size = new System.Drawing.Size(1259, 264);
+            this.LbFileNames.Size = new System.Drawing.Size(1816, 264);
             this.LbFileNames.TabIndex = 6;
             // 
             // panel3
@@ -150,7 +150,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 37);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1259, 862);
+            this.panel3.Size = new System.Drawing.Size(1816, 1140);
             this.panel3.TabIndex = 14;
             // 
             // LbTdfImport
@@ -160,9 +160,9 @@
             this.LbTdfImport.FormattingEnabled = true;
             this.LbTdfImport.HorizontalScrollbar = true;
             this.LbTdfImport.ItemHeight = 20;
-            this.LbTdfImport.Location = new System.Drawing.Point(621, 264);
+            this.LbTdfImport.Location = new System.Drawing.Point(1163, 264);
             this.LbTdfImport.Name = "LbTdfImport";
-            this.LbTdfImport.Size = new System.Drawing.Size(638, 598);
+            this.LbTdfImport.Size = new System.Drawing.Size(653, 876);
             this.LbTdfImport.TabIndex = 8;
             // 
             // LbPwizImport
@@ -170,10 +170,11 @@
             this.LbPwizImport.Dock = System.Windows.Forms.DockStyle.Left;
             this.LbPwizImport.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LbPwizImport.FormattingEnabled = true;
+            this.LbPwizImport.HorizontalScrollbar = true;
             this.LbPwizImport.ItemHeight = 20;
             this.LbPwizImport.Location = new System.Drawing.Point(0, 264);
             this.LbPwizImport.Name = "LbPwizImport";
-            this.LbPwizImport.Size = new System.Drawing.Size(621, 598);
+            this.LbPwizImport.Size = new System.Drawing.Size(1163, 876);
             this.LbPwizImport.TabIndex = 7;
             // 
             // BrukerIMMainForm
@@ -181,7 +182,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1553, 899);
+            this.ClientSize = new System.Drawing.Size(2110, 1177);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
