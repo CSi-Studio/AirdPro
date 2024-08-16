@@ -132,7 +132,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                             metaDataTable.ExecuteQuery(connection);
                             message = "fetched records: " + (metaDataTable.GetKeyColumn().Values.Count());
                             messages.Add(message);
-                            ShowTableData(metaDataTable);
+                            //ShowTableData(metaDataTable);
 
                             //read frameTable
                             message = $"Reading metadata from " + frameTable.GetTableName() + " ...";
@@ -140,7 +140,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                             frameTable.ExecuteQuery(connection);
                             message = "fetched records: " + (frameTable.GetKeyColumn().Values.Count());
                             messages.Add(message);
-                            ShowTableData(frameTable);
+                            //ShowTableData(frameTable);
                         }
                         catch (Exception ex)
                         {
@@ -215,14 +215,20 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                 frameList.Clear();
                 int numFrames = frameTable.GetFrameIdColumn().GetValueList().Count;
                 messages.Add($"Total {numFrames} frames in the file");
-                //for test: 最多读100条
-                int readFrameCount = numFrames > 100 ? 100 : numFrames;
-                for (int i = 0; i < readFrameCount; i++)
+                //for test: 读frameId为2,18,19的数据
+                //int readFrameCount = numFrames > 100 ? 100 : numFrames;
+                long[] testFrameIds = [2,18,19];
+                for (int i = 0; i < testFrameIds.Length; i++)
                 {
-                    long frameId = frameTable.GetFrameIdColumn().GetValueList()[i];                    
-                    long numScans = frameTable.GetNumScansColumn().GetValueList()[i];                    
-                    double rt = frameTable.GetTimeColumn().GetValueList()[i] / 60; // to minutes
-                   
+                    List<long> frameIdList = frameTable.GetFrameIdColumn().GetValueList();
+                    int index = frameIdList.IndexOf(testFrameIds[i]);
+                    long frameId = frameTable.GetFrameIdColumn().GetValueList()[index];
+                    double rt = frameTable.GetTimeColumn().GetValueList()[index] / 60; // rt，单位：分
+                    long numScans = frameTable.GetNumScansColumn().GetValueList()[index]; //910，固定值
+                    long numPeaks = frameTable.GetNumPeaksColumn().GetValueList()[index];  //mz、intensity、mobility数组大小
+                    double maxIntensity = frameTable.GetMaxIntensityColumn().GetValueList()[index];
+                    double summedIntensity = frameTable.GetSummedIntensityColumn().GetValueList()[index];
+
                     //Range<double> mzRange = metaDataTable.GetMzRange();
 
                     CentroidData centroidData = null;
@@ -258,17 +264,17 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                     frame.intensityArray = centroidData.Intensities;
                     frame.mobilityArray = mobilities;
                     frameList.Add(frame);
+                    messages.Add($"frameId: {frameId}, rt: {rt}, numPeaks: {numPeaks}");
 
-                    //for test: 输出内容太多，后续要注释掉
-                    messages.Add($"frameId: {frameId}, rt: {rt}, numScans: {numScans}, mzArray size: {centroidData.Mzs.Length}, intensityArray size: {centroidData.Intensities.Length}, mobilityArray size: {mobilities.Length}");
 
-                    if (i > 0 && i % 1000 == 0)
-                    {
-                        messages.Add($"{DateTime.Now:yyyyMMdd HH:mm:ss}: loaded {i} frames, percentage {((float)i / (float)numFrames):P2}");
-                    }
+
+                    /* if (i > 0 && i % 1000 == 0)
+                     {
+                         messages.Add($"{DateTime.Now:yyyyMMdd HH:mm:ss}: loaded {i} frames, percentage {((float)i / (float)numFrames):P2}");
+                     }*/
                 }
 
-                messages.Add($"{DateTime.Now:yyyyMMdd HH:mm:ss}: successfully loaded all {frameList.Count} frames!");
+                //messages.Add($"{DateTime.Now:yyyyMMdd HH:mm:ss}: successfully loaded all {frameList.Count} frames!");
             }
             catch (Exception e)
             {
@@ -282,7 +288,24 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             }
 
             //show first 5 frame
-            ShowSomeFrames();
+            //ShowSomeFrames();
+            ShowTestFrames();
+        }
+
+        private void ShowTestFrames()
+        {
+            for (int i = 0; i < frameList.Count; i++)
+            {                
+                messages.Add($"test frame count: {frameList.Count}");
+                messages.Add($"frameId: {frameList[i].FrameId}" + "--------------");
+                message = string.Join(", ", frameList[i].mzArray);
+                messages.Add($"mz array: {message}");
+                message = string.Join(", ", frameList[i].intensityArray);
+                messages.Add($"intensity array: {message}");
+                message = string.Join(", ", frameList[i].mobilityArray);
+                messages.Add($"moblility array: {message}");
+                messages.Add("-------------------------------------------------");
+            }
         }
 
         private long[] createPopulatedArrayFrom1(long numScans)
@@ -306,9 +329,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
 
             for (int i = 0; i < showCount; i++)
             {
-                Messages.Add($"frameId: {frameList[i].FrameId}");
-                //Messages.Add($"CentroidData.PrecursorId: {frameList[i].CentroidData.PrecursorId}");
-                //Messages.Add($"CentroidData.NumPeaks: {frameList[i].CentroidData.NumPeaks}");
+                Messages.Add($"frameId: {frameList[i].FrameId}");                
                 string strMzs = string.Join(", ", frameList[i].mzArray);
                 Messages.Add($"mz array: {strMzs}");
                 string strIntensities = string.Join(", ", frameList[i].intensityArray);

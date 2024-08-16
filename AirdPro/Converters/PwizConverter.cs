@@ -1904,31 +1904,29 @@ namespace AirdPro.Converters
         public void pwizImportData()
         {
             ConversionForm.brukerIMMainForm.LbPwizImport.Items.Clear();
-            Spectrum spectrum = SpectrumList.spectrum(0, true);
-            double[] mzData = spectrum.getMZArray().data.Storage();
-            double[] intData = spectrum.getIntensityArray().data.Storage();
-            double[] mobiData = DataUtil.GetMobilityData(spectrum);
             ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("Pwiz  import");
             ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("SpectrumList size: " + SpectrumList.size());
-            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("the first tims data: ");
 
-            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("mzData[" + mzData.Length + "]: ");            
-            for(int i = 0; i < 10; i++)
+            //read spectrum index: 0,1,32,33,34
+            int[] testIndexArray = [0, 1, 32, 33, 34];
+            string message = "";
+            for (int i = 0; i < testIndexArray.Length; i++)
             {
-                ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add(mzData[i]);
+                int index = testIndexArray[i];
+                ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("spectrum index: " + index + "---------------");
+                Spectrum spectrum = SpectrumList.spectrum(index, true);
+                double[] mzData = spectrum.getMZArray().data.Storage();
+                double[] intData = spectrum.getIntensityArray().data.Storage();
+                double[] mobiData = DataUtil.GetMobilityData(spectrum);
+                message = "mzData[" + mzData.Length + "]: " + string.Join(", ", mzData);
+                ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add(message);
+                message = "intData[" + intData.Length + "]: " + string.Join(", ", intData);
+                ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add(message);
+                message = "mobiData[" + mobiData.Length + "]: " + string.Join(", ", mobiData);
+                ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add(message);
+                ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("-------------------------------------------------");
             }
-
-            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("intData[" + intData.Length + "]: ");
-            for (int i = 0; i < 10; i++)
-            {
-                ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add(intData[i]);
-            }            
             
-            ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("mobiData[" + mobiData.Length + "]: ");           
-            for (int i = 0; i < 10; i++)
-            {
-                ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add(mobiData[i]);
-            }
         }
     }
 }
