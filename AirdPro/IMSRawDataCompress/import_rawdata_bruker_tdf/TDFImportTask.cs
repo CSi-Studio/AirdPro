@@ -244,11 +244,12 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                         //mobility
                         int[] scanNums = createPopulatedArrayFrom1(numScans);
                         messages.Add($"scanNums size{scanNums.Length}");
-                        error = TDFLibrary.tims_scannum_to_oneoverk0(handle, frameId, scanNums.Select(x => (double)x).ToArray(), mobilities, scanNums.Length);
+                        mobilities = tdfUtils.convertScanNumsToMobilities(handle, frameId, scanNums);
+                        /*error = TDFLibrary.tims_scannum_to_oneoverk0(handle, frameId, scanNums.Select(x => (double)x).ToArray(), mobilities, scanNums.Length);
                         if (error == 0)
                         {
                             messages.Add($"Could not convert scan nums to 1/K0 for frame {frameId}");
-                        }
+                        }*/
                     }
 
                     Frame frame = new Frame(frameId);
@@ -306,11 +307,11 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                 Messages.Add($"frameId: {frameList[i].FrameId}");
                 //Messages.Add($"CentroidData.PrecursorId: {frameList[i].CentroidData.PrecursorId}");
                 //Messages.Add($"CentroidData.NumPeaks: {frameList[i].CentroidData.NumPeaks}");
-                string strMzs = string.Join(", ", frameList[i].CentroidData.Mzs);
+                string strMzs = string.Join(", ", frameList[i].mzArray);
                 Messages.Add($"mz array: {strMzs}");
-                string strIntensities = string.Join(", ", frameList[i].CentroidData.Intensities);
+                string strIntensities = string.Join(", ", frameList[i].intensityArray);
                 Messages.Add($"intensity array: {strIntensities}");
-                string strMobilities = string.Join(", ", frameList[i].CentroidData.Intensities);
+                string strMobilities = string.Join(", ", frameList[i].mobilityArray);
                 Messages.Add($"moblility array: {strMobilities}");
                 Messages.Add("-------------------------------------------------");
 
