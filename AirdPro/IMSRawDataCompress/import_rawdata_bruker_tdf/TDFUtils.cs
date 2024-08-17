@@ -53,7 +53,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             Logger.LogInformation("TDFUtils initialized.");
         }
 
-        public void close()
+        public void Close()
         {
             if (tdfLib != null && handle != 0L)
             {
@@ -63,19 +63,19 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             //file = null;
         }
 
-        public long openFile(String fileName)
+        public long OpenFile(String fileName)
         {
             return TDFLibrary.tims_open_v2(fileName, 1, 0);
         }
 
 
 
-        public double[] convertScanNumsToMobilities(long handle, long frameId, long[] scanNums)
+        public double[] ConvertScanNumsToMobilities(long handle, long frameId, double[] scanNum)
         {
-            double[] mobilities = new double[scanNums.Length];
+            double[] mobilities = new double[scanNum.Length];
             // 将int数组转换为double数组
-            double[] scanNumsAsDoubles = scanNums.Select(x => (double)x).ToArray();
-            long error = TDFLibrary.tims_scannum_to_oneoverk0(handle, frameId, scanNumsAsDoubles, mobilities, scanNums.Length);
+            //double[] scanNumsAsDoubles = scanNum.Select(x => (double)x).ToArray();
+            long error = TDFLibrary.tims_scannum_to_oneoverk0(handle, frameId, scanNum, mobilities, scanNum.Length);
             if (error == 0L)
             {
                 Logger.LogError($"Error converting scan numbers to one over k0: {error}");

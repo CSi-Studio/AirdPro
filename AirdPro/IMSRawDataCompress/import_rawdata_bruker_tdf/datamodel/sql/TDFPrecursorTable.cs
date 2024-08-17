@@ -1,7 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
 {
+    /**
+      * Table containing all precursors / features detected by an on-line precursor-selection algorithm.
+      * <p>
+      * 'Precursors' table lists only the information derived from MS^1 spectra. How a precursor is
+      * actually measured (= quadrupole settings and scan-number begin/end) remains in the
+      * 'PasefFrameMsMsInfo' table.
+      */
     public class TDFPrecursorTable : TDFDataTable
     {
         public const string PRECURSOR_TABLE_NAME = "Precursors";
@@ -63,7 +71,12 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
             return precursorIds;
         }
 
-        
+
+        public override bool IsValid()
+        {
+            return true;
+        }
+
 
     }
 }

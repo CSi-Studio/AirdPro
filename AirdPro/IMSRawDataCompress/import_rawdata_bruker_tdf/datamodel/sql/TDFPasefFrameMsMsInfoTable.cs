@@ -2,6 +2,18 @@
 
 namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
 {
+    /**
+     * This table describes PASEF frames. For every PASEF frame, it represents a list of non-overlapping
+     * scan-number ranges. For each of the scans inside a given range, the quadrupole has been
+     * configured to be at the same specified isolation m/z and width.
+     * <p>
+     * NOTE: every frame for which there is an entry in this table, will have Frames.MsMsType = 8, and
+     * no entry in any other *FrameMsMsInfo table.
+     * <p>
+     * NOTE: PASEF acquisition allows, in principle, to change the quadrupole isolation window on a
+     * per-scan basis. Therefore, the compound primary key (Frame, ScanNumBegin) uniquely identifies
+     * each fragmentation region.
+     * */
     public class TDFPasefFrameMsMsInfoTable : TDFDataTable
     {
         public const string PASEF_FRAME_MSMS_TABLE_NAME = "PasefFrameMsMsInfo";

@@ -8,33 +8,32 @@ using AirdPro.IMSRawDataCompress.datamodel;
 using AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel;
 using AirdPro.IMSRawDataCompress.datamodel.callbacks;
 using static AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.TDFLibrary;
-using CSharpFastPFOR.Port;
-using System.Drawing;
+
 
 namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
 {
     public class TDFImportTask
     {
-        private string fileName;
-        private FileInfo tdfFile;
-        private FileInfo tdfBinFile;        
+        long error;
+        string message;
+
+        private string fileName; //bruker fileName, 是一个文件夹
+        private FileInfo tdf, tdfBin;
         private TDFMetaDataTable metaDataTable;
         private TDFFrameTable frameTable;
         private TDFPrecursorTable precursorTable;
         private TDFPasefFrameMsMsInfoTable pasefFrameMsMsInfoTable;
         private TDFFrameMsMsInfoTable frameMsMsInfoTable;
         private FramePrecursorTable framePrecursorTable;
-        private PrmFrameTargetTable prmFrameTargetTable;
-        private TDFMaldiFrameInfoTable maldiFrameInfoTable;
-        private TDFMaldiFrameLaserInfoTable maldiFrameLaserInfoTable;
-        private IIMSRawData iMSRawDataFile;
+        //private PrmFrameTargetTable prmFrameTargetTable;
+        //private TDFMaldiFrameInfoTable maldiFrameInfoTable;
+        //private TDFMaldiFrameLaserInfoTable maldiFrameLaserInfoTable;
+        private TimsData timsData;
         private bool isMaldi;
-        private readonly int loadedFrames;
-        private static readonly object LockObject = new();
-        private readonly List<Frame> frameList = new();
-        long error;
-        string message;
+        private int loadedFrames;
 
+        private static readonly object LockObject = new();
+        
         private List<string> messages = new();
         public List<string> Messages
         {
@@ -48,16 +47,11 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             set { showDetail = value; }
         }
 
-        public List<Frame> GetFrameList()
-        {
-            return frameList;
-        }
-
         public void Run(string fileName)
         {
             this.fileName = fileName;
             messages.Clear();
-            //String message = "";
+            //获取tdf和tdfBin
             // 检查文件夹是否存在
             if (!Directory.Exists(fileName)) 
             {
@@ -65,47 +59,50 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                 messages.Add(message);
                 throw new DirectoryNotFoundException(message);
             }
-
             // 定义文件过滤器
             string tdfFilter = Path.Combine(fileName, "*.tdf");
             string tdfBinFilter = Path.Combine(fileName, "*.tdf_bin");
-
             // 获取匹配的文件
-            tdfFile = Directory.EnumerateFiles(fileName, "*.tdf").Select(f => new FileInfo(f)).FirstOrDefault();
-            tdfBinFile = Directory.EnumerateFiles(fileName, "*.tdf_bin").Select(f => new FileInfo(f)).FirstOrDefault();
-
+            tdf = Directory.EnumerateFiles(fileName, "*.tdf").Select(f => new FileInfo(f)).FirstOrDefault();
+            tdfBin = Directory.EnumerateFiles(fileName, "*.tdf_bin").Select(f => new FileInfo(f)).FirstOrDefault();
             // 检查是否找到了文件
-            if (tdfFile == null || tdfBinFile == null)
+            if (tdf == null || tdfBin == null)
             {
                 message = "Could not find both .tdf and .tdf_bin files in the specified directory.";
                 messages.Add(message);
                 throw new FileNotFoundException(message);
-            }            
-
-            message = "Selected tdf file: " + tdfFile.FullName;
+            } 
+            message = "Selected tdf file: " + tdf.FullName;
             messages.Add(message);
-            message = "Selected tdf_bin file: " + tdfBinFile.FullName;
+            message = "Selected tdf_bin file: " + tdfBin.FullName;
             messages.Add(message);
 
-            //init all tables
+            //创建表对象
+            //元数据
             metaDataTable = new TDFMetaDataTable();
+            //Frame
             frameTable = new TDFFrameTable();
+            //PASEF
             precursorTable = new TDFPrecursorTable();
             pasefFrameMsMsInfoTable = new TDFPasefFrameMsMsInfoTable();
-            prmFrameTargetTable = new PrmFrameTargetTable();
-            frameMsMsInfoTable = new TDFFrameMsMsInfoTable();
+            //DIA
             framePrecursorTable = new FramePrecursorTable();
-
-            maldiFrameInfoTable = new TDFMaldiFrameInfoTable();
-            maldiFrameLaserInfoTable = new TDFMaldiFrameLaserInfoTable();
+            frameMsMsInfoTable = new TDFFrameMsMsInfoTable();
+            
+            //PRM
+            //prmFrameTargetTable = new PrmFrameTargetTable();
+            //MALDI
+            /*maldiFrameInfoTable = new TDFMaldiFrameInfoTable();
+            maldiFrameLaserInfoTable = new TDFMaldiFrameLaserInfoTable();*/
             isMaldi = false;
 
-            //import data from db(tdf) file
+            //import data from tdf
             ReadMetadata();
 
-            //iMSRawDataFile.setStartTimeStamp(metaDataTable.getAcquisitionDateTime());
+            timsData = new TimsData();
+            timsData.AcquisitionDateTime = (DateTime)metaDataTable.GetAcquisitionDateTime();
 
-            //import data from tdf_bin file
+            //import data from tdf_bin
             ReadBinData();
         }
 
@@ -115,9 +112,9 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             messages.Add(message);
             try
             {
-                using (var connection = new SQLiteConnection($"Data Source={tdfFile.FullName};Version=3;"))
+                using (var connection = new SQLiteConnection($"Data Source={tdf.FullName};Version=3;"))
                 {
-                    message = $"Establishing SQL connection to {tdfFile.Name}";
+                    message = $"Establishing SQL connection to {tdf.Name}";
                     messages.Add(message);
 
                     lock (typeof(SQLiteConnection))
@@ -160,7 +157,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
         }
 
         //用于测试或调试
-        private void ShowTableData(TDFDataTable dataTable, int countLimit = 30)
+       /* private void ShowTableData(TDFDataTable dataTable, int countLimit = 30)
         {
             if (showDetail)
             {
@@ -192,29 +189,29 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                     messages.Add(oneRow);
                 }
             }
-        }
+        }*/
 
         private void ReadBinData()
         {
             TDFUtils tdfUtils = new();
-            long handle = tdfUtils.openFile(fileName);
-            //long handle = TDFLibrary.tims_open_v2(fileName, 1, 0);
+            messages.Add($"open tdf_bin file {fileName}");
+            long handle = tdfUtils.OpenFile(fileName);
             if (handle == 0)
             {
-                message = $"open the file {fileName} failed!";
-                messages.Add(message);
-                throw new Exception(message);
+                messages.Add($"open tdf_bin file {fileName} failed!");
+                return;
             }
-            else
-            {
-                messages.Add($"open the file {fileName} successfully!");
-            }
-
+            
+            int numFrames = frameTable.GetFrameIdColumn().GetValueList().Count;
+            messages.Add($"Total {numFrames} frames, starting frame import.");
+            loadedFrames = 0;
+            // collect average spectra for each frame#######
+            List<Frame> frameList = new();
+            bool importProfile = false;
             try
             {
-                frameList.Clear();
                 List<long> frameIdList = frameTable.GetFrameIdColumn().GetValueList();
-                messages.Add($"Total {frameIdList.Count} frames in the file");
+                
                 //for test: 读frameId为19的数据
                 //int readFrameCount = numFrames > 100 ? 100 : numFrames;               
                 //long[] testFrameIds = [2,18,19];
@@ -223,7 +220,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                 {                    
                     int index = frameIdList.IndexOf(testFrameIds[i]);
                     long frameId = frameTable.GetFrameIdColumn().GetValueList()[index];
-                    double rt = frameTable.GetTimeColumn().GetValueList()[index] / 60; // rt，单位：分
+                    double rt = frameTable.GetTimeColumn().GetValueList()[index]; // rt，单位：秒
                     long numScans = frameTable.GetNumScansColumn().GetValueList()[index]; //910，固定值
                     long numPeaks = frameTable.GetNumPeaksColumn().GetValueList()[index];  //mz、intensity、mobility数组大小
                     double maxIntensity = frameTable.GetMaxIntensityColumn().GetValueList()[index];
@@ -248,14 +245,9 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                             throw new Exception(message);
                         }
                         //mobility
-                        long[] scanNums = createPopulatedArrayFrom1(numScans);
-                        messages.Add($"scanNums size{scanNums.Length}");
-                        mobilities = tdfUtils.convertScanNumsToMobilities(handle, frameId, scanNums);
-                        /*error = TDFLibrary.tims_scannum_to_oneoverk0(handle, frameId, scanNums.Select(x => (double)x).ToArray(), mobilities, scanNums.Length);
-                        if (error == 0)
-                        {
-                            messages.Add($"Could not convert scan nums to 1/K0 for frame {frameId}");
-                        }*/
+                        double[] scanNum = CreatePopulatedArrayFrom1(numScans);
+                        messages.Add($"scanNums size：{scanNum.Length}");
+                        mobilities = tdfUtils.ConvertScanNumsToMobilities(handle, frameId, scanNum);                        
                     }
 
                     Frame frame = new Frame(frameId);
@@ -283,16 +275,15 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             }
             finally
             {
-                tdfUtils.close();
-                //TDFLibrary.tims_close(handle);
+                tdfUtils.Close();
             }
 
             //show first 5 frame
             //ShowSomeFrames();
-            ShowTestFrames();
+            ShowTestFrames(frameList);
         }
 
-        private void ShowTestFrames()
+        private void ShowTestFrames(List<Frame> frameList)
         {
             messages.Add($"test frame count: {frameList.Count}");
             for (int i = 0; i < frameList.Count; i++)
@@ -308,17 +299,17 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             }
         }
 
-        private long[] createPopulatedArrayFrom1(long numScans)
+        private double[] CreatePopulatedArrayFrom1(long numScans)
         {
-            long[] scanNums = new long[numScans];
-            for (int i = 0; i < numScans; i++)
+            double[] scanNum = new double[numScans];
+            for (long i = 0; i < numScans; i++)
             {
-                scanNums[i] = i + 1;
+                scanNum[i] = i + 1;
             }
-            return scanNums;
+            return scanNum;
         }
 
-        void ShowSomeFrames(int showNum = 5)
+        void ShowSomeFrames(List<Frame> frameList, int showNum = 5)
         {
             int showCount = frameList.Count > showNum ? showNum : frameList.Count;
             if (showCount > 0)

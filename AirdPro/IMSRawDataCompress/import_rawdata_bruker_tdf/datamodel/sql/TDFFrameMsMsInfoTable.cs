@@ -3,6 +3,9 @@ using AirdPro.IMSRawDataCompress.datamodel.msms;
 
 namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
 {
+    /**
+     * Additional MS/MS meta-information.
+     */
     public class TDFFrameMsMsInfoTable : TDFDataTable
     {
         public const string FRAME_MSMS_INFO_TABLE = "FrameMsMsInfo";

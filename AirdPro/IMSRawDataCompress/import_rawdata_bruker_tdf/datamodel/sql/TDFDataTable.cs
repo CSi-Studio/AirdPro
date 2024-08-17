@@ -76,7 +76,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
             return headers.ToString();
         }
 
-        public bool IsValid()
+        public virtual bool IsValid()
         {
             long numKeys = keyColumn.Values.Count();
             foreach (var col in columns)

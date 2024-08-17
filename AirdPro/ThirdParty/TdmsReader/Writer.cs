@@ -176,7 +176,7 @@ namespace NationalInstruments.Tdms
             _writer.WriteMetadata(MetaData);     //meta data contains byte count. These should be updated before 'closing'
             BaseStream.Seek(end_offset, SeekOrigin.Begin);  //set cursor at end
 
-            //close stream 
+            //Close stream 
             if (_ownsStream) BaseStream.Close();
 
             _isOpen = false;

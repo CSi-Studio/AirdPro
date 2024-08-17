@@ -1919,7 +1919,7 @@ namespace AirdPro.Converters
                 int index = testIndexArray[i];
                 ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("spectrum index: " + index + "---------------");  
                 Spectrum spectrum = SpectrumList.spectrum(index, true);
-                double rt = spectrum.scanList.scans[0].cvParams[0].value / 60;
+                double rt = spectrum.scanList.scans[0].cvParams[0].value;
                 ConversionForm.brukerIMMainForm.LbPwizImport.Items.Add("rt: " + rt);
                 double[] mzData = spectrum.getMZArray().data.Storage();
                 mzArrays.Add(mzData);

@@ -110,7 +110,7 @@ namespace NationalInstruments.Tdms
                         writer.WriteRawData(raw, data);
                     }
 
-            //close up
+            //Close up
             segment.Close();
         }
 

@@ -164,10 +164,7 @@
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\ProteomeXchangeDataset.cs" />
     <Compile Include="CommandLine\Options.cs" />
     <Compile Include="Domains\Redis\ConsumeSwitchCommand.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\IIMSRawDataFile.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\IMSRawData.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\IIMSRawData.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\IMSRawDataFileImpl.cs" />
+    <Compile Include="IMSRawDataCompress\datamodel\TimsData.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\MassSpectrum.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\MobilityDataPoint.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\MobilityType.cs" />
@@ -175,7 +172,6 @@
     <Compile Include="IMSRawDataCompress\datamodel\msms\DDAMsMsInfo.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\msms\IDDAMsMsInfo.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\msms\IMsMsInfo.cs" />
-    <Compile Include="IMSRawDataCompress\datamodel\IRawData.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\Scan.cs" />
     <Compile Include="IMSRawDataCompress\datamodel\SpectrumData.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\BrukerScanMode.cs" />
@@ -184,12 +180,7 @@
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\BuildingPASEFMsMSInfo.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\FramePrecursorTable.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\IDataColumn.cs" />
-    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\PrmFrameTargetTable.cs" />
-    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFMaldiFrameInfoTable.cs" />
-    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFMaldiFrameLaserInfoTable.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFPasefFrameMsMsInfoTable.cs" />
-    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFPrmFrameMsMsInfoTable.cs" />
-    <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\sql\TDFPrmTargetsTable.cs" />
     <Compile Include="IMSRawDataCompress\import_rawdata_bruker_tdf\datamodel\TDFLibrary.cs" />
     <Compile Include="IMSRawDataCompress\Forms\BrukerIMMainForm.cs">
       <SubType>Form</SubType>

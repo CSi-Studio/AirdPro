@@ -6,6 +6,12 @@ using System.Text;
 
 namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf.datamodel.sql
 {
+    /**
+     * As this is not a "real" table of the tdf format, it does not share the TDF prefix.
+     * <p>
+     * Maps precursor info (isolation m/z, precursor id and charge) to the respective scan numbers.
+     * Returns {@link PasefMsMsInfo} for each frame.
+     */
     public class FramePrecursorTable : TDFDataTable
     {
         public const String FRAME_PRECURSOR_TABLE = "FramePrecursorTable";
