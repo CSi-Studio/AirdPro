@@ -123,7 +123,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                         {
                             connection.Open();
 
-                            //read metaDataTable
+                            //reading metadata
                             message = $"Reading metadata from " + metaDataTable.GetTableName() + " ...";
                             messages.Add(message);
                             metaDataTable.ExecuteQuery(connection);
@@ -131,13 +131,36 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                             messages.Add(message);
                             //ShowTableData(metaDataTable);
 
-                            //read frameTable
+                            //reading frame data
                             message = $"Reading metadata from " + frameTable.GetTableName() + " ...";
                             messages.Add(message);
                             frameTable.ExecuteQuery(connection);
                             message = "fetched records: " + (frameTable.GetKeyColumn().Values.Count());
                             messages.Add(message);
-                            //ShowTableData(frameTable);
+                            int scanModeValue = (int)BrukerScanMode.MALDI;
+                            isMaldi = frameTable.GetScanModeColumn().Values.Contains(scanModeValue);
+
+                            //reading precursor info
+                            message = $"Reading precursor info from " + precursorTable.GetTableName() + " ...";
+                            messages.Add(message);
+                            precursorTable.ExecuteQuery(connection);
+                            message = "fetched records: " + (precursorTable.GetKeyColumn().Values.Count());
+                            messages.Add(message);
+
+                            //reading MS/MS-Precursor info
+                            message = $"Reading MS/MS-Precursor info from " + framePrecursorTable.GetTableName() + " ...";
+                            messages.Add(message);
+                            framePrecursorTable.ExecuteQuery(connection);
+                            message = "fetched records: " + (framePrecursorTable.GetKeyColumn().Values.Count());
+                            messages.Add(message);
+
+                            //reading PRM Target info
+
+                            if (isMaldi)
+                            {
+
+                            }
+                            messages.Add(message);
                         }
                         catch (Exception ex)
                         {
@@ -145,8 +168,9 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                         }
                         finally
                         {
-                            connection.Close();
+                            connection.Close();                            
                         }
+                        messages.Add ("Metadata read successfully!");
                     }
                 }
             }
@@ -201,9 +225,7 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
                 messages.Add($"open tdf_bin file {fileName} failed!");
                 return;
             }
-            
-            int numFrames = frameTable.GetFrameIdColumn().GetValueList().Count;
-            messages.Add($"Total {numFrames} frames, starting frame import.");
+                        
             loadedFrames = 0;
             // collect average spectra for each frame#######
             List<Frame> frameList = new();
@@ -211,7 +233,9 @@ namespace AirdPro.IMSRawDataCompress.import_rawdata_bruker_tdf
             try
             {
                 List<long> frameIdList = frameTable.GetFrameIdColumn().GetValueList();
-                
+                int numFrames = frameIdList.Count;
+                messages.Add($"Total {numFrames} frames, starting frame import.");
+
                 //for test: 读frameId为19的数据
                 //int readFrameCount = numFrames > 100 ? 100 : numFrames;               
                 //long[] testFrameIds = [2,18,19];
