@@ -40,9 +40,14 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.LbTdfImport = new System.Windows.Forms.ListBox();
             this.LbPwizImport = new System.Windows.Forms.ListBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -144,8 +149,7 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.LbTdfImport);
-            this.panel3.Controls.Add(this.LbPwizImport);
+            this.panel3.Controls.Add(this.splitContainer1);
             this.panel3.Controls.Add(this.LbFileNames);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 37);
@@ -160,22 +164,39 @@
             this.LbTdfImport.FormattingEnabled = true;
             this.LbTdfImport.HorizontalScrollbar = true;
             this.LbTdfImport.ItemHeight = 20;
-            this.LbTdfImport.Location = new System.Drawing.Point(1163, 264);
+            this.LbTdfImport.Location = new System.Drawing.Point(0, 0);
             this.LbTdfImport.Name = "LbTdfImport";
-            this.LbTdfImport.Size = new System.Drawing.Size(653, 876);
+            this.LbTdfImport.Size = new System.Drawing.Size(1207, 876);
             this.LbTdfImport.TabIndex = 8;
             // 
             // LbPwizImport
             // 
-            this.LbPwizImport.Dock = System.Windows.Forms.DockStyle.Left;
+            this.LbPwizImport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LbPwizImport.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LbPwizImport.FormattingEnabled = true;
             this.LbPwizImport.HorizontalScrollbar = true;
             this.LbPwizImport.ItemHeight = 20;
-            this.LbPwizImport.Location = new System.Drawing.Point(0, 264);
+            this.LbPwizImport.Location = new System.Drawing.Point(0, 0);
             this.LbPwizImport.Name = "LbPwizImport";
-            this.LbPwizImport.Size = new System.Drawing.Size(1163, 876);
+            this.LbPwizImport.Size = new System.Drawing.Size(605, 876);
             this.LbPwizImport.TabIndex = 7;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 264);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.LbPwizImport);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.LbTdfImport);
+            this.splitContainer1.Size = new System.Drawing.Size(1816, 876);
+            this.splitContainer1.SplitterDistance = 605;
+            this.splitContainer1.TabIndex = 9;
             // 
             // BrukerIMMainForm
             // 
@@ -194,6 +215,10 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -212,5 +237,6 @@
         private System.Windows.Forms.Button BtnTDFImport;
         private System.Windows.Forms.ListBox LbTdfImport;
         public System.Windows.Forms.ListBox LbPwizImport;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }

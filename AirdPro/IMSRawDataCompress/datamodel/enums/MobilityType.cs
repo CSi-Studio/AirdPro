@@ -1,5 +1,5 @@
-﻿namespace AirdPro.IMSRawDataCompress.datamodel
-{
+﻿namespace AirdPro.IMSRawDataCompress.datamodel.enums
+{ 
     public class MobilityType
     {
         public string AxisLabel { get; }
@@ -33,6 +33,6 @@
         public static readonly MobilityType DRIFT_TUBE = new MobilityType("Drift time", "ms", "DTIMS");
         public static readonly MobilityType TRAVELING_WAVE = new MobilityType("Drift time", "ms", "TWIMS");
         public static readonly MobilityType FAIMS = new MobilityType("TODO", "TODO", "FAIMS");
-    }
 
+    }
 }

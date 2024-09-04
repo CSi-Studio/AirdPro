@@ -26,6 +26,11 @@ namespace AirdPro.IMSRawDataCompress.datamodel
             return new Range<T>(lowerBound, upperBound);
         }
 
+        public static Range<T> Singleton(T value)
+        {
+            return Closed(value, value);
+        }
+
         public override string ToString()
         {
             return $"[{LowerBound}, {UpperBound}]";
