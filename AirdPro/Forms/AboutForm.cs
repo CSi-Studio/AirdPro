@@ -15,7 +15,6 @@ using AirdPro.Constants;
 using AirdPro.Domains;
 using AirdPro.Properties;
 using AirdPro.Utils;
-using AirdSDK.Utils;
 
 namespace AirdPro.Forms
 {
