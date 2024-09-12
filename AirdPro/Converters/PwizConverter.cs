@@ -14,6 +14,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using AirdPro.Algorithms;
 using AirdPro.Algorithms.Compressor;
@@ -25,6 +26,7 @@ using AirdPro.Utils;
 using AirdSDK.Beans;
 using AirdSDK.Beans.Common;
 using AirdSDK.Compressor;
+using AirdSDK.Constants;
 using AirdSDK.Enums;
 using AirdSDK.Utils;
 using Google.Protobuf;
@@ -34,6 +36,7 @@ using pwiz.CLI.cv;
 using pwiz.CLI.data;
 using pwiz.CLI.msdata;
 using Activator = AirdPro.Constants.Activator;
+using Features = AirdSDK.Beans.Features;
 using Software = AirdSDK.Beans.Software;
 using Spectrum = pwiz.CLI.msdata.Spectrum;
 
@@ -1205,45 +1208,65 @@ namespace AirdPro.Converters
                 filterStrings.UnionWith(IndexList[i].filterStrings);
             }
 
-            if (activators.Count == 1)
+            activators.Remove(Activator.UNKNOWN);
+            msTypes.Remove(MSType.UNKNOWN);
+            polarities.Remove(Polarity.UNKNOWN);
+            filterStrings.Remove(String.Empty);
+            energies.Remove(-1);
+            if (activators.Count > 0)
             {
-                airdInfo.activator = IndexList[0].activators[0];
+                airdInfo.activator = string.Join(SymbolConst.COMMA, activators.ToArray());
+            }
+            else
+            {
                 foreach (var index in IndexList)
                 {
                     index.activators = null;
                 }
             }
 
-            if (energies.Count == 1)
+            if (energies.Count > 0)
             {
-                airdInfo.energy = IndexList[0].energies[0];
+                airdInfo.energy = energies.First();
+            }
+            else
+            {
                 foreach (var index in IndexList)
                 {
                     index.energies = null;
                 }
             }
 
-            if (polarities.Count == 1)
+            if (polarities.Count > 0)
             {
-                airdInfo.polarity = IndexList[0].polarities[0];
+                airdInfo.polarity = string.Join(SymbolConst.COMMA, polarities.ToArray());
+            }
+            else
+            {
                 foreach (var index in IndexList)
                 {
                     index.polarities = null;
                 }
             }
 
-            if (msTypes.Count == 1)
+            if (msTypes.Count > 0)
             {
-                airdInfo.msType = IndexList[0].msTypes[0];
+                airdInfo.msType = msTypes.First();
+            }
+            else
+            {
                 foreach (var index in IndexList)
                 {
                     index.msTypes = null;
                 }
             }
 
-            if (filterStrings.Count == 1)
+            if (filterStrings.Count > 0)
             {
-                airdInfo.filterString = IndexList[0].filterStrings[0];
+                airdInfo.filterString = filterStrings.First();
+            }
+            else
+            {
                 foreach (var index in IndexList)
                 {
                     index.filterStrings = null;
@@ -1253,13 +1276,10 @@ namespace AirdPro.Converters
             airdInfo.mobiInfo = MobiInfo;
             //Scan index and window range info
             airdInfo.rangeList = Ranges;
-
             //Block index
             airdInfo.indexList = IndexList;
-
             //ChromatogramIndex
             airdInfo.chromatogramIndex = ChromatogramIndex;
-
             //Instrument Info
             List<Instrument> instruments = new List<Instrument>();
             foreach (InstrumentConfiguration ic in Msd.instrumentConfigurationList)

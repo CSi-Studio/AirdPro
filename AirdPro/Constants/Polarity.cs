@@ -14,6 +14,7 @@ namespace AirdPro.Constants
     {
         public const string NEGATIVE = "NEGATIVE";
         public const string POSITIVE = "POSITIVE";
-        public const string NEUTRAL = "NEUTRAL";
+        public const string NEEUTRAL = "NEUTRAL";
+        public const string UNKNOWN = "UNKNOWN";
     }
 }
