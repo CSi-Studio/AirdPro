@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Management;
 using System.Threading;
 using AirdPro.Constants;
@@ -62,6 +63,15 @@ namespace AirdPro.Domains
         
         //C:/data/plasma.wiff
         public string inputPath;
+
+        //MSI_InputPaths
+        public string inputPaths;
+
+        //MSI 位置坐标x,y,z
+        public int[] MSIPixels;
+
+        //ROW_PER_FILE = 0,IMAGE_PER_FILE = 1,SPECTRUM_PER_FILE =2
+        public int MSIFileOrganisation;
 
         //文件本名
         public string airdFileName;
@@ -149,7 +159,29 @@ namespace AirdPro.Domains
             airdColumnJsonFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".cjson");
             airdColumnProtoFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".cindex");
             status = ProcessingStatus.WAITING;
-            vendorFileSize = GetVendorFileSize();
+            vendorFileSize = GetVendorFileSize(inputPath);
+        }
+
+        public JobInfo(string inputPath, string outputPath, string type, ConversionConfig config, string inputPaths,int MSIFileOrganisation, int[] pixels)
+        {
+            jobId = NextId();
+            this.inputPath = inputPaths.Split('|').FirstOrDefault();
+            this.inputPaths = inputPaths;
+            this.type = type;
+            this.MSIPixels = pixels;
+            this.MSIFileOrganisation = MSIFileOrganisation;
+            this.outputPath = outputPath;
+            this.config = config;
+            format = Path.GetExtension(inputPaths.Split('|').FirstOrDefault()).Replace(".", "").ToUpper();
+            isDir = Directory.Exists(inputPaths.Split('|').FirstOrDefault());
+            airdFileName = FileNameUtil.ParseFileName(inputPaths.Split('|').FirstOrDefault());
+            airdFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".aird");
+            airdJsonFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".json");
+            airdIndexFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".index");
+            airdColumnJsonFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".cjson");
+            airdColumnProtoFilePath = Path.Combine(outputPath, airdFileName + config.suffix + ".cindex");
+            status = ProcessingStatus.WAITING;
+            vendorFileSize = GetVendorFileSize_MSI(inputPaths);
         }
 
         public ListViewItem BuildItem()
@@ -385,7 +417,7 @@ namespace AirdPro.Domains
             logs = new List<Log>();
         }
 
-        public long GetVendorFileSize()
+        public long GetVendorFileSize(string inputPath)
         {
             long FileSize = 0;
             switch (format)
@@ -442,6 +474,16 @@ namespace AirdPro.Domains
                     break;
             }
 
+            return FileSize;
+        }
+
+        public long GetVendorFileSize_MSI(string inputPaths)
+        {
+            long FileSize = 0;
+            foreach (string file in inputPaths.Split('|'))
+            {
+                FileSize += GetVendorFileSize(file);
+            }
             return FileSize;
         }
     }

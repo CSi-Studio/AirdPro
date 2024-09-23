@@ -163,6 +163,7 @@
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\PRIDEParser.cs" />
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\ProteomeXchangeDataset.cs" />
     <Compile Include="CommandLine\Options.cs" />
+    <Compile Include="Converters\MSIConvert.cs" />
     <Compile Include="Domains\Redis\ConsumeSwitchCommand.cs" />
     <Compile Include="Forms\CustomPopup.cs">
       <SubType>Form</SubType>
@@ -529,6 +530,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Properties\app.manifest" />
+    <None Include="Properties\DataSources\AirdPro.Constants.MSIFileOrganisation.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

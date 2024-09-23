@@ -51,5 +51,9 @@ namespace AirdPro.Domains
         public int num;
 
         public WindowRange precursor;
+
+        public int x;
+        public int y;
+        public int z;
     }
 }

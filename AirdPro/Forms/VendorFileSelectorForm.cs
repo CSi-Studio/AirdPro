@@ -22,6 +22,7 @@ using AirdPro.Storage;
 using AirdPro.Storage.Config;
 using AirdPro.Utils;
 using AirdSDK.Utils;
+using HZH_Controls;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using ThermoFisher.CommonCore.Data;
@@ -35,6 +36,8 @@ namespace AirdPro.Forms
         public VendorFileSelectorForm()
         {
             InitializeComponent();
+            MSIFileOrganisation_Load();
+            AddEventHandler();
         }
 
         private void VendorFileSelectorForm_Load(object sender, EventArgs e)
@@ -55,6 +58,30 @@ namespace AirdPro.Forms
             cbConfig.SelectedIndex = selectedIndex;
         }
 
+        private void MSIFileOrganisation_Load()
+        {
+            comboBox_file_organisation.Items.Clear();
+            Array enumValues = Enum.GetValues(typeof(AirdSDK.Enums.MSIFileOrganisation));
+            foreach (var item in enumValues)
+            {
+                comboBox_file_organisation.Items.Add(item);
+            }
+            comboBox_file_organisation.SelectedIndex = 0;
+        }
+
+        private void AddEventHandler()
+        {
+            this.rbAuto.CheckedChanged += new EventHandler(this.radio_CheckChanged);
+            this.radioButton1.CheckedChanged += new EventHandler(this.radio_CheckChanged);
+            this.radioButton2.CheckedChanged += new EventHandler(this.radio_CheckChanged);
+            this.radioButton3.CheckedChanged += new EventHandler(this.radio_CheckChanged);
+            this.radioButton4.CheckedChanged += new EventHandler(this.radio_CheckChanged);
+            this.radioButton5.CheckedChanged += new EventHandler(this.radio_CheckChanged);
+            this.radioButton6.CheckedChanged += new EventHandler(this.radio_CheckChanged);
+            this.radioButton7.CheckedChanged += new EventHandler(this.radio_CheckChanged);
+            this.radioButton8.CheckedChanged += new EventHandler(this.radio_CheckChanged);
+        }
+
         public void ClearInfos()
         {
             msFileViews.files.ClearSelection();
@@ -66,7 +93,7 @@ namespace AirdPro.Forms
             for (int i = 0; i < gBoxMode.Controls.Count; i++)
             {
                 var cb = gBoxMode.Controls[i] as RadioButton;
-                if (cb.Checked)
+                if (cb != null && cb.Checked)
                 {
                     airdType = cb.Text;
                 }
@@ -145,9 +172,23 @@ namespace AirdPro.Forms
             //
             if (local)
             {
-                foreach (string path in filePathList)
+                if (airdType == AirdSDK.Enums.AcquisitionMethod.DDA_MSI || airdType == AirdSDK.Enums.AcquisitionMethod.DDA_MSI)
                 {
-                    Program.conversionForm.AddFile(path, outputPath, airdType, (ConversionConfig)config.Clone());
+                    string msi_path = string.Empty;
+                    foreach (string path in filePathList)
+                    {
+                        msi_path += "|" + path;
+                    }
+                    msi_path = msi_path.Substring(1);
+                    int[] pixels = [pixel_x.Value.ToInt(), pixel_y.Value.ToInt()];
+                    Program.conversionForm.AddFile(msi_path, outputPath, airdType, (ConversionConfig)config.Clone(), msi_path, comboBox_file_organisation.SelectedIndex, pixels);
+                }
+                else
+                {
+                    foreach (string path in filePathList)
+                    {
+                        Program.conversionForm.AddFile(path, outputPath, airdType, (ConversionConfig)config.Clone());
+                    }
                 }
             }
             else
@@ -349,6 +390,32 @@ namespace AirdPro.Forms
             else
             {
                 MessageBox.Show("Redis is not connected");
+            }
+        }
+
+
+        private void radio_CheckChanged(object sender, EventArgs e)
+        {
+            string airdType = GetAirdType();
+            if (airdType == AirdSDK.Enums.AcquisitionMethod.DDA_MSI || airdType == AirdSDK.Enums.AcquisitionMethod.DIA_MSI)
+            {
+                comboBox_file_organisation.Visible = true;
+                label2.Visible = true;
+                pixel_x.Visible = true;
+                label3.Visible = true;
+                pixel_y.Visible = true;
+                //label4.Visible = true;
+                //pixel_z.Visible = true;
+            }
+            else
+            {
+                comboBox_file_organisation.Visible = false;
+                label2.Visible = false;
+                pixel_x.Visible = false;
+                label3.Visible = false;
+                pixel_y.Visible = false;
+                //label4.Visible = false;
+                //pixel_z.Visible = false;
             }
         }
     }

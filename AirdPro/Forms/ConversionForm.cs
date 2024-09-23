@@ -131,11 +131,19 @@ namespace AirdPro.Forms
             }
         }
 
-        public void AddFile(string inputPath, string outputPath, string type, ConversionConfig config)
+        public void AddFile(string inputPath, string outputPath, string type, ConversionConfig config, string inputPaths = null, int MSIFileOrganisation = 0, int[] pixels = null)
         {
             if (!inputPath.IsNullOrEmpty())
             {
-                JobInfo jobInfo = new JobInfo(inputPath, outputPath, type, config);
+                JobInfo jobInfo;
+                if (type == AirdSDK.Enums.AcquisitionMethod.DDA_MSI || type == AirdSDK.Enums.AcquisitionMethod.DIA_MSI)
+                {
+                    jobInfo = new JobInfo(inputPath, outputPath, type, config, inputPaths, MSIFileOrganisation, pixels);
+                }
+                else
+                {
+                    jobInfo = new JobInfo(inputPath, outputPath, type, config);
+                }
                 ListViewItem item = jobInfo.BuildItem();
 
                 lvFileList.Items.Add(item);

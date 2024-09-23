@@ -20,5 +20,7 @@ namespace AirdSDK.Enums
         public const string SCANNING_SWATH = "SCANNING_SWATH"; // 暂未支持
         public const string DDA = "DDA"; // MS1 -> MS2 Group
         public const string MRM = "MRM"; // Chromatogram
+        public const string DIA_MSI = "DIA_MSI"; // MSI
+        public const string DDA_MSI = "DDA_MSI"; // MSI
     }
 }
