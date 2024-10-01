@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>AirdPro</RootNamespace>
     <AssemblyName>AirdPro</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -164,6 +164,12 @@
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\ProteomeXchangeDataset.cs" />
     <Compile Include="CommandLine\Options.cs" />
     <Compile Include="Converters\MSIConvert.cs" />
+    <Compile Include="Domains\Msi\HorizontalStart.cs" />
+    <Compile Include="Domains\Msi\ImagingParameters.cs" />
+    <Compile Include="ImzMLParser\imzml\IMSIData.cs" />
+    <Compile Include="Domains\Msi\Pattern.cs" />
+    <Compile Include="Domains\Msi\ScanDirection.cs" />
+    <Compile Include="Domains\Msi\VerticalStart.cs" />
     <Compile Include="Domains\Redis\ConsumeSwitchCommand.cs" />
     <Compile Include="Forms\CustomPopup.cs">
       <SubType>Form</SubType>
@@ -171,6 +177,121 @@
     <Compile Include="Forms\CustomPopup.Designer.cs">
       <DependentUpon>CustomPopup.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImzMLParser\affair\ChildAddRemoveAffair.cs" />
+    <Compile Include="ImzMLParser\affair\CVParamAddedAffair.cs" />
+    <Compile Include="ImzMLParser\affair\CVParamAddRemoveAffair.cs" />
+    <Compile Include="ImzMLParser\affair\CVParamChangeAffair.cs" />
+    <Compile Include="ImzMLParser\affair\CVParamRemovedAffair.cs" />
+    <Compile Include="ImzMLParser\affair\IMzMLContentListener.cs" />
+    <Compile Include="ImzMLParser\affair\MzMLAffair.cs" />
+    <Compile Include="ImzMLParser\affair\OBOTermCVParamChangeAffair.cs" />
+    <Compile Include="ImzMLParser\affair\ValueCVParamChangeAffair.cs" />
+    <Compile Include="ImzMLParser\data\Base64DataStorage.cs" />
+    <Compile Include="ImzMLParser\data\BinaryDataStorage.cs" />
+    <Compile Include="ImzMLParser\data\DataLocation.cs" />
+    <Compile Include="ImzMLParser\data\DataStorage.cs" />
+    <Compile Include="ImzMLParser\data\DataTransformation.cs" />
+    <Compile Include="ImzMLParser\data\DataTypeTransform.cs" />
+    <Compile Include="ImzMLParser\data\IDataTransform.cs" />
+    <Compile Include="ImzMLParser\data\LZ4DataTransform.cs" />
+    <Compile Include="ImzMLParser\data\MSNumpressDataTransform.cs" />
+    <Compile Include="ImzMLParser\data\MzMLSpectrumDataStorage.cs" />
+    <Compile Include="ImzMLParser\data\XZDataTransform.cs" />
+    <Compile Include="ImzMLParser\data\ZlibDataTransform.cs" />
+    <Compile Include="ImzMLParser\data\ZstdDataTransform.cs" />
+    <Compile Include="ImzMLParser\exceptions\IIssue.cs" />
+    <Compile Include="ImzMLParser\exceptions\InvalidFormatIssue.cs" />
+    <Compile Include="ImzMLParser\exceptions\InvalidXPathException.cs" />
+    <Compile Include="ImzMLParser\exceptions\IParseIssue.cs" />
+    <Compile Include="ImzMLParser\exceptions\NonFatalParseException.cs" />
+    <Compile Include="ImzMLParser\exceptions\NonFatalParseIssue.cs" />
+    <Compile Include="ImzMLParser\exceptions\UnfollowableException.cs" />
+    <Compile Include="ImzMLParser\imzml\ImzML.cs" />
+    <Compile Include="ImzMLParser\imzml\ImzMLContainer.cs" />
+    <Compile Include="ImzMLParser\imzml\PixelLocation.cs" />
+    <Compile Include="ImzMLParser\mzml\Activation.cs" />
+    <Compile Include="ImzMLParser\mzml\Analyser.cs" />
+    <Compile Include="ImzMLParser\mzml\Binary.cs" />
+    <Compile Include="ImzMLParser\mzml\BinaryDataArray.cs" />
+    <Compile Include="ImzMLParser\mzml\BinaryDataArrayList.cs" />
+    <Compile Include="ImzMLParser\mzml\BooleanCVParam.cs" />
+    <Compile Include="ImzMLParser\mzml\Chromatogram.cs" />
+    <Compile Include="ImzMLParser\mzml\ChromatogramList.cs" />
+    <Compile Include="ImzMLParser\mzml\Component.cs" />
+    <Compile Include="ImzMLParser\mzml\ComponentList.cs" />
+    <Compile Include="ImzMLParser\mzml\Contact.cs" />
+    <Compile Include="ImzMLParser\mzml\CV.cs" />
+    <Compile Include="ImzMLParser\mzml\CVList.cs" />
+    <Compile Include="ImzMLParser\mzml\CVParam.cs" />
+    <Compile Include="ImzMLParser\mzml\DataProcessing.cs" />
+    <Compile Include="ImzMLParser\mzml\DataProcessingList.cs" />
+    <Compile Include="ImzMLParser\mzml\Detector.cs" />
+    <Compile Include="ImzMLParser\mzml\DoubleCVParam.cs" />
+    <Compile Include="ImzMLParser\mzml\EmptyCVParam.cs" />
+    <Compile Include="ImzMLParser\mzml\FileContent.cs" />
+    <Compile Include="ImzMLParser\mzml\FileDescription.cs" />
+    <Compile Include="ImzMLParser\mzml\IHasChildren.cs" />
+    <Compile Include="ImzMLParser\mzml\IHasParams.cs" />
+    <Compile Include="ImzMLParser\mzml\IMzMLTag.cs" />
+    <Compile Include="ImzMLParser\mzml\IMzMLTagList.cs" />
+    <Compile Include="ImzMLParser\mzml\InstrumentConfiguration.cs" />
+    <Compile Include="ImzMLParser\mzml\InstrumentConfigurationList.cs" />
+    <Compile Include="ImzMLParser\mzml\IntegerCVParam.cs" />
+    <Compile Include="ImzMLParser\mzml\IReferenceableTag.cs" />
+    <Compile Include="ImzMLParser\mzml\IReferenceList.cs" />
+    <Compile Include="ImzMLParser\mzml\IsolationWindow.cs" />
+    <Compile Include="ImzMLParser\mzml\LongCVParam.cs" />
+    <Compile Include="ImzMLParser\mzml\MzML.cs" />
+    <Compile Include="ImzMLParser\mzml\MzMLContent.cs" />
+    <Compile Include="ImzMLParser\mzml\MzMLContentList.cs" />
+    <Compile Include="ImzMLParser\mzml\MzMLContentWithParams.cs" />
+    <Compile Include="ImzMLParser\mzml\MzMLDataContainer.cs" />
+    <Compile Include="ImzMLParser\mzml\MzMLIDContent.cs" />
+    <Compile Include="ImzMLParser\mzml\MzMLIDContentList.cs" />
+    <Compile Include="ImzMLParser\mzml\MzMLIndexedContentWithParams.cs" />
+    <Compile Include="ImzMLParser\mzml\MzMLOrderedContentWithParams.cs" />
+    <Compile Include="ImzMLParser\mzml\MzMLReference.cs" />
+    <Compile Include="ImzMLParser\mzml\Precursor.cs" />
+    <Compile Include="ImzMLParser\mzml\PrecursorList.cs" />
+    <Compile Include="ImzMLParser\mzml\ProcessingMethod.cs" />
+    <Compile Include="ImzMLParser\mzml\Product.cs" />
+    <Compile Include="ImzMLParser\mzml\ProductList.cs" />
+    <Compile Include="ImzMLParser\mzml\ReferenceableParamGroup.cs" />
+    <Compile Include="ImzMLParser\mzml\ReferenceableParamGroupList.cs" />
+    <Compile Include="ImzMLParser\mzml\ReferenceableParamGroupRef.cs" />
+    <Compile Include="ImzMLParser\mzml\Run.cs" />
+    <Compile Include="ImzMLParser\mzml\Sample.cs" />
+    <Compile Include="ImzMLParser\mzml\SampleList.cs" />
+    <Compile Include="ImzMLParser\mzml\Scan.cs" />
+    <Compile Include="ImzMLParser\mzml\ScanList.cs" />
+    <Compile Include="ImzMLParser\mzml\ScanSettings.cs" />
+    <Compile Include="ImzMLParser\mzml\ScanSettingsList.cs" />
+    <Compile Include="ImzMLParser\mzml\ScanWindow.cs" />
+    <Compile Include="ImzMLParser\mzml\ScanWindowList.cs" />
+    <Compile Include="ImzMLParser\mzml\SelectedIon.cs" />
+    <Compile Include="ImzMLParser\mzml\SelectedIonList.cs" />
+    <Compile Include="ImzMLParser\mzml\Software.cs" />
+    <Compile Include="ImzMLParser\mzml\SoftwareList.cs" />
+    <Compile Include="ImzMLParser\mzml\SoftwareRef.cs" />
+    <Compile Include="ImzMLParser\mzml\Source.cs" />
+    <Compile Include="ImzMLParser\mzml\SourceFile.cs" />
+    <Compile Include="ImzMLParser\mzml\SourceFileList.cs" />
+    <Compile Include="ImzMLParser\mzml\SourceFileRef.cs" />
+    <Compile Include="ImzMLParser\mzml\SourceFileRefList.cs" />
+    <Compile Include="ImzMLParser\mzml\Spectrum.cs" />
+    <Compile Include="ImzMLParser\mzml\SpectrumList.cs" />
+    <Compile Include="ImzMLParser\mzml\StringCVParam.cs" />
+    <Compile Include="ImzMLParser\mzml\Target.cs" />
+    <Compile Include="ImzMLParser\mzml\TargetList.cs" />
+    <Compile Include="ImzMLParser\mzml\UserParam.cs" />
+    <Compile Include="ImzMLParser\obo\FileOBOLoader.cs" />
+    <Compile Include="ImzMLParser\obo\HTTPOBOLoader.cs" />
+    <Compile Include="ImzMLParser\obo\IOBOLoader.cs" />
+    <Compile Include="ImzMLParser\obo\OBO.cs" />
+    <Compile Include="ImzMLParser\obo\OBOTerm.cs" />
+    <Compile Include="ImzMLParser\obo\ResourceOBOLoader.cs" />
+    <Compile Include="ImzMLParser\parser\ImzMLHandler.cs" />
+    <Compile Include="ImzMLParser\util\XMLHelper.cs" />
     <Compile Include="Manager\ConvertTaskManager.cs" />
     <Compile Include="Constants\Activator.cs" />
     <Compile Include="Constants\Froms.cs" />
@@ -526,6 +647,7 @@
       <DependentUpon>PXForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="jimzMLParser.properties" />
     <None Include="log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -551,6 +673,12 @@
     <EmbeddedResource Include="Resources\Config\MLFastConfigFile.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <None Include="Resources\obo\imagingMS.obo" />
+    <None Include="Resources\obo\pato.obo" />
+    <None Include="Resources\obo\psi-ms.obo" />
+    <None Include="Resources\obo\quality.obo" />
+    <None Include="Resources\obo\unit.obo" />
+    <None Include="Resources\obo\uo.obo" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Ico\AIR.ico">
@@ -732,6 +860,9 @@
     <PackageReference Include="IronSnappy" Version="1.3.1" />
     <PackageReference Include="log4net" Version="2.0.17" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NUnit">
+      <Version>4.2.2</Version>
+    </PackageReference>
     <PackageReference Include="StackExchange.Redis" Version="2.7.33" />
     <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />

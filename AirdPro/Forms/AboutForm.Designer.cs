@@ -93,7 +93,7 @@
             this.lblOpVersion.Name = "lblOpVersion";
             this.lblOpVersion.Size = new System.Drawing.Size(83, 20);
             this.lblOpVersion.TabIndex = 6;
-            this.lblOpVersion.Text = "OP Version";
+            this.lblOpVersion.Text = "OP version";
             // 
             // llLicense
             // 

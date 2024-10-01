@@ -95,7 +95,7 @@
             // 
             // headerName
             // 
-            this.headerName.Text = "Config Name";
+            this.headerName.Text = "Config name";
             this.headerName.Width = 180;
             // 
             // lvConfigList
@@ -188,7 +188,7 @@
             this.lblNameConfig.Name = "lblNameConfig";
             this.lblNameConfig.Size = new System.Drawing.Size(76, 16);
             this.lblNameConfig.TabIndex = 136;
-            this.lblNameConfig.Text = "Config Name";
+            this.lblNameConfig.Text = "Config name";
             // 
             // lblConfigIntIntComp
             // 

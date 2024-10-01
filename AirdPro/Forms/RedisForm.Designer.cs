@@ -319,7 +319,7 @@
             // 
             // colServerName
             // 
-            this.colServerName.Text = "Server Name";
+            this.colServerName.Text = "Server name";
             this.colServerName.Width = 123;
             // 
             // colOSVersion

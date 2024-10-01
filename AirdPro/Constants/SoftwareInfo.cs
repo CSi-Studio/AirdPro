@@ -23,7 +23,7 @@ namespace AirdPro.Constants
 
         public static string GetVersion()
         {
-            return "Version " + VERSION;
+            return "version " + VERSION;
         }
 
         public static string GetDescription()

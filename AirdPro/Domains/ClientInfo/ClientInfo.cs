@@ -63,7 +63,7 @@ namespace AirdPro.Domains
             ManagementObjectSearcher mos = new ManagementObjectSearcher("Select * from Win32_Processor");
             foreach (var mo in mos.Get())
             {
-                cpuName = mo["Name"].ToString();
+                cpuName = mo["name"].ToString();
             }
 
             mos.Dispose();
