@@ -79,7 +79,7 @@ namespace AirdPro
             // 
             // FileName
             // 
-            this.FileName.Header = "name";
+            this.FileName.Header = "Name";
             this.FileName.SortOrder = System.Windows.Forms.SortOrder.None;
             this.FileName.TooltipText = "File name";
             this.FileName.Width = 350;
@@ -109,7 +109,7 @@ namespace AirdPro
             // 
             // name
             // 
-            this.name.DataPropertyName = "name";
+            this.name.DataPropertyName = "Name";
             this.name.IncrementalSearchEnabled = true;
             this.name.LeftMargin = 3;
             this.name.ParentColumn = this.FileName;
