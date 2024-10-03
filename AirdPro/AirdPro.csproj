@@ -887,6 +887,9 @@
       <Version>1.3.8</Version>
     </PackageReference>
     <PackageReference Include="log4net" Version="2.0.17" />
+    <PackageReference Include="lz4net">
+      <Version>1.0.15.93</Version>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NUnit">
       <Version>4.2.2</Version>

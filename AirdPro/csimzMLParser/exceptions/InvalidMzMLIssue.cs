@@ -10,7 +10,7 @@ namespace AirdPro.csimzMLParser.exceptions
         
         }
 
-        public InvalidMzMLIssue(String title, String message) : base(title, message)
+        public InvalidMzMLIssue(string title, string message) : base(title, message)
         { 
         
         }
