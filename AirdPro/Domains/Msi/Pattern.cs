@@ -1,5 +1,5 @@
 ﻿namespace AirdPro.Domains.Msi
-{    
+{
     public class Pattern(string name)
     {
         public string Name { get; } = name;
