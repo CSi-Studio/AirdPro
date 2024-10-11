@@ -113,7 +113,7 @@ namespace Aga.Controls
 			foreach (PerformanceInfo info in Performances)
 				len = Math.Max(info.Name.Length, len);
 
-			sb.AppendLine("Name".PadRight(len) + " Count              Total Time, ms    Avg. Time, ms       Percentage, %");
+			sb.AppendLine("name".PadRight(len) + " Count              Total Time, ms    Avg. Time, ms       Percentage, %");
 			sb.AppendLine("----------------------------------------------------------------------------------------------");
 			foreach (PerformanceInfo info in Performances)
 			{

@@ -217,6 +217,7 @@ namespace AirdPro
                                     || FileFormat.DotTDMS.ToLower().Equals(extension.ToLower())
                                     || FileFormat.DotRAW.ToLower().Equals(extension.ToLower())
                                     || FileFormat.DotmzML.ToLower().Equals(extension.ToLower())
+                                    || FileFormat.DotimzML.ToLower().Equals(extension.ToLower())
                                     || FileFormat.DotmzXML.ToLower().Equals(extension.ToLower()))
                                 {
                                     item.MSFile = true;

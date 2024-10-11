@@ -29,7 +29,7 @@ public class SectionInfo
     [XmlElement("ColumnIndex")]
     public int ColumnIndex { get; set; }
     
-    [XmlElement("Name")]
+    [XmlElement("name")]
     public string Name { get; set; }
     
     [XmlElement("ID")]

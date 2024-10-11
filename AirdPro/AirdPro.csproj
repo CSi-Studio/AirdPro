@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>AirdPro</RootNamespace>
     <AssemblyName>AirdPro</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -164,6 +164,26 @@
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\ProteomeXchangeDataset.cs" />
     <Compile Include="CommandLine\Options.cs" />
     <Compile Include="Converters\MSIConvert.cs" />
+    <Compile Include="Domains\Msi\Coordinates.cs" />
+    <Compile Include="Domains\Msi\HorizontalStart.cs" />
+    <Compile Include="Domains\Msi\ImagingParameters.cs" />
+    <Compile Include="Domains\Msi\Pattern.cs" />
+    <Compile Include="Domains\Msi\ScanDirection.cs" />
+    <Compile Include="Domains\Msi\VerticalStart.cs" />
+    <Compile Include="csimzMLParser\exceptions\CVParamAccessionNotFoundIssue.cs" />
+    <Compile Include="csimzMLParser\exceptions\FatalParseException.cs" />
+    <Compile Include="csimzMLParser\exceptions\FatalParseIssue.cs" />
+    <Compile Include="csimzMLParser\exceptions\FatalRuntimeParseException.cs" />
+    <Compile Include="csimzMLParser\exceptions\ImzMLParseException.cs" />
+    <Compile Include="csimzMLParser\exceptions\ImzMLWriteException.cs" />
+    <Compile Include="csimzMLParser\exceptions\InvalidCVParamValue.cs" />
+    <Compile Include="csimzMLParser\exceptions\InvalidExternalOffset.cs" />
+    <Compile Include="csimzMLParser\exceptions\InvalidImzMLIssue.cs" />
+    <Compile Include="csimzMLParser\exceptions\InvalidMzMLIssue.cs" />
+    <Compile Include="csimzMLParser\exceptions\MissingReferenceIssue.cs" />
+    <Compile Include="csimzMLParser\exceptions\MzMLParseException.cs" />
+    <Compile Include="csimzMLParser\exceptions\ObsoleteTermUsed.cs" />
+    <Compile Include="csimzMLParser\imzml\IMSIData.cs" />
     <Compile Include="Domains\Redis\ConsumeSwitchCommand.cs" />
     <Compile Include="Forms\CustomPopup.cs">
       <SubType>Form</SubType>
@@ -171,6 +191,126 @@
     <Compile Include="Forms\CustomPopup.Designer.cs">
       <DependentUpon>CustomPopup.cs</DependentUpon>
     </Compile>
+    <Compile Include="csimzMLParser\affair\ChildAddRemoveAffair.cs" />
+    <Compile Include="csimzMLParser\affair\CVParamAddedAffair.cs" />
+    <Compile Include="csimzMLParser\affair\CVParamAddRemoveAffair.cs" />
+    <Compile Include="csimzMLParser\affair\CVParamChangeAffair.cs" />
+    <Compile Include="csimzMLParser\affair\CVParamRemovedAffair.cs" />
+    <Compile Include="csimzMLParser\affair\IMzMLContentListener.cs" />
+    <Compile Include="csimzMLParser\affair\MzMLAffair.cs" />
+    <Compile Include="csimzMLParser\affair\OBOTermCVParamChangeAffair.cs" />
+    <Compile Include="csimzMLParser\affair\ValueCVParamChangeAffair.cs" />
+    <Compile Include="csimzMLParser\data\Base64DataStorage.cs" />
+    <Compile Include="csimzMLParser\data\BinaryDataStorage.cs" />
+    <Compile Include="csimzMLParser\data\DataLocation.cs" />
+    <Compile Include="csimzMLParser\data\DataStorage.cs" />
+    <Compile Include="csimzMLParser\data\DataTransformation.cs" />
+    <Compile Include="csimzMLParser\data\DataTypeTransform.cs" />
+    <Compile Include="csimzMLParser\data\IDataTransform.cs" />
+    <Compile Include="csimzMLParser\data\LZ4DataTransform.cs" />
+    <Compile Include="csimzMLParser\data\MSNumpressDataTransform.cs" />
+    <Compile Include="csimzMLParser\data\MzMLSpectrumDataStorage.cs" />
+    <Compile Include="csimzMLParser\data\XZDataTransform.cs" />
+    <Compile Include="csimzMLParser\data\ZlibDataTransform.cs" />
+    <Compile Include="csimzMLParser\data\ZstdDataTransform.cs" />
+    <Compile Include="csimzMLParser\exceptions\IIssue.cs" />
+    <Compile Include="csimzMLParser\exceptions\InvalidFormatIssue.cs" />
+    <Compile Include="csimzMLParser\exceptions\InvalidXPathException.cs" />
+    <Compile Include="csimzMLParser\exceptions\IParseIssue.cs" />
+    <Compile Include="csimzMLParser\exceptions\NonFatalParseException.cs" />
+    <Compile Include="csimzMLParser\exceptions\NonFatalParseIssue.cs" />
+    <Compile Include="csimzMLParser\exceptions\UnfollowableException.cs" />
+    <Compile Include="csimzMLParser\imzml\ImzML.cs" />
+    <Compile Include="csimzMLParser\imzml\ImzMLContainer.cs" />
+    <Compile Include="csimzMLParser\imzml\PixelLocation.cs" />
+    <Compile Include="csimzMLParser\mzml\Activation.cs" />
+    <Compile Include="csimzMLParser\mzml\Analyser.cs" />
+    <Compile Include="csimzMLParser\mzml\Binary.cs" />
+    <Compile Include="csimzMLParser\mzml\BinaryDataArray.cs" />
+    <Compile Include="csimzMLParser\mzml\BinaryDataArrayList.cs" />
+    <Compile Include="csimzMLParser\mzml\BooleanCVParam.cs" />
+    <Compile Include="csimzMLParser\mzml\Chromatogram.cs" />
+    <Compile Include="csimzMLParser\mzml\ChromatogramList.cs" />
+    <Compile Include="csimzMLParser\mzml\Component.cs" />
+    <Compile Include="csimzMLParser\mzml\ComponentList.cs" />
+    <Compile Include="csimzMLParser\mzml\Contact.cs" />
+    <Compile Include="csimzMLParser\mzml\CV.cs" />
+    <Compile Include="csimzMLParser\mzml\CVList.cs" />
+    <Compile Include="csimzMLParser\mzml\CVParam.cs" />
+    <Compile Include="csimzMLParser\mzml\DataProcessing.cs" />
+    <Compile Include="csimzMLParser\mzml\DataProcessingList.cs" />
+    <Compile Include="csimzMLParser\mzml\Detector.cs" />
+    <Compile Include="csimzMLParser\mzml\DoubleCVParam.cs" />
+    <Compile Include="csimzMLParser\mzml\EmptyCVParam.cs" />
+    <Compile Include="csimzMLParser\mzml\FileContent.cs" />
+    <Compile Include="csimzMLParser\mzml\FileDescription.cs" />
+    <Compile Include="csimzMLParser\mzml\IHasChildren.cs" />
+    <Compile Include="csimzMLParser\mzml\IHasParams.cs" />
+    <Compile Include="csimzMLParser\mzml\IMzMLTag.cs" />
+    <Compile Include="csimzMLParser\mzml\IMzMLTagList.cs" />
+    <Compile Include="csimzMLParser\mzml\InstrumentConfiguration.cs" />
+    <Compile Include="csimzMLParser\mzml\InstrumentConfigurationList.cs" />
+    <Compile Include="csimzMLParser\mzml\IntegerCVParam.cs" />
+    <Compile Include="csimzMLParser\mzml\IReferenceableTag.cs" />
+    <Compile Include="csimzMLParser\mzml\IReferenceList.cs" />
+    <Compile Include="csimzMLParser\mzml\IsolationWindow.cs" />
+    <Compile Include="csimzMLParser\mzml\LongCVParam.cs" />
+    <Compile Include="csimzMLParser\mzml\MzML.cs" />
+    <Compile Include="csimzMLParser\mzml\MzMLContent.cs" />
+    <Compile Include="csimzMLParser\mzml\MzMLContentList.cs" />
+    <Compile Include="csimzMLParser\mzml\MzMLContentWithParams.cs" />
+    <Compile Include="csimzMLParser\mzml\MzMLDataContainer.cs" />
+    <Compile Include="csimzMLParser\mzml\MzMLIDContent.cs" />
+    <Compile Include="csimzMLParser\mzml\MzMLIDContentList.cs" />
+    <Compile Include="csimzMLParser\mzml\MzMLIndexedContentWithParams.cs" />
+    <Compile Include="csimzMLParser\mzml\MzMLOrderedContentWithParams.cs" />
+    <Compile Include="csimzMLParser\mzml\MzMLReference.cs" />
+    <Compile Include="csimzMLParser\mzml\Precursor.cs" />
+    <Compile Include="csimzMLParser\mzml\PrecursorList.cs" />
+    <Compile Include="csimzMLParser\mzml\ProcessingMethod.cs" />
+    <Compile Include="csimzMLParser\mzml\Product.cs" />
+    <Compile Include="csimzMLParser\mzml\ProductList.cs" />
+    <Compile Include="csimzMLParser\mzml\ReferenceableParamGroup.cs" />
+    <Compile Include="csimzMLParser\mzml\ReferenceableParamGroupList.cs" />
+    <Compile Include="csimzMLParser\mzml\ReferenceableParamGroupRef.cs" />
+    <Compile Include="csimzMLParser\mzml\Run.cs" />
+    <Compile Include="csimzMLParser\mzml\Sample.cs" />
+    <Compile Include="csimzMLParser\mzml\SampleList.cs" />
+    <Compile Include="csimzMLParser\mzml\Scan.cs" />
+    <Compile Include="csimzMLParser\mzml\ScanList.cs" />
+    <Compile Include="csimzMLParser\mzml\ScanSettings.cs" />
+    <Compile Include="csimzMLParser\mzml\ScanSettingsList.cs" />
+    <Compile Include="csimzMLParser\mzml\ScanWindow.cs" />
+    <Compile Include="csimzMLParser\mzml\ScanWindowList.cs" />
+    <Compile Include="csimzMLParser\mzml\SelectedIon.cs" />
+    <Compile Include="csimzMLParser\mzml\SelectedIonList.cs" />
+    <Compile Include="csimzMLParser\mzml\Software.cs" />
+    <Compile Include="csimzMLParser\mzml\SoftwareList.cs" />
+    <Compile Include="csimzMLParser\mzml\SoftwareRef.cs" />
+    <Compile Include="csimzMLParser\mzml\Source.cs" />
+    <Compile Include="csimzMLParser\mzml\SourceFile.cs" />
+    <Compile Include="csimzMLParser\mzml\SourceFileList.cs" />
+    <Compile Include="csimzMLParser\mzml\SourceFileRef.cs" />
+    <Compile Include="csimzMLParser\mzml\SourceFileRefList.cs" />
+    <Compile Include="csimzMLParser\mzml\Spectrum.cs" />
+    <Compile Include="csimzMLParser\mzml\SpectrumList.cs" />
+    <Compile Include="csimzMLParser\mzml\StringCVParam.cs" />
+    <Compile Include="csimzMLParser\mzml\Target.cs" />
+    <Compile Include="csimzMLParser\mzml\TargetList.cs" />
+    <Compile Include="csimzMLParser\mzml\UserParam.cs" />
+    <Compile Include="csimzMLParser\obo\FileOBOLoader.cs" />
+    <Compile Include="csimzMLParser\obo\HTTPOBOLoader.cs" />
+    <Compile Include="csimzMLParser\obo\IOBOLoader.cs" />
+    <Compile Include="csimzMLParser\obo\OBO.cs" />
+    <Compile Include="csimzMLParser\obo\OBOTerm.cs" />
+    <Compile Include="csimzMLParser\obo\ResourceOBOLoader.cs" />
+    <Compile Include="csimzMLParser\parser\ImzMLHandler.cs" />
+    <Compile Include="csimzMLParser\parser\MzMLHandler.cs" />
+    <Compile Include="csimzMLParser\parser\MzMLHeaderHandler.cs" />
+    <Compile Include="csimzMLParser\parser\IParserListener.cs" />
+    <Compile Include="csimzMLParser\util\HexHelper.cs" />
+    <Compile Include="csimzMLParser\util\UUIDHelper.cs" />
+    <Compile Include="csimzMLParser\util\XMLHelper.cs" />
     <Compile Include="Manager\ConvertTaskManager.cs" />
     <Compile Include="Constants\Activator.cs" />
     <Compile Include="Constants\Froms.cs" />
@@ -526,6 +666,7 @@
       <DependentUpon>PXForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="jimzMLParser.properties" />
     <None Include="log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -551,6 +692,12 @@
     <EmbeddedResource Include="Resources\Config\MLFastConfigFile.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <None Include="Resources\obo\imagingMS.obo" />
+    <None Include="Resources\obo\pato.obo" />
+    <None Include="Resources\obo\psi-ms.obo" />
+    <None Include="Resources\obo\quality.obo" />
+    <None Include="Resources\obo\unit.obo" />
+    <None Include="Resources\obo\uo.obo" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Ico\AIR.ico">
@@ -720,6 +867,9 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Brotli.NET">
+      <Version>1.0.0</Version>
+    </PackageReference>
     <PackageReference Include="CommandLineParser">
       <Version>2.9.1</Version>
     </PackageReference>
@@ -730,12 +880,35 @@
     <PackageReference Include="HtmlAgilityPack.NetCore" Version="1.5.0.1" />
     <PackageReference Include="HZH_Controls" Version="1.5.240416" />
     <PackageReference Include="IronSnappy" Version="1.3.1" />
+    <PackageReference Include="K4os.Compression.LZ4">
+      <Version>1.3.8</Version>
+    </PackageReference>
+    <PackageReference Include="K4os.Compression.LZ4.Streams">
+      <Version>1.3.8</Version>
+    </PackageReference>
     <PackageReference Include="log4net" Version="2.0.17" />
+    <PackageReference Include="lz4net">
+      <Version>1.0.15.93</Version>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NUnit">
+      <Version>4.2.2</Version>
+    </PackageReference>
+    <PackageReference Include="SharpCompress">
+      <Version>0.38.0</Version>
+    </PackageReference>
     <PackageReference Include="StackExchange.Redis" Version="2.7.33" />
     <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
-    <PackageReference Include="ZstdNet" Version="1.4.5" />
+    <PackageReference Include="XZ.NET">
+      <Version>2.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="ZstdNet">
+      <Version>1.4.5</Version>
+    </PackageReference>
+    <PackageReference Include="ZstdSharp.Port">
+      <Version>0.8.1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSharpSDK\AirdSDK.csproj">
