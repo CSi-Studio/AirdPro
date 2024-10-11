@@ -25,6 +25,7 @@ using AirdPro.Repository;
 using AirdPro.Utils;
 using AirdSDK.Constants;
 using Newtonsoft.Json;
+using AirdSDK.Bean;
 
 namespace AirdPro.Forms
 {
@@ -131,14 +132,14 @@ namespace AirdPro.Forms
             }
         }
 
-        public void AddFile(string inputPath, string outputPath, string type, ConversionConfig config, string inputPaths = null, int MSIFileOrganisation = 0, int[] pixels = null)
+        public void AddFile(string inputPath, string outputPath, string type, ConversionConfig config, string inputPaths = null, MSIInfo MSIjobConfig = null)
         {
             if (!inputPath.IsNullOrEmpty())
             {
                 JobInfo jobInfo;
                 if (type == AirdSDK.Enums.AcquisitionMethod.DDA_MSI || type == AirdSDK.Enums.AcquisitionMethod.DIA_MSI)
                 {
-                    jobInfo = new JobInfo(inputPath, outputPath, type, config, inputPaths, MSIFileOrganisation, pixels);
+                    jobInfo = new JobInfo(inputPath, outputPath, type, config, inputPaths, MSIjobConfig);
                 }
                 else
                 {

@@ -21,6 +21,7 @@ using AirdPro.Redis;
 using AirdPro.Storage;
 using AirdPro.Storage.Config;
 using AirdPro.Utils;
+using AirdSDK.Bean;
 using AirdSDK.Utils;
 using HZH_Controls;
 using Newtonsoft.Json;
@@ -36,7 +37,7 @@ namespace AirdPro.Forms
         public VendorFileSelectorForm()
         {
             InitializeComponent();
-            MSIFileOrganisation_Load();
+            MSIConfig_Load();
             AddEventHandler();
         }
 
@@ -58,7 +59,7 @@ namespace AirdPro.Forms
             cbConfig.SelectedIndex = selectedIndex;
         }
 
-        private void MSIFileOrganisation_Load()
+        private void MSIConfig_Load()
         {
             comboBox_file_organisation.Items.Clear();
             Array enumValues = Enum.GetValues(typeof(AirdSDK.Enums.MSIFileOrganisation));
@@ -67,6 +68,20 @@ namespace AirdPro.Forms
                 comboBox_file_organisation.Items.Add(item);
             }
             comboBox_file_organisation.SelectedIndex = 0;
+            comboBox_scan_direction.Items.Clear();
+            enumValues = Enum.GetValues(typeof(AirdSDK.Enums.LineScanDirection));
+            foreach (var item in enumValues)
+            {
+                comboBox_scan_direction.Items.Add(item);
+            }
+            comboBox_scan_direction.SelectedIndex = 0;
+            comboBox_scan_pattern.Items.Clear();
+            enumValues = Enum.GetValues(typeof(AirdSDK.Enums.ScanPattern));
+            foreach (var item in enumValues)
+            {
+                comboBox_scan_pattern.Items.Add(item);
+            }
+            comboBox_scan_pattern.SelectedIndex = 0;
         }
 
         private void AddEventHandler()
@@ -181,7 +196,9 @@ namespace AirdPro.Forms
                     }
                     msi_path = msi_path.Substring(1);
                     int[] pixels = [pixel_x.Value.ToInt(), pixel_y.Value.ToInt()];
-                    Program.conversionForm.AddFile(msi_path, outputPath, airdType, (ConversionConfig)config.Clone(), msi_path, comboBox_file_organisation.SelectedIndex, pixels);
+                    MSIInfo MSIConfig = new MSIInfo{ MSIFileOrganisation = comboBox_file_organisation.SelectedIndex, lineScanDirection =comboBox_scan_direction.SelectedIndex,
+                        scanPattern = comboBox_scan_pattern.SelectedIndex, pixelX = pixel_x.Value.ToInt(), pixelY = pixel_y.Value.ToInt() };
+                    Program.conversionForm.AddFile(msi_path, outputPath, airdType, (ConversionConfig)config.Clone(), msi_path, MSIConfig);
                 }
                 else
                 {
@@ -400,22 +417,30 @@ namespace AirdPro.Forms
             if (airdType == AirdSDK.Enums.AcquisitionMethod.DDA_MSI || airdType == AirdSDK.Enums.AcquisitionMethod.DIA_MSI)
             {
                 comboBox_file_organisation.Visible = true;
+                comboBox_scan_direction.Visible = true;
+                comboBox_scan_pattern.Visible = true;
                 label2.Visible = true;
                 pixel_x.Visible = true;
                 label3.Visible = true;
                 pixel_y.Visible = true;
                 //label4.Visible = true;
                 //pixel_z.Visible = true;
+                label5.Visible = true;
+                label6.Visible = true;
             }
             else
             {
                 comboBox_file_organisation.Visible = false;
+                comboBox_scan_direction.Visible = false;
+                comboBox_scan_pattern.Visible = false;
                 label2.Visible = false;
                 pixel_x.Visible = false;
                 label3.Visible = false;
                 pixel_y.Visible = false;
                 //label4.Visible = false;
                 //pixel_z.Visible = false;
+                label5.Visible = false;
+                label6.Visible = false;
             }
         }
     }

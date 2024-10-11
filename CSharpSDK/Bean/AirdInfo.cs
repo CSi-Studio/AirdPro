@@ -8,6 +8,7 @@
  * See the Mulan PSL v2 for more details.
  */
 
+using AirdSDK.Bean;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -172,6 +173,12 @@ namespace AirdSDK.Beans
          * 如果是Mobility采集模式,本字段会启用
          */
         public MobiInfo mobiInfo = new MobiInfo();
+
+        /**
+         * Use in MSI
+         * 如果是空间代谢数据,本字段会启用
+         */
+        public MSIInfo MSIInfo = new MSIInfo();
 
         /**
         * the aird file creator
