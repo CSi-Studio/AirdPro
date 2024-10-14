@@ -16,6 +16,7 @@ namespace AirdPro.Constants
         public static string Parse_Integer_Error = "Parse Integer Error";
         public static string Parse_Double_Error = "Parse Double Error";
         public static string Reading_Vendor_File_Error_Run_Is_Null = "Reading Vendor File Error, run is Null";
+        public static string Reading_ImzML_File_Error_Run_Is_Null = "Reading ImzML File Error, run is Null";
         public static string No_Spectra_Found = "No Spectra Found";
         public static string No_Chromatograms_Found = "No Chromatograms Found";
     }

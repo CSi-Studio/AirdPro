@@ -18,6 +18,10 @@ namespace AirdPro.csimzMLParser.mzml
         public static readonly string ELUTION_TIME_ID = "MS:1000826";
         public static readonly string SCAN_START_TIME_ID = "MS:1000016";
         public static readonly string ION_MOBILITY_DRIFT_TIME_ID = "MS:1002476";
+        public static readonly string SCAN_FILTER_STRING_ID = "MS:1000512";
+        public static readonly string SCAN_INVERSE_REDUCED_ION_MOBILITY_ID = "MS:1002815";
+        public static readonly string SCAN_ION_MOBILITY_DRIFT_TIME_ID = "MS:1002476";
+        public static readonly string SCAN_ION_INJECTION_TIME_ID = "MS:1000927";
 
         private string externalSpectrumID;
         private InstrumentConfiguration instrumentConfigurationRef;

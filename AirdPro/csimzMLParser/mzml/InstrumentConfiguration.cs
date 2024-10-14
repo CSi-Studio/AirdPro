@@ -12,6 +12,8 @@ namespace AirdPro.csimzMLParser.mzml
         public const string INSTRUMENT_ATTRIBUTE_ID = "MS:1000496"; // Optional child (1+)
         public const string ION_OPTICS_TYPE_ID = "MS:1000597"; // Optional child (1)
         public const string ION_OPTICS_ATTRIBUTE_ID = "MS:1000487"; // Optional child (1+)
+        public const string INSTRUMENT_WATERS_INSTRUMENT_MODEL_ID = "MS:1000126";
+        public const string INSTRUMENT_AGILENT_INSTRUMENT_MODEL_ID = "MS:1000490";
 
         public string id; // Required
         public ScanSettings scanSettingsRef; // Optional

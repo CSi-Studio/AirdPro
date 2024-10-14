@@ -1,13 +1,19 @@
-﻿/*
- * Copyright (c) 2020 CSi Studio
- * AirdSDK and AirdPro are licensed under Mulan PSL v2.
- * You can use this software according to the terms and conditions of the Mulan PSL v2.
- * You may obtain a copy of Mulan PSL v2 at:
- *          http://license.coscl.org.cn/MulanPSL2
- * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
- * See the Mulan PSL v2 for more details.
- */
-
+﻿using AirdPro.Algorithms;
+using AirdPro.Algorithms.Compressor;
+using AirdPro.Algorithms.Parser;
+using AirdPro.Constants;
+using AirdPro.csimzMLParser.mzml;
+using AirdPro.csimzMLParser.parser;
+using AirdPro.Domains;
+using AirdPro.Domains.Msi;
+using AirdSDK.Beans;
+using AirdSDK.Beans.Common;
+using AirdSDK.Compressor;
+using AirdSDK.Enums;
+using AirdSDK.Utils;
+using Google.Protobuf;
+using HZH_Controls;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -15,69 +21,59 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using AirdPro.Algorithms;
-using AirdPro.Algorithms.Compressor;
-using AirdPro.Algorithms.Maths;
-using AirdPro.Algorithms.Parser;
-using AirdPro.Constants;
-using AirdPro.Domains;
+using ThermoFisher.CommonCore.Data.FilterEnums;
+using Spectrum = AirdPro.csimzMLParser.mzml.Spectrum;
 using AirdPro.Utils;
-using AirdSDK.Beans;
-using AirdSDK.Beans.Common;
-using AirdSDK.Compressor;
-using AirdSDK.Enums;
-using AirdSDK.Utils;
-using Google.Protobuf;
-using Newtonsoft.Json;
-using pwiz.CLI.analysis;
-using pwiz.CLI.cv;
-using pwiz.CLI.data;
-using pwiz.CLI.msdata;
+using AirdPro.csimzMLParser.imzml;
+using CVUtil = AirdPro.csimzMLParser.util.CVUtil;
+using DataUtil = AirdPro.csimzMLParser.util.DataUtil;
 using Activator = AirdPro.Constants.Activator;
+using AirdPro.Algorithms.Maths;
 using Software = AirdSDK.Beans.Software;
-using Spectrum = pwiz.CLI.msdata.Spectrum;
+using ByteOrder = AirdPro.Constants.ByteOrder;
+using static AirdPro.csimzMLParser.mzml.Component;
 
 namespace AirdPro.Converters
 {
-    public class PwizConverter : Converter
+    public class ImzMLConverter : Converter
     {
-        protected MSData Msd; //非托管内存，需要手动回收
-        public SpectrumList SpectrumList; //非托管内存，需要手动回收
-        protected ChromatogramList ChromatogramList; //非托管内存，需要手动回收
+        public ImzML imzML;
+        public SpectrumList spectra;
+        protected ChromatogramList chromatograms;
 
-        protected List<WindowRange> Ranges = new(); //SWATH/DIA Window的窗口
-        protected Hashtable RangeTable = new(); //用于存放SWATH/DIA窗口的信息,key为mz
-        protected List<BlockIndex> IndexList = new(); //用于存储的全局的SWATH List
-        protected List<ColumnIndex> ColumnIndexList = new(); //列存储索引，仅在面向Search的场景下有效
+        protected List<WindowRange> Ranges = []; //SWATH/DIA Window的窗口
+        protected Hashtable RangeTable = []; //用于存放SWATH/DIA窗口的信息,key为mz
+        protected List<BlockIndex> IndexList = []; //用于存储的全局的SWATH List
+        protected List<ColumnIndex> ColumnIndexList = []; //列存储索引，仅在面向Search的场景下有效
 
         protected Hashtable
-            Ms2Table = Hashtable.Synchronized(new Hashtable()); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
+            Ms2Table = Hashtable.Synchronized([]); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
 
-        public List<MsIndex> Ms1List = new(); //用于存放MS1索引及基础信息,泛型为MsIndex
-        protected Hashtable FeaturesMap = new();
+        public List<MsIndex> Ms1List = []; //用于存放MS1索引及基础信息,泛型为MsIndex
+        protected Hashtable FeaturesMap = [];
 
         //用于离子淌度相关的字段
         public double[] MobiArray;
         public Dictionary<double, int> MobiDict;
         public MobiInfo MobiInfo = new();
-        
+
         // protected int MzPrecision
         protected int MobiPrecision = 10000000; //mobility默认精确到小数点后7位
         protected int IntensityPrecision = 1; //Intensity默认精确到个位数
 
         protected int SpectraNumForIntensityPrecisionPredict = 5; //用于ComboComp预测Intensity精度时的采样光谱数
-        public ICompressor Compressor;
+        public ImzMLComp Compressor;
         public ChromatogramIndex ChromatogramIndex;
 
         public Dictionary<string, AcqCompound>
-            MrmCompoundDict = new(); //用于MRM采集模式下,预存储化合物名称与离子对的词典,当前仅适用于Agilent的.d文件夹类型的质谱文件
+            MrmCompoundDict = []; //用于MRM采集模式下,预存储化合物名称与离子对的词典,当前仅适用于Agilent的.d文件夹类型的质谱文件
 
         public bool CopyToLocal = false; //是否拷贝到本地
 
         public override void Init(JobInfo jobInfo)
         {
             JobInfo = jobInfo;
-            Compressor = new PwizComp(this);
+            Compressor = new ImzMLComp(this);
         }
 
         public override void InitCompressor()
@@ -94,7 +90,7 @@ namespace AirdPro.Converters
 
             Compressor.IntIntComp = IntComp.build(JobInfo.config.intIntComp);
             Compressor.IntByteComp = ByteComp.build(JobInfo.config.intByteComp);
-            
+
 
             Compressor.RtIntComp4Chroma = SortedIntComp.build(JobInfo.config.rtIntComp);
             Compressor.RtByteComp4Chroma = ByteComp.build(JobInfo.config.rtByteComp);
@@ -104,74 +100,53 @@ namespace AirdPro.Converters
         {
             Start();
             CopyFile(); //如果检测到是网络挂载磁盘,则首先拷贝到本地以后再进行转换,以提升转换速度
-            using (MSDataList msdList = ReadVendorFile())
+            ImzML imzML = ReadImzMLFile();
+            try
             {
-                try
+                if (imzML == null)
                 {
-                    if (msdList.Count == 0)
+                    JobInfo.LogError("imzML is null");
+                    return;
+                }
+                StartPosition = 0;
+                InitDirectory(); //创建文件夹,首先创建文件夹的目的在于确保对指定目录拥有写权限,如果无法正常创建,则在本步骤就中断
+                ReadImzML(imzML);
+                using (AirdStream = new FileStream(JobInfo.airdFilePath, FileMode.Create))
+                {
+                    PredictAcquisitionMethod();
+                    InitCompressor();
+                    switch (JobInfo.type)
                     {
-                        JobInfo.LogError("Msd List is Empty");
-                        return;
-                    }
-
-                    foreach (var msd in msdList)
-                    {
-                        StartPosition = 0;
-                        
-                        //如果msdList中包含多个msd，那么每一个msd会被单独导出为一个文件，导出的文件名按照msd的ID进行命名
-                        //如果仅有一个msd，则直接按照该原始文件的名称导出为aird文件
-                        if (msdList.Count > 1) 
-                        {
-                            String id = msd.id;
-                            id = id.Trim();
-                            JobInfo.airdFilePath = Path.Combine(JobInfo.outputPath, id + ".aird");
-                            JobInfo.airdJsonFilePath = Path.Combine(JobInfo.outputPath, id + ".json");
-                            JobInfo.airdIndexFilePath = Path.Combine(JobInfo.outputPath, id + ".index");
-                            JobInfo.airdFileName = id;
-                        }
-
-                        InitDirectory(); //创建文件夹,首先创建文件夹的目的在于确保对指定目录拥有写权限,如果无法正常创建,则在本步骤就中断
-                        ReadMsd(msd);
-                        using (AirdStream = new FileStream(JobInfo.airdFilePath, FileMode.Create))
-                        {
-                            PredictAcquisitionMethod();
-                            InitCompressor();
-                            switch (JobInfo.type)
-                            {
-                                case AcquisitionMethod.DIA:
-                                    ConverterWorkFlow.DIA(this);
-                                    break;
-                                case AcquisitionMethod.DDA:
-                                    ConverterWorkFlow.DDA(this);
-                                    break;
-                                case AcquisitionMethod.PRM:
-                                    ConverterWorkFlow.PRM(this);
-                                    break;
-                                case AcquisitionMethod.MRM:
-                                    ConverterWorkFlow.MRM(this);
-                                    break;
-                                case AcquisitionMethod.DDA_PASEF:
-                                    JobInfo.ionMobility = true;
-                                    ConverterWorkFlow.DDAPasef(this);
-                                    break;
-                                case AcquisitionMethod.DIA_PASEF:
-                                    JobInfo.ionMobility = true;
-                                    ConverterWorkFlow.DIAPasef(this);
-                                    break;
-                            }
-                        }
-
-                        msd?.Dispose();
-                        ClearCache();
+                        case AcquisitionMethod.DIA:
+                            ConverterWorkFlow.DIA(this);
+                            break;
+                        case AcquisitionMethod.DDA:
+                            ConverterWorkFlow.DDA(this);
+                            break;
+                        case AcquisitionMethod.PRM:
+                            ConverterWorkFlow.PRM(this);
+                            break;
+                        case AcquisitionMethod.MRM:
+                            ConverterWorkFlow.MRM(this);
+                            break;
+                        case AcquisitionMethod.DDA_PASEF:
+                            JobInfo.ionMobility = true;
+                            ConverterWorkFlow.DDAPasef(this);
+                            break;
+                        case AcquisitionMethod.DIA_PASEF:
+                            JobInfo.ionMobility = true;
+                            ConverterWorkFlow.DIAPasef(this);
+                            break;
                     }
                 }
-                finally
+                ClearCache();
+            }
+            finally
+            {
+                Finish();
+                if (CopyToLocal)
                 {
-                    Finish();
-                    if (CopyToLocal)
-                    {
-                        AirdProFileUtil.ClearLocalTempFiles();
-                    }
+                    AirdProFileUtil.ClearLocalTempFiles();
                 }
             }
         }
@@ -185,10 +160,9 @@ namespace AirdPro.Converters
             JobInfo.SetConversionTime(Stopwatch.Elapsed.TotalMilliseconds);
             ClearCache();
             JobInfo.SetStatus(ProcessingStatus.FINISHED);
-            if (Msd != null)
+            if (imzML != null)
             {
-                Msd.Dispose();
-                Msd = null;
+                imzML = null;
             }
         }
 
@@ -205,7 +179,7 @@ namespace AirdPro.Converters
             double[] mobility = new double[2000];
             TdfUtil.tims_scannum_to_oneoverk0(handle, 1, scanNums, mobility, scanNums.Length);
             TdfUtil.tims_close(handle);
-            MobiDict = new Dictionary<double, int>();
+            MobiDict = [];
             for (var i = 0; i < mobility.Length; i++)
             {
                 MobiDict.Add(mobility[i], i);
@@ -238,22 +212,27 @@ namespace AirdPro.Converters
             JobInfo.Log(Tag.Predict_Acquisition_Method, Status.Init);
 
             //如果有光谱图
-            if (SpectrumList != null && SpectrumList.size() > 0)
+            if (spectra != null && spectra.Size() > 0)
             {
-                Spectrum firstSpec = SpectrumList.spectrum(0, true);
-                List<Spectrum> predictSpecList = new List<Spectrum>();
-                //首先取10个窗口
-                for (int i = 0; i < 10; i++)
+                Spectrum firstSpec = spectra.GetSpectrum(0);
+                List<Spectrum> predictSpecList = [];
+                //首先取10个窗口，当不足10个时，取spectra.Size()
+                int fetchCount = 10;
+                if (spectra.Size() < 10)
                 {
-                    predictSpecList.Add(SpectrumList.spectrum(i, true));
+                    fetchCount = spectra.Size();
+                }
+                for (int i = 0; i < fetchCount; i++)
+                {
+                    predictSpecList.Add(spectra.GetSpectrum(i));
                 }
 
                 //首先判断是不是带有离子淌度的ion mobility模式
-                if (firstSpec.binaryDataArrays.Count == 3)
+                if (firstSpec.GetBinaryDataArrayList().Size() == 3)
                 {
-                    foreach (BinaryDataArray dataArray in firstSpec.binaryDataArrays)
+                    foreach (BinaryDataArray dataArray in firstSpec.GetBinaryDataArrayList())
                     {
-                        if (dataArray.cvParams[0].cvid.Equals(CVID.MS_mean_inverse_reduced_ion_mobility_array))
+                        if (dataArray.IsMobilityArray())
                         {
                             JobInfo.ionMobility = true;
                             mobi = true;
@@ -270,7 +249,7 @@ namespace AirdPro.Converters
                     //如果全部扫描下来都没有MS2, 说明是Full Scan扫描模式,设置为DDA
                     if (CVUtil.ParseMsLevel(spectrum).Equals(MsLevel.MS2))
                     {
-                        double width = CVUtil.ParsePrecursorWidth(spectrum.precursors[0].isolationWindow, JobInfo);
+                        double width = CVUtil.ParsePrecursorWidth(spectrum.precursorList.Get(0).IsolationWindow, JobInfo);
                         //然后判断前体的宽度范围,如果范围小于4,则被预测为DDA模式,否则会被认定为DIA模式
                         if (width < 4)
                         {
@@ -312,16 +291,14 @@ namespace AirdPro.Converters
             try
             {
                 //如果有色谱图,且谱图数目大于2(排除TIC和BPC图),则预测为SRM模式
-                if (ChromatogramList != null && ChromatogramList.size() > 10)
+                if (chromatograms != null && chromatograms.Size() > 10)
                 {
-                    List<Chromatogram> predictChromatoList = new List<Chromatogram>();
+                    List<Chromatogram> predictChromatoList = [];
                     // 首先取10个窗口
                     for (int i = 0; i < 10; i++)
                     {
-                        using (Chromatogram chroma = ChromatogramList.chromatogram(i, false))
-                        {
-                            predictChromatoList.Add(chroma);
-                        }
+                        Chromatogram chroma = chromatograms.GetChromatogram(i);
+                        predictChromatoList.Add(chroma);
                     }
 
                     JobInfo.SetType(AcquisitionMethod.MRM);
@@ -356,8 +333,8 @@ namespace AirdPro.Converters
          */
         public void PredictForIntensityPrecision()
         {
-            Random rd = new Random();
-            HashSet<int> nums = new HashSet<int>();
+            Random rd = new();
+            HashSet<int> nums = [];
             for (int i = 0; i < SpectraNumForIntensityPrecisionPredict; i++)
             {
                 nums.Add(rd.Next(1, TotalSpectraCount));
@@ -366,10 +343,10 @@ namespace AirdPro.Converters
             bool findIt = false;
             for (var i = 0; i < nums.Count; i++)
             {
-                using Spectrum spectrum = SpectrumList.spectrum(i, true);
-                foreach (double d in spectrum.getIntensityArray().data.Storage())
+                Spectrum spectrum = spectra.GetSpectrum(i);
+                foreach (double d in spectrum.GetIntensityArray())
                 {
-                    if ((d - (int)d) != 0) //如果随机采集到的intensity是精确到小数点后一位的,精确确定为10,即精确到小数点后一位
+                    if ((d - (int)d) != 0) //如果随机采集到的intensity是精确到小数点后一位的,精度确定为10,即精确到小数点后一位
                     {
                         findIt = true;
                         break;
@@ -398,7 +375,7 @@ namespace AirdPro.Converters
 
         public void WriteToFile(Hashtable table, BlockIndex index)
         {
-            ArrayList keys = new ArrayList(table.Keys);
+            ArrayList keys = new(table.Keys);
             keys.Sort();
             foreach (int key in keys)
             {
@@ -434,7 +411,7 @@ namespace AirdPro.Converters
 
             int step = 100000;
             long[] anchors = new long[columnIndex.mzs.Length / step + 1];
-            
+
             for (var i = 0; i < columnIndex.mzs.Length; i++)
             {
                 //每隔10W个数插入一帧
@@ -524,7 +501,7 @@ namespace AirdPro.Converters
         protected void CopyFile()
         {
             string driveLetter = Path.GetPathRoot(JobInfo.inputPath);
-            DriveInfo driveInfo = new DriveInfo(driveLetter);
+            DriveInfo driveInfo = new(driveLetter);
             if (driveInfo.DriveType != DriveType.Network)
             {
                 return;
@@ -537,202 +514,111 @@ namespace AirdPro.Converters
             if (!Directory.Exists(tempPath))
             {
                 Directory.CreateDirectory(tempPath);
-            }
+            }            
 
             switch (JobInfo.format)
             {
-                case FileFormat.WIFF:
-                case FileFormat.WIFF2:
+                case FileFormat.imzML:
                     string directoryPath = Path.GetDirectoryName(JobInfo.inputPath);
                     string fileName = Path.GetFileNameWithoutExtension(JobInfo.inputPath);
                     if (directoryPath == null)
                     {
                         return;
                     }
-
-                    FileInfo wiff = new FileInfo(Path.Combine(directoryPath, fileName + ".wiff"));
-                    if (wiff.Exists)
-                    {
-                        string path = Path.Combine(tempPath, wiff.Name);
-                        File.Copy(wiff.FullName, path, true);
-                    }
-
-                    FileInfo wiff2 = new FileInfo(Path.Combine(directoryPath, fileName + ".wiff2"));
-                    if (wiff2.Exists)
-                    {
-                        string path = Path.Combine(tempPath, wiff2.Name);
-                        File.Copy(wiff2.FullName, path, true);
-                    }
-
-                    FileInfo mtd = new FileInfo(Path.Combine(directoryPath, fileName + ".wiff.mtd"));
-                    if (mtd.Exists)
-                    {
-                        string path = Path.Combine(tempPath, mtd.Name);
-                        File.Copy(mtd.FullName, path, true);
-                    }
-
-                    FileInfo scan = new FileInfo(Path.Combine(directoryPath, fileName + ".wiff.scan"));
-                    if (scan.Exists)
-                    {
-                        string path = Path.Combine(tempPath, scan.Name);
-                        File.Copy(scan.FullName, path, true);
-                    }
-
-                    FileInfo timeseries = new FileInfo(Path.Combine(directoryPath, fileName + ".timeseries.data"));
-                    if (timeseries.Exists)
-                    {
-                        string path = Path.Combine(tempPath, timeseries.Name);
-                        File.Copy(timeseries.FullName, path, true);
-                    }
-
-                    break;
-                case FileFormat.RAW:
-                    if (JobInfo.isDir)
-                    {
-                        DirectoryInfo rawDir = new DirectoryInfo(JobInfo.inputPath);
-                        if (rawDir.Exists)
-                        {
-                            string path = Path.Combine(tempPath, rawDir.Name);
-                            AirdProFileUtil.CopyFolder(rawDir.FullName, path);
-                        }
-                    }
-                    else
-                    {
-                        FileInfo raw = new FileInfo(JobInfo.inputPath);
-                        if (raw.Exists)
-                        {
-                            string path = Path.Combine(tempPath, raw.Name);
-                            File.Copy(raw.FullName, path, true);
-                        }
-                    }
-                    
-
-                    break;
-                case FileFormat.mzML:
-                    FileInfo mzML = new FileInfo(JobInfo.inputPath);
-                    if (mzML.Exists)
-                    {
-                        string path = Path.Combine(tempPath, mzML.Name);
-                        File.Copy(mzML.FullName, path, true);
-                    }                   
-
-                    break;
-                case FileFormat.imzML:
-                    directoryPath = Path.GetDirectoryName(JobInfo.inputPath);
-                    fileName = Path.GetFileNameWithoutExtension(JobInfo.inputPath);
-                    if (directoryPath == null)
-                    {
-                        return;
-                    }
-
-                    FileInfo imzML = new FileInfo(Path.Combine(directoryPath, fileName + ".imzML"));
+                    FileInfo imzML = new(Path.Combine(directoryPath, fileName + ".imzML"));
                     if (imzML.Exists)
                     {
                         string path = Path.Combine(tempPath, imzML.Name);
                         File.Copy(imzML.FullName, path, true);
                     }
-
-                    FileInfo ibd = new FileInfo(Path.Combine(directoryPath, fileName + ".ibd"));
+                    FileInfo ibd = new(Path.Combine(directoryPath, fileName + ".ibd"));
                     if (ibd.Exists)
                     {
                         string path = Path.Combine(tempPath, ibd.Name);
                         File.Copy(ibd.FullName, path, true);
                     }
-
+                    break;
+                case FileFormat.mzML:
+                    FileInfo mzML = new(JobInfo.inputPath);
+                    if (mzML.Exists)
+                    {
+                        string path = Path.Combine(tempPath, mzML.Name);
+                        File.Copy(mzML.FullName, path, true);
+                    }
                     break;
                 case FileFormat.mzXML:
-                    FileInfo mzXML = new FileInfo(JobInfo.inputPath);
+                    FileInfo mzXML = new(JobInfo.inputPath);
                     if (mzXML.Exists)
                     {
                         string path = Path.Combine(tempPath, mzXML.Name);
                         File.Copy(mzXML.FullName, path, true);
                     }
-
                     break;
                 case FileFormat.D:
-                    DirectoryInfo directory = new DirectoryInfo(JobInfo.inputPath);
+                    DirectoryInfo directory = new(JobInfo.inputPath);
                     if (directory.Exists)
                     {
                         string path = Path.Combine(tempPath, directory.Name);
                         AirdProFileUtil.CopyFolder(directory.FullName, path);
                     }
-
                     break;
                 default:
-                    FileInfo file = new FileInfo(JobInfo.inputPath);
+                    FileInfo file = new(JobInfo.inputPath);
                     if (file.Exists)
                     {
                         string path = Path.Combine(tempPath, file.Name);
                         File.Copy(file.FullName, path, true);
                     }
-
                     break;
             }
-        }
+        }         
 
-        /**
-         * 引用本函数的时候需要注意在使用完MSDataList对象以后需要手动释放
-         */
-        public MSDataList ReadVendorFile()
+        public ImzML ReadImzMLFile()
         {
-            JobInfo.Log(Tag.Prepare_To_Parse_Vendor_File, Status.Prepare);
-            ReaderList readerList = ReaderList.FullReaderList;
-            var readerConfig = new ReaderConfig
-            {
-                allowMsMsWithoutPrecursor = false,
-                combineIonMobilitySpectra = true,
-                ignoreZeroIntensityPoints = JobInfo.config.ignoreZeroIntensity
-            };
+            JobInfo.Log(Tag.Prepare_To_Parse_ImzML_File, Status.Prepare);            
 
-            MSDataList msdList = new MSDataList();
+            ImzML imzML;
             if (CopyToLocal)
             {
-                FileInfo file = new FileInfo(JobInfo.inputPath);
-                readerList.read(Path.Combine(AirdProFileUtil.GetAirdProTempPath(), file.Name), msdList, readerConfig);
+                imzML = ImzMLHandler.ParseimzML(Path.Combine(AirdProFileUtil.GetAirdProTempPath()));
             }
             else
             {
-                readerList.read(JobInfo.inputPath, msdList, readerConfig);
+                imzML = ImzMLHandler.ParseimzML(JobInfo.inputPath);
             }
 
-            if (msdList.Count == 0)
+            if (imzML == null)
             {
-                JobInfo.LogError(ResultCode.Reading_Vendor_File_Error_Run_Is_Null);
-                msdList.Dispose();
-                readerList.Dispose();
+                JobInfo.LogError(ResultCode.Reading_ImzML_File_Error_Run_Is_Null);
                 return null;
             }
-
-            JobInfo.Log(Tag.Adapting_Vendor_File_API, Status.Adapting);
-
-            readerList.Dispose();
-            return msdList;
+            JobInfo.Log(Tag.Adapting_ImzML_File_API, Status.Adapting);
+            return imzML;
         }
 
-        public void ReadMsd(MSData msd)
+        public void ReadImzML(ImzML imzML)
         {
-            Msd = msd;
-            List<string> filter = new List<string>();
-            SpectrumListFactory.wrap(msd, filter); //这一步操作可以帮助加快Wiff文件的初始化速度
-
-            SpectrumList = msd.run.spectrumList;
-            if (SpectrumList == null || SpectrumList.empty())
+            this.imzML = imzML;
+            //List<string> filter = new List<string>();
+            //SpectrumListFactory.wrap(MsiData, filter); //这一步操作可以帮助加快Wiff文件的初始化速度
+            spectra = imzML.GetRun().GetSpectrumList();
+            if (spectra == null || spectra.IsEmpty())
             {
                 JobInfo.Log(ResultCode.No_Spectra_Found);
             }
             else
             {
-                TotalSpectraCount = SpectrumList.size();
+                TotalSpectraCount = spectra.Size();
             }
 
-            ChromatogramList = msd.run.chromatogramList;
-            if (ChromatogramList == null || ChromatogramList.empty())
+            chromatograms = imzML.run.chromatogramList;
+            if (chromatograms == null || chromatograms.IsEmpty())
             {
                 JobInfo.Log(ResultCode.No_Chromatograms_Found);
             }
             else
             {
-                TotalChromaCount = ChromatogramList.size();
+                TotalChromaCount = chromatograms.Size();
             }
 
             JobInfo.Log(Tag.Adapting_Finished);
@@ -758,8 +644,8 @@ namespace AirdPro.Converters
                 airdInfo.indexList = null;
                 AirdStream.Write(indexListByte, 0, indexListByte.Length);
             }
-            
-            string briefInfo = JobInfo.airdFileName +"," + airdInfo.type + "," + airdInfo.instruments[0].manufacturer + "," + airdInfo.fileSize + "," ;
+
+            string briefInfo = JobInfo.airdFileName + "," + airdInfo.type + "," + airdInfo.instruments[0].manufacturer + "," + airdInfo.fileSize + ",";
             Console.WriteLine(briefInfo);
             long totalSize = AirdStream.Length;
             if (JobInfo.config.indexFormat == 0 || JobInfo.config.indexFormat == 2)
@@ -770,7 +656,7 @@ namespace AirdPro.Converters
                 using (AirdJsonStream = new FileStream(JobInfo.airdJsonFilePath, FileMode.Create))
                 {
                     AirdJsonStream.Write(airdBytes, 0, airdBytes.Length);
-                    totalSize+= airdBytes.Length;
+                    totalSize += airdBytes.Length;
                 }
             }
 
@@ -801,7 +687,7 @@ namespace AirdPro.Converters
                         totalSize += columnInfoBytes.Length;
                     }
                 }
-                
+
                 if (JobInfo.config.indexFormat == 1 || JobInfo.config.indexFormat == 2)
                 {
                     ColumnInfoProto proto = columnInfo.ToProto();
@@ -819,33 +705,26 @@ namespace AirdPro.Converters
 
         public void ClearCache()
         {
-            Ranges = new();
-            RangeTable = new();
-            IndexList = new();
-            Ms2Table = new();
-            Ms1List = new();
-            FeaturesMap = new();
-            MobiDict = new();
+            Ranges = [];
+            RangeTable = [];
+            IndexList = [];
+            Ms2Table = [];
+            Ms1List = [];
+            FeaturesMap = [];
+            MobiDict = [];
             MobiInfo = new();
             ChromatogramIndex = new();
-
-            //清空所有非托管内存
-            if (SpectrumList != null)
+            if (imzML != null)
             {
-                SpectrumList.Dispose();
-                SpectrumList = null;
+                imzML = null;
             }
-
-            if (ChromatogramList != null)
+            if (spectra != null)
             {
-                ChromatogramList.Dispose();
-                ChromatogramList = null;
+                spectra = null;
             }
-
-            if (Msd != null)
+            if (chromatograms != null)
             {
-                Msd.Dispose();
-                Msd = null;
+                chromatograms = null;
             }
         }
 
@@ -858,7 +737,7 @@ namespace AirdPro.Converters
             }
             else
             {
-                List<MsIndex> indexList = new List<MsIndex>();
+                List<MsIndex> indexList = [];
                 indexList.Add(ms2Index);
                 Ms2Table.Add(key, indexList);
             }
@@ -866,99 +745,87 @@ namespace AirdPro.Converters
 
         protected MsIndex ParseMs1(Spectrum spectrum, int index)
         {
-            MsIndex ms1 = new MsIndex();
-            ms1.level = 1;
-            ms1.num = index;
-            if (spectrum.scanList.scans.Count != 1)
+            MsIndex ms1 = new()
+            {
+                level = 1,
+                num = index
+            };
+            if (spectrum.scanList.Size() != 1)
             {
                 return ms1;
             }
 
-            using (Scan scan = spectrum.scanList.scans[0])
+            Scan scan = spectrum.scanList.Get(0);
+            ms1.filterString = CVUtil.ParseFilterString(scan, JobInfo);
+            ms1.rt = CVUtil.ParseRt(scan, JobInfo);
+            ms1.tic = CVUtil.ParseTic(spectrum);
+            ms1.basePeakIntensity = CVUtil.ParseBasePeakIntensity(spectrum);
+            ms1.basePeakMz = CVUtil.ParseBasePeakMz(spectrum);
+            ms1.injectionTime = CVUtil.ParseInjectionTime(scan);
+            if (MobiInfo.unit == null || MobiInfo.type == null)
             {
-                ms1.filterString = CVUtil.ParseFilterString(scan, JobInfo);
-                ms1.rt = CVUtil.ParseRt(scan, JobInfo);
-                ms1.tic = CVUtil.ParseTic(spectrum);
-                ms1.basePeakIntensity = CVUtil.ParseBasePeakIntensity(spectrum);
-                ms1.basePeakMz = CVUtil.ParseBasePeakMz(spectrum);
-                ms1.injectionTime = CVUtil.ParseInjectionTime(scan);
-                if (MobiInfo.unit == null || MobiInfo.type == null)
-                {
-                    CVUtil.ParseMobility(scan, MobiInfo);
-                }
-                ms1.msType = CVUtil.ParseMsType(spectrum);
-                ms1.polarity = CVUtil.ParsePolarity(spectrum);
-                ms1.activator = Activator.UNKNOWN;
-                ms1.energy = -1;
+                CVUtil.ParseMobility(scan, MobiInfo);
             }
+            ms1.msType = CVUtil.ParseMsType(spectrum);
+            ms1.polarity = CVUtil.ParsePolarity(spectrum);
+            ms1.activator = Activator.UNKNOWN;
+            ms1.energy = -1;
 
             return ms1;
         }
 
         protected MsIndex ParseMs2(Spectrum spectrum, int num, int pNum)
         {
-            MsIndex ms2 = new MsIndex();
-            ms2.level = 2;
-            ms2.pNum = pNum;
-            ms2.num = num;
-
-            using (Precursor precursor = spectrum.precursors[0])
+            MsIndex ms2 = new()
             {
-                try
-                {
-                    ms2.precursor = CVUtil.ParseIsolationWindow(precursor, JobInfo);
-                }
-                catch (Exception e)
-                {
-                    JobInfo.Log(ResultCode.Error).Log(Tag.SpectrumIndex + spectrum.index)
-                        .Log(Tag.SpectrumId + spectrum.id);
-                    using (IsolationWindow isolationWindow = precursor.isolationWindow)
-                    {
-                        using (var cv = isolationWindow.cvParamChild(CVID.MS_isolation_window_target_m_z))
-                        {
-                            JobInfo.Log(Tag.Key_MZ + cv.value);
-                        }
+                level = 2,
+                pNum = pNum,
+                num = num
+            };
 
-                        using (var cv = isolationWindow.cvParamChild(CVID.MS_isolation_window_lower_offset))
-                        {
-                            JobInfo.Log(Tag.LowerOffset + cv.value);
-                        }
-
-                        using (var cv = isolationWindow.cvParamChild(CVID.MS_isolation_window_upper_offset))
-                        {
-                            JobInfo.Log(Tag.UpperOffset + cv.value);
-                        }
-                    }
-
-                    throw e;
-                }
+            Precursor precursor = spectrum.GetPrecursorList().Get(0);
+            try
+            {
+                ms2.precursor = CVUtil.ParseIsolationWindow(precursor, JobInfo);
             }
+            catch (Exception e)
+            {
+                JobInfo.Log(ResultCode.Error).Log(Tag.SpectrumIndex + spectrum.id)
+                    .Log(Tag.SpectrumId + spectrum.id);
+                IsolationWindow isolationWindow = precursor.IsolationWindow;
+                CVParam cv = isolationWindow.GetCVParamOrChild(IsolationWindow.ISOLATION_WINDOW_TARGET_MZ);
+                JobInfo.Log(Tag.Key_MZ + cv.GetValueAsDouble());
+                cv = isolationWindow.GetCVParamOrChild(IsolationWindow.ISOLATION_WINDOW_LOWER_OFFSET_ID);
+                JobInfo.Log(Tag.LowerOffset + cv.GetValueAsDouble());
+                cv = isolationWindow.GetCVParamOrChild(IsolationWindow.ISOLATION_WINDOW_UPPER_OFFSET_ID);
+                JobInfo.Log(Tag.UpperOffset + cv.GetValueAsDouble());
+                throw e;
+            }
+           
 
-            if (spectrum.scanList.scans.Count < 1) return ms2;
+            if (spectrum.scanList.Size() < 1) return ms2;
 
-            var result = CVUtil.ParseActivator(spectrum.precursors[0]);
-            ms2.activator = result.activator;
-            ms2.energy = result.energy;
+            var (activator, energy) = CVUtil.ParseActivator(spectrum.precursorList.Get(0));
+            ms2.activator = activator;
+            ms2.energy = energy;
             ms2.msType = CVUtil.ParseMsType(spectrum);
             ms2.polarity = CVUtil.ParsePolarity(spectrum);
             ms2.tic = CVUtil.ParseTic(spectrum);
             ms2.basePeakIntensity = CVUtil.ParseBasePeakIntensity(spectrum);
             ms2.basePeakMz = CVUtil.ParseBasePeakMz(spectrum);
 
-            using (Scan scan = spectrum.scanList.scans[0])
+            Scan scan = spectrum.scanList.Get(0);
+            ms2.rt = CVUtil.ParseRt(scan, JobInfo);
+            ms2.injectionTime = CVUtil.ParseInjectionTime(scan);
+            if (MobiInfo.unit == null || MobiInfo.type == null)
             {
-                ms2.rt = CVUtil.ParseRt(scan, JobInfo);
-                ms2.injectionTime = CVUtil.ParseInjectionTime(scan);
-                if (MobiInfo.unit == null || MobiInfo.type == null)
-                {
-                    CVUtil.ParseMobility(scan, MobiInfo);
-                }
-
-                ms2.filterString = CVUtil.ParseFilterString(scan, JobInfo);
+                CVUtil.ParseMobility(scan, MobiInfo);
             }
 
+            ms2.filterString = CVUtil.ParseFilterString(scan, JobInfo);
+
             return ms2;
-        }
+        }        
 
         public void CompressMs2BlockForPrm()
         {
@@ -967,11 +834,13 @@ namespace AirdPro.Converters
             foreach (double key in Ms2Table.Keys)
             {
                 List<MsIndex> ms2List = Ms2Table[key] as List<MsIndex>;
-                WindowRange range = new WindowRange(ms2List[0].precursor.start, ms2List[0].precursor.end, key);
+                WindowRange range = new(ms2List[0].precursor.start, ms2List[0].precursor.end, key);
 
-                BlockIndex index = new BlockIndex(); //为每一个key组创建一个SwathBlock
-                index.level = 2;
-                index.startPtr = StartPosition;
+                BlockIndex index = new()
+                {
+                    level = 2,
+                    startPtr = StartPosition
+                }; //为每一个key组创建一个SwathBlock
                 index.setWindowRange(range); //顺便创建一个WindowRanges,用以让Propro服务端快速获取全局的窗口数目和mz区间
                 Ranges.Add(range);
 
@@ -1007,7 +876,9 @@ namespace AirdPro.Converters
                 JobInfo.Log(Tag.FILTER_NO_MS1);
                 return;
             }
-            BlockIndex index = new BlockIndex();
+
+            BlockIndex blockIndex = new();
+            BlockIndex index = blockIndex;
             index.level = 1;
             index.startPtr = StartPosition;
             Compressor.CompressMS1(this, index);
@@ -1029,9 +900,11 @@ namespace AirdPro.Converters
                 List<MsIndex> ms2List = Ms2Table[precursorMz] as List<MsIndex>;
                 WindowRange range = RangeTable[precursorMz] as WindowRange;
 
-                BlockIndex index = new BlockIndex(); //为每一个key组创建一个SwathBlock
-                index.level = 2;
-                index.startPtr = StartPosition;
+                BlockIndex index = new()
+                {
+                    level = 2,
+                    startPtr = StartPosition
+                }; //为每一个key组创建一个SwathBlock
                 index.setWindowRange(range);
 
                 JobInfo.Log(null, Tag.progress(Tag.MS2, progress, Ms2Table.Keys.Count));
@@ -1048,18 +921,20 @@ namespace AirdPro.Converters
         {
             int progress = 0;
             JobInfo.Log(Tag.Start_Processing_MS2_List);
-            ArrayList keys = new ArrayList(Ms2Table.Keys);
+            ArrayList keys = new(Ms2Table.Keys);
             keys.Sort();
             foreach (int key in keys)
             {
                 List<MsIndex> tempIndexList = Ms2Table[key] as List<MsIndex>;
                 //为每一组key创建一个Block
-                BlockIndex blockIndex = new BlockIndex();
-                blockIndex.level = 2;
-                blockIndex.startPtr = StartPosition;
-                blockIndex.num = key;
+                BlockIndex blockIndex = new()
+                {
+                    level = 2,
+                    startPtr = StartPosition,
+                    num = key
+                };
                 //创建这一个block中每一个ms2的窗口序列
-                List<WindowRange> ms2Ranges = new List<WindowRange>();
+                List<WindowRange> ms2Ranges = [];
                 JobInfo.Log(null, Tag.progress(Tag.MS2, progress, Ms2Table.Keys.Count));
                 progress++;
 
@@ -1068,14 +943,14 @@ namespace AirdPro.Converters
                     // WindowRange range = new WindowRange(index.mzStart, index.mzEnd, index.precursorMz);
                     WindowRange range = index.precursor;
                     ms2Ranges.Add(range);
-                    TempScan ts = new TempScan(index);
+                    TempScan ts = new(index);
                     if (JobInfo.ionMobility)
                     {
-                        Compressor.CompressMobility(SpectrumList.spectrum(index.num, true), ts);
+                        Compressor.CompressMobility(spectra.GetSpectrum(index.num), ts);
                     }
                     else
                     {
-                        Compressor.Compress(SpectrumList.spectrum(index.num, true), ts);
+                        Compressor.Compress(spectra.GetSpectrum(index.num), ts);
                     }
 
                     blockIndex.nums.Add(ts.num);
@@ -1110,7 +985,7 @@ namespace AirdPro.Converters
 
         public void compressChromatograms()
         {
-            if (ChromatogramList == null || ChromatogramList.size() == 0)
+            if (chromatograms == null || chromatograms.Size() == 0)
             {
                 return;
             }
@@ -1119,56 +994,50 @@ namespace AirdPro.Converters
             //如果是.d的文件夹类型的质谱文件,可以直接解析AcqMethod.xml文件,用于读取设定的化合物名称
             readMRMCompounds();
 
-            int totalSize = ChromatogramList.size();
+            int totalSize = chromatograms.Size();
             int progress = 0;
             JobInfo.Log(null, Tag.progress(Tag.Chroma, progress, totalSize));
             ChromatogramIndex.startPtr = StartPosition;
-            for (int i = 0; i < ChromatogramList.size(); i++)
+            for (int i = 0; i < chromatograms.Size(); i++)
             {
-                Chromatogram chromatogram = ChromatogramList.chromatogram(i, true);
-                TempScanChroma tempScan = new TempScanChroma();
+                Chromatogram chromatogram = chromatograms.Get(i);
+                TempScanChroma tempScan = new();
                 ChromatogramIndex.nums.Add(i);
                 ChromatogramIndex.ids.Add(chromatogram.id);
-                var result = CVUtil.ParseActivator(chromatogram.precursor);
-                ChromatogramIndex.activators.Add(result.activator);
-                ChromatogramIndex.energies.Add(result.energy);
+                var (activator, energy) = CVUtil.ParseActivator(chromatogram.precursor);
+                ChromatogramIndex.activators.Add(activator);
+                ChromatogramIndex.energies.Add(energy);
                 ChromatogramIndex.polarities.Add(CVUtil.ParsePolarity(chromatogram));
 
                 try
                 {
-                    using (var precursor = chromatogram.precursor)
+                    Precursor precursor = chromatogram.precursor;
+                    WindowRange precursorMz = CVUtil.ParseIsolationWindow(precursor, JobInfo);
+                    IsolationWindow isolationWindow = chromatogram.product.getIsolationWindow();
+                    WindowRange productMz = CVUtil.ParseIsolationWindow(isolationWindow, JobInfo);
+                    string ionPair = Math.Round(precursorMz.mz, 1) + "-" + Math.Round(productMz.mz, 1);
+                    if (MrmCompoundDict.ContainsKey(ionPair))
                     {
-                        WindowRange precursorMz = CVUtil.ParseIsolationWindow(precursor, JobInfo);
-                        using (var isolationWindow = chromatogram.product.isolationWindow)
-                        {
-                            WindowRange productMz = CVUtil.ParseIsolationWindow(isolationWindow, JobInfo);
-                            string ionPair = Math.Round(precursorMz.mz, 1) + "-" + Math.Round(productMz.mz, 1);
-                            if (MrmCompoundDict.ContainsKey(ionPair))
-                            {
-                                string compoundName = MrmCompoundDict[ionPair].name;
-                                ChromatogramIndex.compounds.Add(compoundName);
-                            }
-                            else
-                            {
-                                ChromatogramIndex.compounds.Add("");
-                            }
-
-                            ChromatogramIndex.products.Add(productMz);
-                        }
-
-                        ChromatogramIndex.precursors.Add(precursorMz);
+                        string compoundName = MrmCompoundDict[ionPair].name;
+                        ChromatogramIndex.compounds.Add(compoundName);
                     }
+                    else
+                    {
+                        ChromatogramIndex.compounds.Add("");
+                    }
+                    ChromatogramIndex.products.Add(productMz);
+                    ChromatogramIndex.precursors.Add(precursorMz);
                 }
                 catch (Exception e)
                 {
                     JobInfo.Log(ResultCode.Error).Log(Tag.SpectrumIndex + i)
                         .Log(Tag.SpectrumId + chromatogram.id)
-                        .Log(Tag.Key_MZ + chromatogram.precursor.isolationWindow
-                            .cvParamChild(CVID.MS_isolation_window_target_m_z).value)
-                        .Log(Tag.LowerOffset + chromatogram.precursor.isolationWindow
-                            .cvParamChild(CVID.MS_isolation_window_lower_offset).value)
-                        .Log(Tag.UpperOffset + chromatogram.precursor.isolationWindow
-                            .cvParamChild(CVID.MS_isolation_window_upper_offset).value);
+                        .Log(Tag.Key_MZ + chromatogram.precursor.GetIsolationWindow()
+                            .GetCVParamOrChild(IsolationWindow.ISOLATION_WINDOW_TARGET_MZ).GetValueAsDouble())
+                        .Log(Tag.LowerOffset + chromatogram.precursor.GetIsolationWindow()
+                            .GetCVParamOrChild(IsolationWindow.ISOLATION_WINDOW_LOWER_OFFSET_ID).GetValueAsDouble())
+                        .Log(Tag.UpperOffset + chromatogram.precursor.GetIsolationWindow()
+                            .GetCVParamOrChild(IsolationWindow.ISOLATION_WINDOW_UPPER_OFFSET_ID).GetValueAsDouble());
                     throw e;
                 }
 
@@ -1200,9 +1069,9 @@ namespace AirdPro.Converters
 
         protected AirdInfo buildAirdInfo()
         {
-            AirdInfo airdInfo = new AirdInfo();
-            List<Software> softwares = new List<Software>();
-            List<ParentFile> parentFiles = new List<ParentFile>();
+            AirdInfo airdInfo = new();
+            List<Software> softwares = [];
+            List<ParentFile> parentFiles = [];
 
             //Basic Job Info
             airdInfo.engine = JobInfo.config.engine;
@@ -1210,7 +1079,7 @@ namespace AirdPro.Converters
             airdInfo.fileSize = JobInfo.vendorFileSize;
             airdInfo.createDate = DateTime.Now.ToString();
             airdInfo.type = JobInfo.type;
-            airdInfo.totalCount = Msd.run.spectrumList.size();
+            airdInfo.totalCount = imzML.run.spectrumList.Size();
             airdInfo.creator = JobInfo.config.creator;
 
             HashSet<string> activators = [];
@@ -1284,11 +1153,11 @@ namespace AirdPro.Converters
             airdInfo.chromatogramIndex = ChromatogramIndex;
 
             //Instrument Info
-            List<Instrument> instruments = new List<Instrument>();
-            foreach (InstrumentConfiguration ic in Msd.instrumentConfigurationList)
+            List<Instrument> instruments = [];
+            foreach (InstrumentConfiguration ic in imzML.instrumentConfigurationList)
             {
-                Instrument instrument = new Instrument();
-                
+                Instrument instrument = new();
+
                 switch (JobInfo.format)
                 {
                     //仪器设备信息
@@ -1306,71 +1175,71 @@ namespace AirdPro.Converters
                         instrument.manufacturer = Manufacturer.Bruker;
                         break;
                 }
-                
-                if (!ic.cvParamChild(CVID.MS_Waters_instrument_model).cvid.Equals(CVID.CVID_Unknown))
+
+                if (!ic.GetCVParamOrChild(InstrumentConfiguration.INSTRUMENT_WATERS_INSTRUMENT_MODEL_ID).IsEmpty())
                 {
                     instrument.manufacturer = Manufacturer.Waters;
                 }
-                
+
                 //设备信息在不同的源文件格式中取法不同,有些是在instrumentConfigurationList中获取,有些是在paramGroups获取,因此出现了以下比较丑陋的写法
-                if (ic.cvParams.Count != 0)
+                if (ic.GetCVParamCount() != 0)
                 {
-                    foreach (CVParam cv in ic.cvParams)
+                    foreach (CVParam cv in ic.GetCVParamList())
                     {
-                        if (!FeaturesMap.ContainsKey(cv.name))
+                        if (!FeaturesMap.ContainsKey(cv.GetTagName()))
                         {
-                            FeaturesMap.Add(cv.name, cv.value);
+                            FeaturesMap.Add(cv.GetTagName(), cv.GetValueAsString());
                         }
                     }
 
-                    instrument.model = ic.cvParams[0].name;
+                    instrument.model = ic.GetCVParamList()[0].GetTagName();
                 }
-                else if (Msd.paramGroups.Count != 0)
+                else if (imzML.GetReferenceableParamGroupList().Size() != 0)
                 {
-                    foreach (ParamGroup pg in Msd.paramGroups)
+                    foreach (ReferenceableParamGroup rpg in imzML.GetReferenceableParamGroupList())
                     {
-                        if (!pg.cvParamChild(CVID.MS_Agilent_instrument_model).cvid.Equals(CVID.CVID_Unknown))
+                        if (!rpg.GetCVParamOrChild(InstrumentConfiguration.INSTRUMENT_AGILENT_INSTRUMENT_MODEL_ID).IsEmpty())
                         {
                             instrument.manufacturer = Manufacturer.Agilent;
                         }
-                        
-                        if (pg.cvParams.Count != 0)
+
+                        if (!rpg.GetCVParamList().IsEmpty())
                         {
-                            foreach (CVParam cv in pg.cvParams)
+                            foreach (CVParam cv in rpg.GetCVParamList())
                             {
-                                if (!FeaturesMap.ContainsKey(cv.name))
+                                if (!FeaturesMap.ContainsKey(cv.GetTagName()))
                                 {
-                                    FeaturesMap.Add(cv.name, cv.value.ToString());
+                                    FeaturesMap.Add(cv.GetTagName(), cv.GetValueAsString());
                                 }
                             }
 
-                            instrument.model = pg.cvParams[0].name;
+                            instrument.model = rpg.GetCVParamList()[0].GetTagName();
                         }
                     }
                 }
 
                 foreach (Component component in ic.componentList)
                 {
-                    switch (component.type)
+                    switch (component.Type)
                     {
                         case ComponentType.ComponentType_Analyzer:
-                            foreach (CVParam cv in component.cvParams)
+                            foreach (CVParam cv in component.GetCVParamList())
                             {
-                                instrument.analyzer.Add(cv.name);
+                                instrument.analyzer.Add(cv.GetTagName());
                             }
 
                             break;
                         case ComponentType.ComponentType_Source:
-                            foreach (CVParam cv in component.cvParams)
+                            foreach (CVParam cv in component.GetCVParamList())
                             {
-                                instrument.source.Add(cv.name);
+                                instrument.source.Add(cv.GetTagName());
                             }
 
                             break;
                         case ComponentType.ComponentType_Detector:
-                            foreach (CVParam cv in component.cvParams)
+                            foreach (CVParam cv in component.GetCVParamList())
                             {
-                                instrument.detector.Add(cv.name);
+                                instrument.detector.Add(cv.GetTagName());
                             }
 
                             break;
@@ -1382,22 +1251,22 @@ namespace AirdPro.Converters
                 }
 
                 instruments.Add(instrument);
-                ic.Dispose();
             }
 
             airdInfo.instruments = instruments;
-            airdInfo.startTimeStamp = Msd.run.startTimeStamp;
+            airdInfo.startTimeStamp = imzML.run.startTimeStamp.ToString();
             //Software Info
-            foreach (var soft in Msd.softwareList)
+            foreach (var soft in imzML.softwareList)
             {
-                Software software = new Software();
-                software.name = soft.id;
-                software.version = soft.version;
+                Software software = new()
+                {
+                    name = soft.GetID(),
+                    version = soft.GetVersion()
+                };
                 softwares.Add(software);
-                soft.Dispose();
             }
 
-            Software airdPro = new Software
+            Software airdPro = new()
             {
                 name = SoftwareInfo.NAME,
                 version = SoftwareInfo.VERSION,
@@ -1407,9 +1276,9 @@ namespace AirdPro.Converters
             airdInfo.softwares = softwares;
 
             //Parent Files Info
-            foreach (var sf in Msd.fileDescription.sourceFiles)
+            foreach (var sf in imzML.fileDescription.sourceFileList)
             {
-                ParentFile file = new ParentFile
+                ParentFile file = new()
                 {
                     name = sf.name,
                     location = sf.location,
@@ -1422,10 +1291,10 @@ namespace AirdPro.Converters
 
             //Compressor Info
             List<Compressor> comps = [];
-            Compressor mzCompressor = new Compressor(AirdSDK.Beans.Compressor.TARGET_MZ);
-            Compressor intCompressor = new Compressor(AirdSDK.Beans.Compressor.TARGET_INTENSITY);
-            Compressor mobiCompressor = new Compressor(AirdSDK.Beans.Compressor.TARGET_MOBILITY);
-            Compressor rtCompressor = new Compressor(AirdSDK.Beans.Compressor.TARGET_RT);
+            Compressor mzCompressor = new(AirdSDK.Beans.Compressor.TARGET_MZ);
+            Compressor intCompressor = new(AirdSDK.Beans.Compressor.TARGET_INTENSITY);
+            Compressor mobiCompressor = new(AirdSDK.Beans.Compressor.TARGET_MOBILITY);
+            Compressor rtCompressor = new(AirdSDK.Beans.Compressor.TARGET_RT);
 
             mzCompressor.addMethod(JobInfo.config.mzIntComp.ToString());
             mzCompressor.addMethod(JobInfo.config.mzByteComp.ToString());
@@ -1442,7 +1311,7 @@ namespace AirdPro.Converters
             rtCompressor.addMethod(JobInfo.config.rtIntComp.ToString());
             rtCompressor.addMethod(JobInfo.config.rtByteComp.ToString());
             rtCompressor.precision = 100000;
-            
+
             comps.Add(mzCompressor);
             comps.Add(intCompressor);
             comps.Add(mobiCompressor);
@@ -1451,7 +1320,7 @@ namespace AirdPro.Converters
 
             airdInfo.ignoreZeroIntensityPoint = JobInfo.config.ignoreZeroIntensity;
             //Features Info
-            FeaturesMap.Add(Features.raw_id, Msd.id);
+            FeaturesMap.Add(Features.raw_id, imzML.id);
             FeaturesMap.Add(Features.ignore_zero_intensity, JobInfo.config.ignoreZeroIntensity);
             FeaturesMap.Add(Features.source_file_format, JobInfo.format);
             FeaturesMap.Add(Features.byte_order, ByteOrder.LITTLE_ENDIAN);
@@ -1463,7 +1332,7 @@ namespace AirdPro.Converters
 
         protected ColumnInfo BuildColumnInfo()
         {
-            ColumnInfo columnInfo = new ColumnInfo
+            ColumnInfo columnInfo = new()
             {
                 type = JobInfo.type,
                 indexList = ColumnIndexList,
@@ -1474,24 +1343,23 @@ namespace AirdPro.Converters
             return columnInfo;
         }
 
-        List<ByteComp> byteCompList = [new BrotliWrapper(), new SnappyWrapper(), new ZstdWrapper(), new ZlibWrapper()];
+        readonly List<ByteComp> byteCompList = [new BrotliWrapper(), new SnappyWrapper(), new ZstdWrapper(), new ZlibWrapper()];
 
-        List<SortedIntComp> integratedIntCompList =
+        readonly List<SortedIntComp> integratedIntCompList =
         [
             new DeltaWrapper(), new IntegratedBinPackingWrapper()
         ];
 
-        List<IntComp> intCompList = [new VarByteWrapper(), new BinPackingWrapper(), new Empty()];
+        readonly List<IntComp> intCompList = [new VarByteWrapper(), new BinPackingWrapper(), new Empty()];
 
-        List<IntComp> intIonCompList = [new VarByteWrapper(), new BinPackingWrapper(), new DeltaZigzagVBWrapper(), new Empty()];
+        readonly List<IntComp> intIonCompList = [new VarByteWrapper(), new BinPackingWrapper(), new DeltaZigzagVBWrapper(), new Empty()];
 
         public Combination RandomSampling(int randomNum, bool ionMobi)
         {
             List<int[]> mzArrays = [];
             List<int[]> intensityArrays = [];
             List<int[]> mobiNoArrays = [];
-            Random rn = new Random();
-            GaussianRandomGenerator generator = new GaussianRandomGenerator(TotalSpectraCount / 2, 10000);
+            GaussianRandomGenerator generator = new (TotalSpectraCount / 2, 10000);
             int[] indexes = generator.GenerateRandomNumbers(randomNum, 1, TotalSpectraCount);
 
             for (var i = 0; i < randomNum; i++)
@@ -1514,9 +1382,9 @@ namespace AirdPro.Converters
         public List<int[]> FetchSpectrum(int index, bool mobi)
         {
             List<int[]> arrays = [];
-            Spectrum spectrum = SpectrumList.spectrum(index, true);
-            double[] mzData = spectrum.getMZArray().data.Storage();
-            double[] intData = spectrum.getIntensityArray().data.Storage();
+            Spectrum spectrum = spectra.GetSpectrum(index);
+            double[] mzData = spectrum.GetMzArray();
+            double[] intData = spectrum.GetIntensityArray();
 
             var size = mzData.Length;
             int[] mzArray = new int[size];
@@ -1552,17 +1420,16 @@ namespace AirdPro.Converters
             arrays.Add(mzArray);
             arrays.Add(intensityArray);
             arrays.Add(mobilityNoArray);
-
-            spectrum.Dispose();
+            spectrum = null;
             return arrays;
         }
 
         public Combination CompressForTargetArrays(List<int[]> mzArrays, List<int[]> intensityArrays,
             List<int[]> mobiNoArrays, bool ionMobi)
         {
-            Dictionary<string, long> ctMap = new Dictionary<string, long>();
-            Dictionary<string, long> dtMap = new Dictionary<string, long>();
-            Dictionary<string, long> sizeMap = new Dictionary<string, long>();
+            Dictionary<string, long> ctMap = [];
+            Dictionary<string, long> dtMap = [];
+            Dictionary<string, long> sizeMap = [];
 
             foreach (SortedIntComp intComp in integratedIntCompList)
             {
@@ -1609,7 +1476,7 @@ namespace AirdPro.Converters
             foreach (KeyValuePair<string, long> pair in sizeMap)
             {
                 string key = pair.Key;
-                CompressStat stat = new CompressStat(key, sizeMap[key], ctMap[key], dtMap[key]);
+                CompressStat stat = new(key, sizeMap[key], ctMap[key], dtMap[key]);
                 if (key.StartsWith(Tag.Key_MZ))
                 {
                     stat.key = stat.key.Replace(Tag.Key_MZ_Dash, Tag.Empty);
@@ -1667,44 +1534,40 @@ namespace AirdPro.Converters
             JobInfo.Log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
             for (var i = 0; i < TotalSpectraCount; i++)
             {
-                using (Spectrum spectrum = SpectrumList.spectrum(i, false))
+                Spectrum spectrum = spectra.Get(i);
+                string msLevel = CVUtil.ParseMsLevel(spectrum);
+                JobInfo.SetStatus("Pre:" + i + "/" + TotalSpectraCount);
+                //最后一个谱图,单独判断
+                if (i == TotalSpectraCount - 1)
                 {
-                    string msLevel = CVUtil.ParseMsLevel(spectrum);
-                    JobInfo.SetStatus("Pre:" + i + "/" + TotalSpectraCount);
-                    //最后一个谱图,单独判断
-                    if (i == TotalSpectraCount - 1)
+                    if (msLevel.Equals(MsLevel.MS1))
                     {
-                        if (msLevel.Equals(MsLevel.MS1))
-                        {
-                            Ms1List.Add(ParseMs1(spectrum, i)); //如果是MS1谱图,加入到MS1List
-                        }
+                        Ms1List.Add(ParseMs1(spectrum, i)); //如果是MS1谱图,加入到MS1List
+                    }
 
-                        if (msLevel.Equals(MsLevel.MS2))
+                    if (msLevel.Equals(MsLevel.MS2))
+                    {
+                        MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
+                        AddToMs2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
+                    }
+                }
+                else
+                {
+                    //如果这个谱图是MS1
+                    if (msLevel.Equals(MsLevel.MS1))
+                    {
+                        Ms1List.Add(ParseMs1(spectrum, i)); //加入MS1List
+                        Spectrum next = spectra.Get(i + 1);
+                        if (CVUtil.ParseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
                         {
-                            MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
-                            AddToMs2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
+                            parentNum = i;
                         }
                     }
-                    else
-                    {
-                        //如果这个谱图是MS1
-                        if (msLevel.Equals(MsLevel.MS1))
-                        {
-                            Ms1List.Add(ParseMs1(spectrum, i)); //加入MS1List
-                            using (Spectrum next = SpectrumList.spectrum(i + 1))
-                            {
-                                if (CVUtil.ParseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
-                                {
-                                    parentNum = i;
-                                }
-                            }
-                        }
 
-                        if (msLevel.Equals(MsLevel.MS2))
-                        {
-                            MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
-                            AddToMs2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
-                        }
+                    if (msLevel.Equals(MsLevel.MS2))
+                    {
+                        MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
+                        AddToMs2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
                     }
                 }
             }
@@ -1724,31 +1587,29 @@ namespace AirdPro.Converters
             {
                 progress++;
                 JobInfo.Log(null, Tag.progress(Tag.Pre, progress, TotalSpectraCount));
-                using (Spectrum spectrum = SpectrumList.spectrum(i))
+                Spectrum spectrum = spectra.Get(i);
+                string msLevel = CVUtil.ParseMsLevel(spectrum);
+                //如果这个谱图是MS1                          
+                if (msLevel.Equals(MsLevel.MS1))
                 {
-                    string msLevel = CVUtil.ParseMsLevel(spectrum);
-                    //如果这个谱图是MS1                          
-                    if (msLevel.Equals(MsLevel.MS1))
+                    parentNum = i;
+                    Ms1List.Add(ParseMs1(spectrum, i));
+                }
+
+                //如果这个谱图是MS2
+                if (msLevel.Equals(MsLevel.MS2))
+                {
+                    MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
+                    //边扫描边建立SWATH WindowRange
+                    if (!RangeTable.Contains(ms2Index.precursor.mz))
                     {
-                        parentNum = i;
-                        Ms1List.Add(ParseMs1(spectrum, i));
+                        WindowRange range = ms2Index.precursor;
+                        Ranges.Add(range);
+                        RangeTable.Add(range.mz, range);
                     }
 
-                    //如果这个谱图是MS2
-                    if (msLevel.Equals(MsLevel.MS2))
-                    {
-                        MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
-                        //边扫描边建立SWATH WindowRange
-                        if (!RangeTable.Contains(ms2Index.precursor.mz))
-                        {
-                            WindowRange range = ms2Index.precursor;
-                            Ranges.Add(range);
-                            RangeTable.Add(range.mz, range);
-                        }
-
-                        //DIA的MS2Map以precursorMz为key
-                        AddToMs2Map(ms2Index.precursor.mz, ms2Index);
-                    }
+                    //DIA的MS2Map以precursorMz为key
+                    AddToMs2Map(ms2Index.precursor.mz, ms2Index);
                 }
             }
 
@@ -1765,43 +1626,39 @@ namespace AirdPro.Converters
             for (var i = 0; i < TotalSpectraCount; i++)
             {
                 JobInfo.Log(null, Tag.progress(Tag.Pre, i, TotalSpectraCount));
-                using (Spectrum spectrum = SpectrumList.spectrum(i))
+                Spectrum spectrum = spectra.Get(i);
+                string msLevel = CVUtil.ParseMsLevel(spectrum);
+                //最后一个谱图,单独判断
+                if (i == TotalSpectraCount - 1)
                 {
-                    string msLevel = CVUtil.ParseMsLevel(spectrum);
-                    //最后一个谱图,单独判断
-                    if (i == TotalSpectraCount - 1)
+                    if (msLevel.Equals(MsLevel.MS1))
                     {
-                        if (msLevel.Equals(MsLevel.MS1))
-                        {
-                            Ms1List.Add(ParseMs1(spectrum, i)); //如果是MS1谱图,加入到MS1List
-                        }
+                        Ms1List.Add(ParseMs1(spectrum, i)); //如果是MS1谱图,加入到MS1List
+                    }
 
-                        if (msLevel.Equals(MsLevel.MS2))
+                    if (msLevel.Equals(MsLevel.MS2))
+                    {
+                        MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
+                        AddToMs2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
+                    }
+                }
+                else
+                {
+                    //如果这个谱图是MS1
+                    if (msLevel.Equals(MsLevel.MS1))
+                    {
+                        Ms1List.Add(ParseMs1(spectrum, i)); //加入MS1List
+                        Spectrum next = spectra.Get(i + 1);
+                        if (CVUtil.ParseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
                         {
-                            MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
-                            AddToMs2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
+                            parentNum = i;
                         }
                     }
-                    else
-                    {
-                        //如果这个谱图是MS1
-                        if (msLevel.Equals(MsLevel.MS1))
-                        {
-                            Ms1List.Add(ParseMs1(spectrum, i)); //加入MS1List
-                            using (Spectrum next = SpectrumList.spectrum(i + 1))
-                            {
-                                if (CVUtil.ParseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
-                                {
-                                    parentNum = i;
-                                }
-                            }
-                        }
 
-                        if (msLevel.Equals(MsLevel.MS2))
-                        {
-                            MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
-                            AddToMs2Map(ms2Index.pNum, ms2Index); //如果这个谱图是MS2
-                        }
+                    if (msLevel.Equals(MsLevel.MS2))
+                    {
+                        MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
+                        AddToMs2Map(ms2Index.pNum, ms2Index); //如果这个谱图是MS2
                     }
                 }
             }
@@ -1821,31 +1678,29 @@ namespace AirdPro.Converters
             {
                 progress++;
                 JobInfo.Log(null, Tag.progress(Tag.Pre, progress, TotalSpectraCount));
-                using (Spectrum spectrum = SpectrumList.spectrum(i))
+                Spectrum spectrum = spectra.Get(i);
+                string msLevel = CVUtil.ParseMsLevel(spectrum);
+                //如果这个谱图是MS1                          
+                if (msLevel.Equals(MsLevel.MS1))
                 {
-                    string msLevel = CVUtil.ParseMsLevel(spectrum);
-                    //如果这个谱图是MS1                          
-                    if (msLevel.Equals(MsLevel.MS1))
+                    parentNum = i;
+                    Ms1List.Add(ParseMs1(spectrum, i));
+                }
+
+                //如果这个谱图是MS2
+                if (msLevel.Equals(MsLevel.MS2))
+                {
+                    MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
+                    //边扫描边建立SWATH WindowRange
+                    if (!RangeTable.Contains(ms2Index.precursor.mz))
                     {
-                        parentNum = i;
-                        Ms1List.Add(ParseMs1(spectrum, i));
+                        WindowRange range = ms2Index.precursor;
+                        Ranges.Add(range);
+                        RangeTable.Add(range.mz, range);
                     }
 
-                    //如果这个谱图是MS2
-                    if (msLevel.Equals(MsLevel.MS2))
-                    {
-                        MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
-                        //边扫描边建立SWATH WindowRange
-                        if (!RangeTable.Contains(ms2Index.precursor.mz))
-                        {
-                            WindowRange range = ms2Index.precursor;
-                            Ranges.Add(range);
-                            RangeTable.Add(range.mz, range);
-                        }
-
-                        //DIA的MS2Map以precursorMz为key
-                        AddToMs2Map(ms2Index.precursor.mz, ms2Index);
-                    }
+                    //DIA的MS2Map以precursorMz为key
+                    AddToMs2Map(ms2Index.precursor.mz, ms2Index);
                 }
             }
 
@@ -1862,55 +1717,49 @@ namespace AirdPro.Converters
             for (int i = 0; i < TotalSpectraCount; i++)
             {
                 JobInfo.Log(null, Tag.progress(Tag.Empty, (i + 1), TotalSpectraCount));
-                using (Spectrum spectrum = SpectrumList.spectrum(i))
+                Spectrum spectrum = spectra.Get(i);
+                string msLevel = CVUtil.ParseMsLevel(spectrum);
+                //如果是最后一个谱图,那么单独判断
+                if (i == TotalSpectraCount - 1)
                 {
-                    string msLevel = CVUtil.ParseMsLevel(spectrum);
-                    //如果是最后一个谱图,那么单独判断
-                    if (i == TotalSpectraCount - 1)
-                    {
-                        //如果是MS1谱图,那么直接跳过
-                        if (msLevel.Equals(MsLevel.MS1))
-                        {
-                            continue;
-                        }
-
-                        //如果是MS2谱图,加入到谱图组
-                        if (msLevel.Equals(MsLevel.MS2))
-                        {
-                            MsIndex ms2Index = ParseMs2(SpectrumList.spectrum(i), i, parentNum);
-                            AddToMs2Map(ms2Index.precursor.mz, ms2Index);
-                            continue;
-                        }
-                    }
-
-                    //如果这个谱图是MS1
+                    //如果是MS1谱图,那么直接跳过
                     if (msLevel.Equals(MsLevel.MS1))
                     {
-                        using (Spectrum next = SpectrumList.spectrum(i + 1))
-                        {
-                            string msLevelNext = CVUtil.ParseMsLevel(next);
-                            //如果下一个谱图仍然是MS1, 那么直接忽略这个谱图
-                            if (msLevelNext.Equals(MsLevel.MS1))
-                            {
-                                continue;
-                            }
-
-                            if (msLevelNext.Equals(MsLevel.MS2))
-                            {
-                                parentNum = i;
-                                Ms1List.Add(ParseMs1(SpectrumList.spectrum(i), i));
-                            }
-                        }
+                        continue;
                     }
 
+                    //如果是MS2谱图,加入到谱图组
                     if (msLevel.Equals(MsLevel.MS2))
                     {
-                        using (var current = SpectrumList.spectrum(i))
-                        {
-                            MsIndex ms2Index = ParseMs2(current, i, parentNum);
-                            AddToMs2Map(ms2Index.precursor.mz, ms2Index); //如果这个谱图是MS2
-                        }
+                        MsIndex ms2Index = ParseMs2(spectra.Get(i), i, parentNum);
+                        AddToMs2Map(ms2Index.precursor.mz, ms2Index);
+                        continue;
                     }
+                }
+
+                //如果这个谱图是MS1
+                if (msLevel.Equals(MsLevel.MS1))
+                {
+                    Spectrum next = spectra.GetSpectrum(i + 1);
+                    string msLevelNext = CVUtil.ParseMsLevel(next);
+                    //如果下一个谱图仍然是MS1, 那么直接忽略这个谱图
+                    if (msLevelNext.Equals(MsLevel.MS1))
+                    {
+                        continue;
+                    }
+
+                    if (msLevelNext.Equals(MsLevel.MS2))
+                    {
+                        parentNum = i;
+                        Ms1List.Add(ParseMs1(spectra.GetSpectrum(i), i));
+                    }
+                }
+
+                if (msLevel.Equals(MsLevel.MS2))
+                {
+                    Spectrum current = spectra.GetSpectrum(i);
+                    MsIndex ms2Index = ParseMs2(current, i, parentNum);
+                    AddToMs2Map(ms2Index.precursor.mz, ms2Index); //如果这个谱图是MS2
                 }
             }
 
@@ -1918,5 +1767,255 @@ namespace AirdPro.Converters
             JobInfo.Log("MS2 Group List Size:" + Ms2Table.Count);
             JobInfo.Log("Start Processing MS1 List");
         }
-    }
+
+       /* public SpectrumList ReadImzMLFile()
+        {
+            SpectrumList spectra;
+            try
+            {
+                ImzML imzml = ImzMLHandler.ParseimzML(JobInfo.inputPath);
+                spectra = imzml.GetRun().GetSpectrumList();
+                int totalScans = spectra.Size();
+                for (int i = 0; i < totalScans; i++)
+                {
+                    Spectrum spectrum = spectra.Get(i);
+                    String scanId = spectrum.GetID();
+                    // Extract scan data
+                    int msLevel = ExtractMSLevel(spectrum);
+                    float retentionTime = ExtractRetentionTime(spectrum);
+                    PolarityType polarity = ExtractPolarity(spectrum);
+                    double precursorMz = ExtractPrecursorMz(spectrum);
+                    int precursorCharge = ExtractPrecursorCharge(spectrum);
+                    String scanDefinition = ExtractScanDefinition(spectrum);
+                    // imaging
+                    Coordinates coord = ExtractCoordinates(spectrum);
+
+                    double[] mzValues = ExtractMzValues(spectrum);
+                    double[] intensityValues = ExtractIntensityValues(spectrum);
+
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+            return spectra;
+        }*/
+
+       /* private double[] ExtractIntensityValues(Spectrum spectrum)
+        {
+            try
+            {
+                BinaryDataArrayList dataList = spectrum.GetBinaryDataArrayList();
+                BinaryDataArray intensityArray = dataList.GetIntensityArray();
+                double[] intensityValues = intensityArray.GetDataAsDouble();
+                return intensityValues;
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e.Message);
+                return [];
+            }
+        }
+
+        private double[] ExtractMzValues(Spectrum spectrum)
+        {
+            try
+            {
+                BinaryDataArrayList dataList = spectrum.GetBinaryDataArrayList();
+                BinaryDataArray mzArray = dataList.GetMzArray();
+                double[] mzValues = mzArray.GetDataAsDouble();
+                return mzValues;
+
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e.Message);
+                return [];
+            }
+        }*/
+
+        /*private string ExtractScanDefinition(Spectrum spectrum)
+        {
+            CVParam cvParams = spectrum.GetCVParam("MS:1000512");
+            if (cvParams != null)
+            {
+                return cvParams.GetValueAsString();
+            }
+
+            ScanList scanListElement = spectrum.GetScanList();
+            if (scanListElement != null)
+            {
+                for (int i = 0; i < scanListElement.Size(); i++)
+                {
+                    Scan scan = scanListElement.Get(i);
+
+                    cvParams = scan.GetCVParam("MS:1000512");
+                    if (cvParams != null)
+                    {
+                        return cvParams.GetValueAsString();
+                    }
+                }
+            }
+            return spectrum.GetID();
+        }
+
+        private int ExtractPrecursorCharge(Spectrum spectrum)
+        {
+            PrecursorList precursorList = spectrum.GetPrecursorList();
+            if ((precursorList == null) || (precursorList.Size() == 0))
+            {
+                return 0;
+            }
+
+            foreach (Precursor parent in precursorList)
+            {
+                SelectedIonList selectedIonListElement = parent.GetSelectedIonList();
+                if ((selectedIonListElement == null) || (selectedIonListElement.Size() == 0))
+                {
+                    return 0;
+                }
+
+                foreach (SelectedIon sion in selectedIonListElement)
+                {
+
+                    // precursor charge
+                    CVParam param = sion.GetCVParam("MS:1000041");
+                    if (param != null)
+                    {
+                        return param.GetValueAsInteger();
+                    }
+                }
+            }
+            return 0;
+        }
+
+        private double ExtractPrecursorMz(Spectrum spectrum)
+        {
+            PrecursorList precursorListElement = spectrum.GetPrecursorList();
+            if ((precursorListElement == null) || (precursorListElement.Size() == 0))
+            {
+                return 0;
+            }
+
+            foreach (Precursor parent in precursorListElement)
+            {
+
+                SelectedIonList selectedIonListElement = parent.GetSelectedIonList();
+                if ((selectedIonListElement == null) || (selectedIonListElement.Size() == 0))
+                {
+                    return 0;
+                }
+
+                // MS:1000040 is used in mzML 1.0,
+                // MS:1000744 is used in mzML 1.1.0
+                foreach (SelectedIon sion in selectedIonListElement)
+                {
+                    CVParam param = sion.GetCVParam("MS:1000040");
+                    if (param != null)
+                    {
+                        return param.GetValueAsDouble();
+                    }
+
+                    param = sion.GetCVParam("MS:1000744");
+                    if (param != null)
+                    {
+                        return param.GetValueAsDouble();
+                    }
+                }
+            }
+            return 0;
+        }        
+
+        private PolarityType ExtractPolarity(Spectrum spectrum)
+        {
+            CVParam cv = spectrum.GetCVParam(Spectrum.SCAN_POLARITY_ID);
+            if (spectrum.GetCVParam("MS:1000130") != null)
+            {
+                return PolarityType.Positive;
+            }
+            else if (spectrum.GetCVParam("MS:1000129") != null)
+            {
+                return PolarityType.Negative;
+            }
+
+            ScanList scanListElement = spectrum.GetScanList();
+            if (scanListElement != null)
+            {
+                for (int i = 0; i < scanListElement.Size(); i++)
+                {
+                    Scan scan = scanListElement.Get(i);
+
+                    if (scan.GetCVParam("MS:1000130") != null)
+                    {
+                        return PolarityType.Positive;
+                    }
+                    else if (scan.GetCVParam("MS:1000129") != null)
+                    {
+                        return PolarityType.Negative;
+                    }
+                }
+            }
+            return PolarityType.Any;
+        }
+
+        private float ExtractRetentionTime(Spectrum spectrum)
+        {
+            ScanList scanListElement = spectrum.GetScanList();
+            if (scanListElement == null)
+            {
+                return 0;
+            }
+
+            foreach (Scan scan in scanListElement)
+            {
+                try
+                {
+                    // scan start time correct?
+                    CVParam param = scan.GetCVParam(Scan.SCAN_START_TIME_ID);
+                    if (param != null)
+                    {
+                        return (float)param.GetValueAsDouble();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+            return 0;
+        }        
+
+        private Coordinates ExtractCoordinates(Spectrum spectrum)
+        {
+            ScanList list = spectrum.GetScanList();
+            if (list != null)
+            {
+                foreach (Scan scan in spectrum.GetScanList())
+                {
+                    CVParam xValue = scan.GetCVParam(Scan.POSITION_X_ID);
+                    CVParam yValue = scan.GetCVParam(Scan.POSITION_Y_ID);
+                    CVParam zValue = scan.GetCVParam(Scan.POSITION_Z_ID);
+
+                    if (xValue != null && yValue != null)
+                    {
+                        int x = xValue.GetValueAsInteger() - 1;
+                        int y = yValue.GetValueAsInteger() - 1;
+
+                        if (zValue != null)
+                        {
+                            return new Coordinates(x, y, zValue.GetValueAsInteger() - 1);
+                        }
+                        else
+                        {
+                            return new Coordinates(x, y, 0);
+                        }
+                    }
+                }
+            }
+            return null;
+        }*/
+    }    
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using AirdPro.Domains;
 using System.IO;
 using System.Text;
@@ -30,7 +29,7 @@ namespace AirdPro.Converters
         public override void Init(JobInfo jobInfo)
         {
             JobInfo = jobInfo;
-            TdmsComp = new TdmsComp(jobInfo);
+            InitCompressor();
         }
 
         public override void InitCompressor()

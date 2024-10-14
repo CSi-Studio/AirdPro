@@ -12,7 +12,7 @@
         {
             foreach (ScanSettings scanSettings in scanSettingsList)
             {
-                this.Add(new ScanSettings(scanSettings, rpgList, sourceFileList));
+                Add(new ScanSettings(scanSettings, rpgList, sourceFileList));
             }
         }
 

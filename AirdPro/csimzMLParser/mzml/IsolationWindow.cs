@@ -4,7 +4,10 @@
     {
         private static readonly long serialVersionUID = 1L;
 
-        public static readonly string ISOLATION_WINDOW_ATTRIBUTE_ID = "MS:1000792"; 
+        public static readonly string ISOLATION_WINDOW_ATTRIBUTE_ID = "MS:1000792";
+        public static readonly string ISOLATION_WINDOW_TARGET_MZ = "MS:1000827";
+        public static readonly string ISOLATION_WINDOW_LOWER_OFFSET_ID = "MS:1000828";
+        public static readonly string ISOLATION_WINDOW_UPPER_OFFSET_ID = "MS:1000829";       
 
         public IsolationWindow() : base()
         {

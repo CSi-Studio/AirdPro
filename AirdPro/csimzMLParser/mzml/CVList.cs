@@ -17,12 +17,12 @@ namespace AirdPro.csimzMLParser.mzml
 
         public void AddCV(CV cv)
         {
-            base.Add(cv);
+            Add(cv);
         }
 
         public CV GetCV(string id)
         {
-            return base.Get(id);
+            return Get(id);
         }
 
         public override string GetTagName()

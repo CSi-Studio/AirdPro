@@ -2,6 +2,7 @@
 {
     public class Component : MzMLOrderedContentWithParams
     {
+        public ComponentType Type { get; set; }
         public Component()
         {
 
@@ -10,5 +11,15 @@
         {
             
         }
+
+        public enum ComponentType
+        {
+            ComponentType_Analyzer,
+            ComponentType_Source,
+            ComponentType_Detector,
+            ComponentType_Unknown
+        }
     }
+
+
 }

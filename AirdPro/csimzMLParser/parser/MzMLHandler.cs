@@ -29,12 +29,12 @@ namespace AirdPro.csimzMLParser.parser
             temporaryFileStream = new BinaryWriter(new FileStream(temporaryBinaryFile.FullName, FileMode.Create));
         }
 
-        public MzML ParsemzML(string filename)
+        public static MzML ParsemzML(string filename)
         {
             return ParsemzML(filename, null);
         }
 
-        public MzML ParsemzML(string filename, IParserListener listener)
+        public static MzML ParsemzML(string filename, IParserListener listener)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace AirdPro.csimzMLParser.parser
                 {
                     while (reader.Read())
                     {
-                        StartElement(reader);
+                        handler.StartElement(reader);
                     }
                 }
 

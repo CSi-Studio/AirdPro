@@ -460,6 +460,12 @@ namespace AirdPro.Domains
                     FileInfo mzML = new FileInfo(inputPath);
                     if (mzML.Exists) FileSize += mzML.Length;
                     break;
+                case FileFormat.imzML:
+                    FileInfo imzML = new FileInfo(inputPath);
+                    if (imzML.Exists) FileSize += imzML.Length;
+                    FileInfo ibd = new FileInfo(inputPath.ToLower().Replace(".imzml", ".ibd"));
+                    if (ibd.Exists) FileSize += ibd.Length;
+                    break;
                 case FileFormat.mzXML:
                     FileInfo mzXML = new FileInfo(inputPath);
                     if (mzXML.Exists) FileSize += mzXML.Length;

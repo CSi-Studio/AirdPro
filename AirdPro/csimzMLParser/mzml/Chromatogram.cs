@@ -10,6 +10,10 @@ namespace AirdPro.csimzMLParser.mzml
 
         public static readonly string CHROMATOGRAM_ATTRIBUTE_ID = "MS:1000808";
         public static readonly string CHROMATOGRAM_TYPE_ID = "MS:1000626";
+        public static readonly string POSITIVE_SCAN_ID = "MS:1000130";
+        public static readonly string NEGATIVE_SCAN_ID = "MS:1000129";
+        public static readonly string PROFILE_SPECTRUM_ID = "MS:1000128";
+        public static readonly string CENTROID_SPECTRUM_ID = "MS:1000127";
 
         public Precursor precursor;
         public Product product;

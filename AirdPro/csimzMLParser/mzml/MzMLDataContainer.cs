@@ -1,6 +1,7 @@
 ﻿using AirdPro.csimzMLParser.data;
 using AirdPro.csimzMLParser.util;
 using System.Text;
+using static AirdPro.csimzMLParser.data.DataTypeTransform;
 using static AirdPro.csimzMLParser.mzml.BinaryDataArray;
 
 namespace AirdPro.csimzMLParser.mzml
@@ -108,7 +109,7 @@ namespace AirdPro.csimzMLParser.mzml
                 {
                     foreach (BinaryDataArray bda in binaryDataArrayList)
                     {
-                        CVParam cvParam = bda.GetCVParamOrChild(Accessions.BINARY_DATA_ARRAY_ID);
+                        CVParam cvParam = bda.GetCVParamOrChild(BinaryDataArray.BINARY_DATA_ARRAY_ID);
                         string cvParamID = cvParam.GetTerm().id;
 
                         int cvParamLocation = spectrumData.IndexOf(cvParamID);
@@ -148,7 +149,7 @@ namespace AirdPro.csimzMLParser.mzml
             return binaryDataArrayList.GetIntensityArray().GetDataAsDouble(keepInMemory);
         }
 
-        public void SetCompression(BinaryDataArray.CompressionType compression)
+        public void SetCompression(CompressionType compression)
         {
             binaryDataArrayList.SetCompression(compression);
         }

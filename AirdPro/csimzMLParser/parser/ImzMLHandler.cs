@@ -7,7 +7,6 @@ using log4net;
 using System;
 using System.IO;
 using System.Xml;
-using static AirdPro.csimzMLParser.mzml.BinaryDataArray;
 
 namespace AirdPro.csimzMLParser.parser
 {
@@ -15,8 +14,7 @@ namespace AirdPro.csimzMLParser.parser
     {
         private static readonly ILog LOGGER = LogManager.GetLogger(typeof(ImzMLHandler));
 
-        private FileInfo ibdFile;
-        byte[] uncompressedData = null;
+        private FileInfo ibdFile;        
         private long currentOffset;
         private long currentNumBytes;
         private bool processingSCiLS3DData = false;
@@ -35,6 +33,8 @@ namespace AirdPro.csimzMLParser.parser
         private int currentMaxX = 0;
         private int currentMaxY = 0;
 
+        byte[] uncompressedData = null;
+
         public ImzMLHandler(OBO obo) : base(obo)
         {
         }
@@ -49,20 +49,20 @@ namespace AirdPro.csimzMLParser.parser
             }
         }
 
-        public ImzML ParseimzML(string filename)
+        public static ImzML ParseimzML(string filename)
         {
             return ParseimzML(filename, true);
         }
 
-        public ImzML ParseimzML(string filename, bool openDataStorage)
+        public static ImzML ParseimzML(string filename, bool openDataStorage)
         {
             return ParseimzML(filename, openDataStorage, null);
         }
 
-        public ImzML ParseimzML(string filename, bool openDataStorage, IParserListener listener)
+        public static ImzML ParseimzML(string filename, bool openDataStorage, IParserListener listener)
         {
             ImzMLHandler handler;
-            FileStream inputStream = null;            
+            FileStream fileStream = null;            
             try
             {
                 OBO obo = OBO.GetOBO();
@@ -81,35 +81,35 @@ namespace AirdPro.csimzMLParser.parser
                     IgnoreComments = true
                 };
 
-                inputStream = new FileStream(filename, FileMode.Open, FileAccess.Read);
-                byte[] compressedData = new byte[inputStream.Length];
+                fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read);
+                byte[] compressedData = new byte[fileStream.Length];
                 // 根据文件扩展名选择正确的解压方式
                 if (filename.EndsWith(".lz4", StringComparison.OrdinalIgnoreCase))
                 {
-                    uncompressedData = new LZ4DataTransform().ReverseTransform(compressedData);
+                    handler.uncompressedData = new LZ4DataTransform().ReverseTransform(compressedData);
                 }
                 else if (filename.EndsWith(".zlib", StringComparison.OrdinalIgnoreCase))
                 {
-                    uncompressedData = new ZlibDataTransform().ReverseTransform(compressedData);
+                    handler.uncompressedData = new ZlibDataTransform().ReverseTransform(compressedData);
                 }
                 else if (filename.EndsWith(".zstd", StringComparison.OrdinalIgnoreCase))
                 {
-                    uncompressedData = new ZstdDataTransform().ReverseTransform(compressedData);
+                    handler.uncompressedData = new ZstdDataTransform().ReverseTransform(compressedData);
                 }
                 else if (filename.EndsWith(".xz", StringComparison.OrdinalIgnoreCase))
                 {
-                    uncompressedData = new XZDataTransform().ReverseTransform(compressedData);
+                    handler.uncompressedData = new XZDataTransform().ReverseTransform(compressedData);
                 }
                 else
                 {
-                    uncompressedData = compressedData;
+                    handler.uncompressedData = compressedData;
                 }
                 //
-                using (XmlReader reader = XmlReader.Create(inputStream, settings))
+                using (XmlReader reader = XmlReader.Create(fileStream, settings))
                 {
-                    while (reader.Read())
+                    while (reader.Read() && reader.IsStartElement())
                     {
-                        StartElement(reader);
+                        handler.StartElement(reader);
                     }
                 }
 
@@ -135,28 +135,28 @@ namespace AirdPro.csimzMLParser.parser
             }
             finally
             {
-                if (inputStream != null)
+                if (fileStream != null)
                 {
-                    inputStream.Close();
+                    fileStream.Close();
                 }
             }
         }
 
         protected override void StartCVParam(XmlReader reader)
         {
-            string accession = reader.GetAttribute(MzMLHeaderHandler.ACCESSION_ATTRIBUTE_NAME);
-            if (accession == Accessions.EXTERNAL_ENCODED_LENGTH_ID)
+            string accession = reader.GetAttribute(ACCESSION_ATTRIBUTE_NAME);
+            if (accession.Equals(BinaryDataArray.EXTERNAL_ENCODED_LENGTH_ID))
             {
                 try
                 {
-                    currentNumBytes = long.Parse(reader.GetAttribute(MzMLHeaderHandler.VALUE_ATTRIBUTE_NAME));
+                    currentNumBytes = long.Parse(reader.GetAttribute(VALUE_ATTRIBUTE_NAME));
                 }
                 catch (FormatException)
                 {
-                    currentNumBytes = (long)double.Parse(reader.GetAttribute(MzMLHeaderHandler.VALUE_ATTRIBUTE_NAME));
+                    currentNumBytes = (long)double.Parse(reader.GetAttribute(VALUE_ATTRIBUTE_NAME));
                 }
             }
-            else if (accession == Accessions.EXTERNAL_OFFSET_ID)
+            else if (accession.Equals(BinaryDataArray.EXTERNAL_OFFSET_ID))
             {               
                 try
                 {
@@ -177,7 +177,7 @@ namespace AirdPro.csimzMLParser.parser
             {
                 processingSCiLS3DData = true;
 
-                double z = double.Parse(reader.GetAttribute(MzMLHeaderHandler.VALUE_ATTRIBUTE_NAME));
+                double z = double.Parse(reader.GetAttribute(VALUE_ATTRIBUTE_NAME));
 
                 if (z != current3DPositionZ)
                 {
@@ -188,8 +188,8 @@ namespace AirdPro.csimzMLParser.parser
 
                         maxImagesX = (int)Math.Ceiling(Math.Sqrt(numImagesGuess));
 
-                        LOGGER.InfoFormat("Found image size {0} ({1}, {2})", new Object[] { imageSize, imageMaxX, imageMaxY });
-                        LOGGER.InfoFormat("Guessing we have {0} images based on {1} spectra", new Object[] { numImagesGuess, spectrumList.Size() });
+                        LOGGER.InfoFormat("Found image size {0} ({1}, {2})", [imageSize, imageMaxX, imageMaxY]);
+                        LOGGER.InfoFormat("Guessing we have {0} images based on {1} spectra", [numImagesGuess, spectrumList.Size()]);
                         LOGGER.InfoFormat("Putting {0} images in x", maxImagesX);
 
                         haveDoneCheck = true;
@@ -223,14 +223,14 @@ namespace AirdPro.csimzMLParser.parser
             mzML = new ImzML(reader.GetAttribute("version"));
 
             // Add optional attributes
-            if (reader.GetAttribute(MzMLHeaderHandler.ACCESSION_ATTRIBUTE_NAME) != null)
+            if (reader.GetAttribute(ACCESSION_ATTRIBUTE_NAME) != null)
             {
-                mzML.SetAccession(reader.GetAttribute(MzMLHeaderHandler.ACCESSION_ATTRIBUTE_NAME));
+                mzML.SetAccession(reader.GetAttribute(ACCESSION_ATTRIBUTE_NAME));
             }
 
-            if (reader.GetAttribute(MzMLHeaderHandler.ID_ATTRIBUTE_NAME) != null)
+            if (reader.GetAttribute(ID_ATTRIBUTE_NAME) != null)
             {
-                mzML.SetID(reader.GetAttribute(MzMLHeaderHandler.ID_ATTRIBUTE_NAME));
+                mzML.SetID(reader.GetAttribute(ID_ATTRIBUTE_NAME));
             }
 
             contentStack.Push(mzML);
@@ -248,7 +248,7 @@ namespace AirdPro.csimzMLParser.parser
                     NotifyParserListeners(issue);
 
                     currentOffset += DataLocation.EXTENDED_OFFSET;
-                    currentBinaryDataArray.GetCVParam(Accessions.EXTERNAL_OFFSET_ID).SetValueAsString("" + currentOffset);
+                    currentBinaryDataArray.GetCVParam(BinaryDataArray.EXTERNAL_OFFSET_ID).SetValueAsString("" + currentOffset);
                 }
 
                 DataLocation location = new DataLocation(this.dataStorage, currentOffset, (int)this.currentNumBytes);

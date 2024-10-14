@@ -1,39 +1,44 @@
-﻿using AirdPro.csimzMLParser.obo;
+﻿using AirdPro.csimzMLParser.mzml;
+using AirdPro.csimzMLParser.obo;
 using log4net;
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
-using static AirdPro.csimzMLParser.mzml.BinaryDataArray;
 
 namespace AirdPro.csimzMLParser.data
-{    
-    public enum DataType
+{  
+    [Serializable]
+    public class DataTypeTransform : IDataTransform
     {
-        DOUBLE,
-        FLOAT,
-        INTEGER_8BIT,
-        INTEGER_16BIT,
-        INTEGER_32BIT,
-        INTEGER_64BIT
-    }
-    public static class DataTypeExtensions
-    {        
-        public static OBOTerm ToOBOTerm(this DataType dataType)
+        private static readonly ILog LOGGER = LogManager.GetLogger(typeof(DataTypeTransform));
+
+        public enum DataType
+        {
+            DOUBLE,
+            FLOAT,
+            INTEGER_8BIT,
+            INTEGER_16BIT,
+            INTEGER_32BIT,
+            INTEGER_64BIT
+        }
+
+        public static OBOTerm ToOBOTerm(DataType dataType)
         {
             switch (dataType)
             {
                 case DataType.DOUBLE:
-                    return OBO.GetOBO().GetTerm(Accessions.DOUBLE_PRECISION_ID);
+                    return OBO.GetOBO().GetTerm(BinaryDataArray.DOUBLE_PRECISION_ID);
                 case DataType.FLOAT:
-                    return OBO.GetOBO().GetTerm(Accessions.SINGLE_PRECISION_ID);
+                    return OBO.GetOBO().GetTerm(BinaryDataArray.SINGLE_PRECISION_ID);
                 case DataType.INTEGER_64BIT:
-                    return OBO.GetOBO().GetTerm(Accessions.SIGNED_64BIT_INTEGER_ID);
+                    return OBO.GetOBO().GetTerm(BinaryDataArray.SIGNED_64BIT_INTEGER_ID);
                 case DataType.INTEGER_32BIT:
-                    return OBO.GetOBO().GetTerm(Accessions.SIGNED_32BIT_INTEGER_ID);
+                    return OBO.GetOBO().GetTerm(BinaryDataArray.SIGNED_32BIT_INTEGER_ID);
                 case DataType.INTEGER_16BIT:
-                    return OBO.GetOBO().GetTerm(Accessions.SIGNED_16BIT_INTEGER_ID);
+                    return OBO.GetOBO().GetTerm(BinaryDataArray.SIGNED_16BIT_INTEGER_ID);
                 case DataType.INTEGER_8BIT:
-                    return OBO.GetOBO().GetTerm(Accessions.SIGNED_8BIT_INTEGER_ID);
+                    return OBO.GetOBO().GetTerm(BinaryDataArray.SIGNED_8BIT_INTEGER_ID);
                 default:
                     return null;
             }
@@ -43,39 +48,33 @@ namespace AirdPro.csimzMLParser.data
         {
             string accession = term.id;
 
-            if (accession == Accessions.DOUBLE_PRECISION_ID)
+            if (accession.Equals(BinaryDataArray.DOUBLE_PRECISION_ID))
             {
                 return DataType.DOUBLE;
             }
-            else if (accession == Accessions.SINGLE_PRECISION_ID)
+            else if (accession.Equals(BinaryDataArray.SINGLE_PRECISION_ID))
             {
                 return DataType.FLOAT;
             }
-            else if (accession == Accessions.SIGNED_64BIT_INTEGER_ID || accession == Accessions.IMS_SIGNED_64BIT_INTEGER_ID)
+            else if (accession.Equals(BinaryDataArray.SIGNED_64BIT_INTEGER_ID) || accession.Equals(BinaryDataArray.IMS_SIGNED_64BIT_INTEGER_ID))
             {
                 return DataType.INTEGER_64BIT;
             }
-            else if (accession == Accessions.SIGNED_32BIT_INTEGER_ID || accession == Accessions.IMS_SIGNED_32BIT_INTEGER_ID)
+            else if (accession.Equals(BinaryDataArray.SIGNED_32BIT_INTEGER_ID) || accession.Equals(BinaryDataArray.IMS_SIGNED_32BIT_INTEGER_ID))
             {
                 return DataType.INTEGER_32BIT;
             }
-            else if (accession == Accessions.SIGNED_16BIT_INTEGER_ID)
+            else if (accession.Equals(BinaryDataArray.SIGNED_16BIT_INTEGER_ID))
             {
                 return DataType.INTEGER_16BIT;
             }
-            else if (accession == Accessions.SIGNED_8BIT_INTEGER_ID)
+            else if (accession.Equals(BinaryDataArray.SIGNED_8BIT_INTEGER_ID))
             {
                 return DataType.INTEGER_8BIT;
             }
 
-            return default(DataType);
-        }
-    }
-
-    [Serializable]
-    public class DataTypeTransform : IDataTransform
-    {
-        private static readonly ILog logger = LogManager.GetLogger(typeof(DataTypeTransform));
+            return default;
+        }        
 
         public DataType from;
         public DataType to;
@@ -93,26 +92,29 @@ namespace AirdPro.csimzMLParser.data
             foreach (double aData in data)
             {
                 long doubleVal = BitConverter.DoubleToInt64Bits(aData);
-                for (int i = 0; i < 8; i++)
-                {
-                    convertedData[j++] = (byte)(doubleVal >> (8 * i));
-                }
+                convertedData[j++] = (byte)(doubleVal);
+                convertedData[j++] = (byte)(doubleVal >>> 8);
+                convertedData[j++] = (byte)(doubleVal >>> 16);
+                convertedData[j++] = (byte)(doubleVal >>> 24);
+                convertedData[j++] = (byte)(doubleVal >>> 32);
+                convertedData[j++] = (byte)(doubleVal >>> 40);
+                convertedData[j++] = (byte)(doubleVal >>> 48);
+                convertedData[j++] = (byte)(doubleVal >>> 56);
             }
             return convertedData;
         }
 
         public static double[] ConvertDataToDouble(byte[] data, DataType dataType)
         {
-            if (data == null || data.Length == 0)
+            double[] convertedData = [];
+            if (data == null)
             {
-                return Array.Empty<double>();
+                return convertedData;
             }
 
-            using (MemoryStream memoryStream = new(data))
-            using (BinaryReader reader = new(memoryStream))
+            using (MemoryStream ms = new(data))
+            using (BinaryReader reader = new(ms))
             {
-                double[] convertedData;
-
                 switch (dataType)
                 {
                     case DataType.DOUBLE:
@@ -122,7 +124,6 @@ namespace AirdPro.csimzMLParser.data
                             convertedData[j] = reader.ReadDouble();
                         }
                         break;
-
                     case DataType.FLOAT:
                         convertedData = new double[data.Length / 4];
                         for (int j = 0; j < convertedData.Length; j++)
@@ -130,7 +131,6 @@ namespace AirdPro.csimzMLParser.data
                             convertedData[j] = reader.ReadSingle();
                         }
                         break;
-
                     case DataType.INTEGER_64BIT:
                         convertedData = new double[data.Length / 8];
                         for (int j = 0; j < convertedData.Length; j++)
@@ -138,7 +138,6 @@ namespace AirdPro.csimzMLParser.data
                             convertedData[j] = reader.ReadInt64();
                         }
                         break;
-
                     case DataType.INTEGER_32BIT:
                         convertedData = new double[data.Length / 4];
                         for (int j = 0; j < convertedData.Length; j++)
@@ -146,7 +145,6 @@ namespace AirdPro.csimzMLParser.data
                             convertedData[j] = reader.ReadInt32();
                         }
                         break;
-
                     case DataType.INTEGER_16BIT:
                         convertedData = new double[data.Length / 2];
                         for (int j = 0; j < convertedData.Length; j++)
@@ -154,7 +152,6 @@ namespace AirdPro.csimzMLParser.data
                             convertedData[j] = reader.ReadInt16();
                         }
                         break;
-
                     case DataType.INTEGER_8BIT:
                         convertedData = new double[data.Length];
                         for (int j = 0; j < convertedData.Length; j++)
@@ -162,116 +159,71 @@ namespace AirdPro.csimzMLParser.data
                             convertedData[j] = reader.ReadSByte();
                         }
                         break;
-
                     default:
-                        throw new NotSupportedException("Data type not supported: " + dataType);
+                        throw new InvalidOperationException("Data type not supported: " + dataType);
                 }
-
-                return convertedData;
             }
+            return convertedData;
         }
 
         public static byte[] ConvertData(byte[] data, DataType from, DataType to)
         {
-            if (from == to)
+            if (from.Equals(to))
             {
                 return data;
             }
 
-            double[] doubleData = ConvertDataToDouble(data, from);
+            double[] doubleData = ConvertDataToDouble(data, from);            
 
-            MemoryStream memoryStream = new MemoryStream();
-            using (BinaryWriter writer = new BinaryWriter(memoryStream, Encoding.Unicode, true))
+            using (MemoryStream ms = new MemoryStream())
             {
-                try
+                using (BinaryWriter writer = new BinaryWriter(ms, Encoding.Default, true)) 
                 {
                     switch (to)
                     {
                         case DataType.DOUBLE:
                             foreach (double dataPoint in doubleData)
                             {
-                                byte[] bytes = BitConverter.GetBytes(dataPoint);
-                                if (!BitConverter.IsLittleEndian)
-                                {
-                                    Array.Reverse(bytes);
-                                }
-                                writer.Write(bytes);
+                                writer.Write(dataPoint);
                             }
                             break;
-
                         case DataType.FLOAT:
                             foreach (double dataPoint in doubleData)
                             {
-                                byte[] bytes = BitConverter.GetBytes((float)dataPoint);
-                                if (!BitConverter.IsLittleEndian)
-                                {
-                                    Array.Reverse(bytes);
-                                }
-                                writer.Write(bytes);
+                                writer.Write((float)dataPoint);
                             }
                             break;
-
                         case DataType.INTEGER_64BIT:
                             foreach (double dataPoint in doubleData)
                             {
-                                long value = (long)dataPoint;
-                                byte[] bytes = BitConverter.GetBytes(value);
-                                if (!BitConverter.IsLittleEndian)
-                                {
-                                    Array.Reverse(bytes);
-                                }
-                                writer.Write(bytes);
+                                writer.Write((long)dataPoint);
                             }
                             break;
-
                         case DataType.INTEGER_32BIT:
                             foreach (double dataPoint in doubleData)
                             {
-                                int value = (int)dataPoint;
-                                byte[] bytes = BitConverter.GetBytes(value);
-                                if (!BitConverter.IsLittleEndian)
-                                {
-                                    Array.Reverse(bytes);
-                                }
-                                writer.Write(bytes);
+                                writer.Write((int)dataPoint);
                             }
                             break;
-
                         case DataType.INTEGER_16BIT:
                             foreach (double dataPoint in doubleData)
                             {
-                                short value = (short)dataPoint;
-                                byte[] bytes = BitConverter.GetBytes(value);
-                                if (!BitConverter.IsLittleEndian)
-                                {
-                                    Array.Reverse(bytes);
-                                }
-                                writer.Write(bytes);
+                                writer.Write((short)dataPoint);
                             }
                             break;
-
                         case DataType.INTEGER_8BIT:
                             foreach (double dataPoint in doubleData)
                             {
-                                byte value = (byte)dataPoint;
-                                writer.Write(value);
+                                writer.Write((sbyte)dataPoint);
                             }
                             break;
-
                         default:
-                            throw new NotSupportedException("Data type not supported: " + to.ToString());
+                            throw new InvalidOperationException("Data type not supported: " + to);
                     }
                 }
-                catch (Exception ex)
-                {
-                    logger.Error(null, ex);
-                }
+                return ms.ToArray();
             }
-
-            // Return the byte array from the MemoryStream
-            return memoryStream.ToArray();
         }
-
 
         public byte[] ForwardTransform(byte[] data)
         {
@@ -287,5 +239,6 @@ namespace AirdPro.csimzMLParser.data
         {
             return $"DataTypeTransform from {from} to {to}";
         }
-    }
+
+    }    
 }
