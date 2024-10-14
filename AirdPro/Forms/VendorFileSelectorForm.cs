@@ -75,6 +75,13 @@ namespace AirdPro.Forms
                 comboBox_scan_direction.Items.Add(item);
             }
             comboBox_scan_direction.SelectedIndex = 0;
+            comboBox_scan_sequence.Items.Clear();
+            enumValues = Enum.GetValues(typeof(AirdSDK.Enums.ScanSequence));
+            foreach (var item in enumValues)
+            {
+                comboBox_scan_sequence.Items.Add(item);
+            }
+            comboBox_scan_sequence.SelectedIndex = 2;
             comboBox_scan_pattern.Items.Clear();
             enumValues = Enum.GetValues(typeof(AirdSDK.Enums.ScanPattern));
             foreach (var item in enumValues)
@@ -196,8 +203,15 @@ namespace AirdPro.Forms
                     }
                     msi_path = msi_path.Substring(1);
                     int[] pixels = [pixel_x.Value.ToInt(), pixel_y.Value.ToInt()];
-                    MSIInfo MSIConfig = new MSIInfo{ MSIFileOrganisation = comboBox_file_organisation.SelectedIndex, lineScanDirection =comboBox_scan_direction.SelectedIndex,
-                        scanPattern = comboBox_scan_pattern.SelectedIndex, pixelX = pixel_x.Value.ToInt(), pixelY = pixel_y.Value.ToInt() };
+                    MSIInfo MSIConfig = new MSIInfo
+                    {
+                        MSIFileOrganisation = comboBox_file_organisation.SelectedIndex,
+                        lineScanDirection = comboBox_scan_direction.SelectedIndex,
+                        scanSequence = comboBox_scan_sequence.SelectedIndex,
+                        scanPattern = comboBox_scan_pattern.SelectedIndex,
+                        pixelX = pixel_x.Value.ToInt(),
+                        pixelY = pixel_y.Value.ToInt()
+                    };
                     Program.conversionForm.AddFile(msi_path, outputPath, airdType, (ConversionConfig)config.Clone(), msi_path, MSIConfig);
                 }
                 else
@@ -418,6 +432,7 @@ namespace AirdPro.Forms
             {
                 comboBox_file_organisation.Visible = true;
                 comboBox_scan_direction.Visible = true;
+                comboBox_scan_sequence.Visible = true;
                 comboBox_scan_pattern.Visible = true;
                 label2.Visible = true;
                 pixel_x.Visible = true;
@@ -427,11 +442,13 @@ namespace AirdPro.Forms
                 //pixel_z.Visible = true;
                 label5.Visible = true;
                 label6.Visible = true;
+                label7.Visible = true;
             }
             else
             {
                 comboBox_file_organisation.Visible = false;
                 comboBox_scan_direction.Visible = false;
+                comboBox_scan_sequence.Visible = false;
                 comboBox_scan_pattern.Visible = false;
                 label2.Visible = false;
                 pixel_x.Visible = false;
@@ -441,6 +458,7 @@ namespace AirdPro.Forms
                 //pixel_z.Visible = false;
                 label5.Visible = false;
                 label6.Visible = false;
+                label7.Visible = false;
             }
         }
     }

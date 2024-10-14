@@ -33,10 +33,13 @@ namespace AirdPro.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VendorFileSelectorForm));
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.gBoxMode = new System.Windows.Forms.GroupBox();
+            this.comboBox_scan_sequence = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.comboBox_scan_pattern = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.comboBox_scan_direction = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.pixel_z = new System.Windows.Forms.NumericUpDown();
             this.pixel_x = new System.Windows.Forms.NumericUpDown();
             this.pixel_y = new System.Windows.Forms.NumericUpDown();
@@ -51,7 +54,6 @@ namespace AirdPro.Forms
             this.radioButton6 = new System.Windows.Forms.RadioButton();
             this.radioButton5 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.label4 = new System.Windows.Forms.Label();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.btnEditConfigs = new System.Windows.Forms.Button();
             this.lblConfigOutputPath = new System.Windows.Forms.Label();
@@ -92,10 +94,13 @@ namespace AirdPro.Forms
             // gBoxMode
             // 
             this.gBoxMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.gBoxMode.Controls.Add(this.comboBox_scan_sequence);
+            this.gBoxMode.Controls.Add(this.label7);
             this.gBoxMode.Controls.Add(this.comboBox_scan_pattern);
             this.gBoxMode.Controls.Add(this.label6);
             this.gBoxMode.Controls.Add(this.comboBox_scan_direction);
             this.gBoxMode.Controls.Add(this.label5);
+            this.gBoxMode.Controls.Add(this.label4);
             this.gBoxMode.Controls.Add(this.pixel_z);
             this.gBoxMode.Controls.Add(this.pixel_x);
             this.gBoxMode.Controls.Add(this.pixel_y);
@@ -112,19 +117,39 @@ namespace AirdPro.Forms
             this.gBoxMode.Controls.Add(this.radioButton2);
             this.gBoxMode.Controls.Add(this.radioButton1);
             this.gBoxMode.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.gBoxMode.Location = new System.Drawing.Point(1151, 192);
+            this.gBoxMode.Location = new System.Drawing.Point(1242, 192);
             this.gBoxMode.Margin = new System.Windows.Forms.Padding(4);
             this.gBoxMode.Name = "gBoxMode";
             this.gBoxMode.Padding = new System.Windows.Forms.Padding(4);
-            this.gBoxMode.Size = new System.Drawing.Size(213, 648);
+            this.gBoxMode.Size = new System.Drawing.Size(213, 758);
             this.gBoxMode.TabIndex = 2;
             this.gBoxMode.TabStop = false;
             this.gBoxMode.Text = "Acquisition Mode";
             // 
+            // comboBox_scan_sequence
+            // 
+            this.comboBox_scan_sequence.FormattingEnabled = true;
+            this.comboBox_scan_sequence.Location = new System.Drawing.Point(7, 574);
+            this.comboBox_scan_sequence.Name = "comboBox_scan_sequence";
+            this.comboBox_scan_sequence.Size = new System.Drawing.Size(199, 32);
+            this.comboBox_scan_sequence.TabIndex = 143;
+            this.comboBox_scan_sequence.Tag = "";
+            this.comboBox_scan_sequence.Visible = false;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(8, 547);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(138, 24);
+            this.label7.TabIndex = 142;
+            this.label7.Text = "Scan Sequence";
+            this.label7.Visible = false;
+            // 
             // comboBox_scan_pattern
             // 
             this.comboBox_scan_pattern.FormattingEnabled = true;
-            this.comboBox_scan_pattern.Location = new System.Drawing.Point(7, 586);
+            this.comboBox_scan_pattern.Location = new System.Drawing.Point(7, 636);
             this.comboBox_scan_pattern.Name = "comboBox_scan_pattern";
             this.comboBox_scan_pattern.Size = new System.Drawing.Size(199, 32);
             this.comboBox_scan_pattern.TabIndex = 141;
@@ -134,7 +159,7 @@ namespace AirdPro.Forms
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 557);
+            this.label6.Location = new System.Drawing.Point(8, 609);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(118, 24);
             this.label6.TabIndex = 140;
@@ -144,7 +169,7 @@ namespace AirdPro.Forms
             // comboBox_scan_direction
             // 
             this.comboBox_scan_direction.FormattingEnabled = true;
-            this.comboBox_scan_direction.Location = new System.Drawing.Point(7, 522);
+            this.comboBox_scan_direction.Location = new System.Drawing.Point(7, 512);
             this.comboBox_scan_direction.Name = "comboBox_scan_direction";
             this.comboBox_scan_direction.Size = new System.Drawing.Size(199, 32);
             this.comboBox_scan_direction.TabIndex = 139;
@@ -161,9 +186,20 @@ namespace AirdPro.Forms
             this.label5.Text = "Line Scan Direction";
             this.label5.Visible = false;
             // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(4, 720);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(94, 24);
+            this.label4.TabIndex = 19;
+            this.label4.Text = "pixels in z";
+            this.label4.Visible = false;
+            // 
             // pixel_z
             // 
-            this.pixel_z.Location = new System.Drawing.Point(117, 624);
+            this.pixel_z.Location = new System.Drawing.Point(107, 718);
             this.pixel_z.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -338,16 +374,6 @@ namespace AirdPro.Forms
             this.radioButton2.Text = "DIA";
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(1154, 822);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(107, 18);
-            this.label4.TabIndex = 19;
-            this.label4.Text = "pixels in z";
-            this.label4.Visible = false;
-            // 
             // openFileDialog
             // 
             this.openFileDialog.FileName = "openFileDialog";
@@ -427,7 +453,7 @@ namespace AirdPro.Forms
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.label1.Location = new System.Drawing.Point(1154, 75);
+            this.label1.Location = new System.Drawing.Point(1245, 75);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(213, 112);
@@ -486,7 +512,7 @@ namespace AirdPro.Forms
             // 
             // imgBtnAdd
             // 
-            this.imgBtnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.imgBtnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.imgBtnAdd.BackColor = System.Drawing.Color.White;
             this.imgBtnAdd.BtnBackColor = System.Drawing.Color.White;
             this.imgBtnAdd.BtnFont = new System.Drawing.Font("微软雅黑", 9F);
@@ -504,7 +530,7 @@ namespace AirdPro.Forms
             this.imgBtnAdd.IsRadius = true;
             this.imgBtnAdd.IsShowRect = true;
             this.imgBtnAdd.IsShowTips = false;
-            this.imgBtnAdd.Location = new System.Drawing.Point(1151, 911);
+            this.imgBtnAdd.Location = new System.Drawing.Point(1242, 1023);
             this.imgBtnAdd.Margin = new System.Windows.Forms.Padding(0);
             this.imgBtnAdd.Name = "imgBtnAdd";
             this.imgBtnAdd.RectColor = System.Drawing.Color.Silver;
@@ -519,7 +545,7 @@ namespace AirdPro.Forms
             // 
             // imgBtnClose
             // 
-            this.imgBtnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.imgBtnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.imgBtnClose.BackColor = System.Drawing.Color.White;
             this.imgBtnClose.BtnBackColor = System.Drawing.Color.White;
             this.imgBtnClose.BtnFont = new System.Drawing.Font("微软雅黑", 9F);
@@ -537,7 +563,7 @@ namespace AirdPro.Forms
             this.imgBtnClose.IsRadius = true;
             this.imgBtnClose.IsShowRect = true;
             this.imgBtnClose.IsShowTips = false;
-            this.imgBtnClose.Location = new System.Drawing.Point(1151, 981);
+            this.imgBtnClose.Location = new System.Drawing.Point(1242, 1089);
             this.imgBtnClose.Margin = new System.Windows.Forms.Padding(0);
             this.imgBtnClose.Name = "imgBtnClose";
             this.imgBtnClose.RectColor = System.Drawing.Color.Silver;
@@ -552,7 +578,7 @@ namespace AirdPro.Forms
             // 
             // imgBtnPublish
             // 
-            this.imgBtnPublish.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.imgBtnPublish.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.imgBtnPublish.BackColor = System.Drawing.Color.White;
             this.imgBtnPublish.BtnBackColor = System.Drawing.Color.White;
             this.imgBtnPublish.BtnFont = new System.Drawing.Font("微软雅黑", 9F);
@@ -570,7 +596,7 @@ namespace AirdPro.Forms
             this.imgBtnPublish.IsRadius = true;
             this.imgBtnPublish.IsShowRect = true;
             this.imgBtnPublish.IsShowTips = false;
-            this.imgBtnPublish.Location = new System.Drawing.Point(1151, 844);
+            this.imgBtnPublish.Location = new System.Drawing.Point(1242, 954);
             this.imgBtnPublish.Margin = new System.Windows.Forms.Padding(0);
             this.imgBtnPublish.Name = "imgBtnPublish";
             this.imgBtnPublish.RectColor = System.Drawing.Color.Silver;
@@ -592,19 +618,18 @@ namespace AirdPro.Forms
             this.msFileViews.Location = new System.Drawing.Point(9, 114);
             this.msFileViews.Margin = new System.Windows.Forms.Padding(6);
             this.msFileViews.Name = "msFileViews";
-            this.msFileViews.Size = new System.Drawing.Size(1133, 943);
+            this.msFileViews.Size = new System.Drawing.Size(1224, 1038);
             this.msFileViews.TabIndex = 125;
             // 
             // VendorFileSelectorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1377, 1060);
+            this.ClientSize = new System.Drawing.Size(1468, 1155);
             this.Controls.Add(this.imgBtnPublish);
             this.Controls.Add(this.imgBtnClose);
             this.Controls.Add(this.imgBtnAdd);
             this.Controls.Add(this.btnUnpin);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.btnPin);
             this.Controls.Add(this.btnFileRefresh);
             this.Controls.Add(this.msFileViews);
@@ -677,5 +702,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ComboBox comboBox_scan_pattern;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox comboBox_scan_direction;
+        private System.Windows.Forms.ComboBox comboBox_scan_sequence;
+        private System.Windows.Forms.Label label7;
     }
 }

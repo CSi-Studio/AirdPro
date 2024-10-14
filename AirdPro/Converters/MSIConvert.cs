@@ -33,6 +33,7 @@ namespace AirdPro.Converters
         //ROW_PER_FILE = 0,IMAGE_PER_FILE = 1,SPECTRUM_PER_FILE =2
         public int MSIFileOrganisation;
         public int lineScanDirection;
+        public int scanSequence;
         public int scanPattern;
         int MSIPixelsX = 0;
         int MSIPixelsY = 0;
@@ -481,7 +482,8 @@ namespace AirdPro.Converters
             FeaturesMap.Add(Features.aird_algorithm, JobInfo.GetCompressorStr());
             airdInfo.features = FeaturesUtil.toString(FeaturesMap);
             airdInfo.version = SoftwareInfo.VERSION;
-            airdInfo.MSIInfo = new MSIInfo { MSIFileOrganisation = MSIFileOrganisation, lineScanDirection = lineScanDirection, scanPattern = scanPattern, pixelX = MSIPixelsX, pixelY = MSIPixelsY, pixelZ = MSIPixelsZ };
+            airdInfo.MSIInfo = new MSIInfo { MSIFileOrganisation = MSIFileOrganisation, lineScanDirection = lineScanDirection, scanSequence= scanSequence,
+                scanPattern = scanPattern, pixelX = MSIPixelsX, pixelY = MSIPixelsY, pixelZ = MSIPixelsZ };
 
             return airdInfo;
         }
@@ -626,6 +628,7 @@ namespace AirdPro.Converters
             {
                 MSIFileOrganisation = JobInfo.MSIJobConfig.MSIFileOrganisation;
                 lineScanDirection = JobInfo.MSIJobConfig.lineScanDirection;
+                scanSequence = JobInfo.MSIJobConfig.scanSequence;
                 scanPattern = JobInfo.MSIJobConfig.scanPattern;
                 MSIPixelsX = JobInfo.MSIJobConfig.pixelX;
                 MSIPixelsY = JobInfo.MSIJobConfig.pixelY;

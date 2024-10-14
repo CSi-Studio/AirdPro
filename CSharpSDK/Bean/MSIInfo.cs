@@ -12,6 +12,8 @@ namespace AirdSDK.Bean
         //MSI 
         public int lineScanDirection;
 
+        public int scanSequence;
+
         //MSI 
         public int scanPattern;
 
