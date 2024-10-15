@@ -14,6 +14,9 @@ using System.IO;
 using System.Text;
 using pwiz.CLI.cv;
 using pwiz.CLI.data;
+using pwiz.CLI.msdata;
+using System.Threading.Tasks;
+using AirdSDK.Bean;
 
 namespace AirdPro.Converters
 {
@@ -26,25 +29,32 @@ namespace AirdPro.Converters
         List<AirdSDK.Beans.Software> softwares = new List<AirdSDK.Beans.Software>();
         List<Instrument> instruments = new List<Instrument>();
         List<ParentFile> parentFiles = new List<ParentFile>();
+        //ROW_PER_FILE = 0,IMAGE_PER_FILE = 1,SPECTRUM_PER_FILE =2
+        public int MSIFileOrganisation;
+        public int lineScanDirection;
+        public int scanPattern;
         int MSIPixelsX = 0;
         int MSIPixelsY = 0;
         int MSIPixelsZ = 0;
-        public void test()
-        {
-            InitCompressor();
-        }
 
         public override void DoConvert()
         {
             Start();
             //CopyFile(); //如果检测到是网络挂载磁盘,则首先拷贝到本地以后再进行转换,以提升转换速度
             InitDirectory();
+            LoadJobInfo();
             try
             {
                 using (AirdStream = new FileStream(JobInfo.airdFilePath, FileMode.Create))
                 {
                     StartPosition = 0;
                     InitCompressor();
+                    if (MSIFileOrganisation == (int)AirdSDK.Enums.MSIFileOrganisation.IMAGE_PER_FILE)
+                    {
+                        //只读取第一个文件的数据
+                        JobInfo.inputPaths = JobInfo.inputPaths.Split('|')[0];
+                    }
+                    int fileNum = 0;
                     foreach (var inputPath in JobInfo.inputPaths.Split('|'))
                     {
                         JobInfo.inputPath = inputPath;
@@ -71,11 +81,24 @@ namespace AirdPro.Converters
                                     case AcquisitionMethod.DIA_MSI:
                                         ConverterWorkFlow.DIAMSI(this);
                                         break;
-                                } 
+                                }
                                 msd?.Dispose();
                             }
                         }
                         ClearCache();
+                        fileNum++;
+                        if (MSIFileOrganisation == (int)AirdSDK.Enums.MSIFileOrganisation.SPECTRUM_PER_FILE && fileNum > MSIPixelsX * MSIPixelsY)
+                        {
+                            break;
+                        }
+                        if (MSIFileOrganisation == (int)AirdSDK.Enums.MSIFileOrganisation.ROW_PER_FILE && fileNum >= MSIPixelsY)
+                        {
+                            break;
+                        }
+                    }
+                    if (MSIFileOrganisation == (int)AirdSDK.Enums.MSIFileOrganisation.ROW_PER_FILE && fileNum < MSIPixelsY)
+                    {
+                        MSIPixelsY = fileNum;
                     }
                     WriteToAirdInfoFile();
                 }
@@ -90,31 +113,11 @@ namespace AirdPro.Converters
             }
         }     
 
-        //public void CompressMs1Block()
-        //{
-        //    if (JobInfo.config.noMS1)
-        //    {
-        //        JobInfo.Log(Tag.FILTER_NO_MS1);
-        //        return;
-        //    }
-        //    BlockIndex index = new BlockIndex();
-        //    index.level = 1;
-        //    index.startPtr = StartPosition;
-        //    Compressor.CompressMS1(this, index);
-        //    index.endPtr = StartPosition;
-        //    IndexList.Add(index);
-        //}
-
-
-
         public void PretreatmentDda()
         {
             int parentNum = 0;
             int MS1Num = 0;
-            if (JobInfo.MSIPixels != null) 
-            {
 
-            }
             JobInfo.Log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
             for (var i = 0; i < TotalSpectraCount; i++)
             {
@@ -129,6 +132,18 @@ namespace AirdPro.Converters
                         {
                             Ms1List.Add(ParseMs1(spectrum, i)); //如果是MS1谱图,加入到MS1List
                             MS1Num++;
+                            if (MSIFileOrganisation == (int)AirdSDK.Enums.MSIFileOrganisation.ROW_PER_FILE && MS1Num > MSIPixelsX)
+                            {
+                                break;
+                            }
+                            if (MSIFileOrganisation == (int)AirdSDK.Enums.MSIFileOrganisation.SPECTRUM_PER_FILE && MS1Num > 1)
+                            {
+                                break;
+                            }
+                            if (MSIFileOrganisation == (int)AirdSDK.Enums.MSIFileOrganisation.IMAGE_PER_FILE && MS1Num > MSIPixelsX * MSIPixelsY)
+                            {
+                                break;
+                            }
                         }
 
                         if (msLevel.Equals(MsLevel.MS2))
@@ -143,6 +158,19 @@ namespace AirdPro.Converters
                         if (msLevel.Equals(MsLevel.MS1))
                         {
                             Ms1List.Add(ParseMs1(spectrum, i)); //加入MS1List
+                            MS1Num++;
+                            if (MSIFileOrganisation == (int)AirdSDK.Enums.MSIFileOrganisation.ROW_PER_FILE && MS1Num > MSIPixelsX)
+                            {
+                                break;
+                            }
+                            if (MSIFileOrganisation == (int)AirdSDK.Enums.MSIFileOrganisation.SPECTRUM_PER_FILE && MS1Num > 1)
+                            {
+                                break;
+                            }
+                            if (MSIFileOrganisation == (int)AirdSDK.Enums.MSIFileOrganisation.IMAGE_PER_FILE && MS1Num > MSIPixelsX * MSIPixelsY)
+                            {
+                                break;
+                            }
                             using (Spectrum next = SpectrumList.spectrum(i + 1))
                             {
                                 if (CVUtil.ParseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
@@ -158,6 +186,13 @@ namespace AirdPro.Converters
                             AddToMs2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
                         }
                     }
+                }
+            }
+            if(MSIFileOrganisation == (int)AirdSDK.Enums.MSIFileOrganisation.ROW_PER_FILE)
+            {
+                if (MS1Num < MSIPixelsX)
+                {
+                    MSIPixelsX = MS1Num;
                 }
             }
 
@@ -449,6 +484,8 @@ namespace AirdPro.Converters
             FeaturesMap.Add(Features.aird_algorithm, JobInfo.GetCompressorStr());
             airdInfo.features = FeaturesUtil.toString(FeaturesMap);
             airdInfo.version = SoftwareInfo.VERSION;
+            airdInfo.MSIInfo = new MSIInfo { MSIFileOrganisation = MSIFileOrganisation, lineScanDirection = lineScanDirection, scanPattern = scanPattern, pixelX = MSIPixelsX, pixelY = MSIPixelsY, pixelZ = MSIPixelsZ };
+
             return airdInfo;
         }
 
@@ -584,6 +621,27 @@ namespace AirdPro.Converters
                 };
                 parentFiles.Add(file);
             }
+        }
+
+        public void LoadJobInfo()
+        {
+            if (JobInfo.MSIJobConfig != null)
+            {
+                MSIFileOrganisation = JobInfo.MSIJobConfig.MSIFileOrganisation;
+                lineScanDirection = JobInfo.MSIJobConfig.lineScanDirection;
+                scanPattern = JobInfo.MSIJobConfig.scanPattern;
+                MSIPixelsX = JobInfo.MSIJobConfig.pixelX;
+                MSIPixelsY = JobInfo.MSIJobConfig.pixelY;
+                if (MSIPixelsX == 0)
+                {
+                    MSIPixelsX = int.MaxValue;
+                }
+                if (MSIPixelsY == 0)
+                {
+                    MSIPixelsY = int.MaxValue;
+                }
+            }
+            return;
         }
     }
 }

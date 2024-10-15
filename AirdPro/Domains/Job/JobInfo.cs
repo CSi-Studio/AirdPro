@@ -18,6 +18,7 @@ using System.Threading;
 using AirdPro.Constants;
 using AirdPro.Storage.Config;
 using AirdPro.Utils;
+using AirdSDK.Bean;
 using AirdSDK.Enums;
 using AirdSDK.Utils;
 using Newtonsoft.Json;
@@ -67,11 +68,8 @@ namespace AirdPro.Domains
         //MSI_InputPaths
         public string inputPaths;
 
-        //MSI 位置坐标x,y,z
-        public int[] MSIPixels;
-
-        //ROW_PER_FILE = 0,IMAGE_PER_FILE = 1,SPECTRUM_PER_FILE =2
-        public int MSIFileOrganisation;
+        //MSI信息
+        public MSIInfo MSIJobConfig;
 
         //文件本名
         public string airdFileName;
@@ -162,14 +160,13 @@ namespace AirdPro.Domains
             vendorFileSize = GetVendorFileSize(inputPath);
         }
 
-        public JobInfo(string inputPath, string outputPath, string type, ConversionConfig config, string inputPaths,int MSIFileOrganisation, int[] pixels)
+        public JobInfo(string inputPath, string outputPath, string type, ConversionConfig config, string inputPaths, MSIInfo MSIjobConfig)
         {
             jobId = NextId();
             this.inputPath = inputPaths.Split('|').FirstOrDefault();
             this.inputPaths = inputPaths;
             this.type = type;
-            this.MSIPixels = pixels;
-            this.MSIFileOrganisation = MSIFileOrganisation;
+            this.MSIJobConfig = MSIjobConfig;
             this.outputPath = outputPath;
             this.config = config;
             format = Path.GetExtension(inputPaths.Split('|').FirstOrDefault()).Replace(".", "").ToUpper();
