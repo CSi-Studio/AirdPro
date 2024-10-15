@@ -16,7 +16,7 @@ namespace AirdPro.csimzMLParser.obo
             httpClient = new HttpClient();
         }
 
-        public FileStream GetFileStream(string location)
+        public Stream GetInputStream(string location)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace AirdPro.csimzMLParser.obo
                 // 使用HttpClient获取输入流
                 var response = httpClient.GetAsync(location).Result; 
                 response.EnsureSuccessStatusCode();
-                return (FileStream)response.Content.ReadAsStreamAsync().Result;
+                return response.Content.ReadAsStreamAsync().Result;
             }
             catch (Exception ex)
             {

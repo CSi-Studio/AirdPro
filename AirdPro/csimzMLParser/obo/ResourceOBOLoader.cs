@@ -9,7 +9,7 @@ namespace AirdPro.csimzMLParser.obo
     {
         private static readonly ILog LOGGER = LogManager.GetLogger(typeof(ResourceOBOLoader));
 
-        public FileStream GetFileStream(string location)
+        public Stream GetInputStream(string location)
         {            
             location = location.Substring(location.LastIndexOf('/') + 1);
             string resourcePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\obo\");
@@ -17,7 +17,7 @@ namespace AirdPro.csimzMLParser.obo
 
             try
             {                
-                FileStream inStream = (FileStream)GetType().Assembly.GetManifestResourceStream(location);
+                Stream inStream = GetType().Assembly.GetManifestResourceStream(location);
                 OBO.InstallOBO(inStream, location);
                 inStream.Close();                
             }
@@ -27,7 +27,7 @@ namespace AirdPro.csimzMLParser.obo
             }
 
             // 这里需要重新打开资源流，因为上面的流已经被关闭了
-            return (FileStream)GetType().Assembly.GetManifestResourceStream(location);
+            return GetType().Assembly.GetManifestResourceStream(location);
         }
     }
 }

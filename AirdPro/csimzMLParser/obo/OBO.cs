@@ -42,7 +42,7 @@ namespace AirdPro.csimzMLParser.obo
             imports = [];
             terms = [];
 
-            using (StreamReader reader = new(loader.GetFileStream(location)))
+            using (StreamReader reader = new(loader.GetInputStream(location)))
             {
                 string curLine;
                 OBOTerm curTerm = null;
@@ -219,7 +219,7 @@ namespace AirdPro.csimzMLParser.obo
             ONTOLOGIES_FOLDER = folder;
         }
 
-        public static void InstallOBO(FileStream inStream, string filename)
+        public static void InstallOBO(Stream inStream, string filename)
         {     
             // 确定文件夹路径
             string ontologiesFolderPath = Path.Combine(Directory.GetCurrentDirectory(), ONTOLOGIES_FOLDER);
@@ -236,7 +236,7 @@ namespace AirdPro.csimzMLParser.obo
             try
             {
                 // 使用using语句确保流正确关闭
-                using FileStream outStream = new(filePath, FileMode.Create, FileAccess.Write);
+                using Stream outStream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
                 byte[] buffer = new byte[1024];
                 int bytesRead;
 
