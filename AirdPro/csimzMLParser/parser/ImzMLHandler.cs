@@ -107,9 +107,12 @@ namespace AirdPro.csimzMLParser.parser
                 //
                 using (XmlReader reader = XmlReader.Create(fileStream, settings))
                 {
-                    while (reader.Read() && reader.IsStartElement())
+                    while (reader.Read())
                     {
-                        handler.StartElement(reader);
+                        if (reader.IsStartElement())
+                        {
+                            handler.StartElement(reader);
+                        }                        
                     }
                 }
 

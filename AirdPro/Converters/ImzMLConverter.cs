@@ -139,7 +139,7 @@ namespace AirdPro.Converters
                             break;
                     }
                 }
-                ClearCache();
+                //ClearCache();
             }
             finally
             {
