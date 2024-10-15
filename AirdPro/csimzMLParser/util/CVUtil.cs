@@ -14,6 +14,10 @@ namespace AirdPro.csimzMLParser.util
         public static string ParseMsLevel(Spectrum spectrum)
         {
             CVParam cv = spectrum.GetCVParamOrChild(Spectrum.MS_lEVEL_ID);
+            if (cv == null)
+            {
+                return default;
+            }
             string msLevel = cv.GetValueAsDouble().ToString();
             return msLevel;
         }

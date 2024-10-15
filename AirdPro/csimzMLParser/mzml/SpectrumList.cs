@@ -27,7 +27,7 @@ namespace AirdPro.csimzMLParser.mzml
             foreach (Spectrum spectrum in spectrumList)
             {
                 Spectrum newSpectrum = new(spectrum, rpgList, dpList, sourceFileList, icList);
-                base.Add(newSpectrum);
+                Add(newSpectrum);
             }
 
             if (spectrumList.defaultDataProcessingRef != null && dpList != null)
@@ -44,7 +44,7 @@ namespace AirdPro.csimzMLParser.mzml
 
         public void SetDefaultDataProcessingRef(DataProcessing dp)
         {
-            this.defaultDataProcessingRef = dp;
+            defaultDataProcessingRef = dp;
             EnsureValidReferences();
         }
 
@@ -93,7 +93,7 @@ namespace AirdPro.csimzMLParser.mzml
                 spectrumDictionary = new Dictionary<string, Spectrum>(list.Count);
                 foreach (Spectrum spectrum in list) 
                 { 
-                    this.spectrumDictionary[spectrum.id] = spectrum;
+                    spectrumDictionary[spectrum.id] = spectrum;
                 }
             }            
             return spectrumDictionary[id];
