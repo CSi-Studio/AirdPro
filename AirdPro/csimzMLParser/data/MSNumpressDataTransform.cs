@@ -1,4 +1,5 @@
 ﻿using System;
+using static AirdPro.csimzMLParser.data.DataTypeTransform;
 
 namespace AirdPro.csimzMLParser.data
 {
@@ -35,7 +36,7 @@ namespace AirdPro.csimzMLParser.data
         public byte[] ForwardTransform(byte[] data)
         {
             byte[] encoded = new byte[data.Length];
-            double[] dataAsDouble = DataTypeTransform.ConvertDataToDouble(data, DataType.DOUBLE);
+            double[] dataAsDouble = ConvertDataToDouble(data, DataType.DOUBLE);
             int numBytes = -1;
 
             switch (algorithm)
@@ -68,7 +69,7 @@ namespace AirdPro.csimzMLParser.data
         public byte[] ReverseTransform(byte[] data) 
         {
             double[] result = MSNumpress.decode(accession, data, data.Length);
-            return DataTypeTransform.ConvertDoublesToBytes(result);
+            return ConvertDoublesToBytes(result);
         }
     }
 }

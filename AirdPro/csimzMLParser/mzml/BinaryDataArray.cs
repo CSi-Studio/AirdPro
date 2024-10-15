@@ -3,13 +3,13 @@ using AirdPro.csimzMLParser.obo;
 using AirdPro.csimzMLParser.util;
 using log4net;
 using System;
-using DataType = AirdPro.csimzMLParser.data.DataType;
+using static AirdPro.csimzMLParser.data.DataTypeTransform;
 
 namespace AirdPro.csimzMLParser.mzml
 { 
     public class BinaryDataArray : MzMLContentWithParams
     {
-        private static readonly ILog logger = LogManager.GetLogger(typeof(BinaryDataArray));
+        private static readonly ILog LOGGER = LogManager.GetLogger(typeof(BinaryDataArray));
 
         private const long serialVersionUID = 1L;
 
@@ -42,148 +42,95 @@ namespace AirdPro.csimzMLParser.mzml
             switch (compressionType)
             {
                 case CompressionType.NONE:
-                    return OBO.GetOBO().GetTerm(Accessions.NO_COMPRESSION_ID);
+                    return OBO.GetOBO().GetTerm(NO_COMPRESSION_ID);
                 case CompressionType.ZLIB:
-                    return OBO.GetOBO().GetTerm(Accessions.ZLIB_COMPRESSION_ID);
+                    return OBO.GetOBO().GetTerm(ZLIB_COMPRESSION_ID);
                 case CompressionType.XZ:
-                    return OBO.GetOBO().GetTerm(Accessions.XZ_COMPRESSION_ID);
+                    return OBO.GetOBO().GetTerm(XZ_COMPRESSION_ID);
                 case CompressionType.LZ4:
-                    return OBO.GetOBO().GetTerm(Accessions.LZ4_COMPRESSION_ID);
+                    return OBO.GetOBO().GetTerm(LZ4_COMPRESSION_ID);
                 case CompressionType.ZSTD:
-                    return OBO.GetOBO().GetTerm(Accessions.ZSTD_COMPRESSION_ID);
+                    return OBO.GetOBO().GetTerm(ZSTD_COMPRESSION_ID);
                 case CompressionType.MSNUMPRESS_LINEAR:
-                    return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_LINEAR_ID);
+                    return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_ID);
                 case CompressionType.MSNUMPRESS_POSITIVE:
-                    return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_POSITIVE_ID);
+                    return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_ID);
                 case CompressionType.MSNUMPRESS_SLOF:
-                    return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_SLOF_ID);
+                    return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_ID);
                 case CompressionType.MSNUMPRESS_LINEAR_ZLIB:
-                    return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_LINEAR_ZLIB_ID);
+                    return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_ZLIB_ID);
                 case CompressionType.MSNUMPRESS_POSITIVE_ZLIB:
-                    return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_POSITIVE_ZLIB_ID);
+                    return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_ZLIB_ID);
                 case CompressionType.MSNUMPRESS_SLOF_ZLIB:
-                    return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_SLOF_ZLIB_ID);
+                    return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_ZLIB_ID);
                 case CompressionType.MSNUMPRESS_LINEAR_XZ:
-                    return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_LINEAR_XZ_ID);
+                    return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_XZ_ID);
                 case CompressionType.MSNUMPRESS_POSITIVE_XZ:
-                    return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_POSITIVE_XZ_ID);
+                    return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_XZ_ID);
                 case CompressionType.MSNUMPRESS_SLOF_XZ:
-                    return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_SLOF_XZ_ID);
+                    return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_XZ_ID);
                 case CompressionType.MSNUMPRESS_LINEAR_LZ4:
-                    return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_LINEAR_LZ4_ID);
+                    return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_LZ4_ID);
                 case CompressionType.MSNUMPRESS_POSITIVE_LZ4:
-                    return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_POSITIVE_LZ4_ID);
+                    return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_LZ4_ID);
                 case CompressionType.MSNUMPRESS_SLOF_LZ4:
-                    return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_SLOF_LZ4_ID);
+                    return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_LZ4_ID);
                 case CompressionType.MSNUMPRESS_LINEAR_ZSTD:
-                    return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_LINEAR_ZSTD_ID);
+                    return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_ZSTD_ID);
                 case CompressionType.MSNUMPRESS_POSITIVE_ZSTD:
-                    return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_POSITIVE_ZSTD_ID);
+                    return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_ZSTD_ID);
                 case CompressionType.MSNUMPRESS_SLOF_ZSTD:
-                    return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_SLOF_ZSTD_ID);
+                    return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_ZSTD_ID);
                 default:
                     return null;
             }
         }
 
-        public static class CompressionTypeExtensions
-        {
-            public static OBOTerm toOBOTerm(CompressionType compressionType)
-            {
-                switch (compressionType)
-                {
-                    case CompressionType.NONE:
-                        return OBO.GetOBO().GetTerm(Accessions.NO_COMPRESSION_ID);
-                    case CompressionType.ZLIB:
-                        return OBO.GetOBO().GetTerm(Accessions.ZLIB_COMPRESSION_ID);
-                    case CompressionType.XZ:
-                        return OBO.GetOBO().GetTerm(Accessions.XZ_COMPRESSION_ID);
-                    case CompressionType.LZ4:
-                        return OBO.GetOBO().GetTerm(Accessions.LZ4_COMPRESSION_ID);
-                    case CompressionType.ZSTD:
-                        return OBO.GetOBO().GetTerm(Accessions.ZSTD_COMPRESSION_ID);
-                    case CompressionType.MSNUMPRESS_LINEAR:
-                        return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_LINEAR_ID);
-                    case CompressionType.MSNUMPRESS_POSITIVE:
-                        return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_POSITIVE_ID);
-                    case CompressionType.MSNUMPRESS_SLOF:
-                        return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_SLOF_ID);
-                    case CompressionType.MSNUMPRESS_LINEAR_ZLIB:
-                        return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_LINEAR_ZLIB_ID);
-                    case CompressionType.MSNUMPRESS_POSITIVE_ZLIB:
-                        return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_POSITIVE_ZLIB_ID);
-                    case CompressionType.MSNUMPRESS_SLOF_ZLIB:
-                        return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_SLOF_ZLIB_ID);
-                    case CompressionType.MSNUMPRESS_LINEAR_XZ:
-                        return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_LINEAR_XZ_ID);
-                    case CompressionType.MSNUMPRESS_POSITIVE_XZ:
-                        return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_POSITIVE_XZ_ID);
-                    case CompressionType.MSNUMPRESS_SLOF_XZ:
-                        return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_SLOF_XZ_ID);
-                    case CompressionType.MSNUMPRESS_LINEAR_LZ4:
-                        return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_LINEAR_LZ4_ID);
-                    case CompressionType.MSNUMPRESS_POSITIVE_LZ4:
-                        return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_POSITIVE_LZ4_ID);
-                    case CompressionType.MSNUMPRESS_SLOF_LZ4:
-                        return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_SLOF_LZ4_ID);
-                    case CompressionType.MSNUMPRESS_LINEAR_ZSTD:
-                        return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_LINEAR_ZSTD_ID);
-                    case CompressionType.MSNUMPRESS_POSITIVE_ZSTD:
-                        return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_POSITIVE_ZSTD_ID);
-                    case CompressionType.MSNUMPRESS_SLOF_ZSTD:
-                        return OBO.GetOBO().GetTerm(Accessions.MSNUMPRESS_SLOF_ZSTD_ID);
-                    default:
-                        return null;
-                }
-            }
-        }
-
-        public static class Accessions
-        {
-            public const string COMPRESSION_TYPE_ID = "MS:1000572";
-            public const string BINARY_DATA_ARRAY_ID = "MS:1000513";
-            public const string BINARY_DATA_TYPE_ID = "MS:1000518";
-            public const string IBD_BINARY_DATA_TYPE_ID = "IMS:1000014";
-            public const string MZ_ARRAY_ID = "MS:1000514";
-            public const string MZ_ARRAY_UNITS_ID = "MS:1000040";
-            public const string INTENSITY_ARRAY_ID = "MS:1000515";
-            public const string INTENSITY_ARRAY_UNITS_NUMBER_OF_COUNTS_ID = "MS:1000131";
-            public const string INTENSITY_ARRAY_UNITS_PERCENTAGE_OF_BASEPEAK_ID = "MS:1000132";
-            public const string INTENSITY_ARRAY_UNITS_COUNTS_PER_SECOND_ID = "MS:1000814";
-            public const string INTENSITY_ARRAY_UNITS_PERCENTAGE_OF_BASEPEAK_TIMES_100_ID = "MS:1000905";
-            public const string DOUBLE_PRECISION_ID = "MS:1000523";
-            public const string SINGLE_PRECISION_ID = "MS:1000521";
-            public const string SIGNED_32BIT_INTEGER_ID = "MS:1000519";
-            public const string IMS_SIGNED_32BIT_INTEGER_ID = "IMS:1000141";
-            public const string SIGNED_64BIT_INTEGER_ID = "MS:1000522";
-            public const string IMS_SIGNED_64BIT_INTEGER_ID = "IMS:1000142";
-            public const string SIGNED_8BIT_INTEGER_ID = "IMS:1100000";
-            public const string SIGNED_16BIT_INTEGER_ID = "IMS:1100001";
-            public const string NO_COMPRESSION_ID = "MS:1000576";
-            public const string ZLIB_COMPRESSION_ID = "MS:1000574";
-            public const string XZ_COMPRESSION_ID = "IMS:1005001";
-            public const string LZ4_COMPRESSION_ID = "IMS:1005002";
-            public const string ZSTD_COMPRESSION_ID = "IMS:1005003";
-            public const string MSNUMPRESS_POSITIVE_ID = "MS:1002313";
-            public const string MSNUMPRESS_LINEAR_ID = "MS:1002312";
-            public const string MSNUMPRESS_SLOF_ID = "MS:1002314";
-            public const string MSNUMPRESS_LINEAR_ZLIB_ID = "IMS:1005013";
-            public const string MSNUMPRESS_POSITIVE_ZLIB_ID = "IMS:1005014";
-            public const string MSNUMPRESS_SLOF_ZLIB_ID = "IMS:1005015";
-            public const string MSNUMPRESS_LINEAR_XZ_ID = "IMS:1005004";
-            public const string MSNUMPRESS_POSITIVE_XZ_ID = "IMS:1005005";
-            public const string MSNUMPRESS_SLOF_XZ_ID = "IMS:1005006";
-            public const string MSNUMPRESS_LINEAR_LZ4_ID = "IMS:1005007";
-            public const string MSNUMPRESS_POSITIVE_LZ4_ID = "IMS:1005008";
-            public const string MSNUMPRESS_SLOF_LZ4_ID = "IMS:1005009";
-            public const string MSNUMPRESS_LINEAR_ZSTD_ID = "IMS:1005010";
-            public const string MSNUMPRESS_POSITIVE_ZSTD_ID = "IMS:1005011";
-            public const string MSNUMPRESS_SLOF_ZSTD_ID = "IMS:1005012";
-            public const string EXTERNAL_ARRAY_LENGTH_ID = "IMS:1000103";
-            public const string EXTERNAL_DATA_ID = "IMS:1000101";
-            public const string EXTERNAL_ENCODED_LENGTH_ID = "IMS:1000104";
-            public const string EXTERNAL_OFFSET_ID = "IMS:1000102";
-        }
+        public const string COMPRESSION_TYPE_ID = "MS:1000572";
+        public const string BINARY_DATA_ARRAY_ID = "MS:1000513";
+        public const string BINARY_DATA_TYPE_ID = "MS:1000518";
+        public const string IBD_BINARY_DATA_TYPE_ID = "IMS:1000014";
+        public const string MZ_ARRAY_ID = "MS:1000514";
+        public const string MZ_ARRAY_UNITS_ID = "MS:1000040";
+        public const string INTENSITY_ARRAY_ID = "MS:1000515";
+        public const string INTENSITY_ARRAY_UNITS_NUMBER_OF_COUNTS_ID = "MS:1000131";
+        public const string INTENSITY_ARRAY_UNITS_PERCENTAGE_OF_BASEPEAK_ID = "MS:1000132";
+        public const string INTENSITY_ARRAY_UNITS_COUNTS_PER_SECOND_ID = "MS:1000814";
+        public const string INTENSITY_ARRAY_UNITS_PERCENTAGE_OF_BASEPEAK_TIMES_100_ID = "MS:1000905";
+        public const string MOBILITY_ARRAY_ID = "MS:1003006";
+        public const string MOBILITY_ARRAY_UNITS_ID = "MS:1002814";
+        public const string DOUBLE_PRECISION_ID = "MS:1000523";
+        public const string SINGLE_PRECISION_ID = "MS:1000521";
+        public const string SIGNED_32BIT_INTEGER_ID = "MS:1000519";
+        public const string IMS_SIGNED_32BIT_INTEGER_ID = "IMS:1000141";
+        public const string SIGNED_64BIT_INTEGER_ID = "MS:1000522";
+        public const string IMS_SIGNED_64BIT_INTEGER_ID = "IMS:1000142";
+        public const string SIGNED_8BIT_INTEGER_ID = "IMS:1100000";
+        public const string SIGNED_16BIT_INTEGER_ID = "IMS:1100001";
+        public const string NO_COMPRESSION_ID = "MS:1000576";
+        public const string ZLIB_COMPRESSION_ID = "MS:1000574";
+        public const string XZ_COMPRESSION_ID = "IMS:1005001";
+        public const string LZ4_COMPRESSION_ID = "IMS:1005002";
+        public const string ZSTD_COMPRESSION_ID = "IMS:1005003";
+        public const string MSNUMPRESS_POSITIVE_ID = "MS:1002313";
+        public const string MSNUMPRESS_LINEAR_ID = "MS:1002312";
+        public const string MSNUMPRESS_SLOF_ID = "MS:1002314";
+        public const string MSNUMPRESS_LINEAR_ZLIB_ID = "IMS:1005013";
+        public const string MSNUMPRESS_POSITIVE_ZLIB_ID = "IMS:1005014";
+        public const string MSNUMPRESS_SLOF_ZLIB_ID = "IMS:1005015";
+        public const string MSNUMPRESS_LINEAR_XZ_ID = "IMS:1005004";
+        public const string MSNUMPRESS_POSITIVE_XZ_ID = "IMS:1005005";
+        public const string MSNUMPRESS_SLOF_XZ_ID = "IMS:1005006";
+        public const string MSNUMPRESS_LINEAR_LZ4_ID = "IMS:1005007";
+        public const string MSNUMPRESS_POSITIVE_LZ4_ID = "IMS:1005008";
+        public const string MSNUMPRESS_SLOF_LZ4_ID = "IMS:1005009";
+        public const string MSNUMPRESS_LINEAR_ZSTD_ID = "IMS:1005010";
+        public const string MSNUMPRESS_POSITIVE_ZSTD_ID = "IMS:1005011";
+        public const string MSNUMPRESS_SLOF_ZSTD_ID = "IMS:1005012";
+        public const string EXTERNAL_ARRAY_LENGTH_ID = "IMS:1000103";
+        public const string EXTERNAL_DATA_ID = "IMS:1000101";
+        public const string EXTERNAL_ENCODED_LENGTH_ID = "IMS:1000104";
+        public const string EXTERNAL_OFFSET_ID = "IMS:1000102";
 
         private int arrayLength = -1;
         private DataProcessing dataProcessingRef;
@@ -191,7 +138,8 @@ namespace AirdPro.csimzMLParser.mzml
         private double[] data;
         private bool isMzArray;
         private bool isIntensityArray;
-        protected DataLocation dataLocation;
+        private bool isMobilityArray;
+        protected DataLocation dataLocation;     
 
         public BinaryDataArray(int encodedLength)
         {
@@ -241,44 +189,44 @@ namespace AirdPro.csimzMLParser.mzml
         {
             DataType dataType = GetDataType();
 
-            return dataType == DataType.DOUBLE;
+            return dataType == DataTypeTransform.DataType.DOUBLE;
         }
 
         public bool IsSinglePrecision()
         {
-            CVParam dataTypeCVParam = GetCVParam(Accessions.SINGLE_PRECISION_ID);
+            CVParam dataTypeCVParam = GetCVParam(SINGLE_PRECISION_ID);
             return dataTypeCVParam != null;
         }
 
         public bool IsSigned8BitInteger()
         {
-            CVParam dataTypeCVParam = GetCVParam(Accessions.SIGNED_8BIT_INTEGER_ID);
+            CVParam dataTypeCVParam = GetCVParam(SIGNED_8BIT_INTEGER_ID);
             return dataTypeCVParam != null;
         }
 
         public bool IsSigned16BitInteger()
         {
-            CVParam dataTypeCVParam = GetCVParam(Accessions.SIGNED_16BIT_INTEGER_ID);
+            CVParam dataTypeCVParam = GetCVParam(SIGNED_16BIT_INTEGER_ID);
             return dataTypeCVParam != null;
         }
 
         public bool IsSigned32BitInteger()
         {
-            CVParam dataTypeCVParam = GetCVParam(Accessions.SIGNED_32BIT_INTEGER_ID);
-            CVParam imsDataType = GetCVParam(Accessions.IMS_SIGNED_32BIT_INTEGER_ID);
+            CVParam dataTypeCVParam = GetCVParam(SIGNED_32BIT_INTEGER_ID);
+            CVParam imsDataType = GetCVParam(IMS_SIGNED_32BIT_INTEGER_ID);
             return !(dataTypeCVParam == null && imsDataType == null);
         }
 
         public bool IsSigned64BitInteger()
         {
-            CVParam dataTypeCVParam = GetCVParam(Accessions.SIGNED_64BIT_INTEGER_ID);
-            CVParam imsDataType = GetCVParam(Accessions.IMS_SIGNED_64BIT_INTEGER_ID);
+            CVParam dataTypeCVParam = GetCVParam(SIGNED_64BIT_INTEGER_ID);
+            CVParam imsDataType = GetCVParam(IMS_SIGNED_64BIT_INTEGER_ID);
             return !(dataTypeCVParam == null && imsDataType == null);
         }
 
         public bool IsCompressed()
         {
-            CVParam compression = GetCVParam(Accessions.NO_COMPRESSION_ID);
+            CVParam compression = GetCVParam(NO_COMPRESSION_ID);
             return compression == null;
         }
 
@@ -286,27 +234,27 @@ namespace AirdPro.csimzMLParser.mzml
         {
             string dataTypeTermID = dataType.GetTerm().id;
 
-            if (dataTypeTermID.Equals(Accessions.DOUBLE_PRECISION_ID))
+            if (dataTypeTermID.Equals(DOUBLE_PRECISION_ID))
             {
                 return 8;
             }
-            else if (dataTypeTermID.Equals(Accessions.SINGLE_PRECISION_ID))
+            else if (dataTypeTermID.Equals(SINGLE_PRECISION_ID))
             {
                 return 4;
             }
-            else if (dataTypeTermID.Equals(Accessions.SIGNED_8BIT_INTEGER_ID))
+            else if (dataTypeTermID.Equals(SIGNED_8BIT_INTEGER_ID))
             {
                 return 1;
             }
-            else if (dataTypeTermID.Equals(Accessions.SIGNED_16BIT_INTEGER_ID))
+            else if (dataTypeTermID.Equals(SIGNED_16BIT_INTEGER_ID))
             {
                 return 2;
             }
-            else if (dataTypeTermID.Equals(Accessions.SIGNED_32BIT_INTEGER_ID))
+            else if (dataTypeTermID.Equals(SIGNED_32BIT_INTEGER_ID))
             {
                 return 4;
             }
-            else if (dataTypeTermID.Equals(Accessions.SIGNED_64BIT_INTEGER_ID))
+            else if (dataTypeTermID.Equals(SIGNED_64BIT_INTEGER_ID))
             {
                 return 8;
             }
@@ -354,7 +302,7 @@ namespace AirdPro.csimzMLParser.mzml
             }
             catch (Exception ex) 
             {
-                logger.Error("Data format exception occurred.", ex);
+                LOGGER.Error("Data format exception occurred.", ex);
             }
 
             if (keepInMemory)
@@ -389,67 +337,67 @@ namespace AirdPro.csimzMLParser.mzml
                 transformation.AddTransform(new DataTypeTransform(DataType.DOUBLE, GetDataType()));
             }
 
-            CVParam compressionCVParam = GetCVParamOrChild(Accessions.COMPRESSION_TYPE_ID);
+            CVParam compressionCVParam = GetCVParamOrChild(COMPRESSION_TYPE_ID);
 
             if (compressionCVParam != null)
             {
                 switch (compressionCVParam.GetTerm().id)
                 {
-                    case Accessions.ZLIB_COMPRESSION_ID:
+                    case ZLIB_COMPRESSION_ID:
                         transformation.AddTransform(new ZlibDataTransform());
                         break;
-                    case Accessions.XZ_COMPRESSION_ID:
+                    case XZ_COMPRESSION_ID:
                         //transformation.AddTransform(new XZDataTransform());
                         break;
-                    case Accessions.LZ4_COMPRESSION_ID:
+                    case LZ4_COMPRESSION_ID:
                         //transformation.AddTransform(new LZ4DataTransform((int)(ExternalArrayLength * GetDataTypeInBytes(GetCVParamOrChild(Accessions.BINARY_DATA_TYPE_ID)))));
                         break;
-                    case Accessions.ZSTD_COMPRESSION_ID:
+                    case ZSTD_COMPRESSION_ID:
                         //transformation.AddTransform(new ZstdDataTransform((int)(ExternalArrayLength * GetDataTypeInBytes(GetCVParamOrChild(Accessions.BINARY_DATA_TYPE_ID)))));
                         break;
-                    case Accessions.MSNUMPRESS_LINEAR_ID:
+                    case MSNUMPRESS_LINEAR_ID:
                         //
                         break;
-                    case Accessions.MSNUMPRESS_POSITIVE_ID:
+                    case MSNUMPRESS_POSITIVE_ID:
                         //
                         break;
-                    case Accessions.MSNUMPRESS_SLOF_ID:
+                    case MSNUMPRESS_SLOF_ID:
                         //
                         break;
-                    case Accessions.MSNUMPRESS_LINEAR_LZ4_ID:
+                    case MSNUMPRESS_LINEAR_LZ4_ID:
                         //
                         break;
-                    case Accessions.MSNUMPRESS_LINEAR_XZ_ID:
+                    case MSNUMPRESS_LINEAR_XZ_ID:
                         //
                         break;
-                    case Accessions.MSNUMPRESS_LINEAR_ZLIB_ID:
+                    case MSNUMPRESS_LINEAR_ZLIB_ID:
                         //
                         break;
-                    case Accessions.MSNUMPRESS_LINEAR_ZSTD_ID:
+                    case MSNUMPRESS_LINEAR_ZSTD_ID:
                         //
                         break;
-                    case Accessions.MSNUMPRESS_POSITIVE_LZ4_ID:
+                    case MSNUMPRESS_POSITIVE_LZ4_ID:
                         //
                         break;
-                    case Accessions.MSNUMPRESS_POSITIVE_XZ_ID:
+                    case MSNUMPRESS_POSITIVE_XZ_ID:
                         //
                         break;
-                    case Accessions.MSNUMPRESS_POSITIVE_ZLIB_ID:
+                    case MSNUMPRESS_POSITIVE_ZLIB_ID:
                         //
                         break;
-                    case Accessions.MSNUMPRESS_POSITIVE_ZSTD_ID:
+                    case MSNUMPRESS_POSITIVE_ZSTD_ID:
                         //
                         break;
-                    case Accessions.MSNUMPRESS_SLOF_LZ4_ID:
+                    case MSNUMPRESS_SLOF_LZ4_ID:
                         //
                         break;
-                    case Accessions.MSNUMPRESS_SLOF_XZ_ID:
+                    case MSNUMPRESS_SLOF_XZ_ID:
                         //
                         break;
-                    case Accessions.MSNUMPRESS_SLOF_ZLIB_ID:
+                    case MSNUMPRESS_SLOF_ZLIB_ID:
                         //
                         break;
-                    case Accessions.MSNUMPRESS_SLOF_ZSTD_ID:
+                    case MSNUMPRESS_SLOF_ZSTD_ID:
                         //
                         break;                    
                 }
@@ -460,79 +408,83 @@ namespace AirdPro.csimzMLParser.mzml
 
         public DataType GetDataType()
         {
-            CVParam dataTypeParam = GetCVParamOrChild(Accessions.BINARY_DATA_TYPE_ID);
+            CVParam dataTypeParam = GetCVParamOrChild(BINARY_DATA_TYPE_ID);
             DataType dataType = new();
 
             if (dataTypeParam != null)
             {
                 string term = dataTypeParam.GetTerm().id;
 
-                if (term.Equals(Accessions.DOUBLE_PRECISION_ID))
+                if (term.Equals(DOUBLE_PRECISION_ID))
                 {
                     dataType = DataType.DOUBLE;
                 }
-                else if (term.Equals(Accessions.SINGLE_PRECISION_ID))
+                else if (term.Equals(SINGLE_PRECISION_ID))
                 {
                     dataType = DataType.FLOAT;
                 }
-                else if (term.Equals(Accessions.SIGNED_64BIT_INTEGER_ID) || term.Equals(Accessions.IMS_SIGNED_64BIT_INTEGER_ID))
+                else if (term.Equals(SIGNED_64BIT_INTEGER_ID) || term.Equals(IMS_SIGNED_64BIT_INTEGER_ID))
                 {
                     dataType = DataType.INTEGER_64BIT;
                 }
-                else if (term.Equals(Accessions.SIGNED_32BIT_INTEGER_ID) || term.Equals(Accessions.IMS_SIGNED_32BIT_INTEGER_ID))
+                else if (term.Equals(SIGNED_32BIT_INTEGER_ID) || term.Equals(IMS_SIGNED_32BIT_INTEGER_ID))
                 {
                     dataType = DataType.INTEGER_32BIT;
                 }
-                else if (term.Equals(Accessions.SIGNED_16BIT_INTEGER_ID))
+                else if (term.Equals(SIGNED_16BIT_INTEGER_ID))
                 {
                     dataType = DataType.INTEGER_16BIT;
                 }
-                else if (term.Equals(Accessions.SIGNED_8BIT_INTEGER_ID))
+                else if (term.Equals(SIGNED_8BIT_INTEGER_ID))
                 {
                     dataType = DataType.INTEGER_8BIT;
                 }
             }
             else
             {
-                logger.InfoFormat("BinaryDataArray#getDataType(): {0}", GetCVParamList().ToArray().ToString());
+                LOGGER.InfoFormat("BinaryDataArray#getDataType(): {0}", GetCVParamList().ToArray().ToString());
             }
             return dataType;
         }
 
         public long GetExternalArrayLength()
         {
-            CVParam arrayLengthCVParam = GetCVParam(Accessions.EXTERNAL_ARRAY_LENGTH_ID);
+            CVParam arrayLengthCVParam = GetCVParam(EXTERNAL_ARRAY_LENGTH_ID);
             return arrayLengthCVParam? .GetValueAsLong() ?? -1;
         }
 
         public long GetExternalEncodedLength()
         {
-            CVParam encodedLengthCVParam = GetCVParam(Accessions.EXTERNAL_ENCODED_LENGTH_ID);
+            CVParam encodedLengthCVParam = GetCVParam(EXTERNAL_ENCODED_LENGTH_ID);
             return encodedLengthCVParam?.GetValueAsLong() ?? -1;
         }
 
         public long GetExternalOffset()
         {
-            CVParam externalOffset = GetCVParam(Accessions.EXTERNAL_OFFSET_ID);
+            CVParam externalOffset = GetCVParam(EXTERNAL_OFFSET_ID);
             return externalOffset?.GetValueAsLong() ?? -1;
         }
 
         public override void AddCVParam(CVParam cvParam)
         {
-            logger.Info($"Adding CVParam to BinaryDataArray {cvParam}");
+            LOGGER.Info($"Adding CVParam to BinaryDataArray {cvParam}");
 
-            if (cvParam.GetTerm().IsChildOf(Accessions.BINARY_DATA_ARRAY_ID))
+            if (cvParam.GetTerm().IsChildOf(BINARY_DATA_ARRAY_ID))
             {
                 string term = cvParam.GetTerm().id;
 
-                if (term.Equals(Accessions.MZ_ARRAY_ID))
+                if (term.Equals(MZ_ARRAY_ID))
                 {
-                    logger.Info($"Found m/z array");
+                    LOGGER.Info($"Found m/z array");
                     isMzArray = true;
                 }
-                else if (term.Equals(Accessions.INTENSITY_ARRAY_ID))
+                else if (term.Equals(INTENSITY_ARRAY_ID))
                 {
                     isIntensityArray = true;
+                }
+                else if (term.Equals(MOBILITY_ARRAY_ID))
+                {
+                    isMobilityArray = true;
                 }
             }
             base.AddCVParam(cvParam);
@@ -540,16 +492,20 @@ namespace AirdPro.csimzMLParser.mzml
 
         public override void AddReferenceableParamGroupRef(ReferenceableParamGroupRef rpgr)
         {
-            CVParam child = rpgr.GetReference().GetCVParamOrChild(Accessions.BINARY_DATA_ARRAY_ID);
+            CVParam child = rpgr.GetReference().GetCVParamOrChild(BINARY_DATA_ARRAY_ID);
             if (child != null)
             {
-                if (child.GetTerm().id.Equals(Accessions.MZ_ARRAY_ID))
+                if (child.GetTerm().id.Equals(MZ_ARRAY_ID))
                 {
                     isMzArray = true;
                 }
-                else if (child.GetTerm().id.Equals(Accessions.INTENSITY_ARRAY_ID))
+                else if (child.GetTerm().id.Equals(INTENSITY_ARRAY_ID))
                 {
                     isIntensityArray = true;
+                }
+                else if (child.GetTerm().id.Equals(MOBILITY_ARRAY_ID))
+                {
+                    isMobilityArray = true;
                 }
             }
             base.AddReferenceableParamGroupRef(rpgr);
@@ -565,9 +521,14 @@ namespace AirdPro.csimzMLParser.mzml
             return isIntensityArray;
         }
 
+        public bool IsMobilityArray() 
+        {
+            return isMobilityArray;
+        }
+
         public void SetCompression(CompressionType compression)
         {
-            RemoveChildrenOfCVParam(Accessions.COMPRESSION_TYPE_ID, false);
+            RemoveChildrenOfCVParam(COMPRESSION_TYPE_ID, false);
             this.AddCVParam(new EmptyCVParam(ToOBOTerm(compression)));
         }
 
@@ -578,33 +539,33 @@ namespace AirdPro.csimzMLParser.mzml
             switch (dataType)
             {
                 case DataType.FLOAT:
-                    newDataTypeID = Accessions.SINGLE_PRECISION_ID;
+                    newDataTypeID = SINGLE_PRECISION_ID;
                     break;
                 case DataType.INTEGER_64BIT:
-                    newDataTypeID = Accessions.SIGNED_64BIT_INTEGER_ID;
+                    newDataTypeID = SIGNED_64BIT_INTEGER_ID;
                     break;
                 case DataType.INTEGER_32BIT:
-                    newDataTypeID = Accessions.SIGNED_32BIT_INTEGER_ID;
+                    newDataTypeID = SIGNED_32BIT_INTEGER_ID;
                     break;
                 case DataType.INTEGER_16BIT:
-                    newDataTypeID = Accessions.SIGNED_16BIT_INTEGER_ID;
+                    newDataTypeID = SIGNED_16BIT_INTEGER_ID;
                     break;
                 case DataType.INTEGER_8BIT:
-                    newDataTypeID = Accessions.SIGNED_8BIT_INTEGER_ID;
+                    newDataTypeID = SIGNED_8BIT_INTEGER_ID;
                     break;
                 case DataType.DOUBLE:
                 default:
-                    newDataTypeID = Accessions.DOUBLE_PRECISION_ID;
+                    newDataTypeID = DOUBLE_PRECISION_ID;
                     break;
             }
 
-            this.RemoveChildrenOfCVParam(Accessions.BINARY_DATA_TYPE_ID, false);
+            this.RemoveChildrenOfCVParam(BINARY_DATA_TYPE_ID, false);
             this.AddCVParam(new EmptyCVParam(OBO.GetOBO().GetTerm(newDataTypeID)));
         }
 
         public CVParam GetDataArrayType()
         {
-            return GetCVParamOrChild(Accessions.BINARY_DATA_ARRAY_ID);
+            return GetCVParamOrChild(BINARY_DATA_ARRAY_ID);
         }
 
         public override string GetXMLAttributeText()
@@ -631,7 +592,59 @@ namespace AirdPro.csimzMLParser.mzml
         {
             return "binaryDataArray";
         }
-        
+
+        public static class CompressionTypeExtensions
+        {
+            public static OBOTerm toOBOTerm(CompressionType compressionType)
+            {
+                switch (compressionType)
+                {
+                    case CompressionType.NONE:
+                        return OBO.GetOBO().GetTerm(NO_COMPRESSION_ID);
+                    case CompressionType.ZLIB:
+                        return OBO.GetOBO().GetTerm(ZLIB_COMPRESSION_ID);
+                    case CompressionType.XZ:
+                        return OBO.GetOBO().GetTerm(XZ_COMPRESSION_ID);
+                    case CompressionType.LZ4:
+                        return OBO.GetOBO().GetTerm(LZ4_COMPRESSION_ID);
+                    case CompressionType.ZSTD:
+                        return OBO.GetOBO().GetTerm(ZSTD_COMPRESSION_ID);
+                    case CompressionType.MSNUMPRESS_LINEAR:
+                        return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_ID);
+                    case CompressionType.MSNUMPRESS_POSITIVE:
+                        return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_ID);
+                    case CompressionType.MSNUMPRESS_SLOF:
+                        return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_ID);
+                    case CompressionType.MSNUMPRESS_LINEAR_ZLIB:
+                        return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_ZLIB_ID);
+                    case CompressionType.MSNUMPRESS_POSITIVE_ZLIB:
+                        return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_ZLIB_ID);
+                    case CompressionType.MSNUMPRESS_SLOF_ZLIB:
+                        return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_ZLIB_ID);
+                    case CompressionType.MSNUMPRESS_LINEAR_XZ:
+                        return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_XZ_ID);
+                    case CompressionType.MSNUMPRESS_POSITIVE_XZ:
+                        return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_XZ_ID);
+                    case CompressionType.MSNUMPRESS_SLOF_XZ:
+                        return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_XZ_ID);
+                    case CompressionType.MSNUMPRESS_LINEAR_LZ4:
+                        return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_LZ4_ID);
+                    case CompressionType.MSNUMPRESS_POSITIVE_LZ4:
+                        return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_LZ4_ID);
+                    case CompressionType.MSNUMPRESS_SLOF_LZ4:
+                        return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_LZ4_ID);
+                    case CompressionType.MSNUMPRESS_LINEAR_ZSTD:
+                        return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_ZSTD_ID);
+                    case CompressionType.MSNUMPRESS_POSITIVE_ZSTD:
+                        return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_ZSTD_ID);
+                    case CompressionType.MSNUMPRESS_SLOF_ZSTD:
+                        return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_ZSTD_ID);
+                    default:
+                        return null;
+                }
+            }
+        }
+
     }
 
 }

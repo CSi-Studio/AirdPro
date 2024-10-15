@@ -8,13 +8,13 @@ namespace AirdPro.csimzMLParser.obo
     [Serializable]
     public class OBOTerm
     {
-        private static readonly ILog logger = LogManager.GetLogger(typeof(OBOTerm));
+        private static readonly ILog LOGGER = LogManager.GetLogger(typeof(OBOTerm));
 
         private const long serialVersionUID = 1L;
 
         public OBO ontology;
 
-        public string id;
+        public readonly string id;
 
         public string name;
 
@@ -32,7 +32,7 @@ namespace AirdPro.csimzMLParser.obo
 
         public List<OBOTerm> children;
 
-        public List<OBOTerm> parents;
+        public List<OBOTerm> parents = [];
 
         public bool is_obsolete;
 
@@ -168,15 +168,15 @@ namespace AirdPro.csimzMLParser.obo
                     string relationshipTag = value.Substring(0, indexOfSpace).Trim();
                     string relationshipValue = value.Substring(indexOfSpace + 1).Trim();
 
-                    if (relationshipTag.ToLower() == "is_a")
+                    if ("is_a".Equals(relationshipTag))
                     {
                         AddIs_a(relationshipValue);
                     }
-                    else if (relationshipTag.ToLower() == "has_units")
+                    else if ("has_units".Equals(relationshipTag))
                     {
                         AddUnits(relationshipValue);
                     }
-                    else if (relationshipTag.ToLower() == "part_of")
+                    else if ("part_of".Equals(relationshipTag))
                     {
                         AddPartOf(relationshipValue);
                     }
@@ -192,68 +192,65 @@ namespace AirdPro.csimzMLParser.obo
                     {
                         string[] substrings = value.Replace("value-type:xsd:", "").Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                        if (substrings.Length > 0)
+                        switch (substrings[0])
                         {
-                            switch (substrings[0].ToLower())
-                            {
-                                case "string":
-                                    ValueType = XMLType.STRING;
-                                    break;
-                                case "integer":
-                                    ValueType = XMLType.INTEGER;
-                                    break;
-                                case "int":
-                                    ValueType = XMLType.INT;
-                                    break;
-                                case "decimal":
-                                    ValueType = XMLType.DECIMAL;
-                                    break;
-                                case "negativeinteger":
-                                    ValueType = XMLType.NEGATIVE_INTEGER;
-                                    break;
-                                case "positiveinteger":
-                                    ValueType = XMLType.POSITIVE_INTEGER;
-                                    break;
-                                case "nonnegativeinteger":
-                                    ValueType = XMLType.NON_NEGATIVE_INTEGER;
-                                    break;
-                                case "boolean":
-                                    ValueType = XMLType.BOOLEAN;
-                                    break;
-                                case "date":
-                                    ValueType = XMLType.DATE;
-                                    break;
-                                case "datetime":
-                                    ValueType = XMLType.DATETIME;
-                                    break;
-                                case "float":
-                                    ValueType = XMLType.FLOAT;
-                                    break;
-                                case "nonnegativefloat":
-                                    ValueType = XMLType.NON_NEGATIVE_FLOAT;
-                                    break;
-                                case "nonnegativedouble":
-                                    ValueType = XMLType.NON_NEGATIVE_DOUBLE;
-                                    break;
-                                case "double":
-                                    ValueType = XMLType.DOUBLE;
-                                    break;
-                                case "anyuri":
-                                    ValueType = XMLType.ANY_URI;
-                                    break;
-                                default:
-                                    logger.InfoFormat("Unknown value-type encountered '{0}' @ {1}", value, id);
-                                    break;
-                            }
+                            case "string":
+                                ValueType = XMLType.STRING;
+                                break;
+                            case "integer":
+                                ValueType = XMLType.INTEGER;
+                                break;
+                            case "int":
+                                ValueType = XMLType.INT;
+                                break;
+                            case "decimal":
+                                ValueType = XMLType.DECIMAL;
+                                break;
+                            case "negativeinteger":
+                                ValueType = XMLType.NEGATIVE_INTEGER;
+                                break;
+                            case "positiveinteger":
+                                ValueType = XMLType.POSITIVE_INTEGER;
+                                break;
+                            case "nonnegativeinteger":
+                                ValueType = XMLType.NON_NEGATIVE_INTEGER;
+                                break;
+                            case "boolean":
+                                ValueType = XMLType.BOOLEAN;
+                                break;
+                            case "date":
+                                ValueType = XMLType.DATE;
+                                break;
+                            case "datetime":
+                                ValueType = XMLType.DATETIME;
+                                break;
+                            case "float":
+                                ValueType = XMLType.FLOAT;
+                                break;
+                            case "nonnegativefloat":
+                                ValueType = XMLType.NON_NEGATIVE_FLOAT;
+                                break;
+                            case "nonnegativedouble":
+                                ValueType = XMLType.NON_NEGATIVE_DOUBLE;
+                                break;
+                            case "double":
+                                ValueType = XMLType.DOUBLE;
+                                break;
+                            case "anyuri":
+                                ValueType = XMLType.ANY_URI;
+                                break;
+                            default:
+                                LOGGER.InfoFormat("Unknown value-type encountered '{0}' @ {1}", value, id);
+                                break;
                         }
                     }
                     else
                     {   
-                        logger.InfoFormat("Unknown xref encountered '{0}' @ {1}", value, id);
+                        LOGGER.InfoFormat("Unknown xref encountered '{0}' @ {1}", value, id);
                     }
                     break;
                 default:
-                    logger.InfoFormat("Tag not implemented '{0}'", tag);
+                    LOGGER.InfoFormat("Tag not implemented '{0}'", tag);
                     break;
             }
         }
@@ -286,28 +283,43 @@ namespace AirdPro.csimzMLParser.obo
 
         public void AddParent(OBOTerm parent)
         {
-            if (parents is List<OBOTerm>)
+            if (parents.Count > 1)
             {
                 parents.Add(parent);
             }
-            else if (parents != null)
+            else if (parents.Count == 1)
             {
                 parents = new List<OBOTerm>(parents) { parent };
             }
             else
             {
-                parents = new List<OBOTerm> { parent };
+                parents = [parent];
             }
         }
 
         public bool IsParentOf(string id)
         {           
-            return GetAllChildren(false).Any(child => child.id == id);
+            foreach(OBOTerm child in GetAllChildren(false))
+            {
+                if (child.id.Equals(id))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool IsChildOf(string id)
         {
-            return GetAllParents(false).Any(parent => parent.id == id);
+            foreach(OBOTerm parent in GetAllParents(false))
+            {
+                LOGGER.InfoFormat("In isChildOf() checking parent {0}", parent);
+                if (parent.id.Equals(id))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public List<OBOTerm> GetChildren()
@@ -317,8 +329,21 @@ namespace AirdPro.csimzMLParser.obo
 
         public List<OBOTerm> GetAllChildren(bool includeThis)
         {
-            List<OBOTerm> allChildren = new List<OBOTerm>();
-            GetAllChildren(allChildren, includeThis);
+            List<OBOTerm> allChildren = [];
+
+            if (includeThis)
+            {
+                allChildren.Add(this);
+            }
+
+            if(children != null)
+            {
+                foreach(OBOTerm child in children)
+                {
+                    child.GetAllChildren(allChildren, true);
+                }
+            }
+
             return allChildren;
         }
 
@@ -341,7 +366,7 @@ namespace AirdPro.csimzMLParser.obo
         public List<OBOTerm> GetAllParents(bool includeThis)
         {
             List<OBOTerm> allParents = [];
-            logger.InfoFormat("Getting all parents of {0}, which has {1} parent(s)", id, parents.Count);
+            LOGGER.InfoFormat("Getting all parents of {0}, which has {1} parent(s)", id, parents.Count);
             GetAllParents(allParents, includeThis);
             return allParents;
         }

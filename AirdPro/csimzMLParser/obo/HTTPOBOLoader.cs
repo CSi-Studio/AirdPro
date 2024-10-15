@@ -7,16 +7,16 @@ namespace AirdPro.csimzMLParser.obo
 {
     public class HTTPOBOLoader : IOBOLoader
     {
-        private static readonly ILog logger = LogManager.GetLogger(typeof(HTTPOBOLoader));
+        private static readonly ILog LOGGER = LogManager.GetLogger(typeof(HTTPOBOLoader));
 
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient httpClient;
 
         public HTTPOBOLoader()
         {
-            _httpClient = new HttpClient();
+            httpClient = new HttpClient();
         }
 
-        public Stream GetInputStream(string location)
+        public FileStream GetFileStream(string location)
         {
             try
             {
@@ -24,19 +24,19 @@ namespace AirdPro.csimzMLParser.obo
             }
             catch (Exception ex)
             {
-                logger.Error("Failed to download obo for use later", ex);
+                LOGGER.Error("Failed to download obo for use later", ex);
             }
 
             try
             {
                 // 使用HttpClient获取输入流
-                var response = _httpClient.GetAsync(location).Result; // .Result 会阻塞直到获取结果，也可以使用异步方式
+                var response = httpClient.GetAsync(location).Result; 
                 response.EnsureSuccessStatusCode();
-                return response.Content.ReadAsStreamAsync().Result;
+                return (FileStream)response.Content.ReadAsStreamAsync().Result;
             }
             catch (Exception ex)
             {
-                logger.Error("Failed to open the obo file stream", ex);
+                LOGGER.Error("Failed to open the obo file stream", ex);
                 throw;
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HZH_Controls;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -73,7 +74,7 @@ namespace AirdPro.csimzMLParser.data
                 }
             }
 
-            return DataTypeTransform.ConvertDataToDouble(transformedData, DataType.DOUBLE);
+            return DataTypeTransform.ConvertDataToDouble(transformedData, DataTypeTransform.DataType.DOUBLE);
         }
 
         public int[] GetDataSizeAtEachStage()
@@ -83,7 +84,11 @@ namespace AirdPro.csimzMLParser.data
 
         public bool IsEmpty()
         {
-            return transformation == null || transformation.Count == 0;
+            if(transformation == null)
+            {
+                return true;
+            }
+            return transformation.IsEmpty();
         }
 
         public override string ToString()

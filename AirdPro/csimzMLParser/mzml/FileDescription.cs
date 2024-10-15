@@ -93,9 +93,8 @@ namespace AirdPro.csimzMLParser.mzml
          * @param sourceFileList SourceFileList
          */
         public void SetSourceFileList(SourceFileList sourceFileList)
-        {
-            this.sourceFileList.SetParent(this);
-
+        {            
+            sourceFileList.SetParent(this);
             this.sourceFileList = sourceFileList;
         }
 

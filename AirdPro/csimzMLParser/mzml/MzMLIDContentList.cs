@@ -19,7 +19,11 @@ namespace AirdPro.csimzMLParser.mzml
         
         public virtual T Get(string id)
         {
-            return dictionary[id];
+            if (dictionary.ContainsKey(id))
+            {
+                return dictionary[id];
+            }
+            return default;
         }
 
         private static readonly Regex LAST_INTEGER_PATTERN = new(@"[^0-9]+([0-9]+)$");

@@ -3,30 +3,21 @@ using System;
 
 namespace AirdPro.csimzMLParser.mzml
 {
-    [Serializable]
     public class ReferenceableParamGroup : MzMLContentWithParams, IReferenceableTag
     {
-        // 序列化版本ID。
         private static readonly long serialVersionUID = 1L;
-
-        // 用于确保生成唯一ID的静态整数。
         private static int idNumber = 0;
+        private string id; 
 
-        // 参数组的唯一标识符。
-        private string id; // 必需的
-
-        // 使用唯一ID创建一个空的ReferenceableParamGroup，ID形式为 'refParam#'，#是每次调用此构造函数时递增的整数值。
         public ReferenceableParamGroup()
         {
             id = "refParam" + idNumber++;
         }
 
-        // 使用指定的唯一ID创建一个空的ReferenceableParamGroup。
         public ReferenceableParamGroup(string id)
         {
             if (id == null)
                 throw new ArgumentException("ID cannot be null for ReferenceableParamGroup.");
-
             this.id = id;
         }
 

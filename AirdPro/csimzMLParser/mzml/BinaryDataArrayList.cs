@@ -1,5 +1,6 @@
 ﻿using AirdPro.csimzMLParser.data;
 using System.Linq;
+using static AirdPro.csimzMLParser.data.DataTypeTransform;
 using static AirdPro.csimzMLParser.mzml.BinaryDataArray;
 
 namespace AirdPro.csimzMLParser.mzml

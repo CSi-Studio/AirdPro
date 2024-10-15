@@ -11,7 +11,6 @@ using pwiz.CLI.msdata;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using pwiz.CLI.cv;
 using pwiz.CLI.data;
@@ -60,6 +59,10 @@ namespace AirdPro.Converters
                     foreach (var inputPath in JobInfo.inputPaths.Split('|'))
                     {
                         JobInfo.inputPath = inputPath;
+                        /*if (inputPath.ToLower().EndsWith(".imzml"))
+                        {
+                            
+                        }*/
                         using (MSDataList msdList = ReadVendorFile())
                         {
                             if (msdList.Count == 0)
@@ -109,7 +112,7 @@ namespace AirdPro.Converters
                     AirdProFileUtil.ClearLocalTempFiles();
                 }
             }
-        }
+        }     
 
         public void PretreatmentDda()
         {

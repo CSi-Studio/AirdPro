@@ -2,7 +2,6 @@
 using log4net;
 using System;
 using System.IO;
-using static AirdPro.csimzMLParser.mzml.BinaryDataArray;
 
 namespace AirdPro.csimzMLParser.imzml
 {
@@ -67,8 +66,8 @@ namespace AirdPro.csimzMLParser.imzml
 
                 if (imzMLConverter != null)
                 {
-                    CVParam offsetParam = imzMLConverter.GetCVParam(Accessions.EXTERNAL_OFFSET_ID);
-                    CVParam encodedLengthParam = imzMLConverter.GetCVParam(Accessions.EXTERNAL_ENCODED_LENGTH_ID);
+                    CVParam offsetParam = imzMLConverter.GetCVParam(BinaryDataArray.EXTERNAL_OFFSET_ID);
+                    CVParam encodedLengthParam = imzMLConverter.GetCVParam(BinaryDataArray.EXTERNAL_ENCODED_LENGTH_ID);
 
                     logger.InfoFormat("Found CVParams: {0}, {1}", [offsetParam, encodedLengthParam]);
 

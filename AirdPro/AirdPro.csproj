@@ -149,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\Compressor\ICompressor.cs" />
+    <Compile Include="Algorithms\Compressor\ImzMLComp.cs" />
     <Compile Include="Algorithms\Compressor\PwizComp.cs" />
     <Compile Include="Algorithms\Compressor\TdmsComp.cs" />
     <Compile Include="Algorithms\Maths\GaussianRandomGenerator.cs" />
@@ -163,7 +164,9 @@
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\PRIDEParser.cs" />
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\ProteomeXchangeDataset.cs" />
     <Compile Include="CommandLine\Options.cs" />
+    <Compile Include="Converters\ImzMLConverter.cs" />
     <Compile Include="Converters\MSIConvert.cs" />
+    <Compile Include="csimzMLParser\util\DataUtil.cs" />
     <Compile Include="Domains\Msi\Coordinates.cs" />
     <Compile Include="Domains\Msi\HorizontalStart.cs" />
     <Compile Include="Domains\Msi\ImagingParameters.cs" />
@@ -311,6 +314,7 @@
     <Compile Include="csimzMLParser\util\HexHelper.cs" />
     <Compile Include="csimzMLParser\util\UUIDHelper.cs" />
     <Compile Include="csimzMLParser\util\XMLHelper.cs" />
+    <Compile Include="csimzMLParser\util\CVUtil.cs" />
     <Compile Include="Manager\ConvertTaskManager.cs" />
     <Compile Include="Constants\Activator.cs" />
     <Compile Include="Constants\Froms.cs" />
@@ -666,7 +670,7 @@
       <DependentUpon>PXForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="jimzMLParser.properties" />
+    <None Include="csimzMLParser.properties" />
     <None Include="log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

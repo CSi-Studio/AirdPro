@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using HZH_Controls;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,74 +28,74 @@ namespace AirdPro.csimzMLParser.obo
         public static string IMS_OBO_ID = "IMS";
         public static string IMS_OBO_VERSION = "???";
 
-        private string path;
-        private List<OBO> imports;
-        private string defaultNamespace;
-        private string ontologyIdentifier;
-        private string dataVersion;
-        private Dictionary<string, OBOTerm> terms;
+        private readonly string path;
+        private readonly List<OBO> imports;
+        private readonly string ontologyIdentifier;
+        private readonly string defaultNamespace;
+        private readonly string dataVersion;
+        private readonly Dictionary<string, OBOTerm> terms;
 
-        private static OBO ONTOLOGY;
+        protected static OBO ONTOLOGY;
 
-        protected OBO(string location, IOBOLoader loader)
+        private OBO(string location, IOBOLoader loader)
         {
             imports = [];
             terms = [];
 
-            using (StreamReader reader = new StreamReader(loader.GetInputStream(location)))
+            using (StreamReader reader = new(loader.GetFileStream(location)))
             {
-                string line;
-                OBOTerm currentTerm = null;
+                string curLine;
+                OBOTerm curTerm = null;
                 bool processingTerms = false;
 
-                while ((line = reader.ReadLine()) != null)
+                while ((curLine = reader.ReadLine()) != null)
                 {
-                    if (string.IsNullOrWhiteSpace(line))
+                    if (curLine.Trim().IsEmpty())
                     {
                         continue;
                     }
 
-                    if (line.Equals("[Term]", StringComparison.OrdinalIgnoreCase))
+                    if (curLine.Trim().Equals("[Term]"))
                     {
                         processingTerms = true;
 
-                        line = reader.ReadLine();
-                        if (line != null)
+                        curLine = reader.ReadLine();
+                        if (curLine != null)
                         {
-                            int indexOfColon = line.IndexOf(':');
-                            string id = line.Substring(indexOfColon + 1).Trim();
+                            int indexOfColon = curLine.IndexOf(':');
+                            string id = curLine.Substring(indexOfColon + 1).Trim();
 
-                            currentTerm = new OBOTerm(this, id);
-                            terms.Add(id, currentTerm);
+                            curTerm = new OBOTerm(this, id);
+                            terms.Add(id, curTerm);
                         }
                     }
-                    else if (line.Equals("[Typedef]", StringComparison.OrdinalIgnoreCase))
+                    else if (curLine.Trim().Equals("[Typedef]"))
                     {
                         processingTerms = false;
                     }
-                    else if (currentTerm != null && processingTerms)
+                    else if (curTerm != null && processingTerms)
                     {
-                        currentTerm.Parse(line);
+                        curTerm.Parse(curLine);
                     }
                     else
                     {
-                        int indexOfColon = line.IndexOf(':');
-                        string tag = line.Substring(0, indexOfColon).Trim();
-                        string value = line.Substring(indexOfColon + 1).Trim().ToLower();
+                        int locationOfColon = curLine.IndexOf(':');
+                        string tag = curLine.Substring(0, locationOfColon).Trim();
+                        string value = curLine.Substring(locationOfColon + 1).Trim().ToLower();
 
-                        if (tag.Equals("import", StringComparison.OrdinalIgnoreCase))
+                        if ("import".Equals(tag))
                         {
                             imports.Add(new OBO(value, loader));
                         }
-                        else if (tag.Equals("default-namespace", StringComparison.OrdinalIgnoreCase))
+                        else if ("default-namespace".Equals(tag))
                         {
                             defaultNamespace = value;
                         }
-                        else if (tag.Equals("ontology", StringComparison.OrdinalIgnoreCase))
+                        else if (tag.Equals("ontology"))
                         {
                             ontologyIdentifier = value;
                         }
-                        else if (tag.Equals("data-version", StringComparison.OrdinalIgnoreCase))
+                        else if ("data-version".Equals(tag))
                         {
                             dataVersion = value;
                         }
@@ -103,15 +104,15 @@ namespace AirdPro.csimzMLParser.obo
             }
 
             // Process relationships
-            foreach (var term in terms.Values)
+            foreach (OBOTerm term in terms.Values)
             {
-                var is_a = term.GetIsA();
+                ICollection<string> is_a = term.GetIsA();
 
                 if (is_a != null)
                 {
-                    foreach (var id in is_a)
+                    foreach (string id in is_a)
                     {
-                        var parentTerm = GetTerm(id);
+                        OBOTerm parentTerm = GetTerm(id);
 
                         if (parentTerm == null)
                         {
@@ -130,7 +131,7 @@ namespace AirdPro.csimzMLParser.obo
                 // Units
                 if (term.unitList != null)
                 {
-                    foreach (var unitName in term.unitList)
+                    foreach (string unitName in term.unitList)
                     {
                         term.AddUnit(GetTerm(unitName));
                     }
@@ -138,25 +139,9 @@ namespace AirdPro.csimzMLParser.obo
                     term.unitList = null;
                 }
             }
-        }
 
-        public OBO(string url, HTTPOBOLoader hTTPOBOLoader)
-        {
-            this.url = url;
-            this.hTTPOBOLoader = hTTPOBOLoader;
-        }
-
-        public OBO(string resource, ResourceOBOLoader resourceOBOLoader)
-        {
-            this.resource = resource;
-            this.resourceOBOLoader = resourceOBOLoader;
-        }
-
-        public OBO(string file, FileOBOLoader fileOBOLoader)
-        {
-            this.file = file;
-            this.fileOBOLoader = fileOBOLoader;
-        }
+            return;
+        }        
 
         public static OBO GetOBO()
         {
@@ -165,22 +150,22 @@ namespace AirdPro.csimzMLParser.obo
                 try
                 {
                     LOGGER.Info("Trying to load obo from files");
-                    ONTOLOGY = LoadOntologyFromFile(IMS_OBO_URI);
+                    ONTOLOGY = OBO.LoadOntologyFromFile(IMS_OBO_URI);
                 }
-                catch (IOException ex)
+                catch (IOException)
                 {
                     try
                     {
                         LOGGER.Info("Trying to load obo from URL");
-                        ONTOLOGY = LoadOntologyFromURL(IMS_OBO_URI);
+                        ONTOLOGY = OBO.LoadOntologyFromURL(IMS_OBO_URI);
                     }
-                    catch (IOException ex1)
+                    catch (IOException)
                     {
                         LOGGER.Info("Trying to load obo from resource");
 
                         try
                         {
-                            ONTOLOGY = LoadOntologyFromResource(IMS_OBO_URI);
+                            ONTOLOGY = OBO.LoadOntologyFromResource(IMS_OBO_URI);
                         }
                         catch (IOException e)
                         {
@@ -195,60 +180,47 @@ namespace AirdPro.csimzMLParser.obo
 
         public static void DownloadOBO(string oboLocation)
         {
-            // 创建一个WebClient实例用于下载文件
-            using (WebClient webClient = new WebClient())
+            try
             {
-                try
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(oboLocation);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                bool redirect = response.StatusCode == HttpStatusCode.MovedPermanently ||
+                                response.StatusCode == HttpStatusCode.TemporaryRedirect ||
+                                response.StatusCode == HttpStatusCode.SeeOther;
+
+                if (redirect)
                 {
-                    // 检查响应头来处理重定向
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(oboLocation);
-                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-                    // 如果状态码表示重定向，则获取新的URL
-                    if (response.StatusCode == HttpStatusCode.MovedPermanently ||
-                        response.StatusCode == HttpStatusCode.Found ||
-                        response.StatusCode == HttpStatusCode.SeeOther ||
-                        response.StatusCode == HttpStatusCode.TemporaryRedirect)
-                    {
-                        oboLocation = response.Headers["location"];
-                        response.Close();
-                        request = (HttpWebRequest)WebRequest.Create(oboLocation);
-                        response = (HttpWebResponse)request.GetResponse();
-                    }
-
-                    // 从响应流中读取数据
-                    using (Stream inStream = response.GetResponseStream())
-                    {
-                        // 从URL路径中提取文件名
-                        string filename = oboLocation.Substring(oboLocation.LastIndexOf('/') + 1);
-
-                        // 调用InstallOBO方法来处理输入流和文件名
-                        InstallOBO(inStream, filename);
-                    }
+                    // Follow the redirect
+                    string newUrl = response.Headers["Location"];
+                    response.Close();
+                    request = (HttpWebRequest)WebRequest.Create(newUrl);
+                    response = (HttpWebResponse)request.GetResponse();
                 }
-                catch (WebException ex)
-                {
-                    // 捕获并处理可能的网络异常
-                    throw new IOException("Error downloading obo file", ex);
-                }
+
+                FileStream inStream = (FileStream)response.GetResponseStream();
+                string filename = oboLocation.Substring(oboLocation.LastIndexOf('/') + 1);
+
+                InstallOBO(inStream, filename);
+
+                inStream.Close();
+                response.Close();
             }
+            catch (WebException e)
+            {
+                Console.WriteLine("Error downloading OBO file: " + e.Message);
+            }            
         }
 
         public static string ONTOLOGIES_FOLDER = "Ontologies";
-        private string url;
-        private HTTPOBOLoader hTTPOBOLoader;
-        private string resource;
-        private ResourceOBOLoader resourceOBOLoader;
-        private string file;
-        private FileOBOLoader fileOBOLoader;
 
         public static void SetOntologiesFolder(string folder)
         {
             ONTOLOGIES_FOLDER = folder;
         }
 
-        public static void InstallOBO(Stream inStream, string filename)
-        {
+        public static void InstallOBO(FileStream inStream, string filename)
+        {     
             // 确定文件夹路径
             string ontologiesFolderPath = Path.Combine(Directory.GetCurrentDirectory(), ONTOLOGIES_FOLDER);
 
@@ -264,16 +236,14 @@ namespace AirdPro.csimzMLParser.obo
             try
             {
                 // 使用using语句确保流正确关闭
-                using (FileStream outStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-                {
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
+                using FileStream outStream = new(filePath, FileMode.Create, FileAccess.Write);
+                byte[] buffer = new byte[1024];
+                int bytesRead;
 
-                    // 从输入流读取数据并写入文件
-                    while ((bytesRead = inStream.Read(buffer, 0, buffer.Length)) != 0)
-                    {
-                        outStream.Write(buffer, 0, bytesRead);
-                    }
+                // 从输入流读取数据并写入文件
+                while ((bytesRead = inStream.Read(buffer, 0, buffer.Length)) != 0)
+                {
+                    outStream.Write(buffer, 0, bytesRead);
                 }
             }
             catch (Exception ex)
@@ -310,9 +280,9 @@ namespace AirdPro.csimzMLParser.obo
 
         public List<OBO> GetFullImportHierarchy()
         {
-            List<OBO> fullList = new List<OBO>();
+            List<OBO> fullList = [];
 
-            foreach (var importedOBO in imports)
+            foreach (OBO importedOBO in this.imports)
             {
                 fullList.AddRange(importedOBO.GetFullImportHierarchy());
             }
@@ -329,63 +299,58 @@ namespace AirdPro.csimzMLParser.obo
 
         public OBOTerm GetTerm(string id)
         {
-            if (string.IsNullOrEmpty(id))
+            if (id == null)
             {
                 return null;
             }
 
-            OBOTerm term = terms.ContainsKey(id) ? terms[id] : null;
-
-            if (term == null)
+            //此行报错：KeyNotFoundException: 给定关键字不在字典中
+            //OBOTerm term = terms[id];
+            OBOTerm term = null;
+            if (terms.ContainsKey(id))
             {
-                foreach (var parent in imports)
+                term = terms[id];
+                Console.WriteLine("Can not find key " + id + " in terms dictionary!");
+            }
+
+            if (terms == null)
+            {
+                foreach(OBO parent in imports)
                 {
                     term = parent.GetTerm(id);
-
                     if (term != null)
                     {
                         break;
                     }
                 }
-            }
+            }            
 
             return term;
         }
 
-        public string GetPath()
-        {
-            return path;
-        }
+        public string GetPath() { return path; }    
+        
+        public string GetDefaultNamespace() { return defaultNamespace; }
 
-        public string GetDefaultNamespace()
-        {
-            return defaultNamespace;
-        }
+        public string GetOntology() { return ontologyIdentifier; }
 
-        public string GetOntology()
-        {
-            return ontologyIdentifier;
-        }
-
-        public string GetDataVersion()
-        {
-            return dataVersion;
-        }
+        public string GetDataVersion() {  return dataVersion; }
 
         public OBO GetOBOWithID(string id)
         {
             if (ontologyIdentifier.Equals(id, StringComparison.OrdinalIgnoreCase))
                 return this;
 
-            foreach (var importedOBO in imports)
+            OBO foundOBO = null;
+
+            foreach (OBO importedOBO in imports)
             {
-                var foundOBO = importedOBO.GetOBOWithID(id);
+                foundOBO = importedOBO.GetOBOWithID(id);
 
                 if (foundOBO != null)
-                    return foundOBO;
+                    break;
             }
-
-            return null;
+            return foundOBO;            
         }
 
         public override string ToString()
@@ -395,19 +360,14 @@ namespace AirdPro.csimzMLParser.obo
 
         public static string GetNameFromID(string id)
         {
-            switch (id.ToUpper())
+            return id switch
             {
-                case "IMS":
-                    return IMS_OBO_FULLNAME;
-                case "MS":
-                    return MS_OBO_FULLNAME;
-                case "UO":
-                    return UO_OBO_FULLNAME;
-                case "PATO":
-                    return PATO_OBO_FULLNAME;
-                default:
-                    return id;
-            }
+                "IMS" => OBO.IMS_OBO_FULLNAME,
+                "MS" => OBO.MS_OBO_FULLNAME,
+                "UO" => OBO.UO_OBO_FULLNAME,
+                "PATO" => OBO.PATO_OBO_FULLNAME,
+                _ => id,
+            };
         }
     }
 

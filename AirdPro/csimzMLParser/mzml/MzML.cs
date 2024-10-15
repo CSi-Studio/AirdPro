@@ -14,7 +14,7 @@ namespace AirdPro.csimzMLParser.mzml
     {
         private static readonly long serialVersionUID = 1L;
 
-        private static readonly ILog logger = LogManager.GetLogger(typeof(MzML));
+        private static readonly ILog LOGGER = LogManager.GetLogger(typeof(MzML));
 
         public const string NAMESPACE = "http://psi.hupo.org/ms/mzml";
         public const string XSI = "http://www.w3.org/2001/XMLSchema-instance";
@@ -46,44 +46,45 @@ namespace AirdPro.csimzMLParser.mzml
 
         public MzML(MzML mzML)
         {
-            this.accession = mzML.accession;
-            this.id = mzML.id;
-            this.version = mzML.version;
-            this.obo = mzML.obo;
+            accession = mzML.accession;
+            id = mzML.id;
+            version = mzML.version;
+            obo = mzML.obo;
 
             if (mzML.referenceableParamGroupList != null)
             {
-                this.referenceableParamGroupList = new ReferenceableParamGroupList(mzML.referenceableParamGroupList);
+                referenceableParamGroupList = new ReferenceableParamGroupList(mzML.referenceableParamGroupList);
             }
 
-            this.cvList = new CVList(mzML.cvList);
-            this.fileDescription = new FileDescription(mzML.fileDescription, referenceableParamGroupList);
+            cvList = new CVList(mzML.cvList);
+            fileDescription = new FileDescription(mzML.fileDescription, referenceableParamGroupList);
 
             if (mzML.sampleList != null)
             {
-                this.sampleList = new SampleList(mzML.sampleList, referenceableParamGroupList);
+                sampleList = new SampleList(mzML.sampleList, referenceableParamGroupList);
             }
 
-            this.softwareList = new SoftwareList(mzML.softwareList, referenceableParamGroupList);
+            softwareList = new SoftwareList(mzML.softwareList, referenceableParamGroupList);
 
             if (mzML.scanSettingsList != null)
             {
-                this.scanSettingsList = new ScanSettingsList(mzML.scanSettingsList, referenceableParamGroupList, fileDescription.sourceFileList);
+                scanSettingsList = new ScanSettingsList(mzML.scanSettingsList, referenceableParamGroupList, fileDescription.sourceFileList);
             }
 
-            this.instrumentConfigurationList = new InstrumentConfigurationList(mzML.instrumentConfigurationList, referenceableParamGroupList, scanSettingsList, softwareList);
-            this.dataProcessingList = new DataProcessingList(mzML.dataProcessingList, referenceableParamGroupList, softwareList);
-            this.run = new Run(mzML.run, referenceableParamGroupList, instrumentConfigurationList, fileDescription.sourceFileList, sampleList, dataProcessingList);
+            instrumentConfigurationList = new InstrumentConfigurationList(mzML.instrumentConfigurationList, referenceableParamGroupList, scanSettingsList, softwareList);
+            dataProcessingList = new DataProcessingList(mzML.dataProcessingList, referenceableParamGroupList, softwareList);
+            run = new Run(mzML.run, referenceableParamGroupList, instrumentConfigurationList, fileDescription.sourceFileList, sampleList, dataProcessingList);
         }
 
-        private readonly object lockObject = new();
+        //private readonly object lockObject = new();
 
         public void SetDataStorage(DataStorage dataStorage)
         {
-            lock (lockObject)
+            this.dataStorage = dataStorage;
+            /*lock (lockObject)
             {
                 this.dataStorage = dataStorage;
-            }
+            }*/
         }
 
         public void SetOBO(OBO obo)
@@ -106,7 +107,7 @@ namespace AirdPro.csimzMLParser.mzml
             return version;
         }
 
-        public void SetAccession(String accession)
+        public void SetAccession(string accession)
         {
             this.accession = accession;
         }
@@ -116,29 +117,29 @@ namespace AirdPro.csimzMLParser.mzml
             return accession;
         }
 
-        public void SetID(String id)
+        public void SetID(string id)
         {
             this.id = id;
         }
 
-        public String GetID()
+        public string GetID()
         {
             return id;
         }
 
         public void AddSpectrum(Spectrum spectrum)
         {
-            GetRun().GetSpectrumList().Add(spectrum);
+            run.spectrumList.Add(spectrum);
         }
 
         public SpectrumList GetSpectrumList()
         {
-            return run.GetSpectrumList();
+            return run.spectrumList;
         }
 
         public ChromatogramList GetChromatogramList()
         {
-            return run.GetChromatogramList();
+            return run.chromatogramList;
         }
 
         public void SetCVList(CVList cvList)
@@ -280,7 +281,7 @@ namespace AirdPro.csimzMLParser.mzml
             base.AddChildrenToCollection(children);
         }
 
-        public override void AddTagSpecificElementsAtXPathToCollection(ICollection<IMzMLTag> elements, String fullXPath, String currentXPath)
+        public override void AddTagSpecificElementsAtXPathToCollection(ICollection<IMzMLTag> elements, string fullXPath, string currentXPath)
         {
             if (currentXPath.StartsWith("/" + cvList.GetTagName())) 
             {
@@ -368,9 +369,9 @@ namespace AirdPro.csimzMLParser.mzml
             string attributeText = "";
 
             // Set up namespaces
-            attributeText += "xmlns:xsi=\"" + MzML.XSI + "\"";
-            attributeText += " xsi:schemaLocation=\"" + MzML.SCHEMA_LOCATION + "\"";
-            attributeText += " xmlns=\"" + MzML.NAMESPACE + "\"";
+            attributeText += "xmlns:xsi=\"" + XSI + "\"";
+            attributeText += " xsi:schemaLocation=\"" + SCHEMA_LOCATION + "\"";
+            attributeText += " xmlns=\"" + NAMESPACE + "\"";
             // Attributes
             attributeText += " version=\"" + XMLHelper.EnsureSafeXML(version) + "\"";
             if (accession != null)
@@ -392,30 +393,27 @@ namespace AirdPro.csimzMLParser.mzml
 
         public void Close()
         {
-            lock (this) 
+            if (dataStorage != null)
             {
-                if (dataStorage != null)
+                try
                 {
-                    try
-                    {
-                        dataStorage.Close();
-                    }
-                    catch (IOException ex)
-                    {
-                        logger.Error("Error closing data storage.", ex);
-                    }
+                    dataStorage.Close();
                 }
-
-                SpectrumList spectrumList = GetRun().GetSpectrumList();
-
-                foreach (Spectrum spectrum in spectrumList)
+                catch (IOException ex)
                 {
-                    CloseDataStorage(spectrum.dataLocation);
+                    LOGGER.Error("Error closing data storage.", ex);
+                }
+            }
 
-                    foreach (BinaryDataArray bda in spectrum.binaryDataArrayList)
-                    {
-                        CloseDataStorage(bda.GetDataLocation());
-                    }
+            SpectrumList spectrumList = run.spectrumList;
+
+            foreach (Spectrum spectrum in spectrumList)
+            {
+                CloseDataStorage(spectrum.dataLocation);
+
+                foreach (BinaryDataArray bda in spectrum.binaryDataArrayList)
+                {
+                    CloseDataStorage(bda.GetDataLocation());
                 }
             }
         }
@@ -434,7 +432,7 @@ namespace AirdPro.csimzMLParser.mzml
                     }
                     catch (IOException ex)
                     {
-                        logger.Error("Failed to close DataStorage", ex);
+                        LOGGER.Error("Failed to close DataStorage", ex);
                     }
                 }
             }
@@ -466,7 +464,7 @@ namespace AirdPro.csimzMLParser.mzml
 
         public static MzML Create()
         {
-            MzML mzML = new MzML(CURRENT_VERSION);
+            MzML mzML = new(CURRENT_VERSION);
 
             CreateDefaults(mzML);
 

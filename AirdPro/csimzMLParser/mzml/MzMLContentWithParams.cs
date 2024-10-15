@@ -1,11 +1,13 @@
 ﻿using AirdPro.csimzMLParser.affair;
 using HZH_Controls;
+using pwiz.CLI.cv;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 
 namespace AirdPro.csimzMLParser.mzml
 {
-    public class MzMLContentWithParams : MzMLContent, IHasParams
+    public abstract class MzMLContentWithParams : MzMLContent, IHasParams
     {
         private List<ReferenceableParamGroupRef> referenceableParamGroupRefs = [];
         private List<CVParam> cvParams = [];
@@ -109,7 +111,7 @@ namespace AirdPro.csimzMLParser.mzml
 
                 foreach (CVParam cvParam in rpg.GetCVParamList())
                 {
-                    CVParam curParam = this.GetCVParam(cvParam.GetTerm().id);
+                    CVParam curParam = GetCVParam(cvParam.GetTerm().id);
 
                     if (curParam != null && ContainsCVParam(curParam))
                     {
@@ -139,12 +141,12 @@ namespace AirdPro.csimzMLParser.mzml
         {
             foreach (CVParam replacementParam in rpg.GetCVParamList())
             {
-                CVParam paramToRemove = this.GetCVParam(replacementParam.GetTerm().id);
+                CVParam paramToRemove = GetCVParam(replacementParam.GetTerm().id);
 
                 RemoveCVParam(paramToRemove);
             }
 
-            this.AddReferenceableParamGroupRef(new ReferenceableParamGroupRef(rpg));
+            AddReferenceableParamGroupRef(new ReferenceableParamGroupRef(rpg));
         }
 
         public virtual List<CVParam> GetCVParamList()
@@ -161,9 +163,9 @@ namespace AirdPro.csimzMLParser.mzml
         {
             bool exists = false;
 
-            foreach (ReferenceableParamGroupRef groupRef in GetReferenceableParamGroupRefList())
+            foreach (ReferenceableParamGroupRef rpgRef in GetReferenceableParamGroupRefList())
             {
-                if (groupRef.GetReference().GetID().Equals(rpg.GetReference().GetID()))
+                if (rpgRef.GetReference().GetID().Equals(rpg.GetReference().GetID()))
                 {
                     exists = true;
                     break;
@@ -207,11 +209,11 @@ namespace AirdPro.csimzMLParser.mzml
 
         public virtual ReferenceableParamGroupRef GetReferenceableParamGroupRef(string id)
         {
-            foreach (ReferenceableParamGroupRef groupRef in referenceableParamGroupRefs)
+            foreach (ReferenceableParamGroupRef rpgRef in referenceableParamGroupRefs)
             {
-                if (groupRef.GetReference().GetID().Equals(id))
+                if (rpgRef.GetReference().GetID().Equals(id))
                 {
-                    return groupRef;
+                    return rpgRef;
                 }
             }
 
@@ -404,7 +406,7 @@ namespace AirdPro.csimzMLParser.mzml
 
                 List<CVParam> childList = rpgRef.GetReference().GetChildrenOf(id, false);
 
-                if (!childList.IsEmpty())
+                if (childList.Count != 0)
                 {
                     return childList[0];
                 }
@@ -420,7 +422,7 @@ namespace AirdPro.csimzMLParser.mzml
 
             List<CVParam> children = GetChildrenOf(id, false);
 
-            if (!children.IsEmpty())
+            if (children.Count != 0)
             {
                 return children[0];
             }
@@ -463,7 +465,7 @@ namespace AirdPro.csimzMLParser.mzml
 
         public List<CVParam> GetChildrenOf(string id, bool includeCurrent)
         {
-            List<CVParam> children = new();
+            List<CVParam> children = [];
 
             foreach (ReferenceableParamGroupRef rpgRef in referenceableParamGroupRefs)
             {

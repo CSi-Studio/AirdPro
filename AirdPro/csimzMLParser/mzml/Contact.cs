@@ -26,17 +26,17 @@ namespace AirdPro.csimzMLParser.mzml
 
         }
 
-        public String GetName()
+        public string GetName()
         {
             return GetCVParam(CONTACT_NAME_ID).GetValueAsString();
         }
 
-        public String GetOrganisation()
+        public string GetOrganisation()
         {
             return GetCVParam(CONTACT_ORGANISATION_ID).GetValueAsString();
         }
 
-        public void SetName(String name)
+        public void SetName(string name)
         {
             CVParam param = GetCVParam(CONTACT_NAME_ID);
 
@@ -46,7 +46,7 @@ namespace AirdPro.csimzMLParser.mzml
                 AddCVParam(new StringCVParam(OBO.GetOBO().GetTerm(CONTACT_NAME_ID), name));
         }
 
-        public void SetOrganisation(String organisation)
+        public void SetOrganisation(string organisation)
         {
             CVParam param = GetCVParam(CONTACT_ORGANISATION_ID);
 

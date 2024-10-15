@@ -56,20 +56,20 @@ namespace AirdPro.csimzMLParser.parser
         protected BinaryDataArray currentBinaryDataArray;
         private ChromatogramList chromatogramList;
         private Chromatogram currentChromatogram;
-        protected Stack<MzMLContent> contentStack = new Stack<MzMLContent>();
+        protected Stack<MzMLContent> contentStack = new();
         private bool processingSpectrum;
         private bool processingChromatogram;
         private bool processingPrecursor;
         private bool processingProduct;
         private bool processingOffset;
-        private StringBuilder offsetData;
+        private readonly StringBuilder offsetData;
         private string previousOffsetIDRef;
         private string currentOffsetIDRef;
         private long previousOffset = -1;
         protected DataStorage dataStorage;
         private bool openDataStorage = true;
         protected int numberOfSpectra = 0;
-        private List<IParserListener> listeners;
+        private readonly List<IParserListener> listeners;
 
         public MzMLHeaderHandler(OBO obo)
         {
@@ -82,7 +82,7 @@ namespace AirdPro.csimzMLParser.parser
 
             offsetData = new StringBuilder();
 
-            listeners = new List<IParserListener>();
+            listeners = [];
         }
 
         public void SetOpenDataStorage(bool openDataStorage)
@@ -117,22 +117,22 @@ namespace AirdPro.csimzMLParser.parser
             }
         }
 
-        public MzML ParsemzMLHeader(string filename)
+        public static MzML ParsemzMLHeader(string filename)
         {
             return ParsemzMLHeader(filename, true);
         }
 
-        public MzML ParsemzMLHeader(string filename, bool openDataFile)
+        public static MzML ParsemzMLHeader(string filename, bool openDataFile)
         {
             return ParsemzMLHeader(filename, openDataFile, null);
         }
 
-        public MzML ParsemzMLHeader(string filename, IParserListener listener)
+        public static MzML ParsemzMLHeader(string filename, IParserListener listener)
         {
             return ParsemzMLHeader(filename, true, listener);
         }
 
-        public MzML ParsemzMLHeader(string filename, bool openDataFile, IParserListener listener)
+        public static MzML ParsemzMLHeader(string filename, bool openDataFile, IParserListener listener)
         {
             OBO obo = OBO.GetOBO();
             MzMLHeaderHandler handler;
@@ -148,19 +148,19 @@ namespace AirdPro.csimzMLParser.parser
                     handler.RegisterParserListener(listener);
                 }
 
-                XmlReaderSettings settings = new XmlReaderSettings
+                XmlReaderSettings settings = new()
                 {
                     IgnoreWhitespace = true
                 };
 
-                using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
+                using (FileStream fs = new(filename, FileMode.Open, FileAccess.Read))
                 using (XmlReader reader = XmlReader.Create(fs, settings))
                 {
                     while (reader.Read())
                     {
                         if (reader.NodeType == XmlNodeType.Element)
                         {
-                            StartElement(reader);
+                            handler.StartElement(reader);
                         }
                     }
                 }
@@ -211,10 +211,10 @@ namespace AirdPro.csimzMLParser.parser
 
                 if (term == null)
                 {
-                    UserParam userParam = new UserParam(reader.GetAttribute(ACCESSION_ATTRIBUTE_NAME), reader.GetAttribute(VALUE_ATTRIBUTE_NAME), obo.GetTerm(reader.GetAttribute(UNIT_ACCESSION_ATTRIBUTE_NAME)));
+                    UserParam userParam = new(reader.GetAttribute(ACCESSION_ATTRIBUTE_NAME), reader.GetAttribute(VALUE_ATTRIBUTE_NAME), obo.GetTerm(reader.GetAttribute(UNIT_ACCESSION_ATTRIBUTE_NAME)));
                     ((MzMLContentWithParams)contentStack.Peek()).AddUserParam(userParam);
 
-                    CVParamAccessionNotFoundIssue notFound = new CVParamAccessionNotFoundIssue(reader.GetAttribute(ACCESSION_ATTRIBUTE_NAME), userParam);
+                    CVParamAccessionNotFoundIssue notFound = new(reader.GetAttribute(ACCESSION_ATTRIBUTE_NAME), userParam);
 
                     notFound.SetIssueLocation(contentStack.Peek());
 
@@ -224,7 +224,7 @@ namespace AirdPro.csimzMLParser.parser
                 {
                     if (term.IsObsolete())
                     {
-                        ObsoleteTermUsed obsoleteIssue = new ObsoleteTermUsed(term);
+                        ObsoleteTermUsed obsoleteIssue = new (term);
                         obsoleteIssue.SetIssueLocation(contentStack.Peek());
 
                         NotifyParserListeners(obsoleteIssue);
@@ -247,7 +247,7 @@ namespace AirdPro.csimzMLParser.parser
 
                                 if (value != null && value.Length > 0)
                                 {
-                                    InvalidFormatIssue invalidFormatIssue = new InvalidFormatIssue(term, reader.GetAttribute(VALUE_ATTRIBUTE_NAME));
+                                    InvalidFormatIssue invalidFormatIssue = new (term, reader.GetAttribute(VALUE_ATTRIBUTE_NAME));
                                     invalidFormatIssue.SetIssueLocation(contentStack.Peek());
 
                                     NotifyParserListeners(invalidFormatIssue);
@@ -268,7 +268,7 @@ namespace AirdPro.csimzMLParser.parser
                             default:
                                 cvParam = new StringCVParam(term, reader.GetAttribute(VALUE_ATTRIBUTE_NAME), obo.GetTerm(reader.GetAttribute(UNIT_ACCESSION_ATTRIBUTE_NAME)));
 
-                                InvalidFormatIssue formatIssue = new InvalidFormatIssue(term, paramType);
+                                InvalidFormatIssue formatIssue = new(term, paramType);
                                 formatIssue.FixAttemptedByChangingType((StringCVParam)cvParam);
                                 formatIssue.SetIssueLocation(contentStack.Peek());
                                 NotifyParserListeners(formatIssue);
@@ -276,11 +276,11 @@ namespace AirdPro.csimzMLParser.parser
                                 break;
                         }
                     }
-                    catch (FormatException nfe)
+                    catch (FormatException)
                     {
                         cvParam = new StringCVParam(term, reader.GetAttribute(VALUE_ATTRIBUTE_NAME), obo.GetTerm(reader.GetAttribute(UNIT_ACCESSION_ATTRIBUTE_NAME)));
 
-                        InvalidFormatIssue formatIssue = new InvalidFormatIssue(term, reader.GetAttribute(VALUE_ATTRIBUTE_NAME));
+                        InvalidFormatIssue formatIssue = new (term, reader.GetAttribute(VALUE_ATTRIBUTE_NAME));
                         formatIssue.FixAttemptedByChangingType((StringCVParam)cvParam);
                         formatIssue.SetIssueLocation(contentStack.Peek());
 
@@ -314,7 +314,7 @@ namespace AirdPro.csimzMLParser.parser
 
                 if (group != null)
                 {
-                    ReferenceableParamGroupRef rpgRef = new ReferenceableParamGroupRef(group);
+                    ReferenceableParamGroupRef rpgRef = new (group);
 
                     if (contentStack.Count > 0)
                     {
@@ -328,7 +328,7 @@ namespace AirdPro.csimzMLParser.parser
             if (!foundReference)
             {
                 string refValue = reader.GetAttribute("ref");
-                MissingReferenceIssue missingRefIssue = new MissingReferenceIssue(refValue, "referenceableParamGroupRef", "ref");
+                MissingReferenceIssue missingRefIssue = new(refValue, "referenceableParamGroupRef", "ref");
                 missingRefIssue.SetIssueLocation(contentStack.Peek());
                 missingRefIssue.FixAttemptedByRemovingReference();
 
@@ -357,7 +357,7 @@ namespace AirdPro.csimzMLParser.parser
             }
             else
             {
-                MissingReferenceIssue missingRefIssue = new MissingReferenceIssue(instrumentConfigurationRef, "run", "defaultInstrumentConfigurationRef");
+                MissingReferenceIssue missingRefIssue = new (instrumentConfigurationRef, "run", "defaultInstrumentConfigurationRef");
                 missingRefIssue.SetIssueLocation(contentStack.Peek());
 
                 if (currentInstrumentConfiguration != null)
@@ -388,7 +388,7 @@ namespace AirdPro.csimzMLParser.parser
                 }
                 if (!foundRef)
                 {
-                    MissingReferenceIssue missingRefIssue = new MissingReferenceIssue(defaultSourceFileRef, "run", "defaultSourceFileRef");
+                    MissingReferenceIssue missingRefIssue = new (defaultSourceFileRef, "run", "defaultSourceFileRef");
                     missingRefIssue.SetIssueLocation(contentStack.Peek());
                     missingRefIssue.FixAttemptedByRemovingReference();
                     NotifyParserListeners(missingRefIssue);
@@ -410,7 +410,7 @@ namespace AirdPro.csimzMLParser.parser
                 }
                 if (!foundRef)
                 {
-                    MissingReferenceIssue missingRefIssue = new MissingReferenceIssue(sampleRef, "run", "sampleRef");
+                    MissingReferenceIssue missingRefIssue = new(sampleRef, "run", "sampleRef");
                     missingRefIssue.SetIssueLocation(contentStack.Peek());
                     missingRefIssue.FixAttemptedByRemovingReference();
                     NotifyParserListeners(missingRefIssue);
@@ -427,7 +427,7 @@ namespace AirdPro.csimzMLParser.parser
                 }
                 catch (ParseException)
                 {
-                    InvalidFormatIssue formatIssue = new InvalidFormatIssue("startTimeStamp", "yyyy-MM-dd'T'HH:mm:ss", startTimeStamp);
+                    InvalidFormatIssue formatIssue = new ("startTimeStamp", "yyyy-MM-dd'T'HH:mm:ss", startTimeStamp);
                     formatIssue.SetIssueLocation(contentStack.Peek());
                     NotifyParserListeners(formatIssue);
                     try
@@ -437,7 +437,7 @@ namespace AirdPro.csimzMLParser.parser
                     }
                     catch (ParseException)
                     {
-                        InvalidFormatIssue secondFormatIssue = new InvalidFormatIssue("startTimeStamp", "EEE MMM dd HH:mm:ss zzz yyyy", startTimeStamp);
+                        InvalidFormatIssue secondFormatIssue = new ("startTimeStamp", "EEE MMM dd HH:mm:ss zzz yyyy", startTimeStamp);
                         secondFormatIssue.SetIssueLocation(contentStack.Peek());
                         NotifyParserListeners(secondFormatIssue);
                     }
@@ -510,7 +510,7 @@ namespace AirdPro.csimzMLParser.parser
                 }
                 else
                 {
-                    MissingReferenceIssue refIssue = new MissingReferenceIssue(instrumentConfigurationRef, "scan", "instrumentConfigurationRef");
+                    MissingReferenceIssue refIssue = new (instrumentConfigurationRef, "scan", "instrumentConfigurationRef");
                     refIssue.SetIssueLocation(contentStack.Peek());
 
                     if (currentInstrumentConfiguration != null)
@@ -554,7 +554,7 @@ namespace AirdPro.csimzMLParser.parser
 
                 if (!foundRef)
                 {
-                    MissingReferenceIssue refIssue = new MissingReferenceIssue(sourceFileRef, "scan", "sourceFileRef");
+                    MissingReferenceIssue refIssue = new (sourceFileRef, "scan", "sourceFileRef");
                     refIssue.SetIssueLocation(contentStack.Peek());
                     refIssue.FixAttemptedByRemovingReference();
 
@@ -610,7 +610,7 @@ namespace AirdPro.csimzMLParser.parser
 
                 if (!foundRef)
                 {
-                    MissingReferenceIssue refIssue = new MissingReferenceIssue(sourceFileRef, "precursor", "sourceFileRef");
+                    MissingReferenceIssue refIssue = new (sourceFileRef, "precursor", "sourceFileRef");
                     refIssue.SetIssueLocation(contentStack.Peek());
                     refIssue.FixAttemptedByRemovingReference();
 
@@ -670,14 +670,14 @@ namespace AirdPro.csimzMLParser.parser
                 }
             }
 
-            ProcessingMethod pm = new ProcessingMethod(software);
+            ProcessingMethod pm = new (software);
             currentDataProcessing.AddProcessingMethod(pm);
 
             contentStack.Push(pm);
 
             if (!referenceFound && software != null)
             {
-                MissingReferenceIssue missingRefIssue = new MissingReferenceIssue(softwareRef, "processingMethod", "softwareRef");
+                MissingReferenceIssue missingRefIssue = new (softwareRef, "processingMethod", "softwareRef");
                 missingRefIssue.SetIssueLocation(contentStack.Peek());
                 missingRefIssue.FixAttemptedByChangingReference(software);
 
@@ -685,7 +685,7 @@ namespace AirdPro.csimzMLParser.parser
             }
             else if (!referenceFound)
             {
-                MissingReferenceIssue missingRefIssue = new MissingReferenceIssue(softwareRef, "processingMethod", "softwareRef");
+                MissingReferenceIssue missingRefIssue = new(softwareRef, "processingMethod", "softwareRef");
                 missingRefIssue.SetIssueLocation(contentStack.Peek());
                 missingRefIssue.FixAttemptedByRemovingReference();
 
@@ -709,7 +709,7 @@ namespace AirdPro.csimzMLParser.parser
             if (!string.IsNullOrEmpty(dataProcessingRef))
             {
                 bool foundRef = false;
-                DataProcessing dataProcessing = null;
+                DataProcessing dataProcessing;
 
                 if (dataProcessingList != null)
                 {
@@ -724,7 +724,7 @@ namespace AirdPro.csimzMLParser.parser
 
                 if (!foundRef)
                 {
-                    MissingReferenceIssue refIssue = new MissingReferenceIssue(dataProcessingRef, "binaryDataArray", "dataProcessingRef");
+                    MissingReferenceIssue refIssue = new(dataProcessingRef, "binaryDataArray", "dataProcessingRef");
                     refIssue.SetIssueLocation(contentStack.Peek());
                     refIssue.FixAttemptedByRemovingReference();
 
@@ -771,7 +771,7 @@ namespace AirdPro.csimzMLParser.parser
 
             if (!foundRef)
             {
-                MissingReferenceIssue refIssue = new MissingReferenceIssue(defaultDataProcessingRef, "spectrumList", "defaultDataProcessingRef");
+                MissingReferenceIssue refIssue = new(defaultDataProcessingRef, "spectrumList", "defaultDataProcessingRef");
                 refIssue.SetIssueLocation(contentStack.Peek());
                 refIssue.FixAttemptedByRemovingReference();
 
@@ -815,7 +815,7 @@ namespace AirdPro.csimzMLParser.parser
 
                 if (!foundRef)
                 {
-                    MissingReferenceIssue refIssue = new MissingReferenceIssue(dataProcessingRef, "spectrum", "dataProcessingRef");
+                    MissingReferenceIssue refIssue = new (dataProcessingRef, "spectrum", "dataProcessingRef");
                     refIssue.SetIssueLocation(contentStack.Peek());
                     refIssue.FixAttemptedByRemovingReference();
 
@@ -847,7 +847,7 @@ namespace AirdPro.csimzMLParser.parser
 
                 if (!foundRef)
                 {
-                    MissingReferenceIssue refIssue = new MissingReferenceIssue(sourceFileRef, "spectrum", "sourceFileRef");
+                    MissingReferenceIssue refIssue = new(sourceFileRef, "spectrum", "sourceFileRef");
                     refIssue.SetIssueLocation(contentStack.Peek());
                     refIssue.FixAttemptedByRemovingReference();
 
@@ -884,7 +884,7 @@ namespace AirdPro.csimzMLParser.parser
 
             if (!string.IsNullOrEmpty(defaultDataProcessingRef))
             {
-                DataProcessing dataProcessing = null;
+                DataProcessing dataProcessing;
 
                 try
                 {
@@ -933,7 +933,7 @@ namespace AirdPro.csimzMLParser.parser
 
             if (!string.IsNullOrEmpty(dataProcessingRef))
             {
-                DataProcessing dataProcessing = null;
+                DataProcessing dataProcessing;
 
                 try
                 {
@@ -975,7 +975,7 @@ namespace AirdPro.csimzMLParser.parser
             if (contentStack.Count > 0)
             {
                 string name = reader.GetAttribute("name");
-                UserParam userParam = new UserParam(name);
+                UserParam userParam = new(name);
 
                 string type = reader.GetAttribute("type");
                 if (!string.IsNullOrEmpty(type))
@@ -997,7 +997,7 @@ namespace AirdPro.csimzMLParser.parser
 
         protected virtual void StartMzML(XmlReader reader)
         {
-            MzML mzML = new MzML(reader.GetAttribute("version"));
+            MzML mzML = new(reader.GetAttribute("version"));
 
             mzML.SetDataStorage(dataStorage);
             mzML.SetOBO(obo);
@@ -1020,7 +1020,8 @@ namespace AirdPro.csimzMLParser.parser
 
         protected void StartCVList(XmlReader reader)
         {
-            int count = int.Parse(reader.GetAttribute(COUNT_ATTRIBUTE_NAME));
+            //int count = int.Parse(reader.GetAttribute(COUNT_ATTRIBUTE_NAME));
+            int count = reader.GetAttribute(COUNT_ATTRIBUTE_NAME) != null ? int.Parse(reader.GetAttribute(COUNT_ATTRIBUTE_NAME)) : 0;
             cvList = new CVList(count);
 
             try
@@ -1036,13 +1037,12 @@ namespace AirdPro.csimzMLParser.parser
         }
 
         protected void StartCV(XmlReader reader)
-        {
-            string id = reader.GetAttribute(ID_ATTRIBUTE_NAME);
-            OBO childOBO = OBO.GetOBO().GetOBOWithID(id);
+        { 
+            OBO childOBO = OBO.GetOBO().GetOBOWithID(reader.GetAttribute(ID_ATTRIBUTE_NAME));           
 
             if (childOBO != null)
             {
-                CV cv = new CV(childOBO);
+                CV cv = new(childOBO);
 
                 cvList.Add(cv);
 
@@ -1051,13 +1051,13 @@ namespace AirdPro.csimzMLParser.parser
             else
             {
                 contentStack.Push(null);
-                LOGGER.Error("Weird ontology found! ID: " + id);
+                LOGGER.ErrorFormat("WEIRD ONTOLOGY FOUND! {0}", reader.GetAttribute(ID_ATTRIBUTE_NAME));
             }
         }
 
         protected void StartFileContent()
         {
-            FileContent fc = new FileContent();
+            FileContent fc = new();
 
             try
             {
@@ -1093,7 +1093,7 @@ namespace AirdPro.csimzMLParser.parser
             string id = reader.GetAttribute(ID_ATTRIBUTE_NAME);
             string location = reader.GetAttribute("location");
             string name = reader.GetAttribute("name");
-            SourceFile sf = new SourceFile(id, location, name);
+            SourceFile sf = new(id, location, name);
 
             try
             {
@@ -1109,7 +1109,7 @@ namespace AirdPro.csimzMLParser.parser
 
         protected void StartContact()
         {
-            Contact contact = new Contact();
+            Contact contact = new();
 
             try
             {
@@ -1143,7 +1143,7 @@ namespace AirdPro.csimzMLParser.parser
         protected void StartReferenceableParamGroup(XmlReader reader)
         {
             string id = reader.GetAttribute(ID_ATTRIBUTE_NAME);
-            ReferenceableParamGroup rpg = new ReferenceableParamGroup(id);
+            ReferenceableParamGroup rpg = new(id);
             contentStack.Push(rpg);
 
             referenceableParamGroupList.AddReferenceableParamGroup(rpg);
@@ -1169,7 +1169,7 @@ namespace AirdPro.csimzMLParser.parser
         protected void StartSample(XmlReader reader)
         {
             string id = reader.GetAttribute(ID_ATTRIBUTE_NAME);
-            Sample sample = new Sample(id);
+            Sample sample = new(id);
 
             string name = reader.GetAttribute("name");
             if (!string.IsNullOrEmpty(name))
@@ -1210,7 +1210,7 @@ namespace AirdPro.csimzMLParser.parser
         {
             string id = reader.GetAttribute(ID_ATTRIBUTE_NAME);
             string version = reader.GetAttribute("version");
-            Software sw = new Software(id, version);
+            Software sw = new(id, version);
 
             try
             {
@@ -1293,7 +1293,7 @@ namespace AirdPro.csimzMLParser.parser
 
             if (!foundReference)
             {
-                MissingReferenceIssue missingRefIssue = new MissingReferenceIssue(reader.GetAttribute("ref"), "sourceFileRef", "ref");
+                MissingReferenceIssue missingRefIssue = new(reader.GetAttribute("ref"), "sourceFileRef", "ref");
                 missingRefIssue.SetIssueLocation(contentStack.Peek());
                 missingRefIssue.FixAttemptedByRemovingReference();
 
@@ -1320,7 +1320,7 @@ namespace AirdPro.csimzMLParser.parser
 
         protected void StartTarget()
         {
-            Target target = new Target();
+            Target target = new();
 
             try
             {
@@ -1353,7 +1353,7 @@ namespace AirdPro.csimzMLParser.parser
 
         protected void StartComponentList()
         {
-            currentComponentList = new ComponentList();
+            currentComponentList = [];
 
             try
             {
@@ -1369,7 +1369,7 @@ namespace AirdPro.csimzMLParser.parser
 
         protected void StartSource()
         {
-            Source source = new Source();
+            Source source = new();
 
             try
             {
@@ -1471,7 +1471,7 @@ namespace AirdPro.csimzMLParser.parser
                     StartSource();
                     break;
                 case "analyzer":
-                    Analyser analyser = new Analyser();
+                    Analyser analyser = new();
                     try
                     {
                         currentComponentList.AddAnalyser(analyser);
@@ -1483,7 +1483,7 @@ namespace AirdPro.csimzMLParser.parser
                     contentStack.Push(analyser);
                     break;
                 case "detector":
-                    Detector detector = new Detector();
+                    Detector detector = new();
                     try
                     {
                         currentComponentList.AddDetector(detector);
@@ -1509,7 +1509,7 @@ namespace AirdPro.csimzMLParser.parser
 
                     if (!foundReference)
                     {
-                        MissingReferenceIssue missingRefIssue = new MissingReferenceIssue(softwareRef, "softwareRef", "ref");
+                        MissingReferenceIssue missingRefIssue = new(softwareRef, "softwareRef", "ref");
                         missingRefIssue.SetIssueLocation(contentStack.Peek());
                         missingRefIssue.FixAttemptedByRemovingReference();
                         NotifyParserListeners(missingRefIssue);
@@ -1528,7 +1528,7 @@ namespace AirdPro.csimzMLParser.parser
                     contentStack.Push(dataProcessingList);
                     break;
                 case "dataProcessing":
-                    DataProcessing dp = new DataProcessing(reader.GetAttribute(ID_ATTRIBUTE_NAME));
+                    DataProcessing dp = new(reader.GetAttribute(ID_ATTRIBUTE_NAME));
                     try
                     {
                         dataProcessingList.AddDataProcessing(dp);
@@ -1585,7 +1585,7 @@ namespace AirdPro.csimzMLParser.parser
                     contentStack.Push(currentScanWindowList);
                     break;
                 case "scanWindow":
-                    ScanWindow scanWindow = new ScanWindow();
+                    ScanWindow scanWindow = new();
                     try
                     {
                         currentScanWindowList.AddScanWindow(scanWindow);
@@ -1615,7 +1615,7 @@ namespace AirdPro.csimzMLParser.parser
                     StartPrecursor(reader);
                     break;
                 case "isolationWindow":
-                    IsolationWindow isolationWindow = new IsolationWindow();
+                    IsolationWindow isolationWindow = new();
                     if (processingPrecursor)
                     {
                         try
@@ -1656,7 +1656,7 @@ namespace AirdPro.csimzMLParser.parser
                     contentStack.Push(currentSelectedIonList);
                     break;
                 case "selectedIon":
-                    SelectedIon selectedIon = new SelectedIon();
+                    SelectedIon selectedIon = new();
 
                     try
                     {
@@ -1670,7 +1670,7 @@ namespace AirdPro.csimzMLParser.parser
                     contentStack.Push(selectedIon);
                     break;
                 case "activation":
-                    Activation activation = new Activation();
+                    Activation activation = new();
 
                     try
                     {
@@ -1838,7 +1838,7 @@ namespace AirdPro.csimzMLParser.parser
         {
             if (previousOffset != -1 && openDataStorage && dataContainer != null)
             {
-                DataLocation dataLocation = new DataLocation(dataStorage, previousOffset, (int)(offset - previousOffset));
+                DataLocation dataLocation = new(dataStorage, previousOffset, (int)(offset - previousOffset));
 
                 dataContainer.SetDataLocation(dataLocation);
             }

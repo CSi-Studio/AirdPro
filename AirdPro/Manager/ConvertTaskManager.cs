@@ -128,6 +128,10 @@ namespace AirdPro.Asyncs
                     {
                         converter = new TdmsConverter();
                     }
+                    else if (jobInfo.format.Equals(FileFormat.imzML))
+                    {
+                        converter = new ImzMLConverter();
+                    }
                     else if (jobInfo.type == AirdSDK.Enums.AcquisitionMethod.DDA_MSI || jobInfo.type == AirdSDK.Enums.AcquisitionMethod.DIA_MSI) 
                     {
                         converter = new MSIConvert();

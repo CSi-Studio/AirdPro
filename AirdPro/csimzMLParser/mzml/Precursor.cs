@@ -9,6 +9,10 @@ namespace AirdPro.csimzMLParser.mzml
     {
         private static readonly long serialVersionUID = 1L;
 
+        public static readonly string PRECURSOR_CHARGE_STATE_ID = "MS:1000041";
+        public static readonly string PRECURSOR_CHARGE_ = "";
+
+
         public string ExternalSpectrumID;
         public SourceFile SourceFileRef;
         public Spectrum SpectrumRef;
