@@ -353,7 +353,7 @@ namespace AirdPro.csimzMLParser.mzml
         public virtual CVParam GetCVParam(string id)
         {
             foreach (ReferenceableParamGroupRef rpgRef in referenceableParamGroupRefs)
-    {
+            {
                 if (rpgRef == null)
                 {
                     continue;

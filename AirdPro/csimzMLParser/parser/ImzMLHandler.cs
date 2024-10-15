@@ -3,6 +3,7 @@ using AirdPro.csimzMLParser.exceptions;
 using AirdPro.csimzMLParser.imzml;
 using AirdPro.csimzMLParser.mzml;
 using AirdPro.csimzMLParser.obo;
+using CSharpFastPFOR.Port;
 using log4net;
 using System;
 using System.IO;
@@ -45,7 +46,7 @@ namespace AirdPro.csimzMLParser.parser
 
             if (openDataStorage)
             {
-                this.dataStorage = new BinaryDataStorage(ibdFile, false);
+                dataStorage = new BinaryDataStorage(ibdFile, false);
             }
         }
 
@@ -62,7 +63,7 @@ namespace AirdPro.csimzMLParser.parser
         public static ImzML ParseimzML(string filename, bool openDataStorage, IParserListener listener)
         {
             ImzMLHandler handler;
-            FileStream fileStream = null;            
+            FileStream inputStream = null;            
             try
             {
                 OBO obo = OBO.GetOBO();
@@ -81,8 +82,8 @@ namespace AirdPro.csimzMLParser.parser
                     IgnoreComments = true
                 };
 
-                fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read);
-                byte[] compressedData = new byte[fileStream.Length];
+                inputStream = new FileStream(filename, FileMode.Open, FileAccess.Read);
+                byte[] compressedData = new byte[inputStream.Length];
                 // 根据文件扩展名选择正确的解压方式
                 if (filename.EndsWith(".lz4", StringComparison.OrdinalIgnoreCase))
                 {
@@ -105,7 +106,7 @@ namespace AirdPro.csimzMLParser.parser
                     handler.uncompressedData = compressedData;
                 }
                 //
-                using (XmlReader reader = XmlReader.Create(fileStream, settings))
+                using (XmlReader reader = XmlReader.Create(inputStream, settings))
                 {
                     while (reader.Read())
                     {
@@ -119,7 +120,34 @@ namespace AirdPro.csimzMLParser.parser
                 ImzML imzML = handler.GetImzML();
                 imzML.SetOBO(obo);
 
-                return imzML;
+                // Check if Bruker data, and then correct the image to be relative rather than absolute
+                InstrumentConfiguration ic = imzML.GetInstrumentConfigurationList().GetInstrumentConfiguration(0);
+                if (ic.GetCVParamOrChild("MS:1000122") != null)
+                {
+                    int minX = int.MaxValue;
+                    int minY = int.MaxValue;
+
+                    foreach (Spectrum spectrum in imzML.run.spectrumList)
+                    {
+                        PixelLocation location = spectrum.GetPixelLocation();
+                        if (location.x < minX)
+                            minX = location.x;
+                        if (location.y < minY)
+                            minY = location.y;
+                    }
+
+                    foreach (Spectrum spectrum in imzML.run.spectrumList)
+                    {
+                        PixelLocation location = spectrum.GetPixelLocation();
+                        spectrum.SetPixelLocation(location.x - minX + 1, location.y - minY + 1);
+                    }
+
+                    CVParam curWidth = imzML.GetScanSettingsList().GetScanSettings(0).GetCVParam(ScanSettings.MAX_COUNT_PIXEL_X_ID);
+                    curWidth.SetValueAsString("" + (curWidth.GetValueAsLong() - minX + 1));
+
+                    CVParam curHeight = imzML.GetScanSettingsList().GetScanSettings(0).GetCVParam(ScanSettings.MAX_COUNT_PIXEL_Y_ID);
+                    curHeight.SetValueAsString("" + (curHeight.GetValueAsLong() - minY + 1));
+                }               
             }
             catch (XmlException ex)
             {
@@ -138,11 +166,12 @@ namespace AirdPro.csimzMLParser.parser
             }
             finally
             {
-                if (fileStream != null)
+                if (inputStream != null)
                 {
-                    fileStream.Close();
+                    inputStream.Close();
                 }
             }
+            return handler.GetImzML();
         }
 
         protected override void StartCVParam(XmlReader reader)

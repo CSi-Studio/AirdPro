@@ -3,7 +3,6 @@ using AirdPro.csimzMLParser.mzml;
 using AirdPro.Domains;
 using AirdSDK.Beans;
 using HZH_Controls;
-using pwiz.CLI.cv;
 using System;
 using Activator = AirdPro.Constants.Activator;
 
