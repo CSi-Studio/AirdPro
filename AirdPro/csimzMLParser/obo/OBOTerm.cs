@@ -1,7 +1,6 @@
 ﻿using log4net;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AirdPro.csimzMLParser.obo
 {
@@ -12,29 +11,29 @@ namespace AirdPro.csimzMLParser.obo
 
         private const long serialVersionUID = 1L;
 
-        public OBO ontology;
+        private OBO ontology;
 
-        public readonly string id;
+        private readonly string id;
 
-        public string name;
+        private string name;
 
-        public string nameSpace;
+        private string nameSpace;
 
-        public string description;
+        private string description;
 
-        public List<OBOTerm> has_units;
+        private List<OBOTerm> has_units;
 
         public List<string> unitList;
 
-        public List<string> is_a;
+        private List<string> is_a;
 
-        public List<string> part_of;
+        private List<string> part_of;
 
-        public List<OBOTerm> children;
+        private List<OBOTerm> children;
 
-        public List<OBOTerm> parents = [];
+        private List<OBOTerm> parents = [];
 
-        public bool is_obsolete;
+        private bool is_obsolete = false;
 
         public enum XMLType
         {
@@ -74,7 +73,7 @@ namespace AirdPro.csimzMLParser.obo
             NON_NEGATIVE_DOUBLE
         }
 
-        protected XMLType ValueType { get; set; }
+        protected XMLType ValueType;
 
         public enum Synonym
         {
@@ -152,7 +151,7 @@ namespace AirdPro.csimzMLParser.obo
                 value = value.Substring(0, indexOfExclamation).Trim();
             }
 
-            switch (tag.ToLower())
+            switch (tag)
             {
                 case "name":
                     name = value;
@@ -206,13 +205,13 @@ namespace AirdPro.csimzMLParser.obo
                             case "decimal":
                                 ValueType = XMLType.DECIMAL;
                                 break;
-                            case "negativeinteger":
+                            case "negativeInteger":
                                 ValueType = XMLType.NEGATIVE_INTEGER;
                                 break;
-                            case "positiveinteger":
+                            case "positiveInteger":
                                 ValueType = XMLType.POSITIVE_INTEGER;
                                 break;
-                            case "nonnegativeinteger":
+                            case "nonNegativeInteger":
                                 ValueType = XMLType.NON_NEGATIVE_INTEGER;
                                 break;
                             case "boolean":
@@ -221,32 +220,32 @@ namespace AirdPro.csimzMLParser.obo
                             case "date":
                                 ValueType = XMLType.DATE;
                                 break;
-                            case "datetime":
+                            case "dateTime":
                                 ValueType = XMLType.DATETIME;
                                 break;
                             case "float":
                                 ValueType = XMLType.FLOAT;
                                 break;
-                            case "nonnegativefloat":
+                            case "nonNegativeFloat":
                                 ValueType = XMLType.NON_NEGATIVE_FLOAT;
                                 break;
-                            case "nonnegativedouble":
+                            case "nonNegativeDouble":
                                 ValueType = XMLType.NON_NEGATIVE_DOUBLE;
                                 break;
                             case "double":
                                 ValueType = XMLType.DOUBLE;
                                 break;
-                            case "anyuri":
+                            case "anyURI":
                                 ValueType = XMLType.ANY_URI;
                                 break;
                             default:
-                                LOGGER.InfoFormat("Unknown value-type encountered '{0}' @ {1}", value, id);
+                                LOGGER.InfoFormat("Unknown value-type encountered '{0}' @ {1}", [value, id]);
                                 break;
                         }
                     }
                     else
                     {   
-                        LOGGER.InfoFormat("Unknown xref encountered '{0}' @ {1}", value, id);
+                        LOGGER.InfoFormat("Unknown xref encountered '{0}' @ {1}", [value, id]);
                     }
                     break;
                 default:
@@ -301,7 +300,7 @@ namespace AirdPro.csimzMLParser.obo
         {           
             foreach(OBOTerm child in GetAllChildren(false))
             {
-                if (child.id.Equals(id))
+                if (child.GetID().Equals(id))
                 {
                     return true;
                 }
@@ -314,7 +313,7 @@ namespace AirdPro.csimzMLParser.obo
             foreach(OBOTerm parent in GetAllParents(false))
             {
                 LOGGER.InfoFormat("In isChildOf() checking parent {0}", parent);
-                if (parent.id.Equals(id))
+                if (parent.GetID().Equals(id))
                 {
                     return true;
                 }
@@ -366,7 +365,7 @@ namespace AirdPro.csimzMLParser.obo
         public List<OBOTerm> GetAllParents(bool includeThis)
         {
             List<OBOTerm> allParents = [];
-            LOGGER.InfoFormat("Getting all parents of {0}, which has {1} parent(s)", id, parents.Count);
+            LOGGER.InfoFormat("Getting all parents of {0}, which has {1} parent(s)", [id, parents.Count]);
             GetAllParents(allParents, includeThis);
             return allParents;
         }
@@ -396,13 +395,22 @@ namespace AirdPro.csimzMLParser.obo
 
         public void ClearIsA()
         {
-            is_a.Clear();
+            if(is_a is List<string>)
+            {
+                is_a.Clear();
+            }
+            is_a = null;
         }
 
         public List<string> GetPartOf()
         {
             return part_of;
         }
+
+        public string GetID()
+        {
+            return id;
+        } 
 
         public string GetName()
         {
@@ -441,7 +449,7 @@ namespace AirdPro.csimzMLParser.obo
             }
             else
             {
-                has_units = new List<OBOTerm> { unit };
+                has_units = [unit];
             }
         }
 
@@ -457,20 +465,26 @@ namespace AirdPro.csimzMLParser.obo
                 return true;
             }
 
-            if (!(o is OBOTerm term))
+            if (o is not OBOTerm)
             {
                 return false;
             }
 
-            bool namespaceOK = (nameSpace == null && term.nameSpace == null) || (nameSpace != null && nameSpace.Equals(term.nameSpace));
+            OBOTerm term  = (OBOTerm)o;
 
-            return term.id.Equals(id) && namespaceOK;
+            bool namespaceOK = nameSpace == null && term.nameSpace == null;
+            if(nameSpace != null && term.GetNamespace() != null)
+            {
+                namespaceOK = term.GetNamespace().Equals(nameSpace);
+            }
+
+            return term.GetID().Equals(id) && namespaceOK;
         }
 
         public override int GetHashCode()
         {
             int hash = 7;
-            hash = 23 * hash + (id?.GetHashCode() ?? 0);
+            hash = 23 * hash + (id != null ? id.GetHashCode() : 0);
             return hash;
         }
     }

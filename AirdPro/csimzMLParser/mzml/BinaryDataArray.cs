@@ -232,7 +232,7 @@ namespace AirdPro.csimzMLParser.mzml
 
         public static int GetDataTypeInBytes(CVParam dataType)
         {
-            string dataTypeTermID = dataType.GetTerm().id;
+            string dataTypeTermID = dataType.GetTerm().GetID();
 
             if (dataTypeTermID.Equals(DOUBLE_PRECISION_ID))
             {
@@ -341,7 +341,7 @@ namespace AirdPro.csimzMLParser.mzml
 
             if (compressionCVParam != null)
             {
-                switch (compressionCVParam.GetTerm().id)
+                switch (compressionCVParam.GetTerm().GetID())
                 {
                     case ZLIB_COMPRESSION_ID:
                         transformation.AddTransform(new ZlibDataTransform());
@@ -413,7 +413,7 @@ namespace AirdPro.csimzMLParser.mzml
 
             if (dataTypeParam != null)
             {
-                string term = dataTypeParam.GetTerm().id;
+                string term = dataTypeParam.GetTerm().GetID();
 
                 if (term.Equals(DOUBLE_PRECISION_ID))
                 {
@@ -471,7 +471,7 @@ namespace AirdPro.csimzMLParser.mzml
 
             if (cvParam.GetTerm().IsChildOf(BINARY_DATA_ARRAY_ID))
             {
-                string term = cvParam.GetTerm().id;
+                string term = cvParam.GetTerm().GetID();
 
                 if (term.Equals(MZ_ARRAY_ID))
                 {
@@ -495,15 +495,15 @@ namespace AirdPro.csimzMLParser.mzml
             CVParam child = rpgr.GetReference().GetCVParamOrChild(BINARY_DATA_ARRAY_ID);
             if (child != null)
             {
-                if (child.GetTerm().id.Equals(MZ_ARRAY_ID))
+                if (child.GetTerm().GetID().Equals(MZ_ARRAY_ID))
                 {
                     isMzArray = true;
                 }
-                else if (child.GetTerm().id.Equals(INTENSITY_ARRAY_ID))
+                else if (child.GetTerm().GetID().Equals(INTENSITY_ARRAY_ID))
                 {
                     isIntensityArray = true;
                 }
-                else if (child.GetTerm().id.Equals(MOBILITY_ARRAY_ID))
+                else if (child.GetTerm().GetID().Equals(MOBILITY_ARRAY_ID))
                 {
                     isMobilityArray = true;
                 }

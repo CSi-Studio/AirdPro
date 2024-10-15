@@ -97,7 +97,7 @@ namespace AirdPro.Converters
         {
             Start();
             CopyFile(); //如果检测到是网络挂载磁盘,则首先拷贝到本地以后再进行转换,以提升转换速度
-            ImzML imzML = ReadImzMLFile();
+            ImzML imzML = ImportImzMLFile();
             try
             {
                 if (imzML == null)
@@ -570,7 +570,7 @@ namespace AirdPro.Converters
             }
         }         
 
-        public ImzML ReadImzMLFile()
+        public ImzML ImportImzMLFile()
         {
             JobInfo.Log(Tag.Prepare_To_Parse_ImzML_File, Status.Prepare);            
 
@@ -1765,7 +1765,7 @@ namespace AirdPro.Converters
             JobInfo.Log("Start Processing MS1 List");
         }
 
-       /* public SpectrumList ReadImzMLFile()
+       /* public SpectrumList ImportImzMLFile()
         {
             SpectrumList spectra;
             try

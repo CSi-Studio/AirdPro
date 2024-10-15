@@ -65,10 +65,10 @@ namespace AirdPro.csimzMLParser.exceptions
                 else
                     message.Append(" a value of type ").Append(term.GetValueType());
 
-                message.Append(" for CVParam ").Append(term.id);
+                message.Append(" for CVParam ").Append(term.GetID());
 
-                if (term.name != null)
-                    message.Append(" (").Append(term.name).Append(")");
+                if (term.GetName() != null)
+                    message.Append(" (").Append(term.GetName()).Append(")");
 
                 if (value == null)
                     message.Append(" but the value attribute was omitted");
@@ -81,7 +81,7 @@ namespace AirdPro.csimzMLParser.exceptions
                 message.Append("Unimplemented or unexpected XMLType ");
                 message.Append(term.GetValueType().ToString());
                 message.Append(" (assigned to term ");
-                message.Append(term.id);
+                message.Append(term.GetID());
                 message.Append(")");
             }
 

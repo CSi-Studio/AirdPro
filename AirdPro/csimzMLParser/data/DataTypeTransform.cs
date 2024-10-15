@@ -46,7 +46,7 @@ namespace AirdPro.csimzMLParser.data
 
         public static DataType FromOBOTerm(OBOTerm term)
         {
-            string accession = term.id;
+            string accession = term.GetID();
 
             if (accession.Equals(BinaryDataArray.DOUBLE_PRECISION_ID))
             {

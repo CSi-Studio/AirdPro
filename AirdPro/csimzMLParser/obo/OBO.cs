@@ -14,26 +14,26 @@ namespace AirdPro.csimzMLParser.obo
 
         private static readonly long serialVersionUID = 1L;
 
-        public static string MS_OBO_URI = "https://raw.githubusercontent.com/HUPO-PSI/psi-ms-CV/master/psi-ms.obo";
-        public static string MS_OBO_FULLNAME = "Proteomics Standards Initiative Mass Spectrometry ontology";
+        public static readonly string MS_OBO_URI = "https://raw.githubusercontent.com/HUPO-PSI/psi-ms-CV/master/psi-ms.obo";
+        public static readonly string MS_OBO_FULLNAME = "Proteomics Standards Initiative Mass Spectrometry ontology";
 
-        public static string UO_OBO_URI = "http://purl.obolibrary.org/obo/uo.obo";
-        public static string UO_OBO_FULLNAME = "Units of Measurement ontology";
+        public static readonly string UO_OBO_URI = "http://purl.obolibrary.org/obo/uo.obo";
+        public static readonly string UO_OBO_FULLNAME = "Units of Measurement ontology";
 
-        public static string PATO_OBO_FULLNAME = "Phenotype And Trait ontology";
-        public static string PATO_OBO_URI = "https://raw.githubusercontent.com/pato-ontology/pato/master/pato.obo";
+        public static readonly string PATO_OBO_FULLNAME = "Phenotype And Trait ontology";
+        public static readonly string PATO_OBO_URI = "https://raw.githubusercontent.com/pato-ontology/pato/master/pato.obo";
 
-        public static string IMS_OBO_URI = "https://raw.githubusercontent.com/imzML/imzML/development/imagingMS.obo";
-        public static string IMS_OBO_FULLNAME = "Mass Spectrometry Imaging ontology";
-        public static string IMS_OBO_ID = "IMS";
-        public static string IMS_OBO_VERSION = "???";
+        public static readonly string IMS_OBO_URI = "https://raw.githubusercontent.com/imzML/imzML/development/imagingMS.obo";
+        public static readonly string IMS_OBO_FULLNAME = "Mass Spectrometry Imaging ontology";
+        public static readonly string IMS_OBO_ID = "IMS";
+        public static readonly string IMS_OBO_VERSION = "???";
 
-        private readonly string path;
-        private readonly List<OBO> imports;
-        private readonly string ontologyIdentifier;
-        private readonly string defaultNamespace;
-        private readonly string dataVersion;
-        private readonly Dictionary<string, OBOTerm> terms;
+        private string path;
+        private List<OBO> imports;
+        private string defaultNamespace;
+        private string ontologyIdentifier;        
+        private string dataVersion;
+        private Dictionary<string, OBOTerm> terms;
 
         protected static OBO ONTOLOGY;
 
@@ -91,7 +91,7 @@ namespace AirdPro.csimzMLParser.obo
                         {
                             defaultNamespace = value;
                         }
-                        else if (tag.Equals("ontology"))
+                        else if ("ontology".Equals(tag))
                         {
                             ontologyIdentifier = value;
                         }
@@ -103,7 +103,6 @@ namespace AirdPro.csimzMLParser.obo
                 }
             }
 
-            // Process relationships
             foreach (OBOTerm term in terms.Values)
             {
                 ICollection<string> is_a = term.GetIsA();
@@ -139,8 +138,6 @@ namespace AirdPro.csimzMLParser.obo
                     term.unitList = null;
                 }
             }
-
-            return;
         }        
 
         public static OBO GetOBO()
@@ -150,14 +147,14 @@ namespace AirdPro.csimzMLParser.obo
                 try
                 {
                     LOGGER.Info("Trying to load obo from files");
-                    ONTOLOGY = OBO.LoadOntologyFromFile(IMS_OBO_URI);
+                    ONTOLOGY = LoadOntologyFromFile(IMS_OBO_URI);
                 }
                 catch (IOException)
                 {
                     try
                     {
                         LOGGER.Info("Trying to load obo from URL");
-                        ONTOLOGY = OBO.LoadOntologyFromURL(IMS_OBO_URI);
+                        ONTOLOGY = LoadOntologyFromURL(IMS_OBO_URI);
                     }
                     catch (IOException)
                     {
@@ -165,16 +162,15 @@ namespace AirdPro.csimzMLParser.obo
 
                         try
                         {
-                            ONTOLOGY = OBO.LoadOntologyFromResource(IMS_OBO_URI);
+                            ONTOLOGY = LoadOntologyFromResource(IMS_OBO_URI);
                         }
                         catch (IOException e)
                         {
-                            LOGGER.Error("Failed to load any ontology", e);
+                            LOGGER.Error($"Failed to load any ontology: {e}");
                         }
                     }
                 }
             }
-
             return ONTOLOGY;
         }
 
@@ -198,12 +194,12 @@ namespace AirdPro.csimzMLParser.obo
                     response = (HttpWebResponse)request.GetResponse();
                 }
 
-                FileStream inStream = (FileStream)response.GetResponseStream();
+                FileStream inputStream = (FileStream)response.GetResponseStream();
                 string filename = oboLocation.Substring(oboLocation.LastIndexOf('/') + 1);
 
-                InstallOBO(inStream, filename);
+                InstallOBO(inputStream, filename);
 
-                inStream.Close();
+                inputStream.Close();
                 response.Close();
             }
             catch (WebException e)
@@ -219,7 +215,7 @@ namespace AirdPro.csimzMLParser.obo
             ONTOLOGIES_FOLDER = folder;
         }
 
-        public static void InstallOBO(Stream inStream, string filename)
+        public static void InstallOBO(FileStream inStream, string filename)
         {     
             // 确定文件夹路径
             string ontologiesFolderPath = Path.Combine(Directory.GetCurrentDirectory(), ONTOLOGIES_FOLDER);
@@ -253,10 +249,10 @@ namespace AirdPro.csimzMLParser.obo
             }
         }
 
-        public static void SetOBO(OBO obo)
+        /*public static void SetOBO(OBO obo)
         {
             ONTOLOGY = obo;
-        }
+        }*/
 
         public static OBO LoadOntologyFromURL(string url)
         {
@@ -282,7 +278,7 @@ namespace AirdPro.csimzMLParser.obo
         {
             List<OBO> fullList = [];
 
-            foreach (OBO importedOBO in this.imports)
+            foreach (OBO importedOBO in imports)
             {
                 fullList.AddRange(importedOBO.GetFullImportHierarchy());
             }
@@ -292,7 +288,7 @@ namespace AirdPro.csimzMLParser.obo
             return fullList;
         }
 
-        public IEnumerable<OBOTerm> GetTerms()
+        public ICollection<OBOTerm> GetTerms()
         {
             return terms.Values;
         }
@@ -304,26 +300,29 @@ namespace AirdPro.csimzMLParser.obo
                 return null;
             }
 
-            //此行报错：KeyNotFoundException: 给定关键字不在字典中
             //OBOTerm term = terms[id];
             OBOTerm term = null;
             if (terms.ContainsKey(id))
             {
                 term = terms[id];
-                Console.WriteLine("Can not find key " + id + " in terms dictionary!");
+            }
+            else
+            {
+                Console.WriteLine(id + "不在" + this.ontologyIdentifier + "中。。。");
             }
 
-            if (terms == null)
+            if (term == null)
             {
                 foreach(OBO parent in imports)
                 {
                     term = parent.GetTerm(id);
                     if (term != null)
                     {
+                        Console.WriteLine(id + "在" + parent.ontologyIdentifier + "找到了！！！");
                         break;
                     }
-                }
-            }            
+                }                
+            }   
 
             return term;
         }
@@ -360,14 +359,22 @@ namespace AirdPro.csimzMLParser.obo
 
         public static string GetNameFromID(string id)
         {
-            return id switch
+            if ("IMS".Equals(id)){
+                return IMS_OBO_FULLNAME;
+            }
+            else if ("MS".Equals(id))
             {
-                "IMS" => OBO.IMS_OBO_FULLNAME,
-                "MS" => OBO.MS_OBO_FULLNAME,
-                "UO" => OBO.UO_OBO_FULLNAME,
-                "PATO" => OBO.PATO_OBO_FULLNAME,
-                _ => id,
-            };
+                return MS_OBO_FULLNAME;
+            }
+            else if ("UO".Equals(id))
+            {
+                return UO_OBO_FULLNAME;
+            }
+            else if ("PATO".Equals(id))
+            {
+                return PATO_OBO_FULLNAME;
+            }
+            return id;
         }
     }
 

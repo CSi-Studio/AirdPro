@@ -757,14 +757,13 @@ namespace AirdPro.csimzMLParser.parser
             DataProcessing dataProcessing = null;
             bool foundRef = false;
 
-            if (!string.IsNullOrEmpty(defaultDataProcessingRef) && dataProcessingList != null)
+            if (defaultDataProcessingRef != null && dataProcessingList != null)
             {
                 dataProcessing = dataProcessingList.GetDataProcessing(defaultDataProcessingRef);
 
                 if (dataProcessing != null)
                 {
-                    string count = reader.GetAttribute(COUNT_ATTRIBUTE_NAME);
-                    numberOfSpectra = int.Parse(count);
+                    numberOfSpectra = int.Parse(reader.GetAttribute(COUNT_ATTRIBUTE_NAME));
                     foundRef = true;
                 }
             }
@@ -792,13 +791,11 @@ namespace AirdPro.csimzMLParser.parser
 
         protected void StartSpectrum(XmlReader reader)
         {
-            string id = reader.GetAttribute(ID_ATTRIBUTE_NAME);
-            int defaultArrayLength = int.Parse(reader.GetAttribute("defaultArrayLength"));
-            currentSpectrum = new Spectrum(id, defaultArrayLength);
+            currentSpectrum = new Spectrum(reader.GetAttribute(ID_ATTRIBUTE_NAME), int.Parse(reader.GetAttribute("defaultArrayLength")));
 
             string dataProcessingRef = reader.GetAttribute("dataProcessingRef");
 
-            if (!string.IsNullOrEmpty(dataProcessingRef))
+            if (dataProcessingRef != null)
             {
                 bool foundRef = false;
 
@@ -830,7 +827,7 @@ namespace AirdPro.csimzMLParser.parser
 
             string sourceFileRef = reader.GetAttribute("sourceFileRef");
 
-            if (!string.IsNullOrEmpty(sourceFileRef))
+            if (sourceFileRef != null)
             {
                 bool foundRef = false;
 

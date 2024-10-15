@@ -110,7 +110,7 @@ namespace AirdPro.csimzMLParser.mzml
                     foreach (BinaryDataArray bda in binaryDataArrayList)
                     {
                         CVParam cvParam = bda.GetCVParamOrChild(BinaryDataArray.BINARY_DATA_ARRAY_ID);
-                        string cvParamID = cvParam.GetTerm().id;
+                        string cvParamID = cvParam.GetTerm().GetID();
 
                         int cvParamLocation = spectrumData.IndexOf(cvParamID);
 

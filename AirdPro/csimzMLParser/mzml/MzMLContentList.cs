@@ -46,8 +46,10 @@ namespace AirdPro.csimzMLParser.mzml
             }
             else if (list.Count == 1)
             {
-                list = [];
-                list.Add(item);
+                list = new List<T>(list)
+                {
+                    item
+                };
             }
             else
             {

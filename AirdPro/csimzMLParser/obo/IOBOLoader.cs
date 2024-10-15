@@ -4,6 +4,6 @@ namespace AirdPro.csimzMLParser.obo
 {
     public interface IOBOLoader
     {
-        Stream GetInputStream(string location);
+        FileStream GetInputStream(string location);
     }
 }

@@ -3,7 +3,6 @@ using AirdPro.csimzMLParser.mzml;
 using AirdPro.Domains;
 using AirdSDK.Beans;
 using HZH_Controls;
-using pwiz.CLI.cv;
 using System;
 using Activator = AirdPro.Constants.Activator;
 
@@ -13,7 +12,7 @@ namespace AirdPro.csimzMLParser.util
     {    
         public static string ParseMsLevel(Spectrum spectrum)
         {
-            CVParam cv = spectrum.GetCVParamOrChild(Spectrum.MS_lEVEL_ID);
+            CVParam cv = spectrum.GetCVParam(Spectrum.MS_lEVEL_ID);
             if (cv == null)
             {
                 return default;
@@ -24,7 +23,7 @@ namespace AirdPro.csimzMLParser.util
 
         public static double ParseRt(Scan scan, JobInfo jobInfo)
         {
-            CVParam cv = scan.GetCVParamOrChild(Scan.SCAN_START_TIME_ID);
+            CVParam cv = scan.GetCVParam(Scan.SCAN_START_TIME_ID);
             double time = cv.GetValueAsDouble();
             if (cv.GetUnits().Equals("minute")) time = time * 60;
             time = Math.Round(time * 10000) / 10000;
@@ -33,9 +32,9 @@ namespace AirdPro.csimzMLParser.util
 
         public static string ParseFilterString(Scan scan, JobInfo jobInfo)
         {
-            if (!scan.GetCVParamOrChild(Scan.SCAN_FILTER_STRING_ID).IsEmpty())
+            if (!scan.GetCVParam(Scan.SCAN_FILTER_STRING_ID).IsEmpty())
             {
-                CVParam cv = scan.GetCVParamOrChild(Scan.SCAN_FILTER_STRING_ID);
+                CVParam cv = scan.GetCVParam(Scan.SCAN_FILTER_STRING_ID);
                 string filterString = cv.GetValueAsString();
                 return filterString;
             }
@@ -47,15 +46,15 @@ namespace AirdPro.csimzMLParser.util
 
         public static void ParseMobility(Scan scan, MobiInfo mobiInfo)
         {
-            if (!scan.GetCVParamOrChild(Scan.SCAN_INVERSE_REDUCED_ION_MOBILITY_ID).IsEmpty())
+            if (!scan.GetCVParam(Scan.SCAN_INVERSE_REDUCED_ION_MOBILITY_ID).IsEmpty())
             {
-                CVParam cv = scan.GetCVParamOrChild(Scan.SCAN_INVERSE_REDUCED_ION_MOBILITY_ID);
+                CVParam cv = scan.GetCVParam(Scan.SCAN_INVERSE_REDUCED_ION_MOBILITY_ID);
                 mobiInfo.unit = cv.units.GetName();
                 mobiInfo.type = MobilityType.TIMS;
             }
-            else if (!scan.GetCVParamOrChild(Scan.SCAN_ION_MOBILITY_DRIFT_TIME_ID).IsEmpty())
+            else if (!scan.GetCVParam(Scan.SCAN_ION_MOBILITY_DRIFT_TIME_ID).IsEmpty())
             {
-                CVParam cv = scan.GetCVParamOrChild(Scan.SCAN_ION_MOBILITY_DRIFT_TIME_ID);
+                CVParam cv = scan.GetCVParam(Scan.SCAN_ION_MOBILITY_DRIFT_TIME_ID);
                 mobiInfo.unit = cv.units.GetName();
                 mobiInfo.type = MobilityType.DTIMS;
             }
@@ -65,7 +64,7 @@ namespace AirdPro.csimzMLParser.util
         {
             try
             {
-                CVParam cv = spectrum.GetCVParamOrChild(Spectrum.TOTAL_ION_CURRENT_ID);
+                CVParam cv = spectrum.GetCVParam(Spectrum.TOTAL_ION_CURRENT_ID);
                 return cv.GetValueAsLong();
             }
             catch (Exception)
@@ -78,7 +77,7 @@ namespace AirdPro.csimzMLParser.util
         {
             try
             {
-                CVParam cv = spectrum.GetCVParamOrChild(Spectrum.BASE_PEAK_INTENSITY_ID);
+                CVParam cv = spectrum.GetCVParam(Spectrum.BASE_PEAK_INTENSITY_ID);
                 return cv.GetValueAsDouble();
             }
             catch (Exception)

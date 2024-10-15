@@ -111,7 +111,7 @@ namespace AirdPro.csimzMLParser.mzml
 
                 foreach (CVParam cvParam in rpg.GetCVParamList())
                 {
-                    CVParam curParam = GetCVParam(cvParam.GetTerm().id);
+                    CVParam curParam = GetCVParam(cvParam.GetTerm().GetID());
 
                     if (curParam != null && ContainsCVParam(curParam))
                     {
@@ -141,7 +141,7 @@ namespace AirdPro.csimzMLParser.mzml
         {
             foreach (CVParam replacementParam in rpg.GetCVParamList())
             {
-                CVParam paramToRemove = GetCVParam(replacementParam.GetTerm().id);
+                CVParam paramToRemove = GetCVParam(replacementParam.GetTerm().GetID());
 
                 RemoveCVParam(paramToRemove);
             }
@@ -285,7 +285,7 @@ namespace AirdPro.csimzMLParser.mzml
 
             foreach (CVParam cvParam in cvParams)
             {
-                if (cvParam.GetTerm().id.Equals(id))
+                if (cvParam.GetTerm().GetID().Equals(id))
                 {
                     cvParamList.Add(cvParam);
                 }
@@ -353,7 +353,7 @@ namespace AirdPro.csimzMLParser.mzml
         public virtual CVParam GetCVParam(string id)
         {
             foreach (ReferenceableParamGroupRef rpgRef in referenceableParamGroupRefs)
-    {
+            {
                 if (rpgRef == null)
                 {
                     continue;
@@ -369,7 +369,7 @@ namespace AirdPro.csimzMLParser.mzml
 
             foreach (CVParam cvParam in cvParams)
             {
-                if (cvParam.GetTerm().id.Equals(id))
+                if (cvParam.GetTerm().GetID().Equals(id))
                 {
                     return cvParam;
                 }
@@ -406,7 +406,7 @@ namespace AirdPro.csimzMLParser.mzml
 
                 List<CVParam> childList = rpgRef.GetReference().GetChildrenOf(id, false);
 
-                if (childList.Count != 0)
+                if (!childList.IsEmpty())
                 {
                     return childList[0];
                 }
@@ -414,7 +414,7 @@ namespace AirdPro.csimzMLParser.mzml
 
             foreach (CVParam cvParam in cvParams)
             {
-                if (cvParam.GetTerm().id.Equals(id))
+                if (cvParam.GetTerm().GetID().Equals(id))
                 {
                     return cvParam;
                 }
@@ -422,7 +422,7 @@ namespace AirdPro.csimzMLParser.mzml
 
             List<CVParam> children = GetChildrenOf(id, false);
 
-            if (children.Count != 0)
+            if (!children.IsEmpty())
             {
                 return children[0];
             }
@@ -484,7 +484,7 @@ namespace AirdPro.csimzMLParser.mzml
                     children.Add(cvParam);
                 }
 
-                if (includeCurrent && cvParam.GetTerm().id.Equals(id))
+                if (includeCurrent && cvParam.GetTerm().GetID().Equals(id))
                 {
                     children.Add(cvParam);
                 }
