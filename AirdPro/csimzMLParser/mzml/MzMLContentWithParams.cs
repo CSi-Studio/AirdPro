@@ -422,7 +422,7 @@ namespace AirdPro.csimzMLParser.mzml
 
             List<CVParam> children = GetChildrenOf(id, false);
 
-            if (!children.IsEmpty())
+            if (children.Count > 0)
             {
                 return children[0];
             }

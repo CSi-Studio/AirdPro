@@ -3,12 +3,10 @@ using AirdPro.csimzMLParser.exceptions;
 using AirdPro.csimzMLParser.imzml;
 using AirdPro.csimzMLParser.mzml;
 using AirdPro.csimzMLParser.obo;
-using CSharpFastPFOR.Port;
 using log4net;
 using System;
 using System.IO;
 using System.Xml;
-using XZ.NET;
 
 namespace AirdPro.csimzMLParser.parser
 {

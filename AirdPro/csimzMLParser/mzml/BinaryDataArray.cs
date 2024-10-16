@@ -161,7 +161,7 @@ namespace AirdPro.csimzMLParser.mzml
             {
                 foreach (DataProcessing dp in dpList)
                 {
-                    if (bda.dataProcessingRef.id.Equals(dp.id))
+                    if (bda.dataProcessingRef.GetID().Equals(dp.GetID()))
                     {
                         this.dataProcessingRef = dp;
                         break;
@@ -592,59 +592,7 @@ namespace AirdPro.csimzMLParser.mzml
         {
             return "binaryDataArray";
         }
-
-        public static class CompressionTypeExtensions
-        {
-            public static OBOTerm toOBOTerm(CompressionType compressionType)
-            {
-                switch (compressionType)
-                {
-                    case CompressionType.NONE:
-                        return OBO.GetOBO().GetTerm(NO_COMPRESSION_ID);
-                    case CompressionType.ZLIB:
-                        return OBO.GetOBO().GetTerm(ZLIB_COMPRESSION_ID);
-                    case CompressionType.XZ:
-                        return OBO.GetOBO().GetTerm(XZ_COMPRESSION_ID);
-                    case CompressionType.LZ4:
-                        return OBO.GetOBO().GetTerm(LZ4_COMPRESSION_ID);
-                    case CompressionType.ZSTD:
-                        return OBO.GetOBO().GetTerm(ZSTD_COMPRESSION_ID);
-                    case CompressionType.MSNUMPRESS_LINEAR:
-                        return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_ID);
-                    case CompressionType.MSNUMPRESS_POSITIVE:
-                        return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_ID);
-                    case CompressionType.MSNUMPRESS_SLOF:
-                        return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_ID);
-                    case CompressionType.MSNUMPRESS_LINEAR_ZLIB:
-                        return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_ZLIB_ID);
-                    case CompressionType.MSNUMPRESS_POSITIVE_ZLIB:
-                        return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_ZLIB_ID);
-                    case CompressionType.MSNUMPRESS_SLOF_ZLIB:
-                        return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_ZLIB_ID);
-                    case CompressionType.MSNUMPRESS_LINEAR_XZ:
-                        return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_XZ_ID);
-                    case CompressionType.MSNUMPRESS_POSITIVE_XZ:
-                        return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_XZ_ID);
-                    case CompressionType.MSNUMPRESS_SLOF_XZ:
-                        return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_XZ_ID);
-                    case CompressionType.MSNUMPRESS_LINEAR_LZ4:
-                        return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_LZ4_ID);
-                    case CompressionType.MSNUMPRESS_POSITIVE_LZ4:
-                        return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_LZ4_ID);
-                    case CompressionType.MSNUMPRESS_SLOF_LZ4:
-                        return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_LZ4_ID);
-                    case CompressionType.MSNUMPRESS_LINEAR_ZSTD:
-                        return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_ZSTD_ID);
-                    case CompressionType.MSNUMPRESS_POSITIVE_ZSTD:
-                        return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_ZSTD_ID);
-                    case CompressionType.MSNUMPRESS_SLOF_ZSTD:
-                        return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_ZSTD_ID);
-                    default:
-                        return null;
-                }
-            }
-        }
+        
 
     }
-
 }

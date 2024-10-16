@@ -250,7 +250,7 @@ namespace AirdPro.csimzMLParser.mzml
         {
             return $"spectrum: " +
                 $"id=\"{id}\" " +
-                $"{(dataProcessingRef != null ? $"dataProcessingRef=\"{dataProcessingRef.id}\" " : "")} " +
+                $"{(dataProcessingRef != null ? $"dataProcessingRef=\"{dataProcessingRef.GetID()}\" " : "")} " +
                 $"defaultArrayLength=\"{defaultArrayLength}\"" +
                 $" {(sourceFileRef != null ? $"sourceFileRef=\"{sourceFileRef.id}\" " : "")} " +
                 $"{(spotID != null && !spotID.IsEmpty() ? $"spotID=\"{spotID}\"" : "")}";
@@ -319,9 +319,9 @@ namespace AirdPro.csimzMLParser.mzml
             string newID = "";
 
             if (previousProcessing != null)
-                newID = previousProcessing.id + "-";
+                newID = previousProcessing.GetID() + "-";
 
-            DataProcessing newProcessing = new (newID + processing.id);
+            DataProcessing newProcessing = new (newID + processing.GetID());
 
             foreach (ProcessingMethod method in previousProcessing)
             {

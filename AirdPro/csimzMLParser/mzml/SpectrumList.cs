@@ -34,7 +34,7 @@ namespace AirdPro.csimzMLParser.mzml
             {
                 foreach(DataProcessing dp in dpList)
                 {
-                    if (spectrumList.defaultDataProcessingRef.GetID().Equals(dp.id))
+                    if (spectrumList.defaultDataProcessingRef.GetID().Equals(dp.GetID()))
                     {
                         defaultDataProcessingRef = dp;
                     }
@@ -124,7 +124,7 @@ namespace AirdPro.csimzMLParser.mzml
         public override string GetXMLAttributeText()
         {
             return base.GetXMLAttributeText() + "defaultDataProcessingRef=\""
-                + XMLHelper.EnsureSafeXML(defaultDataProcessingRef.id + "\"");
+                + XMLHelper.EnsureSafeXML(defaultDataProcessingRef.GetID() + "\"");
         }
 
         public override string GetTagName()

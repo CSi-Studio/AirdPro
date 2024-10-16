@@ -1317,7 +1317,7 @@ namespace AirdPro.Converters
 
             airdInfo.ignoreZeroIntensityPoint = JobInfo.config.ignoreZeroIntensity;
             //Features Info
-            FeaturesMap.Add(Features.raw_id, imzML.id);
+            FeaturesMap.Add(Features.raw_id, imzML);
             FeaturesMap.Add(Features.ignore_zero_intensity, JobInfo.config.ignoreZeroIntensity);
             FeaturesMap.Add(Features.source_file_format, JobInfo.format);
             FeaturesMap.Add(Features.byte_order, ByteOrder.LITTLE_ENDIAN);

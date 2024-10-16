@@ -75,37 +75,31 @@ namespace AirdPro.csimzMLParser.util
 
         public static double ParseBasePeakIntensity(Spectrum spectrum)
         {
-            try
-            {
-                CVParam cv = spectrum.GetCVParam(Spectrum.BASE_PEAK_INTENSITY_ID);
-                return cv.GetValueAsDouble();
-            }
-            catch (Exception)
+            CVParam cv = spectrum.GetCVParam(Spectrum.BASE_PEAK_INTENSITY_ID);
+            if (cv == null)
             {
                 return 0;
             }
+            return cv.GetValueAsDouble();
         }
 
         public static double ParseBasePeakMz(Spectrum spectrum)
         {
-            try
-            {
-                CVParam cv = spectrum.GetCVParamOrChild(Spectrum.BASE_PEAK_MZ_ID);
-                return cv.GetValueAsDouble();
-            }
-            catch (Exception)
+            CVParam cv = spectrum.GetCVParam(Spectrum.BASE_PEAK_MZ_ID);
+            if (cv == null)
             {
                 return 0;
             }
+            return cv.GetValueAsDouble();
         }
 
         public static string ParsePolarity(Spectrum spectrum)
         {
-            CVParam cvNeg = spectrum.GetCVParamOrChild(Spectrum.NEGATIVE_SCAN_ID);
+            CVParam cvNeg = spectrum.GetCVParam(Spectrum.NEGATIVE_SCAN_ID);
             if (!cvNeg.IsEmpty())
                 return Polarity.NEGATIVE;
 
-            CVParam cvPos = spectrum.GetCVParamOrChild(Spectrum.POSITIVE_SCAN_ID);
+            CVParam cvPos = spectrum.GetCVParam(Spectrum.POSITIVE_SCAN_ID);
             if (!cvPos.IsEmpty())
                 return Polarity.POSITIVE;
             return "Unknown";
@@ -113,11 +107,11 @@ namespace AirdPro.csimzMLParser.util
 
         public static string ParsePolarity(Chromatogram chromatogram)
         {
-            CVParam cvNeg = chromatogram.GetCVParamOrChild(Chromatogram.NEGATIVE_SCAN_ID);
+            CVParam cvNeg = chromatogram.GetCVParam(Chromatogram.NEGATIVE_SCAN_ID);
             if (!cvNeg.IsEmpty())
                 return Polarity.NEGATIVE;
 
-            CVParam cvPos = chromatogram.GetCVParamOrChild(Chromatogram.POSITIVE_SCAN_ID);
+            CVParam cvPos = chromatogram.GetCVParam(Chromatogram.POSITIVE_SCAN_ID);
             if (!cvPos.IsEmpty())
                 return Polarity.POSITIVE;
             return "Unknown";
@@ -125,11 +119,11 @@ namespace AirdPro.csimzMLParser.util
 
         public static string ParseMsType(Spectrum spectrum)
         {
-            CVParam cvProfile = spectrum.GetCVParamOrChild(Spectrum.PROFILE_SPECTRUM_ID);
+            CVParam cvProfile = spectrum.GetCVParam(Spectrum.PROFILE_SPECTRUM_ID);
             if (!cvProfile.IsEmpty())
                 return MSType.PROFILE;
 
-            CVParam cvCentroid = spectrum.GetCVParamOrChild(Spectrum.CENTROID_SPECTRUM_ID);
+            CVParam cvCentroid = spectrum.GetCVParam(Spectrum.CENTROID_SPECTRUM_ID);
             if (!cvCentroid.IsEmpty())
                 return MSType.CENTROIDED;
 
@@ -138,11 +132,11 @@ namespace AirdPro.csimzMLParser.util
 
         public static string ParseMsType(Chromatogram chromatogram)
         {
-            CVParam cvProfile = chromatogram.GetCVParamOrChild(Chromatogram.PROFILE_SPECTRUM_ID);
+            CVParam cvProfile = chromatogram.GetCVParam(Chromatogram.PROFILE_SPECTRUM_ID);
             if (!cvProfile.IsEmpty())
                 return MSType.PROFILE;
 
-            CVParam cvCentroid = chromatogram.GetCVParamOrChild(Chromatogram.CENTROID_SPECTRUM_ID);
+            CVParam cvCentroid = chromatogram.GetCVParam(Chromatogram.CENTROID_SPECTRUM_ID);
             if (!cvProfile.IsEmpty())
                 return MSType.CENTROIDED;            
 
@@ -161,19 +155,19 @@ namespace AirdPro.csimzMLParser.util
             var act = "";
             float ene = -1;
 
-            if (!activation.GetCVParamOrChild(Activator.HCD).Equals(Activator.UNKNOWN))
+            if (!activation.GetCVParam(Activator.HCD).Equals(Activator.UNKNOWN))
                 act = Activator.HCD;
-            else if (!activation.GetCVParamOrChild(Activator.CID).Equals(Activator.UNKNOWN))
+            else if (!activation.GetCVParam(Activator.CID).Equals(Activator.UNKNOWN))
                 act = Activator.CID;
-            else if (!activation.GetCVParamOrChild(Activator.ECD).Equals(Activator.UNKNOWN))
+            else if (!activation.GetCVParam(Activator.ECD).Equals(Activator.UNKNOWN))
                 act = Activator.ECD;
-            else if (!activation.GetCVParamOrChild(Activator.ETD).Equals(Activator.UNKNOWN))
+            else if (!activation.GetCVParam(Activator.ETD).Equals(Activator.UNKNOWN))
                 act = Activator.ETD;
             else
                 act = Activator.UNKNOWN;
 
-            if (!activation.GetCVParamOrChild(Activation.ACTIVATION_COLLISION_ENERGY).Equals(Activator.UNKNOWN))
-                ene = Convert.ToSingle(activation.GetCVParamOrChild(Activation.ACTIVATION_COLLISION_ENERGY).GetValueAsString());
+            if (!activation.GetCVParam(Activation.ACTIVATION_COLLISION_ENERGY).Equals(Activator.UNKNOWN))
+                ene = Convert.ToSingle(activation.GetCVParam(Activation.ACTIVATION_COLLISION_ENERGY).GetValueAsString());
             else
                 ene = -1;
             return (act, ene);
@@ -187,7 +181,7 @@ namespace AirdPro.csimzMLParser.util
             {
                 try
                 {
-                    CVParam cv = isolationWindow.GetCVParamOrChild(cvid);
+                    CVParam cv = isolationWindow.GetCVParam(cvid);
                     if (cv != null)
                     {
                         result = cv.GetValueAsDouble();
@@ -208,7 +202,7 @@ namespace AirdPro.csimzMLParser.util
 
             if (result == null)
             {
-                CVParam cv = isolationWindow.GetCVParamOrChild(cvid);
+                CVParam cv = isolationWindow.GetCVParam(cvid);
                 throw new Exception(ResultCode.Parse_Double_Error + ":" + cv.GetValueAsDouble());
             }
             return result.Value;
@@ -222,11 +216,11 @@ namespace AirdPro.csimzMLParser.util
             {
                 try
                 {
-                    if (precursor.SelectedIonList == null || precursor.SelectedIonList.Get(0).GetCVParamOrChild(Precursor.PRECURSOR_CHARGE_STATE_ID).IsEmpty())
+                    if (precursor.SelectedIonList == null || precursor.SelectedIonList.Get(0).GetCVParam(Precursor.PRECURSOR_CHARGE_STATE_ID).IsEmpty())
                     {
                         return null;
                     }
-                    result = precursor.SelectedIonList.Get(0).GetCVParamOrChild(Precursor.PRECURSOR_CHARGE_STATE_ID).GetValueAsInteger();
+                    result = precursor.SelectedIonList.Get(0).GetCVParam(Precursor.PRECURSOR_CHARGE_STATE_ID).GetValueAsInteger();
                 }
                 catch (FormatException e)
                 {
@@ -251,7 +245,7 @@ namespace AirdPro.csimzMLParser.util
             {
                 try
                 {
-                    CVParam cv = isolationWindow.GetCVParamOrChild(IsolationWindow.ISOLATION_WINDOW_LOWER_OFFSET_ID);
+                    CVParam cv = isolationWindow.GetCVParam(IsolationWindow.ISOLATION_WINDOW_LOWER_OFFSET_ID);
                     if (cv != null)
                     {                        
                         lower = cv.GetValueAsDouble();
@@ -261,7 +255,7 @@ namespace AirdPro.csimzMLParser.util
                         lower = 0;
                     }
 
-                    cv = isolationWindow.GetCVParamOrChild(IsolationWindow.ISOLATION_WINDOW_UPPER_OFFSET_ID);
+                    cv = isolationWindow.GetCVParam(IsolationWindow.ISOLATION_WINDOW_UPPER_OFFSET_ID);
                     if (cv != null)
                     {                        
                         upper = cv.GetValueAsDouble();
@@ -318,7 +312,7 @@ namespace AirdPro.csimzMLParser.util
 
         public static float ParseInjectionTime(Scan scan)
         {
-            CVParam cv = scan.GetCVParamOrChild(Scan.SCAN_ION_INJECTION_TIME_ID);
+            CVParam cv = scan.GetCVParam(Scan.SCAN_ION_INJECTION_TIME_ID);
             if (cv != null && !cv.GetValueAsDouble().IsEmpty())
             {
                 return (float)Math.Round(cv.GetValueAsDouble() * 10000) / 10000;
