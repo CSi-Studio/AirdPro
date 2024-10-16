@@ -243,10 +243,10 @@ namespace AirdPro.Converters
 
                 foreach (Spectrum spectrum in predictSpecList)
                 {
-                    //如果全部扫描下来都没有MS2, 说明是Full Scan扫描模式,设置为DDA
+                    //如果全部扫描下来都没有MS2, 说明是Full Scan扫描模式,设置为DDA                    
                     if (CVUtil.ParseMsLevel(spectrum).Equals(MsLevel.MS2))
                     {
-                        double width = CVUtil.ParsePrecursorWidth(spectrum.precursorList.Get(0).IsolationWindow, JobInfo);
+                        double width = CVUtil.ParsePrecursorWidth(spectrum.GetPrecursorList().Get(0).IsolationWindow, JobInfo);
                         //然后判断前体的宽度范围,如果范围小于4,则被预测为DDA模式,否则会被认定为DIA模式
                         if (width < 4)
                         {
@@ -608,7 +608,7 @@ namespace AirdPro.Converters
                 TotalSpectraCount = spectra.Size();
             }
 
-            chromatograms = imzML.run.chromatogramList;
+            chromatograms = imzML.GetRun().GetChromatogramList();
             if (chromatograms == null || chromatograms.IsEmpty())
             {
                 JobInfo.Log(ResultCode.No_Chromatograms_Found);
@@ -747,12 +747,12 @@ namespace AirdPro.Converters
                 level = 1,
                 num = index
             };
-            if (spectrum.scanList.Size() != 1)
+            if (spectrum.GetScanList().Size() != 1)
             {
                 return ms1;
             }
 
-            Scan scan = spectrum.scanList.Get(0);
+            Scan scan = spectrum.GetScanList().Get(0);
             ms1.filterString = CVUtil.ParseFilterString(scan, JobInfo);
             ms1.rt = CVUtil.ParseRt(scan, JobInfo);
             ms1.tic = CVUtil.ParseTic(spectrum);
@@ -800,9 +800,9 @@ namespace AirdPro.Converters
             }
            
 
-            if (spectrum.scanList.Size() < 1) return ms2;
+            if (spectrum.GetScanList().Size() < 1) return ms2;
 
-            var (activator, energy) = CVUtil.ParseActivator(spectrum.precursorList.Get(0));
+            var (activator, energy) = CVUtil.ParseActivator(spectrum.GetPrecursorList().Get(0));
             ms2.activator = activator;
             ms2.energy = energy;
             ms2.msType = CVUtil.ParseMsType(spectrum);
@@ -811,7 +811,7 @@ namespace AirdPro.Converters
             ms2.basePeakIntensity = CVUtil.ParseBasePeakIntensity(spectrum);
             ms2.basePeakMz = CVUtil.ParseBasePeakMz(spectrum);
 
-            Scan scan = spectrum.scanList.Get(0);
+            Scan scan = spectrum.GetScanList().Get(0);
             ms2.rt = CVUtil.ParseRt(scan, JobInfo);
             ms2.injectionTime = CVUtil.ParseInjectionTime(scan);
             if (MobiInfo.unit == null || MobiInfo.type == null)
@@ -1076,7 +1076,7 @@ namespace AirdPro.Converters
             airdInfo.fileSize = JobInfo.vendorFileSize;
             airdInfo.createDate = DateTime.Now.ToString();
             airdInfo.type = JobInfo.type;
-            airdInfo.totalCount = imzML.run.spectrumList.Size();
+            airdInfo.totalCount = imzML.GetRun().GetSpectrumList().Size();
             airdInfo.creator = JobInfo.config.creator;
 
             HashSet<string> activators = [];
@@ -1151,7 +1151,7 @@ namespace AirdPro.Converters
 
             //Instrument Info
             List<Instrument> instruments = [];
-            foreach (InstrumentConfiguration ic in imzML.instrumentConfigurationList)
+            foreach (InstrumentConfiguration ic in imzML.GetInstrumentConfigurationList())
             {
                 Instrument instrument = new();
 
@@ -1215,45 +1215,48 @@ namespace AirdPro.Converters
                     }
                 }
 
-                foreach (Component component in ic.componentList)
+                if (!ic.componentList.IsEmpty())
                 {
-                    switch (component.Type)
+                    foreach (Component component in ic.componentList)
                     {
-                        case ComponentType.ComponentType_Analyzer:
-                            foreach (CVParam cv in component.GetCVParamList())
-                            {
-                                instrument.analyzer.Add(cv.GetTagName());
-                            }
+                        switch (component.Type)
+                        {
+                            case ComponentType.ComponentType_Analyzer:
+                                foreach (CVParam cv in component.GetCVParamList())
+                                {
+                                    instrument.analyzer.Add(cv.GetTagName());
+                                }
 
-                            break;
-                        case ComponentType.ComponentType_Source:
-                            foreach (CVParam cv in component.GetCVParamList())
-                            {
-                                instrument.source.Add(cv.GetTagName());
-                            }
+                                break;
+                            case ComponentType.ComponentType_Source:
+                                foreach (CVParam cv in component.GetCVParamList())
+                                {
+                                    instrument.source.Add(cv.GetTagName());
+                                }
 
-                            break;
-                        case ComponentType.ComponentType_Detector:
-                            foreach (CVParam cv in component.GetCVParamList())
-                            {
-                                instrument.detector.Add(cv.GetTagName());
-                            }
+                                break;
+                            case ComponentType.ComponentType_Detector:
+                                foreach (CVParam cv in component.GetCVParamList())
+                                {
+                                    instrument.detector.Add(cv.GetTagName());
+                                }
 
-                            break;
-                        case ComponentType.ComponentType_Unknown:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
+                                break;
+                            case ComponentType.ComponentType_Unknown:
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
                     }
-                }
+                }                
 
                 instruments.Add(instrument);
             }
 
             airdInfo.instruments = instruments;
-            airdInfo.startTimeStamp = imzML.run.startTimeStamp.ToString();
+            airdInfo.startTimeStamp = imzML.GetRun().GetStartTimeStamp().ToString();
             //Software Info
-            foreach (var soft in imzML.softwareList)
+            foreach (var soft in imzML.GetSoftwareList())
             {
                 Software software = new()
                 {
@@ -1273,18 +1276,20 @@ namespace AirdPro.Converters
             airdInfo.softwares = softwares;
 
             //Parent Files Info
-            foreach (var sf in imzML.fileDescription.sourceFileList)
+            if (imzML.GetFileDescription().GetSourceFileList() != null)
             {
-                ParentFile file = new()
+                foreach (var sf in imzML.GetFileDescription().GetSourceFileList())
                 {
-                    name = sf.name,
-                    location = sf.location,
-                    formatType = sf.id
-                };
-                parentFiles.Add(file);
-            }
-
-            airdInfo.parentFiles = parentFiles;
+                    ParentFile file = new()
+                    {
+                        name = sf.name,
+                        location = sf.location,
+                        formatType = sf.id
+                    };
+                    parentFiles.Add(file);
+                }
+                airdInfo.parentFiles = parentFiles;
+            }        
 
             //Compressor Info
             List<Compressor> comps = [];

@@ -128,7 +128,7 @@ namespace AirdPro.csimzMLParser.parser
                     int minX = int.MaxValue;
                     int minY = int.MaxValue;
 
-                    foreach (Spectrum spectrum in imzML.run.spectrumList)
+                    foreach (Spectrum spectrum in imzML.GetRun().GetSpectrumList())
                     {
                         PixelLocation location = spectrum.GetPixelLocation();
                         if (location.x < minX)
@@ -137,7 +137,7 @@ namespace AirdPro.csimzMLParser.parser
                             minY = location.y;
                     }
 
-                    foreach (Spectrum spectrum in imzML.run.spectrumList)
+                    foreach (Spectrum spectrum in imzML.GetRun().GetSpectrumList())
                     {
                         PixelLocation location = spectrum.GetPixelLocation();
                         spectrum.SetPixelLocation(location.x - minX + 1, location.y - minY + 1);

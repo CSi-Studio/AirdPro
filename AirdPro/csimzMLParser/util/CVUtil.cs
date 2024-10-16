@@ -15,7 +15,7 @@ namespace AirdPro.csimzMLParser.util
             CVParam cv = spectrum.GetCVParam(Spectrum.MS_lEVEL_ID);
             if (cv == null)
             {
-                return default;
+                return "1";
             }
             string msLevel = cv.GetValueAsDouble().ToString();
             return msLevel;
@@ -24,6 +24,10 @@ namespace AirdPro.csimzMLParser.util
         public static double ParseRt(Scan scan, JobInfo jobInfo)
         {
             CVParam cv = scan.GetCVParam(Scan.SCAN_START_TIME_ID);
+            if (cv == null)
+            {
+                return 0;
+            }
             double time = cv.GetValueAsDouble();
             if (cv.GetUnits().Equals("minute")) time = time * 60;
             time = Math.Round(time * 10000) / 10000;
@@ -32,27 +36,24 @@ namespace AirdPro.csimzMLParser.util
 
         public static string ParseFilterString(Scan scan, JobInfo jobInfo)
         {
-            if (!scan.GetCVParam(Scan.SCAN_FILTER_STRING_ID).IsEmpty())
-            {
-                CVParam cv = scan.GetCVParam(Scan.SCAN_FILTER_STRING_ID);
-                string filterString = cv.GetValueAsString();
-                return filterString;
-            }
-            else
+            CVParam cv = scan.GetCVParam(Scan.SCAN_FILTER_STRING_ID);
+            if (cv == null)
             {
                 return null;
             }
+            string filterString = cv.GetValueAsString();
+            return filterString;
         }
 
         public static void ParseMobility(Scan scan, MobiInfo mobiInfo)
         {
-            if (!scan.GetCVParam(Scan.SCAN_INVERSE_REDUCED_ION_MOBILITY_ID).IsEmpty())
+            if (scan.GetCVParam(Scan.SCAN_INVERSE_REDUCED_ION_MOBILITY_ID) != null)
             {
                 CVParam cv = scan.GetCVParam(Scan.SCAN_INVERSE_REDUCED_ION_MOBILITY_ID);
                 mobiInfo.unit = cv.units.GetName();
                 mobiInfo.type = MobilityType.TIMS;
             }
-            else if (!scan.GetCVParam(Scan.SCAN_ION_MOBILITY_DRIFT_TIME_ID).IsEmpty())
+            else if (scan.GetCVParam(Scan.SCAN_ION_MOBILITY_DRIFT_TIME_ID) != null)
             {
                 CVParam cv = scan.GetCVParam(Scan.SCAN_ION_MOBILITY_DRIFT_TIME_ID);
                 mobiInfo.unit = cv.units.GetName();
@@ -62,15 +63,12 @@ namespace AirdPro.csimzMLParser.util
 
         public static long ParseTic(Spectrum spectrum)
         {
-            try
+            CVParam cv = spectrum.GetCVParam(Spectrum.TOTAL_ION_CURRENT_ID);
+            if (cv == null)
             {
-                CVParam cv = spectrum.GetCVParam(Spectrum.TOTAL_ION_CURRENT_ID);
-                return cv.GetValueAsLong();
+                return -1;
             }
-            catch (Exception)
-            {
-                return 0;
-            }
+            return cv.GetValueAsLong();
         }
 
         public static double ParseBasePeakIntensity(Spectrum spectrum)
@@ -78,7 +76,7 @@ namespace AirdPro.csimzMLParser.util
             CVParam cv = spectrum.GetCVParam(Spectrum.BASE_PEAK_INTENSITY_ID);
             if (cv == null)
             {
-                return 0;
+                return -1;
             }
             return cv.GetValueAsDouble();
         }
@@ -88,7 +86,7 @@ namespace AirdPro.csimzMLParser.util
             CVParam cv = spectrum.GetCVParam(Spectrum.BASE_PEAK_MZ_ID);
             if (cv == null)
             {
-                return 0;
+                return -1;
             }
             return cv.GetValueAsDouble();
         }
@@ -96,11 +94,11 @@ namespace AirdPro.csimzMLParser.util
         public static string ParsePolarity(Spectrum spectrum)
         {
             CVParam cvNeg = spectrum.GetCVParam(Spectrum.NEGATIVE_SCAN_ID);
-            if (!cvNeg.IsEmpty())
+            if (cvNeg != null)
                 return Polarity.NEGATIVE;
 
             CVParam cvPos = spectrum.GetCVParam(Spectrum.POSITIVE_SCAN_ID);
-            if (!cvPos.IsEmpty())
+            if (cvPos != null)
                 return Polarity.POSITIVE;
             return "Unknown";
         }
@@ -108,11 +106,11 @@ namespace AirdPro.csimzMLParser.util
         public static string ParsePolarity(Chromatogram chromatogram)
         {
             CVParam cvNeg = chromatogram.GetCVParam(Chromatogram.NEGATIVE_SCAN_ID);
-            if (!cvNeg.IsEmpty())
+            if (cvNeg != null)
                 return Polarity.NEGATIVE;
 
             CVParam cvPos = chromatogram.GetCVParam(Chromatogram.POSITIVE_SCAN_ID);
-            if (!cvPos.IsEmpty())
+            if (cvPos != null)
                 return Polarity.POSITIVE;
             return "Unknown";
         }
@@ -120,11 +118,11 @@ namespace AirdPro.csimzMLParser.util
         public static string ParseMsType(Spectrum spectrum)
         {
             CVParam cvProfile = spectrum.GetCVParam(Spectrum.PROFILE_SPECTRUM_ID);
-            if (!cvProfile.IsEmpty())
+            if (cvProfile != null)
                 return MSType.PROFILE;
 
             CVParam cvCentroid = spectrum.GetCVParam(Spectrum.CENTROID_SPECTRUM_ID);
-            if (!cvCentroid.IsEmpty())
+            if (cvCentroid != null)
                 return MSType.CENTROIDED;
 
             return MSType.UNKNOWN;
@@ -133,11 +131,11 @@ namespace AirdPro.csimzMLParser.util
         public static string ParseMsType(Chromatogram chromatogram)
         {
             CVParam cvProfile = chromatogram.GetCVParam(Chromatogram.PROFILE_SPECTRUM_ID);
-            if (!cvProfile.IsEmpty())
+            if (cvProfile != null)
                 return MSType.PROFILE;
 
             CVParam cvCentroid = chromatogram.GetCVParam(Chromatogram.CENTROID_SPECTRUM_ID);
-            if (!cvProfile.IsEmpty())
+            if (cvCentroid != null)
                 return MSType.CENTROIDED;            
 
             return MSType.UNKNOWN;
@@ -216,7 +214,7 @@ namespace AirdPro.csimzMLParser.util
             {
                 try
                 {
-                    if (precursor.SelectedIonList == null || precursor.SelectedIonList.Get(0).GetCVParam(Precursor.PRECURSOR_CHARGE_STATE_ID).IsEmpty())
+                    if (precursor.SelectedIonList == null || precursor.SelectedIonList.Get(0).GetCVParam(Precursor.PRECURSOR_CHARGE_STATE_ID) == null)
                     {
                         return null;
                     }

@@ -306,10 +306,10 @@ namespace AirdPro.csimzMLParser.obo
             {
                 term = terms[id];
             }
-            else
+           /* else
             {
                 Console.WriteLine(id + "不在" + this.ontologyIdentifier + "中。。。");
-            }
+            }*/
 
             if (term == null)
             {
@@ -318,7 +318,7 @@ namespace AirdPro.csimzMLParser.obo
                     term = parent.GetTerm(id);
                     if (term != null)
                     {
-                        Console.WriteLine(id + "在" + parent.ontologyIdentifier + "找到了！！！");
+                        //Console.WriteLine(id + "在" + parent.ontologyIdentifier + "找到了！！！");
                         break;
                     }
                 }                

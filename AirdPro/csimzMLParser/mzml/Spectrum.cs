@@ -31,19 +31,19 @@ namespace AirdPro.csimzMLParser.mzml
 
         protected static int spectrumNumber = 0;
 
-        public SourceFile sourceFileRef;
-        public string spotID;
-        public ScanList scanList;
-        public PrecursorList precursorList;
-        public ProductList productList;
-        public PixelLocation pixelLocation;
+        private SourceFile sourceFileRef;
+        private string spotID;
+        private ScanList scanList;
+        private PrecursorList precursorList;
+        private ProductList productList;
+        private PixelLocation pixelLocation;
 
         public Spectrum(string id, int defaultArrayLength) : base(id, defaultArrayLength)
         {
 
         }
 
-        public Spectrum(Spectrum spectrum, MzML mzML) : this(spectrum, mzML.referenceableParamGroupList, mzML.dataProcessingList, mzML.fileDescription.sourceFileList, mzML.instrumentConfigurationList)
+        public Spectrum(Spectrum spectrum, MzML mzML) : this(spectrum, mzML.GetReferenceableParamGroupList(), mzML.GetDataProcessingList(), mzML.GetFileDescription().GetSourceFileList(), mzML.GetInstrumentConfigurationList())
         {
 
         }
