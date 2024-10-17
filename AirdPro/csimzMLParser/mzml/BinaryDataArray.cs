@@ -189,7 +189,7 @@ namespace AirdPro.csimzMLParser.mzml
         {
             DataType dataType = GetDataType();
 
-            return dataType == DataTypeTransform.DataType.DOUBLE;
+            return dataType == DataType.DOUBLE;
         }
 
         public bool IsSinglePrecision()
@@ -490,9 +490,9 @@ namespace AirdPro.csimzMLParser.mzml
             base.AddCVParam(cvParam);
         }
 
-        public override void AddReferenceableParamGroupRef(ReferenceableParamGroupRef rpgr)
+        public override void AddReferenceableParamGroupRef(ReferenceableParamGroupRef rpgRef)
         {
-            CVParam child = rpgr.GetReference().GetCVParamOrChild(BINARY_DATA_ARRAY_ID);
+            CVParam child = rpgRef.GetReference().GetCVParamOrChild(BINARY_DATA_ARRAY_ID);
             if (child != null)
             {
                 if (child.GetTerm().GetID().Equals(MZ_ARRAY_ID))
@@ -508,7 +508,7 @@ namespace AirdPro.csimzMLParser.mzml
                     isMobilityArray = true;
                 }
             }
-            base.AddReferenceableParamGroupRef(rpgr);
+            base.AddReferenceableParamGroupRef(rpgRef);
         }
 
         public bool IsMzArray()
@@ -529,7 +529,7 @@ namespace AirdPro.csimzMLParser.mzml
         public void SetCompression(CompressionType compression)
         {
             RemoveChildrenOfCVParam(COMPRESSION_TYPE_ID, false);
-            this.AddCVParam(new EmptyCVParam(ToOBOTerm(compression)));
+            AddCVParam(new EmptyCVParam(ToOBOTerm(compression)));
         }
 
         public void SetDataType(DataType dataType)
@@ -559,8 +559,8 @@ namespace AirdPro.csimzMLParser.mzml
                     break;
             }
 
-            this.RemoveChildrenOfCVParam(BINARY_DATA_TYPE_ID, false);
-            this.AddCVParam(new EmptyCVParam(OBO.GetOBO().GetTerm(newDataTypeID)));
+            RemoveChildrenOfCVParam(BINARY_DATA_TYPE_ID, false);
+            AddCVParam(new EmptyCVParam(OBO.GetOBO().GetTerm(newDataTypeID)));
         }
 
         public CVParam GetDataArrayType()

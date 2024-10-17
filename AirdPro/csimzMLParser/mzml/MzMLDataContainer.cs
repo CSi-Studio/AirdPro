@@ -8,11 +8,11 @@ namespace AirdPro.csimzMLParser.mzml
 {
     public abstract class MzMLDataContainer : MzMLIndexedContentWithParams
     {
-        public DataLocation dataLocation;
-        public BinaryDataArrayList binaryDataArrayList;
-        public int defaultArrayLength;
-        public DataProcessing dataProcessingRef;
-        public IReferenceList<DataProcessing> dataProcessingList;
+        protected DataLocation dataLocation;
+        protected BinaryDataArrayList binaryDataArrayList;
+        protected int defaultArrayLength;
+        protected DataProcessing dataProcessingRef;
+        private IReferenceList<DataProcessing> dataProcessingList;
 
         public MzMLDataContainer(MzMLDataContainer mzMLContent, ReferenceableParamGroupList rpgList, DataProcessingList dpList)
             : base(mzMLContent, rpgList)

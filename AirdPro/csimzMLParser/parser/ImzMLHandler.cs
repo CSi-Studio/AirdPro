@@ -65,8 +65,7 @@ namespace AirdPro.csimzMLParser.parser
             FileStream inputStream = null;
             try
             {
-                OBO obo = OBO.GetOBO();
-                //FileInfo ibdFile = new FileInfo(Path.Combine(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename) + ".ibd"));
+                OBO obo = OBO.GetOBO();                
                 FileInfo ibdFile = new(Path.ChangeExtension(filename, ".ibd"));
 
                 handler = new ImzMLHandler(obo, ibdFile, openDataStorage);
@@ -82,30 +81,6 @@ namespace AirdPro.csimzMLParser.parser
                     IgnoreComments = true
                 };
 
-                //inputStream = new FileStream(filename, FileMode.Open, FileAccess.Read);
-                /*byte[] compressedData = new byte[inputStream.Length];
-                // 根据文件扩展名选择正确的解压方式
-                if (filename.EndsWith(".lz4", StringComparison.OrdinalIgnoreCase))
-                {
-                    handler.uncompressedData = new LZ4DataTransform().ReverseTransform(compressedData);
-                }
-                else if (filename.EndsWith(".zlib", StringComparison.OrdinalIgnoreCase))
-                {
-                    handler.uncompressedData = new ZlibDataTransform().ReverseTransform(compressedData);
-                }
-                else if (filename.EndsWith(".zstd", StringComparison.OrdinalIgnoreCase))
-                {
-                    handler.uncompressedData = new ZstdDataTransform().ReverseTransform(compressedData);
-                }
-                else if (filename.EndsWith(".xz", StringComparison.OrdinalIgnoreCase))
-                {
-                    handler.uncompressedData = new XZDataTransform().ReverseTransform(compressedData);
-                }
-                else
-                {
-                    handler.uncompressedData = compressedData;
-                }*/
-                //
                 using (inputStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
                 using (XmlReader reader = XmlReader.Create(inputStream, settings))
                 {
@@ -114,6 +89,10 @@ namespace AirdPro.csimzMLParser.parser
                         if (reader.IsStartElement())
                         {
                             handler.StartElement(reader);
+                        }
+                        else
+                        {
+                            handler.EndElement(reader);
                         }
                     }
                 }
@@ -131,16 +110,16 @@ namespace AirdPro.csimzMLParser.parser
                     foreach (Spectrum spectrum in imzML.GetRun().GetSpectrumList())
                     {
                         PixelLocation location = spectrum.GetPixelLocation();
-                        if (location.x < minX)
-                            minX = location.x;
-                        if (location.y < minY)
-                            minY = location.y;
+                        if (location.GetX() < minX)
+                            minX = location.GetX();
+                        if (location.GetY() < minY)
+                            minY = location.GetY();
                     }
 
                     foreach (Spectrum spectrum in imzML.GetRun().GetSpectrumList())
                     {
                         PixelLocation location = spectrum.GetPixelLocation();
-                        spectrum.SetPixelLocation(location.x - minX + 1, location.y - minY + 1);
+                        spectrum.SetPixelLocation(location.GetX() - minX + 1, location.GetY() - minY + 1);
                     }
 
                     CVParam curWidth = imzML.GetScanSettingsList().GetScanSettings(0).GetCVParam(ScanSettings.MAX_COUNT_PIXEL_X_ID);
@@ -165,13 +144,6 @@ namespace AirdPro.csimzMLParser.parser
                 LOGGER.Error(ex.Message, ex);
                 throw new ImzMLParseException(new FatalParseIssue("IOException: " + ex.Message, ex.Message), ex);
             }
-            /*finally
-            {
-                if (inputStream != null)
-                {
-                    inputStream.Close();
-                }
-            }*/
             return handler.GetImzML();
         }
 

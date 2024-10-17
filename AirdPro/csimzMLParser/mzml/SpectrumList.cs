@@ -71,7 +71,7 @@ namespace AirdPro.csimzMLParser.mzml
             }
             if (spectrumDictionary != null)
             {
-                spectrumDictionary[spectrum.id] = spectrum;
+                spectrumDictionary[spectrum.GetID()] = spectrum;
             }
         }
 
@@ -80,7 +80,7 @@ namespace AirdPro.csimzMLParser.mzml
             Add(spectrum);
         }
 
-            public Spectrum GetSpectrum(int index)
+        public Spectrum GetSpectrum(int index)
         {
             return Get(index);
         }
@@ -93,7 +93,7 @@ namespace AirdPro.csimzMLParser.mzml
                 spectrumDictionary = new Dictionary<string, Spectrum>(list.Count);
                 foreach (Spectrum spectrum in list) 
                 { 
-                    spectrumDictionary[spectrum.id] = spectrum;
+                    spectrumDictionary[spectrum.GetID()] = spectrum;
                 }
             }            
             return spectrumDictionary[id];
@@ -110,8 +110,8 @@ namespace AirdPro.csimzMLParser.mzml
             Spectrum removedSpectrum = spectrum;
             if (spectrumDictionary != null)
             {
-                removedSpectrum = spectrumDictionary[spectrum.id];
-                spectrumDictionary.Remove(removedSpectrum.id);
+                removedSpectrum = spectrumDictionary[spectrum.GetID()];
+                spectrumDictionary.Remove(removedSpectrum.GetID());
             }
             return success && (removedSpectrum.Equals(spectrum));
         }

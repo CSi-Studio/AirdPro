@@ -2,7 +2,7 @@
 {
     public abstract class MzMLIndexedContentWithParams : MzMLOrderedContentWithParams, IReferenceableTag
     {
-        public string id;
+        protected string id;
     
         public MzMLIndexedContentWithParams()
         {

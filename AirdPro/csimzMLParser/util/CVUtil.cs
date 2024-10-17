@@ -12,13 +12,17 @@ namespace AirdPro.csimzMLParser.util
     {    
         public static string ParseMsLevel(Spectrum spectrum)
         {
-            CVParam cv = spectrum.GetCVParam(Spectrum.MS_lEVEL_ID);
+            CVParam cv = spectrum.GetCVParam(Spectrum.MS_LEVEL_ID);
             if (cv == null)
             {
                 return "1";
             }
-            string msLevel = cv.GetValueAsDouble().ToString();
-            return msLevel;
+            if (cv.GetValueAsString().Equals("2"))
+            {
+                return "2";
+            }
+            
+            return "1";
         }
 
         public static double ParseRt(Scan scan, JobInfo jobInfo)

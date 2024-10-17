@@ -27,8 +27,8 @@ namespace AirdPro.csimzMLParser.mzml
 
         public Precursor(Precursor precursor, ReferenceableParamGroupList rpgList, SourceFileList SourceFileList)
         {
-            this.ExternalSpectrumID = precursor.ExternalSpectrumID;
-            this.SpectrumRef = precursor.SpectrumRef;
+            ExternalSpectrumID = precursor.ExternalSpectrumID;
+            SpectrumRef = precursor.SpectrumRef;
 
             if (precursor.SourceFileRef != null && SourceFileList != null)
             {
@@ -36,7 +36,7 @@ namespace AirdPro.csimzMLParser.mzml
                 {
                     if (precursor.SourceFileRef.id.Equals(SourceFile.id))
                     {
-                        this.SourceFileRef = SourceFile;
+                        SourceFileRef = SourceFile;
 
                         break;
                     }
@@ -118,7 +118,7 @@ namespace AirdPro.csimzMLParser.mzml
             }
             if (SpectrumRef != null)
             {
-                attributeText += " spectrumRef=\"" + XMLHelper.EnsureSafeXML(SpectrumRef.id) + "\"";
+                attributeText += " spectrumRef=\"" + XMLHelper.EnsureSafeXML(SpectrumRef.GetID()) + "\"";
             }
 
             if (attributeText.StartsWith(" "))
@@ -129,7 +129,7 @@ namespace AirdPro.csimzMLParser.mzml
         public override string ToString()
         {
             return "precursor: "
-                    + ((SpectrumRef != null) ? " spectrumRef=\"" + SpectrumRef.id + "\"" : "")
+                    + ((SpectrumRef != null) ? " spectrumRef=\"" + SpectrumRef.GetID() + "\"" : "")
                     + ((ExternalSpectrumID != null && !ExternalSpectrumID.IsEmpty()) ? " externalSpectrumID=\"" + ExternalSpectrumID + "\"" : "")
                     + ((SourceFileRef != null) ? " sourceFileRef=\"" + SourceFileRef.id + "\"" : "");
         }

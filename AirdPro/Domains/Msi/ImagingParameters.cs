@@ -26,9 +26,9 @@ namespace AirdPro.Domains.Msi
 
         public ImagingParameters(ImzML imz)
         {
-            MaxNumberOfPixelX = imz.width;
-            MaxNumberOfPixelY = imz.height;
-            MaxNumberOfPixelZ = imz.depth;
+            MaxNumberOfPixelX = imz.GetWidth();
+            MaxNumberOfPixelY = imz.GetHeight();
+            MaxNumberOfPixelZ = imz.GetDepth();
             SpectraPerPixel = imz.GetNumberOfSpectraPerPixel();
             MinMZ = imz.GetMinimumDetectedmz();
             MaxMZ = imz.GetMaximumDetectedmz();

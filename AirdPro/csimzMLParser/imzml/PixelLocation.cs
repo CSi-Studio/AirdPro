@@ -13,15 +13,15 @@ namespace AirdPro.csimzMLParser.imzml
         /**
          * x坐标。
          */
-        public readonly int x;
+        private readonly int x;
         /**
          * y坐标。
          */
-        public readonly int y;
+        private readonly int y;
         /**
          * z坐标。
          */
-        public readonly int z;
+        private readonly int z;
 
         /**
          * 构造PixelLocation (x, y, z)。

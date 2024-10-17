@@ -1,9 +1,7 @@
 ﻿using AirdPro.csimzMLParser.affair;
 using HZH_Controls;
-using pwiz.CLI.cv;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 
 namespace AirdPro.csimzMLParser.mzml
 {
@@ -406,7 +404,7 @@ namespace AirdPro.csimzMLParser.mzml
 
                 List<CVParam> childList = rpgRef.GetReference().GetChildrenOf(id, false);
 
-                if (!childList.IsEmpty())
+                if (childList.Count > 0)
                 {
                     return childList[0];
                 }

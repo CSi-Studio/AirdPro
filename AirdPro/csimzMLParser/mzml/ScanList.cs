@@ -22,10 +22,10 @@ namespace AirdPro.csimzMLParser.mzml
         public ScanList(ScanList scanList, ReferenceableParamGroupList rpgList, SourceFileList sourceFileList, InstrumentConfigurationList icList)
             : base(scanList, rpgList)
         {
-            this.list = new List<Scan> (scanList.Size());
+            list = new List<Scan> (scanList.Size());
             foreach (Scan scan in scanList)
             {
-                this.list.Add(new Scan(scan, rpgList, icList, sourceFileList));
+                list.Add(new Scan(scan, rpgList, icList, sourceFileList));
             }
         }
 

@@ -76,15 +76,15 @@ namespace AirdPro.csimzMLParser.mzml
             run = new Run(mzML.run, referenceableParamGroupList, instrumentConfigurationList, fileDescription.sourceFileList, sampleList, dataProcessingList);
         }
 
-        //private readonly object lockObject = new();
+        private readonly object lockObject = new();
 
         public void SetDataStorage(DataStorage dataStorage)
         {
-            this.dataStorage = dataStorage;
-            /*lock (lockObject)
+            //this.dataStorage = dataStorage;
+            lock (lockObject)
             {
                 this.dataStorage = dataStorage;
-            }*/
+            }
         }
 
         public void SetOBO(OBO obo)
@@ -409,9 +409,9 @@ namespace AirdPro.csimzMLParser.mzml
 
             foreach (Spectrum spectrum in spectrumList)
             {
-                CloseDataStorage(spectrum.dataLocation);
+                CloseDataStorage(spectrum.GetDataLocation());
 
-                foreach (BinaryDataArray bda in spectrum.binaryDataArrayList)
+                foreach (BinaryDataArray bda in spectrum.GetBinaryDataArrayList())
                 {
                     CloseDataStorage(bda.GetDataLocation());
                 }

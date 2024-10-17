@@ -7,21 +7,21 @@ namespace AirdPro.csimzMLParser.imzml
 {
     public class ImzML : MzML, IMSIData
     {
-        public static readonly long serialVersionUID = 1L;
+        private static readonly long serialVersionUID = 1L;
 
         private static readonly ILog logger = LogManager.GetLogger(typeof(ImzML));
 
-        public int width;
-        public int height;
-        public int depth;
-        public FileInfo ibdFile;
-        public double[] fullmzList;
-        public double[,] ticImage;
-        public Spectrum[][][] spectrumGrid;
-        public PixelLocation[] pixelLocations;
-        public double minMZ = double.MaxValue;
-        public double maxMZ = double.MinValue;
-        public int dimensionality = -1;
+        private int width;
+        private int height;
+        private int depth;
+        private FileInfo ibdFile;
+        private double[] fullmzList;
+        private double[,] ticImage;
+        private Spectrum[][][] spectrumGrid;
+        private PixelLocation[] pixelLocations;
+        private double minMZ = double.MaxValue;
+        private double maxMZ = double.MinValue;
+        private int dimensionality = -1;
 
         public ImzML(string version) : base(version)
         {

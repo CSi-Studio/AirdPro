@@ -2,6 +2,7 @@
 using HZH_Controls;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace AirdPro.csimzMLParser.mzml
 {
