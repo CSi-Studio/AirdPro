@@ -28,11 +28,17 @@ namespace AirdPro.csimzMLParser.mzml
 
         public string GetName()
         {
+            CVParam cvParam = GetCVParam(CONTACT_NAME_ID);
+            if (cvParam == null)
+                return null;
             return GetCVParam(CONTACT_NAME_ID).GetValueAsString();
         }
 
         public string GetOrganisation()
         {
+            CVParam cvParam = GetCVParam(CONTACT_ORGANISATION_ID);
+            if (cvParam == null)
+                return null;
             return GetCVParam(CONTACT_ORGANISATION_ID).GetValueAsString();
         }
 

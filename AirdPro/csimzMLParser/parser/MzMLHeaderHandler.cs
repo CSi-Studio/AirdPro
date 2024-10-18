@@ -14,7 +14,7 @@ using System.Xml;
 
 namespace AirdPro.csimzMLParser.parser
 {
-    public class MzMLHeaderHandler : IDisposable
+    public class MzMLHeaderHandler
     {
         public const string ACCESSION_ATTRIBUTE_NAME = "accession";
         public const string VALUE_ATTRIBUTE_NAME = "value";
@@ -420,14 +420,26 @@ namespace AirdPro.csimzMLParser.parser
             string startTimeStamp = reader.GetAttribute("startTimeStamp");
             if (startTimeStamp != null)
             {
+                string format = "yyyy-MM-dd'T'HH:mm:ss";
                 try
                 {
-                    DateTime dateTime = DateTime.ParseExact(startTimeStamp, "yyyy-MM-dd'T'HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                    DateTime dateTime;
+                    if (startTimeStamp.Contains("BST"))
+                    {
+                        format = "ddd MMM dd HH:mm:ss 'BST' yyyy";
+                        // 将BST替换为标准的时区表示
+                        dateTime = DateTimeOffset.ParseExact(startTimeStamp, format, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).UtcDateTime;
+                    }
+                    else
+                    {
+                        dateTime = DateTime.ParseExact(startTimeStamp, "yyyy-MM-dd'T'HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                    }                                   
+                    
                     run.SetStartTimeStamp(dateTime);
                 }
                 catch (ParseException)
                 {
-                    InvalidFormatIssue formatIssue = new ("startTimeStamp", "yyyy-MM-dd'T'HH:mm:ss", startTimeStamp);
+                    InvalidFormatIssue formatIssue = new ("startTimeStamp", format, startTimeStamp);
                     formatIssue.SetIssueLocation(contentStack.Peek());
                     NotifyParserListeners(formatIssue);
                     try
@@ -757,14 +769,13 @@ namespace AirdPro.csimzMLParser.parser
             DataProcessing dataProcessing = null;
             bool foundRef = false;
 
-            if (!string.IsNullOrEmpty(defaultDataProcessingRef) && dataProcessingList != null)
+            if (defaultDataProcessingRef != null && dataProcessingList != null)
             {
                 dataProcessing = dataProcessingList.GetDataProcessing(defaultDataProcessingRef);
 
                 if (dataProcessing != null)
                 {
-                    string count = reader.GetAttribute(COUNT_ATTRIBUTE_NAME);
-                    numberOfSpectra = int.Parse(count);
+                    numberOfSpectra = int.Parse(reader.GetAttribute(COUNT_ATTRIBUTE_NAME));
                     foundRef = true;
                 }
             }
@@ -792,13 +803,11 @@ namespace AirdPro.csimzMLParser.parser
 
         protected void StartSpectrum(XmlReader reader)
         {
-            string id = reader.GetAttribute(ID_ATTRIBUTE_NAME);
-            int defaultArrayLength = int.Parse(reader.GetAttribute("defaultArrayLength"));
-            currentSpectrum = new Spectrum(id, defaultArrayLength);
+            currentSpectrum = new Spectrum(reader.GetAttribute(ID_ATTRIBUTE_NAME), int.Parse(reader.GetAttribute("defaultArrayLength")));
 
             string dataProcessingRef = reader.GetAttribute("dataProcessingRef");
 
-            if (!string.IsNullOrEmpty(dataProcessingRef))
+            if (dataProcessingRef != null)
             {
                 bool foundRef = false;
 
@@ -830,7 +839,7 @@ namespace AirdPro.csimzMLParser.parser
 
             string sourceFileRef = reader.GetAttribute("sourceFileRef");
 
-            if (!string.IsNullOrEmpty(sourceFileRef))
+            if (sourceFileRef != null)
             {
                 bool foundRef = false;
 
@@ -1980,7 +1989,7 @@ namespace AirdPro.csimzMLParser.parser
                         }
                         catch (IOException ex)
                         {
-                            LOGGER.Error(typeof(MzMLHeaderHandler), ex);
+                            LOGGER.Error(null, ex);
                         }
                     }
                 }
@@ -2000,9 +2009,5 @@ namespace AirdPro.csimzMLParser.parser
             return mzML;
         }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

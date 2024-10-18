@@ -1,11 +1,9 @@
-﻿using AirdPro.Algorithms;
-using AirdPro.Algorithms.Compressor;
+﻿using AirdPro.Algorithms.Compressor;
 using AirdPro.Algorithms.Parser;
 using AirdPro.Constants;
 using AirdPro.csimzMLParser.mzml;
 using AirdPro.csimzMLParser.parser;
 using AirdPro.Domains;
-using AirdPro.Domains.Msi;
 using AirdSDK.Beans;
 using AirdSDK.Beans.Common;
 using AirdSDK.Compressor;
@@ -21,7 +19,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using ThermoFisher.CommonCore.Data.FilterEnums;
 using Spectrum = AirdPro.csimzMLParser.mzml.Spectrum;
 using AirdPro.Utils;
 using AirdPro.csimzMLParser.imzml;
@@ -32,6 +29,10 @@ using AirdPro.Algorithms.Maths;
 using Software = AirdSDK.Beans.Software;
 using ByteOrder = AirdPro.Constants.ByteOrder;
 using static AirdPro.csimzMLParser.mzml.Component;
+using AirdPro.Domains.Msi;
+using CSharpFastPFOR.Port;
+using System.Text.RegularExpressions;
+using System.Management.Instrumentation;
 
 namespace AirdPro.Converters
 {
@@ -39,7 +40,8 @@ namespace AirdPro.Converters
     {
         public ImzML imzML;
         public SpectrumList spectra;
-        protected ChromatogramList chromatograms;
+        protected ChromatogramList chromatograms;        
+        private int parsedScans;
 
         protected List<WindowRange> Ranges = []; //SWATH/DIA Window的窗口
         protected Hashtable RangeTable = []; //用于存放SWATH/DIA窗口的信息,key为mz
@@ -100,7 +102,9 @@ namespace AirdPro.Converters
         {
             Start();
             CopyFile(); //如果检测到是网络挂载磁盘,则首先拷贝到本地以后再进行转换,以提升转换速度
-            ImzML imzML = ReadImzMLFile();
+            
+            ImzML imzML = ImportImzMLFile();
+            
             try
             {
                 if (imzML == null)
@@ -110,6 +114,7 @@ namespace AirdPro.Converters
                 }
                 StartPosition = 0;
                 InitDirectory(); //创建文件夹,首先创建文件夹的目的在于确保对指定目录拥有写权限,如果无法正常创建,则在本步骤就中断
+                
                 ReadImzML(imzML);
                 using (AirdStream = new FileStream(JobInfo.airdFilePath, FileMode.Create))
                 {
@@ -246,10 +251,10 @@ namespace AirdPro.Converters
 
                 foreach (Spectrum spectrum in predictSpecList)
                 {
-                    //如果全部扫描下来都没有MS2, 说明是Full Scan扫描模式,设置为DDA
+                    //如果全部扫描下来都没有MS2, 说明是Full Scan扫描模式,设置为DDA                    
                     if (CVUtil.ParseMsLevel(spectrum).Equals(MsLevel.MS2))
                     {
-                        double width = CVUtil.ParsePrecursorWidth(spectrum.precursorList.Get(0).IsolationWindow, JobInfo);
+                        double width = CVUtil.ParsePrecursorWidth(spectrum.GetPrecursorList().Get(0).IsolationWindow, JobInfo);
                         //然后判断前体的宽度范围,如果范围小于4,则被预测为DDA模式,否则会被认定为DIA模式
                         if (width < 4)
                         {
@@ -573,7 +578,7 @@ namespace AirdPro.Converters
             }
         }         
 
-        public ImzML ReadImzMLFile()
+        public ImzML ImportImzMLFile()
         {
             JobInfo.Log(Tag.Prepare_To_Parse_ImzML_File, Status.Prepare);            
 
@@ -611,7 +616,83 @@ namespace AirdPro.Converters
                 TotalSpectraCount = spectra.Size();
             }
 
-            chromatograms = imzML.run.chromatogramList;
+            //
+            for (int i = 0; i < TotalSpectraCount; i++)
+            {
+                Spectrum spectrum = spectra.Get(i);
+                if (!IsMsSpectrum(spectrum))
+                {
+                    parsedScans++;
+                    continue;
+                }
+
+                string scanId = spectrum.GetID();
+                int scanNumber = DataUtil.ConvertScanIdToScanNumber(scanId);
+                
+
+                // Extract scan data
+                int msLevel = DataUtil.ExtractMSLevel(spectrum);
+                
+                float retentionTime = DataUtil.ExtractRetentionTime(spectrum);
+                PolarityType polarity = DataUtil.ExtractPolarity(spectrum);
+                int parentScan = DataUtil.ExtractParentScanNumber(spectrum);
+                double precursorMz = DataUtil.ExtractPrecursorMz(spectrum);
+                int precursorCharge = DataUtil.ExtractPrecursorCharge(spectrum);
+                string scanDefinition = DataUtil.ExtractScanDefinition(spectrum);
+
+                // imaging
+                Coordinates coord = DataUtil.ExtractCoordinates(spectrum);
+
+                // TODO find out if spectrum type is encoded in imzml file
+               /* var metadataScan = new SimpleBuildingScan(scanNumber, msLevel, polarity,
+                    MassSpectrumType.CENTROIDED, retentionTime, precursorMz, precursorCharge);
+                if (!scanProcessorConfig.scanFilter().matches(metadataScan))
+                {
+                    // skip parsing of data and skip this scan completely
+                    parsedScans++;
+                    continue;
+                }*/
+
+                double[] mzValues = DataUtil.ExtractMzValues(spectrum);
+                double[] intensityValues = DataUtil.ExtractIntensityValues(spectrum);/*
+                // Auto-detect whether this scan is centroided
+                SimpleSpectralArrays data = new SimpleSpectralArrays(mzValues, intensityValues);
+                MassSpectrumType spectrumType = ScanUtils.detectSpectrumType(mzValues, intensityValues);
+
+                data = scanProcessorConfig.processor().processScan(metadataScan, data);
+
+                if (scanProcessorConfig.isMassDetectActive(msLevel))
+                {
+                    spectrumType = MassSpectrumType.CENTROIDED;
+                }
+
+                SimpleImagingScan scan = new SimpleImagingScan(newMZmineFile, scanNumber, msLevel,
+                    retentionTime, precursorMz, precursorCharge, data.mzs(), data.intensities(),
+                    spectrumType, polarity, scanDefinition, null, coord);
+
+                if (scanProcessorConfig.isMassDetectActive(msLevel))
+                {
+                    scan.addMassList(new ScanPointerMassList(scan));
+                }
+
+                *//*
+                 * Verify the size of parentStack. The actual size of the window to cover possible
+                 * candidates is defined by limitSize.
+                 *//*
+                if (parentStack.size() > PARENT_STACK_SIZE)
+                {
+                    io.github.mzmine.datamodel.Scan firstScan = parentStack.removeLast();
+                    newMZmineFile.addScan(firstScan);
+                }
+
+                parentStack.addFirst(scan);
+
+                parsedScans++;*/
+
+            }
+
+
+            chromatograms = imzML.GetRun().GetChromatogramList();
             if (chromatograms == null || chromatograms.IsEmpty())
             {
                 JobInfo.Log(ResultCode.No_Chromatograms_Found);
@@ -624,6 +705,15 @@ namespace AirdPro.Converters
             JobInfo.Log(Tag.Adapting_Finished);
             JobInfo.Log(Tag.Total_Spectra + TotalSpectraCount);
             JobInfo.Log(Tag.Total_Chromatograms + TotalChromaCount);
+        }
+
+        private bool IsMsSpectrum(Spectrum spectrum)
+        {
+            // one thats not MS (code for UV?)
+            CVParam cvParams = spectrum.GetCVParam("MS:1000804");
+
+            // By default, let's assume unidentified spectra are MS spectra
+            return cvParams == null;
         }
 
         //将最终的数据写入文件中
@@ -750,12 +840,12 @@ namespace AirdPro.Converters
                 level = 1,
                 num = index
             };
-            if (spectrum.scanList.Size() != 1)
+            if (spectrum.GetScanList().Size() != 1)
             {
                 return ms1;
             }
 
-            Scan scan = spectrum.scanList.Get(0);
+            Scan scan = spectrum.GetScanList().Get(0);
             ms1.filterString = CVUtil.ParseFilterString(scan, JobInfo);
             ms1.rt = CVUtil.ParseRt(scan, JobInfo);
             ms1.tic = CVUtil.ParseTic(spectrum);
@@ -790,8 +880,8 @@ namespace AirdPro.Converters
             }
             catch (Exception e)
             {
-                JobInfo.Log(ResultCode.Error).Log(Tag.SpectrumIndex + spectrum.id)
-                    .Log(Tag.SpectrumId + spectrum.id);
+                JobInfo.Log(ResultCode.Error).Log(Tag.SpectrumIndex + spectrum.GetID())
+                    .Log(Tag.SpectrumId + spectrum.GetID());
                 IsolationWindow isolationWindow = precursor.IsolationWindow;
                 CVParam cv = isolationWindow.GetCVParamOrChild(IsolationWindow.ISOLATION_WINDOW_TARGET_MZ);
                 JobInfo.Log(Tag.Key_MZ + cv.GetValueAsDouble());
@@ -803,9 +893,9 @@ namespace AirdPro.Converters
             }
            
 
-            if (spectrum.scanList.Size() < 1) return ms2;
+            if (spectrum.GetScanList().Size() < 1) return ms2;
 
-            var (activator, energy) = CVUtil.ParseActivator(spectrum.precursorList.Get(0));
+            var (activator, energy) = CVUtil.ParseActivator(spectrum.GetPrecursorList().Get(0));
             ms2.activator = activator;
             ms2.energy = energy;
             ms2.msType = CVUtil.ParseMsType(spectrum);
@@ -814,7 +904,7 @@ namespace AirdPro.Converters
             ms2.basePeakIntensity = CVUtil.ParseBasePeakIntensity(spectrum);
             ms2.basePeakMz = CVUtil.ParseBasePeakMz(spectrum);
 
-            Scan scan = spectrum.scanList.Get(0);
+            Scan scan = spectrum.GetScanList().Get(0);
             ms2.rt = CVUtil.ParseRt(scan, JobInfo);
             ms2.injectionTime = CVUtil.ParseInjectionTime(scan);
             if (MobiInfo.unit == null || MobiInfo.type == null)
@@ -1003,7 +1093,7 @@ namespace AirdPro.Converters
                 Chromatogram chromatogram = chromatograms.Get(i);
                 TempScanChroma tempScan = new();
                 ChromatogramIndex.nums.Add(i);
-                ChromatogramIndex.ids.Add(chromatogram.id);
+                ChromatogramIndex.ids.Add(chromatogram.GetID());
                 var (activator, energy) = CVUtil.ParseActivator(chromatogram.precursor);
                 ChromatogramIndex.activators.Add(activator);
                 ChromatogramIndex.energies.Add(energy);
@@ -1031,7 +1121,7 @@ namespace AirdPro.Converters
                 catch (Exception e)
                 {
                     JobInfo.Log(ResultCode.Error).Log(Tag.SpectrumIndex + i)
-                        .Log(Tag.SpectrumId + chromatogram.id)
+                        .Log(Tag.SpectrumId + chromatogram.GetID())
                         .Log(Tag.Key_MZ + chromatogram.precursor.GetIsolationWindow()
                             .GetCVParamOrChild(IsolationWindow.ISOLATION_WINDOW_TARGET_MZ).GetValueAsDouble())
                         .Log(Tag.LowerOffset + chromatogram.precursor.GetIsolationWindow()
@@ -1079,7 +1169,7 @@ namespace AirdPro.Converters
             airdInfo.fileSize = JobInfo.vendorFileSize;
             airdInfo.createDate = DateTime.Now.ToString();
             airdInfo.type = JobInfo.type;
-            airdInfo.totalCount = imzML.run.spectrumList.Size();
+            airdInfo.totalCount = imzML.GetRun().GetSpectrumList().Size();
             airdInfo.creator = JobInfo.config.creator;
 
             HashSet<string> activators = [];
@@ -1154,7 +1244,7 @@ namespace AirdPro.Converters
 
             //Instrument Info
             List<Instrument> instruments = [];
-            foreach (InstrumentConfiguration ic in imzML.instrumentConfigurationList)
+            foreach (InstrumentConfiguration ic in imzML.GetInstrumentConfigurationList())
             {
                 Instrument instrument = new();
 
@@ -1218,45 +1308,48 @@ namespace AirdPro.Converters
                     }
                 }
 
-                foreach (Component component in ic.componentList)
+                if (!ic.componentList.IsEmpty())
                 {
-                    switch (component.Type)
+                    foreach (Component component in ic.componentList)
                     {
-                        case ComponentType.ComponentType_Analyzer:
-                            foreach (CVParam cv in component.GetCVParamList())
-                            {
-                                instrument.analyzer.Add(cv.GetTagName());
-                            }
+                        switch (component.Type)
+                        {
+                            case ComponentType.ComponentType_Analyzer:
+                                foreach (CVParam cv in component.GetCVParamList())
+                                {
+                                    instrument.analyzer.Add(cv.GetTagName());
+                                }
 
-                            break;
-                        case ComponentType.ComponentType_Source:
-                            foreach (CVParam cv in component.GetCVParamList())
-                            {
-                                instrument.source.Add(cv.GetTagName());
-                            }
+                                break;
+                            case ComponentType.ComponentType_Source:
+                                foreach (CVParam cv in component.GetCVParamList())
+                                {
+                                    instrument.source.Add(cv.GetTagName());
+                                }
 
-                            break;
-                        case ComponentType.ComponentType_Detector:
-                            foreach (CVParam cv in component.GetCVParamList())
-                            {
-                                instrument.detector.Add(cv.GetTagName());
-                            }
+                                break;
+                            case ComponentType.ComponentType_Detector:
+                                foreach (CVParam cv in component.GetCVParamList())
+                                {
+                                    instrument.detector.Add(cv.GetTagName());
+                                }
 
-                            break;
-                        case ComponentType.ComponentType_Unknown:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
+                                break;
+                            case ComponentType.ComponentType_Unknown:
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
                     }
-                }
+                }                
 
                 instruments.Add(instrument);
             }
 
             airdInfo.instruments = instruments;
-            airdInfo.startTimeStamp = imzML.run.startTimeStamp.ToString();
+            airdInfo.startTimeStamp = imzML.GetRun().GetStartTimeStamp().ToString();
             //Software Info
-            foreach (var soft in imzML.softwareList)
+            foreach (var soft in imzML.GetSoftwareList())
             {
                 Software software = new()
                 {
@@ -1276,18 +1369,20 @@ namespace AirdPro.Converters
             airdInfo.softwares = softwares;
 
             //Parent Files Info
-            foreach (var sf in imzML.fileDescription.sourceFileList)
+            if (imzML.GetFileDescription().GetSourceFileList() != null)
             {
-                ParentFile file = new()
+                foreach (var sf in imzML.GetFileDescription().GetSourceFileList())
                 {
-                    name = sf.name,
-                    location = sf.location,
-                    formatType = sf.id
-                };
-                parentFiles.Add(file);
-            }
-
-            airdInfo.parentFiles = parentFiles;
+                    ParentFile file = new()
+                    {
+                        name = sf.name,
+                        location = sf.location,
+                        formatType = sf.id
+                    };
+                    parentFiles.Add(file);
+                }
+                airdInfo.parentFiles = parentFiles;
+            }        
 
             //Compressor Info
             List<Compressor> comps = [];
@@ -1320,7 +1415,7 @@ namespace AirdPro.Converters
 
             airdInfo.ignoreZeroIntensityPoint = JobInfo.config.ignoreZeroIntensity;
             //Features Info
-            FeaturesMap.Add(Features.raw_id, imzML.id);
+            FeaturesMap.Add(Features.raw_id, imzML);
             FeaturesMap.Add(Features.ignore_zero_intensity, JobInfo.config.ignoreZeroIntensity);
             FeaturesMap.Add(Features.source_file_format, JobInfo.format);
             FeaturesMap.Add(Features.byte_order, ByteOrder.LITTLE_ENDIAN);
@@ -1768,254 +1863,5 @@ namespace AirdPro.Converters
             JobInfo.Log("Start Processing MS1 List");
         }
 
-       /* public SpectrumList ReadImzMLFile()
-        {
-            SpectrumList spectra;
-            try
-            {
-                ImzML imzml = ImzMLHandler.ParseimzML(JobInfo.inputPath);
-                spectra = imzml.GetRun().GetSpectrumList();
-                int totalScans = spectra.Size();
-                for (int i = 0; i < totalScans; i++)
-                {
-                    Spectrum spectrum = spectra.Get(i);
-                    String scanId = spectrum.GetID();
-                    // Extract scan data
-                    int msLevel = ExtractMSLevel(spectrum);
-                    float retentionTime = ExtractRetentionTime(spectrum);
-                    PolarityType polarity = ExtractPolarity(spectrum);
-                    double precursorMz = ExtractPrecursorMz(spectrum);
-                    int precursorCharge = ExtractPrecursorCharge(spectrum);
-                    String scanDefinition = ExtractScanDefinition(spectrum);
-                    // imaging
-                    Coordinates coord = ExtractCoordinates(spectrum);
-
-                    double[] mzValues = ExtractMzValues(spectrum);
-                    double[] intensityValues = ExtractIntensityValues(spectrum);
-
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return null;
-            }
-            return spectra;
-        }*/
-
-       /* private double[] ExtractIntensityValues(Spectrum spectrum)
-        {
-            try
-            {
-                BinaryDataArrayList dataList = spectrum.GetBinaryDataArrayList();
-                BinaryDataArray intensityArray = dataList.GetIntensityArray();
-                double[] intensityValues = intensityArray.GetDataAsDouble();
-                return intensityValues;
-            }
-            catch (IOException e)
-            {
-                Console.WriteLine(e.Message);
-                return [];
-            }
-        }
-
-        private double[] ExtractMzValues(Spectrum spectrum)
-        {
-            try
-            {
-                BinaryDataArrayList dataList = spectrum.GetBinaryDataArrayList();
-                BinaryDataArray mzArray = dataList.GetMzArray();
-                double[] mzValues = mzArray.GetDataAsDouble();
-                return mzValues;
-
-            }
-            catch (IOException e)
-            {
-                Console.WriteLine(e.Message);
-                return [];
-            }
-        }*/
-
-        /*private string ExtractScanDefinition(Spectrum spectrum)
-        {
-            CVParam cvParams = spectrum.GetCVParam("MS:1000512");
-            if (cvParams != null)
-            {
-                return cvParams.GetValueAsString();
-            }
-
-            ScanList scanListElement = spectrum.GetScanList();
-            if (scanListElement != null)
-            {
-                for (int i = 0; i < scanListElement.Size(); i++)
-                {
-                    Scan scan = scanListElement.Get(i);
-
-                    cvParams = scan.GetCVParam("MS:1000512");
-                    if (cvParams != null)
-                    {
-                        return cvParams.GetValueAsString();
-                    }
-                }
-            }
-            return spectrum.GetID();
-        }
-
-        private int ExtractPrecursorCharge(Spectrum spectrum)
-        {
-            PrecursorList precursorList = spectrum.GetPrecursorList();
-            if ((precursorList == null) || (precursorList.Size() == 0))
-            {
-                return 0;
-            }
-
-            foreach (Precursor parent in precursorList)
-            {
-                SelectedIonList selectedIonListElement = parent.GetSelectedIonList();
-                if ((selectedIonListElement == null) || (selectedIonListElement.Size() == 0))
-                {
-                    return 0;
-                }
-
-                foreach (SelectedIon sion in selectedIonListElement)
-                {
-
-                    // precursor charge
-                    CVParam param = sion.GetCVParam("MS:1000041");
-                    if (param != null)
-                    {
-                        return param.GetValueAsInteger();
-                    }
-                }
-            }
-            return 0;
-        }
-
-        private double ExtractPrecursorMz(Spectrum spectrum)
-        {
-            PrecursorList precursorListElement = spectrum.GetPrecursorList();
-            if ((precursorListElement == null) || (precursorListElement.Size() == 0))
-            {
-                return 0;
-            }
-
-            foreach (Precursor parent in precursorListElement)
-            {
-
-                SelectedIonList selectedIonListElement = parent.GetSelectedIonList();
-                if ((selectedIonListElement == null) || (selectedIonListElement.Size() == 0))
-                {
-                    return 0;
-                }
-
-                // MS:1000040 is used in mzML 1.0,
-                // MS:1000744 is used in mzML 1.1.0
-                foreach (SelectedIon sion in selectedIonListElement)
-                {
-                    CVParam param = sion.GetCVParam("MS:1000040");
-                    if (param != null)
-                    {
-                        return param.GetValueAsDouble();
-                    }
-
-                    param = sion.GetCVParam("MS:1000744");
-                    if (param != null)
-                    {
-                        return param.GetValueAsDouble();
-                    }
-                }
-            }
-            return 0;
-        }        
-
-        private PolarityType ExtractPolarity(Spectrum spectrum)
-        {
-            CVParam cv = spectrum.GetCVParam(Spectrum.SCAN_POLARITY_ID);
-            if (spectrum.GetCVParam("MS:1000130") != null)
-            {
-                return PolarityType.Positive;
-            }
-            else if (spectrum.GetCVParam("MS:1000129") != null)
-            {
-                return PolarityType.Negative;
-            }
-
-            ScanList scanListElement = spectrum.GetScanList();
-            if (scanListElement != null)
-            {
-                for (int i = 0; i < scanListElement.Size(); i++)
-                {
-                    Scan scan = scanListElement.Get(i);
-
-                    if (scan.GetCVParam("MS:1000130") != null)
-                    {
-                        return PolarityType.Positive;
-                    }
-                    else if (scan.GetCVParam("MS:1000129") != null)
-                    {
-                        return PolarityType.Negative;
-                    }
-                }
-            }
-            return PolarityType.Any;
-        }
-
-        private float ExtractRetentionTime(Spectrum spectrum)
-        {
-            ScanList scanListElement = spectrum.GetScanList();
-            if (scanListElement == null)
-            {
-                return 0;
-            }
-
-            foreach (Scan scan in scanListElement)
-            {
-                try
-                {
-                    // scan start time correct?
-                    CVParam param = scan.GetCVParam(Scan.SCAN_START_TIME_ID);
-                    if (param != null)
-                    {
-                        return (float)param.GetValueAsDouble();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-            return 0;
-        }        
-
-        private Coordinates ExtractCoordinates(Spectrum spectrum)
-        {
-            ScanList list = spectrum.GetScanList();
-            if (list != null)
-            {
-                foreach (Scan scan in spectrum.GetScanList())
-                {
-                    CVParam xValue = scan.GetCVParam(Scan.POSITION_X_ID);
-                    CVParam yValue = scan.GetCVParam(Scan.POSITION_Y_ID);
-                    CVParam zValue = scan.GetCVParam(Scan.POSITION_Z_ID);
-
-                    if (xValue != null && yValue != null)
-                    {
-                        int x = xValue.GetValueAsInteger() - 1;
-                        int y = yValue.GetValueAsInteger() - 1;
-
-                        if (zValue != null)
-                        {
-                            return new Coordinates(x, y, zValue.GetValueAsInteger() - 1);
-                        }
-                        else
-                        {
-                            return new Coordinates(x, y, 0);
-                        }
-                    }
-                }
-            }
-            return null;
-        }*/
     }    
 }

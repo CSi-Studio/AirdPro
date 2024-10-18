@@ -170,7 +170,9 @@
     <Compile Include="Domains\Msi\Coordinates.cs" />
     <Compile Include="Domains\Msi\HorizontalStart.cs" />
     <Compile Include="Domains\Msi\ImagingParameters.cs" />
+    <Compile Include="Domains\Msi\MassSpectrumTypeExtensions.cs" />
     <Compile Include="Domains\Msi\Pattern.cs" />
+    <Compile Include="Domains\Msi\PolarityTypeExtensions.cs" />
     <Compile Include="Domains\Msi\ScanDirection.cs" />
     <Compile Include="Domains\Msi\VerticalStart.cs" />
     <Compile Include="csimzMLParser\exceptions\CVParamAccessionNotFoundIssue.cs" />
@@ -646,6 +648,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ConversionConfigListForm.resx">
       <DependentUpon>ConversionConfigListForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\RedisForm.resx">
       <DependentUpon>RedisForm.cs</DependentUpon>

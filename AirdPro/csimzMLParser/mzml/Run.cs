@@ -12,14 +12,14 @@ namespace AirdPro.csimzMLParser.mzml
 
         public static readonly string RUN_ATTRIBUTE_ID = "MS:1000857";
 
-        public InstrumentConfiguration defaultInstrumentConfigurationRef;
-        public SourceFile defaultSourceFileRef;
-        public string id;
-        public Sample sampleRef;
-        public DateTime startTimeStamp;
-        public IReferenceList<DataProcessing> dataProcessingList;
-        public SpectrumList spectrumList;
-        public ChromatogramList chromatogramList;
+        private InstrumentConfiguration defaultInstrumentConfigurationRef;
+        private SourceFile defaultSourceFileRef;
+        private string id;
+        private Sample sampleRef;
+        private DateTime startTimeStamp;
+        private IReferenceList<DataProcessing> dataProcessingList;
+        private SpectrumList spectrumList;
+        private ChromatogramList chromatogramList;
 
         public Run(string id, InstrumentConfiguration defaultInstrumentConfigurationRef)
         {
@@ -117,6 +117,11 @@ namespace AirdPro.csimzMLParser.mzml
         public void SetStartTimeStamp(DateTime startTimeStamp)
         {
             this.startTimeStamp = startTimeStamp;
+        }
+
+        public DateTime GetStartTimeStamp()
+        {
+            return startTimeStamp;
         }
 
         public void SetSpectrumList(SpectrumList spectrumList)

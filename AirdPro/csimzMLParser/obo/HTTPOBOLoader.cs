@@ -16,7 +16,7 @@ namespace AirdPro.csimzMLParser.obo
             httpClient = new HttpClient();
         }
 
-        public FileStream GetFileStream(string location)
+        public FileStream GetInputStream(string location)
         {
             try
             {

@@ -27,23 +27,23 @@ namespace AirdPro.csimzMLParser.mzml
         public static readonly string NEGATIVE_SCAN_ID = "MS:1000129";
         public static readonly string PROFILE_SPECTRUM_ID = "MS:1000128";
         public static readonly string CENTROID_SPECTRUM_ID = "MS:1000127";
-        public static readonly string MS_lEVEL_ID = "MS:1000511";
+        public static readonly string MS_LEVEL_ID = "MS:1000511";
 
         protected static int spectrumNumber = 0;
 
-        public SourceFile sourceFileRef;
-        public string spotID;
-        public ScanList scanList;
-        public PrecursorList precursorList;
-        public ProductList productList;
-        public PixelLocation pixelLocation;
+        private SourceFile sourceFileRef;
+        private string spotID;
+        private ScanList scanList;
+        private PrecursorList precursorList;
+        private ProductList productList;
+        private PixelLocation pixelLocation;
 
         public Spectrum(string id, int defaultArrayLength) : base(id, defaultArrayLength)
         {
 
         }
 
-        public Spectrum(Spectrum spectrum, MzML mzML) : this(spectrum, mzML.referenceableParamGroupList, mzML.dataProcessingList, mzML.fileDescription.sourceFileList, mzML.instrumentConfigurationList)
+        public Spectrum(Spectrum spectrum, MzML mzML) : this(spectrum, mzML.GetReferenceableParamGroupList(), mzML.GetDataProcessingList(), mzML.GetFileDescription().GetSourceFileList(), mzML.GetInstrumentConfigurationList())
         {
 
         }
@@ -172,12 +172,12 @@ namespace AirdPro.csimzMLParser.mzml
             scan.RemoveCVParam(Scan.POSITION_Y_ID);
             scan.RemoveCVParam(Scan.POSITION_Z_ID);
 
-            scan.AddCVParam(new IntegerCVParam(OBO.GetOBO().GetTerm(Scan.POSITION_X_ID), location.x));
-            scan.AddCVParam(new IntegerCVParam(OBO.GetOBO().GetTerm(Scan.POSITION_Y_ID), location.y));
+            scan.AddCVParam(new IntegerCVParam(OBO.GetOBO().GetTerm(Scan.POSITION_X_ID), location.GetX()));
+            scan.AddCVParam(new IntegerCVParam(OBO.GetOBO().GetTerm(Scan.POSITION_Y_ID), location.GetY()));
 
-            if (location.z >= 1)
+            if (location.GetZ() >= 1)
             {
-                scan.AddCVParam(new IntegerCVParam(OBO.GetOBO().GetTerm(Scan.POSITION_Z_ID), location.z));
+                scan.AddCVParam(new IntegerCVParam(OBO.GetOBO().GetTerm(Scan.POSITION_Z_ID), location.GetZ()));
             }
 
             pixelLocation = location;
@@ -250,7 +250,7 @@ namespace AirdPro.csimzMLParser.mzml
         {
             return $"spectrum: " +
                 $"id=\"{id}\" " +
-                $"{(dataProcessingRef != null ? $"dataProcessingRef=\"{dataProcessingRef.id}\" " : "")} " +
+                $"{(dataProcessingRef != null ? $"dataProcessingRef=\"{dataProcessingRef.GetID()}\" " : "")} " +
                 $"defaultArrayLength=\"{defaultArrayLength}\"" +
                 $" {(sourceFileRef != null ? $"sourceFileRef=\"{sourceFileRef.id}\" " : "")} " +
                 $"{(spotID != null && !spotID.IsEmpty() ? $"spotID=\"{spotID}\"" : "")}";
@@ -292,7 +292,7 @@ namespace AirdPro.csimzMLParser.mzml
         {
             if (binaryDataArrayList == null)
             {
-                return [];
+                return new double[0];
             }
             EnsureLoadableData();
             return binaryDataArrayList.GetMzArray().GetDataAsDouble(keepInMemory);
@@ -307,6 +307,7 @@ namespace AirdPro.csimzMLParser.mzml
         {
             binaryDataArrayList.GetIntensityArray().SetData(intensities);
         }
+
         protected void SetSpectralData(double[] mzs, double[] intensities)
         {
             SetMzArray(mzs);
@@ -319,9 +320,9 @@ namespace AirdPro.csimzMLParser.mzml
             string newID = "";
 
             if (previousProcessing != null)
-                newID = previousProcessing.id + "-";
+                newID = previousProcessing.GetID() + "-";
 
-            DataProcessing newProcessing = new (newID + processing.id);
+            DataProcessing newProcessing = new (newID + processing.GetID());
 
             foreach (ProcessingMethod method in previousProcessing)
             {

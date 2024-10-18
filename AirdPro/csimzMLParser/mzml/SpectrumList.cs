@@ -27,14 +27,14 @@ namespace AirdPro.csimzMLParser.mzml
             foreach (Spectrum spectrum in spectrumList)
             {
                 Spectrum newSpectrum = new(spectrum, rpgList, dpList, sourceFileList, icList);
-                base.Add(newSpectrum);
+                Add(newSpectrum);
             }
 
             if (spectrumList.defaultDataProcessingRef != null && dpList != null)
             {
                 foreach(DataProcessing dp in dpList)
                 {
-                    if (spectrumList.defaultDataProcessingRef.GetID().Equals(dp.id))
+                    if (spectrumList.defaultDataProcessingRef.GetID().Equals(dp.GetID()))
                     {
                         defaultDataProcessingRef = dp;
                     }
@@ -44,7 +44,7 @@ namespace AirdPro.csimzMLParser.mzml
 
         public void SetDefaultDataProcessingRef(DataProcessing dp)
         {
-            this.defaultDataProcessingRef = dp;
+            defaultDataProcessingRef = dp;
             EnsureValidReferences();
         }
 
@@ -71,7 +71,7 @@ namespace AirdPro.csimzMLParser.mzml
             }
             if (spectrumDictionary != null)
             {
-                spectrumDictionary[spectrum.id] = spectrum;
+                spectrumDictionary[spectrum.GetID()] = spectrum;
             }
         }
 
@@ -80,7 +80,7 @@ namespace AirdPro.csimzMLParser.mzml
             Add(spectrum);
         }
 
-            public Spectrum GetSpectrum(int index)
+        public Spectrum GetSpectrum(int index)
         {
             return Get(index);
         }
@@ -93,7 +93,7 @@ namespace AirdPro.csimzMLParser.mzml
                 spectrumDictionary = new Dictionary<string, Spectrum>(list.Count);
                 foreach (Spectrum spectrum in list) 
                 { 
-                    this.spectrumDictionary[spectrum.id] = spectrum;
+                    spectrumDictionary[spectrum.GetID()] = spectrum;
                 }
             }            
             return spectrumDictionary[id];
@@ -110,8 +110,8 @@ namespace AirdPro.csimzMLParser.mzml
             Spectrum removedSpectrum = spectrum;
             if (spectrumDictionary != null)
             {
-                removedSpectrum = spectrumDictionary[spectrum.id];
-                spectrumDictionary.Remove(removedSpectrum.id);
+                removedSpectrum = spectrumDictionary[spectrum.GetID()];
+                spectrumDictionary.Remove(removedSpectrum.GetID());
             }
             return success && (removedSpectrum.Equals(spectrum));
         }
@@ -124,7 +124,7 @@ namespace AirdPro.csimzMLParser.mzml
         public override string GetXMLAttributeText()
         {
             return base.GetXMLAttributeText() + "defaultDataProcessingRef=\""
-                + XMLHelper.EnsureSafeXML(defaultDataProcessingRef.id + "\"");
+                + XMLHelper.EnsureSafeXML(defaultDataProcessingRef.GetID() + "\"");
         }
 
         public override string GetTagName()

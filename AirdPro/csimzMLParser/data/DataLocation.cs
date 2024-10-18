@@ -12,10 +12,10 @@ namespace AirdPro.csimzMLParser.data
         private static readonly ILog LOGGER = LogManager.GetLogger(typeof(DataLocation));
 
         public static readonly long EXTENDED_OFFSET = 4294967296L; // 2^32
-        public DataStorage dataStorage;
-        public long offset;
-        public int length;
-        public DataTransformation dataTransformation = null;
+        protected DataStorage dataStorage;
+        protected long offset;
+        protected int length;
+        protected DataTransformation dataTransformation = null;
 
         public DataLocation(DataStorage dataStorage, long offset, int length)
         {
@@ -67,7 +67,7 @@ namespace AirdPro.csimzMLParser.data
 
         public void SetDataTransformation(DataTransformation transformation)
         {
-            this.dataTransformation = transformation;
+            dataTransformation = transformation;
         }
 
         public override string ToString()

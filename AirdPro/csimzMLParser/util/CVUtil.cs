@@ -3,7 +3,6 @@ using AirdPro.csimzMLParser.mzml;
 using AirdPro.Domains;
 using AirdSDK.Beans;
 using HZH_Controls;
-using pwiz.CLI.cv;
 using System;
 using Activator = AirdPro.Constants.Activator;
 
@@ -13,14 +12,26 @@ namespace AirdPro.csimzMLParser.util
     {    
         public static string ParseMsLevel(Spectrum spectrum)
         {
-            CVParam cv = spectrum.GetCVParamOrChild(Spectrum.MS_lEVEL_ID);
-            string msLevel = cv.GetValueAsDouble().ToString();
-            return msLevel;
+            CVParam cv = spectrum.GetCVParam(Spectrum.MS_LEVEL_ID);
+            if (cv == null)
+            {
+                return "1";
+            }
+            if (cv.GetValueAsString().Equals("2"))
+            {
+                return "2";
+            }
+            
+            return "1";
         }
 
         public static double ParseRt(Scan scan, JobInfo jobInfo)
         {
-            CVParam cv = scan.GetCVParamOrChild(Scan.SCAN_START_TIME_ID);
+            CVParam cv = scan.GetCVParam(Scan.SCAN_START_TIME_ID);
+            if (cv == null)
+            {
+                return 0;
+            }
             double time = cv.GetValueAsDouble();
             if (cv.GetUnits().Equals("minute")) time = time * 60;
             time = Math.Round(time * 10000) / 10000;
@@ -29,29 +40,26 @@ namespace AirdPro.csimzMLParser.util
 
         public static string ParseFilterString(Scan scan, JobInfo jobInfo)
         {
-            if (!scan.GetCVParamOrChild(Scan.SCAN_FILTER_STRING_ID).IsEmpty())
-            {
-                CVParam cv = scan.GetCVParamOrChild(Scan.SCAN_FILTER_STRING_ID);
-                string filterString = cv.GetValueAsString();
-                return filterString;
-            }
-            else
+            CVParam cv = scan.GetCVParam(Scan.SCAN_FILTER_STRING_ID);
+            if (cv == null)
             {
                 return null;
             }
+            string filterString = cv.GetValueAsString();
+            return filterString;
         }
 
         public static void ParseMobility(Scan scan, MobiInfo mobiInfo)
         {
-            if (!scan.GetCVParamOrChild(Scan.SCAN_INVERSE_REDUCED_ION_MOBILITY_ID).IsEmpty())
+            if (scan.GetCVParam(Scan.SCAN_INVERSE_REDUCED_ION_MOBILITY_ID) != null)
             {
-                CVParam cv = scan.GetCVParamOrChild(Scan.SCAN_INVERSE_REDUCED_ION_MOBILITY_ID);
+                CVParam cv = scan.GetCVParam(Scan.SCAN_INVERSE_REDUCED_ION_MOBILITY_ID);
                 mobiInfo.unit = cv.units.GetName();
                 mobiInfo.type = MobilityType.TIMS;
             }
-            else if (!scan.GetCVParamOrChild(Scan.SCAN_ION_MOBILITY_DRIFT_TIME_ID).IsEmpty())
+            else if (scan.GetCVParam(Scan.SCAN_ION_MOBILITY_DRIFT_TIME_ID) != null)
             {
-                CVParam cv = scan.GetCVParamOrChild(Scan.SCAN_ION_MOBILITY_DRIFT_TIME_ID);
+                CVParam cv = scan.GetCVParam(Scan.SCAN_ION_MOBILITY_DRIFT_TIME_ID);
                 mobiInfo.unit = cv.units.GetName();
                 mobiInfo.type = MobilityType.DTIMS;
             }
@@ -59,75 +67,66 @@ namespace AirdPro.csimzMLParser.util
 
         public static long ParseTic(Spectrum spectrum)
         {
-            try
+            CVParam cv = spectrum.GetCVParam(Spectrum.TOTAL_ION_CURRENT_ID);
+            if (cv == null)
             {
-                CVParam cv = spectrum.GetCVParamOrChild(Spectrum.TOTAL_ION_CURRENT_ID);
-                return cv.GetValueAsLong();
+                return -1;
             }
-            catch (Exception)
-            {
-                return 0;
-            }
+            return cv.GetValueAsLong();
         }
 
         public static double ParseBasePeakIntensity(Spectrum spectrum)
         {
-            try
+            CVParam cv = spectrum.GetCVParam(Spectrum.BASE_PEAK_INTENSITY_ID);
+            if (cv == null)
             {
-                CVParam cv = spectrum.GetCVParamOrChild(Spectrum.BASE_PEAK_INTENSITY_ID);
-                return cv.GetValueAsDouble();
+                return -1;
             }
-            catch (Exception)
-            {
-                return 0;
-            }
+            return cv.GetValueAsDouble();
         }
 
         public static double ParseBasePeakMz(Spectrum spectrum)
         {
-            try
+            CVParam cv = spectrum.GetCVParam(Spectrum.BASE_PEAK_MZ_ID);
+            if (cv == null)
             {
-                CVParam cv = spectrum.GetCVParamOrChild(Spectrum.BASE_PEAK_MZ_ID);
-                return cv.GetValueAsDouble();
+                return -1;
             }
-            catch (Exception)
-            {
-                return 0;
-            }
+            return cv.GetValueAsDouble();
         }
 
         public static string ParsePolarity(Spectrum spectrum)
         {
-            CVParam cvNeg = spectrum.GetCVParamOrChild(Spectrum.NEGATIVE_SCAN_ID);
-            if (!cvNeg.IsEmpty())
+            CVParam cvNeg = spectrum.GetCVParam(Spectrum.NEGATIVE_SCAN_ID);
+            if (cvNeg != null)
                 return Polarity.NEGATIVE;
 
-            CVParam cvPos = spectrum.GetCVParamOrChild(Spectrum.POSITIVE_SCAN_ID);
-            if (!cvPos.IsEmpty())
+            CVParam cvPos = spectrum.GetCVParam(Spectrum.POSITIVE_SCAN_ID);
+            if (cvPos != null)
                 return Polarity.POSITIVE;
             return "Unknown";
         }
 
         public static string ParsePolarity(Chromatogram chromatogram)
         {
-            CVParam cvNeg = chromatogram.GetCVParamOrChild(Chromatogram.NEGATIVE_SCAN_ID);
-            if (!cvNeg.IsEmpty())
+            CVParam cvNeg = chromatogram.GetCVParam(Chromatogram.NEGATIVE_SCAN_ID);
+            if (cvNeg != null)
                 return Polarity.NEGATIVE;
 
-            CVParam cvPos = chromatogram.GetCVParamOrChild(Chromatogram.POSITIVE_SCAN_ID);
-            if (!cvPos.IsEmpty())
+            CVParam cvPos = chromatogram.GetCVParam(Chromatogram.POSITIVE_SCAN_ID);
+            if (cvPos != null)
                 return Polarity.POSITIVE;
             return "Unknown";
         }
 
         public static string ParseMsType(Spectrum spectrum)
         {
-            CVParam cvProfile = spectrum.GetCVParamOrChild(Spectrum.PROFILE_SPECTRUM_ID);
-            if (!cvProfile.IsEmpty())
+            CVParam cvProfile = spectrum.GetCVParam(Spectrum.PROFILE_SPECTRUM_ID);
+            if (cvProfile != null)
                 return MSType.PROFILE;
 
-            CVParam cvCentroid = spectrum.GetCVParamOrChild(Spectrum.CENTROID_SPECTRUM_ID);
-            if (!cvCentroid.IsEmpty())
+            CVParam cvCentroid = spectrum.GetCVParam(Spectrum.CENTROID_SPECTRUM_ID);
+            if (cvCentroid != null)
                 return MSType.CENTROIDED;
 
             return MSType.UNKNOWN;
@@ -135,12 +134,12 @@ namespace AirdPro.csimzMLParser.util
 
         public static string ParseMsType(Chromatogram chromatogram)
         {
-            CVParam cvProfile = chromatogram.GetCVParamOrChild(Chromatogram.PROFILE_SPECTRUM_ID);
-            if (!cvProfile.IsEmpty())
+            CVParam cvProfile = chromatogram.GetCVParam(Chromatogram.PROFILE_SPECTRUM_ID);
+            if (cvProfile != null)
                 return MSType.PROFILE;
 
-            CVParam cvCentroid = chromatogram.GetCVParamOrChild(Chromatogram.CENTROID_SPECTRUM_ID);
-            if (!cvProfile.IsEmpty())
+            CVParam cvCentroid = chromatogram.GetCVParam(Chromatogram.CENTROID_SPECTRUM_ID);
+            if (cvCentroid != null)
                 return MSType.CENTROIDED;            
 
             return MSType.UNKNOWN;
@@ -158,19 +157,19 @@ namespace AirdPro.csimzMLParser.util
             var act = "";
             float ene = -1;
 
-            if (!activation.GetCVParamOrChild(Activator.HCD).Equals(Activator.UNKNOWN))
+            if (!activation.GetCVParam(Activator.HCD).Equals(Activator.UNKNOWN))
                 act = Activator.HCD;
-            else if (!activation.GetCVParamOrChild(Activator.CID).Equals(Activator.UNKNOWN))
+            else if (!activation.GetCVParam(Activator.CID).Equals(Activator.UNKNOWN))
                 act = Activator.CID;
-            else if (!activation.GetCVParamOrChild(Activator.ECD).Equals(Activator.UNKNOWN))
+            else if (!activation.GetCVParam(Activator.ECD).Equals(Activator.UNKNOWN))
                 act = Activator.ECD;
-            else if (!activation.GetCVParamOrChild(Activator.ETD).Equals(Activator.UNKNOWN))
+            else if (!activation.GetCVParam(Activator.ETD).Equals(Activator.UNKNOWN))
                 act = Activator.ETD;
             else
                 act = Activator.UNKNOWN;
 
-            if (!activation.GetCVParamOrChild(Activation.ACTIVATION_COLLISION_ENERGY).Equals(Activator.UNKNOWN))
-                ene = Convert.ToSingle(activation.GetCVParamOrChild(Activation.ACTIVATION_COLLISION_ENERGY).GetValueAsString());
+            if (!activation.GetCVParam(Activation.ACTIVATION_COLLISION_ENERGY).Equals(Activator.UNKNOWN))
+                ene = Convert.ToSingle(activation.GetCVParam(Activation.ACTIVATION_COLLISION_ENERGY).GetValueAsString());
             else
                 ene = -1;
             return (act, ene);
@@ -184,7 +183,7 @@ namespace AirdPro.csimzMLParser.util
             {
                 try
                 {
-                    CVParam cv = isolationWindow.GetCVParamOrChild(cvid);
+                    CVParam cv = isolationWindow.GetCVParam(cvid);
                     if (cv != null)
                     {
                         result = cv.GetValueAsDouble();
@@ -205,7 +204,7 @@ namespace AirdPro.csimzMLParser.util
 
             if (result == null)
             {
-                CVParam cv = isolationWindow.GetCVParamOrChild(cvid);
+                CVParam cv = isolationWindow.GetCVParam(cvid);
                 throw new Exception(ResultCode.Parse_Double_Error + ":" + cv.GetValueAsDouble());
             }
             return result.Value;
@@ -219,11 +218,11 @@ namespace AirdPro.csimzMLParser.util
             {
                 try
                 {
-                    if (precursor.SelectedIonList == null || precursor.SelectedIonList.Get(0).GetCVParamOrChild(Precursor.PRECURSOR_CHARGE_STATE_ID).IsEmpty())
+                    if (precursor.SelectedIonList == null || precursor.SelectedIonList.Get(0).GetCVParam(Precursor.PRECURSOR_CHARGE_STATE_ID) == null)
                     {
                         return null;
                     }
-                    result = precursor.SelectedIonList.Get(0).GetCVParamOrChild(Precursor.PRECURSOR_CHARGE_STATE_ID).GetValueAsInteger();
+                    result = precursor.SelectedIonList.Get(0).GetCVParam(Precursor.PRECURSOR_CHARGE_STATE_ID).GetValueAsInteger();
                 }
                 catch (FormatException e)
                 {
@@ -248,7 +247,7 @@ namespace AirdPro.csimzMLParser.util
             {
                 try
                 {
-                    CVParam cv = isolationWindow.GetCVParamOrChild(IsolationWindow.ISOLATION_WINDOW_LOWER_OFFSET_ID);
+                    CVParam cv = isolationWindow.GetCVParam(IsolationWindow.ISOLATION_WINDOW_LOWER_OFFSET_ID);
                     if (cv != null)
                     {                        
                         lower = cv.GetValueAsDouble();
@@ -258,7 +257,7 @@ namespace AirdPro.csimzMLParser.util
                         lower = 0;
                     }
 
-                    cv = isolationWindow.GetCVParamOrChild(IsolationWindow.ISOLATION_WINDOW_UPPER_OFFSET_ID);
+                    cv = isolationWindow.GetCVParam(IsolationWindow.ISOLATION_WINDOW_UPPER_OFFSET_ID);
                     if (cv != null)
                     {                        
                         upper = cv.GetValueAsDouble();
@@ -315,7 +314,7 @@ namespace AirdPro.csimzMLParser.util
 
         public static float ParseInjectionTime(Scan scan)
         {
-            CVParam cv = scan.GetCVParamOrChild(Scan.SCAN_ION_INJECTION_TIME_ID);
+            CVParam cv = scan.GetCVParam(Scan.SCAN_ION_INJECTION_TIME_ID);
             if (cv != null && !cv.GetValueAsDouble().IsEmpty())
             {
                 return (float)Math.Round(cv.GetValueAsDouble() * 10000) / 10000;

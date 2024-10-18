@@ -36,8 +36,8 @@ namespace AirdPro.csimzMLParser.mzml
         public Scan(Scan scan, ReferenceableParamGroupList rpgList, InstrumentConfigurationList icList, SourceFileList sourceFileList)
             : base(scan, rpgList)
         {
-            this.externalSpectrumID = scan.externalSpectrumID;
-            this.spectrumRef = scan.spectrumRef;
+            externalSpectrumID = scan.externalSpectrumID;
+            spectrumRef = scan.spectrumRef;
 
             if (scan.instrumentConfigurationRef != null && icList != null)
             {
@@ -45,7 +45,7 @@ namespace AirdPro.csimzMLParser.mzml
                 {
                     if (scan.instrumentConfigurationRef.id.Equals(ic.id))
                     {
-                        this.instrumentConfigurationRef = ic;
+                        instrumentConfigurationRef = ic;
                         break;
                     }
                 }
@@ -57,7 +57,7 @@ namespace AirdPro.csimzMLParser.mzml
                 {
                     if (scan.sourceFileRef.id.Equals(sourceFile.id))
                     {
-                        this.sourceFileRef = sourceFile;
+                        sourceFileRef = sourceFile;
                         break;
                     }
                 }

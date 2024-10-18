@@ -22,22 +22,22 @@ namespace AirdPro.csimzMLParser.mzml
         public const string IDX_SCHEMA_LOCATION = "http://psi.hupo.org/ms/mzml http://psidev.info/files/ms/mzML/xsd/mzML1.1.2_idx.xsd";
         public const string CURRENT_VERSION = "1.1.0";
         
-        public DataStorage dataStorage;
+        protected DataStorage dataStorage;
 
-        public string accession;
-        public string id;
-        public string version;
+        private string accession;
+        private string id;
+        private string version;
 
-        public CVList cvList;
-        public FileDescription fileDescription;
-        public ReferenceableParamGroupList referenceableParamGroupList;
-        public SampleList sampleList;
-        public SoftwareList softwareList;
-        public ScanSettingsList scanSettingsList;
-        public InstrumentConfigurationList instrumentConfigurationList;
-        public DataProcessingList dataProcessingList;
-        public Run run;
-        public OBO obo;
+        private CVList cvList;
+        private FileDescription fileDescription;
+        private ReferenceableParamGroupList referenceableParamGroupList;
+        private SampleList sampleList;
+        private SoftwareList softwareList;
+        private ScanSettingsList scanSettingsList;
+        private InstrumentConfigurationList instrumentConfigurationList;
+        private DataProcessingList dataProcessingList;
+        private Run run;
+        private OBO obo;
 
         public MzML(string version)
         {
@@ -76,15 +76,15 @@ namespace AirdPro.csimzMLParser.mzml
             run = new Run(mzML.run, referenceableParamGroupList, instrumentConfigurationList, fileDescription.sourceFileList, sampleList, dataProcessingList);
         }
 
-        //private readonly object lockObject = new();
+        private readonly object lockObject = new();
 
         public void SetDataStorage(DataStorage dataStorage)
         {
-            this.dataStorage = dataStorage;
-            /*lock (lockObject)
+            //this.dataStorage = dataStorage;
+            lock (lockObject)
             {
                 this.dataStorage = dataStorage;
-            }*/
+            }
         }
 
         public void SetOBO(OBO obo)
@@ -129,17 +129,17 @@ namespace AirdPro.csimzMLParser.mzml
 
         public void AddSpectrum(Spectrum spectrum)
         {
-            run.spectrumList.Add(spectrum);
+            run.GetSpectrumList().Add(spectrum);
         }
 
         public SpectrumList GetSpectrumList()
         {
-            return run.spectrumList;
+            return run.GetSpectrumList();
         }
 
         public ChromatogramList GetChromatogramList()
         {
-            return run.chromatogramList;
+            return run.GetChromatogramList();
         }
 
         public void SetCVList(CVList cvList)
@@ -405,13 +405,13 @@ namespace AirdPro.csimzMLParser.mzml
                 }
             }
 
-            SpectrumList spectrumList = run.spectrumList;
+            SpectrumList spectrumList = run.GetSpectrumList();
 
             foreach (Spectrum spectrum in spectrumList)
             {
-                CloseDataStorage(spectrum.dataLocation);
+                CloseDataStorage(spectrum.GetDataLocation());
 
-                foreach (BinaryDataArray bda in spectrum.binaryDataArrayList)
+                foreach (BinaryDataArray bda in spectrum.GetBinaryDataArrayList())
                 {
                     CloseDataStorage(bda.GetDataLocation());
                 }

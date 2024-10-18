@@ -2,6 +2,7 @@
 using AirdPro.csimzMLParser.exceptions;
 using AirdPro.csimzMLParser.obo;
 using AirdPro.csimzMLParser.util;
+using HZH_Controls;
 using log4net;
 using log4net.Core;
 using System;
@@ -11,7 +12,7 @@ namespace AirdPro.csimzMLParser.mzml
 {
     public abstract class CVParam : MzMLContent
     {
-        private static readonly ILog logger = LogManager.GetLogger(typeof(CVParam));
+        private static readonly ILog LOGGER = LogManager.GetLogger(typeof(CVParam));
 
         public enum CVParamType
         {
@@ -33,7 +34,7 @@ namespace AirdPro.csimzMLParser.mzml
             return term;
         }
 
-        public void setTerm(OBOTerm term)
+        public void SetTerm(OBOTerm term)
         {
             OBOTerm oldTerm = this.term;
 
@@ -71,16 +72,16 @@ namespace AirdPro.csimzMLParser.mzml
 
         public override string ToString()
         {
-            string description = $"({term.id}) {term.name}";
+            string description = $"({term.GetID()}) {term.GetName()}";
             string value = GetValueAsString();
 
-            if (!string.IsNullOrEmpty(value))
+            if (value != null && !value.IsEmpty())
             {
-                description += $": {value}";
+                description += ":" + GetValueAsString();
 
                 if (units != null)
                 {
-                    description += $" {units.name}";
+                    description += ":" + units.GetName();
                 }
             }
 
@@ -96,20 +97,22 @@ namespace AirdPro.csimzMLParser.mzml
 
         public override string GetXMLAttributeText()
         {
-            string attributes = $"cvRef=\"{XMLHelper.EnsureSafeXML(term.ontology.GetOntology().ToUpper())}\"";
+            string attributes = $"cvRef=\"{XMLHelper.EnsureSafeXML(term.GetOntology().GetOntology().ToUpper())}\"";
+            attributes += $" accession=\"{XMLHelper.EnsureSafeXML(term.GetID())}\"";
+            attributes += $" name=\"{XMLHelper.EnsureSafeXML(term.GetName())}\"";
 
-            attributes += $" accession=\"{XMLHelper.EnsureSafeXML(term.id)}\"";
-            attributes += $" name=\"{XMLHelper.EnsureSafeXML(term.name)}\"";
             string value = GetValueAsString();
 
-            if (!string.IsNullOrEmpty(value))
+            if (value != null && !value.Equals("null"))
+            {
                 attributes += $" value=\"{XMLHelper.EnsureSafeXML(value)}\"";
+            }               
 
             if (units != null)
             {
-                attributes += $" unitCvRef=\"{XMLHelper.EnsureSafeXML(units.ontology.GetOntology().ToUpper())}\"";
-                attributes += $" unitAccession=\"{XMLHelper.EnsureSafeXML(units.id)}\"";
-                attributes += $" unitName=\"{XMLHelper.EnsureSafeXML(units.name)}\"";
+                attributes += $" unitCvRef=\"{XMLHelper.EnsureSafeXML(units.GetOntology().GetOntology().ToUpper())}\"";
+                attributes += $" unitAccession=\"{XMLHelper.EnsureSafeXML(units.GetID())}\"";
+                attributes += $" unitName=\"{XMLHelper.EnsureSafeXML(units.GetName())}\"";
             }
 
             return attributes;
@@ -117,7 +120,7 @@ namespace AirdPro.csimzMLParser.mzml
 
         public static CVParamType GetCVParamType(OBOTerm term)
         {
-            if (term == null)
+            if (term == null || term.GetValueType() == null)
             {
                 return CVParamType.EMPTY;
             }
@@ -144,7 +147,7 @@ namespace AirdPro.csimzMLParser.mzml
                     type = CVParamType.LONG;
                     break;
                 default:
-                    logger.Error($"Unknown CVParamType: {term.GetValueType()} (assigned to term {term.id})");
+                    LOGGER.Error($"Unknown CVParamType: {term.GetValueType()} (assigned to term {term.GetID()})");
 
                     InvalidFormatIssue issue = new InvalidFormatIssue(term, term.GetValueType());
 

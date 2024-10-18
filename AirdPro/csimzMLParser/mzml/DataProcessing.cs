@@ -6,7 +6,7 @@ namespace AirdPro.csimzMLParser.mzml
     public class DataProcessing : MzMLContentList<ProcessingMethod>, IReferenceableTag
     {
         private const long serialVersionUID = 1L;
-        public string id;
+        protected string id;
 
         public DataProcessing(string id) : base(0)
         {

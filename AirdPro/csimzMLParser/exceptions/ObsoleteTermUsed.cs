@@ -18,7 +18,7 @@ namespace AirdPro.csimzMLParser.exceptions
 
         public override string GetIssueMessage()
         {
-            return term.id + " (" + term.name + ") used while it is marked OBSOLETE";
+            return term.GetID() + " (" + term.GetName() + ") used while it is marked OBSOLETE";
         }
 
         public override IssueLevel GetIssueLevel()

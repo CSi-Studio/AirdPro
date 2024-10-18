@@ -33,7 +33,7 @@ namespace AirdPro.csimzMLParser.parser
         private int currentMaxX = 0;
         private int currentMaxY = 0;
 
-        byte[] uncompressedData = null;
+        //byte[] uncompressedData = null;
 
         public ImzMLHandler(OBO obo) : base(obo)
         {
@@ -45,7 +45,7 @@ namespace AirdPro.csimzMLParser.parser
 
             if (openDataStorage)
             {
-                this.dataStorage = new BinaryDataStorage(ibdFile, false);
+                dataStorage = new BinaryDataStorage(ibdFile, false);
             }
         }
 
@@ -62,12 +62,12 @@ namespace AirdPro.csimzMLParser.parser
         public static ImzML ParseimzML(string filename, bool openDataStorage, IParserListener listener)
         {
             ImzMLHandler handler;
-            FileStream fileStream = null;            
+            FileStream inputStream = null;
             try
             {
-                OBO obo = OBO.GetOBO();
-                FileInfo ibdFile = new FileInfo(Path.Combine(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename) + ".ibd"));
-               
+                OBO obo = OBO.GetOBO();                
+                FileInfo ibdFile = new(Path.ChangeExtension(filename, ".ibd"));
+
                 handler = new ImzMLHandler(obo, ibdFile, openDataStorage);
 
                 if (listener != null)
@@ -81,45 +81,53 @@ namespace AirdPro.csimzMLParser.parser
                     IgnoreComments = true
                 };
 
-                fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read);
-                byte[] compressedData = new byte[fileStream.Length];
-                // 根据文件扩展名选择正确的解压方式
-                if (filename.EndsWith(".lz4", StringComparison.OrdinalIgnoreCase))
-                {
-                    handler.uncompressedData = new LZ4DataTransform().ReverseTransform(compressedData);
-                }
-                else if (filename.EndsWith(".zlib", StringComparison.OrdinalIgnoreCase))
-                {
-                    handler.uncompressedData = new ZlibDataTransform().ReverseTransform(compressedData);
-                }
-                else if (filename.EndsWith(".zstd", StringComparison.OrdinalIgnoreCase))
-                {
-                    handler.uncompressedData = new ZstdDataTransform().ReverseTransform(compressedData);
-                }
-                else if (filename.EndsWith(".xz", StringComparison.OrdinalIgnoreCase))
-                {
-                    handler.uncompressedData = new XZDataTransform().ReverseTransform(compressedData);
-                }
-                else
-                {
-                    handler.uncompressedData = compressedData;
-                }
-                //
-                using (XmlReader reader = XmlReader.Create(fileStream, settings))
+                using (inputStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
+                using (XmlReader reader = XmlReader.Create(inputStream, settings))
                 {
                     while (reader.Read())
                     {
                         if (reader.IsStartElement())
                         {
                             handler.StartElement(reader);
-                        }                        
+                        }
+                        else
+                        {
+                            handler.EndElement(reader);
+                        }
                     }
                 }
 
                 ImzML imzML = handler.GetImzML();
                 imzML.SetOBO(obo);
 
-                return imzML;
+                // Check if Bruker data, and then correct the image to be relative rather than absolute
+                InstrumentConfiguration ic = imzML.GetInstrumentConfigurationList().GetInstrumentConfiguration(0);
+                if (ic.GetCVParamOrChild("MS:1000122") != null)
+                {
+                    int minX = int.MaxValue;
+                    int minY = int.MaxValue;
+
+                    foreach (Spectrum spectrum in imzML.GetRun().GetSpectrumList())
+                    {
+                        PixelLocation location = spectrum.GetPixelLocation();
+                        if (location.GetX() < minX)
+                            minX = location.GetX();
+                        if (location.GetY() < minY)
+                            minY = location.GetY();
+                    }
+
+                    foreach (Spectrum spectrum in imzML.GetRun().GetSpectrumList())
+                    {
+                        PixelLocation location = spectrum.GetPixelLocation();
+                        spectrum.SetPixelLocation(location.GetX() - minX + 1, location.GetY() - minY + 1);
+                    }
+
+                    CVParam curWidth = imzML.GetScanSettingsList().GetScanSettings(0).GetCVParam(ScanSettings.MAX_COUNT_PIXEL_X_ID);
+                    curWidth.SetValueAsString("" + (curWidth.GetValueAsLong() - minX + 1));
+
+                    CVParam curHeight = imzML.GetScanSettingsList().GetScanSettings(0).GetCVParam(ScanSettings.MAX_COUNT_PIXEL_Y_ID);
+                    curHeight.SetValueAsString("" + (curHeight.GetValueAsLong() - minY + 1));
+                }
             }
             catch (XmlException ex)
             {
@@ -136,14 +144,9 @@ namespace AirdPro.csimzMLParser.parser
                 LOGGER.Error(ex.Message, ex);
                 throw new ImzMLParseException(new FatalParseIssue("IOException: " + ex.Message, ex.Message), ex);
             }
-            finally
-            {
-                if (fileStream != null)
-                {
-                    fileStream.Close();
-                }
-            }
+            return handler.GetImzML();
         }
+
 
         protected override void StartCVParam(XmlReader reader)
         {
@@ -254,7 +257,7 @@ namespace AirdPro.csimzMLParser.parser
                     currentBinaryDataArray.GetCVParam(BinaryDataArray.EXTERNAL_OFFSET_ID).SetValueAsString("" + currentOffset);
                 }
 
-                DataLocation location = new DataLocation(this.dataStorage, currentOffset, (int)this.currentNumBytes);
+                DataLocation location = new DataLocation(dataStorage, currentOffset, (int)currentNumBytes);
                 currentBinaryDataArray.SetDataLocation(location);
                 location.SetDataTransformation(currentBinaryDataArray.GenerateDataTransformation());
             }
@@ -282,7 +285,7 @@ namespace AirdPro.csimzMLParser.parser
                 if (currentScan.GetCVParam(Scan.POSITION_X_ID).GetValueAsInteger() != x)
                 {
                     LOGGER.InfoFormat("Mismatch between the X value in the currentScan ({0}) and the local variable x ({1})",
-                            new Object[] { currentScan.GetCVParam(Scan.POSITION_X_ID).GetValueAsInteger(), x });
+                            [currentScan.GetCVParam(Scan.POSITION_X_ID).GetValueAsInteger(), x]);
                 }
 
                 currentScan.GetCVParam(Scan.POSITION_X_ID).SetValueAsString("" + newX);
@@ -308,7 +311,7 @@ namespace AirdPro.csimzMLParser.parser
                 if (currentScan.GetCVParam(Scan.POSITION_Y_ID).GetValueAsInteger() != y)
                 {
                     LOGGER.InfoFormat("Mismatch between the Y value in the currentScan ({0}) and the local variable y ({1})",
-                            new Object[] { currentScan.GetCVParam(Scan.POSITION_Y_ID).GetValueAsInteger(), y });
+                            [currentScan.GetCVParam(Scan.POSITION_Y_ID).GetValueAsInteger(), y]);
                 }
 
                 currentScan.GetCVParam(Scan.POSITION_Y_ID).SetValueAsString("" + newY);
@@ -316,8 +319,8 @@ namespace AirdPro.csimzMLParser.parser
 
             if ("run".Equals(qName) && processingSCiLS3DData)
             {
-                this.currentScanSettings.GetCVParam("IMS:1000042").SetValueAsString("" + this.datasetMaxX);
-                this.currentScanSettings.GetCVParam("IMS:1000043").SetValueAsString("" + this.datasetMaxY);
+                currentScanSettings.GetCVParam("IMS:1000042").SetValueAsString("" + datasetMaxX);
+                currentScanSettings.GetCVParam("IMS:1000043").SetValueAsString("" + datasetMaxY);
             }
 
             base.EndElement(reader);
@@ -327,7 +330,7 @@ namespace AirdPro.csimzMLParser.parser
         {
             ImzML imzML = (ImzML)mzML;
 
-            imzML.ibdFile = ibdFile;
+            imzML.SetIBDFile(ibdFile);
             imzML.SetDataStorage(dataStorage);
 
             return imzML;

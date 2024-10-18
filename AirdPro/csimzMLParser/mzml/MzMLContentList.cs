@@ -2,6 +2,7 @@
 using HZH_Controls;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace AirdPro.csimzMLParser.mzml
 {
@@ -46,8 +47,10 @@ namespace AirdPro.csimzMLParser.mzml
             }
             else if (list.Count == 1)
             {
-                list = [];
-                list.Add(item);
+                list = new List<T>(list)
+                {
+                    item
+                };
             }
             else
             {

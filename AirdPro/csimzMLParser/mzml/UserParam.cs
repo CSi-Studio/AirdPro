@@ -94,9 +94,9 @@ namespace AirdPro.csimzMLParser.mzml
 
             if (Units != null)
             {
-                attributes += $" unitCvRef=\"{XMLHelper.EnsureSafeXML(Units.nameSpace)}\"";
-                attributes += $" unitAccession=\"{XMLHelper.EnsureSafeXML(Units.id)}\"";
-                attributes += $" unitName=\"{XMLHelper.EnsureSafeXML(Units.name)}\"";
+                attributes += $" unitCvRef=\"{XMLHelper.EnsureSafeXML(Units.GetNamespace())}\"";
+                attributes += $" unitAccession=\"{XMLHelper.EnsureSafeXML(Units.GetID())}\"";
+                attributes += $" unitName=\"{XMLHelper.EnsureSafeXML(Units.GetName())}\"";
             }
 
             return attributes;
