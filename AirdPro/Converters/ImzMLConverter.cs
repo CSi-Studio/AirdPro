@@ -30,9 +30,8 @@ using Software = AirdSDK.Beans.Software;
 using ByteOrder = AirdPro.Constants.ByteOrder;
 using static AirdPro.csimzMLParser.mzml.Component;
 using AirdPro.Domains.Msi;
-using CSharpFastPFOR.Port;
-using System.Text.RegularExpressions;
-using System.Management.Instrumentation;
+using AirdSDK.Bean;
+using MSIInfo = AirdPro.Domains.Msi.MSIInfo;
 
 namespace AirdPro.Converters
 {
@@ -616,8 +615,8 @@ namespace AirdPro.Converters
                 TotalSpectraCount = spectra.Size();
             }
 
-            //
-            for (int i = 0; i < TotalSpectraCount; i++)
+            //            
+            /*for (int i = 0; i < TotalSpectraCount; i++)
             {
                 Spectrum spectrum = spectra.Get(i);
                 if (!IsMsSpectrum(spectrum))
@@ -642,54 +641,7 @@ namespace AirdPro.Converters
 
                 // imaging
                 Coordinates coord = DataUtil.ExtractCoordinates(spectrum);
-
-                // TODO find out if spectrum type is encoded in imzml file
-               /* var metadataScan = new SimpleBuildingScan(scanNumber, msLevel, polarity,
-                    MassSpectrumType.CENTROIDED, retentionTime, precursorMz, precursorCharge);
-                if (!scanProcessorConfig.scanFilter().matches(metadataScan))
-                {
-                    // skip parsing of data and skip this scan completely
-                    parsedScans++;
-                    continue;
-                }*/
-
-                double[] mzValues = DataUtil.ExtractMzValues(spectrum);
-                double[] intensityValues = DataUtil.ExtractIntensityValues(spectrum);/*
-                // Auto-detect whether this scan is centroided
-                SimpleSpectralArrays data = new SimpleSpectralArrays(mzValues, intensityValues);
-                MassSpectrumType spectrumType = ScanUtils.detectSpectrumType(mzValues, intensityValues);
-
-                data = scanProcessorConfig.processor().processScan(metadataScan, data);
-
-                if (scanProcessorConfig.isMassDetectActive(msLevel))
-                {
-                    spectrumType = MassSpectrumType.CENTROIDED;
-                }
-
-                SimpleImagingScan scan = new SimpleImagingScan(newMZmineFile, scanNumber, msLevel,
-                    retentionTime, precursorMz, precursorCharge, data.mzs(), data.intensities(),
-                    spectrumType, polarity, scanDefinition, null, coord);
-
-                if (scanProcessorConfig.isMassDetectActive(msLevel))
-                {
-                    scan.addMassList(new ScanPointerMassList(scan));
-                }
-
-                *//*
-                 * Verify the size of parentStack. The actual size of the window to cover possible
-                 * candidates is defined by limitSize.
-                 *//*
-                if (parentStack.size() > PARENT_STACK_SIZE)
-                {
-                    io.github.mzmine.datamodel.Scan firstScan = parentStack.removeLast();
-                    newMZmineFile.addScan(firstScan);
-                }
-
-                parentStack.addFirst(scan);
-
-                parsedScans++;*/
-
-            }
+            }*/
 
 
             chromatograms = imzML.GetRun().GetChromatogramList();
@@ -1382,7 +1334,27 @@ namespace AirdPro.Converters
                     parentFiles.Add(file);
                 }
                 airdInfo.parentFiles = parentFiles;
-            }        
+            }
+
+            //MSI Info
+            /*//ROW_PER_FILE = 0,IMAGE_PER_FILE = 1,SPECTRUM_PER_FILE =2
+            public int MSIFileOrganisation;
+            //MSI 
+            public int lineScanDirection;
+            //MSI 
+            public int scanPattern;
+            public int pixelX;
+            public int pixelY;
+            public int pixelZ;*/
+
+            MSIInfo msiInfo = new();
+            msiInfo.MSIFileOrganisation = 1;
+            msiInfo.lineScanDirection = 1;
+            msiInfo.scanPattern = 1;            
+            msiInfo.pixelX = 1;
+            msiInfo.pixelY = 1;
+            msiInfo.pixelZ = 1;
+
 
             //Compressor Info
             List<Compressor> comps = [];
