@@ -171,6 +171,7 @@
     <Compile Include="Domains\Msi\HorizontalStart.cs" />
     <Compile Include="Domains\Msi\ImagingParameters.cs" />
     <Compile Include="Domains\Msi\MassSpectrumTypeExtensions.cs" />
+    <Compile Include="Domains\Msi\MSIInfo.cs" />
     <Compile Include="Domains\Msi\Pattern.cs" />
     <Compile Include="Domains\Msi\PolarityTypeExtensions.cs" />
     <Compile Include="Domains\Msi\ScanDirection.cs" />
