@@ -9,12 +9,10 @@ namespace AirdSDK.Bean
         //ROW_PER_FILE = 0,IMAGE_PER_FILE = 1,SPECTRUM_PER_FILE =2
         public int MSIFileOrganisation;
 
-        //MSI 
         public int lineScanDirection;
 
         public int scanSequence;
 
-        //MSI 
         public int scanPattern;
 
         public int pixelX;
