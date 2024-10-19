@@ -11,7 +11,7 @@ namespace AirdPro.csimzMLParser.util
     public class CVUtil
     {    
         public static string ParseMsLevel(Spectrum spectrum)
-        {
+        {            
             CVParam cv = spectrum.GetCVParam(Spectrum.MS_LEVEL_ID);
             if (cv == null)
             {
@@ -210,34 +210,6 @@ namespace AirdPro.csimzMLParser.util
             return result.Value;
         }
 
-        public static int? ParsePrecursorCharge(Precursor precursor, JobInfo jobInfo)
-        {
-            var result = 0;
-            var retryTimes = 3;
-            while (result < 0 && retryTimes > 0)
-            {
-                try
-                {
-                    if (precursor.SelectedIonList == null || precursor.SelectedIonList.Get(0).GetCVParam(Precursor.PRECURSOR_CHARGE_STATE_ID) == null)
-                    {
-                        return null;
-                    }
-                    result = precursor.SelectedIonList.Get(0).GetCVParam(Precursor.PRECURSOR_CHARGE_STATE_ID).GetValueAsInteger();
-                }
-                catch (FormatException e)
-                {
-                    jobInfo.Log("Charge-Retry Times-" + retryTimes + "-Result:" + result);
-                    jobInfo.Log(e.StackTrace);
-                }
-
-                retryTimes--;
-            }
-
-            if (result < 0) throw new Exception(ResultCode.Parse_Integer_Error + result);
-
-            return result;
-        }
-
         public static double ParsePrecursorWidth(IsolationWindow isolationWindow, JobInfo jobInfo)
         {
             var retryTimes = 3;
@@ -282,6 +254,34 @@ namespace AirdPro.csimzMLParser.util
             return upper + lower;
         }
 
+        public static int? ParsePrecursorCharge(Precursor precursor, JobInfo jobInfo)
+        {
+            var result = 0;
+            var retryTimes = 3;
+            while (result < 0 && retryTimes > 0)
+            {
+                try
+                {
+                    if (precursor.SelectedIonList == null || precursor.SelectedIonList.Get(0).GetCVParam(Precursor.PRECURSOR_CHARGE_STATE_ID) == null)
+                    {
+                        return null;
+                    }
+                    result = precursor.SelectedIonList.Get(0).GetCVParam(Precursor.PRECURSOR_CHARGE_STATE_ID).GetValueAsInteger();
+                }
+                catch (FormatException e)
+                {
+                    jobInfo.Log("Charge-Retry Times-" + retryTimes + "-Result:" + result);
+                    jobInfo.Log(e.StackTrace);
+                }
+
+                retryTimes--;
+            }
+
+            if (result < 0) throw new Exception(ResultCode.Parse_Integer_Error + result);
+
+            return result;
+        }
+
         public static WindowRange ParseIsolationWindow(Precursor precursor, JobInfo jobInfo)
         {
             var windowRange = new WindowRange();
@@ -322,6 +322,5 @@ namespace AirdPro.csimzMLParser.util
 
             return -1;
         }
-
     }
 }

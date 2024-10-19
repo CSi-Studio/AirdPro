@@ -23,22 +23,6 @@ namespace AirdPro.Algorithms.Compressor
 {
     public class ImzMLComp : ICompressor
     {
-        /*public int MzPrecision = 100000;
-        public bool IgnoreZero = true;
-
-        public SortedIntComp MzIntComp;
-        public ByteComp MzByteComp;
-        public IntComp IntIntComp;
-        public ByteComp IntByteComp;
-        public IntComp MobiIntComp;
-        public ByteComp MobiByteComp;
-        public SortedIntComp RtIntComp4Chroma;
-        public ByteComp RtByteComp4Chroma;
-
-        public Dictionary<double, int> MobiDict;
-        public int IntensityPrecision = 1;
-        public int RtPrecision = 100000;*/
-
         private static readonly object Locker = new object();
 
         public ImzMLComp(Converter converter) : base(converter)
@@ -46,12 +30,6 @@ namespace AirdPro.Algorithms.Compressor
             MzPrecision = converter.JobInfo.config.mzPrecision;
             IgnoreZero = converter.JobInfo.config.ignoreZeroIntensity;
         }
-
-        /*public ImzMLComp(Converter converter)
-        {
-            MzPrecision = converter.JobInfo.config.mzPrecision;
-            IgnoreZero = converter.JobInfo.config.ignoreZeroIntensity;
-        }*/
 
         public void CompressMS1(ImzMLConverter converter, BlockIndex index)
         {
@@ -75,7 +53,7 @@ namespace AirdPro.Algorithms.Compressor
                     //部分情况下读取Spectrum是不能并行的，需要加锁以避免异步读取错误
                     lock (Locker)
                     {
-                        spectrum = converter.spectra.GetSpectrum(ts.num);
+                        spectrum = converter.spectrumList.GetSpectrum(ts.num);
                     }
 
                     switch (converter.JobInfo.config.engine)
@@ -138,7 +116,7 @@ namespace AirdPro.Algorithms.Compressor
                 {
                     lock (Locker)
                     {
-                        spectrum = converter.spectra.GetSpectrum(ts.num);
+                        spectrum = converter.spectrumList.GetSpectrum(ts.num);
                     }
 
                     switch (converter.JobInfo.config.engine)

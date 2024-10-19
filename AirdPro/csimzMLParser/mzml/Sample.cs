@@ -7,6 +7,10 @@ namespace AirdPro.csimzMLParser.mzml
     {
         private const long serialVersionUID = 1L;
 
+        public const string POSITION_ACCURACY_ID = "IMS:1000200";
+        public const string STEP_SIZE_ID = "IMS:1000201";
+        public const string TARGET_MATERIAL_ID = "IMS:1000202";
+
         public static int idNumber = 0;
         public string id;		// Required
         public string name;	// Optional

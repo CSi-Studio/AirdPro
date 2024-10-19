@@ -137,7 +137,7 @@ namespace AirdPro.Converters
 
         public static void MRM(ImzMLConverter converter)
         {
-            if (converter.spectra.Size() > 0)
+            if (converter.spectrumList.Size() > 0)
             {
                 converter.PredictForIntensityPrecision(); //预测intensity需要保留的精度
                 converter.PredictForBestCombination(); //预测最佳压缩组合

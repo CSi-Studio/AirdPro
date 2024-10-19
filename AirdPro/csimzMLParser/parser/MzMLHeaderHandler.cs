@@ -1797,7 +1797,7 @@ namespace AirdPro.csimzMLParser.parser
                     }
                     break;
                 case "indexedmzML":
-                case "indexList":
+                case "IndexList":
                     // Do nothing
                     break;
                 default:
@@ -1978,7 +1978,7 @@ namespace AirdPro.csimzMLParser.parser
             }
             else if ("mzML".Equals(qName) || "indexedmzML".Equals(qName))
             {
-                // Go through spectra and chromatograms to convert the data storage if necessary
+                // Go through spectrumList and chromatogramList to convert the data storage if necessary
                 if (spectrumList != null)
                 {
                     foreach (Spectrum spectrum in spectrumList)
@@ -1997,7 +1997,7 @@ namespace AirdPro.csimzMLParser.parser
 
             if (!qName.Equals("indexedmzML") && !qName.Equals("cvParam") && !qName.Equals("userParam") && !qName.Equals("softwareRef")
                 && !qName.Equals("binary") && !qName.Equals("referenceableParamGroupRef") && !qName.Equals("sourceFileRef")
-                && !qName.Equals("index") && !qName.Equals("indexList") && !qName.Equals("offset") && !qName.Equals("indexListOffset")
+                && !qName.Equals("index") && !qName.Equals("IndexList") && !qName.Equals("offset") && !qName.Equals("indexListOffset")
                 && !qName.Equals("fileChecksum"))
             {
                 contentStack.Pop();

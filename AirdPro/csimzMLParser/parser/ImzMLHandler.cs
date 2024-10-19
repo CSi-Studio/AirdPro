@@ -195,7 +195,7 @@ namespace AirdPro.csimzMLParser.parser
                         maxImagesX = (int)Math.Ceiling(Math.Sqrt(numImagesGuess));
 
                         LOGGER.InfoFormat("Found image size {0} ({1}, {2})", [imageSize, imageMaxX, imageMaxY]);
-                        LOGGER.InfoFormat("Guessing we have {0} images based on {1} spectra", [numImagesGuess, spectrumList.Size()]);
+                        LOGGER.InfoFormat("Guessing we have {0} images based on {1} spectrumList", [numImagesGuess, spectrumList.Size()]);
                         LOGGER.InfoFormat("Putting {0} images in x", maxImagesX);
 
                         haveDoneCheck = true;

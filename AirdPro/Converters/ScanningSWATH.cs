@@ -125,8 +125,8 @@ namespace AirdPro.Converters
         //         }
         //
         //         swathIndex.endPtr = startPosition;
-        //         indexList.Add(swathIndex);
-        //         ranges.Add(swathIndex.getWindowRange());
+        //         IndexList.Add(swathIndex);
+        //         Ranges.Add(swathIndex.getWindowRange());
         //     }
         // }
         //

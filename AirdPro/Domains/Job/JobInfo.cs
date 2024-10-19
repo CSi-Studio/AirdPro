@@ -335,7 +335,7 @@ namespace AirdPro.Domains
             jobInfo += Tag.Conversion_Time + AirdProFileUtil.GetTimeLabel(conversionTime) + Const.Change_Line;
             if (config.autoDecision)
             {
-                jobInfo += config.spectraToPredict + " spectra for prediction" + Const.Change_Line;
+                jobInfo += config.spectraToPredict + " spectrumList for prediction" + Const.Change_Line;
                 jobInfo += "size:ct:dt=" + config.compressionSizeWeight + ":" + config.compressionTimeWeight + ":" +
                            config.decompressionTimeWeight + Const.Change_Line;
             }

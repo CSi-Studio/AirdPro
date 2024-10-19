@@ -14,8 +14,6 @@ using System.IO;
 using System.Text;
 using pwiz.CLI.cv;
 using pwiz.CLI.data;
-using pwiz.CLI.msdata;
-using System.Threading.Tasks;
 using AirdSDK.Bean;
 
 namespace AirdPro.Converters

@@ -29,18 +29,16 @@ using AirdPro.Algorithms.Maths;
 using Software = AirdSDK.Beans.Software;
 using ByteOrder = AirdPro.Constants.ByteOrder;
 using static AirdPro.csimzMLParser.mzml.Component;
-using AirdPro.Domains.Msi;
-using AirdSDK.Bean;
-using MSIInfo = AirdPro.Domains.Msi.MSIInfo;
+using AirdSDK.Bean.Msi;
+using AirdPro.csimzMLParser.util;
 
 namespace AirdPro.Converters
 {
     public class ImzMLConverter : Converter
     {
         public ImzML imzML;
-        public SpectrumList spectra;
-        protected ChromatogramList chromatograms;        
-        private int parsedScans;
+        public SpectrumList spectrumList;
+        protected ChromatogramList chromatogramList;
 
         protected List<WindowRange> Ranges = []; //SWATH/DIA Window的窗口
         protected Hashtable RangeTable = []; //用于存放SWATH/DIA窗口的信息,key为mz
@@ -101,9 +99,8 @@ namespace AirdPro.Converters
         {
             Start();
             CopyFile(); //如果检测到是网络挂载磁盘,则首先拷贝到本地以后再进行转换,以提升转换速度
-            
+
             ImzML imzML = ImportImzMLFile();
-            
             try
             {
                 if (imzML == null)
@@ -113,8 +110,8 @@ namespace AirdPro.Converters
                 }
                 StartPosition = 0;
                 InitDirectory(); //创建文件夹,首先创建文件夹的目的在于确保对指定目录拥有写权限,如果无法正常创建,则在本步骤就中断
-                
-                ReadImzML(imzML);
+
+                ReadMSIData(imzML);
                 using (AirdStream = new FileStream(JobInfo.airdFilePath, FileMode.Create))
                 {
                     PredictAcquisitionMethod();
@@ -143,7 +140,7 @@ namespace AirdPro.Converters
                             break;
                     }
                 }
-                //ClearCache();
+                ClearCache();
             }
             finally
             {
@@ -216,19 +213,19 @@ namespace AirdPro.Converters
             JobInfo.Log(Tag.Predict_Acquisition_Method, Status.Init);
 
             //如果有光谱图
-            if (spectra != null && spectra.Size() > 0)
+            if (spectrumList != null && spectrumList.Size() > 0)
             {
-                Spectrum firstSpec = spectra.GetSpectrum(0);
+                Spectrum firstSpec = spectrumList.GetSpectrum(0);
                 List<Spectrum> predictSpecList = [];
                 //首先取10个窗口，当不足10个时，取spectra.Size()
                 int fetchCount = 10;
-                if (spectra.Size() < 10)
+                if (spectrumList.Size() < 10)
                 {
-                    fetchCount = spectra.Size();
+                    fetchCount = spectrumList.Size();
                 }
                 for (int i = 0; i < fetchCount; i++)
                 {
-                    predictSpecList.Add(spectra.GetSpectrum(i));
+                    predictSpecList.Add(spectrumList.GetSpectrum(i));
                 }
 
                 //首先判断是不是带有离子淌度的ion mobility模式
@@ -295,13 +292,13 @@ namespace AirdPro.Converters
             try
             {
                 //如果有色谱图,且谱图数目大于2(排除TIC和BPC图),则预测为SRM模式
-                if (chromatograms != null && chromatograms.Size() > 10)
+                if (chromatogramList != null && chromatogramList.Size() > 10)
                 {
                     List<Chromatogram> predictChromatoList = [];
                     // 首先取10个窗口
                     for (int i = 0; i < 10; i++)
                     {
-                        Chromatogram chroma = chromatograms.GetChromatogram(i);
+                        Chromatogram chroma = chromatogramList.GetChromatogram(i);
                         predictChromatoList.Add(chroma);
                     }
 
@@ -347,7 +344,7 @@ namespace AirdPro.Converters
             bool findIt = false;
             for (var i = 0; i < nums.Count; i++)
             {
-                Spectrum spectrum = spectra.GetSpectrum(i);
+                Spectrum spectrum = spectrumList.GetSpectrum(i);
                 foreach (double d in spectrum.GetIntensityArray())
                 {
                     if ((d - (int)d) != 0) //如果随机采集到的intensity是精确到小数点后一位的,精度确定为10,即精确到小数点后一位
@@ -518,7 +515,7 @@ namespace AirdPro.Converters
             if (!Directory.Exists(tempPath))
             {
                 Directory.CreateDirectory(tempPath);
-            }            
+            }
 
             switch (JobInfo.format)
             {
@@ -575,11 +572,11 @@ namespace AirdPro.Converters
                     }
                     break;
             }
-        }         
+        }
 
         public ImzML ImportImzMLFile()
         {
-            JobInfo.Log(Tag.Prepare_To_Parse_ImzML_File, Status.Prepare);            
+            JobInfo.Log(Tag.Prepare_To_Parse_ImzML_File, Status.Prepare);
 
             ImzML imzML;
             if (CopyToLocal)
@@ -600,58 +597,29 @@ namespace AirdPro.Converters
             return imzML;
         }
 
-        public void ReadImzML(ImzML imzML)
+        public void ReadMSIData(ImzML imzML)
         {
             this.imzML = imzML;
-            //List<string> filter = new List<string>();
-            //SpectrumListFactory.wrap(MsiData, filter); //这一步操作可以帮助加快Wiff文件的初始化速度
-            spectra = imzML.GetRun().GetSpectrumList();
-            if (spectra == null || spectra.IsEmpty())
+            //spectrumList
+            spectrumList = imzML.GetRun().GetSpectrumList();
+            if (spectrumList == null || spectrumList.IsEmpty())
             {
                 JobInfo.Log(ResultCode.No_Spectra_Found);
             }
             else
             {
-                TotalSpectraCount = spectra.Size();
+                TotalSpectraCount = spectrumList.Size();
             }
 
-            //            
-            /*for (int i = 0; i < TotalSpectraCount; i++)
-            {
-                Spectrum spectrum = spectra.Get(i);
-                if (!IsMsSpectrum(spectrum))
-                {
-                    parsedScans++;
-                    continue;
-                }
-
-                string scanId = spectrum.GetID();
-                int scanNumber = DataUtil.ConvertScanIdToScanNumber(scanId);
-                
-
-                // Extract scan data
-                int msLevel = DataUtil.ExtractMSLevel(spectrum);
-                
-                float retentionTime = DataUtil.ExtractRetentionTime(spectrum);
-                PolarityType polarity = DataUtil.ExtractPolarity(spectrum);
-                int parentScan = DataUtil.ExtractParentScanNumber(spectrum);
-                double precursorMz = DataUtil.ExtractPrecursorMz(spectrum);
-                int precursorCharge = DataUtil.ExtractPrecursorCharge(spectrum);
-                string scanDefinition = DataUtil.ExtractScanDefinition(spectrum);
-
-                // imaging
-                Coordinates coord = DataUtil.ExtractCoordinates(spectrum);
-            }*/
-
-
-            chromatograms = imzML.GetRun().GetChromatogramList();
-            if (chromatograms == null || chromatograms.IsEmpty())
+            //chromatogramList
+            chromatogramList = imzML.GetRun().GetChromatogramList();
+            if (chromatogramList == null || chromatogramList.IsEmpty())
             {
                 JobInfo.Log(ResultCode.No_Chromatograms_Found);
             }
             else
             {
-                TotalChromaCount = chromatograms.Size();
+                TotalChromaCount = chromatogramList.Size();
             }
 
             JobInfo.Log(Tag.Adapting_Finished);
@@ -664,7 +632,7 @@ namespace AirdPro.Converters
             // one thats not MS (code for UV?)
             CVParam cvParams = spectrum.GetCVParam("MS:1000804");
 
-            // By default, let's assume unidentified spectra are MS spectra
+            // By default, let's assume unidentified spectrumList are MS spectrumList
             return cvParams == null;
         }
 
@@ -760,13 +728,13 @@ namespace AirdPro.Converters
             {
                 imzML = null;
             }
-            if (spectra != null)
+            if (spectrumList != null)
             {
-                spectra = null;
+                spectrumList = null;
             }
-            if (chromatograms != null)
+            if (chromatogramList != null)
             {
-                chromatograms = null;
+                chromatogramList = null;
             }
         }
 
@@ -843,7 +811,6 @@ namespace AirdPro.Converters
                 JobInfo.Log(Tag.UpperOffset + cv.GetValueAsDouble());
                 throw e;
             }
-           
 
             if (spectrum.GetScanList().Size() < 1) return ms2;
 
@@ -867,7 +834,7 @@ namespace AirdPro.Converters
             ms2.filterString = CVUtil.ParseFilterString(scan, JobInfo);
 
             return ms2;
-        }        
+        }
 
         public void CompressMs2BlockForPrm()
         {
@@ -988,11 +955,11 @@ namespace AirdPro.Converters
                     TempScan ts = new(index);
                     if (JobInfo.ionMobility)
                     {
-                        Compressor.CompressMobility(spectra.GetSpectrum(index.num), ts);
+                        Compressor.CompressMobility(spectrumList.GetSpectrum(index.num), ts);
                     }
                     else
                     {
-                        Compressor.Compress(spectra.GetSpectrum(index.num), ts);
+                        Compressor.Compress(spectrumList.GetSpectrum(index.num), ts);
                     }
 
                     blockIndex.nums.Add(ts.num);
@@ -1027,7 +994,7 @@ namespace AirdPro.Converters
 
         public void compressChromatograms()
         {
-            if (chromatograms == null || chromatograms.Size() == 0)
+            if (chromatogramList == null || chromatogramList.Size() == 0)
             {
                 return;
             }
@@ -1036,13 +1003,13 @@ namespace AirdPro.Converters
             //如果是.d的文件夹类型的质谱文件,可以直接解析AcqMethod.xml文件,用于读取设定的化合物名称
             readMRMCompounds();
 
-            int totalSize = chromatograms.Size();
+            int totalSize = chromatogramList.Size();
             int progress = 0;
             JobInfo.Log(null, Tag.progress(Tag.Chroma, progress, totalSize));
             ChromatogramIndex.startPtr = StartPosition;
-            for (int i = 0; i < chromatograms.Size(); i++)
+            for (int i = 0; i < chromatogramList.Size(); i++)
             {
-                Chromatogram chromatogram = chromatograms.Get(i);
+                Chromatogram chromatogram = chromatogramList.Get(i);
                 TempScanChroma tempScan = new();
                 ChromatogramIndex.nums.Add(i);
                 ChromatogramIndex.ids.Add(chromatogram.GetID());
@@ -1293,7 +1260,7 @@ namespace AirdPro.Converters
                                 throw new ArgumentOutOfRangeException();
                         }
                     }
-                }                
+                }
 
                 instruments.Add(instrument);
             }
@@ -1336,25 +1303,8 @@ namespace AirdPro.Converters
                 airdInfo.parentFiles = parentFiles;
             }
 
-            //MSI Info
-            /*//ROW_PER_FILE = 0,IMAGE_PER_FILE = 1,SPECTRUM_PER_FILE =2
-            public int MSIFileOrganisation;
-            //MSI 
-            public int lineScanDirection;
-            //MSI 
-            public int scanPattern;
-            public int pixelX;
-            public int pixelY;
-            public int pixelZ;*/
-
-            MSIInfo msiInfo = new();
-            msiInfo.MSIFileOrganisation = 1;
-            msiInfo.lineScanDirection = 1;
-            msiInfo.scanPattern = 1;            
-            msiInfo.pixelX = 1;
-            msiInfo.pixelY = 1;
-            msiInfo.pixelZ = 1;
-
+            //aird msi info
+            airdInfo.msiInfo = MsiUtil.GetMsiInfo(imzML);           
 
             //Compressor Info
             List<Compressor> comps = [];
@@ -1449,7 +1399,7 @@ namespace AirdPro.Converters
         public List<int[]> FetchSpectrum(int index, bool mobi)
         {
             List<int[]> arrays = [];
-            Spectrum spectrum = spectra.GetSpectrum(index);
+            Spectrum spectrum = spectrumList.GetSpectrum(index);
             double[] mzData = spectrum.GetMzArray();
             double[] intData = spectrum.GetIntensityArray();
 
@@ -1601,7 +1551,7 @@ namespace AirdPro.Converters
             JobInfo.Log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
             for (var i = 0; i < TotalSpectraCount; i++)
             {
-                Spectrum spectrum = spectra.Get(i);
+                Spectrum spectrum = spectrumList.Get(i);
                 string msLevel = CVUtil.ParseMsLevel(spectrum);
                 JobInfo.SetStatus("Pre:" + i + "/" + TotalSpectraCount);
                 //最后一个谱图,单独判断
@@ -1624,7 +1574,7 @@ namespace AirdPro.Converters
                     if (msLevel.Equals(MsLevel.MS1))
                     {
                         Ms1List.Add(ParseMs1(spectrum, i)); //加入MS1List
-                        Spectrum next = spectra.Get(i + 1);
+                        Spectrum next = spectrumList.Get(i + 1);
                         if (CVUtil.ParseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
                         {
                             parentNum = i;
@@ -1654,7 +1604,7 @@ namespace AirdPro.Converters
             {
                 progress++;
                 JobInfo.Log(null, Tag.progress(Tag.Pre, progress, TotalSpectraCount));
-                Spectrum spectrum = spectra.Get(i);
+                Spectrum spectrum = spectrumList.Get(i);
                 string msLevel = CVUtil.ParseMsLevel(spectrum);
                 //如果这个谱图是MS1                          
                 if (msLevel.Equals(MsLevel.MS1))
@@ -1693,7 +1643,7 @@ namespace AirdPro.Converters
             for (var i = 0; i < TotalSpectraCount; i++)
             {
                 JobInfo.Log(null, Tag.progress(Tag.Pre, i, TotalSpectraCount));
-                Spectrum spectrum = spectra.Get(i);
+                Spectrum spectrum = spectrumList.Get(i);
                 string msLevel = CVUtil.ParseMsLevel(spectrum);
                 //最后一个谱图,单独判断
                 if (i == TotalSpectraCount - 1)
@@ -1715,7 +1665,7 @@ namespace AirdPro.Converters
                     if (msLevel.Equals(MsLevel.MS1))
                     {
                         Ms1List.Add(ParseMs1(spectrum, i)); //加入MS1List
-                        Spectrum next = spectra.Get(i + 1);
+                        Spectrum next = spectrumList.Get(i + 1);
                         if (CVUtil.ParseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
                         {
                             parentNum = i;
@@ -1745,7 +1695,7 @@ namespace AirdPro.Converters
             {
                 progress++;
                 JobInfo.Log(null, Tag.progress(Tag.Pre, progress, TotalSpectraCount));
-                Spectrum spectrum = spectra.Get(i);
+                Spectrum spectrum = spectrumList.Get(i);
                 string msLevel = CVUtil.ParseMsLevel(spectrum);
                 //如果这个谱图是MS1                          
                 if (msLevel.Equals(MsLevel.MS1))
@@ -1784,7 +1734,7 @@ namespace AirdPro.Converters
             for (int i = 0; i < TotalSpectraCount; i++)
             {
                 JobInfo.Log(null, Tag.progress(Tag.Empty, (i + 1), TotalSpectraCount));
-                Spectrum spectrum = spectra.Get(i);
+                Spectrum spectrum = spectrumList.Get(i);
                 string msLevel = CVUtil.ParseMsLevel(spectrum);
                 //如果是最后一个谱图,那么单独判断
                 if (i == TotalSpectraCount - 1)
@@ -1798,7 +1748,7 @@ namespace AirdPro.Converters
                     //如果是MS2谱图,加入到谱图组
                     if (msLevel.Equals(MsLevel.MS2))
                     {
-                        MsIndex ms2Index = ParseMs2(spectra.Get(i), i, parentNum);
+                        MsIndex ms2Index = ParseMs2(spectrumList.Get(i), i, parentNum);
                         AddToMs2Map(ms2Index.precursor.mz, ms2Index);
                         continue;
                     }
@@ -1807,7 +1757,7 @@ namespace AirdPro.Converters
                 //如果这个谱图是MS1
                 if (msLevel.Equals(MsLevel.MS1))
                 {
-                    Spectrum next = spectra.GetSpectrum(i + 1);
+                    Spectrum next = spectrumList.GetSpectrum(i + 1);
                     string msLevelNext = CVUtil.ParseMsLevel(next);
                     //如果下一个谱图仍然是MS1, 那么直接忽略这个谱图
                     if (msLevelNext.Equals(MsLevel.MS1))
@@ -1818,13 +1768,13 @@ namespace AirdPro.Converters
                     if (msLevelNext.Equals(MsLevel.MS2))
                     {
                         parentNum = i;
-                        Ms1List.Add(ParseMs1(spectra.GetSpectrum(i), i));
+                        Ms1List.Add(ParseMs1(spectrumList.GetSpectrum(i), i));
                     }
                 }
 
                 if (msLevel.Equals(MsLevel.MS2))
                 {
-                    Spectrum current = spectra.GetSpectrum(i);
+                    Spectrum current = spectrumList.GetSpectrum(i);
                     MsIndex ms2Index = ParseMs2(current, i, parentNum);
                     AddToMs2Map(ms2Index.precursor.mz, ms2Index); //如果这个谱图是MS2
                 }

@@ -163,7 +163,7 @@ namespace AirdPro.Forms
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(118, 24);
             this.label6.TabIndex = 140;
-            this.label6.Text = "Scan Pattern";
+            this.label6.Text = "Scan scanPattern";
             this.label6.Visible = false;
             // 
             // comboBox_scan_direction

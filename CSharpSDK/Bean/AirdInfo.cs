@@ -9,9 +9,9 @@
  */
 
 using AirdSDK.Bean;
+using AirdSDK.Bean.Msi;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AirdSDK.Beans
 {
@@ -178,7 +178,9 @@ namespace AirdSDK.Beans
          * Use in MSI
          * 如果是空间代谢数据,本字段会启用
          */
-        public MSIInfo MSIInfo = new MSIInfo();
+        public MSIInfo MSIInfo = new MSIInfo();  // TODO: merge into MsiInfo
+
+        public MsiInfo msiInfo;               
 
         /**
         * the aird file creator

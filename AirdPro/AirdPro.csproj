@@ -167,15 +167,6 @@
     <Compile Include="Converters\ImzMLConverter.cs" />
     <Compile Include="Converters\MSIConvert.cs" />
     <Compile Include="csimzMLParser\util\DataUtil.cs" />
-    <Compile Include="Domains\Msi\Coordinates.cs" />
-    <Compile Include="Domains\Msi\HorizontalStart.cs" />
-    <Compile Include="Domains\Msi\ImagingParameters.cs" />
-    <Compile Include="Domains\Msi\MassSpectrumTypeExtensions.cs" />
-    <Compile Include="Domains\Msi\MSIInfo.cs" />
-    <Compile Include="Domains\Msi\Pattern.cs" />
-    <Compile Include="Domains\Msi\PolarityTypeExtensions.cs" />
-    <Compile Include="Domains\Msi\ScanDirection.cs" />
-    <Compile Include="Domains\Msi\VerticalStart.cs" />
     <Compile Include="csimzMLParser\exceptions\CVParamAccessionNotFoundIssue.cs" />
     <Compile Include="csimzMLParser\exceptions\FatalParseException.cs" />
     <Compile Include="csimzMLParser\exceptions\FatalParseIssue.cs" />
@@ -190,6 +181,7 @@
     <Compile Include="csimzMLParser\exceptions\MzMLParseException.cs" />
     <Compile Include="csimzMLParser\exceptions\ObsoleteTermUsed.cs" />
     <Compile Include="csimzMLParser\imzml\IMSIData.cs" />
+    <Compile Include="csimzMLParser\util\MsiUtil.cs" />
     <Compile Include="Domains\Redis\ConsumeSwitchCommand.cs" />
     <Compile Include="Forms\CustomPopup.cs">
       <SubType>Form</SubType>
