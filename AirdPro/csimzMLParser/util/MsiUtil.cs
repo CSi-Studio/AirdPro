@@ -31,7 +31,7 @@ namespace AirdPro.csimzMLParser.util
             IbdInfo ibdInfo = new();
 
             FileContent fileContent = imzML.GetFileDescription().GetFileContent();
-            ibdInfo.fileUri = fileContent?.GetCVParam(FileContent.IBD_FILE_ID)?.GetValueAsString();
+            ibdInfo.fileUri = fileContent?.GetCVParam(FileContent.IBD_FILE_ID)?.ToString();
 
             CVParam cvParam = fileContent?.GetCVParam(FileContent.SHA1_CHECKSUM_ID);
             if (cvParam == null)
@@ -47,7 +47,7 @@ namespace AirdPro.csimzMLParser.util
             }
             ibdInfo.binaryType = cvParam?.GetValueAsString();
 
-            ibdInfo.identification = fileContent?.GetCVParam(FileContent.IDB_IDENTIFICATION_ID)?.GetValueAsString();
+            ibdInfo.identification = fileContent?.GetCVParam(FileContent.IDB_IDENTIFICATION_ID)?.ToString();
 
             OffsetHandle offsetHandle = new OffsetHandle();
             SpectrumList spectrumList = imzML.GetSpectrumList();
@@ -99,7 +99,7 @@ namespace AirdPro.csimzMLParser.util
             imageInfo.pixelSize = pixelSizeX;
             imageInfo.pixelSizeX = pixelSizeX;
             imageInfo.pixelSizeY = pixelSizeY;
-            imageInfo.imageShape = scanSettings?.GetCVParam(ScanSettings.IMAGE_ID)?.GetValueAsString();
+            imageInfo.imageShape = scanSettings?.GetCVParam(ScanSettings.IMAGE_ID)?.ToString();
 
             return imageInfo;
         }
@@ -116,7 +116,7 @@ namespace AirdPro.csimzMLParser.util
             Sample sample = sampleList.GetSample(0);
             sampleStage.positionAccuracy = sample?.GetCVParam(Sample.POSITION_ACCURACY_ID)?.GetValueAsDouble() ?? -1;
             sampleStage.stepSize = sample?.GetCVParam(Sample.STEP_SIZE_ID)?.GetValueAsDouble() ?? -1;
-            sampleStage.targetMaterial = sample?.GetCVParam(Sample.TARGET_MATERIAL_ID)?.GetValueAsString();
+            sampleStage.targetMaterial = sample?.GetCVParam(Sample.TARGET_MATERIAL_ID)?.ToString();
 
             return sampleStage;
         }
@@ -129,19 +129,19 @@ namespace AirdPro.csimzMLParser.util
             if (scanSettings != null)
             {
                 //linescanSequence
-                string linescanSequence = scanSettings.GetCVParam(ScanSettings.BOTTOM_UP_ID)?.GetValueAsString();
+                string linescanSequence = scanSettings.GetCVParam(ScanSettings.BOTTOM_UP_ID)?.ToString();
                 if(linescanSequence == null)
                 {
-                    linescanSequence = scanSettings.GetCVParam(ScanSettings.TOP_DOWN_ID)?.GetValueAsString();
+                    linescanSequence = scanSettings.GetCVParam(ScanSettings.TOP_DOWN_ID)?.ToString();
                     if (linescanSequence == null)
                     {
-                        linescanSequence = scanSettings.GetCVParam(ScanSettings.LEFT_RIGHT_ID)?.GetValueAsString();
+                        linescanSequence = scanSettings.GetCVParam(ScanSettings.LEFT_RIGHT_ID)?.ToString();
                         if (linescanSequence == null)
                         {
-                            linescanSequence = scanSettings.GetCVParam(ScanSettings.RIGHT_LEFT_ID)?.GetValueAsString();
+                            linescanSequence = scanSettings.GetCVParam(ScanSettings.RIGHT_LEFT_ID)?.ToString();
                             if (linescanSequence == null)
                             {
-                                linescanSequence = scanSettings.GetCVParam(ScanSettings.NO_DIRECTION_ID)?.GetValueAsString();
+                                linescanSequence = scanSettings.GetCVParam(ScanSettings.NO_DIRECTION_ID)?.ToString();
                             }
                         }
                     }
@@ -149,36 +149,36 @@ namespace AirdPro.csimzMLParser.util
                 scanInfo.linescanSequence = linescanSequence;
 
                 //scanPattern
-                string scanPattern = scanSettings.GetCVParam(ScanSettings.MEANDERING_ID)?.GetValueAsString();
+                string scanPattern = scanSettings.GetCVParam(ScanSettings.MEANDERING_ID)?.ToString();
                 if (scanPattern == null)
                 {
-                    scanPattern = scanSettings.GetCVParam(ScanSettings.FLYBACK_ID)?.GetValueAsString();
+                    scanPattern = scanSettings.GetCVParam(ScanSettings.FLYBACK_ID)?.ToString();
                     if (scanPattern == null)
                     {
-                        scanPattern = scanSettings.GetCVParam(ScanSettings.RANDOM_ACCESS_ID)?.GetValueAsString();                        
+                        scanPattern = scanSettings.GetCVParam(ScanSettings.RANDOM_ACCESS_ID)?.ToString();                        
                     }
                 }
                 scanInfo.scanPattern = scanPattern;
 
                 //scanType
-                string scanType = scanSettings.GetCVParam(ScanSettings.HORIZONTAL_LINESCAN_ID)?.GetValueAsString();
+                string scanType = scanSettings.GetCVParam(ScanSettings.HORIZONTAL_LINESCAN_ID)?.ToString();
                 if (scanType == null)
                 {
-                    scanType = scanSettings.GetCVParam(ScanSettings.VERTICAL_LINESCAN_ID)?.GetValueAsString();                    
+                    scanType = scanSettings.GetCVParam(ScanSettings.VERTICAL_LINESCAN_ID)?.ToString();                    
                 }
                 scanInfo.scanType = scanType;
 
                 //linescanDirection
-                string linescanDirection = scanSettings.GetCVParam(ScanSettings.LINESCAN_BOTTOM_UP_ID)?.GetValueAsString();
+                string linescanDirection = scanSettings.GetCVParam(ScanSettings.LINESCAN_BOTTOM_UP_ID)?.ToString();
                 if (linescanDirection == null)
                 {
-                    linescanDirection = scanSettings.GetCVParam(ScanSettings.LINESCAN_LEFT_RIGHT_ID)?.GetValueAsString();
+                    linescanDirection = scanSettings.GetCVParam(ScanSettings.LINESCAN_LEFT_RIGHT_ID)?.ToString();
                     if (linescanDirection == null)
                     {
-                        linescanDirection = scanSettings.GetCVParam(ScanSettings.LINESCAN_RIGHT_LEFT_ID)?.GetValueAsString();
+                        linescanDirection = scanSettings.GetCVParam(ScanSettings.LINESCAN_RIGHT_LEFT_ID)?.ToString();
                         if (linescanDirection == null)
                         {
-                            linescanDirection = scanSettings.GetCVParam(ScanSettings.LINESCAN_TOP_DOWN_ID)?.GetValueAsString();                            
+                            linescanDirection = scanSettings.GetCVParam(ScanSettings.LINESCAN_TOP_DOWN_ID)?.ToString();                            
                         }
                     }
                 }
