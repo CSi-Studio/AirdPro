@@ -38,14 +38,14 @@ namespace AirdPro.csimzMLParser.util
             {
                 cvParam = fileContent?.GetCVParam(FileContent.MD5_CHECKSUM_ID);
             }
-            ibdInfo.checkSum = cvParam?.GetValueAsString();
+            ibdInfo.checkSum = cvParam?.ToString();
 
             cvParam = fileContent?.GetCVParam(FileContent.BINARY_TYPE_CONTINUOUS_ID);
             if (cvParam == null)
             {
                 cvParam = fileContent?.GetCVParam(FileContent.BINARY_TYPE_PROCESSED_ID);
             }
-            ibdInfo.binaryType = cvParam?.GetValueAsString();
+            ibdInfo.binaryType = cvParam?.ToString();
 
             ibdInfo.identification = fileContent?.GetCVParam(FileContent.IDB_IDENTIFICATION_ID)?.ToString();
 

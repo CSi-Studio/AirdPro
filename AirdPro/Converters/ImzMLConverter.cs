@@ -1195,13 +1195,13 @@ namespace AirdPro.Converters
                 {
                     foreach (CVParam cv in ic.GetCVParamList())
                     {
-                        if (!FeaturesMap.ContainsKey(cv.GetTagName()))
+                        if (!FeaturesMap.ContainsKey(cv.ToString()))
                         {
-                            FeaturesMap.Add(cv.GetTagName(), cv.GetValueAsString());
+                            FeaturesMap.Add(cv.ToString(), cv.GetValueAsString());
                         }
                     }
 
-                    instrument.model = ic.GetCVParamList()[0].GetTagName();
+                    instrument.model = ic.GetCVParamList()[0].ToString();
                 }
                 else if (imzML.GetReferenceableParamGroupList().Size() != 0)
                 {
@@ -1216,13 +1216,13 @@ namespace AirdPro.Converters
                         {
                             foreach (CVParam cv in rpg.GetCVParamList())
                             {
-                                if (!FeaturesMap.ContainsKey(cv.GetTagName()))
+                                if (!FeaturesMap.ContainsKey(cv.ToString()))
                                 {
-                                    FeaturesMap.Add(cv.GetTagName(), cv.GetValueAsString());
+                                    FeaturesMap.Add(cv.ToString(), cv.GetValueAsString());
                                 }
                             }
 
-                            instrument.model = rpg.GetCVParamList()[0].GetTagName();
+                            instrument.model = rpg.GetCVParamList()[0].ToString();
                         }
                     }
                 }
@@ -1236,21 +1236,21 @@ namespace AirdPro.Converters
                             case ComponentType.ComponentType_Analyzer:
                                 foreach (CVParam cv in component.GetCVParamList())
                                 {
-                                    instrument.analyzer.Add(cv.GetTagName());
+                                    instrument.analyzer.Add(cv.ToString());
                                 }
 
                                 break;
                             case ComponentType.ComponentType_Source:
                                 foreach (CVParam cv in component.GetCVParamList())
                                 {
-                                    instrument.source.Add(cv.GetTagName());
+                                    instrument.source.Add(cv.ToString());
                                 }
 
                                 break;
                             case ComponentType.ComponentType_Detector:
                                 foreach (CVParam cv in component.GetCVParamList())
                                 {
-                                    instrument.detector.Add(cv.GetTagName());
+                                    instrument.detector.Add(cv.ToString());
                                 }
 
                                 break;
