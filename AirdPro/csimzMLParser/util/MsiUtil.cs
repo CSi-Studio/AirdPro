@@ -1,6 +1,7 @@
 ﻿using AirdPro.csimzMLParser.imzml;
 using AirdPro.csimzMLParser.mzml;
 using AirdSDK.Bean.Msi;
+using AirdSDK.Enums.Msi;
 using System.Linq;
 
 namespace AirdPro.csimzMLParser.util
@@ -11,7 +12,7 @@ namespace AirdPro.csimzMLParser.util
         {
             MsiInfo msiInfo = new();
             //fileOrganisation: row per file, image per file，spectrum per file
-            msiInfo.fileOrganisation = FileOrganisation.IMAGE_PER_FILE.Name;
+            msiInfo.fileOrganisation = FileOrganisation.IMAGE_PER_FILE;
             //ibd info
             msiInfo.ibdInfo = GetIbdInfo(imzML);
             //image info
@@ -31,21 +32,26 @@ namespace AirdPro.csimzMLParser.util
             IbdInfo ibdInfo = new();
 
             FileContent fileContent = imzML.GetFileDescription().GetFileContent();
-            ibdInfo.fileUri = fileContent?.GetCVParam(FileContent.IBD_FILE_ID)?.ToString();
-
-            CVParam cvParam = fileContent?.GetCVParam(FileContent.SHA1_CHECKSUM_ID);
-            if (cvParam == null)
+            ibdInfo.fileUri = fileContent?.GetCVParam(FileContent.IBD_FILE_ID)?.ToString();  
+            
+            if (fileContent?.GetCVParam(FileContent.SHA1_CHECKSUM_ID) != null)
             {
-                cvParam = fileContent?.GetCVParam(FileContent.MD5_CHECKSUM_ID);
+                ibdInfo.checkSum = CheckSum.SHA1;               
             }
-            ibdInfo.checkSum = cvParam?.ToString();
-
-            cvParam = fileContent?.GetCVParam(FileContent.BINARY_TYPE_CONTINUOUS_ID);
-            if (cvParam == null)
+           else if (fileContent?.GetCVParam(FileContent.MD5_CHECKSUM_ID) != null)
             {
-                cvParam = fileContent?.GetCVParam(FileContent.BINARY_TYPE_PROCESSED_ID);
+                ibdInfo.checkSum = CheckSum.MD5;
             }
-            ibdInfo.binaryType = cvParam?.ToString();
+
+            if (fileContent?.GetCVParam(FileContent.BINARY_TYPE_CONTINUOUS_ID) != null)
+            {
+                ibdInfo.binaryType = BinaryType.CONTINUOUS;
+            }
+            else if (fileContent?.GetCVParam(FileContent.BINARY_TYPE_PROCESSED_ID) != null)
+            {
+                ibdInfo.binaryType = BinaryType.PROCESSED;
+            }
+
 
             ibdInfo.identification = fileContent?.GetCVParam(FileContent.IDB_IDENTIFICATION_ID)?.ToString();
 
@@ -124,65 +130,66 @@ namespace AirdPro.csimzMLParser.util
         public static ScanInfo GetScanInfo(ImzML imzML)
         {
             ScanInfo scanInfo = new ScanInfo();
-
             ScanSettings scanSettings = imzML.GetScanSettingsList().GetScanSettings(0);
-            if (scanSettings != null)
+
+            //scan pattern
+            if(scanSettings?.GetCVParam(ScanSettings.FLYBACK_ID) != null)
             {
-                //linescanSequence
-                string linescanSequence = scanSettings.GetCVParam(ScanSettings.BOTTOM_UP_ID)?.ToString();
-                if(linescanSequence == null)
-                {
-                    linescanSequence = scanSettings.GetCVParam(ScanSettings.TOP_DOWN_ID)?.ToString();
-                    if (linescanSequence == null)
-                    {
-                        linescanSequence = scanSettings.GetCVParam(ScanSettings.LEFT_RIGHT_ID)?.ToString();
-                        if (linescanSequence == null)
-                        {
-                            linescanSequence = scanSettings.GetCVParam(ScanSettings.RIGHT_LEFT_ID)?.ToString();
-                            if (linescanSequence == null)
-                            {
-                                linescanSequence = scanSettings.GetCVParam(ScanSettings.NO_DIRECTION_ID)?.ToString();
-                            }
-                        }
-                    }
-                }
-                scanInfo.linescanSequence = linescanSequence;
+                scanInfo.scanPattern = ScanPattern.FLY_BACK;
+            }
+            else if(scanSettings?.GetCVParam(ScanSettings.MEANDERING_ID) != null)
+            {
+                scanInfo.scanPattern = ScanPattern.MEANDERING;
+            }
+            else if(scanSettings?.GetCVParam(ScanSettings.RANDOM_ACCESS_ID) != null)
+            {
+				scanInfo.scanPattern = ScanPattern.RANDOM_ACCESS;
+            }
 
-                //scanPattern
-                string scanPattern = scanSettings.GetCVParam(ScanSettings.MEANDERING_ID)?.ToString();
-                if (scanPattern == null)
-                {
-                    scanPattern = scanSettings.GetCVParam(ScanSettings.FLYBACK_ID)?.ToString();
-                    if (scanPattern == null)
-                    {
-                        scanPattern = scanSettings.GetCVParam(ScanSettings.RANDOM_ACCESS_ID)?.ToString();                        
-                    }
-                }
-                scanInfo.scanPattern = scanPattern;
+            //scan sequence
+            if (scanSettings?.GetCVParam(ScanSettings.LEFT_RIGHT_ID) != null)
+            {
+                scanInfo.scanSequence = ScanSequence.LEFT_RIGHT;
+            }
+            else if (scanSettings?.GetCVParam(ScanSettings.RIGHT_LEFT_ID) != null)
+            {
+                scanInfo.scanSequence = ScanSequence.RIGHT_LEFT;
+            }
+            else if (scanSettings?.GetCVParam(ScanSettings.TOP_DOWN_ID) != null)
+            {
+                scanInfo.scanSequence = ScanSequence.TOP_DOWN;
+            }
+            else if (scanSettings?.GetCVParam(ScanSettings.BOTTOM_UP_ID) != null)
+            {
+                scanInfo.scanSequence = ScanSequence.BOTTOM_UP;
+            }
 
-                //scanType
-                string scanType = scanSettings.GetCVParam(ScanSettings.HORIZONTAL_LINESCAN_ID)?.ToString();
-                if (scanType == null)
-                {
-                    scanType = scanSettings.GetCVParam(ScanSettings.VERTICAL_LINESCAN_ID)?.ToString();                    
-                }
-                scanInfo.scanType = scanType;
+            //scanType
+            if (scanSettings?.GetCVParam(ScanSettings.HORIZONTAL_LINESCAN_ID) != null)
+            {
+                scanInfo.scanType = ScanType.HORIZONTAL;
+            }
+            else if (scanSettings?.GetCVParam(ScanSettings.VERTICAL_LINESCAN_ID) != null)
+            {
+                scanInfo.scanType = ScanType.VERTICAL;
+            }
 
-                //linescanDirection
-                string linescanDirection = scanSettings.GetCVParam(ScanSettings.LINESCAN_BOTTOM_UP_ID)?.ToString();
-                if (linescanDirection == null)
-                {
-                    linescanDirection = scanSettings.GetCVParam(ScanSettings.LINESCAN_LEFT_RIGHT_ID)?.ToString();
-                    if (linescanDirection == null)
-                    {
-                        linescanDirection = scanSettings.GetCVParam(ScanSettings.LINESCAN_RIGHT_LEFT_ID)?.ToString();
-                        if (linescanDirection == null)
-                        {
-                            linescanDirection = scanSettings.GetCVParam(ScanSettings.LINESCAN_TOP_DOWN_ID)?.ToString();                            
-                        }
-                    }
-                }
-                scanInfo.linescanDirection = linescanDirection;
+            //scanDirection
+            if (scanSettings?.GetCVParam(ScanSettings.LINESCAN_LEFT_RIGHT_ID) != null)
+            {
+                scanInfo.scanDirection = ScanDirection.LINESCAN_LEFT_RIGHT;
+            }
+            else if (scanSettings?.GetCVParam(ScanSettings.LINESCAN_RIGHT_LEFT_ID) != null)
+            {
+                scanInfo.scanDirection = ScanDirection.LINESCAN_RIGHT_LEFT;
+            }
+            else if(scanSettings?.GetCVParam(ScanSettings.LINESCAN_TOP_DOWN_ID) != null)
+            {
+                scanInfo.scanDirection = ScanDirection.LINESCAN_TOP_DOWN;
+            }
+            else if(scanSettings?.GetCVParam(ScanSettings.LINESCAN_BOTTOM_UP_ID) != null)
+            {
+                scanInfo.scanDirection = ScanDirection.LINESCAN_BOTTOM_UP;
             }
 
             return scanInfo;
