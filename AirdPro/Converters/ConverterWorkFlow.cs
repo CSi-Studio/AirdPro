@@ -146,7 +146,7 @@ namespace AirdPro.Converters
                 converter.compressMS2BlockForDDA(); //处理MS2,并将索引写入文件流中
             }
 
-            converter.compressChromatograms();
+            converter.CompressChromatograms();
             converter.WriteToAirdInfoFile(); //将Info数据写入文件
         }
 

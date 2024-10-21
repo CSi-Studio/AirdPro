@@ -19,6 +19,7 @@ using AirdPro.Constants;
 using AirdPro.Storage.Config;
 using AirdPro.Utils;
 using AirdSDK.Bean;
+using AirdSDK.Bean.Msi;
 using AirdSDK.Enums;
 using AirdSDK.Utils;
 using Newtonsoft.Json;
@@ -69,7 +70,7 @@ namespace AirdPro.Domains
         public string inputPaths;
 
         //MSI信息
-        public MSIInfo MSIJobConfig;
+        public MsiConfig msiConfig;
 
         //文件本名
         public string airdFileName;
@@ -160,13 +161,13 @@ namespace AirdPro.Domains
             vendorFileSize = GetVendorFileSize(inputPath);
         }
 
-        public JobInfo(string inputPath, string outputPath, string type, ConversionConfig config, string inputPaths, MSIInfo MSIjobConfig)
+        public JobInfo(string inputPath, string outputPath, string type, ConversionConfig config, string inputPaths, MsiConfig msiConfig)
         {
             jobId = NextId();
             this.inputPath = inputPaths.Split('|').FirstOrDefault();
             this.inputPaths = inputPaths;
             this.type = type;
-            this.MSIJobConfig = MSIjobConfig;
+            this.msiConfig = msiConfig;
             this.outputPath = outputPath;
             this.config = config;
             format = Path.GetExtension(inputPaths.Split('|').FirstOrDefault()).Replace(".", "").ToUpper();

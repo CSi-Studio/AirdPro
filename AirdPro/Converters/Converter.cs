@@ -2,7 +2,6 @@
 using System.IO;
 using AirdPro.Constants;
 using AirdPro.Domains;
-using AirdSDK.Beans;
 
 namespace AirdPro.Converters
 {

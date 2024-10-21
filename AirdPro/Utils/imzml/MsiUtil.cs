@@ -4,7 +4,7 @@ using AirdSDK.Bean.Msi;
 using AirdSDK.Enums.Msi;
 using System.Linq;
 
-namespace AirdPro.csimzMLParser.util
+namespace AirdPro.Utils.imzml
 {
     public class MsiUtil
     {
@@ -25,7 +25,7 @@ namespace AirdPro.csimzMLParser.util
             msiInfo.scanInfo = GetScanInfo(imzML);
 
             return msiInfo;
-        }
+        }        
 
         public static IbdInfo GetIbdInfo(ImzML imzML)
         {
@@ -93,14 +93,14 @@ namespace AirdPro.csimzMLParser.util
             imageInfo.maxPixelZ = imzML.GetDepth();
 
             ScanSettings scanSettings = imzML.GetScanSettingsList().GetScanSettings(0);
-            imageInfo.maxDimensionX = scanSettings?.GetCVParam(ScanSettings.MAX_DIMENSION_X_ID)?.GetValueAsLong()  ?? -1;
-            imageInfo.maxDimensionY = scanSettings?.GetCVParam(ScanSettings.MAX_DIMENSION_Y_ID)?.GetValueAsLong() ?? -1;
-            long pixelSizeX = scanSettings?.GetCVParam(ScanSettings.PIXEL_SIZE_X_ID)?.GetValueAsLong() ?? -1;            
-            long pixelSizeY = pixelSizeX;
+            imageInfo.maxDimensionX = scanSettings?.GetCVParam(ScanSettings.MAX_DIMENSION_X_ID)?.GetValueAsInteger()  ?? -1;
+            imageInfo.maxDimensionY = scanSettings?.GetCVParam(ScanSettings.MAX_DIMENSION_Y_ID)?.GetValueAsInteger() ?? -1;
+            int pixelSizeX = scanSettings?.GetCVParam(ScanSettings.PIXEL_SIZE_X_ID)?.GetValueAsInteger() ?? -1;            
+            int pixelSizeY = pixelSizeX;
             CVParam cvParam = scanSettings.GetCVParam(ScanSettings.PIXEL_SIZE_Y_ID);           
             if (cvParam != null)
             {
-                pixelSizeY = cvParam.GetValueAsLong();
+                pixelSizeY = cvParam.GetValueAsInteger();
             }
             imageInfo.pixelSize = pixelSizeX;
             imageInfo.pixelSizeX = pixelSizeX;

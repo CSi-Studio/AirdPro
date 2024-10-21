@@ -2,14 +2,14 @@
 {
     public class ImageInfo
     {
-        public long maxPixelX;
-        public long maxPixelY;
-        public long maxPixelZ;
-        public long maxDimensionX;
-        public long maxDimensionY;
-        public long pixelSize;
-        public long pixelSizeX;
-        public long pixelSizeY;
+        public int maxPixelX;
+        public int maxPixelY;
+        public int maxPixelZ;
+        public int maxDimensionX = -1;
+        public int maxDimensionY = -1;
+        public int pixelSize = -1;
+        public int pixelSizeX = -1;
+        public int pixelSizeY = -1;
         public string imageShape;
     }
 }

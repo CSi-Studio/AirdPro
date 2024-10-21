@@ -20,17 +20,16 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using Spectrum = AirdPro.csimzMLParser.mzml.Spectrum;
-using AirdPro.Utils;
 using AirdPro.csimzMLParser.imzml;
-using CVUtil = AirdPro.csimzMLParser.util.CVUtil;
-using DataUtil = AirdPro.csimzMLParser.util.DataUtil;
 using Activator = AirdPro.Constants.Activator;
 using AirdPro.Algorithms.Maths;
 using Software = AirdSDK.Beans.Software;
 using ByteOrder = AirdPro.Constants.ByteOrder;
 using static AirdPro.csimzMLParser.mzml.Component;
-using AirdSDK.Bean.Msi;
-using AirdPro.csimzMLParser.util;
+using AirdPro.Utils;
+using CVUtil = AirdPro.Utils.imzml.CVUtil;
+using DataUtil = AirdPro.Utils.imzml.DataUtil;
+using MsiUtil = AirdPro.Utils.imzml.MsiUtil;
 
 namespace AirdPro.Converters
 {
@@ -640,7 +639,7 @@ namespace AirdPro.Converters
         public void WriteToAirdInfoFile()
         {
             JobInfo.Log(Tag.Write_Index_File, Status.Writing_Index_File);
-            AirdInfo airdInfo = buildAirdInfo();
+            AirdInfo airdInfo = BuildAirdInfo();
 
             if (JobInfo.config.compressedIndex)
             {
@@ -992,7 +991,7 @@ namespace AirdPro.Converters
             }
         }
 
-        public void compressChromatograms()
+        public void CompressChromatograms()
         {
             if (chromatogramList == null || chromatogramList.Size() == 0)
             {
@@ -1001,7 +1000,7 @@ namespace AirdPro.Converters
 
             ChromatogramIndex = new ChromatogramIndex();
             //如果是.d的文件夹类型的质谱文件,可以直接解析AcqMethod.xml文件,用于读取设定的化合物名称
-            readMRMCompounds();
+            ReadMRMCompounds();
 
             int totalSize = chromatogramList.Size();
             int progress = 0;
@@ -1068,7 +1067,7 @@ namespace AirdPro.Converters
         /**
          * 用于解析.d文件中的AcqMethod.XML文件
          */
-        public void readMRMCompounds()
+        public void ReadMRMCompounds()
         {
             if (JobInfo.format.Equals(FileFormat.D) && JobInfo.type.Equals(AcquisitionMethod.MRM))
             {
@@ -1076,7 +1075,7 @@ namespace AirdPro.Converters
             }
         }
 
-        protected AirdInfo buildAirdInfo()
+        protected AirdInfo BuildAirdInfo()
         {
             AirdInfo airdInfo = new();
             List<Software> softwares = [];

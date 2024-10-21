@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AirdSDK.Enums.Msi
+﻿namespace AirdSDK.Enums.Msi
 {
     public static class BinaryType
     {

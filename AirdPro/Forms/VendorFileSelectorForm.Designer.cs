@@ -390,7 +390,7 @@ namespace AirdPro.Forms
             this.btnEditConfigs.TabIndex = 6;
             this.btnEditConfigs.Text = "Browser";
             this.btnEditConfigs.UseVisualStyleBackColor = true;
-            this.btnEditConfigs.Click += new System.EventHandler(this.btnCreateConfigs_Click);
+            this.btnEditConfigs.Click += new System.EventHandler(this.BtnCreateConfigs_Click);
             // 
             // lblConfigOutputPath
             // 
@@ -416,7 +416,7 @@ namespace AirdPro.Forms
             this.btnConfigChooseFolder.TabIndex = 120;
             this.btnConfigChooseFolder.Text = "Browser";
             this.btnConfigChooseFolder.UseVisualStyleBackColor = true;
-            this.btnConfigChooseFolder.Click += new System.EventHandler(this.btnConfigChooseFolder_Click);
+            this.btnConfigChooseFolder.Click += new System.EventHandler(this.BtnConfigChooseFolder_Click);
             // 
             // tbOutputPath
             // 
@@ -436,7 +436,7 @@ namespace AirdPro.Forms
             this.cbConfig.Name = "cbConfig";
             this.cbConfig.Size = new System.Drawing.Size(230, 32);
             this.cbConfig.TabIndex = 121;
-            this.cbConfig.SelectionChangeCommitted += new System.EventHandler(this.cbConfig_SelectionChangeCommitted);
+            this.cbConfig.SelectionChangeCommitted += new System.EventHandler(this.CbConfig_SelectionChangeCommitted);
             // 
             // lblConvertConfig
             // 
@@ -480,7 +480,7 @@ namespace AirdPro.Forms
             this.btnFileRefresh.TabIndex = 132;
             this.btnTooltip.SetToolTip(this.btnFileRefresh, "refresh the selected folder");
             this.btnFileRefresh.UseVisualStyleBackColor = true;
-            this.btnFileRefresh.Click += new System.EventHandler(this.btnFileRefresh_Click);
+            this.btnFileRefresh.Click += new System.EventHandler(this.BtnFileRefresh_Click);
             // 
             // btnPin
             // 
@@ -494,7 +494,7 @@ namespace AirdPro.Forms
             this.btnPin.TabIndex = 133;
             this.btnTooltip.SetToolTip(this.btnPin, "Pin the selected folder");
             this.btnPin.UseVisualStyleBackColor = true;
-            this.btnPin.Click += new System.EventHandler(this.btnPin_Click);
+            this.btnPin.Click += new System.EventHandler(this.BtnPin_Click);
             // 
             // btnUnpin
             // 
@@ -508,7 +508,7 @@ namespace AirdPro.Forms
             this.btnUnpin.TabIndex = 134;
             this.btnTooltip.SetToolTip(this.btnUnpin, "Unpin the selected folder");
             this.btnUnpin.UseVisualStyleBackColor = true;
-            this.btnUnpin.Click += new System.EventHandler(this.btnUnpin_Click);
+            this.btnUnpin.Click += new System.EventHandler(this.BtnUnpin_Click);
             // 
             // imgBtnAdd
             // 
@@ -541,7 +541,7 @@ namespace AirdPro.Forms
             this.imgBtnAdd.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.imgBtnAdd.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
             this.imgBtnAdd.TipsText = "";
-            this.imgBtnAdd.BtnClick += new System.EventHandler(this.imgBtnAdd_BtnClick);
+            this.imgBtnAdd.BtnClick += new System.EventHandler(this.ImgBtnAdd_BtnClick);
             // 
             // imgBtnClose
             // 
@@ -574,7 +574,7 @@ namespace AirdPro.Forms
             this.imgBtnClose.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.imgBtnClose.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
             this.imgBtnClose.TipsText = "";
-            this.imgBtnClose.BtnClick += new System.EventHandler(this.imgBtnClose_BtnClick);
+            this.imgBtnClose.BtnClick += new System.EventHandler(this.ImgBtnClose_BtnClick);
             // 
             // imgBtnPublish
             // 
@@ -607,7 +607,7 @@ namespace AirdPro.Forms
             this.imgBtnPublish.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.imgBtnPublish.TipsColor = System.Drawing.Color.Purple;
             this.imgBtnPublish.TipsText = "Publish To Redis";
-            this.imgBtnPublish.BtnClick += new System.EventHandler(this.imgBtnPublish_BtnClick);
+            this.imgBtnPublish.BtnClick += new System.EventHandler(this.ImgBtnPublish_BtnClick);
             // 
             // msFileViews
             // 

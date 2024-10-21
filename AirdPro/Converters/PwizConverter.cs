@@ -122,7 +122,7 @@ namespace AirdPro.Converters
                         //如果仅有一个msd，则直接按照该原始文件的名称导出为aird文件
                         if (msdList.Count > 1) 
                         {
-                            String id = msd.id;
+                            string id = msd.id;
                             id = id.Trim();
                             JobInfo.airdFilePath = Path.Combine(JobInfo.outputPath, id + ".aird");
                             JobInfo.airdJsonFilePath = Path.Combine(JobInfo.outputPath, id + ".json");
@@ -741,7 +741,7 @@ namespace AirdPro.Converters
         }
 
         //将最终的数据写入文件中
-        public void WriteToAirdInfoFile()
+        public virtual void WriteToAirdInfoFile()
         {
             JobInfo.Log(Tag.Write_Index_File, Status.Writing_Index_File);
             AirdInfo airdInfo = buildAirdInfo();
@@ -817,7 +817,7 @@ namespace AirdPro.Converters
             JobInfo.SetAirdFileSize(totalSize);
         }
 
-        public void ClearCache()
+        public virtual void ClearCache()
         {
             Ranges = new();
             RangeTable = new();
@@ -1661,7 +1661,7 @@ namespace AirdPro.Converters
             return key + Const.Dash + intCompName + Const.Dash + byteCompName;
         }
 
-        public void PretreatmentDda()
+        public virtual void PretreatmentDda()
         {
             int parentNum = 0;
             JobInfo.Log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
@@ -1714,7 +1714,7 @@ namespace AirdPro.Converters
             JobInfo.Log(Tag.Start_Processing_MS1_List);
         }
 
-        public void PretreatmentDia()
+        public virtual void PretreatmentDia()
         {
             int parentNum = 0;
             JobInfo.Log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);

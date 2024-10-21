@@ -6,7 +6,7 @@ using HZH_Controls;
 using System;
 using Activator = AirdPro.Constants.Activator;
 
-namespace AirdPro.csimzMLParser.util
+namespace AirdPro.Utils.imzml
 {
     public class CVUtil
     {    

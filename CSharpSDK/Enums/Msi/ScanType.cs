@@ -6,7 +6,7 @@ namespace AirdSDK.Enums.Msi
 {
     public static class ScanType
     {
-        public const string HORIZONTAL = "HORIZONTAL";
+        public const string HORIZONTAL = "HORIZONTAL"; 
         public const string VERTICAL = "VERTICAL";
     }
 }

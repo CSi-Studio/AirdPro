@@ -132,14 +132,14 @@ namespace AirdPro.Forms
             }
         }
 
-        public void AddFile(string inputPath, string outputPath, string type, ConversionConfig config, string inputPaths = null, MSIInfo MSIjobConfig = null)
+        public void AddFile(string inputPath, string outputPath, string type, ConversionConfig config, string inputPaths = null, MsiConfig msiConfig = null)
         {
             if (!inputPath.IsNullOrEmpty())
             {
                 JobInfo jobInfo;
                 if (type == AirdSDK.Enums.AcquisitionMethod.DDA_MSI || type == AirdSDK.Enums.AcquisitionMethod.DIA_MSI)
                 {
-                    jobInfo = new JobInfo(inputPath, outputPath, type, config, inputPaths, MSIjobConfig);
+                    jobInfo = new JobInfo(inputPath, outputPath, type, config, inputPaths, msiConfig);
                 }
                 else
                 {

@@ -10,7 +10,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using Aga.Controls.Tree;
@@ -22,6 +25,7 @@ using AirdPro.Storage;
 using AirdPro.Storage.Config;
 using AirdPro.Utils;
 using AirdSDK.Bean;
+using AirdSDK.Enums.Msi;
 using AirdSDK.Utils;
 using HZH_Controls;
 using Newtonsoft.Json;
@@ -62,46 +66,61 @@ namespace AirdPro.Forms
         private void MSIConfig_Load()
         {
             comboBox_file_organisation.Items.Clear();
-            Array enumValues = Enum.GetValues(typeof(AirdSDK.Enums.MSIFileOrganisation));
-            foreach (var item in enumValues)
+            FieldInfo[] fields = typeof(FileOrganisation).GetFields(BindingFlags.Public | BindingFlags.Static);
+            foreach (FieldInfo field in fields)
             {
-                comboBox_file_organisation.Items.Add(item);
+                if (field.IsLiteral)
+                {
+                    comboBox_file_organisation.Items.Add((string)field.GetValue(null));
+                }
             }
-            comboBox_file_organisation.SelectedIndex = 0;
+            comboBox_file_organisation.SelectedIndex = 0;  // default: row per file
+
             comboBox_scan_direction.Items.Clear();
-            enumValues = Enum.GetValues(typeof(AirdSDK.Enums.LineScanDirection));
-            foreach (var item in enumValues)
+            fields = typeof(ScanDirection).GetFields(BindingFlags.Public | BindingFlags.Static);
+            foreach (FieldInfo field in fields)
             {
-                comboBox_scan_direction.Items.Add(item);
+                if (field.IsLiteral)
+                {
+                    comboBox_scan_direction.Items.Add((string)field.GetValue(null));
+                }
             }
-            comboBox_scan_direction.SelectedIndex = 0;
+            comboBox_scan_direction.SelectedIndex = 2; // default: linescam left right
+
             comboBox_scan_sequence.Items.Clear();
-            enumValues = Enum.GetValues(typeof(AirdSDK.Enums.ScanSequence));
-            foreach (var item in enumValues)
+            fields = typeof(ScanSequence).GetFields(BindingFlags.Public | BindingFlags.Static);
+            foreach (FieldInfo field in fields)
             {
-                comboBox_scan_sequence.Items.Add(item);
+                if (field.IsLiteral)
+                {
+                    comboBox_scan_sequence.Items.Add((string)field.GetValue(null));
+                }
             }
-            comboBox_scan_sequence.SelectedIndex = 2;
+            comboBox_scan_sequence.SelectedIndex = 0; // default: top down
+
             comboBox_scan_pattern.Items.Clear();
-            enumValues = Enum.GetValues(typeof(AirdSDK.Enums.ScanPattern));
-            foreach (var item in enumValues)
+            fields = typeof(ScanPattern).GetFields(BindingFlags.Public | BindingFlags.Static);
+            foreach (FieldInfo field in fields)
             {
-                comboBox_scan_pattern.Items.Add(item);
+                if (field.IsLiteral)
+                {
+                    comboBox_scan_pattern.Items.Add((string)field.GetValue(null));
+                }
             }
-            comboBox_scan_pattern.SelectedIndex = 0;
+            comboBox_scan_pattern.SelectedIndex = 1; // default: fly back
         }
 
         private void AddEventHandler()
         {
-            this.rbAuto.CheckedChanged += new EventHandler(this.radio_CheckChanged);
-            this.radioButton1.CheckedChanged += new EventHandler(this.radio_CheckChanged);
-            this.radioButton2.CheckedChanged += new EventHandler(this.radio_CheckChanged);
-            this.radioButton3.CheckedChanged += new EventHandler(this.radio_CheckChanged);
-            this.radioButton4.CheckedChanged += new EventHandler(this.radio_CheckChanged);
-            this.radioButton5.CheckedChanged += new EventHandler(this.radio_CheckChanged);
-            this.radioButton6.CheckedChanged += new EventHandler(this.radio_CheckChanged);
-            this.radioButton7.CheckedChanged += new EventHandler(this.radio_CheckChanged);
-            this.radioButton8.CheckedChanged += new EventHandler(this.radio_CheckChanged);
+            this.rbAuto.CheckedChanged += new EventHandler(this.Radio_CheckChanged);
+            this.radioButton1.CheckedChanged += new EventHandler(this.Radio_CheckChanged);
+            this.radioButton2.CheckedChanged += new EventHandler(this.Radio_CheckChanged);
+            this.radioButton3.CheckedChanged += new EventHandler(this.Radio_CheckChanged);
+            this.radioButton4.CheckedChanged += new EventHandler(this.Radio_CheckChanged);
+            this.radioButton5.CheckedChanged += new EventHandler(this.Radio_CheckChanged);
+            this.radioButton6.CheckedChanged += new EventHandler(this.Radio_CheckChanged);
+            this.radioButton7.CheckedChanged += new EventHandler(this.Radio_CheckChanged);
+            this.radioButton8.CheckedChanged += new EventHandler(this.Radio_CheckChanged);
         }
 
         public void ClearInfos()
@@ -203,16 +222,71 @@ namespace AirdPro.Forms
                     }
                     msi_path = msi_path.Substring(1);
                     int[] pixels = [pixel_x.Value.ToInt(), pixel_y.Value.ToInt()];
-                    MSIInfo MSIConfig = new MSIInfo
+                    MsiConfig msiConfig = new MsiConfig();
+                    // msiConfig.fileOrganisation
+                    switch (comboBox_file_organisation.SelectedIndex)
                     {
-                        MSIFileOrganisation = comboBox_file_organisation.SelectedIndex,
-                        lineScanDirection = comboBox_scan_direction.SelectedIndex,
-                        scanSequence = comboBox_scan_sequence.SelectedIndex,
-                        scanPattern = comboBox_scan_pattern.SelectedIndex,
-                        pixelX = pixel_x.Value.ToInt(),
-                        pixelY = pixel_y.Value.ToInt()
-                    };
-                    Program.conversionForm.AddFile(msi_path, outputPath, airdType, (ConversionConfig)config.Clone(), msi_path, MSIConfig);
+                        case 0:
+                            msiConfig.fileOrganisation = FileOrganisation.ROW_PER_FILE;
+                            break;
+                        case 1:
+                            msiConfig.fileOrganisation = FileOrganisation.IMAGE_PER_FILE;
+                            break;
+                        case 2:
+                            msiConfig.fileOrganisation = FileOrganisation.SPECTRUM_PER_FILE;
+                            break;
+                    }
+                    // msiConfig.scanDirection
+                    switch (comboBox_scan_direction.SelectedIndex)
+                    {
+                        case 0:
+                            msiConfig.scanDirection = ScanDirection.LINESCAN_TOP_DOWN;
+                            break;
+                        case 1:
+                            msiConfig.scanDirection = ScanDirection.LINESCAN_BOTTOM_UP;
+                            break;
+                        case 2:
+                            msiConfig.scanDirection = ScanDirection.LINESCAN_LEFT_RIGHT;
+                            break;
+                        case 3:
+                            msiConfig.scanDirection = ScanDirection.LINESCAN_RIGHT_LEFT;
+                            break;
+                    }
+                    // msiConfig.scanSequence
+                    switch (comboBox_scan_sequence.SelectedIndex)
+                    {
+                        case 0:
+                            msiConfig.scanSequence = ScanSequence.TOP_DOWN;
+                            break;
+                        case 1:
+                            msiConfig.scanSequence = ScanSequence.BOTTOM_UP;
+                            break;
+                        case 2:
+                            msiConfig.scanSequence = ScanSequence.LEFT_RIGHT;
+                            break;
+                        case 3:
+                            msiConfig.scanSequence = ScanSequence.RIGHT_LEFT;
+                            break;
+                    }
+                    // msiConfig.scanPattern
+                    switch (comboBox_scan_pattern.SelectedIndex)
+                    {
+                        case 0:
+                            msiConfig.scanPattern = ScanPattern.MEANDERING;
+                            break;
+                        case 1:
+                            msiConfig.scanPattern = ScanPattern.FLY_BACK;
+                            break;
+                        case 2:
+                            msiConfig.scanPattern = ScanPattern.RANDOM_ACCESS;
+                            break;                        
+                    }
+                    // maxPixelX, maxPixelY, maxPixelZ
+                    msiConfig.maxPixelX = pixel_x.Value.ToInt();
+                    msiConfig.maxPixelY = pixel_y.Value.ToInt();
+                    msiConfig.maxPixelZ = pixel_z.Value.ToInt();
+                   
+                    Program.conversionForm.AddFile(msi_path, outputPath, airdType, (ConversionConfig)config.Clone(), msi_path, msiConfig);
                 }
                 else
                 {
@@ -235,7 +309,7 @@ namespace AirdPro.Forms
         }
 
         //选择已有参数，或者重新编辑参数，并将参数应用于选中的单个或一批文件
-        private void btnCreateConfigs_Click(object sender, EventArgs e)
+        private void BtnCreateConfigs_Click(object sender, EventArgs e)
         {
             if (this.configListForm == null || this.configListForm.IsDisposed)
             {
@@ -255,7 +329,7 @@ namespace AirdPro.Forms
             }
         }
 
-        private void btnConfigChooseFolder_Click(object sender, EventArgs e)
+        private void BtnConfigChooseFolder_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             fbd.SelectedPath = tbOutputPath.Text;
@@ -273,7 +347,7 @@ namespace AirdPro.Forms
             this.Visible = false;
         }
 
-        private void btnFileRefresh_Click(object sender, EventArgs e)
+        private void BtnFileRefresh_Click(object sender, EventArgs e)
         {
             TreeViewAdv treeViewAdv = msFileViews.files;
             SortedTreeModel model = treeViewAdv.Model as SortedTreeModel;
@@ -292,7 +366,7 @@ namespace AirdPro.Forms
         }
 
         //将某个文件目录收藏至根目录下
-        private void btnPin_Click(object sender, EventArgs e)
+        private void BtnPin_Click(object sender, EventArgs e)
         {
             bool alert = false;
             FolderFileBrowserModel innerModel = msFileViews.getInnerModel();
@@ -332,7 +406,7 @@ namespace AirdPro.Forms
             }
         }
 
-        private void btnUnpin_Click(object sender, EventArgs e)
+        private void BtnUnpin_Click(object sender, EventArgs e)
         {
             FolderFileBrowserModel innerModel = msFileViews.getInnerModel();
             List<string> removedPaths = new List<string>();
@@ -387,7 +461,7 @@ namespace AirdPro.Forms
             Settings.Default.Save();
         }
 
-        private void imgBtnAdd_BtnClick(object sender, EventArgs e)
+        private void ImgBtnAdd_BtnClick(object sender, EventArgs e)
         {
             bool addResult = AddToList(true);
             if (addResult)
@@ -396,19 +470,19 @@ namespace AirdPro.Forms
             }
         }
 
-        private void imgBtnClose_BtnClick(object sender, EventArgs e)
+        private void ImgBtnClose_BtnClick(object sender, EventArgs e)
         {
             ClearInfos();
             Hide();
         }
 
-        private void cbConfig_SelectionChangeCommitted(object sender, EventArgs e)
+        private void CbConfig_SelectionChangeCommitted(object sender, EventArgs e)
         {
             Settings.Default.LastSelectedConfig = cbConfig.SelectedItem.ToString();
             Settings.Default.Save();
         }
 
-        private void imgBtnPublish_BtnClick(object sender, EventArgs e)
+        private void ImgBtnPublish_BtnClick(object sender, EventArgs e)
         {
             if (RedisManager.Instance.Check())
             {
@@ -425,7 +499,7 @@ namespace AirdPro.Forms
         }
 
 
-        private void radio_CheckChanged(object sender, EventArgs e)
+        private void Radio_CheckChanged(object sender, EventArgs e)
         {
             string airdType = GetAirdType();
             if (airdType == AirdSDK.Enums.AcquisitionMethod.DDA_MSI || airdType == AirdSDK.Enums.AcquisitionMethod.DIA_MSI)

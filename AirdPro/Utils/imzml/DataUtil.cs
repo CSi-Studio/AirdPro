@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace AirdPro.csimzMLParser.util
+namespace AirdPro.Utils.imzml
 {
     public class DataUtil
     {

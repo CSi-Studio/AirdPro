@@ -166,7 +166,7 @@
     <Compile Include="CommandLine\Options.cs" />
     <Compile Include="Converters\ImzMLConverter.cs" />
     <Compile Include="Converters\MSIConvert.cs" />
-    <Compile Include="csimzMLParser\util\DataUtil.cs" />
+    <Compile Include="Utils\imzml\DataUtil.cs" />
     <Compile Include="csimzMLParser\exceptions\CVParamAccessionNotFoundIssue.cs" />
     <Compile Include="csimzMLParser\exceptions\FatalParseException.cs" />
     <Compile Include="csimzMLParser\exceptions\FatalParseIssue.cs" />
@@ -181,7 +181,7 @@
     <Compile Include="csimzMLParser\exceptions\MzMLParseException.cs" />
     <Compile Include="csimzMLParser\exceptions\ObsoleteTermUsed.cs" />
     <Compile Include="csimzMLParser\imzml\IMSIData.cs" />
-    <Compile Include="csimzMLParser\util\MsiUtil.cs" />
+    <Compile Include="Utils\imzml\MsiUtil.cs" />
     <Compile Include="Domains\Redis\ConsumeSwitchCommand.cs" />
     <Compile Include="Forms\CustomPopup.cs">
       <SubType>Form</SubType>
@@ -309,7 +309,7 @@
     <Compile Include="csimzMLParser\util\HexHelper.cs" />
     <Compile Include="csimzMLParser\util\UUIDHelper.cs" />
     <Compile Include="csimzMLParser\util\XMLHelper.cs" />
-    <Compile Include="csimzMLParser\util\CVUtil.cs" />
+    <Compile Include="Utils\imzml\CVUtil.cs" />
     <Compile Include="Manager\ConvertTaskManager.cs" />
     <Compile Include="Constants\Activator.cs" />
     <Compile Include="Constants\Froms.cs" />
@@ -612,6 +612,7 @@
     <Compile Include="Utils\AirdProFileUtil.cs" />
     <Compile Include="Utils\HttpUtil.cs" />
     <Compile Include="Utils\DataUtil.cs" />
+    <Compile Include="Utils\MsiUtil.cs" />
     <Compile Include="Utils\RandomUtil.cs" />
     <Compile Include="Utils\ResourceUtil.cs" />
     <Compile Include="Utils\SpeedTestUtil.cs" />
