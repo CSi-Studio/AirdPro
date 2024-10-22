@@ -117,7 +117,7 @@ namespace AirdPro.Forms
             this.gBoxMode.Controls.Add(this.radioButton2);
             this.gBoxMode.Controls.Add(this.radioButton1);
             this.gBoxMode.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.gBoxMode.Location = new System.Drawing.Point(1242, 192);
+            this.gBoxMode.Location = new System.Drawing.Point(1296, 192);
             this.gBoxMode.Margin = new System.Windows.Forms.Padding(4);
             this.gBoxMode.Name = "gBoxMode";
             this.gBoxMode.Padding = new System.Windows.Forms.Padding(4);
@@ -163,7 +163,7 @@ namespace AirdPro.Forms
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(118, 24);
             this.label6.TabIndex = 140;
-            this.label6.Text = "Scan scanPattern";
+            this.label6.Text = "Scan Pattern";
             this.label6.Visible = false;
             // 
             // comboBox_scan_direction
@@ -181,9 +181,9 @@ namespace AirdPro.Forms
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(8, 485);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(174, 24);
+            this.label5.Size = new System.Drawing.Size(134, 24);
             this.label5.TabIndex = 138;
-            this.label5.Text = "Line Scan Direction";
+            this.label5.Text = "Scan Direction";
             this.label5.Visible = false;
             // 
             // label4
@@ -453,7 +453,7 @@ namespace AirdPro.Forms
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.label1.Location = new System.Drawing.Point(1245, 75);
+            this.label1.Location = new System.Drawing.Point(1299, 75);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(213, 112);
@@ -530,7 +530,7 @@ namespace AirdPro.Forms
             this.imgBtnAdd.IsRadius = true;
             this.imgBtnAdd.IsShowRect = true;
             this.imgBtnAdd.IsShowTips = false;
-            this.imgBtnAdd.Location = new System.Drawing.Point(1242, 1023);
+            this.imgBtnAdd.Location = new System.Drawing.Point(1296, 1059);
             this.imgBtnAdd.Margin = new System.Windows.Forms.Padding(0);
             this.imgBtnAdd.Name = "imgBtnAdd";
             this.imgBtnAdd.RectColor = System.Drawing.Color.Silver;
@@ -563,7 +563,7 @@ namespace AirdPro.Forms
             this.imgBtnClose.IsRadius = true;
             this.imgBtnClose.IsShowRect = true;
             this.imgBtnClose.IsShowTips = false;
-            this.imgBtnClose.Location = new System.Drawing.Point(1242, 1089);
+            this.imgBtnClose.Location = new System.Drawing.Point(1296, 1125);
             this.imgBtnClose.Margin = new System.Windows.Forms.Padding(0);
             this.imgBtnClose.Name = "imgBtnClose";
             this.imgBtnClose.RectColor = System.Drawing.Color.Silver;
@@ -596,7 +596,7 @@ namespace AirdPro.Forms
             this.imgBtnPublish.IsRadius = true;
             this.imgBtnPublish.IsShowRect = true;
             this.imgBtnPublish.IsShowTips = false;
-            this.imgBtnPublish.Location = new System.Drawing.Point(1242, 954);
+            this.imgBtnPublish.Location = new System.Drawing.Point(1296, 990);
             this.imgBtnPublish.Margin = new System.Windows.Forms.Padding(0);
             this.imgBtnPublish.Name = "imgBtnPublish";
             this.imgBtnPublish.RectColor = System.Drawing.Color.Silver;
@@ -618,14 +618,14 @@ namespace AirdPro.Forms
             this.msFileViews.Location = new System.Drawing.Point(9, 114);
             this.msFileViews.Margin = new System.Windows.Forms.Padding(6);
             this.msFileViews.Name = "msFileViews";
-            this.msFileViews.Size = new System.Drawing.Size(1224, 1038);
+            this.msFileViews.Size = new System.Drawing.Size(1278, 1074);
             this.msFileViews.TabIndex = 125;
             // 
             // VendorFileSelectorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1468, 1155);
+            this.ClientSize = new System.Drawing.Size(1522, 1191);
             this.Controls.Add(this.imgBtnPublish);
             this.Controls.Add(this.imgBtnClose);
             this.Controls.Add(this.imgBtnAdd);

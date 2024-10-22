@@ -1300,10 +1300,7 @@ namespace AirdPro.Converters
                     parentFiles.Add(file);
                 }
                 airdInfo.parentFiles = parentFiles;
-            }
-
-            //aird msi info
-            airdInfo.msiInfo = MsiUtil.GetMsiInfo(imzML);           
+            }                
 
             //Compressor Info
             List<Compressor> comps = [];
@@ -1335,6 +1332,10 @@ namespace AirdPro.Converters
             airdInfo.compressors = comps;
 
             airdInfo.ignoreZeroIntensityPoint = JobInfo.config.ignoreZeroIntensity;
+
+            //Msi Info
+            airdInfo.msiInfo = MsiUtil.GetMsiInfo(imzML);
+
             //Features Info
             FeaturesMap.Add(Features.raw_id, imzML);
             FeaturesMap.Add(Features.ignore_zero_intensity, JobInfo.config.ignoreZeroIntensity);

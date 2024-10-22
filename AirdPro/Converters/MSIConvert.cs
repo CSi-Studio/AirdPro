@@ -31,21 +31,18 @@ namespace AirdPro.Converters
         List<Instrument> instruments = new List<Instrument>();
         List<ParentFile> parentFiles = new List<ParentFile>();
 
-        public MsiConfig msiConfig;
-
         public override void DoConvert()
         {
             Start();
             //CopyFile(); //如果检测到是网络挂载磁盘,则首先拷贝到本地以后再进行转换,以提升转换速度
             InitDirectory();
-            ReadMsiConfig();  
             try
             {
                 using (AirdStream = new FileStream(JobInfo.airdFilePath, FileMode.Create))
                 {
                     StartPosition = 0;
                     InitCompressor();
-                    if (msiConfig.fileOrganisation == FileOrganisation.IMAGE_PER_FILE)
+                    if (JobInfo.msiConfig.fileOrganisation == FileOrganisation.IMAGE_PER_FILE)
                     {
                         //只读取第一个文件的数据
                         JobInfo.inputPaths = JobInfo.inputPaths.Split('|')[0];
@@ -80,18 +77,18 @@ namespace AirdPro.Converters
                         }
                         ClearCache();
                         fileNum++;
-                        if (msiConfig.fileOrganisation == FileOrganisation.SPECTRUM_PER_FILE && fileNum > msiConfig.maxPixelX * msiConfig.maxPixelY)
+                        if (JobInfo.msiConfig.fileOrganisation == FileOrganisation.SPECTRUM_PER_FILE && fileNum > JobInfo.msiConfig.maxPixelX * JobInfo.msiConfig.maxPixelY)
                         {
                             break;
                         }
-                        if (msiConfig.fileOrganisation == FileOrganisation.ROW_PER_FILE && fileNum >= msiConfig.maxPixelY)
+                        if (JobInfo.msiConfig.fileOrganisation == FileOrganisation.ROW_PER_FILE && fileNum >= JobInfo.msiConfig.maxPixelY)
                         {
                             break;
                         }
                     }
-                    if (msiConfig.fileOrganisation == FileOrganisation.ROW_PER_FILE && fileNum < msiConfig.maxPixelY)
+                    if (JobInfo.msiConfig.fileOrganisation == FileOrganisation.ROW_PER_FILE && fileNum < JobInfo.msiConfig.maxPixelY)
                     {
-                        msiConfig.maxPixelY = fileNum;
+                        JobInfo.msiConfig.maxPixelY = fileNum;
                     }
                     WriteToAirdInfoFile();
                 }
@@ -125,15 +122,15 @@ namespace AirdPro.Converters
                         {
                             Ms1List.Add(ParseMs1(spectrum, i)); //如果是MS1谱图,加入到MS1List
                             MS1Num++;
-                            if (msiConfig.fileOrganisation == FileOrganisation.ROW_PER_FILE && MS1Num > msiConfig.maxPixelX)
+                            if (JobInfo.msiConfig.fileOrganisation == FileOrganisation.ROW_PER_FILE && MS1Num > JobInfo.msiConfig.maxPixelX)
                             {
                                 break;
                             }
-                            if (msiConfig.fileOrganisation == FileOrganisation.SPECTRUM_PER_FILE && MS1Num > 1)
+                            if (JobInfo.msiConfig.fileOrganisation == FileOrganisation.SPECTRUM_PER_FILE && MS1Num > 1)
                             {
                                 break;
                             }
-                            if (msiConfig.fileOrganisation == FileOrganisation.IMAGE_PER_FILE && MS1Num > msiConfig.maxPixelX * msiConfig.maxPixelY)
+                            if (JobInfo.msiConfig.fileOrganisation == FileOrganisation.IMAGE_PER_FILE && MS1Num > JobInfo.msiConfig.maxPixelX * JobInfo.msiConfig.maxPixelY)
                             {
                                 break;
                             }
@@ -152,15 +149,15 @@ namespace AirdPro.Converters
                         {
                             Ms1List.Add(ParseMs1(spectrum, i)); //加入MS1List
                             MS1Num++;
-                            if (msiConfig.fileOrganisation == FileOrganisation.ROW_PER_FILE && MS1Num > msiConfig.maxPixelX)
+                            if (JobInfo.msiConfig.fileOrganisation == FileOrganisation.ROW_PER_FILE && MS1Num > JobInfo.msiConfig.maxPixelX)
                             {
                                 break;
                             }
-                            if (msiConfig.fileOrganisation == FileOrganisation.SPECTRUM_PER_FILE && MS1Num > 1)
+                            if (JobInfo.msiConfig.fileOrganisation == FileOrganisation.SPECTRUM_PER_FILE && MS1Num > 1)
                             {
                                 break;
                             }
-                            if (msiConfig.fileOrganisation == FileOrganisation.IMAGE_PER_FILE && MS1Num > msiConfig.maxPixelX * msiConfig.maxPixelY)
+                            if (JobInfo.msiConfig.fileOrganisation == FileOrganisation.IMAGE_PER_FILE && MS1Num > JobInfo.msiConfig.maxPixelX * JobInfo.msiConfig.maxPixelY)
                             {
                                 break;
                             }
@@ -181,11 +178,11 @@ namespace AirdPro.Converters
                     }
                 }
             }
-            if(msiConfig.fileOrganisation == FileOrganisation.ROW_PER_FILE)
+            if(JobInfo.msiConfig.fileOrganisation == FileOrganisation.ROW_PER_FILE)
             {
-                if (MS1Num < msiConfig.maxPixelX)
+                if (MS1Num < JobInfo.msiConfig.maxPixelX)
                 {
-                    msiConfig.maxPixelX = MS1Num;
+                    JobInfo.msiConfig.maxPixelX = MS1Num;
                 }
             }
 
@@ -437,10 +434,7 @@ namespace AirdPro.Converters
             };
             softwares.Add(airdPro);
             airdInfo.softwares = softwares;
-            airdInfo.parentFiles = parentFiles;
-
-            //aird msi info
-            airdInfo.msiInfo = MsiUtil.GetMsiInfo(msiConfig, Msd);
+            airdInfo.parentFiles = parentFiles;            
 
             //Compressor Info
             List<Compressor> comps = [];
@@ -472,6 +466,10 @@ namespace AirdPro.Converters
             airdInfo.compressors = comps;
 
             airdInfo.ignoreZeroIntensityPoint = JobInfo.config.ignoreZeroIntensity;
+
+            //Msi Info
+            airdInfo.msiInfo = MsiUtil.GetMsiInfo(JobInfo.msiConfig, TotalSpectraCount);
+
             //Features Info
             //FeaturesMap.Add(Features.raw_id, Msd.id);
             FeaturesMap.Add(Features.ignore_zero_intensity, JobInfo.config.ignoreZeroIntensity);
@@ -616,34 +614,6 @@ namespace AirdPro.Converters
                 };
                 parentFiles.Add(file);
             }
-        }
-
-        public void ReadMsiConfig()
-        {
-            msiConfig = new MsiConfig();
-            if (JobInfo.msiConfig != null)
-            {
-                msiConfig.fileOrganisation = JobInfo.msiConfig.fileOrganisation;
-                msiConfig.scanDirection = JobInfo.msiConfig.scanDirection;
-                msiConfig.scanSequence = JobInfo.msiConfig.scanSequence;
-                msiConfig.scanPattern = JobInfo.msiConfig.scanPattern;
-                msiConfig.maxPixelX = JobInfo.msiConfig.maxPixelX;
-                msiConfig.maxPixelY = JobInfo.msiConfig.maxPixelY;
-                msiConfig.maxPixelZ = JobInfo.msiConfig.maxPixelZ;
-                if (msiConfig.maxPixelX == 0)
-                {
-                    msiConfig.maxPixelX = int.MaxValue;
-                }
-                if (msiConfig.maxPixelY == 0)
-                {
-                    msiConfig.maxPixelY = int.MaxValue;
-                }
-                if (msiConfig.maxPixelZ == 0)
-                {
-                    msiConfig.maxPixelZ = int.MaxValue;
-                }
-            }
-            return;
         }
     }
 }

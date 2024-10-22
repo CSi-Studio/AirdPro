@@ -41,7 +41,7 @@ namespace AirdPro.Forms
         public VendorFileSelectorForm()
         {
             InitializeComponent();
-            MSIConfig_Load();
+            MsiConfig_Load();
             AddEventHandler();
         }
 
@@ -63,7 +63,7 @@ namespace AirdPro.Forms
             cbConfig.SelectedIndex = selectedIndex;
         }
 
-        private void MSIConfig_Load()
+        private void MsiConfig_Load()
         {
             comboBox_file_organisation.Items.Clear();
             FieldInfo[] fields = typeof(FileOrganisation).GetFields(BindingFlags.Public | BindingFlags.Static);
@@ -102,9 +102,9 @@ namespace AirdPro.Forms
             fields = typeof(ScanPattern).GetFields(BindingFlags.Public | BindingFlags.Static);
             foreach (FieldInfo field in fields)
             {
-                if (field.IsLiteral)
+                if (field.IsLiteral && !((string)field.GetValue(null)).Equals(ScanPattern.RANDOM_ACCESS))  //厂商格式不支持随机扫描
                 {
-                    comboBox_scan_pattern.Items.Add((string)field.GetValue(null));
+                    comboBox_scan_pattern.Items.Add((string)field.GetValue(null));  
                 }
             }
             comboBox_scan_pattern.SelectedIndex = 1; // default: fly back
