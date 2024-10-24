@@ -395,5 +395,15 @@ namespace AirdPro.Forms
             Program.configListForm.Show();
             Program.configListForm.BringToFront();
         }
+
+        private void imageViewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Program.msiImageForm == null || Program.msiImageForm.IsDisposed)
+            {
+                Program.msiImageForm = new MSIImageForm();
+            }
+            Program.msiImageForm.Show();
+            Program.msiImageForm.BringToFront();
+        }
     }
 }

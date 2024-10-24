@@ -38,6 +38,7 @@ namespace AirdPro
         public static VendorFileSelectorForm fileSelector { get; set; }
         public static MLForm mlForm { get; set; }
         public static PXForm pxForm { get; set; }
+        public static MSIImageForm msiImageForm { get; set; }
 
         [DllImport("kernel32.dll")]
         private static extern bool AllocConsole();

@@ -914,7 +914,7 @@ public abstract class BaseParser
     //     return tags;
     // }
 
-    public String GetType()
+    public new string GetType()
     {
         return airdInfo == null ? null : airdInfo.type;
     }

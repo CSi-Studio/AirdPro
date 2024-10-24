@@ -11,5 +11,9 @@
         public int pixelSizeX = -1;
         public int pixelSizeY = -1;
         public string imageShape;
+
+        public double minMZ;
+        public double maxMZ;
+        public int spectraPerPixel;
     }
 }

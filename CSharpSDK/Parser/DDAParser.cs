@@ -138,7 +138,7 @@ public class DDAParser : BaseParser
         return ms1List;
     }
 
-    private List<DDAMs> BuildDdaMsList(List<double> rtList, int start, int end, BlockIndex ms1Index, Dictionary<double, Spectrum> ms1Map,
+    protected List<DDAMs> BuildDdaMsList(List<double> rtList, int start, int end, BlockIndex ms1Index, Dictionary<double, Spectrum> ms1Map,
         bool includeMS2)
     {
         List<DDAMs> ms1List = new List<DDAMs>();

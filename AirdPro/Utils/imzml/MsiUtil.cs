@@ -106,6 +106,11 @@ namespace AirdPro.Utils.imzml
             imageInfo.pixelSizeX = pixelSizeX;
             imageInfo.pixelSizeY = pixelSizeY;
             imageInfo.imageShape = scanSettings?.GetCVParam(ScanSettings.IMAGE_ID)?.ToString();
+            //mz range
+            imageInfo.minMZ = imzML.GetMinimumDetectedmz();
+            imageInfo.maxMZ = imzML.GetMaximumDetectedmz();
+            //spectra per pixel
+            imageInfo.spectraPerPixel = imzML.GetNumberOfSpectraPerPixel();
 
             return imageInfo;
         }

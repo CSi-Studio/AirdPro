@@ -1,10 +1,8 @@
 ﻿using AirdPro.csimzMLParser.mzml;
 using AirdSDK.Bean.Msi;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Text.RegularExpressions;
+using Spectrum = AirdPro.csimzMLParser.mzml.Spectrum;
 
 namespace AirdPro.Utils.imzml
 {
