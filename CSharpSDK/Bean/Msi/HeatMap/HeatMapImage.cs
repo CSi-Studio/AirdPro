@@ -193,18 +193,18 @@ namespace AirdSDK.Bean.Msi.HeatMap
         }
         private readonly Dictionary<double, double[,]> MultiplyKernelDic = new Dictionary<double, double[,]>();
         private readonly object _obj = new object();
-        public unsafe void SetDatas(List<DataType> datas)
+        public unsafe void SetDatas(List<ImageData> datas)
         {
             Parallel.For(0, datas.Count, ix =>
             {
-                DataType data = datas[ix];
+                ImageData data = datas[ix];
                 int i, j;
                 int ty, ir, jr;
                 int radius = gSize >> 1;
 
                 int x = data.X;
                 int y = data.Y;
-                double weight = Math.Round(data.Weight, 2);
+                double weight = Math.Round(data.Intensity, 2);
                 if (!MultiplyKernelDic.TryGetValue(weight, out var kernelMultiplied))
                 {
                     lock (_obj)
@@ -255,17 +255,17 @@ namespace AirdSDK.Bean.Msi.HeatMap
             });
         }
 
-        public unsafe void SetAData(DataType data)
+        public unsafe void SetAData(ImageData data)
         {
             int i, j, tx, ty, ir, jr;
             int radius = gSize >> 1;
 
             int x = data.X;
             int y = data.Y;
-            if (!MultiplyKernelDic.TryGetValue(data.Weight, out var kernelMultiplied))
+            if (!MultiplyKernelDic.TryGetValue(data.Intensity, out var kernelMultiplied))
             {
-                kernelMultiplied = MultiplyKernel(data.Weight);
-                MultiplyKernelDic.Add(data.Weight, kernelMultiplied);
+                kernelMultiplied = MultiplyKernel(data.Intensity);
+                MultiplyKernelDic.Add(data.Intensity, kernelMultiplied);
             }
 
             for (i = 0; i < gSize; i++)

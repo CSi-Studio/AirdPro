@@ -16,7 +16,6 @@ using AirdPro.csimzMLParser.mzml;
 using AirdSDK.Beans;
 using AirdSDK.Beans.Common;
 using Spectrum = AirdPro.csimzMLParser.mzml.Spectrum;
-using AirdPro.Utils.imzml;
 using AirdPro.Utils;
 using DataUtil = AirdPro.Utils.imzml.DataUtil;
 
@@ -251,7 +250,6 @@ namespace AirdPro.Algorithms.Compressor
 
             ts.mzArrayBytes = compressedMzArray;
             ts.intArrayBytes = compressedIntArray;
-           
         }
 
         public TempSpectrum ReadSpectrum(Spectrum spectrum)

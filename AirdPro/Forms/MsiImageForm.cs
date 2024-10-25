@@ -2,11 +2,13 @@
 using AirdSDK.Bean.Msi.HeatMap;
 using AirdSDK.Beans;
 using AirdSDK.Parser;
+using HZH_Controls.Controls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 
@@ -17,13 +19,9 @@ namespace AirdPro.Forms
         private string fileName; //AirdFile
         OpenFileDialog openFileDialog;
         MSIParser msiParser;
-        List<DataType> datas;
-
-        private List<string> messages = new();
-        public List<string> Messages
-        {
-            get { return messages; }
-        }
+        List<ImageData> imageDataList;
+        ImageInfo imageInfo;
+        
         public MSIImageForm()
         {
             InitializeComponent();
@@ -45,7 +43,7 @@ namespace AirdPro.Forms
         {           
             msiParser = new MSIParser(Path.ChangeExtension(fileName, ".json"));
             AirdInfo airdInfo = msiParser.airdInfo;
-            ImageInfo imageInfo = airdInfo.msiInfo.imageInfo;
+            imageInfo = airdInfo.msiInfo.imageInfo;
             ScanInfo scanInfo = airdInfo.msiInfo.scanInfo;
             LbParams.Items.Clear();
             LbParams.Items.Add($"Range m/z: {imageInfo.minMZ}-{imageInfo.maxMZ}");           
@@ -84,27 +82,58 @@ namespace AirdPro.Forms
                 }
             }*/
 
-            datas = msiParser.GetDatas(mz);
-            //datas = msiParser.GetExampleDatas(mz);
-            
-            var sw = new Stopwatch();
+            imageDataList = msiParser.GetImageDatas(mz);
+
+            /*var sw = new Stopwatch();
             sw.Start();
-            int h = PbMsiImage.Height;
-            int w = PbMsiImage.Width;
-            PbMsiImage.Image = GetImage(w, h, datas.Count);
-            sw.Stop();
+            int h = (int)Math.Round(imageInfo.pixelSizeX);
+            int w = (int)Math.Round(imageInfo.pixelSizeY);
+            PbMsiImage.Image = GetImage(w, h, imageDataList.Count);
+            sw.Stop();*/
+
+            DgvImage.ColumnCount = imageInfo.maxPixelY;
+            DgvImage.RowCount = imageInfo.maxPixelX;
+
+            // 填充 DataGridView
+            foreach (var data in imageDataList)
+            {
+                DgvImage.Rows[data.Y - 1].Cells[data.X - 1].Value = data.Intensity;
+                DgvImage.Rows[data.Y - 1].Cells[data.X - 1].Style.BackColor = GetHeatmapColor(data.Intensity);
+            }
+
+            // 订阅单元格绘制事件
+            DgvImage.CellPainting += DataGridView_CellPainting;
         }
 
-        Bitmap GetImage(int width, int height, int count)
+        private void DataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
-            HeatMapImage heatMapImage = new HeatMapImage(width, height, 200, 50);
-            var sw = new Stopwatch();
-            sw.Start();
-            heatMapImage.SetDatas(datas);
-            sw.Stop();
-            return heatMapImage.GetHeatMap();
+            // 绘制单元格背景色
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                var intensity = DgvImage.Rows[e.RowIndex].Cells[e.ColumnIndex].Value as double?;
+                if (intensity.HasValue)
+                {
+                    e.Graphics.FillRectangle(new SolidBrush(GetHeatmapColor(intensity.Value)), e.CellBounds);
+                    e.Handled = true; // 阻止默认的单元格绘制
+                }
+            }
         }
 
+        private Color GetHeatmapColor(double intensity)
+        {
+            //double range = msiParser.maxIntensity / 255;
+            // 根据强度值返回不同的颜色
+            if (intensity <= 1.0)
+                return Color.Green;
+            else if (intensity <= 2.0)
+                return Color.Yellow;
+            else if (intensity <= 3.0)
+                return Color.Orange;
+            else if (intensity <= 4.0)
+                return Color.Red;
+            else
+                return Color.DarkRed;
+        }
 
     }
 }

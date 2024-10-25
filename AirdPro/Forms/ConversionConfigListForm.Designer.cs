@@ -571,7 +571,7 @@
             this.lblWeightValue.Name = "lblWeightValue";
             this.lblWeightValue.Size = new System.Drawing.Size(49, 17);
             this.lblWeightValue.TabIndex = 147;
-            this.lblWeightValue.Text = "Weight";
+            this.lblWeightValue.Text = "Intensity";
             // 
             // cbDTWeight
             // 

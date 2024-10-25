@@ -37,14 +37,14 @@
             this.TbMZ = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.PnlImage = new System.Windows.Forms.Panel();
+            this.DgvImage = new System.Windows.Forms.DataGridView();
             this.PnlParams = new System.Windows.Forms.Panel();
             this.LbParams = new System.Windows.Forms.ListBox();
-            this.PbMsiImage = new System.Windows.Forms.PictureBox();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.PnlImage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DgvImage)).BeginInit();
             this.PnlParams.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PbMsiImage)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
@@ -125,12 +125,26 @@
             // 
             // PnlImage
             // 
-            this.PnlImage.Controls.Add(this.PbMsiImage);
+            this.PnlImage.Controls.Add(this.DgvImage);
             this.PnlImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PnlImage.Location = new System.Drawing.Point(331, 0);
             this.PnlImage.Name = "PnlImage";
             this.PnlImage.Size = new System.Drawing.Size(1068, 743);
             this.PnlImage.TabIndex = 1;
+            // 
+            // DgvImage
+            // 
+            this.DgvImage.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.DgvImage.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.DgvImage.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.DgvImage.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DgvImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DgvImage.Location = new System.Drawing.Point(0, 0);
+            this.DgvImage.Name = "DgvImage";
+            this.DgvImage.RowHeadersWidth = 62;
+            this.DgvImage.RowTemplate.Height = 30;
+            this.DgvImage.Size = new System.Drawing.Size(1068, 743);
+            this.DgvImage.TabIndex = 0;
             // 
             // PnlParams
             // 
@@ -151,15 +165,6 @@
             this.LbParams.Size = new System.Drawing.Size(331, 743);
             this.LbParams.TabIndex = 0;
             // 
-            // PbMsiImage
-            // 
-            this.PbMsiImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PbMsiImage.Location = new System.Drawing.Point(0, 0);
-            this.PbMsiImage.Name = "PbMsiImage";
-            this.PbMsiImage.Size = new System.Drawing.Size(1068, 743);
-            this.PbMsiImage.TabIndex = 0;
-            this.PbMsiImage.TabStop = false;
-            // 
             // MSIImageForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -173,8 +178,8 @@
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.PnlImage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DgvImage)).EndInit();
             this.PnlParams.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.PbMsiImage)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -192,6 +197,6 @@
         private System.Windows.Forms.TextBox TbAirdFile;
         private System.Windows.Forms.Button BtnSelect;
         private System.Windows.Forms.ListBox LbParams;
-        private System.Windows.Forms.PictureBox PbMsiImage;
+        private System.Windows.Forms.DataGridView DgvImage;
     }
 }
