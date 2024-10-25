@@ -1265,7 +1265,7 @@ namespace AirdPro.Converters
             }
 
             airdInfo.instruments = instruments;
-            airdInfo.startTimeStamp = imzML.GetRun().GetStartTimeStamp().ToString();
+            airdInfo.startTimeStamp = imzML.GetRun().GetStartTimeStamp();
             //Software Info
             foreach (var soft in imzML.GetSoftwareList())
             {

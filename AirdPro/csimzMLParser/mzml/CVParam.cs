@@ -120,7 +120,7 @@ namespace AirdPro.csimzMLParser.mzml
 
         public static CVParamType GetCVParamType(OBOTerm term)
         {
-            if (term == null || term.GetValueType() == null)
+            if (term == null)
             {
                 return CVParamType.EMPTY;
             }

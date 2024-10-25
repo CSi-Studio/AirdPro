@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System;
 using AirdSDK.Beans.Common;
 using System.IO;
+using AirdSDK.Bean.Msi.HeatMap;
 
 namespace AirdSDK.Parser;
 
@@ -115,6 +116,74 @@ public class MSIParser : DDAParser
         Dictionary<double, Spectrum> ms1Map = GetSpectra(ms1Index);
         List<double> ms1RtList = new List<double>(ms1Map.Keys);
         List<DDAMs> ms1List = BuildDdaMsList(ms1RtList, 0, ms1RtList.Count, ms1Index, ms1Map, false);
+
+
+        //debug========================
+        //打印第1张质谱图的mz和intensity数组值的前5个值（解压后）
+        double[] mzArray = ms1List[0].spectrum.mzs;
+        double[] intArray = ms1List[0].spectrum.ints;
+        Console.WriteLine("First spectrum mz array（解压）: ");
+        for (int i = 0; i < 5; i++)
+        {
+            Console.WriteLine($"{mzArray[i]}");
+        }
+        Console.WriteLine("First spectrum intensity array（解压）: ");
+        for (int i = 0; i < 5; i++)
+        {
+            Console.WriteLine($"{intArray[i]}");
+        }
+
         return ms1List;
+    }
+
+    public List<DataType> GetDatas(double mz)
+    {
+        List<DataType> datas = new List<DataType>();
+        this.mz = mz;
+        int[] x = airdInfo.msiInfo.spectraPosition.x;
+        int[] y = airdInfo.msiInfo.spectraPosition.y;
+        List<DDAMs> msList = ReadAllToMemory();
+        for (int index = 0; index < msList.Count; index++)
+        {
+            double[] mzArray = msList[index].spectrum.mzs;
+            double[] intArray = msList[index].spectrum.ints;
+
+            double intensity = 0;
+            for (int i = 0; i < mzArray.Length; i++)
+            {
+                if (Math.Abs(mzArray[i] - mz) <= TOLERANCE)
+                {
+                    intensity += intArray[i];
+                }
+            }
+            datas.Add(new DataType()
+            {
+                X = x[index] - 1,
+                Y = y[index] - 1,
+                Weight = intensity
+            });
+
+        }
+        return datas;
+    }
+
+    public List<DataType> GetExampleDatas(double mz)
+    {
+        ReadAllToMemory();
+        List<DataType> datas = new List<DataType>();        
+        int[] x = airdInfo.msiInfo.spectraPosition.x;
+        int[] y = airdInfo.msiInfo.spectraPosition.y;
+        List<DDAMs> msList = ReadAllToMemory();
+        for (int index = 0; index < msList.Count; index++)
+        {
+            datas.Add(new DataType()
+            {
+                X = x[index] - 1,
+                Y = y[index] - 1,
+                Weight = new Random().Next(0, 2301)
+            });
+
+        }
+        return datas;
     }
 }

@@ -95,12 +95,12 @@ namespace AirdPro.Utils.imzml
             ScanSettings scanSettings = imzML.GetScanSettingsList().GetScanSettings(0);
             imageInfo.maxDimensionX = scanSettings?.GetCVParam(ScanSettings.MAX_DIMENSION_X_ID)?.GetValueAsInteger()  ?? -1;
             imageInfo.maxDimensionY = scanSettings?.GetCVParam(ScanSettings.MAX_DIMENSION_Y_ID)?.GetValueAsInteger() ?? -1;
-            int pixelSizeX = scanSettings?.GetCVParam(ScanSettings.PIXEL_SIZE_X_ID)?.GetValueAsInteger() ?? -1;            
-            int pixelSizeY = pixelSizeX;
+            double pixelSizeX = scanSettings?.GetCVParam(ScanSettings.PIXEL_SIZE_X_ID)?.GetValueAsDouble() ?? -1;            
+            double pixelSizeY = pixelSizeX;
             CVParam cvParam = scanSettings.GetCVParam(ScanSettings.PIXEL_SIZE_Y_ID);           
             if (cvParam != null)
             {
-                pixelSizeY = cvParam.GetValueAsInteger();
+                pixelSizeY = cvParam.GetValueAsDouble();
             }
             imageInfo.pixelSize = pixelSizeX;
             imageInfo.pixelSizeX = pixelSizeX;

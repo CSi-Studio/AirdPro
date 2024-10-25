@@ -1,8 +1,11 @@
 ﻿using AirdSDK.Bean.Msi;
+using AirdSDK.Bean.Msi.HeatMap;
 using AirdSDK.Beans;
 using AirdSDK.Parser;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -14,6 +17,7 @@ namespace AirdPro.Forms
         private string fileName; //AirdFile
         OpenFileDialog openFileDialog;
         MSIParser msiParser;
+        List<DataType> datas;
 
         private List<string> messages = new();
         public List<string> Messages
@@ -66,14 +70,41 @@ namespace AirdPro.Forms
                 MessageBox.Show("please input m/z first!", "message",MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }            
-            double mz = double.Parse(TbMZ.Text.Trim());            
-            double[,] intensityMatrix = msiParser.GetIntensityMatrix(mz);
-
-           
-
+            double mz = double.Parse(TbMZ.Text.Trim());          
             
+            /*double[,] intensityMatrix = msiParser.GetIntensityMatrix(mz);
+            for(int i = 0; i < intensityMatrix.GetLength(0); i++)
+            {
+                for(int j = 0; j < intensityMatrix.GetLength(1); j++)
+                {
+                    if(intensityMatrix[i,j] > 0)
+                    {
+                        intensityMatrix[i,j] = Math.Log10(intensityMatrix[i,j]);
+                    }
+                }
+            }*/
 
+            datas = msiParser.GetDatas(mz);
+            //datas = msiParser.GetExampleDatas(mz);
+            
+            var sw = new Stopwatch();
+            sw.Start();
+            int h = PbMsiImage.Height;
+            int w = PbMsiImage.Width;
+            PbMsiImage.Image = GetImage(w, h, datas.Count);
+            sw.Stop();
         }
+
+        Bitmap GetImage(int width, int height, int count)
+        {
+            HeatMapImage heatMapImage = new HeatMapImage(width, height, 200, 50);
+            var sw = new Stopwatch();
+            sw.Start();
+            heatMapImage.SetDatas(datas);
+            sw.Stop();
+            return heatMapImage.GetHeatMap();
+        }
+
 
     }
 }

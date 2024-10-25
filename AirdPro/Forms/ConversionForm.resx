@@ -128,88 +128,7 @@
   <data name="container.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
     <value>Horizontal</value>
   </data>
-  <data name="btnTest.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnTest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>821, 12</value>
-  </data>
-  <data name="btnTest.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="btnTest.TabIndex" type="System.Int32, mscorlib">
-    <value>45</value>
-  </data>
-  <data name="btnTest.Text" xml:space="preserve">
-    <value>Test</value>
-  </data>
-  <data name="&gt;&gt;btnTest.Name" xml:space="preserve">
-    <value>btnTest</value>
-  </data>
-  <data name="&gt;&gt;btnTest.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnTest.Parent" xml:space="preserve">
-    <value>container.Panel1</value>
-  </data>
-  <data name="&gt;&gt;btnTest.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="Test.Location" type="System.Drawing.Point, System.Drawing">
-    <value>902, 12</value>
-  </data>
-  <data name="Test.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="Test.TabIndex" type="System.Int32, mscorlib">
-    <value>44</value>
-  </data>
-  <data name="Test.Text" xml:space="preserve">
-    <value>Speed Test</value>
-  </data>
-  <data name="Test.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;Test.Name" xml:space="preserve">
-    <value>Test</value>
-  </data>
-  <data name="&gt;&gt;Test.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Test.Parent" xml:space="preserve">
-    <value>container.Panel1</value>
-  </data>
-  <data name="&gt;&gt;Test.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="btnDownloadJobList.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 9pt</value>
-  </data>
-  <data name="btnDownloadJobList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>983, 10</value>
-  </data>
-  <data name="btnDownloadJobList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>159, 30</value>
-  </data>
-  <data name="btnDownloadJobList.TabIndex" type="System.Int32, mscorlib">
-    <value>43</value>
-  </data>
-  <data name="btnDownloadJobList.Text" xml:space="preserve">
-    <value>Download Job Infos</value>
-  </data>
-  <data name="&gt;&gt;btnDownloadJobList.Name" xml:space="preserve">
-    <value>btnDownloadJobList</value>
-  </data>
-  <data name="&gt;&gt;btnDownloadJobList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnDownloadJobList.Parent" xml:space="preserve">
-    <value>container.Panel1</value>
-  </data>
-  <data name="&gt;&gt;btnDownloadJobList.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="label9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -244,7 +163,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>0</value>
   </data>
   <data name="btnDelete.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -320,7 +239,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;btnDelete.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>1</value>
   </data>
   <data name="btnPX.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -471,7 +390,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;btnPX.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>2</value>
   </data>
   <data name="btnMetaboLights.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -657,7 +576,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;btnMetaboLights.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>3</value>
   </data>
   <data name="label4.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -696,7 +615,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>4</value>
   </data>
   <data name="btnMainView.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -779,7 +698,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;btnMainView.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>5</value>
   </data>
   <data name="label12.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -818,7 +737,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>6</value>
   </data>
   <data name="btnHelp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -938,7 +857,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;btnHelp.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>7</value>
   </data>
   <data name="label112.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -977,7 +896,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;label112.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>8</value>
   </data>
   <data name="btnRedisSetting.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1078,7 +997,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;btnRedisSetting.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>9</value>
   </data>
   <data name="label11.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1117,7 +1036,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>10</value>
   </data>
   <data name="label8.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1153,7 +1072,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>11</value>
   </data>
   <data name="label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1189,7 +1108,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>12</value>
   </data>
   <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1225,7 +1144,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>13</value>
   </data>
   <data name="lvFileList.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -1348,7 +1267,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;lvFileList.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>14</value>
   </data>
   <data name="btnImport.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1452,7 +1371,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;btnImport.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>15</value>
   </data>
   <data name="cbAutoExe.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1482,7 +1401,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;cbAutoExe.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>16</value>
   </data>
   <data name="btnConvert.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1586,7 +1505,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;btnConvert.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>17</value>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1619,7 +1538,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>18</value>
   </data>
   <data name="btnCleanFinished.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1692,7 +1611,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;btnCleanFinished.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>19</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1725,7 +1644,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>20</value>
   </data>
   <data name="btnSetting.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1870,7 +1789,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;btnSetting.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>21</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1900,7 +1819,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>25</value>
+    <value>22</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1930,7 +1849,7 @@
     <value>container.Panel1</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>26</value>
+    <value>23</value>
   </data>
   <data name="&gt;&gt;container.Panel1.Name" xml:space="preserve">
     <value>container.Panel1</value>
@@ -5809,6 +5728,12 @@
   <data name="&gt;&gt;headerAirdSize.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;headerRate.Name" xml:space="preserve">
+    <value>headerRate</value>
+  </data>
+  <data name="&gt;&gt;headerRate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;headerCTimer.Name" xml:space="preserve">
     <value>headerCTimer</value>
   </data>
@@ -5868,12 +5793,6 @@
   </data>
   <data name="&gt;&gt;timerTaskScan.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;headerRate.Name" xml:space="preserve">
-    <value>headerRate</value>
-  </data>
-  <data name="&gt;&gt;headerRate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ConversionForm</value>

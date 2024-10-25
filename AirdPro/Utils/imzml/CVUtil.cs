@@ -68,10 +68,16 @@ namespace AirdPro.Utils.imzml
         public static long ParseTic(Spectrum spectrum)
         {
             CVParam cv = spectrum.GetCVParam(Spectrum.TOTAL_ION_CURRENT_ID);
-            if (cv == null)
+            if (cv == null)        
             {
                 return -1;
+            }     
+            string value = cv.GetValueAsString();
+            if (value.Contains("."))
+            {
+                 return (long)Math.Round(cv.GetValueAsDouble());
             }
+            
             return cv.GetValueAsLong();
         }
 

@@ -203,6 +203,7 @@ namespace AirdPro.Algorithms.Compressor
         {
             double[] mzData = spectrum.GetMzArray();
             double[] intData = spectrum.GetIntensityArray();
+
             var size = mzData.Length;
             if (size == 0)
             {
@@ -250,6 +251,7 @@ namespace AirdPro.Algorithms.Compressor
 
             ts.mzArrayBytes = compressedMzArray;
             ts.intArrayBytes = compressedIntArray;
+           
         }
 
         public TempSpectrum ReadSpectrum(Spectrum spectrum)

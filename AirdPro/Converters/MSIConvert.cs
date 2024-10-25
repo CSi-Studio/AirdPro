@@ -14,7 +14,6 @@ using System.IO;
 using System.Text;
 using pwiz.CLI.cv;
 using pwiz.CLI.data;
-using AirdSDK.Bean;
 using CVUtil = AirdPro.Utils.CVUtil;
 using MsiUtil = AirdPro.Utils.MsiUtil;
 using AirdSDK.Enums.Msi;

@@ -418,7 +418,7 @@ namespace AirdPro.csimzMLParser.parser
             }
 
             string startTimeStamp = reader.GetAttribute("startTimeStamp");
-            if (startTimeStamp != null)
+           /* if (startTimeStamp != null)
             {
                 string format = "yyyy-MM-dd'T'HH:mm:ss";
                 try
@@ -454,7 +454,7 @@ namespace AirdPro.csimzMLParser.parser
                         NotifyParserListeners(secondFormatIssue);
                     }
                 }
-            }
+            }*/
             mzML.SetRun(run);
             contentStack.Push(run);
         }

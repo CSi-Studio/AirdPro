@@ -16,7 +16,7 @@ namespace AirdPro.csimzMLParser.mzml
         private SourceFile defaultSourceFileRef;
         private string id;
         private Sample sampleRef;
-        private DateTime startTimeStamp;
+        private string startTimeStamp;
         private IReferenceList<DataProcessing> dataProcessingList;
         private SpectrumList spectrumList;
         private ChromatogramList chromatogramList;
@@ -34,7 +34,7 @@ namespace AirdPro.csimzMLParser.mzml
 
             if (run.startTimeStamp != null)
             {
-                startTimeStamp = (DateTime)run.startTimeStamp;
+                startTimeStamp = run.startTimeStamp;
             }
 
             if (run.defaultInstrumentConfigurationRef != null && icList != null)
@@ -114,12 +114,12 @@ namespace AirdPro.csimzMLParser.mzml
             this.sampleRef = sampleRef;
         }
 
-        public void SetStartTimeStamp(DateTime startTimeStamp)
+        public void SetStartTimeStamp(string startTimeStamp)
         {
             this.startTimeStamp = startTimeStamp;
         }
 
-        public DateTime GetStartTimeStamp()
+        public string GetStartTimeStamp()
         {
             return startTimeStamp;
         }
@@ -198,13 +198,13 @@ namespace AirdPro.csimzMLParser.mzml
             }
             if (startTimeStamp != null)
             {
-                // 定义日期时间格式
+                /*// 定义日期时间格式
                 string xmlDateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss";
                 // 格式化日期时间，包括转换为 UTC
                 DateTimeOffset startTimeStampOffset = new(startTimeStamp.ToUniversalTime());
-                string formattedDateWithTimeZone = startTimeStampOffset.ToString(xmlDateTimeFormat, CultureInfo.InvariantCulture);
+                string formattedDateWithTimeZone = startTimeStampOffset.ToString(xmlDateTimeFormat, CultureInfo.InvariantCulture);*/
                 
-                attributes = $" startTimeStamp=\"{formattedDateWithTimeZone}\"";
+                attributes = $" startTimeStamp=\"{startTimeStamp}\"";
             }
             return attributes;
         }

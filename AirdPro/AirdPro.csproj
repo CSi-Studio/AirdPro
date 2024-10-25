@@ -896,24 +896,6 @@
     <PackageReference Include="K4os.Compression.LZ4.Streams">
       <Version>1.3.8</Version>
     </PackageReference>
-    <PackageReference Include="LiveCharts">
-      <Version>0.9.7</Version>
-    </PackageReference>
-    <PackageReference Include="LiveCharts.Core">
-      <Version>0.9.8</Version>
-    </PackageReference>
-    <PackageReference Include="LiveCharts.NetCore">
-      <Version>0.9.8</Version>
-    </PackageReference>
-    <PackageReference Include="LiveCharts.Plus">
-      <Version>1.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="LiveCharts.WinForms">
-      <Version>0.9.7.1</Version>
-    </PackageReference>
-    <PackageReference Include="LiveCharts.Wpf">
-      <Version>0.9.7</Version>
-    </PackageReference>
     <PackageReference Include="log4net" Version="2.0.17" />
     <PackageReference Include="lz4net">
       <Version>1.0.15.93</Version>
@@ -926,6 +908,9 @@
       <Version>0.38.0</Version>
     </PackageReference>
     <PackageReference Include="StackExchange.Redis" Version="2.7.33" />
+    <PackageReference Include="System.Drawing.Common">
+      <Version>8.0.10</Version>
+    </PackageReference>
     <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
     <PackageReference Include="XZ.NET">
@@ -944,9 +929,7 @@
       <Name>AirdSDK</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Msi\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
