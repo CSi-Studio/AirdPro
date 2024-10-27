@@ -623,8 +623,7 @@ namespace AirdPro.Forms
             // 
             // VendorFileSelectorForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1522, 1191);
             this.Controls.Add(this.imgBtnPublish);
             this.Controls.Add(this.imgBtnClose);

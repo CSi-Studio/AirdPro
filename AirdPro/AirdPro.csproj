@@ -166,11 +166,11 @@
     <Compile Include="CommandLine\Options.cs" />
     <Compile Include="Converters\ImzMLConverter.cs" />
     <Compile Include="Converters\MSIConvert.cs" />
-    <Compile Include="Forms\MsiImageForm.cs">
+    <Compile Include="Forms\MSIForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\MsiImageForm.Designer.cs">
-      <DependentUpon>MsiImageForm.cs</DependentUpon>
+    <Compile Include="Forms\MSIForm.Designer.cs">
+      <DependentUpon>MSIForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\imzml\DataUtil.cs" />
     <Compile Include="csimzMLParser\exceptions\CVParamAccessionNotFoundIssue.cs" />
@@ -650,8 +650,8 @@
       <DependentUpon>ConversionConfigListForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MsiImageForm.resx">
-      <DependentUpon>MsiImageForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\MSIForm.resx">
+      <DependentUpon>MSIForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\RedisForm.resx">
       <DependentUpon>RedisForm.cs</DependentUpon>
@@ -842,6 +842,10 @@
     <Content Include="Controls\TreeViewAdv\Migrated rules for Aga.Controls.ruleset" />
     <Content Include="Controls\TreeViewAdv\Tree\ClassDiagram.cd" />
     <Content Include="Controls\TreeViewAdv\Tree\NodeControls\ClassDiagram.cd" />
+    <Content Include="data\html\msi.html" />
+    <Content Include="data\html\ms.html" />
+    <Content Include="data\js\echarts.js" />
+    <Content Include="data\js\spectrum.js" />
     <Content Include="Resources\Conversion.png" />
     <Content Include="Resources\Menu\Pin.png" />
     <Content Include="Resources\Menu\Redis_Disconnected.png" />
@@ -883,6 +887,9 @@
     <PackageReference Include="CommandLineParser">
       <Version>2.9.1</Version>
     </PackageReference>
+    <PackageReference Include="ECharts.Net">
+      <Version>1.1.1</Version>
+    </PackageReference>
     <PackageReference Include="FluentFTP" Version="50.0.1" />
     <PackageReference Include="BrotliSharpLib" Version="0.3.3" />
     <PackageReference Include="Google.Protobuf" Version="3.26.1" />
@@ -899,6 +906,9 @@
     <PackageReference Include="log4net" Version="2.0.17" />
     <PackageReference Include="lz4net">
       <Version>1.0.15.93</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Web.WebView2">
+      <Version>1.0.2849.39</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NUnit">

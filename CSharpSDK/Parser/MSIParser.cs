@@ -21,20 +21,15 @@ public class MSIParser : DDAParser
 {
     private const double TOLERANCE = 0.0015;
     private double mz;   
-    private double[,] intensityMatrix;  //对应mz的intensity矩阵
+    //private double[,] intensityMatrix;  //对应mz的intensity矩阵
     private List<ImageData> imageDataList;
     public double maxIntensity;
+    public List<DDAMs> msList;
 
     public MSIParser(string indexFilePath) : base(indexFilePath)
     {
-        
-    }
-
-    public MSIParser(string indexFilePath, AirdInfo airdInfo) : base(indexFilePath, airdInfo)
-    {
-        
-        
-    }
+        msList = ReadAllToMemory();
+    }    
 
    /* private void InitIntensityMatrix()
     {
@@ -128,7 +123,7 @@ public class MSIParser : DDAParser
         this.mz = mz;
         int[] x = airdInfo.msiInfo.spectraPosition.x;
         int[] y = airdInfo.msiInfo.spectraPosition.y;
-        List<DDAMs> msList = ReadAllToMemory();
+        
         for (int index = 0; index < msList.Count; index++)
         {
             double[] mzArray = msList[index].spectrum.mzs;

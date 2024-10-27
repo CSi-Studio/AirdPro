@@ -90,6 +90,8 @@ namespace AirdPro.Forms
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.timerTaskScan = new System.Windows.Forms.Timer(this.components);
+            this.btnImage = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -108,6 +110,8 @@ namespace AirdPro.Forms
             // 
             // container.Panel1
             // 
+            this.container.Panel1.Controls.Add(this.label10);
+            this.container.Panel1.Controls.Add(this.btnImage);
             this.container.Panel1.Controls.Add(this.label9);
             this.container.Panel1.Controls.Add(this.btnDelete);
             this.container.Panel1.Controls.Add(this.btnPX);
@@ -485,6 +489,22 @@ namespace AirdPro.Forms
             this.timerTaskScan.Interval = 5000;
             this.timerTaskScan.Tick += new System.EventHandler(this.timerTaskScan_Tick);
             // 
+            // btnImage
+            // 
+            resources.ApplyResources(this.btnImage, "btnImage");
+            this.btnImage.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnImage.FlatAppearance.BorderSize = 0;
+            this.btnImage.Name = "btnImage";
+            this.tooltip.SetToolTip(this.btnImage, resources.GetString("btnImage.ToolTip"));
+            this.btnImage.UseVisualStyleBackColor = true;
+            this.btnImage.Click += new System.EventHandler(this.btnImage_Click);
+            // 
+            // label10
+            // 
+            resources.ApplyResources(this.label10, "label10");
+            this.label10.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label10.Name = "label10";
+            // 
             // ConversionForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -568,6 +588,8 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ColumnHeader colValue;
         private System.Windows.Forms.ColumnHeader headerSize;
         private System.Windows.Forms.ColumnHeader headerRate;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button btnImage;
     }
 }
 

@@ -507,5 +507,15 @@ namespace AirdPro.Forms
                 Console.Write(1 + ",");
             }
         }
+
+        private void btnImage_Click(object sender, EventArgs e)
+        {
+            if (Program.msiImageForm == null || Program.msiImageForm.IsDisposed)
+            {
+                Program.msiImageForm = new MSIImageForm();
+            }
+            Program.msiImageForm.Show();
+            Program.msiImageForm.BringToFront();
+        }
     }
 }
