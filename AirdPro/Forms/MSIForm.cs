@@ -5,6 +5,7 @@ using AirdSDK.Parser;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Windows.Forms;
 
@@ -25,9 +26,9 @@ namespace AirdPro.Forms
             openFileDialog.Filter = "AIRD files (*.aird)|*.aird";
 
             //使用webview2加载html
-            string htmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data/html", "ms.html");
+            string htmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MsiImage/html", "msBarChart.html");
             webViewMS.Source = new Uri(htmlPath);
-            htmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data/html", "msi.html");
+            htmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MsiImage/html", "msiHeatMap.html");
             webViewMSI.Source = new Uri(htmlPath);
         }  
 
@@ -56,7 +57,7 @@ namespace AirdPro.Forms
 
             //LbImageParams   
             LbImageParams.Items.Add("  Image Params");
-            LbImageParams.Items.Add($"  Image dimension [um]: X {imageInfo.maxPixelX} * Y {imageInfo.maxPixelY}");
+            LbImageParams.Items.Add($"  Image dimension [um]: X {imageInfo.maxDimensionX} * Y {imageInfo.maxDimensionY}");
             LbImageParams.Items.Add($"  Total number of pixels: {msiParser.airdInfo.totalCount}");
             LbImageParams.Items.Add($"  Spectra per pixel: {imageInfo.spectraPerPixel}");
             LbImageParams.Items.Add($"  Scan direction: {scanInfo.scanDirection?.ToLower()}");
@@ -94,12 +95,21 @@ namespace AirdPro.Forms
                 MessageBox.Show("m/z value is invalid!", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+            
+            imageDataList = msiParser.GetImageDataList(mz);
+            double maxPixelX = imageInfo.maxPixelX;
+            double maxPixelY = imageInfo.maxPixelY;
+            double maxIntensity = msiParser.maxIntensity;
+            
+            var heatmapData = imageDataList.Select(data => new object[] { data.X, data.Y, data.Intensity }).ToList();
 
-            imageDataList = msiParser.GetImageDatas(mz);
 
-            //webViewMSI.ExecuteScriptAsync(script);
-
-
+            string heatmapDataJson = JsonSerializer.Serialize(heatmapData);
+            string maxPixelXJson = JsonSerializer.Serialize(maxPixelX);
+            string maxPixelYJson = JsonSerializer.Serialize(maxPixelY);
+            string maxIntensityJson = JsonSerializer.Serialize(maxIntensity);
+            string script = $"drawHeatmap({heatmapDataJson}, {maxPixelXJson}, {maxPixelYJson}, {maxIntensityJson});";
+            webViewMSI.ExecuteScriptAsync(script);            
         }
 
         private void BtnShowMS_Click(object sender, EventArgs e)

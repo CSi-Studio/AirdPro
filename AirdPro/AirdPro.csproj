@@ -842,10 +842,21 @@
     <Content Include="Controls\TreeViewAdv\Migrated rules for Aga.Controls.ruleset" />
     <Content Include="Controls\TreeViewAdv\Tree\ClassDiagram.cd" />
     <Content Include="Controls\TreeViewAdv\Tree\NodeControls\ClassDiagram.cd" />
-    <Content Include="data\html\msi.html" />
-    <Content Include="data\html\ms.html" />
-    <Content Include="data\js\echarts.js" />
-    <Content Include="data\js\spectrum.js" />
+    <Content Include="MsiImage\html\msiHeatMap.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MsiImage\html\msBarChart.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MsiImage\js\echarts.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MsiImage\js\msiHeatMap.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MsiImage\js\msBarChart.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Conversion.png" />
     <Content Include="Resources\Menu\Pin.png" />
     <Content Include="Resources\Menu\Redis_Disconnected.png" />

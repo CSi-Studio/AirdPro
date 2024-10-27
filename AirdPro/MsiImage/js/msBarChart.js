@@ -1,5 +1,5 @@
 ﻿function drawBarChart(mzArray, intensityArray) {
-    const spectrumChart = echarts.init(document.getElementById('spectrumContainer'));
+    const msBarChart = echarts.init(document.getElementById('msContainer'));
 
     const option = {
         title: {
@@ -24,5 +24,7 @@
         }]
     };
 
-    spectrumChart.setOption(option);
+    msBarChart.setOption(option);
+    // 监听窗口大小变化，调整图表大小
+    window.addEventListener('resize', msBarChart.resize);
 }

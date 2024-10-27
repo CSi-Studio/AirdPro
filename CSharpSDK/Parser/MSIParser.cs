@@ -20,55 +20,15 @@ namespace AirdSDK.Parser;
 public class MSIParser : DDAParser
 {
     private const double TOLERANCE = 0.0015;
-    private double mz;   
-    //private double[,] intensityMatrix;  //对应mz的intensity矩阵
-    private List<ImageData> imageDataList;
-    public double maxIntensity;
+    private double mz;
     public List<DDAMs> msList;
+    private List<ImageData> imageDataList;
+    public double maxIntensity;    
 
     public MSIParser(string indexFilePath) : base(indexFilePath)
     {
         msList = ReadAllToMemory();
     }    
-
-   /* private void InitIntensityMatrix()
-    {
-        int maxPixelX = airdInfo.msiInfo.imageInfo.maxPixelX;
-        int maxPixelY = airdInfo.msiInfo.imageInfo.maxPixelY;
-        intensityMatrix = new double[maxPixelX, maxPixelY];
-        for(int i = 0; i < maxPixelX; i++)
-        {
-            for(int j = 0; j < maxPixelY; j++)
-            {
-                intensityMatrix[i, j] = 0;
-            }
-        }        
-    }
-    
-    public double[,] GetIntensityMatrix(double mz)
-    {
-        InitIntensityMatrix();
-
-        this.mz = mz;
-        int[] x = airdInfo.msiInfo.spectraPosition.x;
-        int[] y = airdInfo.msiInfo.spectraPosition.y;
-        List<DDAMs> msList = ReadAllToMemory();
-        for(int index = 0; index < msList.Count; index++)
-        {
-            double[] mzArray = msList[index].spectrum.mzs;
-            double[] intArray = msList[index].spectrum.ints;
-            double intensity = 0;
-            for (int i = 0; i < mzArray.Length; i++)
-            {
-                if (Math.Abs(mzArray[i] - mz) <= TOLERANCE )
-                {
-                    intensity += intArray[i];
-                }
-            }
-            intensityMatrix[x[index] - 1, y[index] - 1] = intensity;
-        }
-        return intensityMatrix;
-    }*/
 
     /**
      * 返回值是一个map,其中key为rt,value为这个rt对应点原始谱图信息
@@ -116,7 +76,7 @@ public class MSIParser : DDAParser
         return ms1List;
     }
 
-    public List<ImageData> GetImageDatas(double mz)
+    public List<ImageData> GetImageDataList(double mz)
     {
         imageDataList = new List<ImageData>();
         maxIntensity = 0;
