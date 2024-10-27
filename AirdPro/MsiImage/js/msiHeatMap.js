@@ -12,8 +12,12 @@
 
     const msiHeatMap = echarts.init(msiContainer);
 
-    // 定义颜色渐变，从浅到深
-    const colorList = ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026'];
+    // 定义从蓝色到绿色再到黄色的渐变色
+    const colorList = [        
+        '#00BFFF',  // 蓝色
+        '#C0E0C0',  // 绿色
+        '#FFD700'   // 黄色
+    ];
 
     const option = {
         tooltip: {
@@ -26,29 +30,35 @@
         },
         yAxis: {
             type: 'category',
-            data: Array.from({ length: maxPixelY }, (_, i) => i),
-            splitArea: { show: true }
+            data: Array.from({ length: maxPixelY }, (_, i) => i).reverse(),
+            splitArea: { show: true },
+            axisLine: {
+                show: false
+            }
         },
         visualMap: {
             min: 0,
             max: maxIntensity,
             calculable: true,
-            orient: 'horizontal',
-            left: 'center',
-            bottom: '15%',
+            orient: 'vertical',
+            left: 'left',
+            bottom: 'center',
             inRange: {
-                color: colorList.reverse() // 反转颜色数组，以确保强度值越大，颜色越深
+                color: colorList // 应用颜色渐变
+            },
+            textStyle: {
+                color: '#fff'
             }
         },
         series: [{
             name: 'Heatmap',
             type: 'heatmap',
             coordinateSystem: 'cartesian2d',
-            data: heatmapData,
+            data: heatmapData.map(p => [p[0], maxPixelY - p[1], p[2]]),
             emphasis: {
                 itemStyle: {
-                    borderColor: '#333',
-                    borderWidth: 1
+                    borderColor: 'transparent', // 设置边框为透明
+                    borderWidth: 0 // 设置边框宽度为0，隐藏边框
                 }
             }
         }]

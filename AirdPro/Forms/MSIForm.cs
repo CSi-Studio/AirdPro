@@ -57,8 +57,7 @@ namespace AirdPro.Forms
 
             //LbImageParams   
             LbImageParams.Items.Add("  Image Params");
-            LbImageParams.Items.Add($"  Image dimension [um]: X {imageInfo.maxDimensionX} * Y {imageInfo.maxDimensionY}");
-            LbImageParams.Items.Add($"  Total number of pixels: {msiParser.airdInfo.totalCount}");
+            LbImageParams.Items.Add($"  Image dimension [um]: X {imageInfo.maxDimensionX} * Y {imageInfo.maxDimensionY}");            
             LbImageParams.Items.Add($"  Spectra per pixel: {imageInfo.spectraPerPixel}");
             LbImageParams.Items.Add($"  Scan direction: {scanInfo.scanDirection?.ToLower()}");
             LbImageParams.Items.Add($"  Scan sequence: {scanInfo.scanSequence?.ToLower()}");
@@ -97,12 +96,13 @@ namespace AirdPro.Forms
             }
             
             imageDataList = msiParser.GetImageDataList(mz);
+            double maxIntensity = GetMaxIntensity(imageDataList);
+            LbImageParams.Items.Add($"  Total number of pixels: {imageDataList.Count}");
+
             double maxPixelX = imageInfo.maxPixelX;
-            double maxPixelY = imageInfo.maxPixelY;
-            double maxIntensity = msiParser.maxIntensity;
+            double maxPixelY = imageInfo.maxPixelY;            
             
             var heatmapData = imageDataList.Select(data => new object[] { data.X, data.Y, data.Intensity }).ToList();
-
 
             string heatmapDataJson = JsonSerializer.Serialize(heatmapData);
             string maxPixelXJson = JsonSerializer.Serialize(maxPixelX);
@@ -110,6 +110,19 @@ namespace AirdPro.Forms
             string maxIntensityJson = JsonSerializer.Serialize(maxIntensity);
             string script = $"drawHeatmap({heatmapDataJson}, {maxPixelXJson}, {maxPixelYJson}, {maxIntensityJson});";
             webViewMSI.ExecuteScriptAsync(script);            
+        }
+
+        private double GetMaxIntensity(List<ImageData> imageDataList)
+        {
+            double maxIntensity = 0;
+            foreach (ImageData imageData in imageDataList)
+            {
+                if (imageData.Intensity > maxIntensity)
+                {
+                    maxIntensity = imageData.Intensity;
+                }
+            }
+            return maxIntensity;
         }
 
         private void BtnShowMS_Click(object sender, EventArgs e)

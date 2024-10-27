@@ -23,7 +23,6 @@ public class MSIParser : DDAParser
     private double mz;
     public List<DDAMs> msList;
     private List<ImageData> imageDataList;
-    public double maxIntensity;    
 
     public MSIParser(string indexFilePath) : base(indexFilePath)
     {
@@ -79,13 +78,12 @@ public class MSIParser : DDAParser
     public List<ImageData> GetImageDataList(double mz)
     {
         imageDataList = new List<ImageData>();
-        maxIntensity = 0;
         this.mz = mz;
         int[] x = airdInfo.msiInfo.spectraPosition.x;
         int[] y = airdInfo.msiInfo.spectraPosition.y;
         
         for (int index = 0; index < msList.Count; index++)
-        {
+        {            
             double[] mzArray = msList[index].spectrum.mzs;
             double[] intArray = msList[index].spectrum.ints;
 
@@ -95,11 +93,7 @@ public class MSIParser : DDAParser
                 if (Math.Abs(mzArray[i] - mz) <= TOLERANCE)
                 {
                     intensity += intArray[i];
-                }
-                if(intensity > maxIntensity)
-                {
-                    maxIntensity = intensity;
-                }
+                }                
             }
             imageDataList.Add(new ImageData()
             {
