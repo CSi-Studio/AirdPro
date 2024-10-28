@@ -44,8 +44,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.webViewMSI)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.webViewMS)).BeginInit();
@@ -56,7 +54,6 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.progressBar);
             this.panel2.Controls.Add(this.BtnShowMS);
             this.panel2.Controls.Add(this.TbScanNumber);
             this.panel2.Controls.Add(this.label3);
@@ -74,7 +71,7 @@
             // BtnShowMS
             // 
             this.BtnShowMS.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.BtnShowMS.Location = new System.Drawing.Point(1725, 12);
+            this.BtnShowMS.Location = new System.Drawing.Point(1270, 17);
             this.BtnShowMS.Name = "BtnShowMS";
             this.BtnShowMS.Size = new System.Drawing.Size(176, 39);
             this.BtnShowMS.TabIndex = 9;
@@ -85,7 +82,7 @@
             // TbScanNumber
             // 
             this.TbScanNumber.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.TbScanNumber.Location = new System.Drawing.Point(1595, 20);
+            this.TbScanNumber.Location = new System.Drawing.Point(1140, 20);
             this.TbScanNumber.Name = "TbScanNumber";
             this.TbScanNumber.Size = new System.Drawing.Size(124, 30);
             this.TbScanNumber.TabIndex = 8;
@@ -95,7 +92,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(1527, 23);
+            this.label3.Location = new System.Drawing.Point(1072, 23);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(66, 24);
             this.label3.TabIndex = 7;
@@ -104,7 +101,7 @@
             // BtnShowImage
             // 
             this.BtnShowImage.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.BtnShowImage.Location = new System.Drawing.Point(2102, 12);
+            this.BtnShowImage.Location = new System.Drawing.Point(1647, 17);
             this.BtnShowImage.Name = "BtnShowImage";
             this.BtnShowImage.Size = new System.Drawing.Size(177, 39);
             this.BtnShowImage.TabIndex = 6;
@@ -135,7 +132,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(1922, 24);
+            this.label1.Location = new System.Drawing.Point(1467, 24);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(44, 24);
             this.label1.TabIndex = 2;
@@ -144,7 +141,7 @@
             // TbMz
             // 
             this.TbMz.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.TbMz.Location = new System.Drawing.Point(1972, 19);
+            this.TbMz.Location = new System.Drawing.Point(1517, 19);
             this.TbMz.Name = "TbMz";
             this.TbMz.Size = new System.Drawing.Size(124, 30);
             this.TbMz.TabIndex = 1;
@@ -213,14 +210,6 @@
             this.panel5.Size = new System.Drawing.Size(1223, 1112);
             this.panel5.TabIndex = 6;
             // 
-            // progressBar
-            // 
-            this.progressBar.Location = new System.Drawing.Point(1072, 24);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(368, 27);
-            this.progressBar.TabIndex = 10;
-            this.progressBar.Visible = false;
-            // 
             // MSIImageForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -262,7 +251,5 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.ProgressBar progressBar;
-        private System.ComponentModel.BackgroundWorker backgroundWorker;
     }
 }
