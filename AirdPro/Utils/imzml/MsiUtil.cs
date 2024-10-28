@@ -93,19 +93,17 @@ namespace AirdPro.Utils.imzml
             imageInfo.maxPixelZ = imzML.GetDepth();
 
             ScanSettings scanSettings = imzML.GetScanSettingsList().GetScanSettings(0);
-            imageInfo.maxDimensionX = scanSettings?.GetCVParam(ScanSettings.MAX_DIMENSION_X_ID)?.GetValueAsInteger()  ?? -1;
-            imageInfo.maxDimensionY = scanSettings?.GetCVParam(ScanSettings.MAX_DIMENSION_Y_ID)?.GetValueAsInteger() ?? -1;
-            double pixelSizeX = scanSettings?.GetCVParam(ScanSettings.PIXEL_SIZE_X_ID)?.GetValueAsDouble() ?? -1;            
-            double pixelSizeY = pixelSizeX;
-            CVParam cvParam = scanSettings.GetCVParam(ScanSettings.PIXEL_SIZE_Y_ID);           
-            if (cvParam != null)
-            {
-                pixelSizeY = cvParam.GetValueAsDouble();
-            }
+            double pixelSizeX = scanSettings?.GetCVParam(ScanSettings.PIXEL_SIZE_X_ID)?.GetValueAsDouble() ?? 1;
+            double pixelSizeY = scanSettings.GetCVParam(ScanSettings.PIXEL_SIZE_Y_ID)?.GetValueAsDouble() ?? pixelSizeX;
+           
             imageInfo.pixelSize = pixelSizeX;
             imageInfo.pixelSizeX = pixelSizeX;
             imageInfo.pixelSizeY = pixelSizeY;
-            imageInfo.imageShape = scanSettings?.GetCVParam(ScanSettings.IMAGE_ID)?.ToString();
+            
+            imageInfo.maxDimensionX = scanSettings?.GetCVParam(ScanSettings.MAX_DIMENSION_X_ID)?.GetValueAsDouble() ?? imageInfo.maxPixelX * pixelSizeX;
+            imageInfo.maxDimensionY = scanSettings?.GetCVParam(ScanSettings.MAX_DIMENSION_Y_ID)?.GetValueAsInteger() ?? imageInfo.maxPixelY * pixelSizeY;            
+            
+            imageInfo.imageShape = scanSettings?.GetCVParam(ScanSettings.IMAGE_ID)?.ToString() ?? "unknown";
             //mz range
             imageInfo.minMZ = imzML.GetMinimumDetectedmz();
             imageInfo.maxMZ = imzML.GetMaximumDetectedmz();
@@ -127,7 +125,7 @@ namespace AirdPro.Utils.imzml
             Sample sample = sampleList.GetSample(0);
             sampleStage.positionAccuracy = sample?.GetCVParam(Sample.POSITION_ACCURACY_ID)?.GetValueAsDouble() ?? -1;
             sampleStage.stepSize = sample?.GetCVParam(Sample.STEP_SIZE_ID)?.GetValueAsDouble() ?? -1;
-            sampleStage.targetMaterial = sample?.GetCVParam(Sample.TARGET_MATERIAL_ID)?.ToString();
+            sampleStage.targetMaterial = sample?.GetCVParam(Sample.TARGET_MATERIAL_ID)?.ToString() ?? "unknown";
 
             return sampleStage;
         }

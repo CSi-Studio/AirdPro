@@ -1,27 +1,29 @@
 ﻿using AirdSDK.Bean.Msi;
-using AirdSDK.Bean.Msi.HeatMap;
 using AirdSDK.Beans;
 using AirdSDK.Parser;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace AirdPro.Forms
 {
     public partial class MSIImageForm : Form
-    {  
-        private string fileName; //AirdFile
+    {
+        private string airdFile;
         OpenFileDialog openFileDialog;
         MSIParser msiParser;
         List<ImageData> imageDataList;
-        ImageInfo imageInfo;
-        
+        //ImageInfo imageInfo;
+
         public MSIImageForm()
         {
-            InitializeComponent();            
+            InitializeComponent();
             openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "AIRD files (*.aird)|*.aird";
 
@@ -30,51 +32,69 @@ namespace AirdPro.Forms
             webViewMS.Source = new Uri(htmlPath);
             htmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MsiImage/html", "msiHeatMap.html");
             webViewMSI.Source = new Uri(htmlPath);
-        }  
+
+           
+        }
 
         private void ClearInfo()
         {
-            LbRawData.Items.Clear();
-            LbImageParams.Items.Clear();
-            TbScanNumber.Text = "";
+            TbScanNumber.Text = "0";
             TbMz.Text = "";
+            LbAirdInfo.Items.Clear();
             webViewMS.Reload();
             webViewMSI.Reload();
         }
 
         private void ShowLbInfo()
-        {                      
-            msiParser = new MSIParser(Path.ChangeExtension(fileName, ".json"));
+        {
+            msiParser = new MSIParser(Path.ChangeExtension(airdFile, ".json"));
             AirdInfo airdInfo = msiParser.airdInfo;
-            imageInfo = airdInfo.msiInfo.imageInfo;
+            ImageInfo imageInfo = airdInfo.msiInfo.imageInfo;
             ScanInfo scanInfo = airdInfo.msiInfo.scanInfo;
 
             //LbRawData            
-            LbRawData.Items.Add("  Aird Info");
-            LbRawData.Items.Add($"  File Name: {fileName}");
-            LbRawData.Items.Add($"  Number of spectra: {airdInfo.totalCount}");
-            LbRawData.Items.Add($"  Range m/z: {imageInfo.minMZ}-{imageInfo.maxMZ}");
+            LbAirdInfo.Items.Add("  Data Details");
+            LbAirdInfo.Items.Add($"  File Name: {airdFile}");
+            const double oneGbInBytes = 1024 * 1024 * 1024;
+            double fileSizeInBytes = airdInfo.fileSize;
+            if (fileSizeInBytes >= oneGbInBytes)
+            {
+                LbAirdInfo.Items.Add($"  File Size: {fileSizeInBytes / oneGbInBytes:0.##} GB");
+            }
+            else
+            {
+                LbAirdInfo.Items.Add($"  File Size: {fileSizeInBytes / (1024 * 1024):0.##} MB");
+            }
+            LbAirdInfo.Items.Add($"  Acquisition Method: {airdInfo.type}");
+            LbAirdInfo.Items.Add($"  Instrument: {airdInfo.instruments[0].manufacturer}");
+            LbAirdInfo.Items.Add($"  Target Material: {airdInfo.msiInfo.sampleStage?.targetMaterial}");
 
-            //LbImageParams   
-            LbImageParams.Items.Add("  Image Params");
-            LbImageParams.Items.Add($"  Image dimension [um]: X {imageInfo.maxDimensionX} * Y {imageInfo.maxDimensionY}");            
-            LbImageParams.Items.Add($"  Spectra per pixel: {imageInfo.spectraPerPixel}");
-            LbImageParams.Items.Add($"  Scan direction: {scanInfo.scanDirection?.ToLower()}");
-            LbImageParams.Items.Add($"  Scan sequence: {scanInfo.scanSequence?.ToLower()}");
-            LbImageParams.Items.Add($"  Scan pattern: {scanInfo.scanPattern?.ToLower()}");
-            LbImageParams.Items.Add($"  Scan type: {scanInfo.scanType?.ToLower()}");           
+            LbAirdInfo.Items.Add("");
+            LbAirdInfo.Items.Add("  Image Params");
+            LbAirdInfo.Items.Add($"  Number of scans: {airdInfo.totalCount}");
+            LbAirdInfo.Items.Add($"  Range m/z: {imageInfo.minMZ}-{imageInfo.maxMZ}");
+            LbAirdInfo.Items.Add($"  max count of pixels x: {imageInfo.maxPixelX}");
+            LbAirdInfo.Items.Add($"  max count of pixels y: {imageInfo.maxPixelY}");
+            LbAirdInfo.Items.Add($"  max count of pixels z: {imageInfo.maxPixelZ}");
+            LbAirdInfo.Items.Add($"  Image dimension [um]: X {imageInfo.maxDimensionX} * Y {imageInfo.maxDimensionY}");
+            LbAirdInfo.Items.Add($"  Total number of pixels: {imageInfo.maxPixelX * imageInfo.maxPixelY * imageInfo.spectraPerPixel}");
+            LbAirdInfo.Items.Add($"  Spectra per pixel: {imageInfo.spectraPerPixel}");
+            LbAirdInfo.Items.Add($"  Scan direction: {scanInfo.scanDirection?.ToLower()}");
+            LbAirdInfo.Items.Add($"  Scan sequence: {scanInfo.scanSequence?.ToLower()}");
+            LbAirdInfo.Items.Add($"  Scan pattern: {scanInfo.scanPattern?.ToLower()}");
+            LbAirdInfo.Items.Add($"  Scan type: {scanInfo.scanType?.ToLower()}");
         }
 
         private void BtnShowImage_Click(object sender, EventArgs e)
         {
-            if(fileName == null)
+            if (airdFile == null)
             {
                 MessageBox.Show("please select an aird file first!", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            if(TbMz.Text.Trim().Equals(""))
+            if (TbMz.Text.Trim().Equals(""))
             {
-                MessageBox.Show("please input m/z first!", "message",MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("please input m/z first!", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             double mz;
@@ -89,27 +109,25 @@ namespace AirdPro.Forms
                 return;
             }
 
+            ImageInfo imageInfo = msiParser.airdInfo.msiInfo.imageInfo;
             if (mz < imageInfo.minMZ || mz > imageInfo.maxMZ)
             {
                 MessageBox.Show("m/z value is invalid!", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            
-            imageDataList = msiParser.GetImageDataList(mz);
-            double maxIntensity = GetMaxIntensity(imageDataList);
-            LbImageParams.Items.Add($"  Total number of pixels: {imageDataList.Count}");
 
-            double maxPixelX = imageInfo.maxPixelX;
-            double maxPixelY = imageInfo.maxPixelY;            
-            
+            imageDataList = msiParser.GetImageDataList(mz);
             var heatmapData = imageDataList.Select(data => new object[] { data.X, data.Y, data.Intensity }).ToList();
+            double maxIntensity = GetMaxIntensity(imageDataList);
+            double maxPixelX = imageInfo.maxPixelX;
+            double maxPixelY = imageInfo.maxPixelY;
 
             string heatmapDataJson = JsonSerializer.Serialize(heatmapData);
+            string maxIntensityJson = JsonSerializer.Serialize(maxIntensity);
             string maxPixelXJson = JsonSerializer.Serialize(maxPixelX);
             string maxPixelYJson = JsonSerializer.Serialize(maxPixelY);
-            string maxIntensityJson = JsonSerializer.Serialize(maxIntensity);
-            string script = $"drawHeatmap({heatmapDataJson}, {maxPixelXJson}, {maxPixelYJson}, {maxIntensityJson});";
-            webViewMSI.ExecuteScriptAsync(script);            
+            string script = $"drawHeatmap({heatmapDataJson}, {maxIntensityJson}, {maxPixelXJson}, {maxPixelYJson});";
+            webViewMSI.ExecuteScriptAsync(script);
         }
 
         private double GetMaxIntensity(List<ImageData> imageDataList)
@@ -127,7 +145,7 @@ namespace AirdPro.Forms
 
         private void BtnShowMS_Click(object sender, EventArgs e)
         {
-            if (fileName == null)
+            if (airdFile == null)
             {
                 MessageBox.Show("please select an aird file first!", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -141,14 +159,15 @@ namespace AirdPro.Forms
             try
             {
                 scanNumber = int.Parse(TbScanNumber.Text.Trim());
-            } catch (FormatException fe) 
+            }
+            catch (FormatException fe)
             {
                 Console.WriteLine(fe.Message);
                 MessageBox.Show("scan number is invalid!", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
-            }          
+            }
 
-            if (scanNumber < 0 || scanNumber > msiParser.airdInfo.totalCount)
+            if (scanNumber < 0 || scanNumber >= msiParser.airdInfo.totalCount)
             {
                 MessageBox.Show("scan number is invalid!", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -162,19 +181,20 @@ namespace AirdPro.Forms
             string intensityArrayJson = JsonSerializer.Serialize(intensityArray);
             string script = $"drawBarChart({mzArrayJson}, {intensityArrayJson});";
             webViewMS.ExecuteScriptAsync(script);
-            
-
         }
 
         private void BtnAirdImport_Click(object sender, EventArgs e)
         {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                fileName = openFileDialog.FileName;
+                airdFile = openFileDialog.FileName;
                 TbAirdFile.Text = openFileDialog.FileName;
                 ClearInfo();
                 ShowLbInfo();
             }
         }
+
+       
+
     }
 }

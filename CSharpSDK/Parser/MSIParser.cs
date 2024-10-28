@@ -12,14 +12,14 @@ using System.Collections.Generic;
 using System;
 using AirdSDK.Beans.Common;
 using System.IO;
-using AirdSDK.Bean.Msi.HeatMap;
 using AirdSDK.Beans;
+using AirdSDK.Bean.Msi;
 
 namespace AirdSDK.Parser;
 
 public class MSIParser : DDAParser
 {
-    private const double TOLERANCE = 0.0015;
+    private const double TOLERANCE = 0.0015; //0.0015
     private double mz;
     public List<DDAMs> msList;
     private List<ImageData> imageDataList;

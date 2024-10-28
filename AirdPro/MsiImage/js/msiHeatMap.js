@@ -1,22 +1,19 @@
-﻿function drawHeatmap(heatmapData, maxPixelX, maxPixelY, maxIntensity) {
-    if (typeof echarts === 'undefined') {
-        console.error('ECharts is not loaded');
-        return;
-    }
+﻿function drawHeatmap(heatmapData, maxIntensity, maxPixelX, maxPixelY) {
+    const msiHeatMap = echarts.init(document.getElementById('msiContainer'));
 
-    const msiContainer = document.getElementById('msiContainer');
-    if (!msiContainer) {
-        console.error('msiContainer not found');
-        return;
-    }
-
-    const msiHeatMap = echarts.init(msiContainer);
-
-    // 定义从蓝色到绿色再到黄色的渐变色
-    const colorList = [        
-        '#00BFFF',  // 蓝色
-        '#C0E0C0',  // 绿色
-        '#FFD700'   // 黄色
+    //蓝黄红渐变(echarts案例)
+    const colorList = [
+        '#313695', 
+        '#4575b4', 
+        '#74add1',
+        '#abd9e9',
+        '#e0f3f8',
+        '#ffffbf',
+        '#fee090',
+        '#fdae61',
+        '#f46d43',
+        '#d73027',
+        '#a50026' 
     ];
 
     const option = {
@@ -24,6 +21,7 @@
             position: 'top'
         },
         xAxis: {
+            position: 'top',
             type: 'category',
             data: Array.from({ length: maxPixelX }, (_, i) => i),
             splitArea: { show: true }
@@ -40,11 +38,12 @@
             min: 0,
             max: maxIntensity,
             calculable: true,
+            type: 'continuous',
             orient: 'vertical',
             left: 'left',
             bottom: 'center',
             inRange: {
-                color: colorList // 应用颜色渐变
+                color: colorList
             },
             textStyle: {
                 color: '#fff'
@@ -54,13 +53,14 @@
             name: 'Heatmap',
             type: 'heatmap',
             coordinateSystem: 'cartesian2d',
-            data: heatmapData.map(p => [p[0], maxPixelY - p[1], p[2]]),
+            data: heatmapData.map(p => [p[0] - 1, maxPixelY - p[1], p[2]]),
             emphasis: {
                 itemStyle: {
-                    borderColor: 'transparent', // 设置边框为透明
-                    borderWidth: 0 // 设置边框宽度为0，隐藏边框
+                    borderColor: 'transparent',
+                    borderWidth: 0
                 }
-            }
+            },
+            animation: false
         }]
     };
 

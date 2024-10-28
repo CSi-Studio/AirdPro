@@ -1,4 +1,4 @@
-﻿namespace AirdSDK.Bean.Msi.HeatMap
+﻿namespace AirdSDK.Bean.Msi
 {
     public class ImageData
     {
