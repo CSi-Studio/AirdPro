@@ -71,7 +71,7 @@
             // BtnShowMS
             // 
             this.BtnShowMS.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.BtnShowMS.Location = new System.Drawing.Point(1270, 17);
+            this.BtnShowMS.Location = new System.Drawing.Point(1721, 17);
             this.BtnShowMS.Name = "BtnShowMS";
             this.BtnShowMS.Size = new System.Drawing.Size(176, 39);
             this.BtnShowMS.TabIndex = 9;
@@ -82,7 +82,7 @@
             // TbScanNumber
             // 
             this.TbScanNumber.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.TbScanNumber.Location = new System.Drawing.Point(1140, 20);
+            this.TbScanNumber.Location = new System.Drawing.Point(1591, 20);
             this.TbScanNumber.Name = "TbScanNumber";
             this.TbScanNumber.Size = new System.Drawing.Size(124, 30);
             this.TbScanNumber.TabIndex = 8;
@@ -92,7 +92,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(1072, 23);
+            this.label3.Location = new System.Drawing.Point(1523, 23);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(66, 24);
             this.label3.TabIndex = 7;
@@ -101,7 +101,7 @@
             // BtnShowImage
             // 
             this.BtnShowImage.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.BtnShowImage.Location = new System.Drawing.Point(1647, 17);
+            this.BtnShowImage.Location = new System.Drawing.Point(2098, 17);
             this.BtnShowImage.Name = "BtnShowImage";
             this.BtnShowImage.Size = new System.Drawing.Size(177, 39);
             this.BtnShowImage.TabIndex = 6;
@@ -132,7 +132,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(1467, 24);
+            this.label1.Location = new System.Drawing.Point(1918, 24);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(44, 24);
             this.label1.TabIndex = 2;
@@ -141,7 +141,7 @@
             // TbMz
             // 
             this.TbMz.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.TbMz.Location = new System.Drawing.Point(1517, 19);
+            this.TbMz.Location = new System.Drawing.Point(1968, 19);
             this.TbMz.Name = "TbMz";
             this.TbMz.Size = new System.Drawing.Size(124, 30);
             this.TbMz.TabIndex = 1;
@@ -167,7 +167,7 @@
             this.LbAirdInfo.ItemHeight = 24;
             this.LbAirdInfo.Location = new System.Drawing.Point(0, 0);
             this.LbAirdInfo.Name = "LbAirdInfo";
-            this.LbAirdInfo.Size = new System.Drawing.Size(1072, 576);
+            this.LbAirdInfo.Size = new System.Drawing.Size(1072, 648);
             this.LbAirdInfo.TabIndex = 1;
             // 
             // webViewMS
@@ -178,7 +178,7 @@
             this.webViewMS.Dock = System.Windows.Forms.DockStyle.Fill;
             this.webViewMS.Location = new System.Drawing.Point(0, 0);
             this.webViewMS.Name = "webViewMS";
-            this.webViewMS.Size = new System.Drawing.Size(1072, 536);
+            this.webViewMS.Size = new System.Drawing.Size(1072, 464);
             this.webViewMS.TabIndex = 0;
             this.webViewMS.ZoomFactor = 1D;
             // 
@@ -196,9 +196,9 @@
             // 
             this.panel3.Controls.Add(this.webViewMS);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(0, 576);
+            this.panel3.Location = new System.Drawing.Point(0, 648);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1072, 536);
+            this.panel3.Size = new System.Drawing.Size(1072, 464);
             this.panel3.TabIndex = 2;
             // 
             // panel5

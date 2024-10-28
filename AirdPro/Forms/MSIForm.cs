@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Web.UI;
 using System.Windows.Forms;
 
 namespace AirdPro.Forms
@@ -38,11 +39,6 @@ namespace AirdPro.Forms
             LbAirdInfo.Items.Clear();
             webViewMS.Reload();
             webViewMSI.Reload();
-        }
-
-        private void ImportAirdFile(string airdFile)
-        {
-            msiParser = new MSIParser(Path.ChangeExtension(airdFile, ".json"));            
         }
 
         private void BtnShowImage_Click(object sender, EventArgs e)
@@ -150,14 +146,23 @@ namespace AirdPro.Forms
                 string airdFile = openFileDialog.FileName;
                 TbAirdFile.Text = airdFile;
                 ClearInfo();
-                LbAirdInfo.Text = "Importing and parsing file ...";
+
+                LbAirdInfo.Items.Add("  Importing and parsing file, please wait...");                 
                 DateTime startTime = DateTime.Now;
-                await Task.Run(() => ImportAirdFile(airdFile)); // 异步执行耗时操作
+                await Task.Run(() => ImportAirdFile(airdFile));
                 DateTime endTime = DateTime.Now;
-                LbAirdInfo.Text = $"The file was successfully imported and took {(endTime - startTime).TotalMilliseconds} ms!";
+                LbAirdInfo.Items.Add($"  The file was successfully imported and took {(endTime - startTime).TotalSeconds} s!");
+
                 ShowAirdInfo(airdFile);
             }
         }
+
+        private void ImportAirdFile(string airdFile)
+        {
+            msiParser = new MSIParser(Path.ChangeExtension(airdFile, ".json"));
+        }
+
+       
 
         private void ShowAirdInfo(string airdFile)
         {
@@ -165,7 +170,8 @@ namespace AirdPro.Forms
             ImageInfo imageInfo = airdInfo.msiInfo.imageInfo;
             ScanInfo scanInfo = airdInfo.msiInfo.scanInfo;
 
-            // LbAirdInfo            
+            // LbAirdInfo
+            LbAirdInfo.Items.Add("");
             LbAirdInfo.Items.Add("  Data Details");
             LbAirdInfo.Items.Add($"  File Name: {airdFile}");
             const double oneGbInBytes = 1024 * 1024 * 1024;
@@ -186,9 +192,10 @@ namespace AirdPro.Forms
             LbAirdInfo.Items.Add("  Image Params");
             LbAirdInfo.Items.Add($"  Number of scans: {airdInfo.totalCount}");
             LbAirdInfo.Items.Add($"  Range m/z: {imageInfo.minMZ}-{imageInfo.maxMZ}");
-            LbAirdInfo.Items.Add($"  max count of pixels x: {imageInfo.maxPixelX}");
-            LbAirdInfo.Items.Add($"  max count of pixels y: {imageInfo.maxPixelY}");
-            LbAirdInfo.Items.Add($"  max count of pixels z: {imageInfo.maxPixelZ}");
+            LbAirdInfo.Items.Add($"  Max count of pixels x: {imageInfo.maxPixelX}");
+            LbAirdInfo.Items.Add($"  Max count of pixels y: {imageInfo.maxPixelY}");
+            LbAirdInfo.Items.Add($"  Max count of pixels z: {imageInfo.maxPixelZ}");
+            LbAirdInfo.Items.Add($"  Pixel size: Xaxis {imageInfo.pixelSizeX}, Yaxis {imageInfo.pixelSizeY}");
             LbAirdInfo.Items.Add($"  Image dimension [um]: X {imageInfo.maxDimensionX} * Y {imageInfo.maxDimensionY}");
             LbAirdInfo.Items.Add($"  Total number of pixels: {imageInfo.maxPixelX * imageInfo.maxPixelY * imageInfo.spectraPerPixel}");
             LbAirdInfo.Items.Add($"  Spectra per pixel: {imageInfo.spectraPerPixel}");
