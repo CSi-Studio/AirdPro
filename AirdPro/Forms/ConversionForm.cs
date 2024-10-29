@@ -137,7 +137,7 @@ namespace AirdPro.Forms
             if (!inputPath.IsNullOrEmpty())
             {
                 JobInfo jobInfo;
-                if (type == AirdSDK.Enums.AcquisitionMethod.DDA_MSI || type == AirdSDK.Enums.AcquisitionMethod.DIA_MSI)
+                if (msiConfig != null)
                 {
                     jobInfo = new JobInfo(inputPath, outputPath, type, config, inputPaths, msiConfig);
                 }
@@ -441,71 +441,6 @@ namespace AirdPro.Forms
         {
             lvFileList.Sort();
             FileListSorter.isAscending = !FileListSorter.isAscending;
-        }
-
-        private void btnDownloadJobList_Click(object sender, EventArgs e)
-        {
-            List<Dictionary<string, string>> jobList = [];
-            foreach (ListViewItem item in lvFileList.Items)
-            {
-                JobInfo jobInfo = item.Tag as JobInfo;
-                jobList.Add(jobInfo.GetJobDict());
-            }
-
-            string result = JsonConvert.SerializeObject(jobList);
-            CustomPopup popup = new()
-            {
-                Text = "Job Info List"
-            };
-            popup.content.Text = result;
-            popup.ShowDialog();
-        }
-
-        private void Test_Click(object sender, EventArgs e)
-        {
-            int totalSpectra = 139054;
-            Dictionary<int, List<int>> dict = new()
-            {
-                { 10, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 10) },
-                { 20, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 20) },
-                { 50, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 50) },
-                { 100, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 100) },
-                { 200, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 200) },
-                { 500, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 500) },
-                { 1000, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 1000) },
-                { 2000, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 2000) },
-                { 5000, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 5000) },
-                { 10000, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 10000) },
-                { 20000, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 20000) },
-                { 50000, SpeedTestUtil.GenerateUniqueRandomNumbers(0, totalSpectra, 50000) }
-            };
-            Console.WriteLine("10,20,50,100,200,500,1000,2000,5000,10000,20000,50000");
-            SpeedTestUtil.Test("D:\\Aird2.0\\numpress\\18.mzML", dict);
-            Console.WriteLine();
-            SpeedTestUtil.Test("D:\\Aird2.0\\numpress\\18.mzMLb", dict);
-            Console.WriteLine();
-            SpeedTestUtil.Test("D:\\Aird2.0\\18.mzMLb", dict);
-            Console.WriteLine();
-            SpeedTestUtil.Test("D:\\Aird2.0\\18.mzML", dict);
-            Console.WriteLine();
-            SpeedTestUtil.Test("D:\\Aird2.0\\Vendor\\18.raw", dict);
-            Console.WriteLine();
-        }
-
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-            GaussianRandomGenerator generator = new(10000, 10000);
-            int[] numbers = generator.GenerateRandomNumbers(200, 1, 10000);
-            Array.Sort(numbers);
-            for (var i = 0; i < numbers.Length; i++)
-            {
-                Console.Write(numbers[i]+",");
-            }
-            Console.WriteLine("");
-            for (int i = 0; i < numbers.Length; i++)
-            {
-                Console.Write(1 + ",");
-            }
         }
 
         private void btnImage_Click(object sender, EventArgs e)

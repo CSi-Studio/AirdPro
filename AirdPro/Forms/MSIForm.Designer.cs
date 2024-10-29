@@ -71,7 +71,7 @@
             // BtnShowMS
             // 
             this.BtnShowMS.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.BtnShowMS.Location = new System.Drawing.Point(1721, 17);
+            this.BtnShowMS.Location = new System.Drawing.Point(1277, 17);
             this.BtnShowMS.Name = "BtnShowMS";
             this.BtnShowMS.Size = new System.Drawing.Size(176, 39);
             this.BtnShowMS.TabIndex = 9;
@@ -82,7 +82,7 @@
             // TbScanNumber
             // 
             this.TbScanNumber.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.TbScanNumber.Location = new System.Drawing.Point(1591, 20);
+            this.TbScanNumber.Location = new System.Drawing.Point(1147, 20);
             this.TbScanNumber.Name = "TbScanNumber";
             this.TbScanNumber.Size = new System.Drawing.Size(124, 30);
             this.TbScanNumber.TabIndex = 8;
@@ -92,7 +92,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(1523, 23);
+            this.label3.Location = new System.Drawing.Point(1079, 23);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(66, 24);
             this.label3.TabIndex = 7;
@@ -101,7 +101,7 @@
             // BtnShowImage
             // 
             this.BtnShowImage.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.BtnShowImage.Location = new System.Drawing.Point(2098, 17);
+            this.BtnShowImage.Location = new System.Drawing.Point(1654, 17);
             this.BtnShowImage.Name = "BtnShowImage";
             this.BtnShowImage.Size = new System.Drawing.Size(177, 39);
             this.BtnShowImage.TabIndex = 6;
@@ -132,7 +132,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(1918, 24);
+            this.label1.Location = new System.Drawing.Point(1474, 24);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(44, 24);
             this.label1.TabIndex = 2;
@@ -141,7 +141,7 @@
             // TbMz
             // 
             this.TbMz.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.TbMz.Location = new System.Drawing.Point(1968, 19);
+            this.TbMz.Location = new System.Drawing.Point(1524, 19);
             this.TbMz.Name = "TbMz";
             this.TbMz.Size = new System.Drawing.Size(124, 30);
             this.TbMz.TabIndex = 1;

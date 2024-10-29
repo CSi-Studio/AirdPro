@@ -17,6 +17,7 @@ using AirdPro.Converters;
 using AirdPro.Domains;
 using AirdPro.Forms;
 using AirdPro.Redis;
+using AirdSDK.Enums;
 using static AirdPro.Constants.ProcessingStatus;
 
 namespace AirdPro.Asyncs
@@ -130,9 +131,13 @@ namespace AirdPro.Asyncs
                     }
                     else if (jobInfo.format.Equals(FileFormat.imzML))
                     {
+                        if (jobInfo.type != AcquisitionMethod.DDA)
+                        {
+                            jobInfo.type = AcquisitionMethod.DDA;
+                        }
                         converter = new ImzMLConverter();
                     }
-                    else if (jobInfo.type == AirdSDK.Enums.AcquisitionMethod.DDA_MSI || jobInfo.type == AirdSDK.Enums.AcquisitionMethod.DIA_MSI) 
+                    else if (jobInfo.msiConfig!= null)
                     {
                         converter = new MSIConvert();
                     }

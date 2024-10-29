@@ -10,11 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Windows.Forms;
 using Aga.Controls.Tree;
 using AirdPro.Constants;
@@ -25,11 +21,9 @@ using AirdPro.Storage;
 using AirdPro.Storage.Config;
 using AirdPro.Utils;
 using AirdSDK.Bean;
+using AirdSDK.Enums;
 using AirdSDK.Enums.Msi;
-using AirdSDK.Utils;
 using HZH_Controls;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Forms
@@ -53,6 +47,7 @@ namespace AirdPro.Forms
             }
 
             rbAuto.Checked = true;
+            cbMSI.Checked = false;
             tbOutputPath.Text = Settings.Default.LastOutputPath;
             string selectedConfig = Settings.Default.LastSelectedConfig;
             int selectedIndex = cbConfig.Items.IndexOf(selectedConfig);
@@ -112,15 +107,16 @@ namespace AirdPro.Forms
 
         private void AddEventHandler()
         {
-            this.rbAuto.CheckedChanged += new EventHandler(this.Radio_CheckChanged);
-            this.radioButton1.CheckedChanged += new EventHandler(this.Radio_CheckChanged);
-            this.radioButton2.CheckedChanged += new EventHandler(this.Radio_CheckChanged);
-            this.radioButton3.CheckedChanged += new EventHandler(this.Radio_CheckChanged);
-            this.radioButton4.CheckedChanged += new EventHandler(this.Radio_CheckChanged);
-            this.radioButton5.CheckedChanged += new EventHandler(this.Radio_CheckChanged);
-            this.radioButton6.CheckedChanged += new EventHandler(this.Radio_CheckChanged);
-            this.radioButton7.CheckedChanged += new EventHandler(this.Radio_CheckChanged);
-            this.radioButton8.CheckedChanged += new EventHandler(this.Radio_CheckChanged);
+            rbAuto.CheckedChanged += new EventHandler(Radio_CheckChanged);
+            rbDDA.CheckedChanged += new EventHandler(Radio_CheckChanged);
+            rbDIA.CheckedChanged += new EventHandler(Radio_CheckChanged);
+            rbPRM.CheckedChanged += new EventHandler(Radio_CheckChanged);
+            rbMRM.CheckedChanged += new EventHandler(Radio_CheckChanged);
+            rbDIAPasef.CheckedChanged += new EventHandler(Radio_CheckChanged);
+            rbDDAPasef.CheckedChanged += new EventHandler(Radio_CheckChanged);
+            rbImzML.CheckedChanged += new EventHandler(Radio_CheckChanged);
+            rbMzML.CheckedChanged += new EventHandler(Radio_CheckChanged);
+            rbVendor.CheckedChanged += new EventHandler(Radio_CheckChanged);
         }
 
         public void ClearInfos()
@@ -130,17 +126,18 @@ namespace AirdPro.Forms
 
         private string GetAirdType()
         {
-            string airdType = null;
-            for (int i = 0; i < gBoxMode.Controls.Count; i++)
+            if (cbMSI.Checked) 
             {
-                var cb = gBoxMode.Controls[i] as RadioButton;
-                if (cb != null && cb.Checked)
+                return AcquisitionMethod.DDA;
+            }           
+            foreach(Control ctl in gbAcquisitionMode.Controls)
+            {
+                if(ctl is RadioButton rb && rb.Checked)
                 {
-                    airdType = cb.Text;
+                    return rb.Text;
                 }
             }
-
-            return airdType;
+            return null;
         }
 
         private List<string> GetInputFilesPath()
@@ -174,12 +171,7 @@ namespace AirdPro.Forms
         
         private bool AddToList(bool local)
         {
-            string airdType = GetAirdType();
-            if (airdType == null)
-            {
-                MessageBox.Show(MessageInfo.Choose_One_Acquisition_Mode_First);
-                return false;
-            }
+            string airdType = GetAirdType();            
 
             if (cbConfig.SelectedItem == null && !cbConfig.Text.IsNullOrEmpty())
             {
@@ -204,16 +196,16 @@ namespace AirdPro.Forms
             }
 
             List<string> filePathList = GetInputFilesPath();
+            
             if (filePathList.IsNullOrEmpty())
             {
                 MessageBox.Show(MessageInfo.Select_Files_First);
                 return false;
             }
-
-            //
-            if (local)
+            
+            if (local)  //本地磁盘文件导入
             {
-                if (airdType == AirdSDK.Enums.AcquisitionMethod.DDA_MSI || airdType == AirdSDK.Enums.AcquisitionMethod.DDA_MSI)
+                if (gbMsiConfig.Visible)
                 {
                     string msi_path = string.Empty;
                     foreach (string path in filePathList)
@@ -292,6 +284,10 @@ namespace AirdPro.Forms
                 {
                     foreach (string path in filePathList)
                     {
+                        if (path.ToUpper().EndsWith(FileFormat.DotimzML))
+                        {
+                            airdType = AcquisitionMethod.DDA;
+                        }
                         Program.conversionForm.AddFile(path, outputPath, airdType, (ConversionConfig)config.Clone());
                     }
                 }
@@ -300,6 +296,10 @@ namespace AirdPro.Forms
             {
                 foreach (string path in filePathList)
                 {
+                    if (path.ToUpper().EndsWith(FileFormat.DotimzML))
+                    {
+                        airdType = AcquisitionMethod.DDA;
+                    }
                     RemoteConvertJob remoteJob = new RemoteConvertJob(path, outputPath, airdType, config);
                     RedisManager.Instance.PublishJob(remoteJob);
                 }
@@ -501,38 +501,54 @@ namespace AirdPro.Forms
 
         private void Radio_CheckChanged(object sender, EventArgs e)
         {
-            string airdType = GetAirdType();
-            if (airdType == AirdSDK.Enums.AcquisitionMethod.DDA_MSI || airdType == AirdSDK.Enums.AcquisitionMethod.DIA_MSI)
+            if (cbMSI.Checked)  // 空代数据
             {
-                comboBox_file_organisation.Visible = true;
-                comboBox_scan_direction.Visible = true;
-                comboBox_scan_sequence.Visible = true;
-                comboBox_scan_pattern.Visible = true;
-                label2.Visible = true;
-                pixel_x.Visible = true;
-                label3.Visible = true;
-                pixel_y.Visible = true;
-                //label4.Visible = true;
-                //pixel_z.Visible = true;
-                label5.Visible = true;
-                label6.Visible = true;
-                label7.Visible = true;
+                rbDDA.Checked = true;
+                gbMsiFormat.Visible = true;
+                if (rbImzML.Checked)
+                {
+                    gbMsiConfig.Visible = false;
+                }
+                else
+                {
+                    gbMsiConfig.Visible = true;
+                }
+            }
+            else  // 非空代数据
+            {
+                string airdType = GetAirdType();
+                if (airdType.Equals("DDA") || airdType.Equals("Auto"))
+                {
+                    cbMSI.Enabled = true;
+                }
+                else
+                {
+                    cbMSI.Enabled = false;              
+                    gbMsiFormat.Visible = false;
+                    gbMsiConfig.Visible = false;
+                }
+            }  
+        }
+
+        private void cBoxMSI_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbMSI.Checked)
+            {
+                rbDDA.Checked = true;
+                gbMsiFormat.Visible = true;
+                if (rbImzML.Checked)
+                {
+                    gbMsiConfig.Visible = false;
+                }
+                else
+                {
+                    gbMsiConfig.Visible = true;
+                }
             }
             else
             {
-                comboBox_file_organisation.Visible = false;
-                comboBox_scan_direction.Visible = false;
-                comboBox_scan_sequence.Visible = false;
-                comboBox_scan_pattern.Visible = false;
-                label2.Visible = false;
-                pixel_x.Visible = false;
-                label3.Visible = false;
-                pixel_y.Visible = false;
-                //label4.Visible = false;
-                //pixel_z.Visible = false;
-                label5.Visible = false;
-                label6.Visible = false;
-                label7.Visible = false;
+                gbMsiFormat.Visible = false;
+                gbMsiConfig.Visible = false;
             }
         }
     }

@@ -113,31 +113,9 @@ namespace AirdPro.Converters
                 ReadMSIData(imzML);
                 using (AirdStream = new FileStream(JobInfo.airdFilePath, FileMode.Create))
                 {
-                    PredictAcquisitionMethod();
+                    //PredictAcquisitionMethod();
                     InitCompressor();
-                    switch (JobInfo.type)
-                    {
-                        case AcquisitionMethod.DIA:
-                            ConverterWorkFlow.DIA(this);
-                            break;
-                        case AcquisitionMethod.DDA:
-                            ConverterWorkFlow.DDA(this);
-                            break;
-                        case AcquisitionMethod.PRM:
-                            ConverterWorkFlow.PRM(this);
-                            break;
-                        case AcquisitionMethod.MRM:
-                            ConverterWorkFlow.MRM(this);
-                            break;
-                        case AcquisitionMethod.DDA_PASEF:
-                            JobInfo.ionMobility = true;
-                            ConverterWorkFlow.DDAPasef(this);
-                            break;
-                        case AcquisitionMethod.DIA_PASEF:
-                            JobInfo.ionMobility = true;
-                            ConverterWorkFlow.DIAPasef(this);
-                            break;
-                    }
+                    ConverterWorkFlow.DDA(this);                   
                 }
                 ClearCache();
             }

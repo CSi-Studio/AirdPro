@@ -62,15 +62,7 @@ namespace AirdPro.Converters
                             foreach (MSData msd in msdList)
                             {
                                 ReadMsd(msd);
-                                switch (JobInfo.type)
-                                {
-                                    case AcquisitionMethod.DDA_MSI:
-                                        ConverterWorkFlow.DDAMSI(this);
-                                        break;
-                                    case AcquisitionMethod.DIA_MSI:
-                                        ConverterWorkFlow.DIAMSI(this);
-                                        break;
-                                }
+                                ConverterWorkFlow.DDAMSI(this);                                
                                 msd?.Dispose();
                             }
                         }

@@ -142,7 +142,7 @@
     <value>NoControl</value>
   </data>
   <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1333, 58</value>
+    <value>1394, 58</value>
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>51, 20</value>
@@ -218,7 +218,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnImage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1328, 9</value>
+    <value>1389, 9</value>
   </data>
   <data name="btnImage.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
@@ -481,7 +481,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnPX.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1081, 10</value>
+    <value>1142, 12</value>
   </data>
   <data name="btnPX.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 30</value>
@@ -667,7 +667,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnMetaboLights.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1181, 8</value>
+    <value>1242, 12</value>
   </data>
   <data name="btnMetaboLights.Size" type="System.Drawing.Size, System.Drawing">
     <value>130, 30</value>
@@ -706,7 +706,7 @@
     <value>NoControl</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1390, 58</value>
+    <value>1451, 58</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>44, 20</value>
@@ -789,7 +789,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnMainView.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1384, 9</value>
+    <value>1445, 9</value>
   </data>
   <data name="btnMainView.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
@@ -828,7 +828,7 @@
     <value>NoControl</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1558, 58</value>
+    <value>1619, 58</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
     <value>41, 20</value>
@@ -948,7 +948,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnHelp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1552, 10</value>
+    <value>1613, 10</value>
   </data>
   <data name="btnHelp.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
@@ -987,7 +987,7 @@
     <value>NoControl</value>
   </data>
   <data name="label112.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1501, 59</value>
+    <value>1562, 59</value>
   </data>
   <data name="label112.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 20</value>
@@ -1088,7 +1088,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnRedisSetting.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1497, 10</value>
+    <value>1558, 10</value>
   </data>
   <data name="btnRedisSetting.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
@@ -1127,7 +1127,7 @@
     <value>NoControl</value>
   </data>
   <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1440, 59</value>
+    <value>1501, 59</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>57, 20</value>
@@ -1367,7 +1367,7 @@
     <value>8, 82</value>
   </data>
   <data name="lvFileList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1594, 394</value>
+    <value>1655, 394</value>
   </data>
   <data name="lvFileList.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1488,6 +1488,9 @@
   <data name="&gt;&gt;btnImport.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
+  <data name="cbAutoExe.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
   <data name="cbAutoExe.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1495,7 +1498,7 @@
     <value>NoControl</value>
   </data>
   <data name="cbAutoExe.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1180, 58</value>
+    <value>1230, 54</value>
   </data>
   <data name="cbAutoExe.Size" type="System.Drawing.Size, System.Drawing">
     <value>142, 22</value>
@@ -1880,7 +1883,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnSetting.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1440, 9</value>
+    <value>1501, 9</value>
   </data>
   <data name="btnSetting.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 50</value>
@@ -1997,7 +2000,7 @@
     <value>0, 0</value>
   </data>
   <data name="listViewJobInfo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>479, 312</value>
+    <value>496, 312</value>
   </data>
   <data name="listViewJobInfo.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2039,7 +2042,7 @@
     <value>Vertical</value>
   </data>
   <data name="tbConsole.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1112, 309</value>
+    <value>1156, 309</value>
   </data>
   <data name="tbConsole.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -2069,10 +2072,10 @@
     <value>1</value>
   </data>
   <data name="splitContainer1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1601, 312</value>
+    <value>1662, 312</value>
   </data>
   <data name="splitContainer1.SplitterDistance" type="System.Int32, mscorlib">
-    <value>479</value>
+    <value>496</value>
   </data>
   <data name="splitContainer1.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -2105,7 +2108,7 @@
     <value>1</value>
   </data>
   <data name="container.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1611, 802</value>
+    <value>1672, 802</value>
   </data>
   <data name="container.SplitterDistance" type="System.Int32, mscorlib">
     <value>480</value>
@@ -2144,7 +2147,7 @@
     <value>66</value>
   </metadata>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1611, 802</value>
+    <value>1672, 802</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
