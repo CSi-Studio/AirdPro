@@ -1,11 +1,9 @@
 ﻿using AirdPro.Algorithms.Compressor;
-using AirdPro.Algorithms.Parser;
 using AirdPro.Constants;
 using AirdPro.csimzMLParser.mzml;
 using AirdPro.csimzMLParser.parser;
 using AirdPro.Domains;
 using AirdSDK.Beans;
-using AirdSDK.Beans.Common;
 using AirdSDK.Compressor;
 using AirdSDK.Enums;
 using AirdSDK.Utils;
@@ -14,7 +12,6 @@ using HZH_Controls;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -37,15 +34,8 @@ namespace AirdPro.Converters
     {
         public ImzML imzML;
         public SpectrumList spectrumList;
-        protected ChromatogramList chromatogramList;
 
-        protected List<WindowRange> Ranges = []; //SWATH/DIA Window的窗口
-        protected Hashtable RangeTable = []; //用于存放SWATH/DIA窗口的信息,key为mz
-        protected List<BlockIndex> IndexList = []; //用于存储的全局的SWATH List
-        protected List<ColumnIndex> ColumnIndexList = []; //列存储索引，仅在面向Search的场景下有效
-
-        protected Hashtable
-            Ms2Table = Hashtable.Synchronized([]); //用于存放MS2的索引信息,DDA采集模式下key为ms1的num, DIA采集模式下key为mz
+        protected List<BlockIndex> IndexList = new(); //用于存储的全局的SWATH List
 
         public List<MsIndex> Ms1List = []; //用于存放MS1索引及基础信息,泛型为MsIndex
         protected Hashtable FeaturesMap = [];
@@ -55,16 +45,11 @@ namespace AirdPro.Converters
         public Dictionary<double, int> MobiDict;
         public MobiInfo MobiInfo = new();
 
-        // protected int MzPrecision
         protected int MobiPrecision = 10000000; //mobility默认精确到小数点后7位
         protected int IntensityPrecision = 1; //Intensity默认精确到个位数
 
         protected int SpectraNumForIntensityPrecisionPredict = 5; //用于ComboComp预测Intensity精度时的采样光谱数
         public ImzMLComp Compressor;
-        public ChromatogramIndex ChromatogramIndex;
-
-        public Dictionary<string, AcqCompound>
-            MrmCompoundDict = []; //用于MRM采集模式下,预存储化合物名称与离子对的词典,当前仅适用于Agilent的.d文件夹类型的质谱文件
 
         public bool CopyToLocal = false; //是否拷贝到本地
 
@@ -112,8 +97,7 @@ namespace AirdPro.Converters
 
                 ReadMSIData(imzML);
                 using (AirdStream = new FileStream(JobInfo.airdFilePath, FileMode.Create))
-                {
-                    //PredictAcquisitionMethod();
+                {                    
                     InitCompressor();
                     ConverterWorkFlow.DDA(this);                   
                 }
@@ -165,128 +149,7 @@ namespace AirdPro.Converters
 
             MobiArray = mobility;
             Compressor.MobiDict = MobiDict;
-        }
-
-        /**
-         * 用于检测当前文件的采集模式
-         * 如果含有Mobility属性,则为PASEF模式
-         * 如果前三帧都是MS1,则必然不是DIA
-         * 如果MS2的precursor范围大于3,则可能是DIA
-         * 如果MS2的precursor范围小于1,则可能是DDA
-         */
-        public void PredictAcquisitionMethod()
-        {
-            if (!JobInfo.type.Equals(JobInfo.AutoType))
-            {
-                JobInfo.SetType(JobInfo.type);
-                if (JobInfo.type.Equals(AcquisitionMethod.DIA_PASEF) || JobInfo.type.Equals(AcquisitionMethod.DDA_PASEF))
-                {
-                    JobInfo.ionMobility = true;
-                }
-                return;
-            }
-
-            bool mobi = false;
-            JobInfo.Log(Tag.Predict_Acquisition_Method, Status.Init);
-
-            //如果有光谱图
-            if (spectrumList != null && spectrumList.Size() > 0)
-            {
-                Spectrum firstSpec = spectrumList.GetSpectrum(0);
-                List<Spectrum> predictSpecList = [];
-                //首先取10个窗口，当不足10个时，取spectra.Size()
-                int fetchCount = 10;
-                if (spectrumList.Size() < 10)
-                {
-                    fetchCount = spectrumList.Size();
-                }
-                for (int i = 0; i < fetchCount; i++)
-                {
-                    predictSpecList.Add(spectrumList.GetSpectrum(i));
-                }
-
-                //首先判断是不是带有离子淌度的ion mobility模式
-                if (firstSpec.GetBinaryDataArrayList().Size() == 3)
-                {
-                    foreach (BinaryDataArray dataArray in firstSpec.GetBinaryDataArrayList())
-                    {
-                        if (dataArray.IsMobilityArray())
-                        {
-                            JobInfo.ionMobility = true;
-                            mobi = true;
-                            break;
-                        }
-                    }
-                }
-
-                bool isDDA = true;
-                bool isDIA = false;
-
-                foreach (Spectrum spectrum in predictSpecList)
-                {
-                    //如果全部扫描下来都没有MS2, 说明是Full Scan扫描模式,设置为DDA                    
-                    if (CVUtil.ParseMsLevel(spectrum).Equals(MsLevel.MS2))
-                    {
-                        double width = CVUtil.ParsePrecursorWidth(spectrum.GetPrecursorList().Get(0).IsolationWindow, JobInfo);
-                        //然后判断前体的宽度范围,如果范围小于4,则被预测为DDA模式,否则会被认定为DIA模式
-                        if (width < 4)
-                        {
-                            isDDA = true;
-                            isDIA = false;
-                            //自动模式会将DDA模式与PRM模式混合
-                            break;
-                        }
-                        else
-                        {
-                            isDDA = false;
-                            isDIA = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (isDDA && mobi)
-                {
-                    JobInfo.SetType(AcquisitionMethod.DDA_PASEF);
-                }
-
-                if (isDDA && !mobi)
-                {
-                    JobInfo.SetType(AcquisitionMethod.DDA);
-                }
-
-                if (isDIA && mobi)
-                {
-                    JobInfo.SetType(AcquisitionMethod.DIA_PASEF);
-                }
-
-                if (isDIA && !mobi)
-                {
-                    JobInfo.SetType(AcquisitionMethod.DIA);
-                }
-            }
-
-            try
-            {
-                //如果有色谱图,且谱图数目大于2(排除TIC和BPC图),则预测为SRM模式
-                if (chromatogramList != null && chromatogramList.Size() > 10)
-                {
-                    List<Chromatogram> predictChromatoList = [];
-                    // 首先取10个窗口
-                    for (int i = 0; i < 10; i++)
-                    {
-                        Chromatogram chroma = chromatogramList.GetChromatogram(i);
-                        predictChromatoList.Add(chroma);
-                    }
-
-                    JobInfo.SetType(AcquisitionMethod.MRM);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Chromatogram Reading Failed:" + e.Message);
-            }
-        }
+        }   
 
         public void PredictForBestCombination()
         {
@@ -359,86 +222,6 @@ namespace AirdPro.Converters
             {
                 AddToIndex(index, table[key]);
             }
-        }
-
-        /**
-         * 存储列存储数据
-         * 注意，本函数会操作startPosition这个全局变量
-         */
-        public void WriteColumnData(ConcurrentDictionary<int, ByteColumn> compressedColumns, ColumnIndex columnIndex)
-        {
-            byte[] compressedMzs = ByteTrans.intToByte(
-                        new IntegratedVarByteWrapper().encode(columnIndex.mzs));
-            byte[] compressedRts = ByteTrans.intToByte(
-                        new IntegratedVarByteWrapper().encode(columnIndex.rts));
-            //写入矩阵的横坐标实际值
-            columnIndex.startMzListPtr = StartPosition;
-            StartPosition += compressedMzs.Length;
-            columnIndex.endMzListPtr = StartPosition;
-            AirdStream.Write(compressedMzs, 0, compressedMzs.Length);
-
-            //写入矩阵的纵坐标实际值
-            columnIndex.startRtListPtr = StartPosition;
-            StartPosition += compressedRts.Length;
-            columnIndex.endRtListPtr = StartPosition;
-            AirdStream.Write(compressedRts, 0, compressedRts.Length);
-
-            columnIndex.spectraIds = new int[columnIndex.mzs.Length];
-            columnIndex.intensities = new int[columnIndex.mzs.Length];
-            columnIndex.startPtr = StartPosition;
-
-            int step = 100000;
-            long[] anchors = new long[columnIndex.mzs.Length / step + 1];
-
-            for (var i = 0; i < columnIndex.mzs.Length; i++)
-            {
-                //每隔10W个数插入一帧
-                if (i % step == 0)
-                {
-                    anchors[i / step] = StartPosition;
-                }
-
-                int mz = columnIndex.mzs[i];
-                ByteColumn byteColumn = compressedColumns[mz];
-                if (byteColumn.spectraIds != null && byteColumn.intensities != null)
-                {
-                    columnIndex.spectraIds[i] = byteColumn.spectraIds.Length;
-                    columnIndex.intensities[i] = byteColumn.intensities.Length;
-                    StartPosition = StartPosition + byteColumn.spectraIds.Length + byteColumn.intensities.Length;
-
-                    AirdStream.Write(byteColumn.spectraIds, 0, byteColumn.spectraIds.Length);
-                    AirdStream.Write(byteColumn.intensities, 0, byteColumn.intensities.Length);
-                }
-                else
-                {
-                    columnIndex.spectraIds[i] = 0;
-                    columnIndex.intensities[i] = 0;
-                }
-            }
-
-            columnIndex.endPtr = StartPosition;
-            columnIndex.anchors = anchors;
-            byte[] compressedSpectraIds = ByteTrans.intToByte(new VarByteWrapper().encode(columnIndex.spectraIds));
-            byte[] compressedInts = ByteTrans.intToByte(new VarByteWrapper().encode(columnIndex.intensities));
-
-            //写入矩阵的横坐标实际值
-            columnIndex.startSpectraIdListPtr = StartPosition;
-            StartPosition += compressedSpectraIds.Length;
-            columnIndex.endSpectraIdListPtr = StartPosition;
-            AirdStream.Write(compressedSpectraIds, 0, compressedSpectraIds.Length);
-
-            //写入矩阵的横坐标实际值
-            columnIndex.startIntensityListPtr = StartPosition;
-            StartPosition += compressedInts.Length;
-            columnIndex.endIntensityListPtr = StartPosition;
-            AirdStream.Write(compressedInts, 0, compressedInts.Length);
-
-            columnIndex.mzs = null;
-            columnIndex.rts = null;
-            columnIndex.spectraIds = null;
-            columnIndex.intensities = null;
-
-            ColumnIndexList.Add(columnIndex);
         }
 
         //注意:本函数会操作startPosition这个全局变量
@@ -586,22 +369,10 @@ namespace AirdPro.Converters
             else
             {
                 TotalSpectraCount = spectrumList.Size();
-            }
-
-            //chromatogramList
-            chromatogramList = imzML.GetRun().GetChromatogramList();
-            if (chromatogramList == null || chromatogramList.IsEmpty())
-            {
-                JobInfo.Log(ResultCode.No_Chromatograms_Found);
-            }
-            else
-            {
-                TotalChromaCount = chromatogramList.Size();
-            }
+            }           
 
             JobInfo.Log(Tag.Adapting_Finished);
             JobInfo.Log(Tag.Total_Spectra + TotalSpectraCount);
-            JobInfo.Log(Tag.Total_Chromatograms + TotalChromaCount);
         }
 
         private bool IsMsSpectrum(Spectrum spectrum)
@@ -658,49 +429,15 @@ namespace AirdPro.Converters
                 }
             }
 
-            //列式存储引擎需要额外存储一个cjson的文件
-            if (JobInfo.config.ColumnCompression())
-            {
-                ColumnInfo columnInfo = BuildColumnInfo();
-
-                if (JobInfo.config.indexFormat == 0 || JobInfo.config.indexFormat == 2)
-                {
-                    string columnInfoStr = JsonConvert.SerializeObject(columnInfo,
-                        new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                    byte[] columnInfoBytes = Encoding.Default.GetBytes(columnInfoStr);
-                    using (AirdColumnJsonStream = new FileStream(JobInfo.airdColumnJsonFilePath, FileMode.Create))
-                    {
-                        AirdColumnJsonStream.Write(columnInfoBytes, 0, columnInfoBytes.Length);
-                        totalSize += columnInfoBytes.Length;
-                    }
-                }
-
-                if (JobInfo.config.indexFormat == 1 || JobInfo.config.indexFormat == 2)
-                {
-                    ColumnInfoProto proto = columnInfo.ToProto();
-                    byte[] protoBytes = proto.ToByteArray();
-                    using (AirdColumnProtoStream = new FileStream(JobInfo.airdColumnProtoFilePath, FileMode.Create))
-                    {
-                        AirdColumnProtoStream.Write(protoBytes, 0, protoBytes.Length);
-                        totalSize += protoBytes.Length;
-                    }
-                }
-            }
-
             JobInfo.SetAirdFileSize(totalSize);
         }
 
         public void ClearCache()
         {
-            Ranges = [];
-            RangeTable = [];
-            IndexList = [];
-            Ms2Table = [];
             Ms1List = [];
             FeaturesMap = [];
             MobiDict = [];
             MobiInfo = new();
-            ChromatogramIndex = new();
             if (imzML != null)
             {
                 imzML = null;
@@ -708,25 +445,6 @@ namespace AirdPro.Converters
             if (spectrumList != null)
             {
                 spectrumList = null;
-            }
-            if (chromatogramList != null)
-            {
-                chromatogramList = null;
-            }
-        }
-
-        //DDA模式下,key为ms2Index.pNum, DIA模式下,key为ms2Index.precursorMz
-        protected void AddToMs2Map(Object key, MsIndex ms2Index)
-        {
-            if (Ms2Table.Contains(key))
-            {
-                ((List<MsIndex>)Ms2Table[key]).Add(ms2Index);
-            }
-            else
-            {
-                List<MsIndex> indexList = [];
-                indexList.Add(ms2Index);
-                Ms2Table.Add(key, indexList);
             }
         }
 
@@ -761,84 +479,6 @@ namespace AirdPro.Converters
             return ms1;
         }
 
-        protected MsIndex ParseMs2(Spectrum spectrum, int num, int pNum)
-        {
-            MsIndex ms2 = new()
-            {
-                level = 2,
-                pNum = pNum,
-                num = num
-            };
-
-            Precursor precursor = spectrum.GetPrecursorList().Get(0);
-            try
-            {
-                ms2.precursor = CVUtil.ParseIsolationWindow(precursor, JobInfo);
-            }
-            catch (Exception e)
-            {
-                JobInfo.Log(ResultCode.Error).Log(Tag.SpectrumIndex + spectrum.GetID())
-                    .Log(Tag.SpectrumId + spectrum.GetID());
-                IsolationWindow isolationWindow = precursor.IsolationWindow;
-                CVParam cv = isolationWindow.GetCVParamOrChild(IsolationWindow.ISOLATION_WINDOW_TARGET_MZ);
-                JobInfo.Log(Tag.Key_MZ + cv.GetValueAsDouble());
-                cv = isolationWindow.GetCVParamOrChild(IsolationWindow.ISOLATION_WINDOW_LOWER_OFFSET_ID);
-                JobInfo.Log(Tag.LowerOffset + cv.GetValueAsDouble());
-                cv = isolationWindow.GetCVParamOrChild(IsolationWindow.ISOLATION_WINDOW_UPPER_OFFSET_ID);
-                JobInfo.Log(Tag.UpperOffset + cv.GetValueAsDouble());
-                throw e;
-            }
-
-            if (spectrum.GetScanList().Size() < 1) return ms2;
-
-            var (activator, energy) = CVUtil.ParseActivator(spectrum.GetPrecursorList().Get(0));
-            ms2.activator = activator;
-            ms2.energy = energy;
-            ms2.msType = CVUtil.ParseMsType(spectrum);
-            ms2.polarity = CVUtil.ParsePolarity(spectrum);
-            ms2.tic = CVUtil.ParseTic(spectrum);
-            ms2.basePeakIntensity = CVUtil.ParseBasePeakIntensity(spectrum);
-            ms2.basePeakMz = CVUtil.ParseBasePeakMz(spectrum);
-
-            Scan scan = spectrum.GetScanList().Get(0);
-            ms2.rt = CVUtil.ParseRt(scan, JobInfo);
-            ms2.injectionTime = CVUtil.ParseInjectionTime(scan);
-            if (MobiInfo.unit == null || MobiInfo.type == null)
-            {
-                CVUtil.ParseMobility(scan, MobiInfo);
-            }
-
-            ms2.filterString = CVUtil.ParseFilterString(scan, JobInfo);
-
-            return ms2;
-        }
-
-        public void CompressMs2BlockForPrm()
-        {
-            JobInfo.Log("Start Processing MS2 List");
-            int progress = 0;
-            foreach (double key in Ms2Table.Keys)
-            {
-                List<MsIndex> ms2List = Ms2Table[key] as List<MsIndex>;
-                WindowRange range = new(ms2List[0].precursor.start, ms2List[0].precursor.end, key);
-
-                BlockIndex index = new()
-                {
-                    level = 2,
-                    startPtr = StartPosition
-                }; //为每一个key组创建一个SwathBlock
-                index.setWindowRange(range); //顺便创建一个WindowRanges,用以让Propro服务端快速获取全局的窗口数目和mz区间
-                Ranges.Add(range);
-
-                JobInfo.Log(null, Tag.progress(Tag.MS2, progress, Ms2Table.Keys.Count));
-                progress++;
-                Compressor.CompressMS2(this, ms2List, index);
-                index.endPtr = StartPosition;
-                IndexList.Add(index);
-                JobInfo.Log("MS2 Group Finished:" + progress + "/" + Ms2Table.Keys.Count);
-            }
-        }
-
         public void CompressMobiDict()
         {
             int[] mobiIntArray = new int[MobiArray.Length];
@@ -870,187 +510,6 @@ namespace AirdPro.Converters
             Compressor.CompressMS1(this, index);
             index.endPtr = StartPosition;
             IndexList.Add(index);
-        }
-
-        public void CompressMs2BlockForDia()
-        {
-            if (JobInfo.config.noMS2)
-            {
-                JobInfo.Log(Tag.FILTER_NO_MS2);
-                return;
-            }
-            JobInfo.Log(Tag.Start_Processing_MS2_List);
-            int progress = 0;
-            foreach (double precursorMz in Ms2Table.Keys)
-            {
-                List<MsIndex> ms2List = Ms2Table[precursorMz] as List<MsIndex>;
-                WindowRange range = RangeTable[precursorMz] as WindowRange;
-
-                BlockIndex index = new()
-                {
-                    level = 2,
-                    startPtr = StartPosition
-                }; //为每一个key组创建一个SwathBlock
-                index.setWindowRange(range);
-
-                JobInfo.Log(null, Tag.progress(Tag.MS2, progress, Ms2Table.Keys.Count));
-                progress++;
-                Compressor.CompressMS2(this, ms2List, index);
-                index.endPtr = StartPosition;
-                IndexList.Add(index);
-                JobInfo.Log(Tag.progress(Tag.MS2_Group_Finished, progress, Ms2Table.Keys.Count));
-            }
-        }
-
-        //处理MS2,由于每一个MS1只跟随少量的MS2光谱图,因此DDA采集模式下MS2的压缩模式仍然使用Aird ZDPD的压缩算法
-        public void compressMS2BlockForDDA()
-        {
-            int progress = 0;
-            JobInfo.Log(Tag.Start_Processing_MS2_List);
-            ArrayList keys = new(Ms2Table.Keys);
-            keys.Sort();
-            foreach (int key in keys)
-            {
-                List<MsIndex> tempIndexList = Ms2Table[key] as List<MsIndex>;
-                //为每一组key创建一个Block
-                BlockIndex blockIndex = new()
-                {
-                    level = 2,
-                    startPtr = StartPosition,
-                    num = key
-                };
-                //创建这一个block中每一个ms2的窗口序列
-                List<WindowRange> ms2Ranges = [];
-                JobInfo.Log(null, Tag.progress(Tag.MS2, progress, Ms2Table.Keys.Count));
-                progress++;
-
-                foreach (MsIndex index in tempIndexList)
-                {
-                    // WindowRange range = new WindowRange(index.mzStart, index.mzEnd, index.precursorMz);
-                    WindowRange range = index.precursor;
-                    ms2Ranges.Add(range);
-                    TempScan ts = new(index);
-                    if (JobInfo.ionMobility)
-                    {
-                        Compressor.CompressMobility(spectrumList.GetSpectrum(index.num), ts);
-                    }
-                    else
-                    {
-                        Compressor.Compress(spectrumList.GetSpectrum(index.num), ts);
-                    }
-
-                    blockIndex.nums.Add(ts.num);
-                    blockIndex.rts.Add(ts.rt);
-                    blockIndex.tics.Add(ts.tic);
-
-                    blockIndex.polarities.Add(ts.polarity);
-                    blockIndex.energies.Add(ts.energy);
-                    blockIndex.activators.Add(ts.activator);
-                    blockIndex.tics.Add(ts.tic);
-
-                    blockIndex.basePeakIntensities.Add(ts.basePeakIntensity);
-                    blockIndex.basePeakMzs.Add(ts.basePeakMz);
-                    blockIndex.mzs.Add(ts.mzArrayBytes.Length);
-                    blockIndex.ints.Add(ts.intArrayBytes.Length);
-                    StartPosition = StartPosition + ts.mzArrayBytes.Length + ts.intArrayBytes.Length;
-                    AirdStream.Write(ts.mzArrayBytes, 0, ts.mzArrayBytes.Length);
-                    AirdStream.Write(ts.intArrayBytes, 0, ts.intArrayBytes.Length);
-                    if (ts.mobilityArrayBytes != null)
-                    {
-                        blockIndex.mobilities.Add(ts.mobilityArrayBytes.Length);
-                        StartPosition += ts.mobilityArrayBytes.Length;
-                        AirdStream.Write(ts.mobilityArrayBytes, 0, ts.mobilityArrayBytes.Length);
-                    }
-                }
-
-                blockIndex.rangeList = ms2Ranges;
-                blockIndex.endPtr = StartPosition;
-                IndexList.Add(blockIndex);
-            }
-        }
-
-        public void CompressChromatograms()
-        {
-            if (chromatogramList == null || chromatogramList.Size() == 0)
-            {
-                return;
-            }
-
-            ChromatogramIndex = new ChromatogramIndex();
-            //如果是.d的文件夹类型的质谱文件,可以直接解析AcqMethod.xml文件,用于读取设定的化合物名称
-            ReadMRMCompounds();
-
-            int totalSize = chromatogramList.Size();
-            int progress = 0;
-            JobInfo.Log(null, Tag.progress(Tag.Chroma, progress, totalSize));
-            ChromatogramIndex.startPtr = StartPosition;
-            for (int i = 0; i < chromatogramList.Size(); i++)
-            {
-                Chromatogram chromatogram = chromatogramList.Get(i);
-                TempScanChroma tempScan = new();
-                ChromatogramIndex.nums.Add(i);
-                ChromatogramIndex.ids.Add(chromatogram.GetID());
-                var (activator, energy) = CVUtil.ParseActivator(chromatogram.precursor);
-                ChromatogramIndex.activators.Add(activator);
-                ChromatogramIndex.energies.Add(energy);
-                ChromatogramIndex.polarities.Add(CVUtil.ParsePolarity(chromatogram));
-
-                try
-                {
-                    Precursor precursor = chromatogram.precursor;
-                    WindowRange precursorMz = CVUtil.ParseIsolationWindow(precursor, JobInfo);
-                    IsolationWindow isolationWindow = chromatogram.product.getIsolationWindow();
-                    WindowRange productMz = CVUtil.ParseIsolationWindow(isolationWindow, JobInfo);
-                    string ionPair = Math.Round(precursorMz.mz, 1) + "-" + Math.Round(productMz.mz, 1);
-                    if (MrmCompoundDict.ContainsKey(ionPair))
-                    {
-                        string compoundName = MrmCompoundDict[ionPair].name;
-                        ChromatogramIndex.compounds.Add(compoundName);
-                    }
-                    else
-                    {
-                        ChromatogramIndex.compounds.Add("");
-                    }
-                    ChromatogramIndex.products.Add(productMz);
-                    ChromatogramIndex.precursors.Add(precursorMz);
-                }
-                catch (Exception e)
-                {
-                    JobInfo.Log(ResultCode.Error).Log(Tag.SpectrumIndex + i)
-                        .Log(Tag.SpectrumId + chromatogram.GetID())
-                        .Log(Tag.Key_MZ + chromatogram.precursor.GetIsolationWindow()
-                            .GetCVParamOrChild(IsolationWindow.ISOLATION_WINDOW_TARGET_MZ).GetValueAsDouble())
-                        .Log(Tag.LowerOffset + chromatogram.precursor.GetIsolationWindow()
-                            .GetCVParamOrChild(IsolationWindow.ISOLATION_WINDOW_LOWER_OFFSET_ID).GetValueAsDouble())
-                        .Log(Tag.UpperOffset + chromatogram.precursor.GetIsolationWindow()
-                            .GetCVParamOrChild(IsolationWindow.ISOLATION_WINDOW_UPPER_OFFSET_ID).GetValueAsDouble());
-                    throw e;
-                }
-
-                Compressor.Compress(chromatogram, tempScan);
-                ChromatogramIndex.rts.Add(tempScan.rtArrayBytes.Length);
-                ChromatogramIndex.ints.Add(tempScan.intArrayBytes.Length);
-                StartPosition = StartPosition + tempScan.rtArrayBytes.Length + tempScan.intArrayBytes.Length;
-                AirdStream.Write(tempScan.rtArrayBytes, 0, tempScan.rtArrayBytes.Length);
-                AirdStream.Write(tempScan.intArrayBytes, 0, tempScan.intArrayBytes.Length);
-
-                progress++;
-                JobInfo.Log(null, Tag.progress(Tag.Chroma, progress, totalSize));
-            }
-
-            ChromatogramIndex.totalCount = ChromatogramIndex.ids.Count;
-            ChromatogramIndex.endPtr = StartPosition;
-        }
-
-        /**
-         * 用于解析.d文件中的AcqMethod.XML文件
-         */
-        public void ReadMRMCompounds()
-        {
-            if (JobInfo.format.Equals(FileFormat.D) && JobInfo.type.Equals(AcquisitionMethod.MRM))
-            {
-                MrmCompoundDict = new AcqMethodParser(JobInfo.inputPath).parse();
-            }
         }
 
         protected AirdInfo BuildAirdInfo()
@@ -1129,14 +588,9 @@ namespace AirdPro.Converters
             }
 
             airdInfo.mobiInfo = MobiInfo;
-            //Scan index and window range info
-            airdInfo.rangeList = Ranges;
 
             //Block index
             airdInfo.indexList = IndexList;
-
-            //ChromatogramIndex
-            airdInfo.chromatogramIndex = ChromatogramIndex;
 
             //Instrument Info
             List<Instrument> instruments = [];
@@ -1323,19 +777,6 @@ namespace AirdPro.Converters
             airdInfo.features = FeaturesUtil.toString(FeaturesMap);
             airdInfo.version = SoftwareInfo.VERSION;
             return airdInfo;
-        }
-
-        protected ColumnInfo BuildColumnInfo()
-        {
-            ColumnInfo columnInfo = new()
-            {
-                type = JobInfo.type,
-                indexList = ColumnIndexList,
-                mzPrecision = JobInfo.config.mzPrecision,
-                intPrecision = IntensityPrecision,
-                airdPath = JobInfo.airdFilePath
-            };
-            return columnInfo;
         }
 
         readonly List<ByteComp> byteCompList = [new BrotliWrapper(), new SnappyWrapper(), new ZstdWrapper(), new ZlibWrapper()];
@@ -1538,13 +979,7 @@ namespace AirdPro.Converters
                     if (msLevel.Equals(MsLevel.MS1))
                     {
                         Ms1List.Add(ParseMs1(spectrum, i)); //如果是MS1谱图,加入到MS1List
-                    }
-
-                    if (msLevel.Equals(MsLevel.MS2))
-                    {
-                        MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
-                        AddToMs2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
-                    }
+                    }                    
                 }
                 else
                 {
@@ -1558,17 +993,10 @@ namespace AirdPro.Converters
                             parentNum = i;
                         }
                     }
-
-                    if (msLevel.Equals(MsLevel.MS2))
-                    {
-                        MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
-                        AddToMs2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
-                    }
                 }
             }
 
             JobInfo.Log(Tag.Effective_MS1_List_Size + Ms1List.Count);
-            JobInfo.Log(Tag.MS2_Group_List_Size + Ms2Table.Count);
             JobInfo.Log(Tag.Start_Processing_MS1_List);
         }
 
@@ -1590,27 +1018,9 @@ namespace AirdPro.Converters
                     parentNum = i;
                     Ms1List.Add(ParseMs1(spectrum, i));
                 }
-
-                //如果这个谱图是MS2
-                if (msLevel.Equals(MsLevel.MS2))
-                {
-                    MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
-                    //边扫描边建立SWATH WindowRange
-                    if (!RangeTable.Contains(ms2Index.precursor.mz))
-                    {
-                        WindowRange range = ms2Index.precursor;
-                        Ranges.Add(range);
-                        RangeTable.Add(range.mz, range);
-                    }
-
-                    //DIA的MS2Map以precursorMz为key
-                    AddToMs2Map(ms2Index.precursor.mz, ms2Index);
-                }
             }
 
-            JobInfo.Log(Tag.Total_SWATH_WINDOWS + Ranges.Count);
             JobInfo.Log(Tag.Effective_MS1_List_Size + Ms1List.Count);
-            JobInfo.Log(Tag.MS2_Group_List_Size + Ms2Table.Count);
             JobInfo.Log(Tag.Start_Processing_MS1_List);
         }
 
@@ -1630,12 +1040,6 @@ namespace AirdPro.Converters
                     {
                         Ms1List.Add(ParseMs1(spectrum, i)); //如果是MS1谱图,加入到MS1List
                     }
-
-                    if (msLevel.Equals(MsLevel.MS2))
-                    {
-                        MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
-                        AddToMs2Map(ms2Index.pNum, ms2Index); //如果是MS2谱图,加入到谱图组
-                    }
                 }
                 else
                 {
@@ -1649,118 +1053,11 @@ namespace AirdPro.Converters
                             parentNum = i;
                         }
                     }
-
-                    if (msLevel.Equals(MsLevel.MS2))
-                    {
-                        MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
-                        AddToMs2Map(ms2Index.pNum, ms2Index); //如果这个谱图是MS2
-                    }
                 }
             }
 
             JobInfo.Log(Tag.Effective_MS1_List_Size + Ms1List.Count);
-            JobInfo.Log(Tag.MS2_Group_List_Size + Ms2Table.Count);
             JobInfo.Log(Tag.Start_Processing_MS1_List);
-        }
-
-        public void PretreatmentDiaPasef()
-        {
-            int parentNum = 0;
-            JobInfo.Log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
-            int progress = 0;
-            // 预处理所有的MS谱图,将MS1与MS2的信息扫描以后放入对应的内存对象中
-            for (int i = 0; i < TotalSpectraCount; i++)
-            {
-                progress++;
-                JobInfo.Log(null, Tag.progress(Tag.Pre, progress, TotalSpectraCount));
-                Spectrum spectrum = spectrumList.Get(i);
-                string msLevel = CVUtil.ParseMsLevel(spectrum);
-                //如果这个谱图是MS1                          
-                if (msLevel.Equals(MsLevel.MS1))
-                {
-                    parentNum = i;
-                    Ms1List.Add(ParseMs1(spectrum, i));
-                }
-
-                //如果这个谱图是MS2
-                if (msLevel.Equals(MsLevel.MS2))
-                {
-                    MsIndex ms2Index = ParseMs2(spectrum, i, parentNum);
-                    //边扫描边建立SWATH WindowRange
-                    if (!RangeTable.Contains(ms2Index.precursor.mz))
-                    {
-                        WindowRange range = ms2Index.precursor;
-                        Ranges.Add(range);
-                        RangeTable.Add(range.mz, range);
-                    }
-
-                    //DIA的MS2Map以precursorMz为key
-                    AddToMs2Map(ms2Index.precursor.mz, ms2Index);
-                }
-            }
-
-            JobInfo.Log(Tag.Total_SWATH_WINDOWS + Ranges.Count);
-            JobInfo.Log(Tag.Effective_MS1_List_Size + Ms1List.Count);
-            JobInfo.Log(Tag.MS2_Group_List_Size + Ms2Table.Count);
-            JobInfo.Log(Tag.Start_Processing_MS1_List);
-        }
-
-        public void PretreatmentPrm()
-        {
-            int parentNum = 0;
-            JobInfo.Log(Status.tag_preprocessing + TotalSpectraCount, Status.Preprocessing);
-            for (int i = 0; i < TotalSpectraCount; i++)
-            {
-                JobInfo.Log(null, Tag.progress(Tag.Empty, (i + 1), TotalSpectraCount));
-                Spectrum spectrum = spectrumList.Get(i);
-                string msLevel = CVUtil.ParseMsLevel(spectrum);
-                //如果是最后一个谱图,那么单独判断
-                if (i == TotalSpectraCount - 1)
-                {
-                    //如果是MS1谱图,那么直接跳过
-                    if (msLevel.Equals(MsLevel.MS1))
-                    {
-                        continue;
-                    }
-
-                    //如果是MS2谱图,加入到谱图组
-                    if (msLevel.Equals(MsLevel.MS2))
-                    {
-                        MsIndex ms2Index = ParseMs2(spectrumList.Get(i), i, parentNum);
-                        AddToMs2Map(ms2Index.precursor.mz, ms2Index);
-                        continue;
-                    }
-                }
-
-                //如果这个谱图是MS1
-                if (msLevel.Equals(MsLevel.MS1))
-                {
-                    Spectrum next = spectrumList.GetSpectrum(i + 1);
-                    string msLevelNext = CVUtil.ParseMsLevel(next);
-                    //如果下一个谱图仍然是MS1, 那么直接忽略这个谱图
-                    if (msLevelNext.Equals(MsLevel.MS1))
-                    {
-                        continue;
-                    }
-
-                    if (msLevelNext.Equals(MsLevel.MS2))
-                    {
-                        parentNum = i;
-                        Ms1List.Add(ParseMs1(spectrumList.GetSpectrum(i), i));
-                    }
-                }
-
-                if (msLevel.Equals(MsLevel.MS2))
-                {
-                    Spectrum current = spectrumList.GetSpectrum(i);
-                    MsIndex ms2Index = ParseMs2(current, i, parentNum);
-                    AddToMs2Map(ms2Index.precursor.mz, ms2Index); //如果这个谱图是MS2
-                }
-            }
-
-            JobInfo.Log("Effective MS1 List Size:" + Ms1List.Count);
-            JobInfo.Log("MS2 Group List Size:" + Ms2Table.Count);
-            JobInfo.Log("Start Processing MS1 List");
         }
 
     }    

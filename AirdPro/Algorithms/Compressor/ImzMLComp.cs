@@ -4,7 +4,6 @@ using AirdPro.Domains.Common;
 using AirdPro.Domains;
 using AirdSDK.Compressor;
 using AirdSDK.Enums;
-using AirdSDK.Utils;
 using System;
 using System.Collections.Concurrent;
 using System.Collections;
@@ -12,20 +11,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AirdPro.csimzMLParser.mzml;
 using AirdSDK.Beans;
-using AirdSDK.Beans.Common;
 using Spectrum = AirdPro.csimzMLParser.mzml.Spectrum;
 using AirdPro.Utils;
 using DataUtil = AirdPro.Utils.imzml.DataUtil;
 
 namespace AirdPro.Algorithms.Compressor
 {
-    public class ImzMLComp : ICompressor
+    public class ImzMLComp
     {
         private static readonly object Locker = new object();
+        public int MzPrecision = 100000;
+        public bool IgnoreZero = true;
+        public SortedIntComp MzIntComp;
+        public ByteComp MzByteComp;
+        public IntComp IntIntComp;
+        public ByteComp IntByteComp;
+        public IntComp MobiIntComp;
+        public ByteComp MobiByteComp;
+        public SortedIntComp RtIntComp4Chroma;
+        public ByteComp RtByteComp4Chroma;
 
-        public ImzMLComp(Converter converter) : base(converter)
+        public Dictionary<double, int> MobiDict;
+        public int IntensityPrecision = 1;
+        public int RtPrecision = 100000;
+
+        public ImzMLComp(Converter converter)
         {
             MzPrecision = converter.JobInfo.config.mzPrecision;
             IgnoreZero = converter.JobInfo.config.ignoreZeroIntensity;
@@ -86,116 +97,7 @@ namespace AirdPro.Algorithms.Compressor
             });
             converter.WriteToFile(ms1Table, index);
 
-            //如果是面向搜索的格式转换，则msRowTable不为空，准备启动行矩阵向列矩阵转换的过程
-            if (converter.JobInfo.config.ColumnCompression())
-            {
-                ColumnIndex columnIndex = new ColumnIndex();
-                columnIndex.level = 1;
-                ConcurrentDictionary<int, ByteColumn> compressedColumns = null;
-
-                compressedColumns = CompressAsColumnMatrix(converter, spectra, columnIndex);
-                converter.WriteColumnData(compressedColumns, columnIndex);
-            }
-        }
-
-        public void CompressMS2(ImzMLConverter converter, List<MsIndex> ms2List, BlockIndex index)
-        {
-            //仅当面向Search的Aird模式下有效
-            ConcurrentDictionary<double, TempSpectrum> msDictionary =
-                new ConcurrentDictionary<double, TempSpectrum>();
-            ConcurrentBag<TempSpectrum> spectra = new ConcurrentBag<TempSpectrum>();
-
-            Hashtable table = Hashtable.Synchronized(new Hashtable());
-            //使用多线程处理数据提取与压缩
-            Parallel.For(0, ms2List.Count, (i) =>
-            {
-                MsIndex ms2Index = ms2List[i];
-                TempScan ts = new TempScan(ms2Index);
-                Spectrum spectrum = null;
-                try
-                {
-                    lock (Locker)
-                    {
-                        spectrum = converter.spectrumList.GetSpectrum(ts.num);
-                    }
-
-                    switch (converter.JobInfo.config.engine)
-                    {
-                        case (int)AirdEngine.RowCompression:
-                            if (converter.JobInfo.ionMobility)
-                            {
-                                CompressMobility(spectrum, ts);
-                            }
-                            else
-                            {
-                                Compress(spectrum, ts);
-                            }
-
-                            break;
-
-                        case (int)AirdEngine.ColumnCompression:
-                            switch (converter.JobInfo.type)
-                            {
-                                case AcquisitionMethod.DIA:
-                                    spectra.Add(ReadSpectrum(spectrum));
-                                    // msDictionary[ts.rt] = ReadSpectrum(spectrum);
-                                    break;
-                                case AcquisitionMethod.DDA:
-                                    Compress(spectrum, ts);
-                                    break;
-                            }
-
-                            break;
-                    }
-
-                    table.Add(i, ts);
-                }
-                finally 
-                { 
-
-                }
-            });
-            converter.WriteToFile(table, index);
-
-            //如果是面向搜索引擎的格式转换，则msRowTable不为空，准备启动行矩阵向列矩阵转换的过程
-            if (converter.JobInfo.config.ColumnCompression() &&
-                converter.JobInfo.type.Equals(AcquisitionMethod.DIA))
-            {
-                ColumnIndex columnIndex = new ColumnIndex();
-                columnIndex.level = 2;
-                columnIndex.range = index.getWindowRange();
-                ConcurrentDictionary<int, ByteColumn> compressedColumns = null;
-
-                compressedColumns = CompressAsColumnMatrix(converter, spectra, columnIndex);
-                converter.WriteColumnData(compressedColumns, columnIndex);
-            }
-        }
-
-        public void Compress(Chromatogram chromatogram, TempScanChroma ts)
-        {
-            //double[] rtData = [];
-            double[] intData = chromatogram.GetIntensityArray();
-            var size = intData.Length;
-            if (size == 0)
-            {
-               // ts.rtArrayBytes = new byte[0];
-                ts.intArrayBytes = new byte[0];
-                return;
-            }
-
-            //int[] rtArray = new int[size];
-            int[] intensityArray = new int[size];
-            for (int t = 0; t < size; t++)
-            {
-               // rtArray[t] = DataUtil.FetchRt(rtData[t], RtPrecision);
-                intensityArray[t] = DataUtil.FetchIntensity(intData[t], IntensityPrecision);
-            }
-
-            //byte[] compressedRtArray = RtByteComp4Chroma.encode(ByteTrans.intToByte(RtIntComp4Chroma.encode(rtArray)));
-            byte[] compressedIntArray = IntByteComp.encode(ByteTrans.intToByte(IntIntComp.encode(intensityArray)));
-
-            //ts.rtArrayBytes = compressedRtArray;
-            ts.intArrayBytes = compressedIntArray;
+            
         }
 
         public void Compress(Spectrum spectrum, TempScan ts)
@@ -335,100 +237,6 @@ namespace AirdPro.Algorithms.Compressor
             ts.intArrayBytes = compressedIntArray;
             ts.mobilityArrayBytes = compressedMobilityArray;
         }
-
-        /**
-         * 将按光谱(即按行)存储的模式改为按列存储
-         * 第一代野鸡算法，转换速度慢
-         */
-        public ConcurrentDictionary<int, ByteColumn> CompressAsColumnMatrix(ImzMLConverter converter,
-            ConcurrentBag<TempSpectrum> tempSpectra, ColumnIndex columnIndex)
-        {
-            converter.JobInfo.Log(null, "Column Compressing");
-            //矩阵横坐标
-            List<int> rtsInt = [];
-            int totalPoints = 0;
-            List<TempSpectrum> spectra = tempSpectra.ToList();
-            spectra = spectra.OrderBy(obj => obj.rt).ToList();
-            for (var i = 0; i < spectra.Count; i++)
-            {
-                spectra[i].indexId = i;
-                rtsInt.Add((int)Math.Round(spectra[i].rt * 1000));
-                totalPoints += spectra[i].mzs.Length;
-            }
-
-            HashSet<int> mzsSet = new HashSet<int>();
-            foreach (TempSpectrum spectrum in spectra)
-            {
-                mzsSet.UnionWith(spectrum.mzs);
-            }
-            List<int> mzList = mzsSet.ToList();
-            mzList.Sort();
-            int[] totalMzs = mzList.ToArray();
-
-            converter.JobInfo.Log("Total Spectra:" + spectra.Count + ",Diff m/z:" + totalMzs.Length);
-            converter.JobInfo.Log("m/z range:" + totalMzs[0] + "-" + totalMzs[totalMzs.Length - 1]);
-            converter.JobInfo.Log("Total effective points:" + totalPoints);
-
-            int step = 1;
-            ConcurrentDictionary<int, ByteColumn> treeColumnCompressed = new ConcurrentDictionary<int, ByteColumn>();
-            ConcurrentDictionary<int, Slice> treeColumn = new ConcurrentDictionary<int, Slice>();
-
-            //本段代码无法进行多线程优化，光谱图必须一张一站进行读取
-            foreach (var spectrum in spectra)
-            {
-                int currentStep = Interlocked.Increment(ref step);
-                converter.JobInfo.Log(null, Tag.percentage(Tag.Column_Trans, currentStep, spectra.Count));
-                for (var i = 0; i < spectrum.mzs.Length; i++)
-                {
-                    treeColumn.GetOrAdd(spectrum.mzs[i], new Slice()).Add(spectrum.indexId, spectrum.intensities[i]);
-                }
-            }
-
-            step = 0;
-            // 并行化处理质荷比
-            Parallel.ForEach(totalMzs, mz =>
-            {
-                int currentStep = Interlocked.Increment(ref step);
-
-                if (currentStep % 100000 == 0)
-                {
-                    converter.JobInfo.Log(null, Tag.percentage(Tag.Column_Compress, currentStep, totalMzs.Length));
-                }
-
-                Slice slice = treeColumn[mz];
-                byte[] compressedIndexIds = ByteTrans.intToByte(new IntegratedVarByteWrapper().encode(ArrayUtil.ToIntArray(slice.indexIdList)));
-                byte[] compressedInts = ByteTrans.intToByte(new VarByteWrapper().encode(ArrayUtil.ToIntArray(slice.intensityList)));
-                treeColumnCompressed[mz] = new ByteColumn(compressedIndexIds, compressedInts);
-            });
-
-            columnIndex.mzs = totalMzs;
-            columnIndex.rts = rtsInt.ToArray();
-            return treeColumnCompressed;
-        }
-
-        public override void CompressMS1(PwizConverter converter, BlockIndex index)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void CompressMS2(PwizConverter converter, List<MsIndex> ms2List, BlockIndex index)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Compress(pwiz.CLI.msdata.Spectrum spectrum, TempScan ts)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void CompressMobility(pwiz.CLI.msdata.Spectrum spectrum, TempScan ts)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Compress(pwiz.CLI.msdata.Chromatogram chromatogram, TempScanChroma ts)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

@@ -28,7 +28,6 @@ namespace AirdPro.Converters
             converter.PredictForBestCombination(); //预测最佳压缩组合
             converter.PretreatmentDda(); //MS1和MS2分开建立索引
             converter.CompressMs1Block(); //处理MS1,并将索引写入文件流中
-            converter.compressMS2BlockForDDA(); //处理MS2,并将索引写入文件流中
             converter.WriteToAirdInfoFile(); //将Info数据写入文件
         }
 

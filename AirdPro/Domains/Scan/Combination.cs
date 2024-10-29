@@ -9,6 +9,7 @@
  */
 
 using AirdPro.Algorithms;
+using AirdPro.Algorithms.Compressor;
 using AirdPro.Constants;
 using AirdPro.Storage.Config;
 using AirdSDK.Compressor;
@@ -73,6 +74,43 @@ namespace AirdPro.Domains
                 compressor.MobiByteComp = ByteComp.build(config.mobiByteComp);
             }
     
+            return config;
+        }
+
+        public ConversionConfig enable(ConversionConfig config, ImzMLComp compressor)
+        {
+            if (config == null)
+            {
+                config = new ConversionConfig();
+            }
+
+            if (mz != null && mz.StartsWith(Tag.Key_MZ))
+            {
+                string[] mzCompArray = mz.Split(Const.Char_Dash);
+                config.mzIntComp = SortedIntComp.getType(mzCompArray[1]);
+                config.mzByteComp = ByteComp.getType(mzCompArray[2]);
+                compressor.MzIntComp = SortedIntComp.build(config.mzIntComp);
+                compressor.MzByteComp = ByteComp.build(config.mzByteComp);
+            }
+
+            if (intensity != null && intensity.StartsWith(Tag.Key_Intensity))
+            {
+                string[] intCompArray = intensity.Split(Const.Char_Dash);
+                config.intIntComp = IntComp.getType(intCompArray[1]);
+                config.intByteComp = ByteComp.getType(intCompArray[2]);
+                compressor.IntIntComp = IntComp.build(config.intIntComp);
+                compressor.IntByteComp = ByteComp.build(config.intByteComp);
+            }
+
+            if (mobi != null && mobi.StartsWith(Tag.Key_Mobi))
+            {
+                string[] mobiCompArray = mobi.Split(Const.Char_Dash);
+                config.mobiIntComp = IntComp.getType(mobiCompArray[1]);
+                config.mobiByteComp = ByteComp.getType(mobiCompArray[2]);
+                compressor.MobiIntComp = IntComp.build(config.mobiIntComp);
+                compressor.MobiByteComp = ByteComp.build(config.mobiByteComp);
+            }
+
             return config;
         }
     }
