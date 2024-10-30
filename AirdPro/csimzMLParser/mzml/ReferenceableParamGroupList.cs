@@ -1,14 +1,7 @@
 ﻿namespace AirdPro.csimzMLParser.mzml
 {
-    public class ReferenceableParamGroupList : MzMLIDContentList<ReferenceableParamGroup>
+    public class ReferenceableParamGroupList(int count) : MzMLIDContentList<ReferenceableParamGroup>(count)
     {
-        private static long serialVersionUID = 1L;
-
-        public ReferenceableParamGroupList(int count) : base(count)
-        {
-
-        }
-
         public ReferenceableParamGroupList(ReferenceableParamGroupList rpgList) : this(rpgList.Size())
         {
             foreach(ReferenceableParamGroup rgp in rpgList)

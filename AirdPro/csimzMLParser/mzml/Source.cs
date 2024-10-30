@@ -2,7 +2,6 @@
 {
     public class Source : Component
     {
-        private static readonly long serialVersionUID = 1L;
         public static readonly string IONISATION_TYPE_ID = "MS:1000008";
         public static readonly string SOURCE_ATTRIBUTE_ID = "MS:1000482";
         public static readonly string INLET_TYPE_ID = "MS:1000007";

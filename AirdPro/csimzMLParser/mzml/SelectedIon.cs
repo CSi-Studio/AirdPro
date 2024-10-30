@@ -2,8 +2,6 @@
 {
     public class SelectedIon : MzMLContentWithParams
     {
-        private static readonly long serialVersionUID = 1L;
-
         public static readonly string ION_SELECTION_ATTRIBUTE_ID = "MS:1000455"; 
 
         public SelectedIon() : base()

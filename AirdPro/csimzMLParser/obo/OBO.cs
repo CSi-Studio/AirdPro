@@ -2,6 +2,7 @@
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
 
@@ -11,8 +12,6 @@ namespace AirdPro.csimzMLParser.obo
     public class OBO
     {
         private static readonly ILog LOGGER = LogManager.GetLogger(typeof(OBO));
-
-        private static readonly long serialVersionUID = 1L;
 
         public static readonly string MS_OBO_URI = "https://raw.githubusercontent.com/HUPO-PSI/psi-ms-CV/master/psi-ms.obo";
         public static readonly string MS_OBO_FULLNAME = "Proteomics Standards Initiative Mass Spectrometry ontology";
@@ -28,12 +27,12 @@ namespace AirdPro.csimzMLParser.obo
         public static readonly string IMS_OBO_ID = "IMS";
         public static readonly string IMS_OBO_VERSION = "???";
 
-        private string path;
-        private List<OBO> imports;
-        private string defaultNamespace;
-        private string ontologyIdentifier;        
-        private string dataVersion;
-        private Dictionary<string, OBOTerm> terms;
+        private readonly string path;
+        private readonly List<OBO> imports;
+        private readonly string defaultNamespace;
+        private readonly string ontologyIdentifier;        
+        private readonly string dataVersion;
+        private readonly Dictionary<string, OBOTerm> terms;
 
         protected static OBO ONTOLOGY;
 

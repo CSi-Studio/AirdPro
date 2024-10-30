@@ -18,10 +18,11 @@ namespace AirdPro.Domains
         public string remoteId;
         public string sourcePath;
         public string targetPath;
+        #nullable enable
         public string? type = JobInfo.AutoType;
         public int? mzPrecision;
-        public string creator;
-        public string suffix;
+        public string? creator;
+        public string? suffix;
         // public string? scene = Scene.Computation;
         public int? engine = (int)AirdEngine.RowCompression;
         public int? indexFormat = 0;
@@ -34,8 +35,8 @@ namespace AirdPro.Domains
         public string? mobiIntComp;
         public string? mobiByteComp;
         public bool? autoDecision;
-        public string consumeIP;
-        public string consumeTime;
+        public string? consumeIP;
+        public string? consumeTime;
 
         public RemoteConvertJob()
         {

@@ -1,13 +1,7 @@
 ﻿namespace AirdPro.csimzMLParser.mzml
 {
-    public class ScanSettingsList : MzMLIDContentList<ScanSettings>
+    public class ScanSettingsList(int count) : MzMLIDContentList<ScanSettings>(count)
     {
-        private static readonly long serialVersionUID = 1L;
-
-        public ScanSettingsList(int count) : base(count)
-        {
-        }
-
         public ScanSettingsList(ScanSettingsList scanSettingsList, ReferenceableParamGroupList rpgList, SourceFileList sourceFileList) : this(scanSettingsList.Size())
         {
             foreach (ScanSettings scanSettings in scanSettingsList)

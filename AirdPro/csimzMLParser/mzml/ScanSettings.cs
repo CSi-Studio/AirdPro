@@ -6,8 +6,6 @@ namespace AirdPro.csimzMLParser.mzml
     [Serializable] // 标记类为可序列化
     public class ScanSettings : MzMLContentWithParams, IReferenceableTag
     {
-        private static readonly long serialVersionUID = 1L;
-
         // linescan direction
         public const string LINESCAN_DIRECTION_ID = "IMS:1000049";
         public const string LINESCAN_RIGHT_LEFT_ID = "IMS:1000490";

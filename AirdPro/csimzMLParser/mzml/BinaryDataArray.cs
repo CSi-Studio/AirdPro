@@ -11,8 +11,6 @@ namespace AirdPro.csimzMLParser.mzml
     {
         private static readonly ILog LOGGER = LogManager.GetLogger(typeof(BinaryDataArray));
 
-        private const long serialVersionUID = 1L;
-
         public enum CompressionType
         {
             NONE,
@@ -39,51 +37,30 @@ namespace AirdPro.csimzMLParser.mzml
 
         public static OBOTerm ToOBOTerm(CompressionType compressionType)
         {
-            switch (compressionType)
+            return compressionType switch
             {
-                case CompressionType.NONE:
-                    return OBO.GetOBO().GetTerm(NO_COMPRESSION_ID);
-                case CompressionType.ZLIB:
-                    return OBO.GetOBO().GetTerm(ZLIB_COMPRESSION_ID);
-                case CompressionType.XZ:
-                    return OBO.GetOBO().GetTerm(XZ_COMPRESSION_ID);
-                case CompressionType.LZ4:
-                    return OBO.GetOBO().GetTerm(LZ4_COMPRESSION_ID);
-                case CompressionType.ZSTD:
-                    return OBO.GetOBO().GetTerm(ZSTD_COMPRESSION_ID);
-                case CompressionType.MSNUMPRESS_LINEAR:
-                    return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_ID);
-                case CompressionType.MSNUMPRESS_POSITIVE:
-                    return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_ID);
-                case CompressionType.MSNUMPRESS_SLOF:
-                    return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_ID);
-                case CompressionType.MSNUMPRESS_LINEAR_ZLIB:
-                    return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_ZLIB_ID);
-                case CompressionType.MSNUMPRESS_POSITIVE_ZLIB:
-                    return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_ZLIB_ID);
-                case CompressionType.MSNUMPRESS_SLOF_ZLIB:
-                    return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_ZLIB_ID);
-                case CompressionType.MSNUMPRESS_LINEAR_XZ:
-                    return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_XZ_ID);
-                case CompressionType.MSNUMPRESS_POSITIVE_XZ:
-                    return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_XZ_ID);
-                case CompressionType.MSNUMPRESS_SLOF_XZ:
-                    return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_XZ_ID);
-                case CompressionType.MSNUMPRESS_LINEAR_LZ4:
-                    return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_LZ4_ID);
-                case CompressionType.MSNUMPRESS_POSITIVE_LZ4:
-                    return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_LZ4_ID);
-                case CompressionType.MSNUMPRESS_SLOF_LZ4:
-                    return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_LZ4_ID);
-                case CompressionType.MSNUMPRESS_LINEAR_ZSTD:
-                    return OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_ZSTD_ID);
-                case CompressionType.MSNUMPRESS_POSITIVE_ZSTD:
-                    return OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_ZSTD_ID);
-                case CompressionType.MSNUMPRESS_SLOF_ZSTD:
-                    return OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_ZSTD_ID);
-                default:
-                    return null;
-            }
+                CompressionType.NONE => OBO.GetOBO().GetTerm(NO_COMPRESSION_ID),
+                CompressionType.ZLIB => OBO.GetOBO().GetTerm(ZLIB_COMPRESSION_ID),
+                CompressionType.XZ => OBO.GetOBO().GetTerm(XZ_COMPRESSION_ID),
+                CompressionType.LZ4 => OBO.GetOBO().GetTerm(LZ4_COMPRESSION_ID),
+                CompressionType.ZSTD => OBO.GetOBO().GetTerm(ZSTD_COMPRESSION_ID),
+                CompressionType.MSNUMPRESS_LINEAR => OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_ID),
+                CompressionType.MSNUMPRESS_POSITIVE => OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_ID),
+                CompressionType.MSNUMPRESS_SLOF => OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_ID),
+                CompressionType.MSNUMPRESS_LINEAR_ZLIB => OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_ZLIB_ID),
+                CompressionType.MSNUMPRESS_POSITIVE_ZLIB => OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_ZLIB_ID),
+                CompressionType.MSNUMPRESS_SLOF_ZLIB => OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_ZLIB_ID),
+                CompressionType.MSNUMPRESS_LINEAR_XZ => OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_XZ_ID),
+                CompressionType.MSNUMPRESS_POSITIVE_XZ => OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_XZ_ID),
+                CompressionType.MSNUMPRESS_SLOF_XZ => OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_XZ_ID),
+                CompressionType.MSNUMPRESS_LINEAR_LZ4 => OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_LZ4_ID),
+                CompressionType.MSNUMPRESS_POSITIVE_LZ4 => OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_LZ4_ID),
+                CompressionType.MSNUMPRESS_SLOF_LZ4 => OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_LZ4_ID),
+                CompressionType.MSNUMPRESS_LINEAR_ZSTD => OBO.GetOBO().GetTerm(MSNUMPRESS_LINEAR_ZSTD_ID),
+                CompressionType.MSNUMPRESS_POSITIVE_ZSTD => OBO.GetOBO().GetTerm(MSNUMPRESS_POSITIVE_ZSTD_ID),
+                CompressionType.MSNUMPRESS_SLOF_ZSTD => OBO.GetOBO().GetTerm(MSNUMPRESS_SLOF_ZSTD_ID),
+                _ => null,
+            };
         }
 
         public const string COMPRESSION_TYPE_ID = "MS:1000572";
@@ -134,7 +111,7 @@ namespace AirdPro.csimzMLParser.mzml
 
         private int arrayLength = -1;
         private DataProcessing dataProcessingRef;
-        private int encodedLength = 0;
+        private readonly int encodedLength = 0;
         private double[] data;
         private bool isMzArray;
         private bool isIntensityArray;
@@ -284,9 +261,9 @@ namespace AirdPro.csimzMLParser.mzml
             if (dataLocation == null && parent != null)
             {
                 IMzMLTag grandParent = parent.GetParent();
-                if (grandParent is MzMLDataContainer)
+                if (grandParent is MzMLDataContainer container)
                 {
-                    ((MzMLDataContainer)grandParent).ConvertMzMLDataStorageToBase64();
+                    container.ConvertMzMLDataStorageToBase64();
                 }
             }
 
@@ -345,61 +322,13 @@ namespace AirdPro.csimzMLParser.mzml
                 {
                     case ZLIB_COMPRESSION_ID:
                         transformation.AddTransform(new ZlibDataTransform());
-                        break;
-                    case XZ_COMPRESSION_ID:
-                        //transformation.AddTransform(new XZDataTransform());
-                        break;
+                        break;                   
                     case LZ4_COMPRESSION_ID:
                         //transformation.AddTransform(new LZ4DataTransform((int)(ExternalArrayLength * GetDataTypeInBytes(GetCVParamOrChild(Accessions.BINARY_DATA_TYPE_ID)))));
                         break;
                     case ZSTD_COMPRESSION_ID:
                         //transformation.AddTransform(new ZstdDataTransform((int)(ExternalArrayLength * GetDataTypeInBytes(GetCVParamOrChild(Accessions.BINARY_DATA_TYPE_ID)))));
-                        break;
-                    case MSNUMPRESS_LINEAR_ID:
-                        //
-                        break;
-                    case MSNUMPRESS_POSITIVE_ID:
-                        //
-                        break;
-                    case MSNUMPRESS_SLOF_ID:
-                        //
-                        break;
-                    case MSNUMPRESS_LINEAR_LZ4_ID:
-                        //
-                        break;
-                    case MSNUMPRESS_LINEAR_XZ_ID:
-                        //
-                        break;
-                    case MSNUMPRESS_LINEAR_ZLIB_ID:
-                        //
-                        break;
-                    case MSNUMPRESS_LINEAR_ZSTD_ID:
-                        //
-                        break;
-                    case MSNUMPRESS_POSITIVE_LZ4_ID:
-                        //
-                        break;
-                    case MSNUMPRESS_POSITIVE_XZ_ID:
-                        //
-                        break;
-                    case MSNUMPRESS_POSITIVE_ZLIB_ID:
-                        //
-                        break;
-                    case MSNUMPRESS_POSITIVE_ZSTD_ID:
-                        //
-                        break;
-                    case MSNUMPRESS_SLOF_LZ4_ID:
-                        //
-                        break;
-                    case MSNUMPRESS_SLOF_XZ_ID:
-                        //
-                        break;
-                    case MSNUMPRESS_SLOF_ZLIB_ID:
-                        //
-                        break;
-                    case MSNUMPRESS_SLOF_ZSTD_ID:
-                        //
-                        break;                    
+                        break;                               
                 }
             }
 
@@ -534,31 +463,15 @@ namespace AirdPro.csimzMLParser.mzml
 
         public void SetDataType(DataType dataType)
         {
-            string newDataTypeID;
-
-            switch (dataType)
+            string newDataTypeID = dataType switch
             {
-                case DataType.FLOAT:
-                    newDataTypeID = SINGLE_PRECISION_ID;
-                    break;
-                case DataType.INTEGER_64BIT:
-                    newDataTypeID = SIGNED_64BIT_INTEGER_ID;
-                    break;
-                case DataType.INTEGER_32BIT:
-                    newDataTypeID = SIGNED_32BIT_INTEGER_ID;
-                    break;
-                case DataType.INTEGER_16BIT:
-                    newDataTypeID = SIGNED_16BIT_INTEGER_ID;
-                    break;
-                case DataType.INTEGER_8BIT:
-                    newDataTypeID = SIGNED_8BIT_INTEGER_ID;
-                    break;
-                case DataType.DOUBLE:
-                default:
-                    newDataTypeID = DOUBLE_PRECISION_ID;
-                    break;
-            }
-
+                DataType.FLOAT => SINGLE_PRECISION_ID,
+                DataType.INTEGER_64BIT => SIGNED_64BIT_INTEGER_ID,
+                DataType.INTEGER_32BIT => SIGNED_32BIT_INTEGER_ID,
+                DataType.INTEGER_16BIT => SIGNED_16BIT_INTEGER_ID,
+                DataType.INTEGER_8BIT => SIGNED_8BIT_INTEGER_ID,
+                _ => DOUBLE_PRECISION_ID,
+            };
             RemoveChildrenOfCVParam(BINARY_DATA_TYPE_ID, false);
             AddCVParam(new EmptyCVParam(OBO.GetOBO().GetTerm(newDataTypeID)));
         }

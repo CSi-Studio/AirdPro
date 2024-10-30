@@ -1,13 +1,11 @@
 ﻿using AirdPro.csimzMLParser.mzml;
 using AirdPro.csimzMLParser.obo;
-using log4net;
 using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace AirdPro.csimzMLParser.data
-{  
+{
     [Serializable]
     public class DataTypeTransform(DataTypeTransform.DataType from, DataTypeTransform.DataType to) : IDataTransform
     {

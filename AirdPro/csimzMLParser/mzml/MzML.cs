@@ -12,8 +12,6 @@ namespace AirdPro.csimzMLParser.mzml
     [Serializable]
     public class MzML : MzMLContentWithParams
     {
-        private static readonly long serialVersionUID = 1L;
-
         private static readonly ILog LOGGER = LogManager.GetLogger(typeof(MzML));
 
         public const string NAMESPACE = "http://psi.hupo.org/ms/mzml";
@@ -175,10 +173,7 @@ namespace AirdPro.csimzMLParser.mzml
 
         public ReferenceableParamGroupList GetReferenceableParamGroupList()
         {
-            if (referenceableParamGroupList == null)
-            {
-                referenceableParamGroupList = new ReferenceableParamGroupList(0);
-            }
+            referenceableParamGroupList ??= new ReferenceableParamGroupList(0);
 
             return referenceableParamGroupList;
         }
@@ -210,10 +205,7 @@ namespace AirdPro.csimzMLParser.mzml
 
         public SoftwareList GetSoftwareList()
         {
-            if (softwareList == null)
-            {
-                softwareList = new SoftwareList(0);
-            }
+            softwareList ??= new SoftwareList(0);
 
             return softwareList;
         }
@@ -227,10 +219,7 @@ namespace AirdPro.csimzMLParser.mzml
 
         public ScanSettingsList GetScanSettingsList()
         {
-            if (scanSettingsList == null)
-            {
-                scanSettingsList = new ScanSettingsList(0);
-            }
+            scanSettingsList ??= new ScanSettingsList(0);
 
             return scanSettingsList;
         }
@@ -244,10 +233,7 @@ namespace AirdPro.csimzMLParser.mzml
 
         public InstrumentConfigurationList GetInstrumentConfigurationList()
         {
-            if (instrumentConfigurationList == null)
-            {
-                instrumentConfigurationList = new InstrumentConfigurationList(0);
-            }
+            instrumentConfigurationList ??= new InstrumentConfigurationList(0);
 
             return instrumentConfigurationList;
         }
@@ -311,10 +297,7 @@ namespace AirdPro.csimzMLParser.mzml
             }
             else if (currentXPath.StartsWith("/scanSettingsList"))
             {
-                if (scanSettingsList != null)
-                {
-                    scanSettingsList.AddElementsAtXPathToCollection(elements, fullXPath, currentXPath);
-                }
+                scanSettingsList?.AddElementsAtXPathToCollection(elements, fullXPath, currentXPath);
             }
             else if (currentXPath.StartsWith("/instrumentConfigurationList"))
             {
@@ -333,29 +316,20 @@ namespace AirdPro.csimzMLParser.mzml
         public void SetDataProcessingList(DataProcessingList dataProcessingList)
         {
             dataProcessingList.SetParent(this);
-
             this.dataProcessingList = dataProcessingList;
-
-            if (run != null)
-                run.SetDataProcessingList(dataProcessingList);
+            run?.SetDataProcessingList(dataProcessingList);
         }
 
         public DataProcessingList GetDataProcessingList()
         {
-            if (dataProcessingList == null)
-            {
-                dataProcessingList = new DataProcessingList(0);
-            }
-
+            dataProcessingList ??= new DataProcessingList(0);
             return dataProcessingList;
         }
 
         public void SetRun(Run run)
         {
             run.SetParent(this);
-
             this.run = run;
-
             run.SetDataProcessingList(dataProcessingList);
         }
 
@@ -455,10 +429,10 @@ namespace AirdPro.csimzMLParser.mzml
             DataProcessingList dpList = DataProcessingList.Create(softwareList.Get(0));
             mzML.SetDataProcessingList(dpList);
 
-            Run run = new Run("run", icList.Get(0));
+            Run run = new("run", icList.Get(0));
             mzML.SetRun(run);
 
-            SpectrumList spectrumList = new SpectrumList(0, dpList.Get(0));
+            SpectrumList spectrumList = new(0, dpList.Get(0));
             run.SetSpectrumList(spectrumList);
         }
 

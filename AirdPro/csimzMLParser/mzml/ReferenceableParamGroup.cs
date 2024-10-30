@@ -5,7 +5,6 @@ namespace AirdPro.csimzMLParser.mzml
 {
     public class ReferenceableParamGroup : MzMLContentWithParams, IReferenceableTag
     {
-        private static readonly long serialVersionUID = 1L;
         private static int idNumber = 0;
         private string id; 
 

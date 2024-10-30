@@ -28,6 +28,7 @@ namespace AirdPro.Forms
     {
         public static bool JobUnderConsuming = false; //当前是否有远程任务正在执行
 
+        [Obsolete]
         public RedisForm()
         {
             InitializeComponent();
@@ -60,6 +61,7 @@ namespace AirdPro.Forms
         }
 
         //当重新连接Redis时,会启动Redis任务消费功能
+        [Obsolete]
         private void BtnConnect_Click(object sender, EventArgs e)
         {
             if (RedisManager.Instance.Check())
@@ -152,6 +154,7 @@ namespace AirdPro.Forms
             }
         }
 
+        [Obsolete]
         private void ConnectToRedis()
         {
             if (tbRedisHost.Text == null || tbRedisHost.Text.IsEmpty())
@@ -210,6 +213,7 @@ namespace AirdPro.Forms
             Consume();
         }
 
+        [Obsolete]
         private void OpenConsumeSwitchToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<string> serverIps = [];
@@ -221,6 +225,7 @@ namespace AirdPro.Forms
             RedisManager.Instance.OpenConsume(serverIps);
         }
 
+        [Obsolete]
         private void CloseConsumeSwitchToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<string> serverIps = [];

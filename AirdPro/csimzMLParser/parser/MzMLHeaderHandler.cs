@@ -14,7 +14,7 @@ using System.Xml;
 
 namespace AirdPro.csimzMLParser.parser
 {
-    public class MzMLHeaderHandler
+    public class MzMLHeaderHandler(OBO obo)
     {
         public const string ACCESSION_ATTRIBUTE_NAME = "accession";
         public const string VALUE_ATTRIBUTE_NAME = "value";
@@ -25,7 +25,7 @@ namespace AirdPro.csimzMLParser.parser
         private static readonly ILog LOGGER = LogManager.GetLogger(typeof(MzMLHeaderHandler));
 
         protected MzML mzML;
-        protected OBO obo;
+        protected OBO obo = obo;
         protected CVList cvList;
         protected FileDescription fileDescription;
         protected SourceFileList sourceFileList;
@@ -57,33 +57,19 @@ namespace AirdPro.csimzMLParser.parser
         private ChromatogramList chromatogramList;
         private Chromatogram currentChromatogram;
         protected Stack<MzMLContent> contentStack = new();
-        private bool processingSpectrum;
-        private bool processingChromatogram;
-        private bool processingPrecursor;
-        private bool processingProduct;
+        private bool processingSpectrum = false;
+        private bool processingChromatogram = false;
+        private bool processingPrecursor = false;
+        private bool processingProduct = false;
         private bool processingOffset;
-        private readonly StringBuilder offsetData;
+        private readonly StringBuilder offsetData = new();
         private string previousOffsetIDRef;
         private string currentOffsetIDRef;
         private long previousOffset = -1;
         protected DataStorage dataStorage;
         private bool openDataStorage = true;
         protected int numberOfSpectra = 0;
-        private readonly List<IParserListener> listeners;
-
-        public MzMLHeaderHandler(OBO obo)
-        {
-            this.obo = obo;
-
-            processingSpectrum = false;
-            processingChromatogram = false;
-            processingPrecursor = false;
-            processingProduct = false;
-
-            offsetData = new StringBuilder();
-
-            listeners = [];
-        }
+        private readonly List<IParserListener> listeners = [];
 
         public void SetOpenDataStorage(bool openDataStorage)
         {
@@ -287,9 +273,9 @@ namespace AirdPro.csimzMLParser.parser
                         NotifyParserListeners(formatIssue);
                     }
 
-                    if (contentStack.Peek() is MzMLContentWithParams)
+                    if (contentStack.Peek() is MzMLContentWithParams @params)
                     {
-                        ((MzMLContentWithParams)contentStack.Peek()).AddCVParam(cvParam);
+                        @params.AddCVParam(cvParam);
                     }
                     else
                     {
@@ -418,12 +404,12 @@ namespace AirdPro.csimzMLParser.parser
             }
 
             string startTimeStamp = reader.GetAttribute("startTimeStamp");
-           /* if (startTimeStamp != null)
+            DateTime dateTime;
+            if (startTimeStamp != null)
             {
                 string format = "yyyy-MM-dd'T'HH:mm:ss";
                 try
-                {
-                    DateTime dateTime;
+                {                    
                     if (startTimeStamp.Contains("BST"))
                     {
                         format = "ddd MMM dd HH:mm:ss 'BST' yyyy";
@@ -433,28 +419,29 @@ namespace AirdPro.csimzMLParser.parser
                     else
                     {
                         dateTime = DateTime.ParseExact(startTimeStamp, "yyyy-MM-dd'T'HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None);
-                    }                                   
-                    
-                    run.SetStartTimeStamp(dateTime);
+                    }
+
+                    run.SetStartTimeStamp(dateTime.ToString());
                 }
                 catch (ParseException)
                 {
-                    InvalidFormatIssue formatIssue = new ("startTimeStamp", format, startTimeStamp);
+                    InvalidFormatIssue formatIssue = new("startTimeStamp", format, startTimeStamp);
                     formatIssue.SetIssueLocation(contentStack.Peek());
                     NotifyParserListeners(formatIssue);
                     try
                     {
-                        DateTime parsed = DateTime.ParseExact(startTimeStamp, "EEE MMM dd HH:mm:ss zzz yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
-                        run.SetStartTimeStamp(parsed);
+                        dateTime = DateTime.ParseExact(startTimeStamp, "EEE MMM dd HH:mm:ss zzz yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                        run.SetStartTimeStamp(dateTime.ToString());
                     }
                     catch (ParseException)
                     {
-                        InvalidFormatIssue secondFormatIssue = new ("startTimeStamp", "EEE MMM dd HH:mm:ss zzz yyyy", startTimeStamp);
+                        InvalidFormatIssue secondFormatIssue = new("startTimeStamp", "EEE MMM dd HH:mm:ss zzz yyyy", startTimeStamp);
                         secondFormatIssue.SetIssueLocation(contentStack.Peek());
                         NotifyParserListeners(secondFormatIssue);
+                        run.SetStartTimeStamp(startTimeStamp);
                     }
                 }
-            }*/
+            }
             mzML.SetRun(run);
             contentStack.Push(run);
         }
@@ -1821,19 +1808,13 @@ namespace AirdPro.csimzMLParser.parser
             {
                 dataContainer = spectrumList.GetSpectrum(previousOffsetIDRef);
 
-                if (dataContainer == null)
-                {
-                    dataContainer = spectrumList.GetSpectrum(spectrumList.Size() - 1);
-                }
+                dataContainer ??= spectrumList.GetSpectrum(spectrumList.Size() - 1);
             }
             else
             {
                 dataContainer = chromatogramList.GetChromatogram(previousOffsetIDRef);
 
-                if (dataContainer == null)
-                {
-                    dataContainer = chromatogramList.GetChromatogram(chromatogramList.Size() - 1);
-                }
+                dataContainer ??= chromatogramList.GetChromatogram(chromatogramList.Size() - 1);
             }
             return dataContainer;
         }
@@ -1919,13 +1900,13 @@ namespace AirdPro.csimzMLParser.parser
             }
             else if ("scanWindow".Equals(qName))
             {
-                if (contentStack.Peek() is MzMLContentWithParams)
+                if (contentStack.Peek() is MzMLContentWithParams @params)
                 {
-                    CVParam cvParam = ((MzMLContentWithParams)contentStack.Peek()).GetCVParamOrChild("MS:1000501");
+                    CVParam cvParam = @params.GetCVParamOrChild("MS:1000501");
 
-                    if (((MzMLContentWithParams)contentStack.Peek()).ContainsCVParam(cvParam))
+                    if (@params.ContainsCVParam(cvParam))
                     {
-                        ReferenceableParamGroup bestGroup = ((MzMLContentWithParams)contentStack.Peek()).FindBestFittingRPG(referenceableParamGroupList);
+                        ReferenceableParamGroup bestGroup = @params.FindBestFittingRPG(referenceableParamGroupList);
 
                         if (bestGroup == null)
                         {
@@ -1940,11 +1921,11 @@ namespace AirdPro.csimzMLParser.parser
 
                             referenceableParamGroupList.Add(bestGroup);
 
-                            bestGroup.AddCVParam(((MzMLContentWithParams)contentStack.Peek()).GetCVParamOrChild("MS:1000501"));
-                            bestGroup.AddCVParam(((MzMLContentWithParams)contentStack.Peek()).GetCVParamOrChild("MS:1000500"));
+                            bestGroup.AddCVParam(@params.GetCVParamOrChild("MS:1000501"));
+                            bestGroup.AddCVParam(@params.GetCVParamOrChild("MS:1000500"));
                         }
 
-                        ((MzMLContentWithParams)contentStack.Peek()).ReplaceCVParamsWithRPG(bestGroup);
+                        @params.ReplaceCVParamsWithRPG(bestGroup);
                     }
                 }
             }

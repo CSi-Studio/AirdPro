@@ -1,14 +1,7 @@
 ﻿namespace AirdPro.csimzMLParser.mzml
 {
-    public class SelectedIonList : MzMLContentList<SelectedIon>
+    public class SelectedIonList(int count) : MzMLContentList<SelectedIon>(count)
     {
-        private static readonly long serialVersionUID = 1L;
-
-        public SelectedIonList(int count) : base(count)
-        {
-            
-        }
-
         public SelectedIonList(SelectedIonList siList, ReferenceableParamGroupList rpgList) : this(siList.Size())
         {
             foreach (SelectedIon si in siList)

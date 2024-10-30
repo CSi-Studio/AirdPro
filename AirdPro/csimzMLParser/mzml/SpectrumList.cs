@@ -3,18 +3,11 @@ using System.Collections.Generic;
 
 namespace AirdPro.csimzMLParser.mzml
 {
-    public class SpectrumList : MzMLIDContentList<Spectrum>
+    public class SpectrumList(int count) : MzMLIDContentList<Spectrum>(count)
     {
-        private static readonly long serialVersionUID = 1L;
-
         public Dictionary<string, Spectrum> spectrumDictionary;
         public DataProcessing defaultDataProcessingRef;
         public IReferenceList<DataProcessing> dataProcessingList;
-
-        public SpectrumList(int count) : base(count)
-        {
-
-        }
 
         public SpectrumList(int count, DataProcessing defaultDataProcessingRef) : this(count)
         {

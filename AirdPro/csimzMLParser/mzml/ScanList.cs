@@ -7,8 +7,6 @@ namespace AirdPro.csimzMLParser.mzml
 {
     public class ScanList : MzMLContentWithParams, IMzMLTagList<Scan>
     {
-        private static readonly long serialVersionUID = 1L;
-
         public static readonly string SPECTRA_COMBINATION_ID = "MS:1000570";
         public static readonly string NO_COMBINATION_ID = "MS:1000795";
 
@@ -16,7 +14,7 @@ namespace AirdPro.csimzMLParser.mzml
 
         public ScanList(int count)
         {
-            
+           
         }
 
         public ScanList(ScanList scanList, ReferenceableParamGroupList rpgList, SourceFileList sourceFileList, InstrumentConfigurationList icList)
@@ -45,7 +43,7 @@ namespace AirdPro.csimzMLParser.mzml
             }
             else
             {
-                list = new List<Scan> { scan };
+                list = [scan];
             }
         }
 
@@ -139,8 +137,10 @@ namespace AirdPro.csimzMLParser.mzml
 
         public static ScanList Create()
         {
-            var scanList = new ScanList(1);
-            scanList.Add(Scan.Create());
+            var scanList = new ScanList(1)
+            {
+                Scan.Create()
+            };
 
             scanList.AddCVParam(new EmptyCVParam(OBO.GetOBO().GetTerm(NO_COMBINATION_ID)));
 

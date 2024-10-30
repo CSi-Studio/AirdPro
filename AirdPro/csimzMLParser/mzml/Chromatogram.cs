@@ -6,8 +6,6 @@ namespace AirdPro.csimzMLParser.mzml
 {
     public class Chromatogram : MzMLDataContainer
     {
-        private static readonly long serialVersionUID = 1L;
-
         public static readonly string CHROMATOGRAM_ATTRIBUTE_ID = "MS:1000808";
         public static readonly string CHROMATOGRAM_TYPE_ID = "MS:1000626";
         public static readonly string POSITIVE_SCAN_ID = "MS:1000130";

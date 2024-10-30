@@ -1,14 +1,7 @@
 ﻿namespace AirdPro.csimzMLParser.mzml
 {
-    public class TargetList : MzMLContentList<Target>
+    public class TargetList(int count) : MzMLContentList<Target>(count)
     {
-        private static readonly long serialVersionUID = 1L;
-
-        public TargetList(int count) : base(count)
-        {
-            
-        }
-
         public TargetList(TargetList targetList, ReferenceableParamGroupList rpgList) : this(targetList.Size())
         {
             foreach (Target target in targetList)

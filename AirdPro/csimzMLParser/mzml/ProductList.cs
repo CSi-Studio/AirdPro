@@ -1,14 +1,7 @@
 ﻿namespace AirdPro.csimzMLParser.mzml
 {
-    public class ProductList : MzMLContentList<Product>
+    public class ProductList(int count) : MzMLContentList<Product>(count)
     {
-        private static readonly long serialVersionUID = 1L;
-
-        public ProductList(int count) : base(count)
-        {
-            
-        }
-
         public ProductList(ProductList productList, ReferenceableParamGroupList rpgList) : this(productList.Size())
         {
             foreach (Product product in productList)

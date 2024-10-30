@@ -8,11 +8,9 @@ namespace AirdPro.csimzMLParser.mzml
 {
     public class Run : MzMLContentWithParams, IReferenceableTag
     {
-        private static readonly long serialVersionUID = 1L;
-
         public static readonly string RUN_ATTRIBUTE_ID = "MS:1000857";
 
-        private InstrumentConfiguration defaultInstrumentConfigurationRef;
+        private readonly InstrumentConfiguration defaultInstrumentConfigurationRef;
         private SourceFile defaultSourceFileRef;
         private string id;
         private Sample sampleRef;
@@ -87,11 +85,9 @@ namespace AirdPro.csimzMLParser.mzml
         {
             this.dataProcessingList = dataProcessingList;
 
-            if (spectrumList != null)
-                spectrumList.SetDataProcessingList(dataProcessingList);
+            spectrumList?.SetDataProcessingList(dataProcessingList);
 
-            if (chromatogramList != null)
-                chromatogramList.SetDataProcessingList(dataProcessingList);
+            chromatogramList?.SetDataProcessingList(dataProcessingList);
         }
 
         public void SetDefaultSourceFileRef(SourceFile defaultSourceFileRef)

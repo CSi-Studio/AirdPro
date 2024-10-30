@@ -4,8 +4,6 @@ namespace AirdPro.csimzMLParser.mzml
 {
     public class Product : MzMLContent, IHasChildren
     {
-        private static readonly long serialVersionUID = 1L;
-
         private IsolationWindow isolationWindow;
 
         public Product()
@@ -28,7 +26,7 @@ namespace AirdPro.csimzMLParser.mzml
             this.isolationWindow = isolationWindow;
         }
 
-        public IsolationWindow getIsolationWindow()
+        public IsolationWindow GetIsolationWindow()
         {
             return isolationWindow;
         }

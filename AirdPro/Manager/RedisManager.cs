@@ -58,6 +58,7 @@ namespace AirdPro.Redis
             }
         }
 
+        [Obsolete]
         public void Connect(string host, int port, string user, string password)
         {
             ConfigurationOptions options = new()
@@ -73,7 +74,7 @@ namespace AirdPro.Redis
             {
                 _redis = ConnectionMultiplexer.Connect(options);
                 _db = _redis.GetDatabase(_dbNum);
-                _redis.GetSubscriber().Subscribe(RedisConst.SubscriberConsumeSwitch, ConsumeSwitchSubscriber);
+                _redis.GetSubscriber().Subscribe(RedisConst.SubscriberConsumeSwitch, ConsumeSwitchSubscriber);                
             }
             catch (Exception)
             {
@@ -356,6 +357,7 @@ namespace AirdPro.Redis
             return jobStrList;
         }
 
+        [Obsolete]
         public void OpenConsume(List<string> serverIps)
         {
             ConsumeSwitchCommand command = new()
@@ -365,8 +367,9 @@ namespace AirdPro.Redis
             };
             string com = JsonConvert.SerializeObject(command);
             _db.Publish(RedisConst.SubscriberConsumeSwitch, com);
-        } 
-        
+        }
+
+        [Obsolete]
         public void CloseConsume(List<string> serverIps)
         {
             ConsumeSwitchCommand command = new()

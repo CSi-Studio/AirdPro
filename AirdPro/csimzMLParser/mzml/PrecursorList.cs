@@ -1,14 +1,7 @@
 ﻿namespace AirdPro.csimzMLParser.mzml
 {
-    public class PrecursorList : MzMLContentList<Precursor>
+    public class PrecursorList(int count) : MzMLContentList<Precursor>(count)
     {
-        private static readonly long serialVersionUID = 1L;
-
-        public PrecursorList(int count) : base(count)
-        {
-            
-        }
-
         public PrecursorList(PrecursorList precursorList, ReferenceableParamGroupList rpgList, SourceFileList sourceFileList) : this(precursorList.Size())
         {
             foreach (Precursor precursor in precursorList)

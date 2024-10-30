@@ -9,16 +9,15 @@ namespace AirdPro.csimzMLParser.mzml
 {
     public class ComponentList : MzMLContentList<Component>
     {
-        private static readonly long serialVersionUID = 1L;
         private readonly List<Source> sources;
         private readonly List<Analyser> analysers;
         private readonly List<Detector> detectors;
 
         public ComponentList()
         {
-            sources = new List<Source>();
-            analysers = new List<Analyser>();
-            detectors = new List<Detector>();
+            sources = [];
+            analysers = [];
+            detectors = [];
         }
 
         public ComponentList(ComponentList componentList, ReferenceableParamGroupList rpgList)
@@ -47,12 +46,12 @@ namespace AirdPro.csimzMLParser.mzml
 
         public override void Add(Component component)
         {
-            if (component is Source)
-                AddSource((Source)component);
-            else if (component is Analyser)
-                AddAnalyser((Analyser)component);
-            else if (component is Detector)
-                AddDetector((Detector)component);
+            if (component is Source source)
+                AddSource(source);
+            else if (component is Analyser analyser)
+                AddAnalyser(analyser);
+            else if (component is Detector detector)
+                AddDetector(detector);
         }
 
         public void AddSource(Source source)

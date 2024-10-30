@@ -7,8 +7,6 @@ namespace AirdPro.csimzMLParser.mzml
     [Serializable]
     public class Scan : MzMLContentWithParams
     {
-        private static readonly long serialVersionUID = 1L;
-
         public static readonly string SCAN_ATTRIBUTE_ID = "MS:1000503";
         public static readonly string SCAN_DIRECTION_ID = "MS:1000018";
         public static readonly string SCAN_LAW_ID = "MS:1000019";

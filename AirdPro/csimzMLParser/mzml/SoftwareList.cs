@@ -1,13 +1,7 @@
 ﻿namespace AirdPro.csimzMLParser.mzml
 {
-    public class SoftwareList : MzMLIDContentList<Software>
+    public class SoftwareList(int count) : MzMLIDContentList<Software>(count)
     {
-        private static readonly long serialVersionUID = 1L;
-
-        public SoftwareList(int count) : base(count)
-        {
-        }
-
         public SoftwareList(SoftwareList softwareList, ReferenceableParamGroupList rpgList) : this(softwareList.Size())
         {   
             foreach (Software software in softwareList)

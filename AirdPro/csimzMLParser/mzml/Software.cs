@@ -12,7 +12,6 @@ namespace AirdPro.csimzMLParser.mzml
     public class Software : MzMLContentWithParams, IReferenceableTag
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(Software));
-        private static readonly long serialVersionUID = 1L;
         public const string SOFTWARE_ID = "MS:1000531"; // Required child (1)
         public const string CUSTOM_UNRELEASED_TOOL_ID = "MS:1000799";
 
@@ -85,7 +84,7 @@ namespace AirdPro.csimzMLParser.mzml
                     {
                         if (!line.StartsWith("#") && !string.IsNullOrWhiteSpace(line))
                         {
-                            string[] keyValue = line.Split(new char[] { '=' }, 2);
+                            string[] keyValue = line.Split(['='], 2);
                             if (keyValue.Length == 2)
                             {
                                 properties[keyValue[0].Trim()] = keyValue[1].Trim();
@@ -100,7 +99,7 @@ namespace AirdPro.csimzMLParser.mzml
                 logger.Error("Error loading software version from properties file.", ex);
             }
 
-            Software software = new Software("jimzMLParser", version);
+            Software software = new("jimzMLParser", version);
             software.AddCVParam(new EmptyCVParam(OBO.GetOBO().GetTerm(Software.CUSTOM_UNRELEASED_TOOL_ID)));
 
             return software;

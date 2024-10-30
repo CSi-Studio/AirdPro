@@ -5,8 +5,6 @@ namespace AirdPro.csimzMLParser.mzml
 {
     public class ChromatogramList : MzMLIDContentList<Chromatogram>
     {
-        private static readonly long serialVersionUID = 1L;
-
         public DataProcessing defaultDataProcessingRef;
         public IReferenceList<DataProcessing> dataProcessingList;
 

@@ -1,14 +1,7 @@
 ﻿namespace AirdPro.csimzMLParser.mzml
 {
-    public class SourceFileRefList : MzMLContentList<SourceFileRef>
+    public class SourceFileRefList(int count) : MzMLContentList<SourceFileRef>(count)
     {
-        private static readonly long serialVersionUID = 1L;
-
-        public SourceFileRefList(int count) : base(count)
-        {
-            
-        }
-
         public SourceFileRefList(SourceFileRefList sourceFileRefList, SourceFileList sourceFileList) : this(sourceFileRefList.Size())
         {            
             foreach (SourceFileRef sourceFileRef in sourceFileRefList)

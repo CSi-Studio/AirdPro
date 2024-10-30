@@ -41,19 +41,21 @@ namespace AirdProTests
                 {
                     string outputFile = Path.Combine(outputFolder, Path.GetFileNameWithoutExtension(entry) + ".mzML");
                     string arguments = $"-o \"{outputFolder}\" --mzML \"{entry}\" --combineIonMobilitySpectra";
-                    
+
 
                     // ProcessStartInfo processInfo = new ProcessStartInfo("cmd.exe", $"/K \"{Path.Combine(msconvertPath, "msconvert.exe")}\" {arguments}");
 
-                    ProcessStartInfo processInfo = new ProcessStartInfo(Path.Combine(msconvertPath, "msconvert.exe"), arguments);
-                    processInfo.RedirectStandardError = true;
-                    processInfo.RedirectStandardOutput = true;
-                    processInfo.UseShellExecute = false;
-                    
+                    ProcessStartInfo processInfo = new(Path.Combine(msconvertPath, "msconvert.exe"), arguments)
+                    {
+                        RedirectStandardError = true,
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false
+                    };
+
                     Trace.WriteLine(processInfo.Arguments);
 
                     
-                    Stopwatch stopwatch = new Stopwatch();
+                    Stopwatch stopwatch = new();
                     stopwatch.Start();
 
                     Process process = Process.Start(processInfo);
@@ -75,7 +77,7 @@ namespace AirdProTests
                     stopwatch.Stop();
                     TimeSpan elapsed = stopwatch.Elapsed;
 
-                    FileInfo fileInfo = new FileInfo(outputFile);
+                    FileInfo fileInfo = new(outputFile);
                     Console.WriteLine($"文件 {entry} 转换时间: {elapsed.TotalSeconds} 秒, 转换后大小: {fileInfo.Length / 1024.0 / 1024.0} MB");
                 }
             }

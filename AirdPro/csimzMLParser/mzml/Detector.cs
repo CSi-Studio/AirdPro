@@ -2,7 +2,6 @@
 {
     public class Detector : Component
     {
-        private static readonly long serialVersionUID = 1L;
         public const string DETECTOR_TYPE_ID = "MS:1000026";
         public const string DETECTOR_ATTRIBUTE_ID = "MS:1000481";
         public const string DETECTOR_ACQUISITION_MODE_ID = "MS:1000027";

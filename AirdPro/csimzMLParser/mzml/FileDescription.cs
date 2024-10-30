@@ -7,8 +7,6 @@ namespace AirdPro.csimzMLParser.mzml
     [Serializable]
     public class FileDescription : MzMLContentWithParams
     {
-        private static readonly long serialVersionUID = 1L;
-
         /**
          * 文件内容的描述。
          */

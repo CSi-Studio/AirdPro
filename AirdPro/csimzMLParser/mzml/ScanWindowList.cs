@@ -1,14 +1,7 @@
 ﻿namespace AirdPro.csimzMLParser.mzml
 {
-    public class ScanWindowList : MzMLContentList<ScanWindow>
+    public class ScanWindowList(int count) : MzMLContentList<ScanWindow>(count)
     {
-        private static readonly long serialVersionUID = 1L;
-
-        public ScanWindowList(int count) : base(count)
-        {
-
-        }
-
         public ScanWindowList(ScanWindowList scanWindowList, ReferenceableParamGroupList rpgList) : this(scanWindowList.Size())
         {
             foreach (ScanWindow scanWindow in scanWindowList)

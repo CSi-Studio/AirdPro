@@ -11,8 +11,6 @@ namespace AirdPro.csimzMLParser.mzml
 {
     public class Spectrum : MzMLDataContainer
     {
-        private static readonly long serialVersionUID = 1L;
-
         public static readonly string SCAN_POLARITY_ID = "MS:1000465";
         public static readonly string SPECTRUM_TYPE_ID = "MS:1000559";
         public static readonly string SPECTRUM_REPRESENTATION_ID = "MS:1000525";
@@ -161,10 +159,7 @@ namespace AirdPro.csimzMLParser.mzml
 
         public void SetPixelLocation(PixelLocation location)
         {
-            if (scanList == null)
-            {
-                scanList = ScanList.Create();
-            }
+            scanList ??= ScanList.Create();
 
             Scan scan = scanList.Get(0);
 
@@ -292,7 +287,7 @@ namespace AirdPro.csimzMLParser.mzml
         {
             if (binaryDataArrayList == null)
             {
-                return new double[0];
+                return [];
             }
             EnsureLoadableData();
             return binaryDataArrayList.GetMzArray().GetDataAsDouble(keepInMemory);
@@ -363,19 +358,19 @@ namespace AirdPro.csimzMLParser.mzml
         {
             string id = "spectrum=" + spectrumNumber++;
 
-            Spectrum spectrum = new Spectrum(id, intensities.Length);
+            Spectrum spectrum = new(id, intensities.Length);
             spectrum.SetDataProcessingRef(processing);
 
             spectrum.AddCVParam(new EmptyCVParam(OBO.GetOBO().GetTerm(MS1_SPECTRUM_ID)));
             spectrum.AddCVParam(new EmptyCVParam(OBO.GetOBO().GetTerm(PROFILE_SPECTRUM_ID)));
 
-            BinaryDataArray mzsDataArray = new BinaryDataArray(mzs.Length);
+            BinaryDataArray mzsDataArray = new(mzs.Length);
             mzsDataArray.AddCVParam(new EmptyCVParam(OBO.GetOBO().GetTerm(MZ_ARRAY_ID), 
                 OBO.GetOBO().GetTerm(MZ_ARRAY_UNITS_ID)));
             mzsDataArray.AddCVParam(new EmptyCVParam(OBO.GetOBO().GetTerm(NO_COMPRESSION_ID)));
             mzsDataArray.AddCVParam(new EmptyCVParam(OBO.GetOBO().GetTerm(DOUBLE_PRECISION_ID)));
 
-            BinaryDataArray intensitiesDataArray = new BinaryDataArray(intensities.Length);
+            BinaryDataArray intensitiesDataArray = new(intensities.Length);
             intensitiesDataArray.AddCVParam(new EmptyCVParam(OBO.GetOBO().GetTerm(INTENSITY_ARRAY_ID)));
             intensitiesDataArray.AddCVParam(new EmptyCVParam(OBO.GetOBO().GetTerm(NO_COMPRESSION_ID)));
             intensitiesDataArray.AddCVParam(new EmptyCVParam(OBO.GetOBO().GetTerm(DOUBLE_PRECISION_ID)));

@@ -2,8 +2,6 @@
 {
     public class ScanWindow : MzMLContentWithParams
     {
-        private static readonly long serialVersionUID = 1L;
-
         public ScanWindow() : base()
         {
             

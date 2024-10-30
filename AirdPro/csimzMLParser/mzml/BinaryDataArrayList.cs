@@ -5,14 +5,8 @@ using static AirdPro.csimzMLParser.mzml.BinaryDataArray;
 
 namespace AirdPro.csimzMLParser.mzml
 {
-    public class BinaryDataArrayList : MzMLContentList<BinaryDataArray>
+    public class BinaryDataArrayList(int count) : MzMLContentList<BinaryDataArray>(count)
     {
-        private static readonly long serialVersionUID = 1L;
-
-        public BinaryDataArrayList(int count) : base(count)
-        {
-        }
-
         public BinaryDataArrayList(BinaryDataArrayList bdaList, ReferenceableParamGroupList rpgList, DataProcessingList dpList) : this(bdaList.Size())
         {
             foreach (var bda in bdaList)
