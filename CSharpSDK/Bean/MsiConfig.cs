@@ -8,8 +8,10 @@ namespace AirdSDK.Bean
         public string scanDirection;
         public string scanSequence;
         public string scanPattern;
-        public int maxPixelX = 0;
-        public int maxPixelY = 0;
-        public int maxPixelZ = 0;
+        public int maxPixelX;
+        public int maxPixelY;
+        public int maxPixelZ;
+        public double pixelSizeX;
+        public double pixelSizeY;
     }
 }

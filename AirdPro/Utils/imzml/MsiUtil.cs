@@ -86,27 +86,24 @@ namespace AirdPro.Utils.imzml
 
         public static ImageInfo GetImageInfo(ImzML imzML)
         {
-            ImageInfo imageInfo = new ImageInfo();
-
-            imageInfo.maxPixelX = imzML.GetWidth();
-            imageInfo.maxPixelY = imzML.GetHeight();
-            imageInfo.maxPixelZ = imzML.GetDepth();
+            ImageInfo imageInfo = new()
+            {
+                maxPixelX = imzML.GetWidth(),
+                maxPixelY = imzML.GetHeight(),
+                maxPixelZ = imzML.GetDepth()
+            };
 
             ScanSettings scanSettings = imzML.GetScanSettingsList().GetScanSettings(0);
             double pixelSizeX = scanSettings?.GetCVParam(ScanSettings.PIXEL_SIZE_X_ID)?.GetValueAsDouble() ?? 1;
             double pixelSizeY = scanSettings.GetCVParam(ScanSettings.PIXEL_SIZE_Y_ID)?.GetValueAsDouble() ?? pixelSizeX;
-           
-            imageInfo.pixelSize = pixelSizeX;
+
             imageInfo.pixelSizeX = pixelSizeX;
-            imageInfo.pixelSizeY = pixelSizeY;
+            imageInfo.pixelSizeY = pixelSizeY;    
             
-            imageInfo.maxDimensionX = scanSettings?.GetCVParam(ScanSettings.MAX_DIMENSION_X_ID)?.GetValueAsDouble() ?? imageInfo.maxPixelX * pixelSizeX;
-            imageInfo.maxDimensionY = scanSettings?.GetCVParam(ScanSettings.MAX_DIMENSION_Y_ID)?.GetValueAsInteger() ?? imageInfo.maxPixelY * pixelSizeY;            
-            
-            imageInfo.imageShape = scanSettings?.GetCVParam(ScanSettings.IMAGE_ID)?.ToString() ?? "unknown";
+            imageInfo.imageShape = scanSettings?.GetCVParam(ScanSettings.IMAGE_ID)?.ToString() ?? "no data";
             //mz range
-            imageInfo.minMZ = imzML.GetMinimumDetectedmz();
-            imageInfo.maxMZ = imzML.GetMaximumDetectedmz();
+            imageInfo.minMZ = DataUtil.GetMinMZ(imzML.GetSpectrumList());
+            imageInfo.maxMZ = DataUtil.GetMaxMZ(imzML.GetSpectrumList());
             //spectra per pixel
             imageInfo.spectraPerPixel = imzML.GetNumberOfSpectraPerPixel();
 
@@ -125,7 +122,7 @@ namespace AirdPro.Utils.imzml
             Sample sample = sampleList.GetSample(0);
             sampleStage.positionAccuracy = sample?.GetCVParam(Sample.POSITION_ACCURACY_ID)?.GetValueAsDouble() ?? -1;
             sampleStage.stepSize = sample?.GetCVParam(Sample.STEP_SIZE_ID)?.GetValueAsDouble() ?? -1;
-            sampleStage.targetMaterial = sample?.GetCVParam(Sample.TARGET_MATERIAL_ID)?.ToString() ?? "unknown";
+            sampleStage.targetMaterial = sample?.GetCVParam(Sample.TARGET_MATERIAL_ID)?.ToString() ?? "no data";
 
             return sampleStage;
         }

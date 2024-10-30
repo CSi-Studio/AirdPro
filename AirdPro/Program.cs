@@ -89,10 +89,10 @@ namespace AirdPro
                             configName = "Default";
                         }
                         conversionConfigHandler = new ConversionConfigHandler();
-                        ConversionConfig config = Program.conversionConfigHandler.configMap[configName];
-                        if (config == null && Program.conversionConfigHandler.configMap != null && Program.conversionConfigHandler.configMap.Count > 0)
+                        ConversionConfig config = conversionConfigHandler.configMap[configName];
+                        if (config == null && conversionConfigHandler.configMap != null && conversionConfigHandler.configMap.Count > 0)
                         {
-                            config = Program.conversionConfigHandler.configMap.First().Value;
+                            config = conversionConfigHandler.configMap.First().Value;
                         }
 
                         string suffix = options.Suffix;

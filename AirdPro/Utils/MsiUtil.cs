@@ -8,16 +8,15 @@ namespace AirdPro.Utils
 {
     public class MsiUtil
     {
-        public static MsiInfo GetMsiInfo(MsiConfig msiConfig, int spectaCount)
+        public static MsiInfo GetMsiInfo(MsiConfig msiConfig, int spectraCount, double minMZ, double maxMZ)
         {
             MsiInfo msiInfo = new();
             //fileOrganisation: row per file, image per file，spectrum per file
             msiInfo.fileOrganisation = GetFileOrganisation(msiConfig);
             //image info
-            msiInfo.imageInfo = GetImageInfo(msiConfig);
+            msiInfo.imageInfo = GetImageInfo(msiConfig, minMZ, maxMZ);
             //spectrum position
-            msiInfo.spectraPosition = GetSpectraPosition(msiConfig, spectaCount);
-            //sample stage ???            
+            msiInfo.spectraPosition = GetSpectraPosition(msiConfig, spectraCount);
             //public ScanInfo scanInfo
             msiInfo.scanInfo = GetScanInfo(msiConfig);
 
@@ -35,20 +34,25 @@ namespace AirdPro.Utils
             };
         }
 
-        public static ImageInfo GetImageInfo(MsiConfig msiConfig)
+        public static ImageInfo GetImageInfo(MsiConfig msiConfig, double minMZ, double maxMZ)
         {
-            ImageInfo imageInfo = new ImageInfo();
+            ImageInfo imageInfo = new()
+            {
+                maxPixelX = msiConfig.maxPixelX,
+                maxPixelY = msiConfig.maxPixelY,
+                maxPixelZ = msiConfig.maxPixelZ,
+                pixelSizeX = msiConfig.pixelSizeX,
+                pixelSizeY = msiConfig.pixelSizeY,
 
-            imageInfo.maxPixelX = msiConfig.maxPixelX;
-            imageInfo.maxPixelY = msiConfig.maxPixelY;
-            imageInfo.maxPixelZ = msiConfig.maxPixelZ;       
-
+                minMZ = minMZ,
+                maxMZ = maxMZ
+            };
             return imageInfo;
         }
 
         public static ScanInfo GetScanInfo(MsiConfig msiConfig)
         {
-            ScanInfo scanInfo = new ScanInfo();
+            ScanInfo scanInfo = new();
             //scanDirection
             switch (msiConfig.scanDirection)
             {

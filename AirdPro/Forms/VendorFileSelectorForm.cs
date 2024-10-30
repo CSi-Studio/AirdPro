@@ -171,7 +171,7 @@ namespace AirdPro.Forms
         
         private bool AddToList(bool local)
         {
-            string airdType = GetAirdType();            
+            string airdType = GetAirdType();   
 
             if (cbConfig.SelectedItem == null && !cbConfig.Text.IsNullOrEmpty())
             {
@@ -273,10 +273,12 @@ namespace AirdPro.Forms
                             msiConfig.scanPattern = ScanPattern.RANDOM_ACCESS;
                             break;                        
                     }
-                    // maxPixelX, maxPixelY, maxPixelZ
+                    // maxPixelX, maxPixelY, maxPixelZ, pixelSizeX, pixelSizeY
                     msiConfig.maxPixelX = pixel_x.Value.ToInt();
                     msiConfig.maxPixelY = pixel_y.Value.ToInt();
                     msiConfig.maxPixelZ = pixel_z.Value.ToInt();
+                    msiConfig.pixelSizeX = tbPixelSizeX.Text.Trim().ToDouble();
+                    msiConfig.pixelSizeY = tbPixelSizeY.Text.Trim().ToDouble();
                    
                     Program.conversionForm.AddFile(msi_path, outputPath, airdType, (ConversionConfig)config.Clone(), msi_path, msiConfig);
                 }
@@ -306,7 +308,7 @@ namespace AirdPro.Forms
             }
             
             return true;
-        }
+        }               
 
         //选择已有参数，或者重新编辑参数，并将参数应用于选中的单个或一批文件
         private void BtnCreateConfigs_Click(object sender, EventArgs e)
@@ -462,7 +464,7 @@ namespace AirdPro.Forms
         }
 
         private void ImgBtnAdd_BtnClick(object sender, EventArgs e)
-        {
+        {           
             bool addResult = AddToList(true);
             if (addResult)
             {

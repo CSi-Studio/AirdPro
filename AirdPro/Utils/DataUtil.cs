@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using pwiz.CLI.cv;
 using pwiz.CLI.msdata;
+using SharpCompress;
 
 namespace AirdPro.Utils
 {
@@ -90,6 +91,38 @@ namespace AirdPro.Utils
             }
 
             return maxIndex;
+        }
+
+        public static double GetMinMZ(SpectrumList spectrumList)
+        {
+            double minMZ = double.MaxValue;
+            for (int i = 0; i < spectrumList.size(); i++)
+            {
+                spectrumList.spectrum(i).getMZArray().data.ForEach(mz =>
+                {
+                    if (mz < minMZ)
+                    {
+                        minMZ = mz;
+                    }
+                });
+            }
+            return minMZ;
+        }
+
+        public static double GetMaxMZ(SpectrumList spectrumList)
+        {
+            double maxMZ = double.MinValue;
+            for (int i = 0; i < spectrumList.size(); i++)
+            {
+                spectrumList.spectrum(i).getMZArray().data.ForEach(mz =>
+                {
+                    if (mz > maxMZ)
+                    {
+                        maxMZ = mz;
+                    }
+                });
+            }
+            return maxMZ;
         }
     }
 }

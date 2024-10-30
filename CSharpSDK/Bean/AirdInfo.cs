@@ -112,6 +112,11 @@ namespace AirdSDK.Beans
         public string type;
 
         /**
+         * 区分源文件是imzml，mzml，vendor
+         */
+        public string msiType;
+
+        /**
          * the vendor file size
          * 原始文件的文件大小,单位byte
          */

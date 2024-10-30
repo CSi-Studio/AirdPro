@@ -183,20 +183,21 @@ namespace AirdPro.Forms
             else
             {
                 LbAirdInfo.Items.Add($"  File Size: {fileSizeInBytes / (1024 * 1024):0.##} MB");
-            }
+            }           
+           
             LbAirdInfo.Items.Add($"  Acquisition Method: {airdInfo.type}");
-            LbAirdInfo.Items.Add($"  Instrument: {airdInfo.instruments[0].manufacturer}");
-            LbAirdInfo.Items.Add($"  Target Material: {airdInfo.msiInfo.sampleStage?.targetMaterial}");
 
             LbAirdInfo.Items.Add("");
             LbAirdInfo.Items.Add("  Image Params");
+            LbAirdInfo.Items.Add($"  File Organisation : {airdInfo.msiInfo.fileOrganisation?.ToLower()}");
             LbAirdInfo.Items.Add($"  Number of scans: {airdInfo.totalCount}");
-            LbAirdInfo.Items.Add($"  Range m/z: {imageInfo.minMZ}-{imageInfo.maxMZ}");
+            LbAirdInfo.Items.Add($"  Range m/z: {Math.Round(imageInfo.minMZ, 5)}-{Math.Round(imageInfo.maxMZ, 5)}");
             LbAirdInfo.Items.Add($"  Max count of pixels x: {imageInfo.maxPixelX}");
             LbAirdInfo.Items.Add($"  Max count of pixels y: {imageInfo.maxPixelY}");
             LbAirdInfo.Items.Add($"  Max count of pixels z: {imageInfo.maxPixelZ}");
+            
             LbAirdInfo.Items.Add($"  Pixel size: Xaxis {imageInfo.pixelSizeX}, Yaxis {imageInfo.pixelSizeY}");
-            LbAirdInfo.Items.Add($"  Image dimension [um]: X {imageInfo.maxDimensionX} * Y {imageInfo.maxDimensionY}");
+            LbAirdInfo.Items.Add($"  Image dimension [um]: X {imageInfo.pixelSizeX * imageInfo.maxPixelX} * Y {imageInfo.pixelSizeY * imageInfo.maxPixelY}");
             LbAirdInfo.Items.Add($"  Total number of pixels: {imageInfo.maxPixelX * imageInfo.maxPixelY * imageInfo.spectraPerPixel}");
             LbAirdInfo.Items.Add($"  Spectra per pixel: {imageInfo.spectraPerPixel}");
             LbAirdInfo.Items.Add($"  Scan direction: {scanInfo.scanDirection?.ToLower()}");

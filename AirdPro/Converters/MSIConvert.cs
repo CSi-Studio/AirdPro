@@ -17,6 +17,7 @@ using pwiz.CLI.data;
 using CVUtil = AirdPro.Utils.CVUtil;
 using MsiUtil = AirdPro.Utils.MsiUtil;
 using AirdSDK.Enums.Msi;
+using Software = AirdSDK.Beans.Software;
 
 namespace AirdPro.Converters
 {
@@ -25,10 +26,11 @@ namespace AirdPro.Converters
         public MSIConvert() { }
 
         public long totalCount = 0;
+        public double minMZ, maxMZ;
         public string startTime = string.Empty;
-        List<AirdSDK.Beans.Software> softwares = new List<AirdSDK.Beans.Software>();
-        List<Instrument> instruments = new List<Instrument>();
-        List<ParentFile> parentFiles = new List<ParentFile>();
+        readonly List<Software> softwares = [];
+        readonly List<Instrument> instruments = [];
+        readonly List<ParentFile> parentFiles = [];
 
         public override void DoConvert()
         {
@@ -62,6 +64,8 @@ namespace AirdPro.Converters
                             foreach (MSData msd in msdList)
                             {
                                 ReadMsd(msd);
+                                minMZ = DataUtil.GetMinMZ(SpectrumList);
+                                maxMZ = DataUtil.GetMaxMZ(SpectrumList);
                                 ConverterWorkFlow.DDAMSI(this);                                
                                 msd?.Dispose();
                             }
@@ -92,7 +96,7 @@ namespace AirdPro.Converters
                     AirdProFileUtil.ClearLocalTempFiles();
                 }
             }
-        }     
+        }        
 
         public override void PretreatmentDda()
         {
@@ -459,7 +463,7 @@ namespace AirdPro.Converters
             airdInfo.ignoreZeroIntensityPoint = JobInfo.config.ignoreZeroIntensity;
 
             //Msi Info
-            airdInfo.msiInfo = MsiUtil.GetMsiInfo(JobInfo.msiConfig, TotalSpectraCount);
+            airdInfo.msiInfo = MsiUtil.GetMsiInfo(JobInfo.msiConfig, TotalSpectraCount, minMZ, maxMZ);
 
             //Features Info
             //FeaturesMap.Add(Features.raw_id, Msd.id);

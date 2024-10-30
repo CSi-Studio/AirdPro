@@ -598,24 +598,6 @@ namespace AirdPro.Converters
             {
                 Instrument instrument = new();
 
-                switch (JobInfo.format)
-                {
-                    //仪器设备信息
-                    case FileFormat.WIFF:
-                    case FileFormat.WIFF2:
-                        instrument.manufacturer = Manufacturer.SCIEX;
-                        break;
-                    case FileFormat.RAW:
-                        if (!JobInfo.isDir)
-                        {
-                            instrument.manufacturer = Manufacturer.Thermo;
-                        }
-                        break;
-                    case FileFormat.D:
-                        instrument.manufacturer = Manufacturer.Bruker;
-                        break;
-                }
-
                 if (!ic.GetCVParamOrChild(InstrumentConfiguration.INSTRUMENT_WATERS_INSTRUMENT_MODEL_ID).IsEmpty())
                 {
                     instrument.manufacturer = Manufacturer.Waters;

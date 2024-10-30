@@ -167,7 +167,7 @@
             this.LbAirdInfo.ItemHeight = 24;
             this.LbAirdInfo.Location = new System.Drawing.Point(0, 0);
             this.LbAirdInfo.Name = "LbAirdInfo";
-            this.LbAirdInfo.Size = new System.Drawing.Size(1072, 648);
+            this.LbAirdInfo.Size = new System.Drawing.Size(1072, 720);
             this.LbAirdInfo.TabIndex = 1;
             // 
             // webViewMS
@@ -178,7 +178,7 @@
             this.webViewMS.Dock = System.Windows.Forms.DockStyle.Fill;
             this.webViewMS.Location = new System.Drawing.Point(0, 0);
             this.webViewMS.Name = "webViewMS";
-            this.webViewMS.Size = new System.Drawing.Size(1072, 464);
+            this.webViewMS.Size = new System.Drawing.Size(1072, 392);
             this.webViewMS.TabIndex = 0;
             this.webViewMS.ZoomFactor = 1D;
             // 
@@ -196,9 +196,9 @@
             // 
             this.panel3.Controls.Add(this.webViewMS);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(0, 648);
+            this.panel3.Location = new System.Drawing.Point(0, 720);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1072, 464);
+            this.panel3.Size = new System.Drawing.Size(1072, 392);
             this.panel3.TabIndex = 2;
             // 
             // panel5
