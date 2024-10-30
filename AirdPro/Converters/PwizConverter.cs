@@ -1194,7 +1194,7 @@ namespace AirdPro.Converters
         {
             if (JobInfo.format.Equals(FileFormat.D) && JobInfo.type.Equals(AcquisitionMethod.MRM))
             {
-                MrmCompoundDict = new AcqMethodParser(JobInfo.inputPath).parse();
+                MrmCompoundDict = new AcqMethodParser(JobInfo.inputPath).Parse();
             }
         }
 

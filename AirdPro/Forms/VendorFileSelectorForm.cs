@@ -142,7 +142,7 @@ namespace AirdPro.Forms
 
         private List<string> GetInputFilesPath()
         {
-            List<string> paths = new List<string>();
+            List<string> paths = [];
             var selectedNodes = msFileViews.files.SelectedNodes;
             if (selectedNodes.IsNullOrEmpty())
             {
@@ -213,8 +213,7 @@ namespace AirdPro.Forms
                         msi_path += "|" + path;
                     }
                     msi_path = msi_path.Substring(1);
-                    int[] pixels = [pixel_x.Value.ToInt(), pixel_y.Value.ToInt()];
-                    MsiConfig msiConfig = new MsiConfig();
+                    MsiConfig msiConfig = new();
                     // msiConfig.fileOrganisation
                     switch (comboBox_file_organisation.SelectedIndex)
                     {
@@ -302,7 +301,7 @@ namespace AirdPro.Forms
                     {
                         airdType = AcquisitionMethod.DDA;
                     }
-                    RemoteConvertJob remoteJob = new RemoteConvertJob(path, outputPath, airdType, config);
+                    RemoteConvertJob remoteJob = new(path, outputPath, airdType, config);
                     RedisManager.Instance.PublishJob(remoteJob);
                 }
             }
@@ -333,8 +332,10 @@ namespace AirdPro.Forms
 
         private void BtnConfigChooseFolder_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            fbd.SelectedPath = tbOutputPath.Text;
+            FolderBrowserDialog fbd = new()
+            {
+                SelectedPath = tbOutputPath.Text
+            };
             if (fbd.ShowDialog(this) == DialogResult.OK)
             {
                 Settings.Default.LastOutputPath = fbd.SelectedPath;
@@ -372,7 +373,7 @@ namespace AirdPro.Forms
         {
             bool alert = false;
             FolderFileBrowserModel innerModel = msFileViews.getInnerModel();
-            List<string> addedPaths = new List<string>();
+            List<string> addedPaths = [];
             for (var i = 0; i < msFileViews.files.SelectedNodes.Count; i++)
             {
                 TreeNodeAdv node = msFileViews.files.SelectedNodes[i];
@@ -411,7 +412,7 @@ namespace AirdPro.Forms
         private void BtnUnpin_Click(object sender, EventArgs e)
         {
             FolderFileBrowserModel innerModel = msFileViews.getInnerModel();
-            List<string> removedPaths = new List<string>();
+            List<string> removedPaths = [];
             for (var i = 0; i < msFileViews.files.SelectedNodes.Count; i++)
             {
                 TreeNodeAdv node = msFileViews.files.SelectedNodes[i];
@@ -439,7 +440,7 @@ namespace AirdPro.Forms
         {
             string pinPathStr = Settings.Default.PinPathList;
             string[] pinPathArray = pinPathStr.Split(',');
-            HashSet<string> pinPathSet = new HashSet<string>(pinPathArray);
+            HashSet<string> pinPathSet = new(pinPathArray);
             for (var i = 0; i < addedPaths.Count; i++)
             {
                 pinPathSet.Add(addedPaths[i]);
@@ -453,7 +454,7 @@ namespace AirdPro.Forms
         {
             string pinPathStr = Settings.Default.PinPathList;
             string[] pinPathArray = pinPathStr.Split(',');
-            HashSet<string> pinPathSet = new HashSet<string>(pinPathArray);
+            HashSet<string> pinPathSet = new(pinPathArray);
             for (var i = 0; i < removedPaths.Count; i++)
             {
                 pinPathSet.Remove(removedPaths[i]);
@@ -532,7 +533,7 @@ namespace AirdPro.Forms
             }  
         }
 
-        private void cBoxMSI_CheckedChanged(object sender, EventArgs e)
+        private void CBoxMSI_CheckedChanged(object sender, EventArgs e)
         {
             if (cbMSI.Checked)
             {

@@ -23,7 +23,7 @@ namespace AirdPro.Forms
 {
     public partial class ConversionConfigListForm : Form, Observer<Dictionary<string, ConversionConfig>>
     {
-        private ListViewItem item;
+        private readonly ListViewItem item;
 
         public ConversionConfigListForm()
         {
@@ -74,10 +74,10 @@ namespace AirdPro.Forms
             lvConfigList.Items.Clear();
             foreach (var configEntry in configMap)
             {
-                ListViewItem item = new ListViewItem(new string[]
-                {
+                ListViewItem item = new(
+                [
                     configEntry.Key, configEntry.Value.GetMzPrecisionStr(), configEntry.Value.autoDecision + ""
-                });
+                ]);
                 if (configEntry.Value.engine.Equals(AirdEngine.RowCompression))
                 {
                     item.ImageIndex = 0;
@@ -91,7 +91,7 @@ namespace AirdPro.Forms
             }
         }
 
-        private void cbConfigIsZeroIntensityIgnore_CheckedChanged(object sender, EventArgs e)
+        private void CbConfigIsZeroIntensityIgnore_CheckedChanged(object sender, EventArgs e)
         {
             string suffix = "";
 
@@ -101,21 +101,19 @@ namespace AirdPro.Forms
             }
 
             tbConfigFileNameSuffix.Text = suffix;
-        }
-
-        private void cbConfigIsCentroid_CheckedChanged(object sender, EventArgs e)
-        {
-        }
+        }       
 
         //设置所有参数
         private ConversionConfig BuildConfigInfo()
         {
-            ConversionConfig config = new ConversionConfig();
-            config.mzPrecision = (int)Math.Pow(10, int.Parse(cbConfigMzPrecision.Text));
-            config.ignoreZeroIntensity = cbConfigIsZeroIntensityIgnore.Checked;
-            config.engine = cbCompEngine.SelectedIndex;
-            config.configName = tbNameConfig.Text;
-            config.indexFormat = cbIndexFormat.SelectedIndex;
+            ConversionConfig config = new()
+            {
+                mzPrecision = (int)Math.Pow(10, int.Parse(cbConfigMzPrecision.Text)),
+                ignoreZeroIntensity = cbConfigIsZeroIntensityIgnore.Checked,
+                engine = cbCompEngine.SelectedIndex,
+                configName = tbNameConfig.Text,
+                indexFormat = cbIndexFormat.SelectedIndex
+            };
             //如果不是自动决策的,则会使用配置的组合压缩器
             if (!cbAutoDecision.Checked)
             {
@@ -143,7 +141,7 @@ namespace AirdPro.Forms
             {
                 config.spectraToPredict = int.Parse(tbSpectraToPredict.Text);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 config.spectraToPredict = 50;
                 tbSpectraToPredict.Text = "50";
@@ -160,7 +158,7 @@ namespace AirdPro.Forms
         }
 
         //保存文件到本地
-        private void btnSaveToLocal_Click(object sender, EventArgs e)
+        private void BtnSaveToLocal_Click(object sender, EventArgs e)
         {
             if (tbNameConfig.Text.IsNullOrEmpty())
             {
@@ -175,7 +173,7 @@ namespace AirdPro.Forms
 
 
         //不存储进内存，直接应用于当前文件
-        private void btnApply_Click(object sender, EventArgs e)
+        private void BtnApply_Click(object sender, EventArgs e)
         {
             ConversionConfig config = BuildConfigInfo();
             JobInfo jobInfo = (JobInfo)(item.Tag);
@@ -192,7 +190,7 @@ namespace AirdPro.Forms
             Hide();
         }
 
-        private void lvConfigList_SelectedIndexChanged(object sender, EventArgs e)
+        private void LvConfigList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lvConfigList.SelectedItems.Count == 1)
             {
@@ -230,12 +228,12 @@ namespace AirdPro.Forms
             cbNoMS2.Checked = config.noMS2;
         }
 
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (lvConfigList.SelectedItems.Count != 0)
             {
                 ListView.SelectedListViewItemCollection items = this.lvConfigList.SelectedItems; //获取所有选中的Items集合
-                List<string> configNames = new List<string>();
+                List<string> configNames = [];
                 foreach (ListViewItem item in items)
                 {
                     string configName = item.SubItems[0].Text;
@@ -251,16 +249,22 @@ namespace AirdPro.Forms
             Program.conversionConfigHandler.detach(this);
         }
 
-        private void cbAutoDecision_CheckedChanged(object sender, EventArgs e)
+        private void CbAutoDecision_CheckedChanged(object sender, EventArgs e)
         {
             tableAutoDecision.Enabled = !cbAutoDecision.Checked;
             tableDeciderWeight.Enabled = cbAutoDecision.Checked;
             tbSpectraToPredict.Enabled = cbAutoDecision.Checked;
         }
 
-        private void btnGlobalSettingSave_Click(object sender, EventArgs e)
+        private void BtnGlobalSettingSave_Click(object sender, EventArgs e)
         {
             Settings.Default.MaxConversionTasks = (int)numMaxTasks.Value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is ConversionConfigListForm form &&
+                   EqualityComparer<ListViewItem>.Default.Equals(item, form.item);
         }
     }
 }

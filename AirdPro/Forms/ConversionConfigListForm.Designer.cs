@@ -122,7 +122,7 @@
             this.lvConfigList.TabIndex = 8;
             this.lvConfigList.UseCompatibleStateImageBehavior = false;
             this.lvConfigList.View = System.Windows.Forms.View.Details;
-            this.lvConfigList.SelectedIndexChanged += new System.EventHandler(this.lvConfigList_SelectedIndexChanged);
+            this.lvConfigList.SelectedIndexChanged += new System.EventHandler(this.LvConfigList_SelectedIndexChanged);
             // 
             // mzPrecision
             // 
@@ -147,7 +147,7 @@
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
             this.deleteToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
             // 
             // imgsForList
             // 
@@ -166,7 +166,7 @@
             this.btnSaveToLocal.TabIndex = 138;
             this.btnSaveToLocal.Text = "Save";
             this.btnSaveToLocal.UseVisualStyleBackColor = true;
-            this.btnSaveToLocal.Click += new System.EventHandler(this.btnSaveToLocal_Click);
+            this.btnSaveToLocal.Click += new System.EventHandler(this.BtnSaveToLocal_Click);
             // 
             // tbNameConfig
             // 
@@ -326,7 +326,7 @@
             this.cbConfigIsZeroIntensityIgnore.TabIndex = 118;
             this.cbConfigIsZeroIntensityIgnore.Text = "Ignore Zero Intensity";
             this.cbConfigIsZeroIntensityIgnore.UseVisualStyleBackColor = true;
-            this.cbConfigIsZeroIntensityIgnore.CheckedChanged += new System.EventHandler(this.cbConfigIsZeroIntensityIgnore_CheckedChanged);
+            this.cbConfigIsZeroIntensityIgnore.CheckedChanged += new System.EventHandler(this.CbConfigIsZeroIntensityIgnore_CheckedChanged);
             // 
             // btnApply
             // 
@@ -338,7 +338,7 @@
             this.btnApply.TabIndex = 139;
             this.btnApply.Text = "Apply";
             this.btnApply.UseVisualStyleBackColor = true;
-            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            this.btnApply.Click += new System.EventHandler(this.BtnApply_Click);
             // 
             // cbIntByteComp
             // 
@@ -400,7 +400,7 @@
             this.cbAutoDecision.TabIndex = 146;
             this.cbAutoDecision.Text = "Auto Decision(More conversion time but better compression performance)";
             this.cbAutoDecision.UseVisualStyleBackColor = true;
-            this.cbAutoDecision.CheckedChanged += new System.EventHandler(this.cbAutoDecision_CheckedChanged);
+            this.cbAutoDecision.CheckedChanged += new System.EventHandler(this.CbAutoDecision_CheckedChanged);
             // 
             // lblIntegerPurpose
             // 
@@ -761,7 +761,7 @@
             this.btnGlobalSettingSave.TabIndex = 161;
             this.btnGlobalSettingSave.Text = "Save";
             this.btnGlobalSettingSave.UseVisualStyleBackColor = true;
-            this.btnGlobalSettingSave.Click += new System.EventHandler(this.btnGlobalSettingSave_Click);
+            this.btnGlobalSettingSave.Click += new System.EventHandler(this.BtnGlobalSettingSave_Click);
             // 
             // lblIndexFormat
             // 

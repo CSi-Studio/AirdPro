@@ -669,7 +669,7 @@ namespace AirdPro.Forms
             this.cbMSI.TabIndex = 139;
             this.cbMSI.Text = "MSI";
             this.cbMSI.UseVisualStyleBackColor = true;
-            this.cbMSI.CheckedChanged += new System.EventHandler(this.cBoxMSI_CheckedChanged);
+            this.cbMSI.CheckedChanged += new System.EventHandler(this.CBoxMSI_CheckedChanged);
             // 
             // panel1
             // 

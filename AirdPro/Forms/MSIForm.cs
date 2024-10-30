@@ -14,15 +14,17 @@ namespace AirdPro.Forms
 {
     public partial class MSIImageForm : Form
     {
-        OpenFileDialog openFileDialog;
+        readonly OpenFileDialog openFileDialog;
         MSIParser msiParser;
         List<ImageData> imageDataList;
 
         public MSIImageForm()
         {
             InitializeComponent();
-            openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "AIRD files (*.aird)|*.aird";
+            openFileDialog = new OpenFileDialog
+            {
+                Filter = "AIRD files (*.aird)|*.aird"
+            };
 
             //使用webview2加载html
             string htmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MsiImage/html", "msBarChart.html");
@@ -183,9 +185,17 @@ namespace AirdPro.Forms
             else
             {
                 LbAirdInfo.Items.Add($"  File Size: {fileSizeInBytes / (1024 * 1024):0.##} MB");
-            }           
-           
+            }
             LbAirdInfo.Items.Add($"  Acquisition Method: {airdInfo.type}");
+            /*//源文件信息
+            LbAirdInfo.Items.Add("");
+            LbAirdInfo.Items.Add($"  Source File");
+           List <ParentFile> parentFiles = airdInfo.parentFiles;
+            foreach(ParentFile parentFile in parentFiles)
+            {
+                LbAirdInfo.Items.Add($"  File Name: {parentFile.name}");
+                LbAirdInfo.Items.Add($"  File Location: {parentFile.location}");
+            }*/
 
             LbAirdInfo.Items.Add("");
             LbAirdInfo.Items.Add("  Image Params");

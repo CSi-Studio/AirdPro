@@ -7,8 +7,6 @@ namespace AirdPro.csimzMLParser.imzml
 {
     public class ImzML : MzML, IMSIData
     {
-        private static readonly long serialVersionUID = 1L;
-
         private static readonly ILog logger = LogManager.GetLogger(typeof(ImzML));
 
         private int width;

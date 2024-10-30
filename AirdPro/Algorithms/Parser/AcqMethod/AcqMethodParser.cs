@@ -7,49 +7,42 @@ using AirdPro.Constants;
 
 namespace AirdPro.Algorithms.Parser;
 
-public class AcqMethodParser
+public class AcqMethodParser(string rawFilePath)
 {
-    public string rawFilePath;
+    public string rawFilePath = rawFilePath;
     public string acqMethodPath;
-    public AcqMethodParser(string rawFilePath)
-    {
-        this.rawFilePath = rawFilePath;
-    }
 
-    public Dictionary<string, AcqCompound> parse()
+    public Dictionary<string, AcqCompound> Parse()
     {
-        Dictionary<string, AcqCompound> compoundDict = new Dictionary<string, AcqCompound>();
+        Dictionary<string, AcqCompound> compoundDict = [];
         if (!rawFilePath.ToUpper().EndsWith(FileFormat.DotD))
         {
             return compoundDict;
         }
 
-        DirectoryInfo dir = new DirectoryInfo(rawFilePath);
+        DirectoryInfo dir = new(rawFilePath);
         if (!dir.Exists)
         {
             return compoundDict;
         }
         
         acqMethodPath = Path.Combine(Path.Combine(rawFilePath, "AcqData"), "AcqMethod.xml");
-        FileInfo file = new FileInfo(acqMethodPath);
+        FileInfo file = new(acqMethodPath);
         if (file.Exists)
         {
-            XmlDocument doc = new XmlDocument();  
+            XmlDocument doc = new();
             doc.Load(acqMethodPath);  
             XmlNode rootNode = doc.DocumentElement;
-            XmlNode rcDevicesXmlNode = null;
+            //XmlNode rcDevicesXmlNode = null;
             XmlNode scicDevicesXmlNode = null;
             foreach (XmlNode node in rootNode.ChildNodes)  
             {
                 if (node.Name.Equals("MethodReport"))
                 {
                     foreach (XmlNode childNode in node.ChildNodes)
-                    {
+                    {                        
                         switch (childNode.Name)
                         {
-                            // case "RCDevicesXml": 
-                            //     rcDevicesXmlNode = childNode;
-                            //     break;
                             case "SCICDevicesXml":
                                 scicDevicesXmlNode = childNode;
                                 break;
@@ -60,26 +53,17 @@ public class AcqMethodParser
                 }
             }
 
-            // if (rcDevicesXmlNode != null)
-            // {
-            //     string innerXml = rcDevicesXmlNode.InnerXml;
-            //     innerXml = innerXml.Replace("&lt;", "<").Replace("&gt;", ">");
-            //     XmlDocument rcDevicesXmlDoc = new XmlDocument();
-            //     rcDevicesXmlDoc.LoadXml(innerXml);
-            //     XmlNode rcRootNode = rcDevicesXmlDoc.DocumentElement;
-            // }
+           
            
             if (scicDevicesXmlNode != null)
             {
                 string innerXml = scicDevicesXmlNode.InnerXml;
                 innerXml = innerXml.Replace("&lt;", "<").Replace("&gt;", ">");
-                XmlSerializer serializer = new XmlSerializer(typeof(NewDataSet));
-                StringReader reader = new StringReader(innerXml);
+                XmlSerializer serializer = new(typeof(NewDataSet));
+                StringReader reader = new(innerXml);
                 NewDataSet newDataSet = (NewDataSet)serializer.Deserialize(reader);
                 reader.Close();
-                Dictionary<int, AcqCompound> rowCompDict = new Dictionary<int, AcqCompound>();
-                bool start = false;
-                bool scan = false;
+                Dictionary<int, AcqCompound> rowCompDict = [];
                 int rowIndex;
                 AcqCompound currentCompound;
                 foreach (SectionInfo sectionInfo in newDataSet.SectionInfos)
@@ -89,7 +73,7 @@ public class AcqMethodParser
                         rowIndex = sectionInfo.RowIndex;
                         if (!rowCompDict.ContainsKey(rowIndex))
                         {
-                            AcqCompound compound = new AcqCompound();
+                            AcqCompound compound = new();
                             rowCompDict.Add(rowIndex, compound);
                         }
                         

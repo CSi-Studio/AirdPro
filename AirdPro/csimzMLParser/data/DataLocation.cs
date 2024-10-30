@@ -5,24 +5,15 @@ using static AirdPro.csimzMLParser.data.DataTypeTransform;
 namespace AirdPro.csimzMLParser.data
 {
     [Serializable]
-    public class DataLocation
+    public class DataLocation(DataStorage dataStorage, long offset, int length)
     {
-        private static readonly long serialVersionUID = 1L;
-
         private static readonly ILog LOGGER = LogManager.GetLogger(typeof(DataLocation));
 
         public static readonly long EXTENDED_OFFSET = 4294967296L; // 2^32
-        protected DataStorage dataStorage;
-        protected long offset;
-        protected int length;
+        protected DataStorage dataStorage = dataStorage;
+        protected long offset = offset;
+        protected int length = length;
         protected DataTransformation dataTransformation = null;
-
-        public DataLocation(DataStorage dataStorage, long offset, int length)
-        {
-            this.dataStorage = dataStorage;
-            this.offset = offset;
-            this.length = length;
-        }
 
         public DataStorage GetDataStorage()
         {

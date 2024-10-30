@@ -50,7 +50,7 @@ namespace AirdPro.Forms
         }
 
         //保存Redis配置项字段
-        private void btnSave_Click(object sender, EventArgs e)
+        private void BtnSave_Click(object sender, EventArgs e)
         {
             Settings.Default.RedisHost = tbRedisHost.Text;
             Settings.Default.RedisPort = tbRedisPort.Text;
@@ -60,7 +60,7 @@ namespace AirdPro.Forms
         }
 
         //当重新连接Redis时,会启动Redis任务消费功能
-        private void btnConnect_Click(object sender, EventArgs e)
+        private void BtnConnect_Click(object sender, EventArgs e)
         {
             if (RedisManager.Instance.Check())
             {
@@ -102,7 +102,7 @@ namespace AirdPro.Forms
             {
                 RedisManager.Instance.RegisterOrUpdate();
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }
@@ -116,7 +116,7 @@ namespace AirdPro.Forms
             lvServers.Items.Clear();
             foreach (var kv in serverMap)
             {
-                ListViewItem item = new ListViewItem(kv.Key);
+                ListViewItem item = new(kv.Key);
                 ClientInfo info = kv.Value;
                 item.SubItems.Add(string.Join(";", info.IPList));
                 item.SubItems.Add(info.ServerName);
@@ -138,10 +138,10 @@ namespace AirdPro.Forms
             lvJobs.Items.Clear();
             foreach (RemoteConvertJob remoteJob in jobList)
             {
-                ListViewItem item = new ListViewItem(remoteJob.remoteId);
+                ListViewItem item = new(remoteJob.remoteId);
                 item.SubItems.Add(remoteJob.type);
                 item.SubItems.Add(remoteJob.engine + "");
-                FileInfo info = new FileInfo(remoteJob.sourcePath);
+                FileInfo info = new(remoteJob.sourcePath);
                 item.SubItems.Add(info.Name);
                 item.SubItems.Add(remoteJob.sourcePath);
                 item.SubItems.Add(remoteJob.targetPath);
@@ -182,7 +182,7 @@ namespace AirdPro.Forms
             }
         }
 
-        private void btnRefreshJobList_Click(object sender, EventArgs e)
+        private void BtnRefreshJobList_Click(object sender, EventArgs e)
         {
             LoadJobs();
             LoadServers();
@@ -198,21 +198,21 @@ namespace AirdPro.Forms
         }
 
         //全局任务消费开关
-        private void switchConsumeJob_CheckedChanged(object sender, EventArgs e)
+        private void SwitchConsumeJob_CheckedChanged(object sender, EventArgs e)
         {
             UCSwitch switcher = (UCSwitch)sender;
             RedisManager.GlobalConsumeJobSwitch = switcher.Checked;
             lblSwitch.Text = "Consume " + (switcher.Checked ? "On" : "Off");
         }
 
-        private void consumeTimer_Tick(object sender, EventArgs e)
+        private void ConsumeTimer_Tick(object sender, EventArgs e)
         {
             Consume();
         }
 
-        private void openConsumeSwitchToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenConsumeSwitchToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            List<string> serverIps = new List<string>();
+            List<string> serverIps = [];
             foreach (ListViewItem selectedItem in lvServers.SelectedItems)
             {
                 serverIps.Add(selectedItem.SubItems[0].Text);
@@ -221,9 +221,9 @@ namespace AirdPro.Forms
             RedisManager.Instance.OpenConsume(serverIps);
         }
 
-        private void closeConsumeSwitchToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CloseConsumeSwitchToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            List<string> serverIps = new List<string>();
+            List<string> serverIps = [];
             foreach (ListViewItem selectedItem in lvServers.SelectedItems)
             {
                 serverIps.Add(selectedItem.SubItems[0].Text);
@@ -232,18 +232,18 @@ namespace AirdPro.Forms
             RedisManager.Instance.CloseConsume(serverIps);
         }
 
-        private void heartBeatTimer_Tick(object sender, EventArgs e)
+        private void HeartBeatTimer_Tick(object sender, EventArgs e)
         {
             HeartBeat();
         }
 
-        private void btnClearRedisCache_Click(object sender, EventArgs e)
+        private void BtnClearRedisCache_Click(object sender, EventArgs e)
         {
             RedisManager.Instance.ClearServerCache();
             LoadServers();
         }
 
-        private void btnClearTempFiles_Click(object sender, EventArgs e)
+        private void BtnClearTempFiles_Click(object sender, EventArgs e)
         {
             AirdProFileUtil.ClearLocalTempFiles();
         }

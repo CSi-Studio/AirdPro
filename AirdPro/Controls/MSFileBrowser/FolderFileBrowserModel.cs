@@ -14,36 +14,33 @@ namespace AirdPro
 {
     public class FolderFileBrowserModel : ITreeModel
     {
-        private BackgroundWorker worker;
-        private List<BaseItem> itemsToRead;
-        private Dictionary<string, List<BaseItem>> cache = new();
+        private readonly BackgroundWorker worker;
+        private readonly List<BaseItem> itemsToRead;
+        private readonly Dictionary<string, List<BaseItem>> cache = [];
         private HashSet<string> criticalPathList = null;
         public FolderFileBrowserModel()
         {
-            itemsToRead = new List<BaseItem>();
-            worker = new BackgroundWorker();
-            worker.WorkerReportsProgress = true;
+            itemsToRead = [];
+            worker = new BackgroundWorker
+            {
+                WorkerReportsProgress = true
+            };
             worker.DoWork += new DoWorkEventHandler(ReadFilesProperties);
             worker.ProgressChanged += new ProgressChangedEventHandler(ProgressChanged); 
-            init();
+            Init();
         }
 
-        public void init()
+        public void Init()
         {
-            criticalPathList = new HashSet<string>(Environment.GetLogicalDrives());
-            criticalPathList.Add(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+            criticalPathList = new HashSet<string>(Environment.GetLogicalDrives())
+            {
+                Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+            };
         }
         
         public RootItem BuildRoot(string path)
         {
-            DirectoryInfo dir = new DirectoryInfo(path);
-            RootItem item = new RootItem(path, this);
-            // if (dir.Exists)
-            // {
-            //     item.Date = dir.CreationTime;
-            // }
-            // item.Exist = dir.Exists;
-
+            RootItem item = new(path, this);
             return item;
         }
 
@@ -52,14 +49,14 @@ namespace AirdPro
          */
         public string AddRootItemToCache(RootItem item)
         {
-            List<BaseItem> items = null;
+            List<BaseItem> items;
             if (cache.ContainsKey("ROOT"))
             {
                 items = cache["ROOT"];
             }
             else
             {
-                items = new List<BaseItem>();
+                items = [];
             }
 
             if (!items.Contains(item))
@@ -98,17 +95,17 @@ namespace AirdPro
                 
                 if (item is FolderItem)
                 {
-                    DirectoryInfo info = new DirectoryInfo(item.ItemPath);
+                    DirectoryInfo info = new(item.ItemPath);
                     item.Date = info.CreationTime;
                 }
                 else if (item is FileItem)
                 {
-                    FileInfo info = new FileInfo(item.ItemPath);
+                    FileInfo info = new(item.ItemPath);
                     item.Size = info.Length;
                     item.Date = info.CreationTime;
                     if (info.Extension.ToLower() == ".ico")
                     {
-                        Icon icon = new Icon(item.ItemPath);
+                        Icon icon = new(item.ItemPath);
                         item.Icon = icon.ToBitmap();
                     }
                     else if (info.Extension.ToLower() == ".bmp")
@@ -132,14 +129,14 @@ namespace AirdPro
                 return TreePath.Empty;
             else
             {
-                Stack<object> stack = new Stack<object>();
+                Stack<object> stack = new();
                 while (item != null)
                 {
                     stack.Push(item);
                     item = item.Parent;
                 }
 
-                return new TreePath(stack.ToArray());
+                return new TreePath([.. stack]);
             }
         }
 
@@ -152,7 +149,7 @@ namespace AirdPro
                     items = cache["ROOT"];
                 else
                 {
-                    items = new List<BaseItem>();
+                    items = [];
                     cache.Add("ROOT", items);
                     
                     RootItem desktop = BuildRoot(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
@@ -186,19 +183,18 @@ namespace AirdPro
             }
             else
             {
-                BaseItem parent = treePath.LastNode as BaseItem;
-                if (parent != null && !parent.MSFile)
+                if (treePath.LastNode is BaseItem parent && !parent.MSFile)
                 {
                     if (cache.ContainsKey(parent.ItemPath))
                         items = cache[parent.ItemPath];
                     else
                     {
-                        items = new List<BaseItem>();
+                        items = [];
                         try
                         {
                             foreach (string str in Directory.GetDirectories(parent.ItemPath))
                             {
-                                FolderItem item = new FolderItem(str, parent, this);
+                                FolderItem item = new(str, parent, this);
                                 if (str.ToLower().EndsWith(FileFormat.DotD.ToLower()) ||
                                     str.ToLower().EndsWith(FileFormat.DotRAW.ToLower()))
                                 {
@@ -210,7 +206,7 @@ namespace AirdPro
 
                             foreach (string str in Directory.GetFiles(parent.ItemPath))
                             {
-                                FileItem item = new FileItem(str, parent, this);
+                                FileItem item = new(str, parent, this);
                                 string extension = Path.GetExtension(str);
                                 if (FileFormat.DotWIFF.ToLower().Equals(extension.ToLower())
                                     || FileFormat.DotWIFF2.ToLower().Equals(extension.ToLower())
@@ -268,7 +264,7 @@ namespace AirdPro
             if (NodesChanged != null)
             {
                 TreePath path = GetPath(item.Parent);
-                NodesChanged(this, new TreeModelEventArgs(path, new object[] { item }));
+                NodesChanged(this, new TreeModelEventArgs(path, [item]));
             }
         }
 

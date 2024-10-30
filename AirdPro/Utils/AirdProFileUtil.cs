@@ -62,32 +62,28 @@ namespace AirdPro.Utils
         {
             if (!File.Exists(filePath)) return null;
 
-            using (var fsRead = new FileStream(filePath, FileMode.Open))
-            {
-                var fsLen = (int)fsRead.Length;
-                var heByte = new byte[fsLen];
-                var r = fsRead.Read(heByte, 0, heByte.Length);
-                var projectJson = Encoding.UTF8.GetString(heByte);
-                fsRead.Close();
+            using var fsRead = new FileStream(filePath, FileMode.Open);
+            var fsLen = (int)fsRead.Length;
+            var heByte = new byte[fsLen];
+            var r = fsRead.Read(heByte, 0, heByte.Length);
+            var projectJson = Encoding.UTF8.GetString(heByte);
+            fsRead.Close();
 
-                return projectJson;
-            }
+            return projectJson;
         }
 
         public static T ReadFromFileAsJson<T>(string filePath)
         {
-            if (!File.Exists(filePath)) return default(T);
+            if (!File.Exists(filePath)) return default;
 
-            using (var fsRead = new FileStream(filePath, FileMode.Open))
-            {
-                var fsLen = (int)fsRead.Length;
-                var heByte = new byte[fsLen];
-                var r = fsRead.Read(heByte, 0, heByte.Length);
-                var projectJson = Encoding.UTF8.GetString(heByte);
-                fsRead.Close();
+            using var fsRead = new FileStream(filePath, FileMode.Open);
+            var fsLen = (int)fsRead.Length;
+            var heByte = new byte[fsLen];
+            var r = fsRead.Read(heByte, 0, heByte.Length);
+            var projectJson = Encoding.UTF8.GetString(heByte);
+            fsRead.Close();
 
-                return JsonConvert.DeserializeObject<T>(projectJson);
-            }
+            return JsonConvert.DeserializeObject<T>(projectJson);
         }
 
         public static void WriteToFile(object obj, string outputFilePath)
@@ -102,7 +98,7 @@ namespace AirdPro.Utils
         public static long GetDirectorySize(string directory)
         {
             long directorySize = 0;
-            DirectoryInfo di = new DirectoryInfo(directory);
+            DirectoryInfo di = new(directory);
             if (!di.Exists)
             {
                 return 0;
@@ -127,14 +123,14 @@ namespace AirdPro.Utils
          */
         public static List<string> Scan(string folderPath)
         {
-            List<string> items = new List<string>();
-            string[] dirs = Array.Empty<string>();
+            List<string> items = [];
+            string[] dirs = [];
             //这个try catch是为了防止访问部分windows文件夹异常时做的容错逻辑
             try
             {
                 dirs = Directory.GetDirectories(folderPath);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // ignored
             }
@@ -191,8 +187,8 @@ namespace AirdPro.Utils
 
         public static void CopyFolder(string sourceFolderPath, string destinationFolderPath)
         {
-            DirectoryInfo sourceDirectory = new DirectoryInfo(sourceFolderPath);
-            DirectoryInfo destinationDirectory = new DirectoryInfo(destinationFolderPath);
+            DirectoryInfo sourceDirectory = new(sourceFolderPath);
+            DirectoryInfo destinationDirectory = new(destinationFolderPath);
 
             if (!sourceDirectory.Exists)
             {
@@ -251,9 +247,9 @@ namespace AirdPro.Utils
                 {
                     File.Delete(file);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    //ignore
+                    
                 }
             }
 
@@ -267,9 +263,9 @@ namespace AirdPro.Utils
                 {
                     Directory.Delete(subfolder, true);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    //ignore
+                    
                 }
                 
             }

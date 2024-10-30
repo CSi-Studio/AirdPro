@@ -56,7 +56,7 @@ namespace AirdPro.csimzMLParser.exceptions
         {
             StringBuilder message = new();
 
-            if (term != null && xmlType == null && expectedParamType == null)
+            /*if (term != null && xmlType == null && expectedParamType == null)
             {
                 message.Append("Expected");
 
@@ -74,9 +74,9 @@ namespace AirdPro.csimzMLParser.exceptions
                     message.Append(" but the value attribute was omitted");
                 else
                     message.Append(" but got value \"").Append(value).Append("\"");
-            }
+            }*/
 
-            if (term != null && xmlType != null)
+            if (term != null /*&& xmlType != null*/)
             {
                 message.Append("Unimplemented or unexpected XMLType ");
                 message.Append(term.GetValueType().ToString());

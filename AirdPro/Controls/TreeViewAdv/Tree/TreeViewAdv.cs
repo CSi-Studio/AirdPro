@@ -1152,7 +1152,7 @@ namespace Aga.Controls.Tree
 		{
 			_model.NodesChanged += new EventHandler<TreeModelEventArgs>(_model_NodesChanged);
 			_model.NodesInserted += new EventHandler<TreeModelEventArgs>(_model_NodesInserted);
-			_model.NodesRemoved += new EventHandler<TreeModelEventArgs>(_model_NodesRemoved);
+			_model.NodesRemoved += new EventHandler<TreeModelEventArgs>(Model_NodesRemoved);
 			_model.StructureChanged += new EventHandler<TreePathEventArgs>(_model_StructureChanged);
 		}
 
@@ -1160,7 +1160,7 @@ namespace Aga.Controls.Tree
 		{
 			_model.NodesChanged -= new EventHandler<TreeModelEventArgs>(_model_NodesChanged);
 			_model.NodesInserted -= new EventHandler<TreeModelEventArgs>(_model_NodesInserted);
-			_model.NodesRemoved -= new EventHandler<TreeModelEventArgs>(_model_NodesRemoved);
+			_model.NodesRemoved -= new EventHandler<TreeModelEventArgs>(Model_NodesRemoved);
 			_model.StructureChanged -= new EventHandler<TreePathEventArgs>(_model_StructureChanged);
 		}
 
@@ -1302,7 +1302,7 @@ namespace Aga.Controls.Tree
 			}
 		}
 
-		private void _model_NodesRemoved(object sender, TreeModelEventArgs e)
+		private void Model_NodesRemoved(object sender, TreeModelEventArgs e)
 		{
 			TreeNodeAdv parent = FindNode(e.Path);
 			if (parent != null)

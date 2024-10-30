@@ -4,8 +4,6 @@ namespace AirdPro.csimzMLParser.exceptions
 {
     public class ImzMLWriteException : Exception
     {
-        private static readonly long serialVersionUID = 1L;
-
         public ImzMLWriteException(String message) : base(message)
         {
             

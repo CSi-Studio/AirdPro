@@ -8,14 +8,12 @@ namespace AirdPro.csimzMLParser.data
     [Serializable]
     public class DataTransformation
     {
-        private static readonly long serialVersionUID = 1L;
-
         public List<IDataTransform> transformation;
         public int[] dataSizeAtEachStage;
 
         public void AddTransform(IDataTransform transform)
         {
-            if (transformation is List<IDataTransform>)
+            if (transformation is not null and List<IDataTransform>)
             {
                 transformation.Add(transform);
             }
@@ -66,7 +64,7 @@ namespace AirdPro.csimzMLParser.data
             if (transformation != null)
             {
                 // 使用 Stack 来实现逆序迭代
-                Stack<IDataTransform> stack = new Stack<IDataTransform>(transformation);
+                Stack<IDataTransform> stack = new(transformation);
                 while (stack.Count > 0)
                 {
                     IDataTransform transform = stack.Pop();
@@ -93,7 +91,7 @@ namespace AirdPro.csimzMLParser.data
 
         public override string ToString()
         {
-            StringBuilder description = new StringBuilder("DataTransform\n");
+            StringBuilder description = new("DataTransform\n");
 
             if (transformation != null)
             {

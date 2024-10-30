@@ -9,10 +9,8 @@ using System.Text;
 namespace AirdPro.csimzMLParser.data
 {  
     [Serializable]
-    public class DataTypeTransform : IDataTransform
+    public class DataTypeTransform(DataTypeTransform.DataType from, DataTypeTransform.DataType to) : IDataTransform
     {
-        private static readonly ILog LOGGER = LogManager.GetLogger(typeof(DataTypeTransform));
-
         public enum DataType
         {
             DOUBLE,
@@ -25,23 +23,16 @@ namespace AirdPro.csimzMLParser.data
 
         public static OBOTerm ToOBOTerm(DataType dataType)
         {
-            switch (dataType)
+            return dataType switch
             {
-                case DataType.DOUBLE:
-                    return OBO.GetOBO().GetTerm(BinaryDataArray.DOUBLE_PRECISION_ID);
-                case DataType.FLOAT:
-                    return OBO.GetOBO().GetTerm(BinaryDataArray.SINGLE_PRECISION_ID);
-                case DataType.INTEGER_64BIT:
-                    return OBO.GetOBO().GetTerm(BinaryDataArray.SIGNED_64BIT_INTEGER_ID);
-                case DataType.INTEGER_32BIT:
-                    return OBO.GetOBO().GetTerm(BinaryDataArray.SIGNED_32BIT_INTEGER_ID);
-                case DataType.INTEGER_16BIT:
-                    return OBO.GetOBO().GetTerm(BinaryDataArray.SIGNED_16BIT_INTEGER_ID);
-                case DataType.INTEGER_8BIT:
-                    return OBO.GetOBO().GetTerm(BinaryDataArray.SIGNED_8BIT_INTEGER_ID);
-                default:
-                    return null;
-            }
+                DataType.DOUBLE => OBO.GetOBO().GetTerm(BinaryDataArray.DOUBLE_PRECISION_ID),
+                DataType.FLOAT => OBO.GetOBO().GetTerm(BinaryDataArray.SINGLE_PRECISION_ID),
+                DataType.INTEGER_64BIT => OBO.GetOBO().GetTerm(BinaryDataArray.SIGNED_64BIT_INTEGER_ID),
+                DataType.INTEGER_32BIT => OBO.GetOBO().GetTerm(BinaryDataArray.SIGNED_32BIT_INTEGER_ID),
+                DataType.INTEGER_16BIT => OBO.GetOBO().GetTerm(BinaryDataArray.SIGNED_16BIT_INTEGER_ID),
+                DataType.INTEGER_8BIT => OBO.GetOBO().GetTerm(BinaryDataArray.SIGNED_8BIT_INTEGER_ID),
+                _ => null,
+            };
         }
 
         public static DataType FromOBOTerm(OBOTerm term)
@@ -76,14 +67,8 @@ namespace AirdPro.csimzMLParser.data
             return default;
         }        
 
-        public DataType from;
-        public DataType to;
-
-        public DataTypeTransform(DataType from, DataType to)
-        {
-            this.from = from;
-            this.to = to;
-        }
+        public DataType from = from;
+        public DataType to = to;
 
         public static byte[] ConvertDoublesToBytes(double[] data)
         {
@@ -173,56 +158,54 @@ namespace AirdPro.csimzMLParser.data
                 return data;
             }
 
-            double[] doubleData = ConvertDataToDouble(data, from);            
+            double[] doubleData = ConvertDataToDouble(data, from);
 
-            using (MemoryStream ms = new MemoryStream())
+            using MemoryStream ms = new();
+            using (BinaryWriter writer = new(ms, Encoding.Default, true))
             {
-                using (BinaryWriter writer = new BinaryWriter(ms, Encoding.Default, true)) 
+                switch (to)
                 {
-                    switch (to)
-                    {
-                        case DataType.DOUBLE:
-                            foreach (double dataPoint in doubleData)
-                            {
-                                writer.Write(dataPoint);
-                            }
-                            break;
-                        case DataType.FLOAT:
-                            foreach (double dataPoint in doubleData)
-                            {
-                                writer.Write((float)dataPoint);
-                            }
-                            break;
-                        case DataType.INTEGER_64BIT:
-                            foreach (double dataPoint in doubleData)
-                            {
-                                writer.Write((long)dataPoint);
-                            }
-                            break;
-                        case DataType.INTEGER_32BIT:
-                            foreach (double dataPoint in doubleData)
-                            {
-                                writer.Write((int)dataPoint);
-                            }
-                            break;
-                        case DataType.INTEGER_16BIT:
-                            foreach (double dataPoint in doubleData)
-                            {
-                                writer.Write((short)dataPoint);
-                            }
-                            break;
-                        case DataType.INTEGER_8BIT:
-                            foreach (double dataPoint in doubleData)
-                            {
-                                writer.Write((sbyte)dataPoint);
-                            }
-                            break;
-                        default:
-                            throw new InvalidOperationException("Data type not supported: " + to);
-                    }
+                    case DataType.DOUBLE:
+                        foreach (double dataPoint in doubleData)
+                        {
+                            writer.Write(dataPoint);
+                        }
+                        break;
+                    case DataType.FLOAT:
+                        foreach (double dataPoint in doubleData)
+                        {
+                            writer.Write((float)dataPoint);
+                        }
+                        break;
+                    case DataType.INTEGER_64BIT:
+                        foreach (double dataPoint in doubleData)
+                        {
+                            writer.Write((long)dataPoint);
+                        }
+                        break;
+                    case DataType.INTEGER_32BIT:
+                        foreach (double dataPoint in doubleData)
+                        {
+                            writer.Write((int)dataPoint);
+                        }
+                        break;
+                    case DataType.INTEGER_16BIT:
+                        foreach (double dataPoint in doubleData)
+                        {
+                            writer.Write((short)dataPoint);
+                        }
+                        break;
+                    case DataType.INTEGER_8BIT:
+                        foreach (double dataPoint in doubleData)
+                        {
+                            writer.Write((sbyte)dataPoint);
+                        }
+                        break;
+                    default:
+                        throw new InvalidOperationException("Data type not supported: " + to);
                 }
-                return ms.ToArray();
             }
+            return ms.ToArray();
         }
 
         public byte[] ForwardTransform(byte[] data)

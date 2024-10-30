@@ -8,8 +8,8 @@ namespace AirdSDK.Parser;
 
 public class MSIParser : DDAParser
 {
-    private const double TOLERANCE = 0.0015; //0.0015
-    private double mz;
+    private const double TOLERANCE = 0.0015; 
+    //private double mz;
     public List<DDAMs> msList;
     private List<ImageData> imageDataList;
 
@@ -26,15 +26,15 @@ public class MSIParser : DDAParser
             ms1Index.rts[i] = i + 1;
         }
         Dictionary<double, Spectrum> ms1Map = GetSpectra(ms1Index);
-        List<double> ms1RtList = new List<double>(ms1Map.Keys);
+        List<double> ms1RtList = new(ms1Map.Keys);
         List<DDAMs> ms1List = BuildDdaMsList(ms1RtList, 0, ms1RtList.Count, ms1Index, ms1Map, false);
         return ms1List;
     }
 
     public List<ImageData> GetImageDataList(double mz)
     {
-        imageDataList = new List<ImageData>();
-        this.mz = mz;
+        imageDataList = [];
+        //this.mz = mz;
         int[] x = airdInfo.msiInfo.spectraPosition.x;
         int[] y = airdInfo.msiInfo.spectraPosition.y;
         

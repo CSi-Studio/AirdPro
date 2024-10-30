@@ -138,7 +138,7 @@
             this.switchConsumeJob.Texts = new string[] { "Consume Job Switch" };
             this.switchConsumeJob.TrueColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(59)))));
             this.switchConsumeJob.TrueTextColr = System.Drawing.Color.White;
-            this.switchConsumeJob.CheckedChanged += new System.EventHandler(this.switchConsumeJob_CheckedChanged);
+            this.switchConsumeJob.CheckedChanged += new System.EventHandler(this.SwitchConsumeJob_CheckedChanged);
             // 
             // btnRefreshJobList
             // 
@@ -153,7 +153,7 @@
             this.btnRefreshJobList.TabIndex = 156;
             this.btnRefreshJobList.Text = "Refresh";
             this.btnRefreshJobList.UseVisualStyleBackColor = true;
-            this.btnRefreshJobList.Click += new System.EventHandler(this.btnRefreshJobList_Click);
+            this.btnRefreshJobList.Click += new System.EventHandler(this.BtnRefreshJobList_Click);
             // 
             // btnClearRedisCache
             // 
@@ -168,7 +168,7 @@
             this.btnClearRedisCache.TabIndex = 154;
             this.btnClearRedisCache.Text = "Clear Redis Cache";
             this.btnClearRedisCache.UseVisualStyleBackColor = true;
-            this.btnClearRedisCache.Click += new System.EventHandler(this.btnClearRedisCache_Click);
+            this.btnClearRedisCache.Click += new System.EventHandler(this.BtnClearRedisCache_Click);
             // 
             // lblPassword
             // 
@@ -224,7 +224,7 @@
             this.btnConnect.TabIndex = 146;
             this.btnConnect.Text = "Connect";
             this.btnConnect.UseVisualStyleBackColor = true;
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            this.btnConnect.Click += new System.EventHandler(this.BtnConnect_Click);
             // 
             // tbRedisPassword
             // 
@@ -274,7 +274,7 @@
             this.btnSave.TabIndex = 140;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // mainOperation
             // 
@@ -358,14 +358,14 @@
             this.openConsumeSwitchToolStripMenuItem.Name = "openConsumeSwitchToolStripMenuItem";
             this.openConsumeSwitchToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.openConsumeSwitchToolStripMenuItem.Text = "Open Consume Switch";
-            this.openConsumeSwitchToolStripMenuItem.Click += new System.EventHandler(this.openConsumeSwitchToolStripMenuItem_Click);
+            this.openConsumeSwitchToolStripMenuItem.Click += new System.EventHandler(this.OpenConsumeSwitchToolStripMenuItem_Click);
             // 
             // closeConsumeSwitchToolStripMenuItem
             // 
             this.closeConsumeSwitchToolStripMenuItem.Name = "closeConsumeSwitchToolStripMenuItem";
             this.closeConsumeSwitchToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.closeConsumeSwitchToolStripMenuItem.Text = "Close Consume Switch";
-            this.closeConsumeSwitchToolStripMenuItem.Click += new System.EventHandler(this.closeConsumeSwitchToolStripMenuItem_Click);
+            this.closeConsumeSwitchToolStripMenuItem.Click += new System.EventHandler(this.CloseConsumeSwitchToolStripMenuItem_Click);
             // 
             // lvJobs
             // 
@@ -423,13 +423,13 @@
             // consumeTimer
             // 
             this.consumeTimer.Enabled = true;
-            this.consumeTimer.Tick += new System.EventHandler(this.consumeTimer_Tick);
+            this.consumeTimer.Tick += new System.EventHandler(this.ConsumeTimer_Tick);
             // 
             // heartBeatTimer
             // 
             this.heartBeatTimer.Enabled = true;
             this.heartBeatTimer.Interval = 5000;
-            this.heartBeatTimer.Tick += new System.EventHandler(this.heartBeatTimer_Tick);
+            this.heartBeatTimer.Tick += new System.EventHandler(this.HeartBeatTimer_Tick);
             // 
             // btnClearTempFiles
             // 
@@ -444,7 +444,7 @@
             this.btnClearTempFiles.TabIndex = 160;
             this.btnClearTempFiles.Text = "Clear Temp Files";
             this.btnClearTempFiles.UseVisualStyleBackColor = true;
-            this.btnClearTempFiles.Click += new System.EventHandler(this.btnClearTempFiles_Click);
+            this.btnClearTempFiles.Click += new System.EventHandler(this.BtnClearTempFiles_Click);
             // 
             // RedisForm
             // 

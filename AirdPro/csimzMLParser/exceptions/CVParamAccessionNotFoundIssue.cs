@@ -5,8 +5,6 @@ namespace AirdPro.csimzMLParser.exceptions
 {
     public class CVParamAccessionNotFoundIssue : NonFatalParseIssue
     {
-        private static readonly long serialVersionUID = 1470705281628394244L;
-
         private readonly string accession;
         private readonly UserParam userParam;
 

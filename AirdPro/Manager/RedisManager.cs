@@ -32,10 +32,10 @@ namespace AirdPro.Redis
         private ConnectionMultiplexer _redis;
         private IDatabase _db;
         private readonly int _dbNum = 1;
-        private static int _messageNum = 0;
+        //private static int _messageNum = 0;
         public const int HeartBeatInterval = 5000; //客户端心跳间隔,单位:秒
         public const int ConsumeInterval = 3000; //分布式任务消费间隔,单位:秒
-        private static readonly object locker = new object();
+        private static readonly object locker = new();
         public static bool GlobalConsumeJobSwitch = false;
 
         private RedisManager()
@@ -50,10 +50,7 @@ namespace AirdPro.Redis
                 {
                     lock (locker)
                     {
-                        if (_instance == null)
-                        {
-                            _instance = new RedisManager();
-                        }
+                        _instance ??= new RedisManager();
                     }
                 }
 
@@ -63,7 +60,7 @@ namespace AirdPro.Redis
 
         public void Connect(string host, int port, string user, string password)
         {
-            ConfigurationOptions options = new ConfigurationOptions
+            ConfigurationOptions options = new()
             {
                 EndPoints = { { host, port } },
                 ConnectTimeout = 1000,
@@ -78,7 +75,7 @@ namespace AirdPro.Redis
                 _db = _redis.GetDatabase(_dbNum);
                 _redis.GetSubscriber().Subscribe(RedisConst.SubscriberConsumeSwitch, ConsumeSwitchSubscriber);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // ignored
             }
@@ -124,7 +121,7 @@ namespace AirdPro.Redis
                     // 如果获取到转换队列中相关的任务,那么将消息队列中的转换任务加入到执行队列中
                     valueStr = value.ToString();
                     job = JsonConvert.DeserializeObject<RemoteConvertJob>(valueStr);
-                    ConversionConfig conversionConfig = new ConversionConfig
+                    ConversionConfig conversionConfig = new()
                     {
                         configName = "Redis",
                         suffix = job.suffix,
@@ -189,9 +186,11 @@ namespace AirdPro.Redis
                             (ByteCompType)Enum.Parse(typeof(ByteCompType), job.mobiByteComp);
                     }
 
-                    jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
-                    jobInfo.fromRedis = true;
-                    jobInfo.remoteId = job.remoteId;
+                    jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig)
+                    {
+                        fromRedis = true,
+                        remoteId = job.remoteId
+                    };
                     needToExecute = true;
                 }
             }
@@ -223,7 +222,7 @@ namespace AirdPro.Redis
         public void RegisterOrUpdate()
         {
             if (!Check()) return;
-            ClientInfo info = new ClientInfo();
+            ClientInfo info = new();
             info.init();
             string clientInfo = info.ToJson();
             _db.HashSet(RedisConst.ServerInfoList, info.ClientID, clientInfo);
@@ -289,9 +288,9 @@ namespace AirdPro.Redis
         */
         public Dictionary<string, ClientInfo> GetServerMap()
         {
-            if (!Check()) return new Dictionary<string, ClientInfo>();
+            if (!Check()) return [];
             HashEntry[] entries = _db.HashGetAll(RedisConst.ServerInfoList);
-            Dictionary<string, ClientInfo> serverMap = new Dictionary<string, ClientInfo>();
+            Dictionary<string, ClientInfo> serverMap = [];
             foreach (var entry in entries)
             {
                 ClientInfo clientInfo = JsonConvert.DeserializeObject<ClientInfo>(entry.Value);
@@ -312,7 +311,7 @@ namespace AirdPro.Redis
         {
             if (!Check()) return null;
             string value = _db.HashGet(RedisConst.ServerInfoList, ip);
-            Dictionary<string, object> dict = new Dictionary<string, object>();
+            Dictionary<string, object> dict = [];
             if (value != null && !value.IsEmpty())
             {
                 dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(value);
@@ -326,7 +325,7 @@ namespace AirdPro.Redis
          */
         public List<RemoteConvertJob> GetTodoJobs()
         {
-            List<RemoteConvertJob> jobStrList = new List<RemoteConvertJob>();
+            List<RemoteConvertJob> jobStrList = [];
             if (!Check()) return jobStrList;
             RedisValue[] jobs = _db.SetMembers(RedisConst.ConvertTask);
             foreach (RedisValue jobValue in jobs)
@@ -344,7 +343,7 @@ namespace AirdPro.Redis
          */
         public List<RemoteConvertJob> GetConvertingJobs()
         {
-            List<RemoteConvertJob> jobStrList = new List<RemoteConvertJob>();
+            List<RemoteConvertJob> jobStrList = [];
             if (!Check()) return jobStrList;
             var jobs = _db.HashGetAll(RedisConst.ConvertingTask);
             foreach (var entry in jobs)
@@ -359,18 +358,22 @@ namespace AirdPro.Redis
 
         public void OpenConsume(List<string> serverIps)
         {
-            ConsumeSwitchCommand command = new ConsumeSwitchCommand();
-            command.serverIps = serverIps;
-            command.switcher = true;
+            ConsumeSwitchCommand command = new()
+            {
+                serverIps = serverIps,
+                switcher = true
+            };
             string com = JsonConvert.SerializeObject(command);
             _db.Publish(RedisConst.SubscriberConsumeSwitch, com);
         } 
         
         public void CloseConsume(List<string> serverIps)
         {
-            ConsumeSwitchCommand command = new ConsumeSwitchCommand();
-            command.serverIps = serverIps;
-            command.switcher = false;
+            ConsumeSwitchCommand command = new()
+            {
+                serverIps = serverIps,
+                switcher = false
+            };
             string com = JsonConvert.SerializeObject(command);
             _db.Publish(RedisConst.SubscriberConsumeSwitch, com);
         }
