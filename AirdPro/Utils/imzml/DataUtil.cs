@@ -1,5 +1,4 @@
 ﻿using AirdPro.csimzMLParser.mzml;
-using AirdSDK.Bean.Msi;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -58,7 +57,12 @@ namespace AirdPro.Utils.imzml
             double minMZ = double.MaxValue;
             foreach (Spectrum spectrum in spectrumList)
             {
-                double mz = spectrum.GetMzArray().Min();
+                double[] mzArray = spectrum.GetMzArray();
+                if (mzArray == null || mzArray.Count() == 0) 
+                {
+                    continue;
+                }
+                double mz = mzArray.Min();
                 if (minMZ > mz)
                 {
                     minMZ = mz;
@@ -72,7 +76,12 @@ namespace AirdPro.Utils.imzml
             double maxMZ = double.MinValue;
             foreach (Spectrum spectrum in spectrumList)
             {
-                double mz = spectrum.GetMzArray().Max();
+                double[] mzArray = spectrum.GetMzArray();
+                if (mzArray == null || mzArray.Count() == 0)
+                {
+                    continue;
+                }
+                double mz = mzArray.Max();
                 if (maxMZ < mz)
                 {
                     maxMZ = mz;

@@ -2,10 +2,12 @@
 using AirdPro.csimzMLParser.exceptions;
 using AirdPro.csimzMLParser.mzml;
 using AirdPro.csimzMLParser.obo;
+using AirdSDK.Enums.Msi;
 using HZH_Controls;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -405,43 +407,21 @@ namespace AirdPro.csimzMLParser.parser
 
             string startTimeStamp = reader.GetAttribute("startTimeStamp");
             DateTime dateTime;
-            if (startTimeStamp != null)
+            bool tryParse = DateTime.TryParseExact(
+                startTimeStamp,
+                DateTimeFormat.Formats.ToArray(),
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out dateTime);
+            if (tryParse) 
             {
-                string format = "yyyy-MM-dd'T'HH:mm:ss";
-                try
-                {                    
-                    if (startTimeStamp.Contains("BST"))
-                    {
-                        format = "ddd MMM dd HH:mm:ss 'BST' yyyy";
-                        // 将BST替换为标准的时区表示
-                        dateTime = DateTimeOffset.ParseExact(startTimeStamp, format, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).UtcDateTime;
-                    }
-                    else
-                    {
-                        dateTime = DateTime.ParseExact(startTimeStamp, "yyyy-MM-dd'T'HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None);
-                    }
-
-                    run.SetStartTimeStamp(dateTime.ToString());
-                }
-                catch (ParseException)
-                {
-                    InvalidFormatIssue formatIssue = new("startTimeStamp", format, startTimeStamp);
-                    formatIssue.SetIssueLocation(contentStack.Peek());
-                    NotifyParserListeners(formatIssue);
-                    try
-                    {
-                        dateTime = DateTime.ParseExact(startTimeStamp, "EEE MMM dd HH:mm:ss zzz yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
-                        run.SetStartTimeStamp(dateTime.ToString());
-                    }
-                    catch (ParseException)
-                    {
-                        InvalidFormatIssue secondFormatIssue = new("startTimeStamp", "EEE MMM dd HH:mm:ss zzz yyyy", startTimeStamp);
-                        secondFormatIssue.SetIssueLocation(contentStack.Peek());
-                        NotifyParserListeners(secondFormatIssue);
-                        run.SetStartTimeStamp(startTimeStamp);
-                    }
-                }
+                run.SetStartTimeStamp(dateTime);
             }
+            else
+            {
+                run.SetStartTimeStamp(startTimeStamp);
+            }
+
             mzML.SetRun(run);
             contentStack.Push(run);
         }

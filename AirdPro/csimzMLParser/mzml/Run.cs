@@ -110,6 +110,11 @@ namespace AirdPro.csimzMLParser.mzml
             this.sampleRef = sampleRef;
         }
 
+        public void SetStartTimeStamp(DateTime startTimeStamp)
+        {
+            this.startTimeStamp = startTimeStamp.ToString();
+        }
+
         public void SetStartTimeStamp(string startTimeStamp)
         {
             this.startTimeStamp = startTimeStamp;
@@ -199,7 +204,7 @@ namespace AirdPro.csimzMLParser.mzml
                 // 格式化日期时间，包括转换为 UTC
                 DateTimeOffset startTimeStampOffset = new(startTimeStamp.ToUniversalTime());
                 string formattedDateWithTimeZone = startTimeStampOffset.ToString(xmlDateTimeFormat, CultureInfo.InvariantCulture);*/
-                
+
                 attributes = $" startTimeStamp=\"{startTimeStamp}\"";
             }
             return attributes;

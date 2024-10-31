@@ -95,7 +95,7 @@ namespace AirdPro.Converters
                 StartPosition = 0;
                 InitDirectory(); //创建文件夹,首先创建文件夹的目的在于确保对指定目录拥有写权限,如果无法正常创建,则在本步骤就中断
 
-                ReadMSIData(imzML);
+                ReadMSIData(imzML);                
                 using (AirdStream = new FileStream(JobInfo.airdFilePath, FileMode.Create))
                 {                    
                     InitCompressor();
