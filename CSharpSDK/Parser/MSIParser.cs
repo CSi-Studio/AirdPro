@@ -8,7 +8,6 @@ namespace AirdSDK.Parser;
 
 public class MSIParser : DDAParser
 {
-    private const double TOLERANCE = 0.0015; 
     //private double mz;
     public List<DDAMs> msList;
     private List<ImageData> imageDataList;
@@ -31,7 +30,7 @@ public class MSIParser : DDAParser
         return ms1List;
     }
 
-    public List<ImageData> GetImageDataList(double mz)
+    public List<ImageData> GetImageDataList(double mz, double tolerance)
     {
         imageDataList = [];
         //this.mz = mz;
@@ -46,7 +45,7 @@ public class MSIParser : DDAParser
             double intensity = 0;
             for (int i = 0; i < mzArray.Length; i++)
             {
-                if (Math.Abs(mzArray[i] - mz) <= TOLERANCE)
+                if (Math.Abs(mzArray[i] - mz) <= tolerance)
                 {
                     intensity += intArray[i];
                 }                

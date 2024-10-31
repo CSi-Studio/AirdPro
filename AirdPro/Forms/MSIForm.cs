@@ -55,7 +55,12 @@ namespace AirdPro.Forms
                 MessageBox.Show("please input m/z first!", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            double mz;
+            if (TbTolerance.Text.Trim().Equals(""))
+            {
+                MessageBox.Show("please input m/z tolerance first!", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            double mz, tolerance;
             try
             {
                 mz = double.Parse(TbMz.Text.Trim());
@@ -66,6 +71,17 @@ namespace AirdPro.Forms
                 MessageBox.Show("m/z value is invalid!", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+            try
+            {
+                tolerance = double.Parse(TbTolerance.Text.Trim());
+            }
+            catch (FormatException fe)
+            {
+                Console.WriteLine(fe.Message);
+                MessageBox.Show("m/z tolerance value is invalid!", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
 
             ImageInfo imageInfo = msiParser.airdInfo.msiInfo.imageInfo;
             if (mz < imageInfo.minMZ || mz > imageInfo.maxMZ)
@@ -74,7 +90,7 @@ namespace AirdPro.Forms
                 return;
             }
 
-            imageDataList = msiParser.GetImageDataList(mz);
+            imageDataList = msiParser.GetImageDataList(mz, tolerance);
             var heatmapData = imageDataList.Select(data => new object[] { data.X, data.Y, data.Intensity }).ToList();
             double maxIntensity = GetMaxIntensity(imageDataList);
             double maxPixelX = imageInfo.maxPixelX;
