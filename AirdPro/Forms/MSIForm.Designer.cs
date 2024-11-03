@@ -30,6 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MSIImageForm));
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.TbTolerance = new System.Windows.Forms.TextBox();
             this.BtnShowMS = new System.Windows.Forms.Button();
             this.TbScanNumber = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -44,9 +47,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.TbTolerance = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.webViewMSI)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.webViewMS)).BeginInit();
@@ -74,8 +74,39 @@
             this.panel2.Size = new System.Drawing.Size(2295, 66);
             this.panel2.TabIndex = 4;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label4.Location = new System.Drawing.Point(1881, 21);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(34, 24);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Da";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.Location = new System.Drawing.Point(1659, 21);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(124, 24);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "tolerance +/-";
+            // 
+            // TbTolerance
+            // 
+            this.TbTolerance.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.TbTolerance.Location = new System.Drawing.Point(1788, 18);
+            this.TbTolerance.Name = "TbTolerance";
+            this.TbTolerance.Size = new System.Drawing.Size(87, 30);
+            this.TbTolerance.TabIndex = 10;
+            this.TbTolerance.Text = "0.015";
+            this.TbTolerance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
             // BtnShowMS
             // 
+            this.BtnShowMS.Enabled = false;
             this.BtnShowMS.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.BtnShowMS.Location = new System.Drawing.Point(1277, 14);
             this.BtnShowMS.Name = "BtnShowMS";
@@ -106,6 +137,7 @@
             // 
             // BtnShowImage
             // 
+            this.BtnShowImage.Enabled = false;
             this.BtnShowImage.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.BtnShowImage.Location = new System.Drawing.Point(1933, 13);
             this.BtnShowImage.Name = "BtnShowImage";
@@ -215,36 +247,6 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(1223, 1112);
             this.panel5.TabIndex = 6;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(1659, 21);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(124, 24);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "tolerance +/-";
-            // 
-            // TbTolerance
-            // 
-            this.TbTolerance.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.TbTolerance.Location = new System.Drawing.Point(1788, 18);
-            this.TbTolerance.Name = "TbTolerance";
-            this.TbTolerance.Size = new System.Drawing.Size(87, 30);
-            this.TbTolerance.TabIndex = 10;
-            this.TbTolerance.Text = "0.015";
-            this.TbTolerance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.Location = new System.Drawing.Point(1881, 21);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(34, 24);
-            this.label4.TabIndex = 12;
-            this.label4.Text = "Da";
             // 
             // MSIImageForm
             // 

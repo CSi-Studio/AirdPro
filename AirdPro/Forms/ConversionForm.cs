@@ -338,6 +338,7 @@ namespace AirdPro.Forms
             timerTaskScan.Enabled = cbAutoExe.Checked;
         }
 
+        [Obsolete]
         private void btnRedisSetting_Click(object sender, EventArgs e)
         {
             if (Program.redisForm == null || Program.redisForm.IsDisposed)

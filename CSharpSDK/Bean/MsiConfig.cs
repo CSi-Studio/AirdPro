@@ -4,6 +4,7 @@ namespace AirdSDK.Bean
 {
     public class MsiConfig
     {
+        public string locationFilePath;
         public string fileOrganisation;
         public string scanDirection;
         public string scanSequence;

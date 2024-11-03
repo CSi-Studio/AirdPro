@@ -56,6 +56,7 @@ namespace AirdPro.Forms
             Program.aboutForm.BringToFront();
         }
 
+        [Obsolete]
         private void globalSettingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Program.redisForm == null || Program.redisForm.IsDisposed)

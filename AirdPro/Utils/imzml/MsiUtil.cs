@@ -2,6 +2,8 @@
 using AirdPro.csimzMLParser.mzml;
 using AirdSDK.Bean.Msi;
 using AirdSDK.Enums.Msi;
+using SharpCompress.Common;
+using System.IO;
 using System.Linq;
 
 namespace AirdPro.Utils.imzml
@@ -204,7 +206,8 @@ namespace AirdPro.Utils.imzml
             int totalSpectrumCount = spectrumList.Size();
             int[] x = new int[totalSpectrumCount];
             int[] y = new int[totalSpectrumCount];
-            int[] z = new int[totalSpectrumCount];
+            int[] z = new int[totalSpectrumCount];            
+            
             for (int i = 0; i < totalSpectrumCount; i++)
             {
                 x[i] = spectrumList.GetSpectrum(i).GetPixelLocation().GetX();

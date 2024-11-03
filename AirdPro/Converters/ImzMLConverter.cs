@@ -750,6 +750,20 @@ namespace AirdPro.Converters
             //Msi Info
             airdInfo.msiInfo = MsiUtil.GetMsiInfo(imzML);
 
+            //write position info to SpectraPositionFile
+            /*string positionFile = Path.ChangeExtension(JobInfo.airdFilePath, "position.txt");
+            int[] x = airdInfo.msiInfo.spectraPosition.x;
+            int[] y = airdInfo.msiInfo.spectraPosition.y;
+            int[] z = airdInfo.msiInfo.spectraPosition.z;           
+            using (StreamWriter writer = new StreamWriter(positionFile))
+            {
+                for (int i = 0; i < x.Length; i++)
+                {
+                    // 将x和y坐标写入文件，格式为"x,y"
+                    writer.WriteLine($"{x[i]},{y[i]},{z[i]}");
+                }
+            }*/
+
             //Features Info
             FeaturesMap.Add(Features.raw_id, imzML);
             FeaturesMap.Add(Features.ignore_zero_intensity, JobInfo.config.ignoreZeroIntensity);
@@ -948,94 +962,11 @@ namespace AirdPro.Converters
 
         public void PretreatmentDda()
         {
-            int parentNum = 0;
             JobInfo.Log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
             for (var i = 0; i < TotalSpectraCount; i++)
             {
-                Spectrum spectrum = spectrumList.Get(i);
-                string msLevel = CVUtil.ParseMsLevel(spectrum);
                 JobInfo.SetStatus("Pre:" + i + "/" + TotalSpectraCount);
-                //最后一个谱图,单独判断
-                if (i == TotalSpectraCount - 1)
-                {
-                    if (msLevel.Equals(MsLevel.MS1))
-                    {
-                        Ms1List.Add(ParseMs1(spectrum, i)); //如果是MS1谱图,加入到MS1List
-                    }                    
-                }
-                else
-                {
-                    //如果这个谱图是MS1
-                    if (msLevel.Equals(MsLevel.MS1))
-                    {
-                        Ms1List.Add(ParseMs1(spectrum, i)); //加入MS1List
-                        Spectrum next = spectrumList.Get(i + 1);
-                        if (CVUtil.ParseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
-                        {
-                            parentNum = i;
-                        }
-                    }
-                }
-            }
-
-            JobInfo.Log(Tag.Effective_MS1_List_Size + Ms1List.Count);
-            JobInfo.Log(Tag.Start_Processing_MS1_List);
-        }
-
-        public void PretreatmentDia()
-        {
-            int parentNum = 0;
-            JobInfo.Log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
-            int progress = 0;
-            // 预处理所有的MS谱图,将MS1与MS2的信息扫描以后放入对应的内存对象中
-            for (int i = 0; i < TotalSpectraCount; i++)
-            {
-                progress++;
-                JobInfo.Log(null, Tag.progress(Tag.Pre, progress, TotalSpectraCount));
-                Spectrum spectrum = spectrumList.Get(i);
-                string msLevel = CVUtil.ParseMsLevel(spectrum);
-                //如果这个谱图是MS1                          
-                if (msLevel.Equals(MsLevel.MS1))
-                {
-                    parentNum = i;
-                    Ms1List.Add(ParseMs1(spectrum, i));
-                }
-            }
-
-            JobInfo.Log(Tag.Effective_MS1_List_Size + Ms1List.Count);
-            JobInfo.Log(Tag.Start_Processing_MS1_List);
-        }
-
-        public void PretreatmentDdaPasef()
-        {
-            int parentNum = 0;
-            JobInfo.Log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
-            for (var i = 0; i < TotalSpectraCount; i++)
-            {
-                JobInfo.Log(null, Tag.progress(Tag.Pre, i, TotalSpectraCount));
-                Spectrum spectrum = spectrumList.Get(i);
-                string msLevel = CVUtil.ParseMsLevel(spectrum);
-                //最后一个谱图,单独判断
-                if (i == TotalSpectraCount - 1)
-                {
-                    if (msLevel.Equals(MsLevel.MS1))
-                    {
-                        Ms1List.Add(ParseMs1(spectrum, i)); //如果是MS1谱图,加入到MS1List
-                    }
-                }
-                else
-                {
-                    //如果这个谱图是MS1
-                    if (msLevel.Equals(MsLevel.MS1))
-                    {
-                        Ms1List.Add(ParseMs1(spectrum, i)); //加入MS1List
-                        Spectrum next = spectrumList.Get(i + 1);
-                        if (CVUtil.ParseMsLevel(next).Equals(MsLevel.MS2)) //如果下一个谱图是MS2, 那么将这个谱图设置为当前的父谱图
-                        {
-                            parentNum = i;
-                        }
-                    }
-                }
+                Ms1List.Add(ParseMs1(spectrumList.Get(i), i)); //加入MS1List                
             }
 
             JobInfo.Log(Tag.Effective_MS1_List_Size + Ms1List.Count);

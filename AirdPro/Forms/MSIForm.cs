@@ -38,6 +38,8 @@ namespace AirdPro.Forms
         {
             TbScanNumber.Text = "0";
             TbMz.Text = "";
+            BtnShowMS.Enabled = false;
+            BtnShowImage.Enabled = false;
             LbAirdInfo.Items.Clear();
             webViewMS.Reload();
             webViewMSI.Reload();
@@ -163,7 +165,7 @@ namespace AirdPro.Forms
             {
                 string airdFile = openFileDialog.FileName;
                 TbAirdFile.Text = airdFile;
-                ClearInfo();
+                ClearInfo();                
 
                 LbAirdInfo.Items.Add("  Importing and parsing file, please wait...");                 
                 DateTime startTime = DateTime.Now;
@@ -172,6 +174,8 @@ namespace AirdPro.Forms
                 LbAirdInfo.Items.Add($"  The file was successfully imported and took {(endTime - startTime).TotalSeconds} s!");
 
                 ShowAirdInfo(airdFile);
+                BtnShowMS.Enabled = true;
+                BtnShowImage.Enabled = true;
             }
         }
 
@@ -196,11 +200,11 @@ namespace AirdPro.Forms
             double fileSizeInBytes = airdInfo.fileSize;
             if (fileSizeInBytes >= oneGbInBytes)
             {
-                LbAirdInfo.Items.Add($"  File Size: {fileSizeInBytes / oneGbInBytes:0.##} GB");
+                LbAirdInfo.Items.Add($"  Source File Size: {fileSizeInBytes / oneGbInBytes:0.##} GB");
             }
             else
             {
-                LbAirdInfo.Items.Add($"  File Size: {fileSizeInBytes / (1024 * 1024):0.##} MB");
+                LbAirdInfo.Items.Add($"  Source File Size: {fileSizeInBytes / (1024 * 1024):0.##} MB");
             }
             LbAirdInfo.Items.Add($"  Acquisition Method: {airdInfo.type}");
             /*//源文件信息

@@ -3,6 +3,8 @@ using AirdSDK.Bean.Msi;
 using AirdSDK.Enums.Msi;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
 
 namespace AirdPro.Utils
 {
@@ -117,14 +119,25 @@ namespace AirdPro.Utils
             {
                 return null;
             }
+            if (msiConfig.locationFilePath.Equals(""))
+            {
+                return GetSpectraPositionByMsiConfig(msiConfig, spectaCount);
+            }
+            else
+            {
+                return GetSpectraPositionBySpectraLocationFile(msiConfig, spectaCount);
+            }
+        }
+
+        private static SpectraPosition GetSpectraPositionByMsiConfig(MsiConfig msiConfig, int spectaCount)
+        {
             int[] x = new int[spectaCount];
             int[] y = new int[spectaCount];
             int[] z = new int[spectaCount];
-            
-            List<int> yList = new();
+
             if (msiConfig.maxPixelZ == 1)
             {
-                for(int i= 0; i < spectaCount; i++)
+                for (int i = 0; i < spectaCount; i++)
                 {
                     z[i] = 1;
                 }
@@ -178,7 +191,7 @@ namespace AirdPro.Utils
                     y = Y_YtoYand1to1(msiConfig.maxPixelX, msiConfig.maxPixelY);
                 }
                 else if (msiConfig.scanDirection.Equals(ScanDirection.LINESCAN_TOP_DOWN) && msiConfig.scanSequence.Equals(ScanSequence.LEFT_RIGHT))
-                {                    
+                {
                     if (msiConfig.scanPattern.Equals(ScanPattern.MEANDERING)) //9：1-1,x-x; 1-y,y-1
                     {
                         y = Y_1toYandYto1(msiConfig.maxPixelX, msiConfig.maxPixelY);
@@ -189,8 +202,8 @@ namespace AirdPro.Utils
                     }
                     x = X_1to1andXtoX(msiConfig.maxPixelX, msiConfig.maxPixelY);
                 }
-                else if (msiConfig.scanDirection.Equals(ScanDirection.LINESCAN_TOP_DOWN) && msiConfig.scanSequence.Equals(ScanSequence.RIGHT_LEFT)) 
-                { 
+                else if (msiConfig.scanDirection.Equals(ScanDirection.LINESCAN_TOP_DOWN) && msiConfig.scanSequence.Equals(ScanSequence.RIGHT_LEFT))
+                {
                     if (msiConfig.scanPattern.Equals(ScanPattern.MEANDERING)) //11：x-x,1-1; 1-y,y-1
                     {
                         y = Y_1toYandYto1(msiConfig.maxPixelX, msiConfig.maxPixelY);
@@ -226,12 +239,51 @@ namespace AirdPro.Utils
                     x = X_XtoXand1to1(msiConfig.maxPixelX, msiConfig.maxPixelY);
                 }
             }
-            else
-            {
-                // 不用实现
-            }
-            
             return new SpectraPosition(x, y, z);
+        }
+
+        private static SpectraPosition GetSpectraPositionBySpectraLocationFile(MsiConfig msiConfig, int spectaCount)
+        {
+            string locationFilePath = msiConfig.locationFilePath;
+            
+            List<int> xList = [];
+            List<int> yList = [];
+            List<int> zList = [];
+            try
+            {
+                using StreamReader reader = new(locationFilePath);
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    // 根据行内容是否包含逗号来选择分隔符
+                    string[] parts = line.Contains(",") ? line.Split(',') : Regex.Split(line, @"\s+");
+                    if (parts.Length == 2)
+                    {
+                        int x = int.Parse(parts[0]);
+                        int y = int.Parse(parts[1]);
+
+                        xList.Add(x);
+                        yList.Add(y);
+                        zList.Add(1);
+                    }
+                    else if (parts.Length == 3)
+                    {
+                        int x = int.Parse(parts[0]);
+                        int y = int.Parse(parts[1]);
+                        int z = int.Parse(parts[2]);
+
+                        xList.Add(x);
+                        yList.Add(y);
+                        zList.Add(z);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error reading file: " + ex.Message);
+                return null; 
+            }
+            return new SpectraPosition([.. xList], [.. yList], [.. zList]);
         }
 
         private static int[] Y_Yto1andYto1(int maxPixelX, int maxPixelY)

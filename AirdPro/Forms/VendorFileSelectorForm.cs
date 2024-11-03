@@ -30,6 +30,7 @@ namespace AirdPro.Forms
 {
     public partial class VendorFileSelectorForm : Form, Observer<Dictionary<string, ConversionConfig>>
     {
+        readonly OpenFileDialog openLocationFileDialog;
         private ConversionConfigListForm configListForm;
 
         public VendorFileSelectorForm()
@@ -37,6 +38,10 @@ namespace AirdPro.Forms
             InitializeComponent();
             MsiConfig_Load();
             AddEventHandler();
+            openLocationFileDialog = new OpenFileDialog
+            {
+                Filter = "spectra location file (*.txt)|*.txt"
+            };
         }
 
         private void VendorFileSelectorForm_Load(object sender, EventArgs e)
@@ -69,7 +74,7 @@ namespace AirdPro.Forms
                     comboBox_file_organisation.Items.Add((string)field.GetValue(null));
                 }
             }
-            comboBox_file_organisation.SelectedIndex = 0;  // default: row per file
+            comboBox_file_organisation.SelectedIndex = 1;  // default: image per file
 
             comboBox_scan_direction.Items.Clear();
             fields = typeof(ScanDirection).GetFields(BindingFlags.Public | BindingFlags.Static);
@@ -170,7 +175,7 @@ namespace AirdPro.Forms
         }
         
         private bool AddToList(bool local)
-        {
+        {            
             string airdType = GetAirdType();   
 
             if (cbConfig.SelectedItem == null && !cbConfig.Text.IsNullOrEmpty())
@@ -214,6 +219,8 @@ namespace AirdPro.Forms
                     }
                     msi_path = msi_path.Substring(1);
                     MsiConfig msiConfig = new();
+                    //msiConfig.locationFilePath
+                    msiConfig.locationFilePath = tbLocationFilePath.Text.Trim();
                     // msiConfig.fileOrganisation
                     switch (comboBox_file_organisation.SelectedIndex)
                     {
@@ -511,10 +518,12 @@ namespace AirdPro.Forms
                 if (rbImzML.Checked)
                 {
                     gbMsiConfig.Visible = false;
+                    pnlSpectraLocationFile.Visible = false;
                 }
                 else
                 {
                     gbMsiConfig.Visible = true;
+                    pnlSpectraLocationFile.Visible = true;
                 }
             }
             else  // 非空代数据
@@ -529,6 +538,7 @@ namespace AirdPro.Forms
                     cbMSI.Enabled = false;              
                     gbMsiFormat.Visible = false;
                     gbMsiConfig.Visible = false;
+                    pnlSpectraLocationFile.Visible = false;
                 }
             }  
         }
@@ -542,16 +552,28 @@ namespace AirdPro.Forms
                 if (rbImzML.Checked)
                 {
                     gbMsiConfig.Visible = false;
+                    pnlSpectraLocationFile.Visible = false;
                 }
                 else
                 {
                     gbMsiConfig.Visible = true;
+                    pnlSpectraLocationFile.Visible = true;
                 }
             }
             else
             {
                 gbMsiFormat.Visible = false;
                 gbMsiConfig.Visible = false;
+                pnlSpectraLocationFile.Visible = false;
+            }
+        }
+
+        private void btnLocationUpload_Click(object sender, EventArgs e)
+        {
+            if (openLocationFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string spectraLocationFileName = openLocationFileDialog.FileName;
+                tbLocationFilePath.Text = spectraLocationFileName;
             }
         }
     }
