@@ -12,15 +12,17 @@ namespace AirdPro.Utils
     {
         public static MsiInfo GetMsiInfo(MsiConfig msiConfig, int spectraCount, double minMZ, double maxMZ)
         {
-            MsiInfo msiInfo = new();
-            //fileOrganisation: row per file, image per file，spectrum per file
-            msiInfo.fileOrganisation = GetFileOrganisation(msiConfig);
-            //image info
-            msiInfo.imageInfo = GetImageInfo(msiConfig, minMZ, maxMZ);
-            //spectrum position
-            msiInfo.spectraPosition = GetSpectraPosition(msiConfig, spectraCount);
-            //public ScanInfo scanInfo
-            msiInfo.scanInfo = GetScanInfo(msiConfig);
+            MsiInfo msiInfo = new()
+            {
+                //fileOrganisation: row per file, image per file，spectrum per file
+                fileOrganisation = GetFileOrganisation(msiConfig),
+                //image info
+                imageInfo = GetImageInfo(msiConfig, minMZ, maxMZ),
+                //spectrum position
+                spectraPosition = GetSpectraPosition(msiConfig, spectraCount),
+                //public ScanInfo scanInfo
+                scanInfo = GetScanInfo(msiConfig)                
+            };
 
             return msiInfo;
         }
@@ -45,7 +47,6 @@ namespace AirdPro.Utils
                 maxPixelZ = msiConfig.maxPixelZ,
                 pixelSizeX = msiConfig.pixelSizeX,
                 pixelSizeY = msiConfig.pixelSizeY,
-
                 minMZ = minMZ,
                 maxMZ = maxMZ
             };
@@ -125,7 +126,7 @@ namespace AirdPro.Utils
             }
             else
             {
-                return GetSpectraPositionBySpectraLocationFile(msiConfig, spectaCount);
+                return GetSpectraPositionBySpectraLocationFile(msiConfig);
             }
         }
 
@@ -242,7 +243,7 @@ namespace AirdPro.Utils
             return new SpectraPosition(x, y, z);
         }
 
-        private static SpectraPosition GetSpectraPositionBySpectraLocationFile(MsiConfig msiConfig, int spectaCount)
+        private static SpectraPosition GetSpectraPositionBySpectraLocationFile(MsiConfig msiConfig)
         {
             string locationFilePath = msiConfig.locationFilePath;
             
@@ -288,7 +289,7 @@ namespace AirdPro.Utils
 
         private static int[] Y_Yto1andYto1(int maxPixelX, int maxPixelY)
         {
-            List<int> yList = new();
+            List<int> yList = [];
             for (int j = 1; j <= maxPixelX; j++)
             {
                 for (int i = maxPixelY; i >= 1; i--)
@@ -296,12 +297,12 @@ namespace AirdPro.Utils
                     yList.Add(i);
                 }
             }
-            return yList.ToArray();
+            return [.. yList];
         }
 
         private static int[] Y_Yto1and1toY(int maxPixelX, int maxPixelY)
         {
-            List<int> yList = new();
+            List<int> yList = [];
             int cycle = maxPixelX / 2;
             for (int i = 1; i <= cycle; i++)
             {
@@ -322,12 +323,12 @@ namespace AirdPro.Utils
                     yList.Add(j);
                 }
             }
-            return yList.ToArray();
+            return [.. yList];
         }
 
         private static int[] X_XtoXand1to1(int maxPixelX, int maxPixelY)
         {
-            List<int> xList = new();
+            List<int> xList = [];
             for (int i = maxPixelX; i >= 1; i--)
             {
                 for (int j = 1; j <= maxPixelY; j++)
@@ -335,12 +336,12 @@ namespace AirdPro.Utils
                     xList.Add(i);
                 }
             }
-            return xList.ToArray();
+            return [.. xList];
         }
 
         private static int[] X_1to1andXtoX(int maxPixelX, int maxPixelY)
         {
-            List<int> xList = new();
+            List<int> xList = [];
             for (int i = 1; i <= maxPixelX; i++)
             {
                 for (int j = 1; j <= maxPixelY; j++)
@@ -348,12 +349,12 @@ namespace AirdPro.Utils
                     xList.Add(i);
                 }
             }
-            return xList.ToArray();
+            return [.. xList];
         }
 
         private static int[] Y_1toYand1toY(int maxPixelX, int maxPixelY)
         {
-            List<int> yList = new();
+            List<int> yList = [];
             for (int j = 1; j <= maxPixelX; j++)
             {
                 for (int i = 1; i <= maxPixelY; i++)
@@ -361,12 +362,12 @@ namespace AirdPro.Utils
                     yList.Add(i);
                 }
             }
-            return yList.ToArray();
+            return [.. yList];
         }
 
         private static int[] Y_1toYandYto1(int maxPixelX, int maxPixelY)
         {
-            List<int> yList = new();
+            List<int> yList = [];
             int cycle = maxPixelX / 2;
             for (int i = 1; i <= cycle; i++)
             {
@@ -386,12 +387,12 @@ namespace AirdPro.Utils
                     yList.Add(j);
                 }
             }
-            return yList.ToArray();
+            return [.. yList];
         }
 
         private static int[] Y_YtoYand1to1(int maxPixelX, int maxPixelY)
         {
-            List<int> yList = new();
+            List<int> yList = [];
             for (int i = maxPixelY; i >= 1; i--)
             {
                 for (int j = 1; j <= maxPixelX; j++)
@@ -399,12 +400,12 @@ namespace AirdPro.Utils
                     yList.Add(i);
                 }
             }
-            return yList.ToArray();
+            return [.. yList];
         }
 
         private static int[] X_1toXandXto1(int maxPixelX, int maxPixelY)
         {
-            List<int> xList = new();
+            List<int> xList = [];
             int cycle = maxPixelY / 2;
             for (int i = 1; i <= cycle; i++)
             {
@@ -424,12 +425,12 @@ namespace AirdPro.Utils
                     xList.Add(j);
                 }
             }
-            return xList.ToArray();
+            return [.. xList];
         }
 
         private static int[] Y_1to1andYtoY(int maxPixelX, int maxPixelY)
         {
-            List<int> yList = new();
+            List<int> yList = [];
             for (int i = 1; i <= maxPixelY; i++)
             {
                 for (int j = 1; j <= maxPixelX; j++)
@@ -437,12 +438,12 @@ namespace AirdPro.Utils
                     yList.Add(i);
                 }
             }
-            return yList.ToArray();
+            return [.. yList];
         }
 
         private static int[] X_Xto1and1toX(int maxPixelX, int maxPixelY) 
         {
-            List<int> xList = new();
+            List<int> xList = [];
             int cycle = maxPixelY / 2;
             for (int i = 1; i <= cycle; i++)
             {
@@ -462,12 +463,12 @@ namespace AirdPro.Utils
                     xList.Add(j);
                 }
             }
-            return xList.ToArray();
+            return [.. xList];
         }       
 
         private static int[] X_1toXand1toX(int maxPixelX, int maxPixelY)  //1-maxPixelX,1-maxPixelX,...,1-maxPixelX
         {
-            List<int> xList = new();
+            List<int> xList = [];
             for (int i = 1; i <= maxPixelY; i++)
             {
                 for (int j = 1; j <= maxPixelX; j++)
@@ -475,12 +476,12 @@ namespace AirdPro.Utils
                     xList.Add(j);
                 }
             }
-            return xList.ToArray();
+            return [.. xList];
         }
 
         private static int[] X_Xto1andXto1(int maxPixelX, int maxPixelY)  //maxPixelX-1,maxPixelX-1,...,maxPixelX-1
         {
-            List<int> xList = new();
+            List<int> xList = [];
             for (int i = 1; i <= maxPixelY; i++)
             {
                 for (int j = maxPixelX; j >= 1; j--)
@@ -488,7 +489,7 @@ namespace AirdPro.Utils
                     xList.Add(j);
                 }
             }
-            return xList.ToArray();
+            return [.. xList];
         }        
        
     }        

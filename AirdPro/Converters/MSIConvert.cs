@@ -16,20 +16,20 @@ using pwiz.CLI.data;
 using MsiUtil = AirdPro.Utils.MsiUtil;
 using AirdSDK.Enums.Msi;
 using Software = AirdSDK.Beans.Software;
-using System.Linq;
 
 namespace AirdPro.Converters
 {
     public class MSIConvert: PwizConverter
-    {
-        public MSIConvert() { }
-
-        public long totalCount = 0;
-        public double minMZ, maxMZ;
-        public string startTime = string.Empty;
+    {        
         readonly List<Software> softwares = [];
         readonly List<Instrument> instruments = [];
         readonly List<ParentFile> parentFiles = [];
+        public long totalCount = 0;
+        public string startTime = string.Empty;
+        public double minMZ = double.MaxValue;
+        public double maxMZ = double.MinValue;
+
+        public MSIConvert() { }
 
         public override void DoConvert()
         {
@@ -63,7 +63,6 @@ namespace AirdPro.Converters
                             foreach (MSData msd in msdList)
                             {
                                 ReadMsd(msd);
-                                CalcMaxMinMZ(SpectrumList);
                                 ConverterWorkFlow.DDAMSI(this);                                
                                 msd?.Dispose();
                             }
@@ -96,27 +95,6 @@ namespace AirdPro.Converters
             }
         }
 
-        private void CalcMaxMinMZ(SpectrumList spectrumList)
-        {
-            
-            maxMZ = double.MinValue;
-            minMZ = double.MaxValue;
-            for (int i = 0; i < spectrumList.size(); i++)
-            {
-                double[] mzArray = spectrumList.spectrum(i).getMZArray().data.Storage();
-                double mz = mzArray.Min();
-                if (minMZ > mz)
-                {
-                    minMZ = mz;
-                }
-                mz = mzArray.Max();
-                if (maxMZ < mz)
-                {
-                    maxMZ = mz;
-                }
-            }
-        }
-
         public new void ReadMsd(MSData msd)
         {
             Msd = msd;
@@ -142,23 +120,31 @@ namespace AirdPro.Converters
             JobInfo.Log(Tag.Pretreatment + TotalSpectraCount, Status.Pretreatment);
             for (var i = 0; i < TotalSpectraCount; i++)
             {
-                using (Spectrum spectrum = SpectrumList.spectrum(i, false))
+                using Spectrum spectrum = SpectrumList.spectrum(i, false);
+                JobInfo.SetStatus("Pre:" + i + "/" + TotalSpectraCount);
+                MsIndex msIndex = ParseMs1(spectrum, i);
+                Ms1List.Add(msIndex); //如果是MS1谱图,加入到MS1List
+                //minMZ, maxMZ
+                if (minMZ > msIndex.minMz)
                 {
-                    JobInfo.SetStatus("Pre:" + i + "/" + TotalSpectraCount);
-                    Ms1List.Add(ParseMs1(spectrum, i)); //如果是MS1谱图,加入到MS1List
-                    MS1Num++;
-                    if (JobInfo.msiConfig.fileOrganisation == FileOrganisation.ROW_PER_FILE && MS1Num > JobInfo.msiConfig.maxPixelX)
-                    {
-                        break;
-                    }
-                    if (JobInfo.msiConfig.fileOrganisation == FileOrganisation.SPECTRUM_PER_FILE && MS1Num > 1)
-                    {
-                        break;
-                    }
-                    if (JobInfo.msiConfig.fileOrganisation == FileOrganisation.IMAGE_PER_FILE && MS1Num > JobInfo.msiConfig.maxPixelX * JobInfo.msiConfig.maxPixelY)
-                    {
-                        break;
-                    }
+                    minMZ = msIndex.minMz;
+                }
+                if (maxMZ < msIndex.maxMz)
+                {
+                    maxMZ = msIndex.maxMz;
+                }
+                MS1Num++;
+                if (JobInfo.msiConfig.fileOrganisation == FileOrganisation.ROW_PER_FILE && MS1Num > JobInfo.msiConfig.maxPixelX)
+                {
+                    break;
+                }
+                if (JobInfo.msiConfig.fileOrganisation == FileOrganisation.SPECTRUM_PER_FILE && MS1Num > 1)
+                {
+                    break;
+                }
+                if (JobInfo.msiConfig.fileOrganisation == FileOrganisation.IMAGE_PER_FILE && MS1Num > JobInfo.msiConfig.maxPixelX * JobInfo.msiConfig.maxPixelY)
+                {
+                    break;
                 }
             }
             if(JobInfo.msiConfig.fileOrganisation == FileOrganisation.ROW_PER_FILE)
@@ -335,10 +321,10 @@ namespace AirdPro.Converters
 
             //Compressor Info
             List<Compressor> comps = [];
-            Compressor mzCompressor = new Compressor(AirdSDK.Beans.Compressor.TARGET_MZ);
-            Compressor intCompressor = new Compressor(AirdSDK.Beans.Compressor.TARGET_INTENSITY);
-            Compressor mobiCompressor = new Compressor(AirdSDK.Beans.Compressor.TARGET_MOBILITY);
-            Compressor rtCompressor = new Compressor(AirdSDK.Beans.Compressor.TARGET_RT);
+            Compressor mzCompressor = new(AirdSDK.Beans.Compressor.TARGET_MZ);
+            Compressor intCompressor = new(AirdSDK.Beans.Compressor.TARGET_INTENSITY);
+            Compressor mobiCompressor = new(AirdSDK.Beans.Compressor.TARGET_MOBILITY);
+            Compressor rtCompressor = new(AirdSDK.Beans.Compressor.TARGET_RT);
 
             mzCompressor.addMethod(JobInfo.config.mzIntComp.ToString());
             mzCompressor.addMethod(JobInfo.config.mzByteComp.ToString());
@@ -365,7 +351,8 @@ namespace AirdPro.Converters
             airdInfo.ignoreZeroIntensityPoint = JobInfo.config.ignoreZeroIntensity;
 
             //Msi Info
-            airdInfo.msiInfo = MsiUtil.GetMsiInfo(JobInfo.msiConfig, TotalSpectraCount, minMZ, maxMZ);
+            airdInfo.msiInfo = MsiUtil.GetMsiInfo(JobInfo.msiConfig, TotalSpectraCount, minMZ, maxMZ);     
+            airdInfo.msiFormat = JobInfo.msiConfig.msiFormat;
 
             //Features Info
             FeaturesMap.Add(Features.ignore_zero_intensity, JobInfo.config.ignoreZeroIntensity);
@@ -383,7 +370,7 @@ namespace AirdPro.Converters
             //Instrument Info
             foreach (InstrumentConfiguration ic in Msd.instrumentConfigurationList)
             {
-                Instrument instrument = new Instrument();
+                Instrument instrument = new();
 
                 switch (JobInfo.format)
                 {
@@ -493,16 +480,18 @@ namespace AirdPro.Converters
             //Software Info
             foreach (var soft in Msd.softwareList)
             {
-                AirdSDK.Beans.Software software = new AirdSDK.Beans.Software();
-                software.name = soft.id;
-                software.version = soft.version;
+                Software software = new()
+                {
+                    name = soft.id,
+                    version = soft.version
+                };
                 softwares.Add(software);
                 soft.Dispose();
             }
             //Parent Files Info
             foreach (var sf in Msd.fileDescription.sourceFiles)
             {
-                ParentFile file = new ParentFile
+                ParentFile file = new()
                 {
                     name = sf.name,
                     location = sf.location,

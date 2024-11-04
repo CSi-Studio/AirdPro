@@ -5,7 +5,6 @@ using AirdPro.csimzMLParser.parser;
 using AirdPro.Domains;
 using AirdSDK.Beans;
 using AirdSDK.Compressor;
-using AirdSDK.Enums;
 using AirdSDK.Utils;
 using Google.Protobuf;
 using HZH_Controls;
@@ -16,7 +15,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using Spectrum = AirdPro.csimzMLParser.mzml.Spectrum;
 using AirdPro.csimzMLParser.imzml;
 using Activator = AirdPro.Constants.Activator;
 using AirdPro.Algorithms.Maths;
@@ -27,6 +25,8 @@ using AirdPro.Utils;
 using CVUtil = AirdPro.Utils.imzml.CVUtil;
 using DataUtil = AirdPro.Utils.imzml.DataUtil;
 using MsiUtil = AirdPro.Utils.imzml.MsiUtil;
+using System.Linq;
+using AirdSDK.Enums.Msi;
 
 namespace AirdPro.Converters
 {
@@ -34,6 +34,8 @@ namespace AirdPro.Converters
     {
         public ImzML imzML;
         public SpectrumList spectrumList;
+        public double minMZ = double.MaxValue;
+        public double maxMZ = double.MinValue;
 
         protected List<BlockIndex> IndexList = new(); //用于存储的全局的SWATH List
 
@@ -475,7 +477,10 @@ namespace AirdPro.Converters
             ms1.polarity = CVUtil.ParsePolarity(spectrum);
             ms1.activator = Activator.UNKNOWN;
             ms1.energy = -1;
-
+            //min max mz
+            double[] mzArray = spectrum.GetMzArray();
+            ms1.minMz = mzArray.Min();
+            ms1.maxMz = mzArray.Max();
             return ms1;
         }
 
@@ -748,13 +753,14 @@ namespace AirdPro.Converters
             airdInfo.ignoreZeroIntensityPoint = JobInfo.config.ignoreZeroIntensity;
 
             //Msi Info
-            airdInfo.msiInfo = MsiUtil.GetMsiInfo(imzML);
-
+            airdInfo.msiInfo = MsiUtil.GetMsiInfo(imzML, minMZ, maxMZ);     
+            airdInfo.msiFormat = MsiFormat.IMZML;
+                      
             //write position info to SpectraPositionFile
-            /*string positionFile = Path.ChangeExtension(JobInfo.airdFilePath, "position.txt");
+            /*string positionFile = Path.ChangeExtension(JobInfo.airdFilePath, "txt");
             int[] x = airdInfo.msiInfo.spectraPosition.x;
             int[] y = airdInfo.msiInfo.spectraPosition.y;
-            int[] z = airdInfo.msiInfo.spectraPosition.z;           
+            int[] z = airdInfo.msiInfo.spectraPosition.z;
             using (StreamWriter writer = new StreamWriter(positionFile))
             {
                 for (int i = 0; i < x.Length; i++)
@@ -966,9 +972,19 @@ namespace AirdPro.Converters
             for (var i = 0; i < TotalSpectraCount; i++)
             {
                 JobInfo.SetStatus("Pre:" + i + "/" + TotalSpectraCount);
-                Ms1List.Add(ParseMs1(spectrumList.Get(i), i)); //加入MS1List                
-            }
-
+                MsIndex msIndex = ParseMs1(spectrumList.Get(i), i);
+                Ms1List.Add(msIndex); //加入MS1List
+                //minMZ, maxMZ
+                if (minMZ > msIndex.minMz)
+                {
+                    minMZ = msIndex.minMz;
+                }
+                if(maxMZ < msIndex.maxMz)
+                {
+                    maxMZ = msIndex.maxMz;
+                }
+            }            
+            
             JobInfo.Log(Tag.Effective_MS1_List_Size + Ms1List.Count);
             JobInfo.Log(Tag.Start_Processing_MS1_List);
         }

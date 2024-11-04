@@ -48,6 +48,7 @@ namespace AirdPro
         /// </summary>
         [STAThread]
         [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.ControlAppDomain)]
+        [Obsolete]
         public static void Main(string[] args)
         {
             if (args.Length == 0)

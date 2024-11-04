@@ -7,8 +7,6 @@
  * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
  * See the Mulan PSL v2 for more details.
  */
-
-using AirdSDK.Bean;
 using AirdSDK.Bean.Msi;
 using System;
 using System.Collections.Generic;
@@ -114,7 +112,7 @@ namespace AirdSDK.Beans
         /**
          * 区分源文件是imzml，mzml，vendor
          */
-        public string msiType;
+        public string msiFormat;
 
         /**
          * the vendor file size
@@ -183,7 +181,7 @@ namespace AirdSDK.Beans
          * Use in MSI
          * 如果是空间代谢数据,本字段会启用
          */
-        public MsiInfo msiInfo;               
+        public MsiInfo msiInfo;
 
         /**
         * the aird file creator

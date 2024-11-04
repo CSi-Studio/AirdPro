@@ -52,43 +52,5 @@ namespace AirdPro.Utils.imzml
             return null;
         }
 
-        public static double GetMinMZ(SpectrumList spectrumList)
-        {
-            double minMZ = double.MaxValue;
-            foreach (Spectrum spectrum in spectrumList)
-            {
-                double[] mzArray = spectrum.GetMzArray();
-                if (mzArray == null || mzArray.Count() == 0) 
-                {
-                    continue;
-                }
-                double mz = mzArray.Min();
-                if (minMZ > mz)
-                {
-                    minMZ = mz;
-                }
-            }
-            return minMZ;
-        }
-
-        public static double GetMaxMZ(SpectrumList spectrumList)
-        {
-            double maxMZ = double.MinValue;
-            foreach (Spectrum spectrum in spectrumList)
-            {
-                double[] mzArray = spectrum.GetMzArray();
-                if (mzArray == null || mzArray.Count() == 0)
-                {
-                    continue;
-                }
-                double mz = mzArray.Max();
-                if (maxMZ < mz)
-                {
-                    maxMZ = mz;
-                }
-            }
-            return maxMZ;
-        }
-
     }
 }

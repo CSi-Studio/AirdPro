@@ -221,6 +221,14 @@ namespace AirdPro.Forms
                     MsiConfig msiConfig = new();
                     //msiConfig.locationFilePath
                     msiConfig.locationFilePath = tbLocationFilePath.Text.Trim();
+                    //msiConfig.msiFormat
+                    foreach (Control ctl in gbMsiFormat.Controls)
+                    {
+                        if (ctl is RadioButton rb && rb.Checked)
+                        {
+                            msiConfig.msiFormat = rb.Text;
+                        }
+                    }
                     // msiConfig.fileOrganisation
                     switch (comboBox_file_organisation.SelectedIndex)
                     {
@@ -518,7 +526,7 @@ namespace AirdPro.Forms
                 if (rbImzML.Checked)
                 {
                     gbMsiConfig.Visible = false;
-                    pnlSpectraLocationFile.Visible = false;
+                    pnlSpectraLocationFile.Visible = false;                    
                 }
                 else
                 {

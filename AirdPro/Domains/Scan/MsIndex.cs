@@ -44,6 +44,9 @@ namespace AirdPro.Domains
 
         public string msType;
 
+        //minMZ, maxMZ
+        public double minMz, maxMz;
+
         //对应的ms1的序号
         public int pNum;
 

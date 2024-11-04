@@ -8,7 +8,6 @@ namespace AirdSDK.Parser;
 
 public class MSIParser : DDAParser
 {
-    //private double mz;
     public List<DDAMs> msList;
     private List<ImageData> imageDataList;
 
@@ -40,7 +39,6 @@ public class MSIParser : DDAParser
         {            
             double[] mzArray = msList[index].spectrum.mzs;
             double[] intArray = msList[index].spectrum.ints;
-
             double intensity = 0;
             for (int i = 0; i < mzArray.Length; i++)
             {

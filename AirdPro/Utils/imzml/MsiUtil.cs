@@ -2,15 +2,13 @@
 using AirdPro.csimzMLParser.mzml;
 using AirdSDK.Bean.Msi;
 using AirdSDK.Enums.Msi;
-using SharpCompress.Common;
-using System.IO;
 using System.Linq;
 
 namespace AirdPro.Utils.imzml
 {
     public class MsiUtil
     {
-        public static MsiInfo GetMsiInfo(ImzML imzML)
+        public static MsiInfo GetMsiInfo(ImzML imzML, double minMZ, double maxMZ)
         {
             MsiInfo msiInfo = new();
             //fileOrganisation: row per file, image per file，spectrum per file
@@ -18,13 +16,13 @@ namespace AirdPro.Utils.imzml
             //ibd info
             msiInfo.ibdInfo = GetIbdInfo(imzML);
             //image info
-            msiInfo.imageInfo = GetImageInfo(imzML);
+            msiInfo.imageInfo = GetImageInfo(imzML, minMZ, maxMZ);
             //spectrum position
             msiInfo.spectraPosition = GetSpectraPosition(imzML.GetSpectrumList());
             //sample stage
             msiInfo.sampleStage = GetSampleStage(imzML);
             //public ScanInfo scanInfo
-            msiInfo.scanInfo = GetScanInfo(imzML);
+            msiInfo.scanInfo = GetScanInfo(imzML);            
 
             return msiInfo;
         }        
@@ -86,7 +84,7 @@ namespace AirdPro.Utils.imzml
             return ibdInfo;
         }       
 
-        public static ImageInfo GetImageInfo(ImzML imzML)
+        public static ImageInfo GetImageInfo(ImzML imzML, double minMZ, double maxMZ)
         {
             ImageInfo imageInfo = new()
             {
@@ -103,11 +101,12 @@ namespace AirdPro.Utils.imzml
             imageInfo.pixelSizeY = pixelSizeY;    
             
             imageInfo.imageShape = scanSettings?.GetCVParam(ScanSettings.IMAGE_ID)?.ToString() ?? "no data";
-            //mz range
-            imageInfo.minMZ = DataUtil.GetMinMZ(imzML.GetSpectrumList());
-            imageInfo.maxMZ = DataUtil.GetMaxMZ(imzML.GetSpectrumList());
+            
             //spectra per pixel
             imageInfo.spectraPerPixel = imzML.GetNumberOfSpectraPerPixel();
+
+            imageInfo.minMZ = minMZ;
+            imageInfo.maxMZ = maxMZ;
 
             return imageInfo;
         }

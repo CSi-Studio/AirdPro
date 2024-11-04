@@ -32,6 +32,7 @@ namespace AirdPro.Forms
         private string indexPath;
         private AirdInfo airdInfo;
 
+        [Obsolete]
         public MainForm()
         {
             InitializeComponent();

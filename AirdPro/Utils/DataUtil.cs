@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using AirdSDK.Beans;
 using pwiz.CLI.cv;
 using pwiz.CLI.msdata;
 using SharpCompress;
@@ -92,6 +93,18 @@ namespace AirdPro.Utils
 
             return maxIndex;
         }
-        
+
+        public static string FormatFileSize(long fileSizeInBytes)
+        {
+            const double oneGbInBytes = 1024 * 1024 * 1024;
+            if (fileSizeInBytes >= oneGbInBytes)
+            {
+                return $"{fileSizeInBytes / oneGbInBytes:0.##} GB";
+            }
+            else
+            {
+                return $"{fileSizeInBytes / (1024 * 1024):0.##} MB";
+            }
+        }
     }
 }

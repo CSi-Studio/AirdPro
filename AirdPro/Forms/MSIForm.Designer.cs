@@ -70,17 +70,19 @@
             this.panel2.Controls.Add(this.TbMz);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(2295, 66);
+            this.panel2.Size = new System.Drawing.Size(1530, 44);
             this.panel2.TabIndex = 4;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.Location = new System.Drawing.Point(1881, 21);
+            this.label4.Location = new System.Drawing.Point(1254, 14);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(34, 24);
+            this.label4.Size = new System.Drawing.Size(24, 17);
             this.label4.TabIndex = 12;
             this.label4.Text = "Da";
             // 
@@ -88,18 +90,20 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(1659, 21);
+            this.label2.Location = new System.Drawing.Point(1106, 14);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(124, 24);
+            this.label2.Size = new System.Drawing.Size(85, 17);
             this.label2.TabIndex = 11;
             this.label2.Text = "tolerance +/-";
             // 
             // TbTolerance
             // 
             this.TbTolerance.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.TbTolerance.Location = new System.Drawing.Point(1788, 18);
+            this.TbTolerance.Location = new System.Drawing.Point(1192, 12);
+            this.TbTolerance.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.TbTolerance.Name = "TbTolerance";
-            this.TbTolerance.Size = new System.Drawing.Size(87, 30);
+            this.TbTolerance.Size = new System.Drawing.Size(59, 23);
             this.TbTolerance.TabIndex = 10;
             this.TbTolerance.Text = "0.015";
             this.TbTolerance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -108,9 +112,10 @@
             // 
             this.BtnShowMS.Enabled = false;
             this.BtnShowMS.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.BtnShowMS.Location = new System.Drawing.Point(1277, 14);
+            this.BtnShowMS.Location = new System.Drawing.Point(851, 9);
+            this.BtnShowMS.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.BtnShowMS.Name = "BtnShowMS";
-            this.BtnShowMS.Size = new System.Drawing.Size(176, 39);
+            this.BtnShowMS.Size = new System.Drawing.Size(117, 26);
             this.BtnShowMS.TabIndex = 9;
             this.BtnShowMS.Text = "Show Spectrum";
             this.BtnShowMS.UseVisualStyleBackColor = true;
@@ -119,9 +124,10 @@
             // TbScanNumber
             // 
             this.TbScanNumber.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.TbScanNumber.Location = new System.Drawing.Point(1147, 17);
+            this.TbScanNumber.Location = new System.Drawing.Point(765, 11);
+            this.TbScanNumber.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.TbScanNumber.Name = "TbScanNumber";
-            this.TbScanNumber.Size = new System.Drawing.Size(124, 30);
+            this.TbScanNumber.Size = new System.Drawing.Size(84, 23);
             this.TbScanNumber.TabIndex = 8;
             this.TbScanNumber.Text = "0";
             // 
@@ -129,9 +135,10 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(1079, 20);
+            this.label3.Location = new System.Drawing.Point(719, 13);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(66, 24);
+            this.label3.Size = new System.Drawing.Size(47, 17);
             this.label3.TabIndex = 7;
             this.label3.Text = "Scan #";
             // 
@@ -139,9 +146,10 @@
             // 
             this.BtnShowImage.Enabled = false;
             this.BtnShowImage.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.BtnShowImage.Location = new System.Drawing.Point(1933, 13);
+            this.BtnShowImage.Location = new System.Drawing.Point(1289, 9);
+            this.BtnShowImage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.BtnShowImage.Name = "BtnShowImage";
-            this.BtnShowImage.Size = new System.Drawing.Size(177, 39);
+            this.BtnShowImage.Size = new System.Drawing.Size(118, 26);
             this.BtnShowImage.TabIndex = 6;
             this.BtnShowImage.Text = "Show MSI Image";
             this.BtnShowImage.UseVisualStyleBackColor = true;
@@ -150,17 +158,19 @@
             // TbAirdFile
             // 
             this.TbAirdFile.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.TbAirdFile.Location = new System.Drawing.Point(12, 18);
+            this.TbAirdFile.Location = new System.Drawing.Point(8, 12);
+            this.TbAirdFile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.TbAirdFile.Name = "TbAirdFile";
-            this.TbAirdFile.Size = new System.Drawing.Size(942, 30);
+            this.TbAirdFile.Size = new System.Drawing.Size(629, 23);
             this.TbAirdFile.TabIndex = 4;
             // 
             // BtnAirdImport
             // 
             this.BtnAirdImport.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.BtnAirdImport.Location = new System.Drawing.Point(960, 14);
+            this.BtnAirdImport.Location = new System.Drawing.Point(640, 9);
+            this.BtnAirdImport.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.BtnAirdImport.Name = "BtnAirdImport";
-            this.BtnAirdImport.Size = new System.Drawing.Size(100, 39);
+            this.BtnAirdImport.Size = new System.Drawing.Size(67, 26);
             this.BtnAirdImport.TabIndex = 3;
             this.BtnAirdImport.Text = "*.aird";
             this.BtnAirdImport.UseVisualStyleBackColor = true;
@@ -170,18 +180,20 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(1476, 21);
+            this.label1.Location = new System.Drawing.Point(984, 14);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(44, 24);
+            this.label1.Size = new System.Drawing.Size(30, 17);
             this.label1.TabIndex = 2;
             this.label1.Text = "m/z";
             // 
             // TbMz
             // 
             this.TbMz.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.TbMz.Location = new System.Drawing.Point(1523, 18);
+            this.TbMz.Location = new System.Drawing.Point(1015, 12);
+            this.TbMz.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.TbMz.Name = "TbMz";
-            this.TbMz.Size = new System.Drawing.Size(124, 30);
+            this.TbMz.Size = new System.Drawing.Size(84, 23);
             this.TbMz.TabIndex = 1;
             // 
             // webViewMSI
@@ -191,8 +203,9 @@
             this.webViewMSI.DefaultBackgroundColor = System.Drawing.Color.White;
             this.webViewMSI.Dock = System.Windows.Forms.DockStyle.Fill;
             this.webViewMSI.Location = new System.Drawing.Point(0, 0);
+            this.webViewMSI.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.webViewMSI.Name = "webViewMSI";
-            this.webViewMSI.Size = new System.Drawing.Size(1223, 1112);
+            this.webViewMSI.Size = new System.Drawing.Size(815, 741);
             this.webViewMSI.TabIndex = 0;
             this.webViewMSI.ZoomFactor = 1D;
             // 
@@ -202,10 +215,11 @@
             this.LbAirdInfo.Dock = System.Windows.Forms.DockStyle.Top;
             this.LbAirdInfo.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.LbAirdInfo.FormattingEnabled = true;
-            this.LbAirdInfo.ItemHeight = 24;
+            this.LbAirdInfo.ItemHeight = 17;
             this.LbAirdInfo.Location = new System.Drawing.Point(0, 0);
+            this.LbAirdInfo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.LbAirdInfo.Name = "LbAirdInfo";
-            this.LbAirdInfo.Size = new System.Drawing.Size(1072, 720);
+            this.LbAirdInfo.Size = new System.Drawing.Size(715, 544);
             this.LbAirdInfo.TabIndex = 1;
             // 
             // webViewMS
@@ -215,8 +229,9 @@
             this.webViewMS.DefaultBackgroundColor = System.Drawing.Color.White;
             this.webViewMS.Dock = System.Windows.Forms.DockStyle.Fill;
             this.webViewMS.Location = new System.Drawing.Point(0, 0);
+            this.webViewMS.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.webViewMS.Name = "webViewMS";
-            this.webViewMS.Size = new System.Drawing.Size(1072, 392);
+            this.webViewMS.Size = new System.Drawing.Size(715, 197);
             this.webViewMS.TabIndex = 0;
             this.webViewMS.ZoomFactor = 1D;
             // 
@@ -225,38 +240,42 @@
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.LbAirdInfo);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel1.Location = new System.Drawing.Point(0, 66);
+            this.panel1.Location = new System.Drawing.Point(0, 44);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1072, 1112);
+            this.panel1.Size = new System.Drawing.Size(715, 741);
             this.panel1.TabIndex = 5;
             // 
             // panel3
             // 
             this.panel3.Controls.Add(this.webViewMS);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(0, 720);
+            this.panel3.Location = new System.Drawing.Point(0, 544);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1072, 392);
+            this.panel3.Size = new System.Drawing.Size(715, 197);
             this.panel3.TabIndex = 2;
             // 
             // panel5
             // 
             this.panel5.Controls.Add(this.webViewMSI);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel5.Location = new System.Drawing.Point(1072, 66);
+            this.panel5.Location = new System.Drawing.Point(715, 44);
+            this.panel5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(1223, 1112);
+            this.panel5.Size = new System.Drawing.Size(815, 741);
             this.panel5.TabIndex = 6;
             // 
             // MSIImageForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2295, 1178);
+            this.ClientSize = new System.Drawing.Size(1530, 785);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "MSIImageForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MSI Image Viewer";

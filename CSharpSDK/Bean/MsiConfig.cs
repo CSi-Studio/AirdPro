@@ -1,10 +1,9 @@
-﻿using AirdSDK.Bean.Msi;
-
-namespace AirdSDK.Bean
+﻿namespace AirdSDK.Bean
 {
     public class MsiConfig
     {
         public string locationFilePath;
+        public string msiFormat;
         public string fileOrganisation;
         public string scanDirection;
         public string scanSequence;

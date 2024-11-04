@@ -1,4 +1,5 @@
-﻿using AirdSDK.Bean.Msi;
+﻿using AirdPro.Utils;
+using AirdSDK.Bean.Msi;
 using AirdSDK.Beans;
 using AirdSDK.Parser;
 using System;
@@ -84,14 +85,12 @@ namespace AirdPro.Forms
                 return;
             }
 
-
             ImageInfo imageInfo = msiParser.airdInfo.msiInfo.imageInfo;
             if (mz < imageInfo.minMZ || mz > imageInfo.maxMZ)
             {
                 MessageBox.Show("m/z value is invalid!", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-
             imageDataList = msiParser.GetImageDataList(mz, tolerance);
             var heatmapData = imageDataList.Select(data => new object[] { data.X, data.Y, data.Intensity }).ToList();
             double maxIntensity = GetMaxIntensity(imageDataList);
@@ -194,41 +193,25 @@ namespace AirdPro.Forms
 
             // LbAirdInfo
             LbAirdInfo.Items.Add("");
-            LbAirdInfo.Items.Add("  Data Details");
-            LbAirdInfo.Items.Add($"  File Name: {airdFile}");
-            const double oneGbInBytes = 1024 * 1024 * 1024;
-            double fileSizeInBytes = airdInfo.fileSize;
-            if (fileSizeInBytes >= oneGbInBytes)
-            {
-                LbAirdInfo.Items.Add($"  Source File Size: {fileSizeInBytes / oneGbInBytes:0.##} GB");
-            }
-            else
-            {
-                LbAirdInfo.Items.Add($"  Source File Size: {fileSizeInBytes / (1024 * 1024):0.##} MB");
-            }
+            LbAirdInfo.Items.Add("  Basic Info");
+            LbAirdInfo.Items.Add($"  Aird File Name: {airdFile}");
+            LbAirdInfo.Items.Add($"  Aird File Size: {DataUtil.FormatFileSize(msiParser.airdFile.Length)}");
             LbAirdInfo.Items.Add($"  Acquisition Method: {airdInfo.type}");
-            /*//源文件信息
-            LbAirdInfo.Items.Add("");
-            LbAirdInfo.Items.Add($"  Source File");
-           List <ParentFile> parentFiles = airdInfo.parentFiles;
-            foreach(ParentFile parentFile in parentFiles)
-            {
-                LbAirdInfo.Items.Add($"  File Name: {parentFile.name}");
-                LbAirdInfo.Items.Add($"  File Location: {parentFile.location}");
-            }*/
+            LbAirdInfo.Items.Add($"  Source File Format: {airdInfo.msiFormat}");
+            LbAirdInfo.Items.Add($"  Source File Size: {DataUtil.FormatFileSize(airdInfo.fileSize)}");
 
             LbAirdInfo.Items.Add("");
             LbAirdInfo.Items.Add("  Image Params");
             LbAirdInfo.Items.Add($"  File Organisation : {airdInfo.msiInfo.fileOrganisation?.ToLower()}");
             LbAirdInfo.Items.Add($"  Number of scans: {airdInfo.totalCount}");
-            LbAirdInfo.Items.Add($"  Range m/z: {Math.Round(imageInfo.minMZ, 5)}-{Math.Round(imageInfo.maxMZ, 5)}");
+            LbAirdInfo.Items.Add($"  Range m/z: {imageInfo.minMZ}-{imageInfo.maxMZ}");
             LbAirdInfo.Items.Add($"  Max count of pixels x: {imageInfo.maxPixelX}");
             LbAirdInfo.Items.Add($"  Max count of pixels y: {imageInfo.maxPixelY}");
             LbAirdInfo.Items.Add($"  Max count of pixels z: {imageInfo.maxPixelZ}");
             
             LbAirdInfo.Items.Add($"  Pixel size: Xaxis {imageInfo.pixelSizeX}, Yaxis {imageInfo.pixelSizeY}");
             LbAirdInfo.Items.Add($"  Image dimension [um]: X {imageInfo.pixelSizeX * imageInfo.maxPixelX} * Y {imageInfo.pixelSizeY * imageInfo.maxPixelY}");
-            LbAirdInfo.Items.Add($"  Total number of pixels: {imageInfo.maxPixelX * imageInfo.maxPixelY * imageInfo.spectraPerPixel}");
+            LbAirdInfo.Items.Add($"  Total number of pixels: {airdInfo.msiInfo.spectraPosition.x.Length}");
             LbAirdInfo.Items.Add($"  Spectra per pixel: {imageInfo.spectraPerPixel}");
             LbAirdInfo.Items.Add($"  Scan direction: {scanInfo.scanDirection?.ToLower()}");
             LbAirdInfo.Items.Add($"  Scan sequence: {scanInfo.scanSequence?.ToLower()}");

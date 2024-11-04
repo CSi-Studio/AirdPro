@@ -7,6 +7,6 @@
         public ImageInfo imageInfo;
         public SpectraPosition spectraPosition;
         public SampleStage sampleStage;
-        public ScanInfo scanInfo; 
+        public ScanInfo scanInfo;         
     }
 }

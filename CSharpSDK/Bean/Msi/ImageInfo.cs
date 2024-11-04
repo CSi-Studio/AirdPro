@@ -8,9 +8,8 @@
         public double pixelSizeX;
         public double pixelSizeY;
         public string imageShape;
-
-        public double minMZ;
-        public double maxMZ;
         public int spectraPerPixel = 1;
+        public double maxMZ;
+        public double minMZ;
     }
 }

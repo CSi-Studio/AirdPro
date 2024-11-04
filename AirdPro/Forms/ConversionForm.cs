@@ -32,6 +32,7 @@ namespace AirdPro.Forms
         readonly ArrayList jobIdList = [];
         BackgroundWorker bw;
 
+        [Obsolete]
         public ConversionForm()
         {
             InitializeComponent();
@@ -363,6 +364,7 @@ namespace AirdPro.Forms
             Program.aboutForm.BringToFront();
         }
 
+        [Obsolete]
         private void btnMainView_Click(object sender, EventArgs e)
         {
             if (Program.mainForm == null || Program.mainForm.IsDisposed)
