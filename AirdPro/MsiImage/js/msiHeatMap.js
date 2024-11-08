@@ -71,7 +71,8 @@
             },
             axisTick: {
                 show: false
-            }
+            },
+            position: 'top'
         },
         yAxis: {
             type: 'category',
