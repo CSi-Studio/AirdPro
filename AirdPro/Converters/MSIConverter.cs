@@ -19,7 +19,7 @@ using Software = AirdSDK.Beans.Software;
 
 namespace AirdPro.Converters
 {
-    public class MSIConvert: PwizConverter
+    public class MSIConverter: PwizConverter
     {        
         readonly List<Software> softwares = [];
         readonly List<Instrument> instruments = [];
@@ -29,7 +29,7 @@ namespace AirdPro.Converters
         public double minMZ = double.MaxValue;
         public double maxMZ = double.MinValue;
 
-        public MSIConvert() { }
+        public MSIConverter() { }
 
         public override void DoConvert()
         {

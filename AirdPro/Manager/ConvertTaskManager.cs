@@ -139,7 +139,7 @@ namespace AirdPro.Asyncs
                     }
                     else if (jobInfo.msiConfig!= null)
                     {
-                        converter = new MSIConvert();
+                        converter = new MSIConverter();
                     }
                     else
                     {

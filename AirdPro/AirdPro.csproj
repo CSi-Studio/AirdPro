@@ -165,7 +165,7 @@
     <Compile Include="Algorithms\Parser\DownloadXML\PRIDE\ProteomeXchangeDataset.cs" />
     <Compile Include="CommandLine\Options.cs" />
     <Compile Include="Converters\ImzMLConverter.cs" />
-    <Compile Include="Converters\MSIConvert.cs" />
+    <Compile Include="Converters\MSIConverter.cs" />
     <Compile Include="Forms\MSIForm.cs">
       <SubType>Form</SubType>
     </Compile>

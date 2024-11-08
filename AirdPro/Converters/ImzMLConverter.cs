@@ -37,7 +37,7 @@ namespace AirdPro.Converters
         public double minMZ = double.MaxValue;
         public double maxMZ = double.MinValue;
 
-        protected List<BlockIndex> IndexList = new(); //用于存储的全局的SWATH List
+        protected List<BlockIndex> IndexList = []; //用于存储的全局的SWATH List
 
         public List<MsIndex> Ms1List = []; //用于存放MS1索引及基础信息,泛型为MsIndex
         protected Hashtable FeaturesMap = [];
@@ -279,60 +279,23 @@ namespace AirdPro.Converters
                 Directory.CreateDirectory(tempPath);
             }
 
-            switch (JobInfo.format)
+            string directoryPath = Path.GetDirectoryName(JobInfo.inputPath);
+            string fileName = Path.GetFileNameWithoutExtension(JobInfo.inputPath);
+            if (directoryPath == null)
             {
-                case FileFormat.imzML:
-                    string directoryPath = Path.GetDirectoryName(JobInfo.inputPath);
-                    string fileName = Path.GetFileNameWithoutExtension(JobInfo.inputPath);
-                    if (directoryPath == null)
-                    {
-                        return;
-                    }
-                    FileInfo imzML = new(Path.Combine(directoryPath, fileName + ".imzML"));
-                    if (imzML.Exists)
-                    {
-                        string path = Path.Combine(tempPath, imzML.Name);
-                        File.Copy(imzML.FullName, path, true);
-                    }
-                    FileInfo ibd = new(Path.Combine(directoryPath, fileName + ".ibd"));
-                    if (ibd.Exists)
-                    {
-                        string path = Path.Combine(tempPath, ibd.Name);
-                        File.Copy(ibd.FullName, path, true);
-                    }
-                    break;
-                case FileFormat.mzML:
-                    FileInfo mzML = new(JobInfo.inputPath);
-                    if (mzML.Exists)
-                    {
-                        string path = Path.Combine(tempPath, mzML.Name);
-                        File.Copy(mzML.FullName, path, true);
-                    }
-                    break;
-                case FileFormat.mzXML:
-                    FileInfo mzXML = new(JobInfo.inputPath);
-                    if (mzXML.Exists)
-                    {
-                        string path = Path.Combine(tempPath, mzXML.Name);
-                        File.Copy(mzXML.FullName, path, true);
-                    }
-                    break;
-                case FileFormat.D:
-                    DirectoryInfo directory = new(JobInfo.inputPath);
-                    if (directory.Exists)
-                    {
-                        string path = Path.Combine(tempPath, directory.Name);
-                        AirdProFileUtil.CopyFolder(directory.FullName, path);
-                    }
-                    break;
-                default:
-                    FileInfo file = new(JobInfo.inputPath);
-                    if (file.Exists)
-                    {
-                        string path = Path.Combine(tempPath, file.Name);
-                        File.Copy(file.FullName, path, true);
-                    }
-                    break;
+                return;
+            }
+            FileInfo imzML = new(Path.Combine(directoryPath, fileName + ".imzML"));
+            if (imzML.Exists)
+            {
+                string path = Path.Combine(tempPath, imzML.Name);
+                File.Copy(imzML.FullName, path, true);
+            }
+            FileInfo ibd = new(Path.Combine(directoryPath, fileName + ".ibd"));
+            if (ibd.Exists)
+            {
+                string path = Path.Combine(tempPath, ibd.Name);
+                File.Copy(ibd.FullName, path, true);
             }
         }
 

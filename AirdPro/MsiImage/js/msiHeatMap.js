@@ -1,10 +1,45 @@
 ﻿function drawHeatmap(heatmapData, maxIntensity, maxPixelX, maxPixelY) {
-    const msiHeatMap = echarts.init(document.getElementById('msiContainer'));
+    const msiContainer = document.getElementById('msiContainer');
+    const msiHeatMap = echarts.init(msiContainer);
 
-    //蓝黄红渐变(echarts案例)
+    // 计算宽高比
+    const aspectRatio = maxPixelX / maxPixelY;
+
+    // 动态设置容器尺寸
+    function setContainerSize() {
+        const panelWidth = msiContainer.offsetWidth; // 获取 panel 宽度
+        const panelHeight = msiContainer.offsetHeight; // 获取 panel 高度
+
+        // 根据宽高比和窗口尺寸计算容器的宽度和高度
+        let containerWidth, containerHeight;
+        if (panelWidth / panelHeight > aspectRatio) {
+            // 如果 panel 的宽高比大于热力图的宽高比，那么高度应该与 panel 高度相匹配
+            containerHeight = panelHeight;
+            containerWidth = aspectRatio * containerHeight;
+        } else {
+            // 否则，宽度应该与 panel 宽度相匹配
+            containerWidth = panelWidth;
+            containerHeight = containerWidth / aspectRatio;
+        }
+
+        // 设置容器的尺寸
+        msiContainer.style.width = `${containerWidth}px`;
+        msiContainer.style.height = `${containerHeight}px`;
+
+        // 调整ECharts图表大小以适应容器尺寸
+        msiHeatMap.resize();
+    }
+
+    // 初始化时设置容器尺寸
+    setContainerSize();
+
+    // 监听窗口大小变化事件，以便在窗口大小变化时调整容器尺寸
+    window.addEventListener('resize', setContainerSize);
+
+    // 蓝黄红渐变(echarts案例)
     const colorList = [
-        '#313695', 
-        '#4575b4', 
+        '#313695',
+        '#4575b4',
         '#74add1',
         '#abd9e9',
         '#e0f3f8',
@@ -13,24 +48,39 @@
         '#fdae61',
         '#f46d43',
         '#d73027',
-        '#a50026' 
+        '#a50026'
     ];
 
     const option = {
         tooltip: {
             position: 'top'
         },
+        grid: {
+            left: '10%',
+            right: '10%',
+            top: '10%',
+            bottom: '10%',
+            containLabel: true
+        },
         xAxis: {
-            position: 'top',
             type: 'category',
             data: Array.from({ length: maxPixelX }, (_, i) => i),
-            splitArea: { show: true }
+            splitArea: { show: true },
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            }
         },
         yAxis: {
             type: 'category',
             data: Array.from({ length: maxPixelY }, (_, i) => i).reverse(),
             splitArea: { show: true },
             axisLine: {
+                show: false
+            },
+            axisTick: {
                 show: false
             }
         },
@@ -39,9 +89,9 @@
             max: maxIntensity,
             calculable: true,
             type: 'continuous',
-            orient: 'vertical',
-            left: 'left',
-            bottom: 'center',
+            orient: 'horizontal',
+            left: 'center',
+            top: 'top',
             inRange: {
                 color: colorList
             },
@@ -65,5 +115,4 @@
     };
 
     msiHeatMap.setOption(option);
-    window.addEventListener('resize', msiHeatMap.resize);
 }

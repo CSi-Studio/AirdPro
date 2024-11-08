@@ -90,7 +90,7 @@ namespace AirdPro.Converters
             converter.WriteToAirdInfoFile(); //将Info数据写入文件
         }        
 
-        public static void DDAMSI(MSIConvert converter)
+        public static void DDAMSI(MSIConverter converter)
         {
             converter.PredictForIntensityPrecision(); //预测intensity需要保留的精度
             converter.PredictForBestCombination(); //预测最佳压缩组合
