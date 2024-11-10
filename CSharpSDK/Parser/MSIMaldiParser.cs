@@ -6,12 +6,12 @@ using AirdSDK.Bean.Msi;
 
 namespace AirdSDK.Parser;
 
-public class MSIParser : DDAParser
+public class MSIMaldiParser : DDAParser
 {
     public List<DDAMs> msList;
     private List<ImageData> imageDataList;
 
-    public MSIParser(string indexFilePath) : base(indexFilePath)
+    public MSIMaldiParser(string indexFilePath) : base(indexFilePath)
     {
         msList = ReadAllToMemory();
     }    

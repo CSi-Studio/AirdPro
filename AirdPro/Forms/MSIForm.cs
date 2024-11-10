@@ -15,7 +15,7 @@ namespace AirdPro.Forms
     public partial class MSIImageForm : Form
     {
         readonly OpenFileDialog openFileDialog;
-        MSIParser msiParser;
+        MSIMaldiParser msiMaldiParser;
         List<ImageData> imageDataList;
         double mz, tolerance;
 
@@ -87,13 +87,13 @@ namespace AirdPro.Forms
                 return;
             }
 
-            ImageInfo imageInfo = msiParser.airdInfo.msiInfo.imageInfo;
+            ImageInfo imageInfo = msiMaldiParser.airdInfo.msiInfo.imageInfo;
             if (mz < imageInfo.minMZ || mz > imageInfo.maxMZ)
             {
                 MessageBox.Show("m/z value is invalid!", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            imageDataList = msiParser.GetImageDataList(mz, tolerance);
+            imageDataList = msiMaldiParser.GetImageDataList(mz, tolerance);
             var heatmapData = imageDataList.Select(data => new object[] { data.X, data.Y, data.Intensity }).ToList();
             double maxIntensity = GetMaxIntensity(imageDataList);
             double maxPixelX = imageInfo.maxPixelX;
@@ -144,14 +144,14 @@ namespace AirdPro.Forms
                 return;
             }
 
-            if (scanNumber < 0 || scanNumber >= msiParser.airdInfo.totalCount)
+            if (scanNumber < 0 || scanNumber >= msiMaldiParser.airdInfo.totalCount)
             {
                 MessageBox.Show("scan number is invalid!", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            double[] mzArray = msiParser.msList[scanNumber].spectrum.mzs;
-            double[] intensityArray = msiParser.msList[scanNumber].spectrum.ints;
+            double[] mzArray = msiMaldiParser.msList[scanNumber].spectrum.mzs;
+            double[] intensityArray = msiMaldiParser.msList[scanNumber].spectrum.ints;
 
             // 执行 JavaScript 代码
             string mzArrayJson = JsonSerializer.Serialize(mzArray);
@@ -182,14 +182,14 @@ namespace AirdPro.Forms
 
         private void ImportAirdFile(string airdFile)
         {
-            msiParser = new MSIParser(Path.ChangeExtension(airdFile, ".json"));
+            msiMaldiParser = new MSIMaldiParser(Path.ChangeExtension(airdFile, ".json"));
         }
 
 
 
         private void ShowAirdInfo(string airdFile)
         {
-            AirdInfo airdInfo = msiParser.airdInfo;
+            AirdInfo airdInfo = msiMaldiParser.airdInfo;
             ImageInfo imageInfo = airdInfo.msiInfo.imageInfo;
             ScanInfo scanInfo = airdInfo.msiInfo.scanInfo;
 
@@ -197,7 +197,7 @@ namespace AirdPro.Forms
             LbAirdInfo.Items.Add("");
             LbAirdInfo.Items.Add("  Basic Info");
             LbAirdInfo.Items.Add($"  Aird File Name: {airdFile}");
-            LbAirdInfo.Items.Add($"  Aird File Size: {DataUtil.FormatFileSize(msiParser.airdFile.Length)}");
+            LbAirdInfo.Items.Add($"  Aird File Size: {DataUtil.FormatFileSize(msiMaldiParser.airdFile.Length)}");
             LbAirdInfo.Items.Add($"  Aird Type: {airdInfo.type}");
             LbAirdInfo.Items.Add($"  Source File Size: {DataUtil.FormatFileSize(airdInfo.fileSize)}");
 
