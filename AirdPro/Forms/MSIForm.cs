@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Web.UI;
 using System.Windows.Forms;
 
 namespace AirdPro.Forms
@@ -18,6 +17,7 @@ namespace AirdPro.Forms
         readonly OpenFileDialog openFileDialog;
         MSIParser msiParser;
         List<ImageData> imageDataList;
+        double mz, tolerance;
 
         public MSIImageForm()
         {
@@ -31,7 +31,7 @@ namespace AirdPro.Forms
             string htmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MsiImage/html", "msBarChart.html");
             webViewMS.Source = new Uri(htmlPath);
             htmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MsiImage/html", "msiHeatMap.html");
-            webViewMSI.Source = new Uri(htmlPath);            
+            webViewMSI.Source = new Uri(htmlPath);
 
         }
 
@@ -39,6 +39,8 @@ namespace AirdPro.Forms
         {
             TbScanNumber.Text = "0";
             TbMz.Text = "";
+            TbPPM.Text = "";
+            TbDAL.Text = "";
             BtnShowMS.Enabled = false;
             BtnShowImage.Enabled = false;
             LbAirdInfo.Items.Clear();
@@ -58,12 +60,12 @@ namespace AirdPro.Forms
                 MessageBox.Show("please input m/z first!", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            if (TbTolerance.Text.Trim().Equals(""))
+            if (TbPPM.Text.Trim().Equals("") && TbDAL.Text.Trim().Equals(""))
             {
                 MessageBox.Show("please input m/z tolerance first!", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            double mz, tolerance;
+
             try
             {
                 mz = double.Parse(TbMz.Text.Trim());
@@ -76,7 +78,7 @@ namespace AirdPro.Forms
             }
             try
             {
-                tolerance = double.Parse(TbTolerance.Text.Trim());
+                tolerance = double.Parse(TbDAL.Text.Trim());
             }
             catch (FormatException fe)
             {
@@ -164,9 +166,9 @@ namespace AirdPro.Forms
             {
                 string airdFile = openFileDialog.FileName;
                 TbAirdFile.Text = airdFile;
-                ClearInfo();                
+                ClearInfo();
 
-                LbAirdInfo.Items.Add("  Importing and parsing file, please wait...");                 
+                LbAirdInfo.Items.Add("  Importing and parsing file, please wait...");
                 DateTime startTime = DateTime.Now;
                 await Task.Run(() => ImportAirdFile(airdFile));
                 DateTime endTime = DateTime.Now;
@@ -183,7 +185,7 @@ namespace AirdPro.Forms
             msiParser = new MSIParser(Path.ChangeExtension(airdFile, ".json"));
         }
 
-       
+
 
         private void ShowAirdInfo(string airdFile)
         {
@@ -196,8 +198,7 @@ namespace AirdPro.Forms
             LbAirdInfo.Items.Add("  Basic Info");
             LbAirdInfo.Items.Add($"  Aird File Name: {airdFile}");
             LbAirdInfo.Items.Add($"  Aird File Size: {DataUtil.FormatFileSize(msiParser.airdFile.Length)}");
-            LbAirdInfo.Items.Add($"  Acquisition Method: {airdInfo.type}");
-            LbAirdInfo.Items.Add($"  Source File Format: {airdInfo.msiFormat}");
+            LbAirdInfo.Items.Add($"  Aird Type: {airdInfo.type}");
             LbAirdInfo.Items.Add($"  Source File Size: {DataUtil.FormatFileSize(airdInfo.fileSize)}");
 
             LbAirdInfo.Items.Add("");
@@ -208,7 +209,7 @@ namespace AirdPro.Forms
             LbAirdInfo.Items.Add($"  Max count of pixels x: {imageInfo.maxPixelX}");
             LbAirdInfo.Items.Add($"  Max count of pixels y: {imageInfo.maxPixelY}");
             LbAirdInfo.Items.Add($"  Max count of pixels z: {imageInfo.maxPixelZ}");
-            
+
             LbAirdInfo.Items.Add($"  Pixel size: Xaxis {imageInfo.pixelSizeX}, Yaxis {imageInfo.pixelSizeY}");
             LbAirdInfo.Items.Add($"  Image dimension [um]: X {imageInfo.pixelSizeX * imageInfo.maxPixelX} * Y {imageInfo.pixelSizeY * imageInfo.maxPixelY}");
             LbAirdInfo.Items.Add($"  Total number of pixels: {airdInfo.msiInfo.spectraPosition.x.Length}");
@@ -217,6 +218,55 @@ namespace AirdPro.Forms
             LbAirdInfo.Items.Add($"  Scan sequence: {scanInfo.scanSequence?.ToLower()}");
             LbAirdInfo.Items.Add($"  Scan pattern: {scanInfo.scanPattern?.ToLower()}");
             LbAirdInfo.Items.Add($"  Scan type: {scanInfo.scanType?.ToLower()}");
+        }        
+
+        private void TbPPM_Leave(object sender, EventArgs e)
+        {
+            if (TbPPM.Text.Trim().Equals(""))
+            {
+                return;
+            }
+            if (!TbMz.Text.Trim().Equals(""))
+            {
+                try
+                {
+                    double mz = Convert.ToDouble(TbMz.Text.Trim());
+                    double ppm = Convert.ToDouble(TbPPM.Text.Trim());
+                    double dal = mz * ppm * Math.Pow(10, -6);
+                    TbDAL.Text = dal.ToString();
+                }
+                catch (FormatException fe)
+                {
+                    Console.WriteLine(fe.Message);
+                    MessageBox.Show("ppm value is invalid!", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
         }
+
+        private void TbDAL_Leave(object sender, EventArgs e)
+        {
+            if (TbDAL.Text.Trim().Equals(""))
+            {
+                return;
+            }
+            if (!TbMz.Text.Trim().Equals(""))
+            {
+                try
+                {
+                    double mz = Convert.ToDouble(TbMz.Text.Trim());
+                    double dal = Convert.ToDouble(TbDAL.Text.Trim());
+                    double ppm = Math.Round(dal * Math.Pow(10, 6) / mz);
+                    TbPPM.Text = ppm.ToString();
+                }
+                catch (FormatException fe)
+                {
+                    Console.WriteLine(fe.Message);
+                    MessageBox.Show("dal value is invalid!", "message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+        }
+     
     }
 }

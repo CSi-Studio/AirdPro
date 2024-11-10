@@ -52,7 +52,7 @@ namespace AirdPro.Forms
             }
 
             rbAuto.Checked = true;
-            cbMSI.Checked = false;
+            cbMSIRaw.Checked = false;
             tbOutputPath.Text = Settings.Default.LastOutputPath;
             string selectedConfig = Settings.Default.LastSelectedConfig;
             int selectedIndex = cbConfig.Items.IndexOf(selectedConfig);
@@ -110,6 +110,7 @@ namespace AirdPro.Forms
             comboBox_scan_pattern.SelectedIndex = 1; // default: fly back
         }
 
+        [Obsolete]
         private void AddEventHandler()
         {
             rbAuto.CheckedChanged += new EventHandler(Radio_CheckChanged);
@@ -119,9 +120,7 @@ namespace AirdPro.Forms
             rbMRM.CheckedChanged += new EventHandler(Radio_CheckChanged);
             rbDIAPasef.CheckedChanged += new EventHandler(Radio_CheckChanged);
             rbDDAPasef.CheckedChanged += new EventHandler(Radio_CheckChanged);
-            rbImzML.CheckedChanged += new EventHandler(Radio_CheckChanged);
-            rbMzML.CheckedChanged += new EventHandler(Radio_CheckChanged);
-            rbVendor.CheckedChanged += new EventHandler(Radio_CheckChanged);
+            rbMSIMaldi.CheckedChanged += new EventHandler(Radio_CheckChanged);
         }
 
         public void ClearInfos()
@@ -131,15 +130,11 @@ namespace AirdPro.Forms
 
         private string GetAirdType()
         {
-            if (cbMSI.Checked) 
-            {
-                return AcquisitionMethod.DDA;
-            }           
-            foreach(Control ctl in gbAcquisitionMode.Controls)
+            foreach (Control ctl in gbAcquisitionMode.Controls)
             {
                 if(ctl is RadioButton rb && rb.Checked)
                 {
-                    return rb.Text;
+                   return  rb.Text.Trim();   
                 }
             }
             return null;
@@ -210,25 +205,17 @@ namespace AirdPro.Forms
             
             if (local)  //本地磁盘文件导入
             {
-                if (gbMsiConfig.Visible)
+                if (gbMsiConfig.Visible)  //MSI_RAW
                 {
-                    string msi_path = string.Empty;
+                    string msiRawPath = string.Empty;
                     foreach (string path in filePathList)
                     {
-                        msi_path += "|" + path;
+                        msiRawPath += "|" + path;
                     }
-                    msi_path = msi_path.Substring(1);
-                    MsiConfig msiConfig = new();
-                    //msiConfig.locationFilePath
-                    msiConfig.locationFilePath = tbLocationFilePath.Text.Trim();
-                    //msiConfig.msiFormat
-                    foreach (Control ctl in gbMsiFormat.Controls)
-                    {
-                        if (ctl is RadioButton rb && rb.Checked)
-                        {
-                            msiConfig.msiFormat = rb.Text;
-                        }
-                    }
+                    msiRawPath = msiRawPath.Substring(1);
+
+                    MsiConfig msiConfig = new();        
+                    
                     // msiConfig.fileOrganisation
                     switch (comboBox_file_organisation.SelectedIndex)
                     {
@@ -242,6 +229,14 @@ namespace AirdPro.Forms
                             msiConfig.fileOrganisation = FileOrganisation.SPECTRUM_PER_FILE;
                             break;
                     }
+
+                    //  pixelSizeX, pixelSizeY, maxPixelX, maxPixelY, maxPixelZ
+                    msiConfig.pixelSizeX = tbPixelSizeX.Text.Trim().ToDouble();
+                    msiConfig.pixelSizeY = tbPixelSizeY.Text.Trim().ToDouble();
+                    msiConfig.maxPixelX = pixel_x.Value.ToInt();
+                    msiConfig.maxPixelY = pixel_y.Value.ToInt();
+                    msiConfig.maxPixelZ = pixel_z.Value.ToInt();       
+                    
                     // msiConfig.scanDirection
                     switch (comboBox_scan_direction.SelectedIndex)
                     {
@@ -258,6 +253,7 @@ namespace AirdPro.Forms
                             msiConfig.scanDirection = ScanDirection.LINESCAN_RIGHT_LEFT;
                             break;
                     }
+
                     // msiConfig.scanSequence
                     switch (comboBox_scan_sequence.SelectedIndex)
                     {
@@ -274,6 +270,7 @@ namespace AirdPro.Forms
                             msiConfig.scanSequence = ScanSequence.RIGHT_LEFT;
                             break;
                     }
+
                     // msiConfig.scanPattern
                     switch (comboBox_scan_pattern.SelectedIndex)
                     {
@@ -286,24 +283,17 @@ namespace AirdPro.Forms
                         case 2:
                             msiConfig.scanPattern = ScanPattern.RANDOM_ACCESS;
                             break;                        
-                    }
-                    // maxPixelX, maxPixelY, maxPixelZ, pixelSizeX, pixelSizeY
-                    msiConfig.maxPixelX = pixel_x.Value.ToInt();
-                    msiConfig.maxPixelY = pixel_y.Value.ToInt();
-                    msiConfig.maxPixelZ = pixel_z.Value.ToInt();
-                    msiConfig.pixelSizeX = tbPixelSizeX.Text.Trim().ToDouble();
-                    msiConfig.pixelSizeY = tbPixelSizeY.Text.Trim().ToDouble();
-                   
-                    Program.conversionForm.AddFile(msi_path, outputPath, airdType, (ConversionConfig)config.Clone(), msi_path, msiConfig);
+                    }                    
+
+                    //msiConfig.locationFilePath
+                    msiConfig.locationFilePath = tbLocationFilePath.Text.Trim();
+
+                    Program.conversionForm.AddFile(msiRawPath, outputPath, airdType, (ConversionConfig)config.Clone(), msiRawPath, msiConfig);
                 }
                 else
                 {
                     foreach (string path in filePathList)
                     {
-                        if (path.ToUpper().EndsWith(FileFormat.DotimzML))
-                        {
-                            airdType = AcquisitionMethod.DDA;
-                        }
                         Program.conversionForm.AddFile(path, outputPath, airdType, (ConversionConfig)config.Clone());
                     }
                 }
@@ -314,7 +304,7 @@ namespace AirdPro.Forms
                 {
                     if (path.ToUpper().EndsWith(FileFormat.DotimzML))
                     {
-                        airdType = AcquisitionMethod.DDA;
+                        airdType = AcquisitionMethod.MSI_MALDI;
                     }
                     RemoteConvertJob remoteJob = new(path, outputPath, airdType, config);
                     RedisManager.Instance.PublishJob(remoteJob);
@@ -480,7 +470,7 @@ namespace AirdPro.Forms
         }
 
         private void ImgBtnAdd_BtnClick(object sender, EventArgs e)
-        {           
+        {
             bool addResult = AddToList(true);
             if (addResult)
             {
@@ -516,64 +506,20 @@ namespace AirdPro.Forms
             }
         }
 
-
+        [Obsolete]
         private void Radio_CheckChanged(object sender, EventArgs e)
         {
-            if (cbMSI.Checked)  // 空代数据
-            {
-                rbDDA.Checked = true;
-                gbMsiFormat.Visible = true;
-                if (rbImzML.Checked)
-                {
-                    gbMsiConfig.Visible = false;
-                    pnlSpectraLocationFile.Visible = false;                    
-                }
-                else
-                {
-                    gbMsiConfig.Visible = true;
-                    pnlSpectraLocationFile.Visible = true;
-                }
-            }
-            else  // 非空代数据
-            {
-                string airdType = GetAirdType();
-                if (airdType.Equals("DDA") || airdType.Equals("Auto"))
-                {
-                    cbMSI.Enabled = true;
-                }
-                else
-                {
-                    cbMSI.Enabled = false;              
-                    gbMsiFormat.Visible = false;
-                    gbMsiConfig.Visible = false;
-                    pnlSpectraLocationFile.Visible = false;
-                }
-            }  
-        }
-
-        private void CBoxMSI_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cbMSI.Checked)
-            {
-                rbDDA.Checked = true;
-                gbMsiFormat.Visible = true;
-                if (rbImzML.Checked)
-                {
-                    gbMsiConfig.Visible = false;
-                    pnlSpectraLocationFile.Visible = false;
-                }
-                else
-                {
-                    gbMsiConfig.Visible = true;
-                    pnlSpectraLocationFile.Visible = true;
-                }
+            string airdType = GetAirdType();
+            if (airdType.Equals(AirdType.MSI_MALDI))
+            {      
+                cbMSIRaw.Visible = true;                   
             }
             else
             {
-                gbMsiFormat.Visible = false;
+                cbMSIRaw.Visible = false;
                 gbMsiConfig.Visible = false;
-                pnlSpectraLocationFile.Visible = false;
             }
+            cbMSIRaw.Checked = false;
         }
 
         private void btnLocationUpload_Click(object sender, EventArgs e)
@@ -582,6 +528,19 @@ namespace AirdPro.Forms
             {
                 string spectraLocationFileName = openLocationFileDialog.FileName;
                 tbLocationFilePath.Text = spectraLocationFileName;
+            }
+        }
+
+        private void cbMSIRaw_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbMSIRaw.Checked) 
+            {                
+                gbMsiConfig.Visible = true;
+                rbMSIMaldi.Checked = true;
+            }
+            else
+            {
+                gbMsiConfig.Visible = false;
             }
         }
     }

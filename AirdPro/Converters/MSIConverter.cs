@@ -351,8 +351,8 @@ namespace AirdPro.Converters
             airdInfo.ignoreZeroIntensityPoint = JobInfo.config.ignoreZeroIntensity;
 
             //Msi Info
-            airdInfo.msiInfo = MsiUtil.GetMsiInfo(JobInfo.msiConfig, TotalSpectraCount, minMZ, maxMZ);     
-            airdInfo.msiFormat = JobInfo.msiConfig.msiFormat;
+            airdInfo.msiInfo = MsiUtil.GetMsiInfo(JobInfo.msiConfig, TotalSpectraCount, minMZ, maxMZ);   
+            
 
             //Features Info
             FeaturesMap.Add(Features.ignore_zero_intensity, JobInfo.config.ignoreZeroIntensity);

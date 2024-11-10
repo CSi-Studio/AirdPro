@@ -10,16 +10,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Management;
 using System.Threading;
 using AirdPro.Constants;
 using AirdPro.Storage.Config;
 using AirdPro.Utils;
 using AirdSDK.Bean;
-using AirdSDK.Bean.Msi;
 using AirdSDK.Enums;
 using AirdSDK.Utils;
 using Newtonsoft.Json;
@@ -48,7 +45,7 @@ namespace AirdPro.Domains
         //用于转换的参数
         public ConversionConfig config;
 
-        //DIA,PRM,DDA. see AcquisitionMethod
+        //DIA,PRM,DDA,MSI_MALDI. see AcquisitionMethod
         public string type;
         
         [JsonIgnore]

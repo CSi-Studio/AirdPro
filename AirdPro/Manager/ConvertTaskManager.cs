@@ -131,9 +131,9 @@ namespace AirdPro.Asyncs
                     }
                     else if (jobInfo.format.Equals(FileFormat.imzML))
                     {
-                        if (jobInfo.type != AcquisitionMethod.DDA)
+                        if (jobInfo.type != AirdType.MSI_MALDI)
                         {
-                            jobInfo.type = AcquisitionMethod.DDA;
+                            jobInfo.type = AirdType.MSI_MALDI;
                         }
                         converter = new ImzMLConverter();
                     }

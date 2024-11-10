@@ -103,16 +103,11 @@ namespace AirdSDK.Beans
 
         /**
          * [Core Field]
-         * AcquisitionMethod, Support for DIA/SWATH, PRM, DDA, SRM/MRM, DDAPasef, DIAPasef
+         * AcquisitionMethod, Support for DIA/SWATH, PRM, DDA, SRM/MRM, DDAPasef, DIAPasef, MSI_MALDI
          * [核心字段]
-         * Aird支持的采集模式的类型,目前支持SRM/MRM, DIA, PRM, DDA, DDAPasef, DIAPasef 6种
+         * Aird支持的采集模式的类型,目前支持SRM/MRM, DIA, PRM, DDA, DDAPasef, DIAPasef, MSI_MALDI 7种
          */
         public string type;
-
-        /**
-         * 区分源文件是imzml，mzml，vendor
-         */
-        public string msiFormat;
 
         /**
          * the vendor file size

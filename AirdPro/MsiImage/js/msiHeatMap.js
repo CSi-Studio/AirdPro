@@ -7,8 +7,8 @@
 
     // 动态设置容器尺寸
     function setContainerSize() {
-        const panelWidth = msiContainer.offsetWidth; // 获取 panel 宽度
-        const panelHeight = msiContainer.offsetHeight; // 获取 panel 高度
+        const panelWidth = msiContainer.offsetWidth;
+        const panelHeight = msiContainer.offsetHeight;
 
         // 根据宽高比和窗口尺寸计算容器的宽度和高度
         let containerWidth, containerHeight;
@@ -29,12 +29,12 @@
         // 调整ECharts图表大小以适应容器尺寸
         msiHeatMap.resize();
     }
-
-    // 初始化时设置容器尺寸
+    
+    // 设置容器尺寸
     setContainerSize();
 
     // 监听窗口大小变化事件，以便在窗口大小变化时调整容器尺寸
-    window.addEventListener('resize', setContainerSize);
+    window.addEventListener('resize', msiHeatMap.resize);
 
     // 蓝黄红渐变(echarts案例)
     const colorList = [
@@ -59,7 +59,7 @@
             left: '10%',
             right: '10%',
             top: '10%',
-            bottom: '10%',
+            bottom: '25%',
             containLabel: true
         },
         xAxis: {
@@ -91,13 +91,13 @@
             calculable: true,
             type: 'continuous',
             orient: 'horizontal',
-            left: 'center',
-            top: 'top',
+            right: 'center',
+            bottom: 0,
             inRange: {
                 color: colorList
             },
             textStyle: {
-                color: '#fff'
+                color: '#000'
             }
         },
         series: [{

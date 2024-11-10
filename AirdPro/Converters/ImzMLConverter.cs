@@ -26,7 +26,6 @@ using CVUtil = AirdPro.Utils.imzml.CVUtil;
 using DataUtil = AirdPro.Utils.imzml.DataUtil;
 using MsiUtil = AirdPro.Utils.imzml.MsiUtil;
 using System.Linq;
-using AirdSDK.Enums.Msi;
 
 namespace AirdPro.Converters
 {
@@ -717,7 +716,6 @@ namespace AirdPro.Converters
 
             //Msi Info
             airdInfo.msiInfo = MsiUtil.GetMsiInfo(imzML, minMZ, maxMZ);     
-            airdInfo.msiFormat = MsiFormat.IMZML;
                       
             //write position info to SpectraPositionFile
             /*string positionFile = Path.ChangeExtension(JobInfo.airdFilePath, "txt");

@@ -31,7 +31,6 @@ public class MSIParser : DDAParser
 
     public List<ImageData> GetImageDataList(double mz, double tolerance)
     {
-        tolerance = tolerance * mz / 1000000;
         imageDataList = [];
         int[] x = airdInfo.msiInfo.spectraPosition.x;
         int[] y = airdInfo.msiInfo.spectraPosition.y;
