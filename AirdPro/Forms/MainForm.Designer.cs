@@ -85,7 +85,11 @@
             // menu
             // 
             this.menu.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.filesToolStripMenuItem, this.startConversionToolStripMenuItem, this.settingToolStripMenuItem, this.helpToolStripMenuItem });
+            this.menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.filesToolStripMenuItem,
+            this.startConversionToolStripMenuItem,
+            this.settingToolStripMenuItem,
+            this.helpToolStripMenuItem});
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
             this.menu.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
@@ -95,7 +99,8 @@
             // 
             // filesToolStripMenuItem
             // 
-            this.filesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.openRepositoryToolStripMenuItem });
+            this.filesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openRepositoryToolStripMenuItem});
             this.filesToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("filesToolStripMenuItem.Image")));
             this.filesToolStripMenuItem.Name = "filesToolStripMenuItem";
             this.filesToolStripMenuItem.Size = new System.Drawing.Size(69, 28);
@@ -118,7 +123,9 @@
             // 
             // settingToolStripMenuItem
             // 
-            this.settingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.globalSettingToolStripMenuItem, this.conversionSettingToolStripMenuItem });
+            this.settingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.globalSettingToolStripMenuItem,
+            this.conversionSettingToolStripMenuItem});
             this.settingToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("settingToolStripMenuItem.Image")));
             this.settingToolStripMenuItem.Name = "settingToolStripMenuItem";
             this.settingToolStripMenuItem.Size = new System.Drawing.Size(84, 28);
@@ -140,7 +147,8 @@
             // 
             // helpToolStripMenuItem
             // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.aboutToolStripMenuItem });
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("helpToolStripMenuItem.Image")));
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(71, 28);
@@ -193,7 +201,8 @@
             // fileTreeContext
             // 
             this.fileTreeContext.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.fileTreeContext.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.itemRefresh });
+            this.fileTreeContext.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itemRefresh});
             this.fileTreeContext.Name = "fileTreeContext";
             this.fileTreeContext.Size = new System.Drawing.Size(121, 26);
             // 
@@ -341,7 +350,9 @@
             // spectraDataGrids
             // 
             this.spectraDataGrids.AllowUserToOrderColumns = true;
-            this.spectraDataGrids.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.spectraDataGrids.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.spectraDataGrids.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.spectraDataGrids.ColumnHeadersHeight = 34;
             this.spectraDataGrids.Location = new System.Drawing.Point(3, 439);
@@ -351,7 +362,7 @@
             this.spectraDataGrids.RowHeadersWidth = 62;
             this.spectraDataGrids.RowTemplate.Height = 23;
             this.spectraDataGrids.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.spectraDataGrids.Size = new System.Drawing.Size(1219, 386);
+            this.spectraDataGrids.Size = new System.Drawing.Size(1220, 386);
             this.spectraDataGrids.TabIndex = 0;
             this.spectraDataGrids.VirtualMode = true;
             this.spectraDataGrids.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.spectraDataGrids_MouseDoubleClick);
@@ -367,7 +378,8 @@
             // notifyMenu
             // 
             this.notifyMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.notifyMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.quitToolStripMenuItem });
+            this.notifyMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.quitToolStripMenuItem});
             this.notifyMenu.Name = "notifyMenu";
             this.notifyMenu.Size = new System.Drawing.Size(101, 26);
             // 
@@ -411,6 +423,7 @@
             this.notifyMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion

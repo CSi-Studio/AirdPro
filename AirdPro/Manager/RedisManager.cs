@@ -31,7 +31,7 @@ namespace AirdPro.Redis
         private static RedisManager _instance;
         private ConnectionMultiplexer _redis;
         private IDatabase _db;
-        private readonly int _dbNum = 1;
+        private readonly int _dbNum = 0;
         private static int _messageNum = 0;
         public const int HeartBeatInterval = 5000; //客户端心跳间隔,单位:秒
         public const int ConsumeInterval = 3000; //分布式任务消费间隔,单位:秒
