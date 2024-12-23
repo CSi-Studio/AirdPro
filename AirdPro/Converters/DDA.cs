@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using AirdPro.Domains.Convert;
 using ThermoFisher.CommonCore.Data;
+using AirdPro.Domains;
 
 namespace AirdPro.Converters
 {
@@ -117,47 +118,57 @@ namespace AirdPro.Converters
             ms2.level = 2;
             ms2.pNum = parentIndex;
             ms2.num = index;
-            try
+            var retryTimes = 3;
+            bool parseResult = false;
+            while (!parseResult && retryTimes > 0)
             {
-                float mz = (float) double.Parse(spectrum.precursors[0].isolationWindow
-                    .cvParamChild(CVID.MS_isolation_window_target_m_z).value.ToString());
-
-
-                //兼容Agilent的DDA数据格式中可能出现的lower offset和upper offset为空的情况
-                string lowerOffsetStr =spectrum.precursors[0].isolationWindow
-                    .cvParamChild(CVID.MS_isolation_window_lower_offset).value.ToString();
-                string upperOffsetStr = spectrum.precursors[0].isolationWindow
-                    .cvParamChild(CVID.MS_isolation_window_upper_offset).value.ToString();
-
-                
-                float lowerOffset = 0f;
-                if (!lowerOffsetStr.IsNullOrEmpty())
+                try
                 {
-                    lowerOffset = (float) double.Parse(lowerOffsetStr);
-                }
+                    float mz = (float)double.Parse(spectrum.precursors[0].isolationWindow
+                        .cvParamChild(CVID.MS_isolation_window_target_m_z).value.ToString());
 
-                float upperOffset = 0f;
-                if (!upperOffsetStr.IsNullOrEmpty())
-                {
-                    upperOffset = (float) double.Parse(upperOffsetStr);
+
+                    //兼容Agilent的DDA数据格式中可能出现的lower offset和upper offset为空的情况
+                    string lowerOffsetStr = spectrum.precursors[0].isolationWindow
+                        .cvParamChild(CVID.MS_isolation_window_lower_offset).value.ToString();
+                    string upperOffsetStr = spectrum.precursors[0].isolationWindow
+                        .cvParamChild(CVID.MS_isolation_window_upper_offset).value.ToString();
+
+
+                    float lowerOffset = 0f;
+                    if (!lowerOffsetStr.IsNullOrEmpty())
+                    {
+                        lowerOffset = (float)double.Parse(lowerOffsetStr);
+                    }
+
+                    float upperOffset = 0f;
+                    if (!upperOffsetStr.IsNullOrEmpty())
+                    {
+                        upperOffset = (float)double.Parse(upperOffsetStr);
+                    }
+
+                    ms2.mz = mz;
+                    ms2.mzStart = mz - lowerOffset;
+                    ms2.mzEnd = mz + upperOffset;
+                    ms2.wid = lowerOffset + upperOffset;
+                    parseResult = true;
                 }
-               
-                ms2.mz = mz;
-                ms2.mzStart = mz - lowerOffset;
-                ms2.mzEnd = mz + upperOffset;
-                ms2.wid = lowerOffset + upperOffset;
+                catch (Exception e)
+                {
+                    retryTimes--;
+                }
             }
-            catch (Exception e)
+
+            if (!parseResult)
             {
                 jobInfo.log("ERROR:SpectrumIndex:" + spectrum.index)
                     .log("ERROR:SpectrumId:" + spectrum.id)
                     .log("ERROR: mz:" + spectrum.precursors[0].isolationWindow
-                             .cvParamChild(CVID.MS_isolation_window_target_m_z).value)
+                        .cvParamChild(CVID.MS_isolation_window_target_m_z).value)
                     .log("ERROR: lowerOffset:" + spectrum.precursors[0].isolationWindow
-                             .cvParamChild(CVID.MS_isolation_window_lower_offset).value)
+                        .cvParamChild(CVID.MS_isolation_window_lower_offset).value)
                     .log("ERROR: upperOffset:" + spectrum.precursors[0].isolationWindow
-                             .cvParamChild(CVID.MS_isolation_window_upper_offset).value);
-                throw e;
+                        .cvParamChild(CVID.MS_isolation_window_upper_offset).value);
             }
 
             if (spectrum.scanList.scans.Count != 1) return ms2;
