@@ -193,6 +193,10 @@ namespace AirdPro.Utils.imzml
                 scanInfo.scanDirection = ScanDirection.LINESCAN_BOTTOM_UP;
             }
 
+            var spectrumList = imzML.GetSpectrumList();
+            var maxPixelX = imzML.GetWidth();
+
+
             return scanInfo;
         }
 

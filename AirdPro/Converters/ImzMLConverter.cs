@@ -441,8 +441,11 @@ namespace AirdPro.Converters
             ms1.energy = -1;
             //min max mz
             double[] mzArray = spectrum.GetMzArray();
-            ms1.minMz = mzArray.Min();
-            ms1.maxMz = mzArray.Max();
+            if(mzArray !=null && mzArray.Length!=0)
+            {
+                ms1.minMz = mzArray.Min();
+                ms1.maxMz = mzArray.Max();
+            }
             return ms1;
         }
 
