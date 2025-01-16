@@ -15,6 +15,7 @@ using AirdSDK.Beans;
 using Spectrum = AirdPro.csimzMLParser.mzml.Spectrum;
 using AirdPro.Utils;
 using DataUtil = AirdPro.Utils.imzml.DataUtil;
+using Google.Protobuf.WellKnownTypes;
 
 namespace AirdPro.Algorithms.Compressor
 {
@@ -116,8 +117,10 @@ namespace AirdPro.Algorithms.Compressor
             int[] mzArray = new int[size];
             int[] intensityArray = new int[size];
             int j = 0;
+
             for (int t = 0; t < size; t++)
             {
+                intData[t] = Math.Round(intData[t], 0);
                 if (IgnoreZero && intData[t] == 0) continue;
                 mzArray[j] = DataUtil.FetchMz(mzData[t], MzPrecision);
                 intensityArray[j] = DataUtil.FetchIntensity(intData[t], IntensityPrecision);

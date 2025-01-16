@@ -426,11 +426,11 @@ namespace AirdPro.Converters
 
             Scan scan = spectrum.GetScanList().Get(0);
             ms1.filterString = CVUtil.ParseFilterString(scan, JobInfo);
-            ms1.rt = CVUtil.ParseRt(scan, JobInfo);
+            // ms1.rt = CVUtil.ParseRt(scan, JobInfo);
             ms1.tic = CVUtil.ParseTic(spectrum);
             ms1.basePeakIntensity = CVUtil.ParseBasePeakIntensity(spectrum);
             ms1.basePeakMz = CVUtil.ParseBasePeakMz(spectrum);
-            ms1.injectionTime = CVUtil.ParseInjectionTime(scan);
+            // ms1.injectionTime = CVUtil.ParseInjectionTime(scan);
             if (MobiInfo.unit == null || MobiInfo.type == null)
             {
                 CVUtil.ParseMobility(scan, MobiInfo);
