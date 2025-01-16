@@ -700,12 +700,24 @@
     <EmbeddedResource Include="Resources\Config\MLFastConfigFile.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <None Include="Resources\obo\imagingMS.obo" />
-    <None Include="Resources\obo\pato.obo" />
-    <None Include="Resources\obo\psi-ms.obo" />
-    <None Include="Resources\obo\quality.obo" />
-    <None Include="Resources\obo\unit.obo" />
-    <None Include="Resources\obo\uo.obo" />
+    <EmbeddedResource Include="Resources\obo\imagingMS.obo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\obo\pato.obo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\obo\psi-ms.obo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\obo\quality.obo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\obo\unit.obo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\obo\uo.obo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Ico\AIR.ico">
