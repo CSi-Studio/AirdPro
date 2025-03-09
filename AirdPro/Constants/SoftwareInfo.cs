@@ -16,7 +16,8 @@ namespace AirdPro.Constants
 
         public static string CLIENT_VERSION_DESCRIPTION = "1. Completely solve the problem of memory leaks\r\n" +
                                                           "2. Increase the conversion speed of columns\r\n" +
-                                                          "3. Distributed task processing system\r\n"
+                                                          "3. Distributed task processing system\r\n" +
+                                                          "4. Support for Mixed Polarity Filter\r\n"
                                                           ;
 
         public static string NAME = "AirdPro";

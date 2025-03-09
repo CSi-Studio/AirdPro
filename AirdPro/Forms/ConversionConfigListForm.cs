@@ -116,6 +116,8 @@ namespace AirdPro.Forms
             config.engine = cbCompEngine.SelectedIndex;
             config.configName = tbNameConfig.Text;
             config.indexFormat = cbIndexFormat.SelectedIndex;
+            config.polarityFilter = cbPolarityFilter.SelectedIndex;
+
             //如果不是自动决策的,则会使用配置的组合压缩器
             if (!cbAutoDecision.Checked)
             {
@@ -152,7 +154,7 @@ namespace AirdPro.Forms
             config.compressionSizeWeight = int.Parse(cbCSWeight.Text);
             config.compressionTimeWeight = int.Parse(cbCTWeight.Text);
             config.decompressionTimeWeight = int.Parse(cbDTWeight.Text);
-           
+            
             //Filter字段
             config.noMS1 = cbNoMS1.Checked;
             config.noMS2 = cbNoMS2.Checked;
@@ -228,6 +230,7 @@ namespace AirdPro.Forms
             cbIndexFormat.SelectedIndex = config.indexFormat;
             cbNoMS1.Checked = config.noMS1;
             cbNoMS2.Checked = config.noMS2;
+            cbPolarityFilter.SelectedIndex = config.polarityFilter;
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)

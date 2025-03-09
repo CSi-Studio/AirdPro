@@ -1709,6 +1709,32 @@ namespace AirdPro.Converters
             JobInfo.Log(Tag.Effective_MS1_List_Size + Ms1List.Count);
             JobInfo.Log(Tag.MS2_Group_List_Size + Ms2Table.Count);
             JobInfo.Log(Tag.Start_Processing_MS1_List);
+
+            if (JobInfo.config.polarityFilter != 0)
+            {
+                if (JobInfo.config.polarityFilter == 1) //Only Negative
+                {
+                    for (int i = Ms1List.Count - 1; i >= 0; i--)
+                    {
+                        if (!Ms1List[i].polarity.Equals(Polarity.NEGATIVE))
+                        {
+                            Ms2Table.Remove(Ms1List[i].num);
+                            Ms1List.RemoveAt(i);
+                        }
+                    }
+                } 
+                else if (JobInfo.config.polarityFilter == 2)
+                {
+                    for (int i = Ms1List.Count - 1; i >= 0; i--)
+                    {
+                        if (!Ms1List[i].polarity.Equals(Polarity.POSITIVE))
+                        {
+                            Ms2Table.Remove(Ms1List[i].num);
+                            Ms1List.RemoveAt(i);
+                        }
+                    }
+                }
+            }
         }
 
         public void PretreatmentDia()
