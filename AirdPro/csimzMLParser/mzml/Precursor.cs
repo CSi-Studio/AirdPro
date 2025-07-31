@@ -2,6 +2,7 @@
 using HZH_Controls;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AirdPro.csimzMLParser.mzml
 {
@@ -66,6 +67,11 @@ namespace AirdPro.csimzMLParser.mzml
         
         public void SetIsolationWindow(IsolationWindow isolationWindow)
         {
+            if (IsolationWindow == null)
+            {
+                IsolationWindow = new IsolationWindow();
+            }
+
             IsolationWindow.SetParent(this);
 
             this.IsolationWindow = isolationWindow;
@@ -78,9 +84,14 @@ namespace AirdPro.csimzMLParser.mzml
 
         public void SetSelectedIonList(SelectedIonList selectedIonList)
         {
+            if (SelectedIonList == null)
+            {
+                SelectedIonList = new SelectedIonList(selectedIonList.Count());
+            }
             SelectedIonList.SetParent(this);
 
             this.SelectedIonList = selectedIonList;
+
         }
 
         public SelectedIonList GetSelectedIonList()
@@ -90,6 +101,10 @@ namespace AirdPro.csimzMLParser.mzml
 
         public void SetActivation(Activation activation)
         {
+            if (Activation == null)
+            {
+                Activation = new Activation();
+            }
             Activation.SetParent(this);
 
             this.Activation = activation;
