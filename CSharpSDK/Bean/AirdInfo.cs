@@ -257,7 +257,7 @@ namespace AirdSDK.Beans
                 }
 
                 proto.Softwares.AddRange(protos);
-            } 
+            }
             if (this.parentFiles != null && this.parentFiles.Count > 0)
             {
                 List<ParentFileProto> protos = new List<ParentFileProto>();

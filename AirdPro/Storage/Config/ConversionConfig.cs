@@ -57,6 +57,13 @@ namespace AirdPro.Storage.Config
         public bool autoDecision = false;
 
         /**
+         * 0: No Filter
+         * 1: Only Negative
+         * 2: Only Positive
+         */
+        public int polarityFilter = 0;
+
+        /**
          * 转换后的索引格式，支持输出JSON，Protobuf或者两者均输出的形式
          * 0. JSON
          * 1. Protobuf

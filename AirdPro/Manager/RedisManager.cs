@@ -31,8 +31,8 @@ namespace AirdPro.Redis
         private static RedisManager _instance;
         private ConnectionMultiplexer _redis;
         private IDatabase _db;
-        private readonly int _dbNum = 1;
-        //private static int _messageNum = 0;
+        private readonly int _dbNum = 0;
+        private static int _messageNum = 0;
         public const int HeartBeatInterval = 5000; //客户端心跳间隔,单位:秒
         public const int ConsumeInterval = 3000; //分布式任务消费间隔,单位:秒
         private static readonly object locker = new();
@@ -187,11 +187,14 @@ namespace AirdPro.Redis
                             (ByteCompType)Enum.Parse(typeof(ByteCompType), job.mobiByteComp);
                     }
 
-                    jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig)
+                    jobInfo = new JobInfo(job.sourcePath, job.targetPath, job.type, conversionConfig);
+                    jobInfo.fromRedis = true;
+                    if (job.remoteId == null || job.remoteId.IsEmpty())
                     {
-                        fromRedis = true,
-                        remoteId = job.remoteId
-                    };
+                        Guid uuid = Guid.NewGuid();
+                        job.remoteId = uuid.ToString();
+                    }
+                    jobInfo.remoteId = job.remoteId;
                     needToExecute = true;
                 }
             }

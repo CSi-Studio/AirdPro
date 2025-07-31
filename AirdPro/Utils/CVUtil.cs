@@ -120,7 +120,7 @@ public class CVUtil
         }
         else
         {
-            return null;
+            return String.Empty;
         }
     }
 
@@ -195,7 +195,7 @@ public class CVUtil
         using var cvPos = spectrum.cvParamChild(CVID.MS_positive_scan);
         if (!cvPos.cvid.Equals(CVID.CVID_Unknown))
             return Polarity.POSITIVE;
-        return "Unknown";
+        return Polarity.UNKNOWN;
     }
 
     /**
@@ -210,7 +210,7 @@ public class CVUtil
         using var cvPos = chromatogram.cvParamChild(CVID.MS_positive_scan);
         if (!cvPos.cvid.Equals(CVID.CVID_Unknown))
             return Polarity.POSITIVE;
-        return "Unknown";
+        return Polarity.UNKNOWN;
     }
 
     /**

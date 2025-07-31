@@ -67,7 +67,7 @@ namespace AirdPro
             else
             {
                 AllocConsole();
-                Console.WriteLine("This is AirdPro Command Line");
+                Console.WriteLine("This is AirdPro command line");
                 Parser.Default.ParseArguments<Options>(args).WithParsed<Options>(options =>
                     {
                         // 这里可以访问options对象的属性来获取命令行参数的值

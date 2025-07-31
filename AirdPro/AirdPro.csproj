@@ -883,11 +883,9 @@
     <Content Include="Resources\TreeViewAdv\plus.bmp" />
     <Content Include="Resources\TreeViewAdv\uncheck.bmp" />
     <Content Include="Resources\TreeViewAdv\unknown.bmp" />
-    <Content Include="Version-CN.xml" />
-    <Content Include="Version.xml" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8.1">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.6.1 %28x86 和 x64%29</ProductName>
       <Install>true</Install>

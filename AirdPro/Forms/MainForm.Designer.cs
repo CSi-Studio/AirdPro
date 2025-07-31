@@ -378,7 +378,7 @@
             this.spectraDataGrids.RowHeadersWidth = 62;
             this.spectraDataGrids.RowTemplate.Height = 23;
             this.spectraDataGrids.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.spectraDataGrids.Size = new System.Drawing.Size(1831, 592);
+            this.spectraDataGrids.Size = new System.Drawing.Size(1220, 386);
             this.spectraDataGrids.TabIndex = 0;
             this.spectraDataGrids.VirtualMode = true;
             this.spectraDataGrids.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.spectraDataGrids_MouseDoubleClick);

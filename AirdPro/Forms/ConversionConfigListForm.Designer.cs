@@ -82,11 +82,13 @@
             this.lblMaxTasks = new System.Windows.Forms.Label();
             this.numMaxTasks = new System.Windows.Forms.NumericUpDown();
             this.btnGlobalSettingSave = new System.Windows.Forms.Button();
-            this.lblIndexFormat = new System.Windows.Forms.Label();
-            this.cbIndexFormat = new System.Windows.Forms.ComboBox();
             this.cbNoMS2 = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.cbNoMS1 = new System.Windows.Forms.CheckBox();
+            this.cbIndexFormat = new System.Windows.Forms.ComboBox();
+            this.lblIndexFormat = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cbPolarityFilter = new System.Windows.Forms.ComboBox();
             this.contextMenu.SuspendLayout();
             this.tableAutoDecision.SuspendLayout();
             this.tableDeciderWeight.SuspendLayout();
@@ -253,7 +255,7 @@
             this.lblConfigOperator.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.lblConfigOperator.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblConfigOperator.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblConfigOperator.Location = new System.Drawing.Point(595, 71);
+            this.lblConfigOperator.Location = new System.Drawing.Point(527, 71);
             this.lblConfigOperator.Name = "lblConfigOperator";
             this.lblConfigOperator.Size = new System.Drawing.Size(62, 17);
             this.lblConfigOperator.TabIndex = 126;
@@ -262,9 +264,9 @@
             // tbConfigOperator
             // 
             this.tbConfigOperator.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.tbConfigOperator.Location = new System.Drawing.Point(663, 68);
+            this.tbConfigOperator.Location = new System.Drawing.Point(595, 68);
             this.tbConfigOperator.Name = "tbConfigOperator";
-            this.tbConfigOperator.Size = new System.Drawing.Size(101, 23);
+            this.tbConfigOperator.Size = new System.Drawing.Size(88, 23);
             this.tbConfigOperator.TabIndex = 125;
             // 
             // lblConfigFileNameTag
@@ -284,7 +286,7 @@
             this.tbConfigFileNameSuffix.Font = new System.Drawing.Font("微软雅黑", 9F);
             this.tbConfigFileNameSuffix.Location = new System.Drawing.Point(407, 68);
             this.tbConfigFileNameSuffix.Name = "tbConfigFileNameSuffix";
-            this.tbConfigFileNameSuffix.Size = new System.Drawing.Size(155, 23);
+            this.tbConfigFileNameSuffix.Size = new System.Drawing.Size(112, 23);
             this.tbConfigFileNameSuffix.TabIndex = 123;
             // 
             // lblMzPrecision
@@ -763,31 +765,6 @@
             this.btnGlobalSettingSave.UseVisualStyleBackColor = true;
             this.btnGlobalSettingSave.Click += new System.EventHandler(this.BtnGlobalSettingSave_Click);
             // 
-            // lblIndexFormat
-            // 
-            this.lblIndexFormat.AutoSize = true;
-            this.lblIndexFormat.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblIndexFormat.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblIndexFormat.Location = new System.Drawing.Point(597, 41);
-            this.lblIndexFormat.Name = "lblIndexFormat";
-            this.lblIndexFormat.Size = new System.Drawing.Size(85, 17);
-            this.lblIndexFormat.TabIndex = 163;
-            this.lblIndexFormat.Text = "Index Format";
-            // 
-            // cbIndexFormat
-            // 
-            this.cbIndexFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbIndexFormat.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cbIndexFormat.FormattingEnabled = true;
-            this.cbIndexFormat.Items.AddRange(new object[] {
-            "Json",
-            "Protobuf",
-            "Both"});
-            this.cbIndexFormat.Location = new System.Drawing.Point(688, 37);
-            this.cbIndexFormat.Name = "cbIndexFormat";
-            this.cbIndexFormat.Size = new System.Drawing.Size(137, 25);
-            this.cbIndexFormat.TabIndex = 162;
-            // 
             // cbNoMS2
             // 
             this.cbNoMS2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -828,11 +805,63 @@
             this.cbNoMS1.Text = "No MS1";
             this.cbNoMS1.UseVisualStyleBackColor = true;
             // 
+            // cbIndexFormat
+            // 
+            this.cbIndexFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbIndexFormat.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbIndexFormat.FormattingEnabled = true;
+            this.cbIndexFormat.Items.AddRange(new object[] {
+            "Json",
+            "Protobuf",
+            "Both"});
+            this.cbIndexFormat.Location = new System.Drawing.Point(660, 37);
+            this.cbIndexFormat.Name = "cbIndexFormat";
+            this.cbIndexFormat.Size = new System.Drawing.Size(137, 25);
+            this.cbIndexFormat.TabIndex = 162;
+            // 
+            // lblIndexFormat
+            // 
+            this.lblIndexFormat.AutoSize = true;
+            this.lblIndexFormat.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblIndexFormat.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.lblIndexFormat.Location = new System.Drawing.Point(569, 41);
+            this.lblIndexFormat.Name = "lblIndexFormat";
+            this.lblIndexFormat.Size = new System.Drawing.Size(85, 17);
+            this.lblIndexFormat.TabIndex = 163;
+            this.lblIndexFormat.Text = "Index Format";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label3.Location = new System.Drawing.Point(689, 71);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(83, 17);
+            this.label3.TabIndex = 168;
+            this.label3.Text = "Polarity Filter";
+            // 
+            // cbPolarityFilter
+            // 
+            this.cbPolarityFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPolarityFilter.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbPolarityFilter.FormattingEnabled = true;
+            this.cbPolarityFilter.Items.AddRange(new object[] {
+            "No Filter",
+            "Only Negative",
+            "Only Positive"});
+            this.cbPolarityFilter.Location = new System.Drawing.Point(780, 68);
+            this.cbPolarityFilter.Name = "cbPolarityFilter";
+            this.cbPolarityFilter.Size = new System.Drawing.Size(132, 25);
+            this.cbPolarityFilter.TabIndex = 167;
+            // 
             // ConversionConfigListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(932, 515);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.cbPolarityFilter);
             this.Controls.Add(this.cbNoMS1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cbNoMS2);
@@ -936,10 +965,12 @@
         private System.Windows.Forms.ColumnHeader mzPrecision;
         private System.Windows.Forms.ColumnHeader headerAuto;
         public System.Windows.Forms.CheckBox cbCompressedIndex;
-        private System.Windows.Forms.Label lblIndexFormat;
-        public System.Windows.Forms.ComboBox cbIndexFormat;
         public System.Windows.Forms.CheckBox cbNoMS2;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.CheckBox cbNoMS1;
+        public System.Windows.Forms.ComboBox cbIndexFormat;
+        private System.Windows.Forms.Label lblIndexFormat;
+        private System.Windows.Forms.Label label3;
+        public System.Windows.Forms.ComboBox cbPolarityFilter;
     }
 }
