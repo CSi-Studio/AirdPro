@@ -1,4 +1,4 @@
-﻿function drawHeatmap(heatmapData, maxIntensity, maxPixelX, maxPixelY) {
+﻿function drawHeatmap(heatmapData, maxIntensity, maxPixelX, maxPixelY, pixelSizeX, pixelSizeY) {
     const msiContainer = document.getElementById('msiContainer');
     const msiHeatMap = echarts.init(msiContainer);
 
@@ -63,8 +63,11 @@
             containLabel: true
         },
         xAxis: {
+            name: 'μm',
+            nameLocation: 'middle',
+            nameTextStyle: { padding: 20 },
             type: 'category',
-            data: Array.from({ length: maxPixelX }, (_, i) => i),
+            data: Array.from({ length: maxPixelX }, (_, i) => i * pixelSizeX),
             splitArea: { show: true },
             axisLine: {
                 show: false
@@ -75,8 +78,11 @@
             position: 'top'
         },
         yAxis: {
+            name: 'μm',
+            nameLocation: 'middle',
+            nameTextStyle: { padding: 20 },
             type: 'category',
-            data: Array.from({ length: maxPixelY }, (_, i) => i).reverse(),
+            data: Array.from({ length: maxPixelY }, (_, i) => i * pixelSizeY).reverse(),
             splitArea: { show: true },
             axisLine: {
                 show: false
@@ -88,6 +94,7 @@
         visualMap: {
             min: 0,
             max: maxIntensity,
+            padding: 240,
             calculable: true,
             type: 'continuous',
             orient: 'horizontal',
@@ -104,6 +111,7 @@
             name: 'Heatmap',
             type: 'heatmap',
             coordinateSystem: 'cartesian2d',
+            progressive: 0,
             data: heatmapData.map(p => [p[0] - 1, maxPixelY - p[1], p[2]]),
             emphasis: {
                 itemStyle: {
@@ -112,7 +120,12 @@
                 }
             },
             animation: false
-        }]
+        }],
+        toolbox: {
+            feature: {
+                saveAsImage: {}  // 导出图片功能
+            }
+        }
     };
 
     msiHeatMap.setOption(option);

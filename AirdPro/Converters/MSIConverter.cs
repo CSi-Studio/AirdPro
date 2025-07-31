@@ -16,6 +16,8 @@ using pwiz.CLI.data;
 using MsiUtil = AirdPro.Utils.MsiUtil;
 using AirdSDK.Enums.Msi;
 using Software = AirdSDK.Beans.Software;
+using System.Linq;
+using ThermoFisher.CommonCore.Data;
 
 namespace AirdPro.Converters
 {
@@ -51,7 +53,14 @@ namespace AirdPro.Converters
                     foreach (var inputPath in JobInfo.inputPaths.Split('|'))
                     {
                         JobInfo.inputPath = inputPath;
+                        if (!string.IsNullOrEmpty(JobInfo.msiConfig.locationFilePath))
+                        {
+                            var position = MsiUtil.GetSpectraPosition(JobInfo.msiConfig);
+                            JobInfo.msiConfig.maxPixelX = position.x.Max();
+                            JobInfo.msiConfig.maxPixelY = position.y.Max();
+                        }
                         
+
                         using (MSDataList msdList = ReadVendorFile())
                         {
                             if (msdList.Count == 0)

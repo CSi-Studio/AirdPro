@@ -114,7 +114,7 @@ namespace AirdPro.Utils
             return scanInfo;
         }
 
-        public static SpectraPosition GetSpectraPosition(MsiConfig msiConfig, int spectaCount)
+        public static SpectraPosition GetSpectraPosition(MsiConfig msiConfig, int spectaCount = -1)
         {
             if (spectaCount == 0)
             {

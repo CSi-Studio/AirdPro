@@ -103,7 +103,9 @@ namespace AirdPro.Forms
             string maxIntensityJson = JsonSerializer.Serialize(maxIntensity);
             string maxPixelXJson = JsonSerializer.Serialize(maxPixelX);
             string maxPixelYJson = JsonSerializer.Serialize(maxPixelY);
-            string script = $"drawHeatmap({heatmapDataJson}, {maxIntensityJson}, {maxPixelXJson}, {maxPixelYJson});";
+            string pixelSizeX = JsonSerializer.Serialize(imageInfo.pixelSizeX);
+            string pixelSizeY = JsonSerializer.Serialize(imageInfo.pixelSizeY);
+            string script = $"drawHeatmap({heatmapDataJson}, {maxIntensityJson}, {maxPixelXJson}, {maxPixelYJson}, {pixelSizeX}, {pixelSizeY});";
             webViewMSI.ExecuteScriptAsync(script);
         }
 
@@ -172,6 +174,7 @@ namespace AirdPro.Forms
                 DateTime startTime = DateTime.Now;
                 await Task.Run(() => ImportAirdFile(airdFile));
                 DateTime endTime = DateTime.Now;
+                LbAirdInfo.Items.Clear();
                 LbAirdInfo.Items.Add($"  The file was successfully imported and took {(endTime - startTime).TotalSeconds} s!");
 
                 ShowAirdInfo(airdFile);
