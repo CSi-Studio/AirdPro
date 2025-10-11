@@ -46,6 +46,7 @@ namespace AirdPro.Forms
             bw.DoWork += (sender, e) => ConvertTaskManager.GetInstance().Run();
             // 创建一个ListViewSorter对象
             FileListSorter sorter = new();
+            cbCopyFileFromRemote.Checked = Settings.Default.CopyFileFromRemote;
             lvFileList.ListViewItemSorter = sorter;
             listViewJobInfo.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
@@ -452,6 +453,12 @@ namespace AirdPro.Forms
             }
             Program.msiImageForm.Show();
             Program.msiImageForm.BringToFront();
+        }
+
+        private void cbCopyFileFromRemote_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.CopyFileFromRemote = cbCopyFileFromRemote.Checked;
+            Settings.Default.Save();
         }
     }
 }

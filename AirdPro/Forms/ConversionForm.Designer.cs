@@ -93,6 +93,7 @@ namespace AirdPro.Forms
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.timerTaskScan = new System.Windows.Forms.Timer(this.components);
+            this.cbCopyFileFromRemote = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.container)).BeginInit();
             this.container.Panel1.SuspendLayout();
             this.container.Panel2.SuspendLayout();
@@ -111,6 +112,7 @@ namespace AirdPro.Forms
             // 
             // container.Panel1
             // 
+            this.container.Panel1.Controls.Add(this.cbCopyFileFromRemote);
             this.container.Panel1.Controls.Add(this.label10);
             this.container.Panel1.Controls.Add(this.btnImage);
             this.container.Panel1.Controls.Add(this.label9);
@@ -506,6 +508,13 @@ namespace AirdPro.Forms
             this.timerTaskScan.Interval = 5000;
             this.timerTaskScan.Tick += new System.EventHandler(this.timerTaskScan_Tick);
             // 
+            // cbCopyFileFromRemote
+            // 
+            resources.ApplyResources(this.cbCopyFileFromRemote, "cbCopyFileFromRemote");
+            this.cbCopyFileFromRemote.Name = "cbCopyFileFromRemote";
+            this.cbCopyFileFromRemote.UseVisualStyleBackColor = true;
+            this.cbCopyFileFromRemote.CheckedChanged += new System.EventHandler(this.cbCopyFileFromRemote_CheckedChanged);
+            // 
             // ConversionForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -591,6 +600,7 @@ namespace AirdPro.Forms
         private System.Windows.Forms.ColumnHeader headerRate;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button btnImage;
+        private System.Windows.Forms.CheckBox cbCopyFileFromRemote;
     }
 }
 

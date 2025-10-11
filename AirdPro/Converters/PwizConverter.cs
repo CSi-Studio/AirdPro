@@ -22,6 +22,7 @@ using AirdPro.Algorithms.Maths;
 using AirdPro.Algorithms.Parser;
 using AirdPro.Constants;
 using AirdPro.Domains;
+using AirdPro.Properties;
 using AirdPro.Utils;
 using AirdSDK.Beans;
 using AirdSDK.Beans.Common;
@@ -526,6 +527,11 @@ namespace AirdPro.Converters
 
         protected void CopyFile()
         {
+            if (!Settings.Default.CopyFileFromRemote)
+            {
+                Console.WriteLine("跳过远程拷贝");
+                return;
+            }
             string driveLetter = Path.GetPathRoot(JobInfo.inputPath);
             DriveInfo driveInfo = new DriveInfo(driveLetter);
             if (driveInfo.DriveType != DriveType.Network)
