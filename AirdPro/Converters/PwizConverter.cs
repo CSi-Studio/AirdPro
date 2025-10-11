@@ -529,7 +529,6 @@ namespace AirdPro.Converters
         {
             if (!Settings.Default.CopyFileFromRemote)
             {
-                Console.WriteLine("跳过远程拷贝");
                 return;
             }
             string driveLetter = Path.GetPathRoot(JobInfo.inputPath);
