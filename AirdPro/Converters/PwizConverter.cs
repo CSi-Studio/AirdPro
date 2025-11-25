@@ -898,10 +898,6 @@ namespace AirdPro.Converters
                 ms1.polarity = CVUtil.ParsePolarity(spectrum);
                 ms1.activator = Activator.UNKNOWN;
                 ms1.energy = -1;
-                //min max mz
-                double[] mzArray = spectrum.getMZArray().data.Storage();
-                ms1.minMz = mzArray.Min();
-                ms1.maxMz = mzArray.Max();
             }
 
             return ms1;
