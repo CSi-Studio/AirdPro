@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # macOS/Linux容器服务（使用Wine运行Windows应用）
+  airdpro-macos:
+    build:
+      context: .
+      target: runtime-macos
+    image: airdpro:macos
+    container_name: airdpro-macos
+    volumes:
+      - ./data:/data
+      - ./logs:/app/logs
+      - /tmp/.X11-unix:/tmp/.X11-unix  # X11显示支持（macOS需要XQuartz）
+    environment:
+      - DISPLAY=host.docker.internal:0
+      - WINEPREFIX=/wine
+      - WINEARCH=win64
+      - WINEDEBUG=-all
+    # 需要访问X11服务器
+    privileged: true
+    stdin_open: true
+    tty: true
+    
+  # 命令行模式服务（无GUI）
+  airdpro-cli:
+    build:
+      context: .
+      target: runtime-macos
+    image: airdpro:cli
+    container_name: airdpro-cli
+    volumes:
+      - ./data:/data
+      - ./logs:/app/logs
+    environment:
+      - WINEPREFIX=/wine
+      - WINEARCH=win64
+      - WINEDEBUG=-all
+    command: ["--help"]
+    # 命令行模式不需要GUI支持
+    
+  # 开发模式服务（带热重载）
+  airdpro-dev:
+    build:
+      context: .
+      target: runtime-macos
+    image: airdpro:dev
+    container_name: airdpro-dev
+    volumes:
+      - ./data:/data
+      - ./logs:/app/logs
+      - ./AirdPro:/app/windows:ro  # 挂载源代码（只读）
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY=host.docker.internal:0
+      - WINEPREFIX=/wine
+      - WINEARCH=win64
+      - WINEDEBUG=-all
+    privileged: true
+    stdin_open: true
+    tty: true
+
+volumes:
+  data:
+    driver: local
+  logs:
+    driver: local
