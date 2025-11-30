@@ -1,0 +1,177 @@
+# AirdPro跨平台Docker构建文件
+# 支持Windows、Linux、macOS平台的Docker镜像构建
+
+# 第一阶段：跨平台构建（使用.NET 6 SDK）
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+
+# 设置工作目录
+WORKDIR /src
+
+# 复制项目文件
+COPY AirdPro.sln .
+COPY AirdPro/AirdPro.csproj ./AirdPro/
+COPY AirdProTests/AirdProTests.csproj ./AirdProTests/
+COPY CSharpSDK/AirdSDK.csproj ./CSharpSDK/
+
+# 恢复NuGet包
+RUN dotnet restore AirdPro.sln
+
+# 复制源代码
+COPY AirdPro/ ./AirdPro/
+COPY AirdProTests/ ./AirdProTests/
+COPY CSharpSDK/ ./CSharpSDK/
+COPY ImportLibs/ ./ImportLibs/
+
+# 构建项目
+RUN dotnet build AirdPro.sln --configuration Release --no-restore
+
+# 第二阶段：Windows原生容器运行时（需要在Windows环境中构建）
+FROM mcr.microsoft.com/windows/servercore:ltsc2022 AS runtime-windows
+
+# 安装.NET Framework 4.8
+ADD https://download.microsoft.com/download/6/5/6/65632d60-c5c1-4a47-82e4-6f4b4e6e5c5e/ndp48-web.exe /temp/ndp48-web.exe
+RUN C:\temp\ndp48-web.exe /quiet
+
+# 创建工作目录
+WORKDIR /app
+
+# 复制构建好的文件（假设在Windows环境中）
+COPY --from=build /src/AirdPro/bin/Release/net48/ ./
+COPY --from=build /src/ImportLibs/ ./ImportLibs/
+
+# 设置入口点
+ENTRYPOINT ["AirdPro.exe"]
+
+# 第三阶段：Linux/macOS运行时（使用Wine运行.NET Framework应用）
+FROM ubuntu:22.04 AS runtime-linux
+
+# 设置环境变量
+ENV DEBIAN_FRONTEND=noninteractive
+ENV WINEPREFIX=/wine
+ENV WINEARCH=win64
+ENV WINEDEBUG=-all
+ENV DISPLAY=:99
+
+# 安装系统依赖
+RUN dpkg --add-architecture i386 && \
+    apt-get update && \
+    apt-get install -y \
+    wget \
+    gnupg2 \
+    software-properties-common \
+    curl \
+    cabextract \
+    fonts-wine \
+    libasound2 \
+    libc6 \
+    libglib2.0-0 \
+    libgphoto2-6 \
+    libgphoto2-port12 \
+    liblcms2-2 \
+    libldap-2.5-0 \
+    libltdl7 \
+    libmpg123-0 \
+    libopenal1 \
+    libpcap0.8 \
+    libpulse0 \
+    libudev1 \
+    libv4l-0 \
+    libx11-6 \
+    libx11-xcb1 \
+    libxcb1 \
+    libxcomposite1 \
+    libxcursor1 \
+    libxext6 \
+    libxfixes3 \
+    libxi6 \
+    libxrandr2 \
+    libxrender1 \
+    libxss1 \
+    libxtst6 \
+    xvfb \
+    && rm -rf /var/lib/apt/lists/*
+
+# 添加Wine仓库并安装Wine
+RUN wget -qO- https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
+    apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ jammy main' && \
+    apt-get update && \
+    apt-get install -y --install-recommends winehq-staging
+
+# 创建工作目录
+WORKDIR /app
+
+# 复制Windows应用程序文件（需要Windows环境构建）
+COPY --from=build /src/AirdPro/bin/Release/net48/ ./windows/
+COPY --from=build /src/ImportLibs/ ./windows/ImportLibs/
+
+# 创建启动脚本
+RUN echo '#!/bin/bash' > /app/start.sh && \
+    echo 'set -e' >> /app/start.sh && \
+    echo 'if [ ! -d "/wine/dosdevices/c:/windows" ]; then' >> /app/start.sh && \
+    echo '    echo "首次运行，正在初始化Wine环境..."' >> /app/start.sh && \
+    echo '    export WINEPREFIX=/wine' >> /app/start.sh && \
+    echo '    export WINEARCH=win64' >> /app/start.sh && \
+    echo '    wineboot --init' >> /app/start.sh && \
+    echo '    # 安装.NET Framework 4.8' >> /app/start.sh && \
+    echo '    wget -O /tmp/dotnet48.exe https://download.microsoft.com/download/6/5/6/65632d60-c5c1-4a47-82e4-6f4b4e6e5c5e/ndp48-web.exe' >> /app/start.sh && \
+    echo '    wine /tmp/dotnet48.exe /quiet' >> /app/start.sh && \
+    echo '    rm /tmp/dotnet48.exe' >> /app/start.sh && \
+    echo '    # 安装常用字体' >> /app/start.sh && \
+    echo '    winetricks -q corefonts vcrun2019' >> /app/start.sh && \
+    echo '    wineserver -w' >> /app/start.sh && \
+    echo '    echo "Wine环境初始化完成"' >> /app/start.sh && \
+    echo 'fi' >> /app/start.sh && \
+    echo 'echo "启动AirdPro应用程序..."' >> /app/start.sh && \
+    echo 'cd /app/windows' >> /app/start.sh && \
+    echo 'export WINEPREFIX=/wine' >> /app/start.sh && \
+    echo 'export WINEARCH=win64' >> /app/start.sh && \
+    echo 'wine AirdPro.exe "$@"' >> /app/start.sh && \
+    chmod +x /app/start.sh
+
+# 设置数据卷
+VOLUME ["/data"]
+VOLUME ["/logs"]
+
+# 设置入口点
+ENTRYPOINT ["/app/start.sh"]
+
+# 第四阶段：CLI版本（无GUI）
+FROM runtime-linux AS runtime-cli
+
+# 移除GUI相关依赖，减少镜像大小
+RUN apt-get remove -y xvfb libx11-6 libx11-xcb1 libxcb1 libxcomposite1 \
+    libxcursor1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 \
+    libxss1 libxtst6 fonts-wine && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# 覆盖入口点为CLI模式
+ENTRYPOINT ["/app/start.sh", "--console"]
+
+# 第五阶段：开发版本
+FROM runtime-linux AS runtime-dev
+
+# 安装开发工具
+RUN apt-get update && \
+    apt-get install -y \
+    vim \
+    nano \
+    curl \
+    wget \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# 创建开发环境入口点
+RUN echo '#!/bin/bash' > /app/dev-start.sh && \
+    echo 'set -e' >> /app/dev-start.sh && \
+    echo 'if [ "$1" = "--interactive" ]; then' >> /app/dev-start.sh && \
+    echo '    echo "进入开发模式交互环境..."' >> /app/dev-start.sh && \
+    echo '    /bin/bash' >> /app/dev-start.sh && \
+    echo 'else' >> /app/dev-start.sh && \
+    echo '    exec /app/start.sh "$@"' >> /app/dev-start.sh && \
+    echo 'fi' >> /app/dev-start.sh && \
+    chmod +x /app/dev-start.sh
+
+# 覆盖入口点
+ENTRYPOINT ["/app/dev-start.sh"]
