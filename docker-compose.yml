@@ -1,16 +1,30 @@
 version: '3.8'
 
 services:
-  # macOS/Linux容器服务（使用Wine运行Windows应用）
-  airdpro-macos:
+  # Windows原生容器服务
+  airdpro-windows:
     build:
       context: .
-      target: runtime-macos
-    image: airdpro:macos
-    container_name: airdpro-macos
+      target: runtime-windows
+    image: airdpro:windows
+    container_name: airdpro-windows
     volumes:
       - ./data:/data
-      - ./logs:/app/logs
+      - ./logs:C:/app/logs
+    environment:
+      - COMPLUS_NO gui=1
+    # Windows容器特定配置
+    
+  # macOS/Linux容器服务（使用Wine运行Windows应用）
+  airdpro-linux:
+    build:
+      context: .
+      target: runtime-linux
+    image: airdpro:linux
+    container_name: airdpro-linux
+    volumes:
+      - ./data:/data
+      - ./logs:/logs
       - /tmp/.X11-unix:/tmp/.X11-unix  # X11显示支持（macOS需要XQuartz）
     environment:
       - DISPLAY=host.docker.internal:0
@@ -26,29 +40,28 @@ services:
   airdpro-cli:
     build:
       context: .
-      target: runtime-macos
+      target: runtime-linux
     image: airdpro:cli
     container_name: airdpro-cli
     volumes:
       - ./data:/data
-      - ./logs:/app/logs
+      - ./logs:/logs
     environment:
       - WINEPREFIX=/wine
       - WINEARCH=win64
       - WINEDEBUG=-all
-    command: ["--help"]
     # 命令行模式不需要GUI支持
     
   # 开发模式服务（带热重载）
   airdpro-dev:
     build:
       context: .
-      target: runtime-macos
+      target: runtime-linux
     image: airdpro:dev
     container_name: airdpro-dev
     volumes:
       - ./data:/data
-      - ./logs:/app/logs
+      - ./logs:/logs
       - ./AirdPro:/app/windows:ro  # 挂载源代码（只读）
       - /tmp/.X11-unix:/tmp/.X11-unix
     environment:
